@@ -29,6 +29,7 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [connectedFamilyName, setConnectedFamilyName] = useState<string | null>(null);
+  const [connectedChild, setConnectedChild] = useState<{ name?: string; avatar?: string } | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
 
   if (!isOpen) return null;
@@ -50,6 +51,9 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
     if (result.success) {
       setIsSuccess(true);
       setConnectedFamilyName(result.familyName || 'Gia đình Siêu Nhân');
+      if (result.childName || result.childAvatar) {
+        setConnectedChild({ name: result.childName, avatar: result.childAvatar });
+      }
       sounds.playFanfare();
       confetti({
         particleCount: 80,
@@ -175,52 +179,30 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
             </>
           ) : (
             <div className="space-y-4 text-center py-2">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center mx-auto shadow-md">
-                <CheckCircle2 className="w-10 h-10" />
+              <div className="relative inline-block mx-auto">
+                <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-emerald-400 to-teal-500 text-white flex items-center justify-center mx-auto shadow-lg text-4xl">
+                  {connectedChild?.avatar || '🦁'}
+                </div>
+                <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-emerald-500 border-2 border-white dark:border-zinc-900 text-white flex items-center justify-center">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
               </div>
 
               <div>
-                <h4 className="font-extrabold text-base text-slate-800 dark:text-slate-100">
-                  Chào mừng đến với {connectedFamilyName}!
+                <h4 className="font-black text-lg text-slate-800 dark:text-slate-100">
+                  {connectedChild?.name ? `Chào mừng bé ${connectedChild.name}! 🌟` : `Chào mừng đến với ${connectedFamilyName}!`}
                 </h4>
                 <p className="text-xs text-slate-500 mt-1">
-                  Máy này đã được liên kết với mã <strong className="font-mono text-indigo-600">{familyCode}</strong>. Toàn bộ nhiệm vụ của bé đã sẵn sàng!
+                  Thiết bị đã kết nối thành công! Toàn bộ nhiệm vụ và phần thưởng của bé đã sẵn sàng.
                 </p>
               </div>
-
-              {/* Select Child Profile if multiple exist */}
-              {profiles.length > 1 && (
-                <div className="text-left space-y-2 pt-2 border-t border-slate-100 dark:border-zinc-800">
-                  <div className="text-xs font-bold text-slate-700 dark:text-slate-300 text-center">
-                    Bé nào đang sử dụng thiết bị này?
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {profiles.map((p) => (
-                      <button
-                        key={p.id}
-                        type="button"
-                        onClick={() => setActiveChildId(p.id)}
-                        className={`p-3 rounded-2xl border text-center transition-all cursor-pointer ${
-                          p.id === activeChildId
-                            ? 'border-indigo-600 bg-indigo-50/80 dark:bg-indigo-950/50 ring-2 ring-indigo-500'
-                            : 'border-slate-200 dark:border-zinc-800 hover:bg-slate-50'
-                        }`}
-                      >
-                        <div className="text-2xl mb-1">{p.avatar}</div>
-                        <div className="font-bold text-xs text-slate-800 dark:text-slate-100 truncate">{p.name}</div>
-                        <div className="text-[10px] text-amber-500 font-semibold">⭐ {p.points} sao</div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               <button
                 type="button"
                 onClick={handleFinish}
-                className="w-full min-h-[44px] rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-200 dark:shadow-none transition-all cursor-pointer active:scale-98"
+                className="w-full min-h-[46px] rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-200 dark:shadow-none transition-all cursor-pointer active:scale-98"
               >
-                <span>Bắt Đầu Làm Nhiệm Vụ ⭐</span>
+                <span>Bắt Đầu Làm Nhiệm Vụ Của Bé ⭐</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

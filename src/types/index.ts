@@ -54,6 +54,7 @@ export interface ChildProfile {
   ageStage?: AgeStage;
   lastActiveDate?: string;
   leagueTier?: LeagueTier;
+  accessCode?: string; // Mã kết nối thiết bị riêng biệt của bé
   createdAt: string;
 }
 

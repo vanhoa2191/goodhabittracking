@@ -97,7 +97,10 @@ export function ParentDashboard() {
     applyAgeHabitsBundle,
     parentProfile,
     familyCode,
+    childCodes,
     generateFamilyCode,
+    generateChildCodes,
+    regenerateChildCode,
   } = useAppStore();
 
   const { t, language } = useTranslation();
@@ -106,9 +109,11 @@ export function ParentDashboard() {
     'approvals' | 'habits' | 'journeys' | 'rewards' | 'children' | 'analytics' | 'settings'
   >('approvals');
 
-  // Family Pairing Code state
+  // Per-child pairing code states
+  const [copiedChildId, setCopiedChildId] = useState<string | null>(null);
+  const [qrChildId, setQrChildId] = useState<string | null>(null);
+  const [regeneratingChildId, setRegeneratingChildId] = useState<string | null>(null);
   const [codeCopied, setCodeCopied] = useState(false);
-  const [showQrCode, setShowQrCode] = useState(false);
   const [isRegeneratingCode, setIsRegeneratingCode] = useState(false);
 
   const handleCopyCode = (codeToCopy: string) => {
@@ -120,10 +125,26 @@ export function ParentDashboard() {
   };
 
   const handleRegenerateCode = async () => {
-    if (confirm('Bạn có chắc muốn đổi mã kết nối mới không? (Mã cũ sẽ không còn hiệu lực trên thiết bị mới)')) {
+    if (confirm('Bạn có chắc muốn đổi mã kết nối gia đình mới không? (Mã cũ sẽ không còn hiệu lực trên thiết bị mới)')) {
       setIsRegeneratingCode(true);
       await generateFamilyCode(true);
       setIsRegeneratingCode(false);
+    }
+  };
+
+  const handleCopyChildCode = (childId: string, codeToCopy: string) => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(codeToCopy);
+      setCopiedChildId(childId);
+      setTimeout(() => setCopiedChildId(null), 2500);
+    }
+  };
+
+  const handleRegenerateChildCode = async (childId: string, childName: string) => {
+    if (confirm(`Bạn có chắc muốn cấp mã kết nối mới riêng cho bé ${childName}? (Mã cũ của bé này sẽ hết hạn trên máy mới)`)) {
+      setRegeneratingChildId(childId);
+      await regenerateChildCode(childId);
+      setRegeneratingChildId(null);
     }
   };
 
@@ -1095,99 +1116,46 @@ export function ParentDashboard() {
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <h4 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100">
-                      Mã kết nối thiết bị cho bé
+                      Mã kết nối riêng cho từng bé
                     </h4>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
-                      Tự động sinh • Không trùng lặp
+                      Mỗi bé 1 mã riêng biệt • Không trùng lặp
                     </span>
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                    Bé mở KidHabit trên điện thoại/iPad khác, chỉ cần nhập mã này là tự động đồng bộ ngay mà không cần tài khoản phụ huynh.
+                    Mỗi bé có một mã định danh riêng biệt bên dưới. Khi bé nhập mã trên thiết bị của mình, máy sẽ tự động kết nối thẳng vào đúng hồ sơ của bé đó mà không cần chọn lại!
                   </p>
                 </div>
               </div>
 
-              {/* Monospace Code & Action Buttons */}
-              <div className="flex items-center gap-2 flex-wrap">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-white dark:bg-zinc-800 border-2 border-indigo-300 dark:border-indigo-700 shadow-inner">
-                  <span className="font-mono font-black text-xl sm:text-2xl text-indigo-600 dark:text-indigo-400 tracking-widest">
-                    {familyCode || 'Đang tạo mã...'}
-                  </span>
-                </div>
-
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
-                  onClick={() => familyCode && handleCopyCode(familyCode)}
-                  disabled={!familyCode}
-                  className="py-2.5 px-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
+                  onClick={async () => {
+                    await generateChildCodes();
+                    alert('Đã cập nhật và làm mới mã kết nối riêng cho tất cả các bé!');
+                  }}
+                  className="py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
                 >
-                  {codeCopied ? (
-                    <>
-                      <Check className="w-4 h-4 text-emerald-300" />
-                      <span>Đã chép!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4" />
-                      <span>Sao chép</span>
-                    </>
-                  )}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setShowQrCode(!showQrCode)}
-                  className="py-2.5 px-3 rounded-xl bg-white dark:bg-zinc-800 hover:bg-slate-50 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
-                  title="Hiện mã QR để bé quét nhanh"
-                >
-                  <QrCode className="w-4 h-4 text-indigo-600" />
-                  <span>Mã QR</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleRegenerateCode}
-                  disabled={isRegeneratingCode}
-                  className="p-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 text-slate-500 hover:text-indigo-600 transition-colors cursor-pointer"
-                  title="Đổi mã mới"
-                >
-                  <RefreshCw className={`w-4 h-4 ${isRegeneratingCode ? 'animate-spin' : ''}`} />
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Đồng bộ mã các bé</span>
                 </button>
               </div>
             </div>
 
-            {/* QR Code expansion */}
-            {showQrCode && familyCode && (
-              <div className="p-4 rounded-2xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700 flex flex-col sm:flex-row items-center gap-4 animate-fade-in">
-                <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(familyCode)}`}
-                  alt="QR Code liên kết"
-                  className="w-28 h-28 rounded-xl border border-slate-200 dark:border-zinc-600 p-1.5 bg-white shadow-xs"
-                />
-                <div className="text-xs space-y-1 text-center sm:text-left">
-                  <div className="font-bold text-slate-800 dark:text-slate-100">
-                    Quét camera trên máy của bé
-                  </div>
-                  <p className="text-slate-500 dark:text-slate-400 text-[11px]">
-                    Hoặc trên thiết bị của bé, bấm nút &quot;Bé nhập mã&quot; và gõ mã <strong>{familyCode}</strong>.
-                  </p>
-                </div>
-              </div>
-            )}
-
             {/* 3 Step Guidance */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-200/60 dark:border-zinc-800 text-[11px]">
               <div className="p-2.5 rounded-xl bg-white/70 dark:bg-zinc-800/40 border border-slate-100 dark:border-zinc-800">
-                <span className="font-bold text-indigo-600 dark:text-indigo-400 block mb-0.5">1. Mở máy của bé</span>
-                <span className="text-slate-500 dark:text-slate-400">Truy cập KidHabit Hero trên điện thoại hoặc máy tính bảng của con.</span>
+                <span className="font-bold text-indigo-600 dark:text-indigo-400 block mb-0.5">1. Lấy mã riêng của bé</span>
+                <span className="text-slate-500 dark:text-slate-400">Xem thẻ của từng bé bên dưới, bấm Sao chép mã hoặc mở mã QR của riêng bé đó.</span>
               </div>
               <div className="p-2.5 rounded-xl bg-white/70 dark:bg-zinc-800/40 border border-slate-100 dark:border-zinc-800">
-                <span className="font-bold text-indigo-600 dark:text-indigo-400 block mb-0.5">2. Bấm &quot;Bé nhập mã&quot;</span>
-                <span className="text-slate-500 dark:text-slate-400">Ở góc trên trang hoặc ở màn hình chính có nút nhập mã liên kết.</span>
+                <span className="font-bold text-indigo-600 dark:text-indigo-400 block mb-0.5">2. Mở máy của bé</span>
+                <span className="text-slate-500 dark:text-slate-400">Trên điện thoại/tablet của con, bấm nút &quot;Bé nhập mã&quot; ở góc trên trang.</span>
               </div>
               <div className="p-2.5 rounded-xl bg-white/70 dark:bg-zinc-800/40 border border-slate-100 dark:border-zinc-800">
-                <span className="font-bold text-indigo-600 dark:text-indigo-400 block mb-0.5">3. Nhập mã {familyCode || 'HERO-8492'}</span>
-                <span className="text-slate-500 dark:text-slate-400">Thiết bị bé sẽ nạp đúng hồ sơ, nhiệm vụ &amp; sao thưởng ngay lập tức.</span>
+                <span className="font-bold text-indigo-600 dark:text-indigo-400 block mb-0.5">3. Nhập mã &amp; Bắt đầu</span>
+                <span className="text-slate-500 dark:text-slate-400">Máy của bé tự động đăng nhập đúng vào bé đó, an toàn và độc lập tuyệt đối.</span>
               </div>
             </div>
           </div>
@@ -1258,6 +1226,83 @@ export function ParentDashboard() {
                         <span className="bg-rose-50 text-rose-600 dark:bg-rose-950/50 dark:text-rose-300 font-semibold px-2 py-0.5 rounded-lg text-[10px]">
                           🔒 Ẩn khỏi BXH
                         </span>
+                      )}
+                    </div>
+
+                    {/* Dedicated Device Pairing Code for this Child */}
+                    <div className="mt-3.5 p-3 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/50 space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-indigo-700 dark:text-indigo-300">
+                          <Smartphone className="w-3.5 h-3.5" />
+                          <span>Mã riêng máy bé:</span>
+                        </div>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                          Dành riêng cho {child.name}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <div className="flex-1 min-w-[120px] px-3 py-1.5 rounded-xl bg-white dark:bg-zinc-800 border-2 border-indigo-300 dark:border-indigo-700 shadow-inner flex items-center justify-center">
+                          <span className="font-mono font-black text-base text-indigo-600 dark:text-indigo-400 tracking-wider">
+                            {childCodes[child.id] || child.accessCode || 'HERO-...'}
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const code = childCodes[child.id] || child.accessCode;
+                            if (code) handleCopyChildCode(child.id, code);
+                          }}
+                          className="py-1.5 px-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold transition-all flex items-center gap-1 shadow-xs cursor-pointer active:scale-95"
+                          title="Sao chép mã"
+                        >
+                          {copiedChildId === child.id ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-300" />
+                              <span>Đã chép!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5" />
+                              <span>Chép</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setQrChildId(qrChildId === child.id ? null : child.id)}
+                          className="py-1.5 px-2.5 rounded-xl bg-white dark:bg-zinc-800 hover:bg-slate-50 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-slate-300 text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer active:scale-95"
+                          title="Hiện QR cho bé quét"
+                        >
+                          <QrCode className="w-3.5 h-3.5 text-indigo-600" />
+                          <span>QR</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleRegenerateChildCode(child.id, child.name)}
+                          disabled={regeneratingChildId === child.id}
+                          className="p-1.5 rounded-xl bg-white dark:bg-zinc-800 hover:bg-slate-100 text-slate-500 hover:text-indigo-600 transition-colors cursor-pointer border border-slate-200 dark:border-zinc-700"
+                          title="Đổi mã mới riêng cho bé này"
+                        >
+                          <RefreshCw className={`w-3.5 h-3.5 ${regeneratingChildId === child.id ? 'animate-spin' : ''}`} />
+                        </button>
+                      </div>
+
+                      {/* Expandable QR for this Child */}
+                      {qrChildId === child.id && (childCodes[child.id] || child.accessCode) && (
+                        <div className="pt-2 flex flex-col sm:flex-row items-center gap-3 border-t border-indigo-100 dark:border-indigo-900/40 animate-fade-in">
+                          <img
+                            src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(childCodes[child.id] || child.accessCode || '')}`}
+                            alt={`QR Code ${child.name}`}
+                            className="w-20 h-20 rounded-xl border border-slate-200 dark:border-zinc-700 p-1 bg-white shadow-xs"
+                          />
+                          <p className="text-[10px] text-slate-500 dark:text-slate-400 text-center sm:text-left leading-relaxed">
+                            Quét camera trên máy bé {child.name} hoặc nhập mã <strong className="font-mono text-indigo-600 dark:text-indigo-400">{childCodes[child.id] || child.accessCode}</strong> để tự động vào thẳng hồ sơ bé.
+                          </p>
+                        </div>
                       )}
                     </div>
                   </div>
