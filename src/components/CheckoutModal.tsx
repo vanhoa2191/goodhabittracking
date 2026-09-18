@@ -1,0 +1,376 @@
+'use client';
+
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  X,
+  Copy,
+  Check,
+  QrCode,
+  Sparkles,
+  ShieldCheck,
+  RefreshCw,
+  AlertTriangle,
+  Clock,
+  Zap,
+} from 'lucide-react';
+import { useAppStore } from '@/lib/store';
+import { PricingPlan } from '@/types';
+import { PaymentResult } from '@/lib/payos';
+import { useTranslation } from '@/lib/i18n/context';
+
+interface CheckoutModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  plan: PricingPlan | null;
+}
+
+export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
+  const { upgradePlan, currentUser } = useAppStore();
+  const { language, t } = useTranslation();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [paymentData, setPaymentData] = useState<PaymentResult | null>(null);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+  const [isCheckingStatus, setIsCheckingStatus] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [timeLeftSeconds, setTimeLeftSeconds] = useState(15 * 60); // 15 minutes countdown
+
+  // Initialize Payment Request from API
+  const initPayment = useCallback(async () => {
+    if (!plan) return;
+    setIsLoading(true);
+    setErrorMessage(null);
+    setIsSuccess(false);
+
+    try {
+      const res = await fetch('/api/payment/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          planId: plan.id,
+          userId: currentUser?.id,
+        }),
+      });
+
+      const json = await res.json();
+      if (json.success && json.payment) {
+        setPaymentData(json.payment);
+      } else {
+        setErrorMessage(json.error || 'Failed to create payment.');
+      }
+    } catch (err: unknown) {
+      console.error('Failed to init payment:', err);
+      setErrorMessage('Error connecting to payment server.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [plan, currentUser]);
+
+  useEffect(() => {
+    if (isOpen && plan) {
+      initPayment();
+      setTimeLeftSeconds(15 * 60);
+    }
+  }, [isOpen, plan, initPayment]);
+
+  // Countdown timer
+  useEffect(() => {
+    if (!isOpen || isSuccess) return;
+    const interval = setInterval(() => {
+      setTimeLeftSeconds((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [isOpen, isSuccess]);
+
+  // Check payment status with API
+  const checkStatus = useCallback(
+    async (simulate = false) => {
+      if (!paymentData || isSuccess) return;
+      setIsCheckingStatus(true);
+
+      try {
+        const res = await fetch('/api/payment/status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderCode: paymentData.orderCode,
+            simulateSuccess: simulate,
+          }),
+        });
+
+        const json = await res.json();
+        if (json.success && json.paid) {
+          setIsSuccess(true);
+          upgradePlan(plan?.id as 'monthly' | 'yearly' | 'lifetime');
+          setTimeout(() => {
+            onClose();
+          }, 2500);
+        } else if (!simulate) {
+          // Normal check, still pending
+          setCopiedField('status-pending');
+          setTimeout(() => setCopiedField(null), 2500);
+        }
+      } catch (err) {
+        console.error('Error checking payment status:', err);
+      } finally {
+        setIsCheckingStatus(false);
+      }
+    },
+    [paymentData, isSuccess, plan, upgradePlan, onClose]
+  );
+
+  // Auto poll status every 6 seconds
+  useEffect(() => {
+    if (!isOpen || !paymentData || isSuccess) return;
+    const pollInterval = setInterval(() => {
+      checkStatus(false);
+    }, 6000);
+    return () => clearInterval(pollInterval);
+  }, [isOpen, paymentData, isSuccess, checkStatus]);
+
+  if (!isOpen || !plan) return null;
+
+  const copyToClipboard = (text: string, fieldName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(fieldName);
+    setTimeout(() => {
+      setCopiedField(null);
+    }, 2000);
+  };
+
+  const minutes = Math.floor(timeLeftSeconds / 60);
+  const seconds = timeLeftSeconds % 60;
+  const timeFormatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/65 backdrop-blur-sm animate-fade-in">
+      <div
+        className="relative w-full max-w-2xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 flex flex-col max-h-[92vh] overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Modal Header */}
+        <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 sticky top-0 z-10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-md shrink-0">
+              <QrCode className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 tracking-tight">
+                  {t.checkoutModalTitle}
+                </h2>
+                <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+                  PayOS 24/7
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                {plan.name} &bull; {plan.price.toLocaleString(language === 'vi' ? 'vi-VN' : 'en-US')} VNĐ
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={onClose}
+            className="min-w-[40px] min-h-[40px] flex items-center justify-center p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            title={t.close}
+            aria-label={t.close}
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Modal Body */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin">
+          {/* Success screen */}
+          {isSuccess ? (
+            <div className="py-12 flex flex-col items-center justify-center text-center space-y-4 animate-fade-in">
+              <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center shadow-lg animate-bounce">
+                <Check className="w-10 h-10 stroke-[3]" />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-xl font-black text-slate-900 dark:text-white">
+                  {t.paymentSuccessTitle}
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm">
+                  {t.paymentSuccessDesc}
+                </p>
+              </div>
+              <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 text-xs font-bold text-emerald-700 dark:text-emerald-300">
+                {plan.name} &bull; {t.planActivated}
+              </div>
+            </div>
+          ) : isLoading ? (
+            <div className="py-16 flex flex-col items-center justify-center space-y-3">
+              <RefreshCw className="w-8 h-8 text-indigo-600 animate-spin" />
+              <p className="text-xs font-bold text-slate-500">{t.checkingPayment}</p>
+            </div>
+          ) : errorMessage ? (
+            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs space-y-2">
+              <div className="flex items-center gap-2 font-bold">
+                <AlertTriangle className="w-4 h-4" />
+                <span>Error</span>
+              </div>
+              <p>{errorMessage}</p>
+              <button
+                onClick={initPayment}
+                className="py-1.5 px-3 rounded-xl bg-rose-600 text-white font-bold cursor-pointer"
+              >
+                Retry
+              </button>
+            </div>
+          ) : paymentData ? (
+            <div className="space-y-5">
+              {/* Countdown timer banner */}
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/40 text-amber-900 dark:text-amber-200">
+                <div className="flex items-center gap-2 text-xs font-bold">
+                  <Clock className="w-4 h-4 text-amber-600" />
+                  <span>{t.paymentHoldTimer}</span>
+                </div>
+                <span className="font-mono font-black text-sm text-amber-600 dark:text-amber-400">
+                  {timeFormatted}
+                </span>
+              </div>
+
+              {/* Main VietQR layout: Left QR code, Right Details */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 items-center">
+                {/* QR Display Card */}
+                <div className="flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-zinc-800/60 rounded-3xl border border-slate-200 dark:border-zinc-700 text-center space-y-3">
+                  <div className="relative p-2 bg-white rounded-2xl shadow-md border border-slate-100">
+                    <img
+                      src={paymentData.vietQrUrl}
+                      alt="VietQR PayOS"
+                      className="w-52 h-52 sm:w-56 sm:h-56 object-contain rounded-xl"
+                    />
+                  </div>
+
+                  <div className="space-y-0.5">
+                    <div className="text-xs font-black text-slate-800 dark:text-slate-100">
+                      {t.scanWithBankApp}
+                    </div>
+                    <p className="text-[11px] text-slate-400">
+                      VCB, MB, Techcom, BIDV, VPBank, ACB, Momo...
+                    </p>
+                  </div>
+                </div>
+
+                {/* Transfer Info Details Card */}
+                <div className="space-y-3 text-xs">
+                  {/* Bank info */}
+                  <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700 space-y-1">
+                    <div className="text-[10px] uppercase font-bold text-slate-400">{t.bankNameLabel}</div>
+                    <div className="font-bold text-slate-800 dark:text-slate-100">
+                      {paymentData.bankName || 'MBBank'}
+                    </div>
+                  </div>
+
+                  {/* Account number with Copy */}
+                  <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700 flex items-center justify-between gap-2">
+                    <div className="min-w-0">
+                      <div className="text-[10px] uppercase font-bold text-slate-400">{t.accountNumberLabel}</div>
+                      <div className="font-mono font-black text-sm text-slate-900 dark:text-white truncate">
+                        {paymentData.accountNumber}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => copyToClipboard(paymentData.accountNumber, 'accNumber')}
+                      className="min-h-[38px] py-1.5 px-3 rounded-xl bg-white dark:bg-zinc-700 border border-slate-200 dark:border-zinc-600 hover:bg-slate-100 text-slate-700 dark:text-slate-200 font-bold transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 shrink-0"
+                    >
+                      {copiedField === 'accNumber' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedField === 'accNumber' ? t.copiedAction : t.copyAction}</span>
+                    </button>
+                  </div>
+
+                  {/* Account Name */}
+                  <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700">
+                    <div className="text-[10px] uppercase font-bold text-slate-400">{t.accountNameLabel}</div>
+                    <div className="font-bold text-slate-800 dark:text-slate-100">
+                      {paymentData.accountName}
+                    </div>
+                  </div>
+
+                  {/* Amount with Copy */}
+                  <div className="p-3 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/50 flex items-center justify-between gap-2">
+                    <div>
+                      <div className="text-[10px] uppercase font-bold text-indigo-500">{t.exactAmountLabel}</div>
+                      <div className="font-mono font-black text-base text-indigo-700 dark:text-indigo-300">
+                        {paymentData.amount.toLocaleString(language === 'vi' ? 'vi-VN' : 'en-US')} VNĐ
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => copyToClipboard(String(paymentData.amount), 'amount')}
+                      className="min-h-[38px] py-1.5 px-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95 shrink-0"
+                    >
+                      {copiedField === 'amount' ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copiedField === 'amount' ? t.copiedAction : t.copyAction}</span>
+                    </button>
+                  </div>
+
+                  {/* Transfer Note / Syntax with Warning */}
+                  <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-400 dark:border-amber-600/80 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <div className="text-[10px] uppercase font-black text-amber-700 dark:text-amber-300">
+                        {t.transferMemoLabel}
+                      </div>
+                      <button
+                        onClick={() => copyToClipboard(paymentData.description, 'memo')}
+                        className="min-h-[34px] py-1 px-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-[11px] font-black transition-all flex items-center gap-1 cursor-pointer active:scale-95 shrink-0"
+                      >
+                        {copiedField === 'memo' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                        <span>{copiedField === 'memo' ? t.copiedAction : t.copyAction}</span>
+                      </button>
+                    </div>
+                    <div className="font-mono font-black text-sm text-slate-900 dark:text-white bg-white dark:bg-zinc-800 p-2 rounded-xl border border-amber-200 dark:border-amber-800 break-all">
+                      {paymentData.description}
+                    </div>
+                    <p className="text-[10px] text-amber-800 dark:text-amber-200 leading-tight">
+                      {t.transferMemoWarning}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Status Notice if checking manually */}
+              {copiedField === 'status-pending' && (
+                <div className="p-2.5 rounded-xl bg-blue-50 text-blue-700 text-xs font-bold text-center animate-fade-in">
+                  {t.checkingPayment}
+                </div>
+              )}
+            </div>
+          ) : null}
+        </div>
+
+        {/* Modal Footer Actions */}
+        <div className="p-4 sm:px-6 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+          {/* Simulation button for easy demo test */}
+          <button
+            onClick={() => checkStatus(true)}
+            disabled={isLoading || isSuccess}
+            className="w-full sm:w-auto min-h-[44px] py-2.5 px-4 rounded-2xl bg-amber-100 hover:bg-amber-200 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300 text-xs font-extrabold transition-all active:scale-95 flex items-center justify-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+            title="Mô phỏng thanh toán thành công để test ngay"
+          >
+            <Zap className="w-4 h-4 text-amber-600 fill-current" />
+            <span>{t.simulateSuccessBtn}</span>
+          </button>
+
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <button
+              onClick={() => checkStatus(false)}
+              disabled={isLoading || isCheckingStatus || isSuccess}
+              className="flex-1 sm:flex-none min-h-[44px] py-2.5 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isCheckingStatus ? 'animate-spin' : ''}`} />
+              <span>{isCheckingStatus ? t.checkingPayment : t.iHaveTransferredBtn}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
