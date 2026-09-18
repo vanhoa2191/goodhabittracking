@@ -133,6 +133,18 @@ interface AppStoreContextType {
   lastSyncTime: string | null;
   syncNow: () => Promise<void>;
 
+  // Family Device Pairing Code
+  familyCode: string | null;
+  familyId: string | null;
+  isFamilyConnected: boolean;
+  isConnectModalOpen: boolean;
+  setIsConnectModalOpen: (open: boolean) => void;
+  openConnectModal: () => void;
+  closeConnectModal: () => void;
+  generateFamilyCode: (forceRegenerate?: boolean) => Promise<string | null>;
+  connectWithFamilyCode: (code: string) => Promise<{ success: boolean; message?: string; familyName?: string }>;
+  disconnectFamilyCode: () => void;
+
   exportData: () => string;
   importData: (jsonData: string) => boolean;
 }
@@ -180,6 +192,16 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [parentProfile, setParentProfile] = useState<ParentProfile | null>(null);
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
   const [isPortraitModalOpen, setIsPortraitModalOpen] = useState(false);
+
+  // Family Device Pairing Code
+  const [familyCode, setFamilyCode] = useState<string | null>(null);
+  const [familyId, setFamilyId] = useState<string | null>(null);
+  const [isFamilyConnected, setIsFamilyConnected] = useState(false);
+  const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
+
+  const openConnectModal = () => setIsConnectModalOpen(true);
+  const closeConnectModal = () => setIsConnectModalOpen(false);
+
 
   const checkIsPro = useCallback(
     (plan: SubscriptionPlan, trialEnd: string | null, subEnd: string | null): boolean => {
@@ -247,6 +269,19 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     try {
       const savedPin = localStorage.getItem(`${LOCAL_STORAGE_PREFIX}pin`);
       if (savedPin) setParentPin(savedPin);
+
+      const savedFamilyCode = localStorage.getItem(`${LOCAL_STORAGE_PREFIX}family_code`);
+      if (savedFamilyCode) {
+        setFamilyCode(savedFamilyCode);
+        setIsFamilyConnected(true);
+      }
+
+      let savedFamilyId = localStorage.getItem(`${LOCAL_STORAGE_PREFIX}family_id`);
+      if (!savedFamilyId) {
+        savedFamilyId = 'fam_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+        localStorage.setItem(`${LOCAL_STORAGE_PREFIX}family_id`, savedFamilyId);
+      }
+      setFamilyId(savedFamilyId);
 
       const savedStorageMode = localStorage.getItem(`${LOCAL_STORAGE_PREFIX}storage_mode`);
       if (savedStorageMode === 'local' || savedStorageMode === 'cloud') {
@@ -364,9 +399,15 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     } else {
       localStorage.removeItem(`${LOCAL_STORAGE_PREFIX}subscription_ends_at`);
     }
+    if (familyCode) {
+      localStorage.setItem(`${LOCAL_STORAGE_PREFIX}family_code`, familyCode);
+    } else {
+      localStorage.removeItem(`${LOCAL_STORAGE_PREFIX}family_code`);
+    }
   }, [
     isLoaded,
     parentPin,
+    familyCode,
     storageMode,
     profiles,
     activeChildId,
@@ -499,6 +540,94 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     if (/^\d{4}$/.test(newPin)) {
       setParentPin(newPin);
     }
+  };
+
+  // Generate or get unique family pairing code
+  const generateFamilyCode = useCallback(
+    async (forceRegenerate = false): Promise<string | null> => {
+      try {
+        const effectiveFamilyId = currentUser?.id || familyId || 'fam_default';
+        const res = await fetch('/api/family/code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: forceRegenerate ? 'regenerate' : 'get_or_create',
+            familyId: effectiveFamilyId,
+            familyName: parentProfile?.name ? `Gia đình ${parentProfile.name}` : 'Gia đình Siêu Nhân',
+            parentPin,
+            profiles,
+            activities,
+            rewards,
+          }),
+        });
+        const data = await res.json();
+        if (data.success && data.code) {
+          setFamilyCode(data.code);
+          return data.code;
+        }
+      } catch (err) {
+        console.warn('Could not generate family pairing code:', err);
+      }
+      return null;
+    },
+    [currentUser, familyId, parentProfile, parentPin, profiles, activities, rewards]
+  );
+
+  // Automatically ensure family code exists when entering parent mode
+  useEffect(() => {
+    if (isLoaded && mode === 'parent') {
+      generateFamilyCode();
+    }
+  }, [isLoaded, mode, generateFamilyCode]);
+
+  // Connect child device using code
+  const connectWithFamilyCode = async (
+    codeToVerify: string
+  ): Promise<{ success: boolean; message?: string; familyName?: string }> => {
+    try {
+      const res = await fetch('/api/family/code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'verify',
+          code: codeToVerify,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setFamilyCode(data.code);
+        if (data.familyId) {
+          setFamilyId(data.familyId);
+          localStorage.setItem(`${LOCAL_STORAGE_PREFIX}family_id`, data.familyId);
+        }
+        setIsFamilyConnected(true);
+        if (data.profiles && Array.isArray(data.profiles) && data.profiles.length > 0) {
+          setProfiles(data.profiles);
+          setActiveChildIdState(data.profiles[0].id);
+        }
+        if (data.activities && Array.isArray(data.activities) && data.activities.length > 0) {
+          setActivities(data.activities);
+        }
+        if (data.rewards && Array.isArray(data.rewards) && data.rewards.length > 0) {
+          setRewards(data.rewards);
+        }
+        if (data.parentPin) {
+          setParentPin(data.parentPin);
+        }
+        setModeState('kid');
+        return { success: true, familyName: data.familyName };
+      } else {
+        return { success: false, message: data.error || 'Mã kết nối không hợp lệ.' };
+      }
+    } catch (err: any) {
+      return { success: false, message: 'Không thể kết nối máy chủ: ' + (err?.message || '') };
+    }
+  };
+
+  const disconnectFamilyCode = () => {
+    setFamilyCode(null);
+    setIsFamilyConnected(false);
+    localStorage.removeItem(`${LOCAL_STORAGE_PREFIX}family_code`);
   };
 
   // Active Child
@@ -1428,6 +1557,18 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
         cloudSyncActive,
         lastSyncTime,
         syncNow,
+
+        // Family Device Pairing Code
+        familyCode,
+        familyId,
+        isFamilyConnected,
+        isConnectModalOpen,
+        setIsConnectModalOpen,
+        openConnectModal,
+        closeConnectModal,
+        generateFamilyCode,
+        connectWithFamilyCode,
+        disconnectFamilyCode,
 
         exportData,
         importData,

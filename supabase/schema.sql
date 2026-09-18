@@ -247,3 +247,26 @@ CREATE POLICY "Users can view their own payment orders"
 
 CREATE INDEX IF NOT EXISTS idx_user_subscriptions_user ON user_subscriptions(user_id);
 CREATE INDEX IF NOT EXISTS idx_payment_orders_code ON payment_orders(order_code);
+
+-- ==============================================================================
+-- 8. Family Device Access Codes (Ghép nối thiết bị trẻ em qua mã duy nhất)
+-- ==============================================================================
+CREATE TABLE IF NOT EXISTS family_access_codes (
+  code TEXT PRIMARY KEY,
+  family_id TEXT NOT NULL,
+  family_name TEXT DEFAULT 'Gia đình Siêu Nhân',
+  data_snapshot JSONB DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now()),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+ALTER TABLE family_access_codes ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public access to family access codes" ON family_access_codes;
+CREATE POLICY "Public access to family access codes"
+  ON family_access_codes FOR ALL
+  USING (true)
+  WITH CHECK (true);
+
+CREATE INDEX IF NOT EXISTS idx_family_access_codes_family ON family_access_codes(family_id);
+

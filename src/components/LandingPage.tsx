@@ -15,8 +15,10 @@ import {
   Flame,
   Compass,
   ChevronRight,
+  Smartphone,
 } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
+import { useAppStore } from '@/lib/store';
 import { WEEKLY_JOURNEY_PLANS, MONTHLY_JOURNEY_PLANS } from '@/lib/constants';
 
 interface LandingPageProps {
@@ -715,6 +717,7 @@ const FRAMEWORK_PILLARS = [
 
 export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingPageProps) {
   const { t, language } = useTranslation();
+  const { openConnectModal } = useAppStore();
   const [activePillarIndex, setActivePillarIndex] = useState(0);
   const [roadmapType, setRoadmapType] = useState<'weekly' | 'monthly'>('weekly');
   const [selectedPlanId, setSelectedPlanId] = useState<string>('week-1');
@@ -749,13 +752,13 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
           </p>
 
           {/* CTA Action Buttons */}
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md mx-auto">
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3.5 max-w-lg mx-auto flex-wrap">
             {/* Google Sign In */}
             {!isLoggedIn ? (
               <button
                 type="button"
                 onClick={onLoginGoogle}
-                className="w-full sm:w-auto py-3.5 px-6 rounded-2xl bg-white dark:bg-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-700 border border-slate-200 dark:border-zinc-700 text-slate-800 dark:text-white text-sm font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2.5 active:scale-95 cursor-pointer"
+                className="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-white dark:bg-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-700 border border-slate-200 dark:border-zinc-700 text-slate-800 dark:text-white text-sm font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2.5 active:scale-95 cursor-pointer"
               >
                 <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
                   <path
@@ -779,11 +782,24 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
               </button>
             ) : null}
 
+            {/* Child Enter with Code */}
+            {!isLoggedIn && (
+              <button
+                type="button"
+                onClick={openConnectModal}
+                className="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-purple-50 hover:bg-purple-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-purple-200/80 dark:border-zinc-700 text-purple-700 dark:text-purple-300 text-sm font-bold transition-all shadow-xs flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+                title="Bé nhập mã gia đình từ máy ba mẹ"
+              >
+                <Smartphone className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0" />
+                <span>Bé vào bằng mã</span>
+              </button>
+            )}
+
             {/* Direct Try Demo / Back to App */}
             <button
               type="button"
               onClick={onStartDemo}
-              className="w-full sm:w-auto py-3.5 px-7 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-extrabold transition-all shadow-lg hover:shadow-indigo-500/25 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+              className="w-full sm:w-auto py-3.5 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-extrabold transition-all shadow-lg hover:shadow-indigo-500/25 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
             >
               <span>{isLoggedIn ? t.landingBackToApp : t.landingCtaDemo}</span>
               <ArrowRight className="w-4 h-4" />

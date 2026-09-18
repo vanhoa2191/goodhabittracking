@@ -33,6 +33,9 @@ import {
   CheckCheck,
   X,
   ChevronDown,
+  Smartphone,
+  QrCode,
+  RefreshCw,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
@@ -93,6 +96,8 @@ export function ParentDashboard() {
     openOnboarding,
     applyAgeHabitsBundle,
     parentProfile,
+    familyCode,
+    generateFamilyCode,
   } = useAppStore();
 
   const { t, language } = useTranslation();
@@ -100,6 +105,27 @@ export function ParentDashboard() {
   const [activeTab, setActiveTab] = useState<
     'approvals' | 'habits' | 'journeys' | 'rewards' | 'children' | 'analytics' | 'settings'
   >('approvals');
+
+  // Family Pairing Code state
+  const [codeCopied, setCodeCopied] = useState(false);
+  const [showQrCode, setShowQrCode] = useState(false);
+  const [isRegeneratingCode, setIsRegeneratingCode] = useState(false);
+
+  const handleCopyCode = (codeToCopy: string) => {
+    if (typeof navigator !== 'undefined' && navigator.clipboard) {
+      navigator.clipboard.writeText(codeToCopy);
+      setCodeCopied(true);
+      setTimeout(() => setCodeCopied(false), 2500);
+    }
+  };
+
+  const handleRegenerateCode = async () => {
+    if (confirm('Bạn có chắc muốn đổi mã kết nối mới không? (Mã cũ sẽ không còn hiệu lực trên thiết bị mới)')) {
+      setIsRegeneratingCode(true);
+      await generateFamilyCode(true);
+      setIsRegeneratingCode(false);
+    }
+  };
 
   // Selected pack tab in WIT library
   const [selectedWitPackKey, setSelectedWitPackKey] = useState<string>('nutrition');
@@ -1059,6 +1085,113 @@ export function ParentDashboard() {
       {/* 5. TAB: CHILDREN PROFILES MANAGEMENT */}
       {activeTab === 'children' && (
         <div className="space-y-6">
+          {/* Family Device Connection Code Card */}
+          <div className="bg-gradient-to-br from-indigo-50/90 via-white to-purple-50/90 dark:from-zinc-900 dark:via-zinc-900 dark:to-indigo-950/30 rounded-3xl p-5 sm:p-6 border-2 border-indigo-200/80 dark:border-zinc-800 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-md shadow-indigo-200 dark:shadow-none shrink-0">
+                  <Smartphone className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100">
+                      Mã kết nối thiết bị cho bé
+                    </h4>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
+                      Tự động sinh • Không trùng lặp
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    Bé mở KidHabit trên điện thoại/iPad khác, chỉ cần nhập mã này là tự động đồng bộ ngay mà không cần tài khoản phụ huynh.
+                  </p>
+                </div>
+              </div>
+
+              {/* Monospace Code & Action Buttons */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-white dark:bg-zinc-800 border-2 border-indigo-300 dark:border-indigo-700 shadow-inner">
+                  <span className="font-mono font-black text-xl sm:text-2xl text-indigo-600 dark:text-indigo-400 tracking-widest">
+                    {familyCode || 'Đang tạo mã...'}
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => familyCode && handleCopyCode(familyCode)}
+                  disabled={!familyCode}
+                  className="py-2.5 px-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
+                >
+                  {codeCopied ? (
+                    <>
+                      <Check className="w-4 h-4 text-emerald-300" />
+                      <span>Đã chép!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4" />
+                      <span>Sao chép</span>
+                    </>
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setShowQrCode(!showQrCode)}
+                  className="py-2.5 px-3 rounded-xl bg-white dark:bg-zinc-800 hover:bg-slate-50 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer active:scale-95"
+                  title="Hiện mã QR để bé quét nhanh"
+                >
+                  <QrCode className="w-4 h-4 text-indigo-600" />
+                  <span>Mã QR</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleRegenerateCode}
+                  disabled={isRegeneratingCode}
+                  className="p-2.5 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 text-slate-500 hover:text-indigo-600 transition-colors cursor-pointer"
+                  title="Đổi mã mới"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isRegeneratingCode ? 'animate-spin' : ''}`} />
+                </button>
+              </div>
+            </div>
+
+            {/* QR Code expansion */}
+            {showQrCode && familyCode && (
+              <div className="p-4 rounded-2xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700 flex flex-col sm:flex-row items-center gap-4 animate-fade-in">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(familyCode)}`}
+                  alt="QR Code liên kết"
+                  className="w-28 h-28 rounded-xl border border-slate-200 dark:border-zinc-600 p-1.5 bg-white shadow-xs"
+                />
+                <div className="text-xs space-y-1 text-center sm:text-left">
+                  <div className="font-bold text-slate-800 dark:text-slate-100">
+                    Quét camera trên máy của bé
+                  </div>
+                  <p className="text-slate-500 dark:text-slate-400 text-[11px]">
+                    Hoặc trên thiết bị của bé, bấm nút &quot;Bé nhập mã&quot; và gõ mã <strong>{familyCode}</strong>.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* 3 Step Guidance */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-200/60 dark:border-zinc-800 text-[11px]">
+              <div className="p-2.5 rounded-xl bg-white/70 dark:bg-zinc-800/40 border border-slate-100 dark:border-zinc-800">
+                <span className="font-bold text-indigo-600 dark:text-indigo-400 block mb-0.5">1. Mở máy của bé</span>
+                <span className="text-slate-500 dark:text-slate-400">Truy cập KidHabit Hero trên điện thoại hoặc máy tính bảng của con.</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white/70 dark:bg-zinc-800/40 border border-slate-100 dark:border-zinc-800">
+                <span className="font-bold text-indigo-600 dark:text-indigo-400 block mb-0.5">2. Bấm &quot;Bé nhập mã&quot;</span>
+                <span className="text-slate-500 dark:text-slate-400">Ở góc trên trang hoặc ở màn hình chính có nút nhập mã liên kết.</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white/70 dark:bg-zinc-800/40 border border-slate-100 dark:border-zinc-800">
+                <span className="font-bold text-indigo-600 dark:text-indigo-400 block mb-0.5">3. Nhập mã {familyCode || 'HERO-8492'}</span>
+                <span className="text-slate-500 dark:text-slate-400">Thiết bị bé sẽ nạp đúng hồ sơ, nhiệm vụ &amp; sao thưởng ngay lập tức.</span>
+              </div>
+            </div>
+          </div>
+
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
               <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">
@@ -1233,6 +1366,47 @@ export function ParentDashboard() {
           <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">
             {t.parentSettings}
           </h3>
+
+          {/* Family Device Connection Code Card */}
+          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                  <Smartphone className="w-4 h-4 text-indigo-600" />
+                  Mã kết nối thiết bị cho bé (Không trùng lặp)
+                </h4>
+                <p className="text-xs text-slate-400 mt-1">
+                  Mã duy nhất dùng để liên kết điện thoại/iPad của bé vào tài khoản gia đình bạn.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <div className="px-3.5 py-1.5 rounded-xl bg-indigo-50 dark:bg-zinc-800 border border-indigo-200 dark:border-indigo-800">
+                  <span className="font-mono font-black text-lg text-indigo-600 dark:text-indigo-400 tracking-widest">
+                    {familyCode || 'Đang tạo...'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => familyCode && handleCopyCode(familyCode)}
+                  disabled={!familyCode}
+                  className="py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+                >
+                  {codeCopied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{codeCopied ? 'Đã copy' : 'Copy'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleRegenerateCode}
+                  disabled={isRegeneratingCode}
+                  className="p-2 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 text-slate-500 hover:text-indigo-600 transition-colors cursor-pointer"
+                  title="Đổi mã mới"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${isRegeneratingCode ? 'animate-spin' : ''}`} />
+                </button>
+              </div>
+            </div>
+          </div>
 
           {/* Change PIN */}
           <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">

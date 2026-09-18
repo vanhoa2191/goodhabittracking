@@ -228,3 +228,12 @@ export interface PaymentOrder {
   paidAt?: string;
   isMock?: boolean;
 }
+
+export interface FamilyDeviceCode {
+  code: string;
+  familyId: string;
+  familyName?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+

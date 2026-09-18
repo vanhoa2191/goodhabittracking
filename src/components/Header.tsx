@@ -20,12 +20,14 @@ import {
   X,
   BookOpen,
   UserPlus,
+  Smartphone,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation, SUPPORTED_LANGUAGES, LanguageOption } from '@/lib/i18n/context';
 import { sounds } from '@/lib/sound';
 import { PinModal } from './PinModal';
 import { FontSettingsModal } from './FontSettingsModal';
+import { DeviceConnectModal } from './DeviceConnectModal';
 
 interface HeaderProps {
   onToggleLanding?: () => void;
@@ -55,7 +57,13 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
     setIsPortraitModalOpen,
     openOnboarding,
     parentProfile,
+    familyCode,
+    isConnectModalOpen,
+    openConnectModal,
+    closeConnectModal,
   } = useAppStore();
+
+  const isLoggedIn = Boolean(currentUser || familyCode);
 
   const { language, setLanguage, t } = useTranslation();
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
@@ -107,8 +115,8 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
             </div>
           </div>
 
-          {/* Center: Multi-Child Profile Switcher (Only in Dashboard mode) */}
-          {!isLanding && profiles.length > 0 && (
+          {/* Center: Multi-Child Profile Switcher (Only when logged in and in Dashboard mode) */}
+          {isLoggedIn && !isLanding && profiles.length > 0 && (
             <div className="relative shrink-0">
               <button
                 type="button"
@@ -168,20 +176,22 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
 
           {/* Right Action Controls */}
           <div className="flex items-center gap-1 sm:gap-2">
-            {/* Desktop Only: Storage Status */}
-            <div
-              className={`hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
-                storageMode === 'cloud' && cloudSyncActive
-                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800'
-                  : storageMode === 'cloud'
-                  ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-800'
-                  : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-zinc-900 dark:text-slate-400 dark:border-zinc-800'
-              }`}
-              title={storageMode === 'cloud' ? (cloudSyncActive ? t.storageCloudConnected : 'Cloud') : t.storageLocalPrivate}
-            >
-              <Database className="w-3 h-3" />
-              <span>{storageMode === 'cloud' ? (cloudSyncActive ? t.storageCloudConnected : 'Cloud') : t.storageLocalPrivate}</span>
-            </div>
+            {/* Desktop Only: Storage Status (Only when logged in) */}
+            {isLoggedIn && (
+              <div
+                className={`hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
+                  storageMode === 'cloud' && cloudSyncActive
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800'
+                    : storageMode === 'cloud'
+                    ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-800'
+                    : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-zinc-900 dark:text-slate-400 dark:border-zinc-800'
+                }`}
+                title={storageMode === 'cloud' ? (cloudSyncActive ? t.storageCloudConnected : 'Cloud') : t.storageLocalPrivate}
+              >
+                <Database className="w-3 h-3" />
+                <span>{storageMode === 'cloud' ? (cloudSyncActive ? t.storageCloudConnected : 'Cloud') : t.storageLocalPrivate}</span>
+              </div>
+            )}
 
             {/* Desktop Only: Font Customization (xl:flex) */}
             <button
@@ -355,29 +365,42 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
               )}
             </button>
 
-            {/* Mode Switcher (Parent Mode) */}
-            <button
-              onClick={handleParentModeClick}
-              className={`min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-2.5 sm:px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
-                mode === 'parent'
-                  ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none'
-                  : 'bg-amber-100 hover:bg-amber-200 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300'
-              }`}
-            >
-              {mode === 'parent' ? (
-                <>
-                  <Unlock className="w-3.5 h-3.5 shrink-0" />
-                  <span className="hidden sm:inline whitespace-nowrap">{t.parentMode}</span>
-                  <span className="sm:hidden whitespace-nowrap text-[11px]">{t.parentShort}</span>
-                </>
-              ) : (
-                <>
-                  <Lock className="w-3.5 h-3.5 shrink-0" />
-                  <span className="hidden sm:inline whitespace-nowrap">{t.parentMode}</span>
-                  <span className="sm:hidden whitespace-nowrap text-[11px]">{t.parentShort}</span>
-                </>
-              )}
-            </button>
+            {/* Mode Switcher (Parent Mode) - Only when logged in */}
+            {isLoggedIn ? (
+              <button
+                onClick={handleParentModeClick}
+                className={`min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-2.5 sm:px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
+                  mode === 'parent'
+                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none'
+                    : 'bg-amber-100 hover:bg-amber-200 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300'
+                }`}
+              >
+                {mode === 'parent' ? (
+                  <>
+                    <Unlock className="w-3.5 h-3.5 shrink-0" />
+                    <span className="hidden sm:inline whitespace-nowrap">{t.parentMode}</span>
+                    <span className="sm:hidden whitespace-nowrap text-[11px]">{t.parentShort}</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-3.5 h-3.5 shrink-0" />
+                    <span className="hidden sm:inline whitespace-nowrap">{t.parentMode}</span>
+                    <span className="sm:hidden whitespace-nowrap text-[11px]">{t.parentShort}</span>
+                  </>
+                )}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={openConnectModal}
+                className="min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-2.5 sm:px-3.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 dark:from-indigo-950/50 dark:to-purple-950/50 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/80 transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
+                title="Bé vào bằng mã gia đình"
+              >
+                <Smartphone className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
+                <span className="hidden sm:inline whitespace-nowrap">Bé nhập mã</span>
+                <span className="sm:hidden whitespace-nowrap text-[11px]">Nhập mã</span>
+              </button>
+            )}
 
             {/* Mobile / Tablet Menu Button (xl:hidden) */}
             <div className="relative xl:hidden shrink-0">
@@ -529,6 +552,20 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
 
                     {/* 16 Portraits & Onboarding in Mobile Menu */}
                     <div className="space-y-1.5 pt-1 border-t border-slate-100 dark:border-zinc-800">
+                      {/* Kid enter code button in mobile menu if not logged in */}
+                      {!isLoggedIn && (
+                        <button
+                          onClick={() => {
+                            openConnectModal();
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-xs font-bold text-indigo-700 dark:text-indigo-300 flex items-center justify-center gap-2 transition-colors"
+                        >
+                          <Smartphone className="w-3.5 h-3.5 text-indigo-600" />
+                          <span>Bé nhập mã kết nối gia đình</span>
+                        </button>
+                      )}
+
                       <button
                         onClick={() => {
                           setIsPortraitModalOpen(true);
@@ -540,16 +577,18 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
                         <span>Cẩm nang 16 Chân Dung &amp; 7 Bố Thí</span>
                       </button>
 
-                      <button
-                        onClick={() => {
-                          openOnboarding();
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className="w-full py-2 px-3 rounded-xl bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 text-xs font-bold text-purple-700 dark:text-purple-300 flex items-center justify-center gap-2 transition-colors"
-                      >
-                        <UserPlus className="w-3.5 h-3.5 text-purple-600" />
-                        <span>{parentProfile ? 'Hồ sơ Thân giáo Ba Mẹ' : 'Đăng ký Con &amp; Phụ huynh'}</span>
-                      </button>
+                      {isLoggedIn && (
+                        <button
+                          onClick={() => {
+                            openOnboarding();
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full py-2 px-3 rounded-xl bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 text-xs font-bold text-purple-700 dark:text-purple-300 flex items-center justify-center gap-2 transition-colors"
+                        >
+                          <UserPlus className="w-3.5 h-3.5 text-purple-600" />
+                          <span>{parentProfile ? 'Hồ sơ Thân giáo Ba Mẹ' : 'Đăng ký Con &amp; Phụ huynh'}</span>
+                        </button>
+                      )}
                     </div>
 
                     {/* Landing Page Guide Switcher if available */}
@@ -566,13 +605,15 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
                       </button>
                     )}
 
-                    {/* Storage Mode Notice */}
-                    <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between text-[11px] text-slate-500">
-                      <span className="flex items-center gap-1">
-                        <Database className="w-3 h-3 text-indigo-500" />
-                        <span>{storageMode === 'cloud' ? (cloudSyncActive ? t.storageCloudConnected : 'Cloud') : t.storageLocalPrivate}</span>
-                      </span>
-                    </div>
+                    {/* Storage Mode Notice (Only when logged in) */}
+                    {isLoggedIn && (
+                      <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between text-[11px] text-slate-500">
+                        <span className="flex items-center gap-1">
+                          <Database className="w-3 h-3 text-indigo-500" />
+                          <span>{storageMode === 'cloud' ? (cloudSyncActive ? t.storageCloudConnected : 'Cloud') : t.storageLocalPrivate}</span>
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </>
               )}
@@ -595,6 +636,12 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
       <FontSettingsModal
         isOpen={isFontModalOpen}
         onClose={() => setIsFontModalOpen(false)}
+      />
+
+      {/* Child Device Pairing Modal */}
+      <DeviceConnectModal
+        isOpen={isConnectModalOpen}
+        onClose={closeConnectModal}
       />
     </>
   );
