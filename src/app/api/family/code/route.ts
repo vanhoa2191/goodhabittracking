@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { getSupabase } from '@/lib/supabase';
+
+export const runtime = 'edge';
 
 interface ChildCodeEntry {
   code: string;
@@ -25,59 +25,17 @@ interface StorageSchema {
   childToCode: Record<string, string>; // key: childId -> code
 }
 
-const DATA_DIR = path.join(process.cwd(), '.data');
-const DATA_FILE = path.join(DATA_DIR, 'family_codes.json');
-
 let memoryStorage: StorageSchema = {
   codes: {},
   childToCode: {},
 };
-let isLoaded = false;
-
-function ensureDataFile() {
-  try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-    }
-    if (!fs.existsSync(DATA_FILE)) {
-      fs.writeFileSync(DATA_FILE, JSON.stringify({ codes: {}, childToCode: {} }), 'utf-8');
-    }
-  } catch (err) {
-    console.warn('Could not initialize .data directory:', err);
-  }
-}
 
 function loadStorage(): StorageSchema {
-  if (isLoaded) return memoryStorage;
-  ensureDataFile();
-  try {
-    if (fs.existsSync(DATA_FILE)) {
-      const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-      const parsed = JSON.parse(raw || '{}');
-      if (parsed.codes && parsed.childToCode) {
-        memoryStorage = parsed;
-      } else {
-        // Upgrade legacy schema if necessary
-        memoryStorage = { codes: {}, childToCode: {} };
-      }
-      isLoaded = true;
-    }
-  } catch (err) {
-    console.warn('Error reading family_codes.json:', err);
-    memoryStorage = { codes: {}, childToCode: {} };
-  }
   return memoryStorage;
 }
 
 function saveStorage(storage: StorageSchema) {
   memoryStorage = storage;
-  isLoaded = true;
-  ensureDataFile();
-  try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(storage, null, 2), 'utf-8');
-  } catch (err) {
-    console.warn('Error saving family_codes.json:', err);
-  }
 }
 
 const CODE_PREFIX = 'HERO-';

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createPaymentOrder, isPayOSConfigured } from '@/lib/payos';
 import { getSupabase } from '@/lib/supabase';
 
+export const runtime = 'edge';
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();

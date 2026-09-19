@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import { PricingPlan, SubscriptionPlan } from '@/types';
 
 export const PRICING_PLANS: PricingPlan[] = [
@@ -116,25 +115,43 @@ export function isPayOSConfigured(): boolean {
 }
 
 /**
+ * Helper to compute HMAC SHA256 using standard Web Crypto API (Edge / Cloudflare compatible)
+ */
+async function computeHmacSha256(key: string, data: string): Promise<string> {
+  const enc = new TextEncoder();
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    enc.encode(key),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign']
+  );
+  const signatureBuffer = await crypto.subtle.sign('HMAC', cryptoKey, enc.encode(data));
+  return Array.from(new Uint8Array(signatureBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+/**
  * Generate HMAC SHA256 signature for PayOS Create Payment Request
  * Formula: sort alphabetically amount, cancelUrl, description, orderCode, returnUrl
  */
-export function createPayOSSignature(data: {
+export async function createPayOSSignature(data: {
   amount: number;
   cancelUrl: string;
   description: string;
   orderCode: number;
   returnUrl: string;
-}): string {
+}): Promise<string> {
   const checksumKey = process.env.PAYOS_CHECKSUM_KEY || '';
   const sortedData = `amount=${data.amount}&cancelUrl=${data.cancelUrl}&description=${data.description}&orderCode=${data.orderCode}&returnUrl=${data.returnUrl}`;
-  return crypto.createHmac('sha256', checksumKey).update(sortedData).digest('hex');
+  return computeHmacSha256(checksumKey, sortedData);
 }
 
 /**
  * Verify PayOS Webhook Signature
  */
-export function verifyPayOSWebhook(data: Record<string, unknown>, signature: string): boolean {
+export async function verifyPayOSWebhook(data: Record<string, unknown>, signature: string): Promise<boolean> {
   const checksumKey = process.env.PAYOS_CHECKSUM_KEY || '';
   if (!checksumKey) return false;
 
@@ -144,7 +161,7 @@ export function verifyPayOSWebhook(data: Record<string, unknown>, signature: str
     .map((key) => `${key}=${data[key] !== null && data[key] !== undefined ? data[key] : ''}`)
     .join('&');
 
-  const calculatedSignature = crypto.createHmac('sha256', checksumKey).update(sortedData).digest('hex');
+  const calculatedSignature = await computeHmacSha256(checksumKey, sortedData);
   return calculatedSignature === signature;
 }
 
@@ -196,7 +213,7 @@ export async function createPaymentOrder(params: CreatePaymentParams): Promise<P
       const clientId = process.env.PAYOS_CLIENT_ID!;
       const apiKey = process.env.PAYOS_API_KEY!;
 
-      const signature = createPayOSSignature({
+      const signature = await createPayOSSignature({
         amount,
         cancelUrl,
         description,

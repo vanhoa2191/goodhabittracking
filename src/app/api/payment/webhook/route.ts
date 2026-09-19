@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyPayOSWebhook, isPayOSConfigured } from '@/lib/payos';
 import { getSupabase } from '@/lib/supabase';
 
+export const runtime = 'edge';
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -14,7 +16,7 @@ export async function POST(req: NextRequest) {
 
     // Verify signature if PayOS is configured
     if (isPayOSConfigured() && signature) {
-      const isValid = verifyPayOSWebhook(data, signature);
+      const isValid = await verifyPayOSWebhook(data, signature);
       if (!isValid) {
         console.warn('Invalid PayOS webhook signature for order:', data.orderCode);
         return NextResponse.json({ success: false, message: 'Sai chữ ký xác thực' }, { status: 401 });
