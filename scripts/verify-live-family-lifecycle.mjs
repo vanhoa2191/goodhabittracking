@@ -143,17 +143,17 @@ try {
     'content-type': 'application/json',
     cookie: parent.cookieHeader(),
   };
-  const challenge = await jsonRequest('/api/pairing/challenges', {
+  const credential = await jsonRequest('/api/pairing/credentials', {
     method: 'POST',
     headers: parentHeaders,
     body: JSON.stringify({ childId }),
   });
-  assert(challenge.response.status === 200 && challenge.body?.code, 'Pairing challenge failed.');
+  assert(credential.response.status === 200 && credential.body?.code, 'Pairing credential failed.');
 
   const exchange = await jsonRequest('/api/pairing/exchange', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ code: challenge.body.code, deviceLabel: 'Automated child device' }),
+    body: JSON.stringify({ code: credential.body.code, deviceLabel: 'Automated child device' }),
   });
   assert(exchange.response.status === 200, 'Pairing exchange failed.');
   const setCookie = exchange.response.headers.get('set-cookie') ?? '';
@@ -164,12 +164,30 @@ try {
     cookie: `kidhabit_child_session=${childCookieMatch[1]}`,
   };
 
-  const replay = await jsonRequest('/api/pairing/exchange', {
+  const reuse = await jsonRequest('/api/pairing/exchange', {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ code: challenge.body.code }),
+    body: JSON.stringify({ code: credential.body.code, deviceLabel: 'Automated second child device' }),
   });
-  assert(replay.response.status === 409, 'Pairing challenge replay was not denied.');
+  assert(reuse.response.status === 200, 'Persistent pairing credential could not be reused.');
+
+  const rotated = await jsonRequest('/api/pairing/credentials/rotate', {
+    method: 'POST',
+    headers: parentHeaders,
+    body: JSON.stringify({ childId }),
+  });
+  assert(
+    rotated.response.status === 200
+      && rotated.body?.code
+      && rotated.body.code !== credential.body.code,
+    'Pairing credential rotation failed.',
+  );
+  const staleCredential = await jsonRequest('/api/pairing/exchange', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ code: credential.body.code }),
+  });
+  assert(staleCredential.response.status === 404, 'Rotated pairing credential remained valid.');
 
   const initialSession = await jsonRequest('/api/child/session', { headers: childHeaders });
   assert(
@@ -258,7 +276,7 @@ try {
   familyId = undefined;
 
   process.stdout.write(
-    'Live family lifecycle passed: pair, replay denial, child completion, parent approval, reward delivery, reconnect, revoke, and owner deletion.\n',
+    'Live family lifecycle passed: persistent pairing, rotation, child completion, parent approval, reward delivery, reconnect, revoke, and owner deletion.\n',
   );
 } finally {
   await cleanup();
