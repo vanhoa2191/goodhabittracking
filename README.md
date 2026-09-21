@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KidHabit Hero
 
-## Getting Started
+Ứng dụng xây dựng thói quen cho gia đình, gồm giao diện trẻ em, quản trị phụ huynh, ghép nối thiết bị theo từng bé, đồng bộ Supabase và thanh toán PayOS.
 
-First, run the development server:
+## Chạy local
+
+Yêu cầu Node.js 24 và npm.
 
 ```bash
+git clone https://github.com/vanhoa2191/goodhabittracking.git
+cd goodhabittracking
+npm ci
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mở `http://localhost:3000`. Không commit `.env.local`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Biến môi trường
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Tên | Phạm vi | Mục đích |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Browser/server | URL dự án Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Browser/server | Public anon key, RLS vẫn là ranh giới bảo mật |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server secret | Webhook và tác vụ quản trị billing |
+| `NEXT_PUBLIC_APP_URL` | Build/server | Origin chuẩn cho callback PayOS |
+| `PAYOS_CLIENT_ID` | Server secret | Merchant client ID |
+| `PAYOS_API_KEY` | Server secret | PayOS API key |
+| `PAYOS_CHECKSUM_KEY` | Server secret | Ký request và xác minh webhook |
+| `PAIRING_RATE_LIMIT_SECRET` | Server secret | HMAC fingerprint cho rate limiting |
 
-## Learn More
+Các cờ legacy/simulation trong `.env.example` bị khóa ở production và không thể bật lại endpoint pairing cũ.
 
-To learn more about Next.js, take a look at the following resources:
+## Kiểm tra chất lượng
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npm run check:performance
+npm run test:e2e
+npm run test:a11y
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`npm run ci` chạy lint, typecheck, unit/integration/API tests, build và ngân sách bundle.
 
-## Deploy on Vercel
+## Database
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Mọi thay đổi schema nằm trong [`supabase/migrations`](supabase/migrations). `supabase/schema.sql` chỉ là manifest chạy tuần tự các migration. Trước production:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. chạy preflight trong `supabase/preflight/`;
+2. sao lưu database;
+3. chạy migration theo thứ tự;
+4. chạy smoke/RLS tests bằng hai tài khoản gia đình độc lập;
+5. dùng rollback không phá dữ liệu nếu gate thất bại.
+
+Không dùng `supabase db reset` trên production.
+
+## Triển khai Cloudflare
+
+Ứng dụng có route handlers động nên phải chạy trên Cloudflare Workers, không phải Pages static export. Cấu hình dùng OpenNext để giữ nguyên Next.js 16 trong khi Cloudflare khuyến nghị đánh giá vinext trước lần nâng cấp nền tảng tiếp theo.
+
+```bash
+npm run preview:cloudflare
+npm run deploy:cloudflare
+```
+
+Thiết lập public build variables và server secrets trong Workers trước khi deploy. Chi tiết tại [`docs/deployment.md`](docs/deployment.md).
+
+## Tài liệu
+
+- [`docs/architecture.md`](docs/architecture.md)
+- [`docs/security-privacy.md`](docs/security-privacy.md)
+- [`docs/data-recovery.md`](docs/data-recovery.md)
+- [`docs/claims-ledger.md`](docs/claims-ledger.md)
+- [`docs/runbooks/incident-response.md`](docs/runbooks/incident-response.md)
+
+## Mô hình dữ liệu và trải nghiệm
+
+- Chế độ demo/local chỉ lưu trên thiết bị và không ghi production.
+- Chế độ cloud cần tài khoản, dùng family tenancy và RLS.
+- Mã ghép nối là one-time, có TTL, giới hạn thử và chỉ cấp session cho đúng một bé.
+- Client không tự cấp Pro; webhook PayOS đã xác minh chữ ký mới kích hoạt entitlement qua transaction idempotent.
+- Leaderboard công khai mặc định tắt; tên thật chỉ hiển thị khi phụ huynh chủ động bật.

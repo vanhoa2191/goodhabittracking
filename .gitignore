@@ -12,10 +12,15 @@
 
 # testing
 /coverage
+/playwright-report/
+/test-results/
 
 # next.js
 /.next/
 /out/
+/.open-next/
+/.wrangler/
+cloudflare-env.d.ts
 
 # production
 /build
@@ -44,3 +49,8 @@ next-env.d.ts
 # local persistent storage
 .data/
 
+# Supabase CLI project linkage and connection metadata
+/supabase/.temp/
+
+# local agent review artifacts
+/.omo/

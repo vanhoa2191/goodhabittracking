@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useSyncExternalStore } from 'react';
 
 export type FontFamilyChoice = 'rounded' | 'modern' | 'playful' | 'serif';
 export type FontSizeChoice = 'normal' | 'large' | 'xlarge';
@@ -55,22 +55,56 @@ interface AppearanceContextType {
 
 const AppearanceContext = createContext<AppearanceContextType | undefined>(undefined);
 
-export function AppearanceProvider({ children }: { children: React.ReactNode }) {
-  // Default to rounded and slightly larger as requested by user
-  const [fontFamily, setFontFamilyState] = useState<FontFamilyChoice>('rounded');
-  const [fontSize, setFontSizeState] = useState<FontSizeChoice>('large');
+const FONT_FAMILY_STORAGE_KEY = 'kidhabit_font_family';
+const FONT_SIZE_STORAGE_KEY = 'kidhabit_font_size';
+const APPEARANCE_CHANGE_EVENT = 'kidhabit-appearance-change';
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const savedFont = localStorage.getItem('kidhabit_font_family') as FontFamilyChoice;
-    if (savedFont && ['rounded', 'modern', 'playful', 'serif'].includes(savedFont)) {
-      setFontFamilyState(savedFont);
-    }
-    const savedSize = localStorage.getItem('kidhabit_font_size') as FontSizeChoice;
-    if (savedSize && ['normal', 'large', 'xlarge'].includes(savedSize)) {
-      setFontSizeState(savedSize);
-    }
-  }, []);
+function isFontFamilyChoice(value: string | null): value is FontFamilyChoice {
+  return value === 'rounded' || value === 'modern' || value === 'playful' || value === 'serif';
+}
+
+function isFontSizeChoice(value: string | null): value is FontSizeChoice {
+  return value === 'normal' || value === 'large' || value === 'xlarge';
+}
+
+function subscribeToAppearance(onStoreChange: () => void) {
+  window.addEventListener('storage', onStoreChange);
+  window.addEventListener(APPEARANCE_CHANGE_EVENT, onStoreChange);
+  return () => {
+    window.removeEventListener('storage', onStoreChange);
+    window.removeEventListener(APPEARANCE_CHANGE_EVENT, onStoreChange);
+  };
+}
+
+function getFontFamilySnapshot(): FontFamilyChoice {
+  const savedFont = localStorage.getItem(FONT_FAMILY_STORAGE_KEY);
+  return isFontFamilyChoice(savedFont) ? savedFont : 'rounded';
+}
+
+function getFontSizeSnapshot(): FontSizeChoice {
+  const savedSize = localStorage.getItem(FONT_SIZE_STORAGE_KEY);
+  return isFontSizeChoice(savedSize) ? savedSize : 'large';
+}
+
+function getServerFontFamilySnapshot(): FontFamilyChoice {
+  return 'rounded';
+}
+
+function getServerFontSizeSnapshot(): FontSizeChoice {
+  return 'large';
+}
+
+export function AppearanceProvider({ children }: { children: React.ReactNode }) {
+  const fontFamily = useSyncExternalStore(
+    subscribeToAppearance,
+    getFontFamilySnapshot,
+    getServerFontFamilySnapshot
+  );
+  const fontSize = useSyncExternalStore(
+    subscribeToAppearance,
+    getFontSizeSnapshot,
+    getServerFontSizeSnapshot
+  );
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -82,17 +116,13 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
   }, [fontFamily, fontSize]);
 
   const setFontFamily = (font: FontFamilyChoice) => {
-    setFontFamilyState(font);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('kidhabit_font_family', font);
-    }
+    localStorage.setItem(FONT_FAMILY_STORAGE_KEY, font);
+    window.dispatchEvent(new Event(APPEARANCE_CHANGE_EVENT));
   };
 
   const setFontSize = (size: FontSizeChoice) => {
-    setFontSizeState(size);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('kidhabit_font_size', size);
-    }
+    localStorage.setItem(FONT_SIZE_STORAGE_KEY, size);
+    window.dispatchEvent(new Event(APPEARANCE_CHANGE_EVENT));
   };
 
   const currentFontOption = FONT_OPTIONS.find((f) => f.id === fontFamily) || FONT_OPTIONS[0];

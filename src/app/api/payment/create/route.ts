@@ -1,59 +1,75 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createPaymentOrder, isPayOSConfigured } from '@/lib/payos';
-import { getSupabase } from '@/lib/supabase';
+import { getParentContext } from '@/lib/auth/parent-context';
+import { createPayOSPayment } from '@/lib/billing/payos-server';
+import { createPaymentRequestSchema } from '@/lib/billing/schemas';
+import { getPricingPlan } from '@/lib/payos';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
-export async function POST(req: NextRequest) {
+function createOrderCode(): number {
+  return Date.now() * 100 + (crypto.getRandomValues(new Uint8Array(1))[0] % 100);
+}
+
+export async function POST(request: NextRequest) {
+  const parent = await getParentContext();
+  if (!parent) {
+    return NextResponse.json({ success: false, error: 'Authentication required.' }, { status: 401 });
+  }
+
+  const parsed = createPaymentRequestSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json({ success: false, error: 'Invalid payment request.' }, { status: 400 });
+  }
+
   try {
-    const body = await req.json();
-    const { planId, returnUrl, cancelUrl, userId } = body;
+    const admin = createAdminSupabaseClient();
+    const plan = getPricingPlan(parsed.data.planId);
+    const orderCode = createOrderCode();
+    const description = `KIDHABIT ${orderCode}`.slice(0, 25);
+    const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
-    if (!planId || !['monthly', 'yearly', 'lifetime'].includes(planId)) {
-      return NextResponse.json(
-        { success: false, error: 'Gói thanh toán không hợp lệ (monthly, yearly, lifetime).' },
-        { status: 400 }
-      );
-    }
-
-    const paymentResult = await createPaymentOrder({
-      planId,
-      returnUrl,
-      cancelUrl,
-      userId,
+    const { error: insertError } = await admin.from('payment_orders').insert({
+      order_code: orderCode,
+      family_id: parent.familyId,
+      user_id: parent.user.id,
+      plan_id: parsed.data.planId,
+      amount: plan.price,
+      description,
+      status: 'PENDING',
+      expires_at: expiresAt,
     });
+    if (insertError) throw insertError;
 
-    // Optionally save pending order to Supabase
-    const supabase = getSupabase();
-    if (supabase) {
-      try {
-        await supabase.from('payment_orders').insert({
-          order_code: paymentResult.orderCode,
-          user_id: userId || null,
-          plan_id: planId,
-          amount: paymentResult.amount,
-          description: paymentResult.description,
-          status: 'PENDING',
-          payment_url: paymentResult.checkoutUrl,
-          qr_code: paymentResult.qrCode,
-        });
-      } catch (dbErr) {
-        // Table may not exist yet if migration not run, log gracefully
-        console.warn('Could not record pending order to Supabase table:', dbErr);
-      }
+    try {
+      const payment = await createPayOSPayment({ planId: parsed.data.planId, orderCode });
+      const { error: updateError } = await admin
+        .from('payment_orders')
+        .update({
+          payment_url: payment.checkoutUrl,
+          qr_code: payment.qrCode,
+          payment_link_id: payment.paymentLinkId,
+        })
+        .eq('order_code', orderCode)
+        .eq('family_id', parent.familyId);
+      if (updateError) throw updateError;
+
+      const { paymentLinkId, ...publicPayment } = payment;
+      void paymentLinkId;
+      return NextResponse.json({ success: true, payment: publicPayment });
+    } catch (error) {
+      await admin
+        .from('payment_orders')
+        .update({ status: 'CANCELLED', cancelled_at: new Date().toISOString() })
+        .eq('order_code', orderCode)
+        .eq('family_id', parent.familyId);
+      throw error;
     }
-
-    return NextResponse.json({
-      success: true,
-      payment: paymentResult,
-      isPayOSConfigured: isPayOSConfigured(),
-    });
-  } catch (error: unknown) {
-    console.error('Error in /api/payment/create:', error);
-    const errMessage = error instanceof Error ? error.message : 'Lỗi không xác định';
+  } catch (error) {
+    console.error('Payment creation failed:', error instanceof Error ? error.message : 'unknown');
     return NextResponse.json(
-      { success: false, error: 'Không thể tạo mã thanh toán VietQR: ' + errMessage },
-      { status: 500 }
+      { success: false, error: 'Payment service is temporarily unavailable.' },
+      { status: 503 }
     );
   }
 }

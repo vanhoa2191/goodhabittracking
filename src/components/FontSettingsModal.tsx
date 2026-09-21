@@ -6,10 +6,10 @@ import {
   useAppearance,
   FONT_OPTIONS,
   FONT_SIZE_SCALES,
-  FontFamilyChoice,
   FontSizeChoice,
 } from '@/lib/appearance-context';
 import { useTranslation } from '@/lib/i18n/context';
+import { useModalFocus } from '@/lib/use-modal-focus';
 
 interface FontSettingsModalProps {
   isOpen: boolean;
@@ -17,6 +17,7 @@ interface FontSettingsModalProps {
 }
 
 export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
+  useModalFocus(isOpen, onClose);
   const { fontFamily, setFontFamily, fontSize, setFontSize } = useAppearance();
   const { t } = useTranslation();
 
@@ -24,7 +25,7 @@ export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-      <div className="relative w-full max-w-md max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
+      <div role="dialog" aria-modal="true" aria-label="Cài đặt chữ" className="relative w-full max-w-md max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">

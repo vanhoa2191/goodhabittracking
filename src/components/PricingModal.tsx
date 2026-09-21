@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   X,
   Check,
@@ -16,6 +16,7 @@ import { useAppStore } from '@/lib/store';
 import { PRICING_PLANS } from '@/lib/payos';
 import { SubscriptionPlan, Language } from '@/types';
 import { useTranslation } from '@/lib/i18n/context';
+import { useModalFocus } from '@/lib/use-modal-focus';
 
 interface PricingModalProps {
   isOpen: boolean;
@@ -225,6 +226,7 @@ const PLAN_LOCALIZATION: Record<
 };
 
 export function PricingModal({ isOpen, onClose }: PricingModalProps) {
+  useModalFocus(isOpen, onClose);
   const {
     isPro,
     subscriptionPlan,
@@ -234,14 +236,20 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
   } = useAppStore();
 
   const { language, t } = useTranslation();
+  const [trialError, setTrialError] = useState<string | null>(null);
+  const [isActivatingTrial, setIsActivatingTrial] = useState(false);
 
   if (!isOpen) return null;
 
   const subDetails = getSubscriptionDetails();
 
-  const handleActivateTrial = () => {
-    activateFreeTrial();
-    onClose();
+  const handleActivateTrial = async () => {
+    setIsActivatingTrial(true);
+    setTrialError(null);
+    const result = await activateFreeTrial();
+    setIsActivatingTrial(false);
+    if (result.success) onClose();
+    else setTrialError(result.error ?? t.connectFail);
   };
 
   const handleSelectPlan = (planId: SubscriptionPlan) => {
@@ -250,7 +258,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
       return;
     }
     if (planId === 'trial') {
-      handleActivateTrial();
+      void handleActivateTrial();
       return;
     }
     openCheckoutModal(planId);
@@ -259,6 +267,9 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={t.pricingModalTitle}
         className="relative w-full max-w-5xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 flex flex-col max-h-[92vh] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
@@ -327,10 +338,11 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                 ) : (
                   <button
                     onClick={handleActivateTrial}
-                    className="w-full sm:w-auto min-h-[48px] px-5 py-3 rounded-2xl bg-white text-indigo-700 hover:bg-amber-50 text-xs sm:text-sm font-black shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                    disabled={isActivatingTrial}
+                    className="w-full sm:w-auto min-h-[48px] px-5 py-3 rounded-2xl bg-white text-indigo-700 hover:bg-amber-50 text-xs sm:text-sm font-black shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-wait disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                   >
                     <Sparkles className="w-4 h-4 text-amber-500 fill-current" />
-                    <span>{t.activateTrialBtn}</span>
+                    <span>{isActivatingTrial ? t.checkingPayment : t.activateTrialBtn}</span>
                   </button>
                 )}
               </div>
@@ -339,6 +351,12 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
             {/* Decorative background circle */}
             <div className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-white/10 blur-2xl pointer-events-none" />
           </div>
+
+          {trialError && (
+            <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200">
+              {trialError}
+            </div>
+          )}
 
           {/* 2. Pricing Plans Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Language } from '@/types';
+import React, { createContext, useContext, useEffect, useSyncExternalStore } from 'react';
+import type { Language } from '@/types';
 import { translations } from './translations';
 
 export interface LanguageOption {
@@ -30,26 +30,56 @@ interface I18nContextType {
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
-export function I18nProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('vi');
-  const [isClient, setIsClient] = useState(false);
+const LANGUAGE_STORAGE_KEY = 'kidhabit_language';
+const LANGUAGE_CHANGE_EVENT = 'kidhabit-language-change';
 
-  useEffect(() => {
-    setIsClient(true);
-    const saved = localStorage.getItem('kidhabit_language') as Language;
-    if (saved && ['vi', 'en', 'zh', 'ja', 'ko', 'fr', 'de', 'it', 'es'].includes(saved)) {
-      setLanguageState(saved);
-    }
-  }, []);
+function isLanguage(value: string | null): value is Language {
+  return value === 'vi'
+    || value === 'en'
+    || value === 'zh'
+    || value === 'ja'
+    || value === 'ko'
+    || value === 'fr'
+    || value === 'de'
+    || value === 'it'
+    || value === 'es';
+}
+
+function subscribeToLanguage(onStoreChange: () => void) {
+  window.addEventListener('storage', onStoreChange);
+  window.addEventListener(LANGUAGE_CHANGE_EVENT, onStoreChange);
+  return () => {
+    window.removeEventListener('storage', onStoreChange);
+    window.removeEventListener(LANGUAGE_CHANGE_EVENT, onStoreChange);
+  };
+}
+
+function getLanguageSnapshot(): Language {
+  const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+  return isLanguage(savedLanguage) ? savedLanguage : 'vi';
+}
+
+function getServerLanguageSnapshot(): Language {
+  return 'vi';
+}
+
+export function I18nProvider({ children }: { children: React.ReactNode }) {
+  const language = useSyncExternalStore(
+    subscribeToLanguage,
+    getLanguageSnapshot,
+    getServerLanguageSnapshot
+  );
 
   const setLanguage = (lang: Language) => {
-    setLanguageState(lang);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('kidhabit_language', lang);
-    }
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+    window.dispatchEvent(new Event(LANGUAGE_CHANGE_EVENT));
   };
 
   const t = translations[language] || translations.vi;
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
 
   return (
     <I18nContext.Provider value={{ language, setLanguage, t }}>

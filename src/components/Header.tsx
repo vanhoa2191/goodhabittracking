@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import {
   Sparkles,
   Lock,
@@ -12,7 +13,6 @@ import {
   ChevronDown,
   Check,
   Type,
-  LogIn,
   LogOut,
   User as UserIcon,
   Crown,
@@ -28,13 +28,15 @@ import { sounds } from '@/lib/sound';
 import { PinModal } from './PinModal';
 import { FontSettingsModal } from './FontSettingsModal';
 import { DeviceConnectModal } from './DeviceConnectModal';
+import { getHeaderCopy } from '@/lib/i18n/header-copy';
 
 interface HeaderProps {
   onToggleLanding?: () => void;
   isLanding?: boolean;
+  isDemo?: boolean;
 }
 
-export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
+export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderProps = {}) {
   const {
     mode,
     setMode,
@@ -57,15 +59,17 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
     setIsPortraitModalOpen,
     openOnboarding,
     parentProfile,
-    familyCode,
+    isFamilyConnected,
     isConnectModalOpen,
     openConnectModal,
     closeConnectModal,
   } = useAppStore();
 
-  const isLoggedIn = Boolean(currentUser || familyCode);
+  const isAuthenticated = Boolean(currentUser || isFamilyConnected);
+  const hasDashboardAccess = isAuthenticated || isDemo || profiles.length > 0;
 
   const { language, setLanguage, t } = useTranslation();
+  const copy = getHeaderCopy(language);
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
   const [isFontModalOpen, setIsFontModalOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
@@ -99,13 +103,13 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
           {/* Left: Logo & Slogan */}
           <div
             onClick={onToggleLanding ? onToggleLanding : undefined}
-            className={`flex items-center gap-2 sm:gap-3 shrink-0 ${onToggleLanding ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`}
+            className={`${hasDashboardAccess && !isLanding ? 'hidden min-[430px]:flex' : 'flex'} items-center gap-2 sm:gap-3 shrink-0 ${onToggleLanding ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`}
             title={t.appName}
           >
             <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-amber-400 to-indigo-600 flex items-center justify-center text-white shadow-xs">
               <Sparkles className="w-5 h-5 fill-current" />
             </div>
-            <div className="hidden sm:block">
+            <div className="hidden xl:block">
               <span className="font-extrabold text-slate-800 dark:text-slate-100 text-base sm:text-lg tracking-tight block leading-tight">
                 {t.appName}
               </span>
@@ -116,7 +120,7 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
           </div>
 
           {/* Center: Multi-Child Profile Switcher (Only when logged in and in Dashboard mode) */}
-          {isLoggedIn && !isLanding && profiles.length > 0 && (
+          {hasDashboardAccess && !isLanding && profiles.length > 0 && (
             <div className="relative shrink-0">
               <button
                 type="button"
@@ -177,9 +181,9 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
           {/* Right Action Controls */}
           <div className="flex items-center gap-1 sm:gap-2">
             {/* Desktop Only: Storage Status (Only when logged in) */}
-            {isLoggedIn && (
+            {hasDashboardAccess && (
               <div
-                className={`hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
+                className={`hidden 2xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
                   storageMode === 'cloud' && cloudSyncActive
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800'
                     : storageMode === 'cloud'
@@ -196,7 +200,7 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
             {/* Desktop Only: Font Customization (xl:flex) */}
             <button
               onClick={() => setIsFontModalOpen(true)}
-              className="hidden lg:flex min-w-[38px] min-h-[38px] p-2 rounded-xl text-slate-500 hover:text-indigo-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center gap-1 text-xs font-bold cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              className="hidden 2xl:flex min-w-[38px] min-h-[38px] p-2 rounded-xl text-slate-500 hover:text-indigo-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center gap-1 text-xs font-bold cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               title={t.fontSettingsTitle}
             >
               <Type className="w-4 h-4" />
@@ -206,14 +210,14 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
             {/* Desktop Only: Sound Toggle (xl:flex) */}
             <button
               onClick={toggleSound}
-              className="hidden lg:flex min-w-[38px] min-h-[38px] p-2 rounded-xl text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              className="hidden 2xl:flex min-w-[38px] min-h-[38px] p-2 rounded-xl text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               title={soundEnabled ? t.soundOn : t.soundOff}
             >
               {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
             </button>
 
             {/* Desktop Only: Language Switcher Dropdown (xl:block) */}
-            <div className="relative hidden lg:block">
+            <div className="relative hidden 2xl:block">
               <button
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                 className="min-h-[38px] flex items-center gap-1 py-1.5 px-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
@@ -255,11 +259,11 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
             <button
               type="button"
               onClick={() => setIsPortraitModalOpen(true)}
-              className="hidden xl:flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold bg-amber-50 dark:bg-amber-950/50 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/80 transition-all shadow-xs cursor-pointer active:scale-95"
-              title="16 Chân Dung & 7 Bố Thí"
+              className="hidden 2xl:flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold bg-amber-50 dark:bg-amber-950/50 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/80 transition-all shadow-xs cursor-pointer active:scale-95"
+              title={copy.portraitGuide}
             >
               <BookOpen className="w-3.5 h-3.5 text-amber-600" />
-              <span>Cẩm nang 16 Chân Dung</span>
+              <span>{copy.portraitGuideShort}</span>
             </button>
 
             {/* Desktop Only: Landing Page Switcher (xl:flex) */}
@@ -267,7 +271,7 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
               <button
                 type="button"
                 onClick={onToggleLanding}
-                className={`hidden xl:flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                className={`hidden 2xl:flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                   isLanding
                     ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none'
                     : 'bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60'
@@ -281,11 +285,14 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
 
             {/* Google Account */}
             {currentUser ? (
-              <div className="hidden lg:flex min-h-[38px] items-center gap-1.5 py-1 px-2.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-xs font-semibold text-slate-700 dark:text-slate-200">
+              <div className="hidden 2xl:flex min-h-[38px] items-center gap-1.5 py-1 px-2.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-xs font-semibold text-slate-700 dark:text-slate-200">
                 {currentUser.user_metadata?.avatar_url ? (
-                  <img
+                  <Image
                     src={currentUser.user_metadata.avatar_url}
                     alt="Google avatar"
+                    width={20}
+                    height={20}
+                    unoptimized
                     className="w-5 h-5 rounded-full"
                   />
                 ) : (
@@ -305,7 +312,7 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
             ) : (
               <button
                 onClick={loginWithGoogle}
-                className="hidden lg:flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold bg-white dark:bg-zinc-900 hover:bg-slate-50 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-slate-200 transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                className="hidden 2xl:flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold bg-white dark:bg-zinc-900 hover:bg-slate-50 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-slate-200 transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 title={t.googleLogin}
               >
                 <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
@@ -334,7 +341,7 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
             <button
               type="button"
               onClick={openPricingModal}
-              className={`min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-2.5 sm:px-3 rounded-full text-xs font-black transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
+              className={`min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-black transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
                 isPro
                   ? subscriptionPlan === 'trial'
                     ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-amber-200 dark:shadow-none animate-pulse'
@@ -366,10 +373,10 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
             </button>
 
             {/* Mode Switcher (Parent Mode) - Only when logged in */}
-            {isLoggedIn ? (
+            {hasDashboardAccess ? (
               <button
                 onClick={handleParentModeClick}
-                className={`min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-2.5 sm:px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
+                className={`min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
                   mode === 'parent'
                     ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none'
                     : 'bg-amber-100 hover:bg-amber-200 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300'
@@ -394,16 +401,16 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
                 type="button"
                 onClick={openConnectModal}
                 className="min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-2.5 sm:px-3.5 rounded-full text-xs font-extrabold bg-gradient-to-r from-indigo-50 to-purple-50 hover:from-indigo-100 hover:to-purple-100 text-indigo-700 dark:from-indigo-950/50 dark:to-purple-950/50 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/80 transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
-                title="Bé vào bằng mã gia đình"
+                title={copy.childCode}
               >
                 <Smartphone className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
-                <span className="hidden sm:inline whitespace-nowrap">Bé nhập mã</span>
-                <span className="sm:hidden whitespace-nowrap text-[11px]">Nhập mã</span>
+                <span className="hidden sm:inline whitespace-nowrap">{copy.childCodeButton}</span>
+                <span className="sm:hidden whitespace-nowrap text-[11px]">{copy.childCodeShort}</span>
               </button>
             )}
 
             {/* Mobile / Tablet Menu Button (xl:hidden) */}
-            <div className="relative xl:hidden shrink-0">
+            <div className="relative 2xl:hidden shrink-0">
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -440,9 +447,12 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
                         <div className="p-2 rounded-xl bg-slate-50 dark:bg-zinc-800/80 flex items-center justify-between gap-2">
                           <div className="flex items-center gap-2 min-w-0">
                             {currentUser.user_metadata?.avatar_url ? (
-                              <img
+                              <Image
                                 src={currentUser.user_metadata.avatar_url}
                                 alt="avatar"
+                                width={24}
+                                height={24}
+                                unoptimized
                                 className="w-6 h-6 rounded-full shrink-0"
                               />
                             ) : (
@@ -553,7 +563,7 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
                     {/* 16 Portraits & Onboarding in Mobile Menu */}
                     <div className="space-y-1.5 pt-1 border-t border-slate-100 dark:border-zinc-800">
                       {/* Kid enter code button in mobile menu if not logged in */}
-                      {!isLoggedIn && (
+                      {!hasDashboardAccess && (
                         <button
                           onClick={() => {
                             openConnectModal();
@@ -562,7 +572,7 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
                           className="w-full py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-xs font-bold text-indigo-700 dark:text-indigo-300 flex items-center justify-center gap-2 transition-colors"
                         >
                           <Smartphone className="w-3.5 h-3.5 text-indigo-600" />
-                          <span>Bé nhập mã kết nối gia đình</span>
+                          <span>{copy.childConnect}</span>
                         </button>
                       )}
 
@@ -574,10 +584,10 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
                         className="w-full py-2 px-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-xs font-bold text-amber-800 dark:text-amber-300 flex items-center justify-center gap-2 transition-colors"
                       >
                         <BookOpen className="w-3.5 h-3.5 text-amber-600" />
-                        <span>Cẩm nang 16 Chân Dung &amp; 7 Bố Thí</span>
+                        <span>{copy.portraitGuide}</span>
                       </button>
 
-                      {isLoggedIn && (
+                      {isAuthenticated && (
                         <button
                           onClick={() => {
                             openOnboarding();
@@ -586,7 +596,7 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
                           className="w-full py-2 px-3 rounded-xl bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 text-xs font-bold text-purple-700 dark:text-purple-300 flex items-center justify-center gap-2 transition-colors"
                         >
                           <UserPlus className="w-3.5 h-3.5 text-purple-600" />
-                          <span>{parentProfile ? 'Hồ sơ Thân giáo Ba Mẹ' : 'Đăng ký Con &amp; Phụ huynh'}</span>
+                          <span>{parentProfile ? copy.parentProfile : copy.familySetup}</span>
                         </button>
                       )}
                     </div>
@@ -606,7 +616,7 @@ export function Header({ onToggleLanding, isLanding }: HeaderProps = {}) {
                     )}
 
                     {/* Storage Mode Notice (Only when logged in) */}
-                    {isLoggedIn && (
+                    {hasDashboardAccess && (
                       <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between text-[11px] text-slate-500">
                         <span className="flex items-center gap-1">
                           <Database className="w-3 h-3 text-indigo-500" />

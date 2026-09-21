@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { Sparkles, Palette, Check, X } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
+import { useModalFocus } from '@/lib/use-modal-focus';
+import { getProfileMutationCopy } from '@/lib/i18n/profile-mutation-copy';
 
 export const AVATAR_OPTIONS = [
   { emoji: '🦁', label: 'Sư tử dũng cảm' },
@@ -41,7 +43,7 @@ interface AvatarPickerModalProps {
   onClose: () => void;
   currentAvatar: string;
   currentColor: string;
-  onSave: (avatar: string, color: string) => void;
+  onSave: (avatar: string, color: string) => Promise<boolean>;
 }
 
 export function AvatarPickerModal({
@@ -51,20 +53,31 @@ export function AvatarPickerModal({
   currentColor,
   onSave,
 }: AvatarPickerModalProps) {
-  const { t } = useTranslation();
+  useModalFocus(isOpen, onClose);
+  const { t, language } = useTranslation();
+  const copy = getProfileMutationCopy(language);
   const [selectedAvatar, setSelectedAvatar] = useState(currentAvatar);
   const [selectedColor, setSelectedColor] = useState(currentColor);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
 
   if (!isOpen) return null;
 
-  const handleSave = () => {
-    onSave(selectedAvatar, selectedColor);
-    onClose();
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSaveError('');
+    const saved = await onSave(selectedAvatar, selectedColor);
+    setIsSaving(false);
+    if (saved) {
+      onClose();
+      return;
+    }
+    setSaveError(copy.saveError);
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-      <div className="relative w-full max-w-md max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
+      <div role="dialog" aria-modal="true" aria-label="Chọn hình đại diện" className="relative w-full max-w-md max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -159,22 +172,28 @@ export function AvatarPickerModal({
         </div>
 
         {/* Fixed Footer */}
-        <div className="shrink-0 p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/70 flex items-center justify-end gap-2.5 pb-safe">
+        <div className="shrink-0 p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/70 space-y-3 pb-safe">
+          {saveError && <p role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">{saveError}</p>}
+          <div className="flex items-center justify-end gap-2.5">
           <button
             type="button"
             onClick={onClose}
+            disabled={isSaving}
             className="py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
           >
             {t.cancel}
           </button>
           <button
             type="button"
-            onClick={handleSave}
-            className="py-2.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5 active:scale-95"
+            onClick={() => void handleSave()}
+            disabled={isSaving}
+            aria-busy={isSaving}
+            className="py-2.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5 active:scale-95 disabled:cursor-wait disabled:opacity-60"
           >
             <Check className="w-4 h-4" />
-            {t.save}
+            {isSaving ? copy.saving : t.save}
           </button>
+          </div>
         </div>
       </div>
     </div>

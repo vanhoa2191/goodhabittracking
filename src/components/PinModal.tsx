@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Lock, X, Delete } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
+import { useModalFocus } from '@/lib/use-modal-focus';
 
 interface PinModalProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface PinModalProps {
 }
 
 export function PinModal({ isOpen, onClose, onSuccess, verifyPin }: PinModalProps) {
+  useModalFocus(isOpen, onClose);
   const { t } = useTranslation();
   const [pin, setPin] = useState('');
   const [error, setError] = useState(false);
@@ -47,6 +49,9 @@ export function PinModal({ isOpen, onClose, onSuccess, verifyPin }: PinModalProp
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={t.enterPin}
         className={`relative w-full max-w-sm max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden ${
           error ? 'animate-shake' : ''
         }`}
@@ -121,7 +126,7 @@ export function PinModal({ isOpen, onClose, onSuccess, verifyPin }: PinModalProp
               type="button"
               onClick={handleDelete}
               className="h-11 sm:h-13 rounded-2xl bg-slate-50 dark:bg-zinc-800/80 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-zinc-700 flex items-center justify-center text-slate-500 transition-colors active:scale-95 shadow-xs"
-              aria-label="Xóa"
+              aria-label={t.delete}
             >
               <Delete className="w-5 h-5" />
             </button>

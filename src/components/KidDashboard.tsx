@@ -23,8 +23,6 @@ import {
   Palette,
   BookOpen,
   Heart,
-  Shield,
-  Baby,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
@@ -32,7 +30,9 @@ import { HabitActivity, TimeOfDay } from '@/types';
 import { HabitTimerModal } from './HabitTimerModal';
 import { AvatarPickerModal } from './AvatarPickerModal';
 import { LeaderboardSection } from './LeaderboardSection';
-import { getStageInfo } from '@/lib/wit-framework';
+import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
+import { localizeDemoActivity, localizeDemoReward } from '@/lib/i18n/demo-content-copy';
+import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
 
 export function KidDashboard() {
   const {
@@ -47,11 +47,10 @@ export function KidDashboard() {
     childBadges,
     updateActiveAvatar,
     setIsPortraitModalOpen,
-    openOnboarding,
-    parentProfile,
   } = useAppStore();
 
   const { t, language } = useTranslation();
+  const copy = getKidDashboardCopy(language);
 
   const [activeTab, setActiveTab] = useState<'tasks' | 'leaderboard' | 'rewards' | 'badges'>('tasks');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -98,7 +97,7 @@ export function KidDashboard() {
       return act.recurrenceDays && act.recurrenceDays.includes(dayOfWeek);
     }
     return true;
-  });
+  }).map((activity) => localizeAgeAdaptedHabit(localizeDemoActivity(activity, language), language));
 
   // Calculate completion
   const childLogsForDate = logs.filter(
@@ -130,7 +129,8 @@ export function KidDashboard() {
   ];
 
   // Wishlist goal
-  const wishlistReward = rewards.find((r) => r.id === wishlistRewardId) || rewards[0] || null;
+  const localizedRewards = rewards.map((reward) => localizeDemoReward(reward, language));
+  const wishlistReward = localizedRewards.find((r) => r.id === wishlistRewardId) || localizedRewards[0] || null;
   const wishlistProgress = wishlistReward
     ? Math.min(100, Math.round((activeChild.points / wishlistReward.costPoints) * 100))
     : 0;
@@ -175,12 +175,12 @@ export function KidDashboard() {
                 </span>
                 {activeChild.ageStage && (
                   <span className="text-xs font-bold bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full shadow-xs">
-                    {getStageInfo(activeChild.ageStage).name} ({getStageInfo(activeChild.ageStage).range})
+                    {copy.stageLabels[activeChild.ageStage]}
                   </span>
                 )}
                 {activeChild.age !== undefined && (
                   <span className="text-xs font-medium bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">
-                    {activeChild.age} tuổi
+                    {activeChild.age} {copy.ageUnit}
                   </span>
                 )}
               </div>
@@ -189,7 +189,7 @@ export function KidDashboard() {
               </h1>
               <p className="text-sm text-indigo-100 font-medium">
                 {activeChild.ageStage === '0-3'
-                  ? `🍼 Nhật ký Thân giáo của Ba Mẹ & Rõ hình cho bé ${activeChild.name}`
+                  ? copy.infantJournal(activeChild.name)
                   : `${t.greeting} ${activeChild.name}! ✨`}
               </p>
             </div>
@@ -303,24 +303,24 @@ export function KidDashboard() {
             <button
               onClick={handlePrevDay}
               className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-              aria-label="Ngày trước"
+              aria-label={copy.previousDay}
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <div className="text-center">
               <span className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 block">
                 {isToday ? `${t.today} - ` : ''}
-                {selectedDate.toLocaleDateString(language === 'vi' ? 'vi-VN' : 'en-US', {
+                {new Intl.DateTimeFormat(language, {
                   weekday: 'short',
                   day: 'numeric',
                   month: 'numeric',
-                })}
+                }).format(selectedDate)}
               </span>
             </div>
             <button
               onClick={handleNextDay}
               className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-              aria-label="Ngày tiếp theo"
+              aria-label={copy.nextDay}
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -336,14 +336,14 @@ export function KidDashboard() {
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-extrabold text-sm text-purple-900 dark:text-purple-200">
-                      Giai đoạn Thấm Nhuần Môi Trường (0 - 3 Tuổi)
+                      {copy.infantStage}
                     </h3>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-200 text-purple-800 dark:bg-purple-800 dark:text-purple-200">
-                      Thân giáo là chính
+                      {copy.infantTag}
                     </span>
                   </div>
                   <p className="text-xs text-purple-700/80 dark:text-purple-300/80 mt-0.5 leading-relaxed">
-                    Bé như một chiếc máy ảnh chụp lại mọi cử chỉ của ba mẹ. Ba mẹ thực hành 16 hành động nhân cách &amp; tích hoàn thành mỗi ngày để rõ hình trong tâm trí cho con.
+                    {copy.infantDescription}
                   </p>
                 </div>
               </div>
@@ -354,7 +354,7 @@ export function KidDashboard() {
                 className="shrink-0 py-2 px-3.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 active:scale-95"
               >
                 <BookOpen className="w-3.5 h-3.5" />
-                <span>Xem Cẩm nang</span>
+                <span>{copy.handbook}</span>
               </button>
             </div>
           ) : (
@@ -362,7 +362,7 @@ export function KidDashboard() {
               <div className="flex items-center gap-2 text-xs text-amber-900 dark:text-amber-200">
                 <span>✨</span>
                 <span className="font-medium">
-                  Nuôi dưỡng <strong>16 Chân Dung Trẻ Thơ</strong> &amp; <strong>7 Bố Thí Đời Người</strong> mỗi ngày.
+                  {copy.portraitPractice}
                 </span>
               </div>
               <button
@@ -371,7 +371,7 @@ export function KidDashboard() {
                 className="shrink-0 text-xs font-bold text-amber-700 dark:text-amber-300 hover:underline flex items-center gap-1"
               >
                 <BookOpen className="w-3 h-3" />
-                <span>Tra cứu</span>
+                <span>{copy.guide}</span>
               </button>
             </div>
           )}
@@ -434,7 +434,7 @@ export function KidDashboard() {
                                   {act.isParentRole && (
                                     <span className="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
                                       <Heart className="w-3 h-3 fill-current text-rose-500" />
-                                      Thân giáo Ba Mẹ
+                                      {copy.parentRole}
                                     </span>
                                   )}
 
@@ -486,7 +486,7 @@ export function KidDashboard() {
                                 if (typeof window !== 'undefined' && 'vibrate' in navigator) {
                                   try {
                                     navigator.vibrate?.(25);
-                                  } catch (e) {
+                                  } catch {
                                     // ignore if unsupported
                                   }
                                 }
@@ -554,7 +554,7 @@ export function KidDashboard() {
 
           {/* Rewards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {rewards
+            {localizedRewards
               .filter((r) => r.isActive)
               .map((rew) => {
                 const canAfford = activeChild.points >= rew.costPoints;
@@ -571,7 +571,7 @@ export function KidDashboard() {
                       </span>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <h4 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 truncate">
+                          <h4 className="font-extrabold text-sm sm:text-base leading-snug text-slate-800 dark:text-slate-100 line-clamp-2">
                             {rew.title}
                           </h4>
                           <span className="font-black text-sm text-amber-500 shrink-0">
@@ -594,8 +594,8 @@ export function KidDashboard() {
                             ? 'bg-pink-100 text-pink-600 dark:bg-pink-950/50'
                             : 'text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-zinc-800'
                         }`}
-                        title="Đặt làm mục tiêu"
-                        aria-label="Đặt làm mục tiêu"
+                        title={copy.setGoal}
+                        aria-label={copy.setGoal}
                       >
                         🎯
                       </button>
@@ -628,7 +628,7 @@ export function KidDashboard() {
                 {redemptions
                   .filter((r) => r.childId === activeChild.id)
                   .map((red) => {
-                    const rew = rewards.find((r) => r.id === red.rewardId);
+                    const rew = localizedRewards.find((r) => r.id === red.rewardId);
                     return (
                       <div
                         key={red.id}
@@ -637,7 +637,7 @@ export function KidDashboard() {
                         <div className="flex items-center gap-2.5">
                           <span className="text-xl">{rew?.icon || '🎁'}</span>
                           <span className="font-semibold text-slate-700 dark:text-slate-200">
-                            {rew?.title || 'Phần thưởng'}
+                            {rew?.title || copy.defaultReward}
                           </span>
                         </div>
                         <span
@@ -673,8 +673,8 @@ export function KidDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {badges.map((b) => {
             const isUnlocked = unlockedBadgeIds.has(b.id);
-            const badgeName = b.name[language] || b.name.vi;
-            const badgeDesc = b.description[language] || b.description.vi;
+            const badgeName = b.name[language] || b.name.en || b.name.vi;
+            const badgeDesc = b.description[language] || b.description.en || b.description.vi;
 
             return (
               <div
@@ -736,7 +736,7 @@ export function KidDashboard() {
           onClose={() => setIsAvatarPickerOpen(false)}
           currentAvatar={activeChild.avatar}
           currentColor={activeChild.themeColor}
-          onSave={(newAvatar, newColor) => updateActiveAvatar(newAvatar, newColor)}
+          onSave={updateActiveAvatar}
         />
       )}
     </div>

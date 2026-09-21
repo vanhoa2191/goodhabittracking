@@ -3,9 +3,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, RotateCcw, X, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
-import { HabitActivity } from '@/types';
+import type { HabitActivity } from '@/types';
 import { useTranslation } from '@/lib/i18n/context';
 import { sounds } from '@/lib/sound';
+import { useModalFocus } from '@/lib/use-modal-focus';
 
 interface HabitTimerModalProps {
   activity: HabitActivity | null;
@@ -15,6 +16,7 @@ interface HabitTimerModalProps {
 }
 
 export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: HabitTimerModalProps) {
+  useModalFocus(isOpen, onClose);
   const { t } = useTranslation();
   const initialSeconds = (activity?.durationMinutes || 2) * 60;
   const [timeLeft, setTimeLeft] = useState(initialSeconds);
@@ -23,24 +25,31 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (activity) {
+    if (!activity) return;
+
+    const resetTimer = setTimeout(() => {
       const secs = (activity.durationMinutes || 2) * 60;
       setTimeLeft(secs);
       setIsRunning(false);
       setIsFinished(false);
-    }
+    }, 0);
+
+    return () => clearTimeout(resetTimer);
   }, [activity]);
 
   useEffect(() => {
     if (isRunning && timeLeft > 0) {
       timerRef.current = setTimeout(() => {
+        if (timeLeft === 1) {
+          setTimeLeft(0);
+          setIsRunning(false);
+          setIsFinished(true);
+          sounds.playTimerFinish();
+          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+          return;
+        }
         setTimeLeft((prev) => prev - 1);
       }, 1000);
-    } else if (isRunning && timeLeft === 0) {
-      setIsRunning(false);
-      setIsFinished(true);
-      sounds.playTimerFinish();
-      confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
     }
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -80,7 +89,7 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-      <div className="relative w-full max-w-sm max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden text-center">
+      <div role="dialog" aria-modal="true" aria-label="Đồng hồ thói quen" className="relative w-full max-w-sm max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden text-center">
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between text-left">
           <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">

@@ -35,12 +35,38 @@ body {
   overflow-x: hidden;
 }
 
+html:not(.dark) .text-slate-400 {
+  color: #475569;
+}
+
+html:not(.dark) .text-amber-500,
+html:not(.dark) .text-amber-600 {
+  color: #92400e;
+}
+
+html:not(.dark) .text-emerald-600 {
+  color: #047857;
+}
+
+html:not(.dark) .text-pink-600 {
+  color: #9d174d;
+}
+
 button, a, [role="button"] {
   touch-action: manipulation;
 }
 
 button, input, select, textarea {
   font-family: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid #4f46e5;
+  outline-offset: 3px;
+}
+
+@media (forced-colors: active) {
+  :focus-visible { outline-color: Highlight; }
 }
 
 @keyframes fadeIn {

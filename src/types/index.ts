@@ -39,6 +39,7 @@ export interface ParentProfile {
 export interface ChildProfile {
   id: string;
   userId?: string;
+  familyId?: string;
   name: string; // Tên thật của bé
   nickname?: string; // Biệt danh trên Bảng xếp hạng
   showRealNameOnLeaderboard?: boolean; // false = chỉ hiện biệt danh (bảo mật), true = hiện tên thật
@@ -54,7 +55,6 @@ export interface ChildProfile {
   ageStage?: AgeStage;
   lastActiveDate?: string;
   leagueTier?: LeagueTier;
-  accessCode?: string; // Mã kết nối thiết bị riêng biệt của bé
   createdAt: string;
 }
 
@@ -84,6 +84,7 @@ export interface HabitActivity {
 export interface ActivityLog {
   id: string;
   userId?: string;
+  familyId?: string;
   activityId: string;
   childId: string;
   date: string;
@@ -109,6 +110,7 @@ export interface Reward {
 export interface Redemption {
   id: string;
   userId?: string;
+  familyId?: string;
   rewardId: string;
   childId: string;
   pointsSpent: number;
@@ -128,6 +130,7 @@ export interface Badge {
 }
 
 export interface ChildBadge {
+  familyId?: string;
   childId: string;
   badgeId: string;
   unlockedAt: string;
@@ -164,6 +167,7 @@ export interface JourneyPlan {
 
 export interface GroupTeam {
   id: string;
+  familyId?: string;
   name: string;
   inviteCode: string;
   icon: string;
@@ -190,6 +194,8 @@ export interface LeaderboardEntry {
 
 export interface Kudo {
   id: string;
+  familyId?: string;
+  fromChildId?: string;
   fromChildName: string;
   toChildId: string;
   emoji: string;
@@ -237,4 +243,3 @@ export interface FamilyDeviceCode {
   createdAt: string;
   updatedAt?: string;
 }
-

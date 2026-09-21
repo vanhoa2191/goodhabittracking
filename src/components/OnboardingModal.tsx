@@ -1,47 +1,52 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   X,
   Sparkles,
   Heart,
-  Baby,
-  User,
-  CheckCircle2,
   Calendar,
-  ShieldCheck,
   ArrowRight,
-  Smile,
   BookOpen,
-  Zap,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
-import { useTranslation } from '@/lib/i18n/context';
 import { AgeStage } from '@/types';
 import { getStageFromAge, getStageInfo, generateAgeAdaptedHabits } from '@/lib/wit-framework';
 import { sounds } from '@/lib/sound';
+import { useModalFocus } from '@/lib/use-modal-focus';
+import { useTranslation } from '@/lib/i18n/context';
+import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 
 interface OnboardingModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+const PARENT_ROLES = [
+  'mother',
+  'father',
+  'grandparent',
+  'guardian',
+] as const;
+
+type ParentRole = (typeof PARENT_ROLES)[number];
+
 export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
+  useModalFocus(isOpen, onClose);
+  const { language } = useTranslation();
+  const copy = getOnboardingCopy(language);
   const {
     parentProfile,
     updateParentProfile,
     createProfile,
-    applyAgeHabitsBundle,
-    profiles,
-    setActiveChildId,
+    currentUser,
   } = useAppStore();
-  const { t } = useTranslation();
 
   const [step, setStep] = useState<1 | 2>(1);
 
   // Parent form state
   const [parentName, setParentName] = useState(parentProfile?.name || '');
-  const [parentRole, setParentRole] = useState<'mother' | 'father' | 'grandparent' | 'guardian'>(
+  const [parentRole, setParentRole] = useState<ParentRole>(
     parentProfile?.role || 'mother'
   );
   const [phoneOrEmail, setPhoneOrEmail] = useState(parentProfile?.phoneOrEmail || '');
@@ -51,19 +56,29 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   const [childNickname, setChildNickname] = useState('');
   const [childAge, setChildAge] = useState<number>(5);
   const [childAvatar, setChildAvatar] = useState('🌟');
-  const [childThemeColor, setChildThemeColor] = useState('#6366f1');
+  const childThemeColor = '#6366f1';
   const [autoApplyHabits, setAutoApplyHabits] = useState(true);
+  const [hasConsent, setHasConsent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
 
   if (!isOpen) return null;
 
   const currentStage: AgeStage = getStageFromAge(childAge);
   const stageInfo = getStageInfo(currentStage);
+  const stageCopy = copy.stages[currentStage];
   const previewHabits = generateAgeAdaptedHabits(null, currentStage);
+
+  const goToStep = (nextStep: 1 | 2) => {
+    setStep(nextStep);
+    requestAnimationFrame(() => bodyRef.current?.scrollTo({ top: 0 }));
+  };
 
   const handleNextStep = (e: React.FormEvent) => {
     e.preventDefault();
     if (!parentName.trim()) {
-      alert('Vui lòng nhập tên của ba mẹ để tiện xưng hô trong ứng dụng nhé!');
+      alert(copy.parentNameRequired);
       return;
     }
     updateParentProfile({
@@ -72,20 +87,39 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
       phoneOrEmail: phoneOrEmail.trim(),
     });
     sounds.playClick();
-    setStep(2);
+    goToStep(2);
   };
 
-  const handleCompleteRegistration = (e: React.FormEvent) => {
+  const handleCompleteRegistration = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!childName.trim()) {
-      alert('Vui lòng nhập tên của bé yêu!');
+      alert(copy.childNameRequired);
+      return;
+    }
+    if (!hasConsent) {
+      setSubmitError(copy.consentRequired);
       return;
     }
 
+    setIsSubmitting(true);
+    setSubmitError(null);
+    if (currentUser) {
+      const response = await fetch('/api/privacy/consent', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ policyVersion: '2026-09-19', childDataConsent: true }),
+      });
+      if (!response.ok) {
+        setIsSubmitting(false);
+        setSubmitError(copy.saveError);
+        return;
+      }
+    }
+
     // Create child profile with age & ageStage
-    createProfile({
+    const profileSaved = await createProfile({
       name: childName.trim(),
-      nickname: childNickname.trim() || `Bé ${childName.trim().split(/\s+/).pop()}`,
+      nickname: childNickname.trim() || `${copy.nicknamePrefix} ${childName.trim().split(/\s+/).pop()}`,
       avatar: childAvatar,
       themeColor: childThemeColor,
       points: 20,
@@ -94,18 +128,27 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
       streak: 1,
       age: childAge,
       birthYear: new Date().getFullYear() - childAge,
-      ageStage: currentStage,
+      ageStage: autoApplyHabits ? currentStage : undefined,
       showRealNameOnLeaderboard: false,
-      isPublicOnLeaderboard: true,
+      isPublicOnLeaderboard: false,
     });
+    if (!profileSaved) {
+      setIsSubmitting(false);
+      setSubmitError(copy.saveError);
+      return;
+    }
 
     sounds.playLevelUp();
+    setIsSubmitting(false);
     onClose();
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={copy.dialogLabel}
         className="relative w-full max-w-2xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 flex flex-col max-h-[92vh] overflow-hidden my-auto"
         onClick={(e) => e.stopPropagation()}
       >
@@ -117,12 +160,12 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 tracking-tight">
-                Đăng Ký &amp; Cá Nhân Hóa Theo Lứa Tuổi
+                {copy.title}
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 {step === 1
-                  ? 'Bước 1/2: Thông tin Người Thân Giáo (Ba Mẹ)'
-                  : 'Bước 2/2: Thông tin Bé &amp; Thích ứng Hành Động (16 Chân Dung)'}
+                  ? copy.stepOne
+                  : copy.stepTwo}
               </p>
             </div>
           </div>
@@ -130,14 +173,15 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
           <button
             onClick={onClose}
             className="min-w-[40px] min-h-[40px] flex items-center justify-center p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95"
-            title="Đóng"
+            title={copy.close}
+            aria-label={copy.close}
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6 overscroll-contain">
+        <div ref={bodyRef} className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6 overscroll-contain">
           {step === 1 ? (
             /* STEP 1: PARENT INFORMATION */
             <form onSubmit={handleNextStep} className="space-y-5">
@@ -146,23 +190,24 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                 <Heart className="w-5 h-5 text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
                 <div className="space-y-1 text-xs text-indigo-950 dark:text-indigo-200">
                   <span className="font-bold block">
-                    &ldquo;Trở thành trước khi Giáo dục &ndash; Thân giáo làm gương&rdquo;
+                    {copy.philosophyTitle}
                   </span>
                   <p className="text-[11px] leading-relaxed opacity-90">
-                    Trẻ em không học qua việc nghe đạo lý, trẻ học bằng mắt qua hiện thực của cha mẹ. Khi ba mẹ an vui và thắp sáng ngọn đèn nhân cách, con sẽ tự khắc chuyển hóa!
+                    {copy.philosophyBody}
                   </p>
                 </div>
               </div>
 
               {/* Parent Name */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Tên của Ba Mẹ / Người nuôi dưỡng *
+                <label htmlFor="onboarding-parent-name" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  {copy.parentNameLabel}
                 </label>
                 <input
+                  id="onboarding-parent-name"
                   type="text"
                   required
-                  placeholder="Ví dụ: Mẹ Lan, Bố Tuấn, Bà Ngoại..."
+                  placeholder={copy.parentNamePlaceholder}
                   value={parentName}
                   onChange={(e) => setParentName(e.target.value)}
                   className="w-full py-2.5 px-3.5 rounded-2xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
@@ -171,27 +216,22 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
 
               {/* Parent Role */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Vai trò của bạn trong gia đình
-                </label>
+                <span className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  {copy.familyRoleLabel}
+                </span>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {[
-                    { id: 'mother', label: '👩 Mẹ yêu' },
-                    { id: 'father', label: '👨 Bố yêu' },
-                    { id: 'grandparent', label: '👵 Ông / Bà' },
-                    { id: 'guardian', label: '🧑 Người giám hộ' },
-                  ].map((r) => (
+                  {PARENT_ROLES.map((role) => (
                     <button
-                      key={r.id}
+                      key={role}
                       type="button"
-                      onClick={() => setParentRole(r.id as any)}
+                      onClick={() => setParentRole(role)}
                       className={`py-2.5 px-3 rounded-2xl text-xs font-bold border transition-all text-center cursor-pointer ${
-                        parentRole === r.id
+                        parentRole === role
                           ? 'border-indigo-600 bg-indigo-50/80 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 shadow-xs'
                           : 'border-slate-200 dark:border-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-300'
                       }`}
                     >
-                      {r.label}
+                      {copy.roles[role]}
                     </button>
                   ))}
                 </div>
@@ -199,18 +239,19 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
 
               {/* Phone or Email for backup / sync */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Số điện thoại hoặc Email (Tùy chọn)
+                <label htmlFor="onboarding-parent-contact" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  {copy.contactLabel}
                 </label>
                 <input
+                  id="onboarding-parent-contact"
                   type="text"
-                  placeholder="Nhập để lưu trữ và nhận cẩm nang nuôi dạy con..."
+                  placeholder={copy.contactPlaceholder}
                   value={phoneOrEmail}
                   onChange={(e) => setPhoneOrEmail(e.target.value)}
                   className="w-full py-2.5 px-3.5 rounded-2xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
                 />
                 <span className="text-[11px] text-slate-400 mt-1 block">
-                  Dữ liệu được bảo mật an toàn, dùng để đồng bộ lộ trình trên nhiều thiết bị.
+                  {copy.contactHelp}
                 </span>
               </div>
 
@@ -219,7 +260,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   type="submit"
                   className="w-full py-3 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span>Tiếp Tục: Thêm Thông Tin Bé</span>
+                  <span>{copy.continue}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -230,13 +271,14 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               {/* Child Name & Nickname */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                    Họ và Tên bé *
+                  <label htmlFor="onboarding-child-name" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                    {copy.childNameLabel}
                   </label>
                   <input
+                    id="onboarding-child-name"
                     type="text"
                     required
-                    placeholder="Ví dụ: Nguyễn Minh An..."
+                    placeholder={copy.childNamePlaceholder}
                     value={childName}
                     onChange={(e) => setChildName(e.target.value)}
                     className="w-full py-2.5 px-3.5 rounded-2xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
@@ -244,12 +286,13 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                    Biệt danh của bé
+                  <label htmlFor="onboarding-child-nickname" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                    {copy.nicknameLabel}
                   </label>
                   <input
+                    id="onboarding-child-nickname"
                     type="text"
-                    placeholder="Ví dụ: Bé Bo, Sóc Nhí, Cún Con..."
+                    placeholder={copy.nicknamePlaceholder}
                     value={childNickname}
                     onChange={(e) => setChildNickname(e.target.value)}
                     className="w-full py-2.5 px-3.5 rounded-2xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
@@ -260,20 +303,21 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               {/* Age Selector with Dynamic Golden Stage Card */}
               <div className="p-4 rounded-3xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200/80 dark:border-zinc-700/60 space-y-3">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-black text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
+                  <label htmlFor="onboarding-child-age" className="text-xs font-black text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
                     <Calendar className="w-4 h-4 text-indigo-600" />
-                    <span>Độ tuổi của bé hiện tại:</span>
+                    <span>{copy.ageLabel}</span>
                   </label>
                   <div className="flex items-center gap-1 bg-white dark:bg-zinc-700 px-3 py-1 rounded-full border border-slate-200 dark:border-zinc-600">
                     <span className="text-lg font-black text-indigo-600 dark:text-indigo-300">
                       {childAge}
                     </span>
-                    <span className="text-xs font-bold text-slate-500">tuổi</span>
+                    <span className="text-xs font-bold text-slate-500">{copy.ageUnit}</span>
                   </div>
                 </div>
 
                 {/* Range Slider */}
                 <input
+                  id="onboarding-child-age"
                   type="range"
                   min={0}
                   max={18}
@@ -289,14 +333,14 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                       <span className="text-2xl">{stageInfo.icon}</span>
                       <div>
                         <span className="text-[11px] font-black uppercase tracking-wider block opacity-90">
-                          {stageInfo.label} &bull; {stageInfo.title}
+                          {copy.stageLabels[currentStage]} &bull; {stageCopy.title}
                         </span>
-                        <h4 className="text-sm font-black">{stageInfo.subtitle}</h4>
+                        <h4 className="text-sm font-black">{stageCopy.subtitle}</h4>
                       </div>
                     </div>
                   </div>
                   <p className="text-[11px] opacity-95 leading-relaxed pt-1">
-                    {stageInfo.summary}
+                    {stageCopy.summary}
                   </p>
                 </div>
               </div>
@@ -304,7 +348,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               {/* Avatar Mascot & Color Selection */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                  Linh vật may mắn của bé ({childAvatar})
+                  {copy.luckyMascot(childAvatar)}
                 </label>
                 <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
                   {['🦁', '🐰', '🐼', '👶', '🦊', '🐱', '🐶', '🦄', '🚀', '🌟', '👑', '🦸'].map((emoji) => (
@@ -330,7 +374,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-4 h-4 text-indigo-600" />
                     <span className="text-xs font-black text-slate-800 dark:text-slate-100">
-                      Gói Hành Động Thích Ứng ({stageInfo.label})
+                      {copy.previewBundle(copy.stageLabels[currentStage])}
                     </span>
                   </div>
                   <label className="flex items-center gap-1.5 cursor-pointer text-xs font-bold text-indigo-600 dark:text-indigo-400">
@@ -340,7 +384,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                       onChange={(e) => setAutoApplyHabits(e.target.checked)}
                       className="rounded text-indigo-600 focus:ring-indigo-500"
                     />
-                    <span>Tự động nạp mẫu</span>
+                    <span>{copy.autoLoad}</span>
                   </label>
                 </div>
 
@@ -353,7 +397,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                       <div className="flex items-center gap-2 truncate">
                         <span className="text-base">{act.icon}</span>
                         <span className="font-semibold text-slate-700 dark:text-slate-200 truncate">
-                          {act.title}
+                          {stageCopy.habitTitles[idx] ?? act.title}
                         </span>
                       </div>
                       <span className="text-[10px] font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full shrink-0">
@@ -364,21 +408,40 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                 </div>
               </div>
 
+              <label className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs leading-relaxed text-slate-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-200">
+                <input
+                  type="checkbox"
+                  checked={hasConsent}
+                  onChange={(event) => setHasConsent(event.target.checked)}
+                  className="mt-0.5 h-5 w-5 shrink-0 accent-indigo-600"
+                />
+                <span>
+                  {copy.consent}
+                </span>
+              </label>
+
+              {submitError && (
+                <p role="alert" className="rounded-xl bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-200">
+                  {submitError}
+                </p>
+              )}
+
               {/* Action Buttons */}
               <div className="flex items-center gap-3 pt-2">
                 <button
                   type="button"
-                  onClick={() => setStep(1)}
+                  onClick={() => goToStep(1)}
                   className="py-3 px-5 rounded-2xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 text-xs font-bold text-slate-700 dark:text-slate-300 transition-all cursor-pointer"
                 >
-                  Quay lại
+                  {copy.back}
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 py-3 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={isSubmitting}
+                  className="flex-1 py-3 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-wait disabled:opacity-60"
                 >
                   <Sparkles className="w-4 h-4 text-amber-300 fill-current" />
-                  <span>Hoàn Tất &amp; Bắt Đầu Rèn Luyện</span>
+                  <span>{isSubmitting ? copy.saving : copy.complete}</span>
                 </button>
               </div>
             </form>

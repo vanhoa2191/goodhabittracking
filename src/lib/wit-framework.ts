@@ -1,4 +1,4 @@
-import { AgeStage, HabitActivity, ActivityCategory } from '@/types';
+import { AgeStage, HabitActivity } from '@/types';
 
 export interface Portrait16Item {
   id: string;
@@ -398,8 +398,6 @@ export function generateAgeAdaptedHabits(
   childId: string | null,
   stage: AgeStage
 ): Omit<HabitActivity, 'id' | 'createdAt'>[] {
-  const now = new Date().toISOString();
-
   if (stage === '0-3') {
     // 0-3: Cha mẹ thân giáo (Ba mẹ làm gương rõ hình cho bé)
     return [

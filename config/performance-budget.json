@@ -1,0 +1,4 @@
+{
+  "maxTotalJavaScriptBytes": 2500000,
+  "maxSingleChunkBytes": 1000000
+}

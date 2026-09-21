@@ -16,13 +16,18 @@ import {
   Compass,
   ChevronRight,
   Smartphone,
+  Upload,
 } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAppStore } from '@/lib/store';
 import { WEEKLY_JOURNEY_PLANS, MONTHLY_JOURNEY_PLANS } from '@/lib/constants';
+import { getJourneyHabitText } from '@/lib/i18n/journey-content';
+import { getJourneyPeriodLabel, journeyCopy } from '@/lib/i18n/journey-copy';
+import { getLandingUiCopy } from '@/lib/i18n/landing-ui-copy';
 
 interface LandingPageProps {
   onStartDemo: () => void;
+  onStartLocalSetup: () => void;
   onLoginGoogle: () => void;
   isLoggedIn?: boolean;
 }
@@ -715,12 +720,25 @@ const FRAMEWORK_PILLARS = [
   },
 ];
 
-export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingPageProps) {
+export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isLoggedIn }: LandingPageProps) {
   const { t, language } = useTranslation();
-  const { openConnectModal } = useAppStore();
+  const roadmapCopy = journeyCopy[language];
+  const uiCopy = getLandingUiCopy(language);
+  const { openConnectModal, importData } = useAppStore();
   const [activePillarIndex, setActivePillarIndex] = useState(0);
   const [roadmapType, setRoadmapType] = useState<'weekly' | 'monthly'>('weekly');
   const [selectedPlanId, setSelectedPlanId] = useState<string>('week-1');
+  const [restoreNotice, setRestoreNotice] = useState<string | null>(null);
+
+  const handleRestore = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = typeof event.target?.result === 'string' ? event.target.result : '';
+      setRestoreNotice(content && importData(content) ? null : uiCopy.backupInvalid);
+    };
+    reader.onerror = () => setRestoreNotice(uiCopy.backupReadError);
+    reader.readAsText(file);
+  };
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-indigo-50/50 via-white to-amber-50/30 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 text-slate-800 dark:text-slate-100 transition-colors">
@@ -782,16 +800,45 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
               </button>
             ) : null}
 
+            {!isLoggedIn && (
+              <button
+                type="button"
+                onClick={onStartLocalSetup}
+                className="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-sm font-bold transition-all shadow-xs flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                <span>{t.landingCtaLocalSetup}</span>
+              </button>
+            )}
+
+            {!isLoggedIn && (
+              <label className="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-slate-50 dark:bg-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-700 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-slate-200 text-sm font-bold transition-all shadow-xs flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
+                <Upload className="w-4 h-4" />
+                <span>{t.importData}</span>
+                <input
+                  type="file"
+                  accept="application/json,.json"
+                  className="sr-only"
+                  aria-label={t.importData}
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    if (file) handleRestore(file);
+                    event.target.value = '';
+                  }}
+                />
+              </label>
+            )}
+
             {/* Child Enter with Code */}
             {!isLoggedIn && (
               <button
                 type="button"
                 onClick={openConnectModal}
                 className="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-purple-50 hover:bg-purple-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-purple-200/80 dark:border-zinc-700 text-purple-700 dark:text-purple-300 text-sm font-bold transition-all shadow-xs flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
-                title="Bé nhập mã gia đình từ máy ba mẹ"
+                title={uiCopy.childCodeTitle}
               >
                 <Smartphone className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0" />
-                <span>Bé vào bằng mã</span>
+                <span>{uiCopy.childCodeButton}</span>
               </button>
             )}
 
@@ -805,6 +852,12 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
+
+          {restoreNotice && (
+            <p role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+              {restoreNotice}
+            </p>
+          )}
 
           {/* Trust Social Proof */}
           <div className="pt-6 flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400">
@@ -832,13 +885,13 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
               </div>
               <div>
                 <div className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
-                  <span>Bé Minh An (Sư Tử Dũng Cảm)</span>
+                  <span>{uiCopy.mockChildName}</span>
                   <span className="text-amber-500 text-xs font-black bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full">
-                    Cấp 3
+                    {t.levelPrefix} 3
                   </span>
                 </div>
                 <div className="text-[11px] text-slate-400 flex items-center gap-2 mt-0.5">
-                  <span>🔥 Chuỗi 7 ngày liên tiếp</span>
+                  <span>🔥 {uiCopy.streak(7)}</span>
                   <span>•</span>
                   <span className="text-amber-600 font-bold">⭐ 145 sao</span>
                 </div>
@@ -865,21 +918,21 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                   <span>{t.morning}</span>
                 </span>
                 <span className="text-[10px] font-black text-amber-600 bg-amber-100 dark:bg-amber-950 px-2 py-0.5 rounded-full">
-                  2/2 Đã xong
+                  {uiCopy.doneCount(2, 2)}
                 </span>
               </div>
               <div className="space-y-1.5">
                 <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="text-base">🛏️</span>
-                    <span className="font-semibold line-through text-slate-400">Tự gấp chăn mền</span>
+                    <span className="font-semibold line-through text-slate-400">{uiCopy.makeBed}</span>
                   </div>
                   <span className="text-[11px] font-bold text-emerald-600">✓ +5 ⭐</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="text-base">🪥</span>
-                    <span className="font-semibold line-through text-slate-400">Đánh răng 2 phút</span>
+                    <span className="font-semibold line-through text-slate-400">{uiCopy.brushTeeth}</span>
                   </div>
                   <span className="text-[11px] font-bold text-emerald-600">✓ +10 ⭐</span>
                 </div>
@@ -894,21 +947,21 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                   <span>{t.afternoon}</span>
                 </span>
                 <span className="text-[10px] font-black text-indigo-600 bg-indigo-100 dark:bg-indigo-950 px-2 py-0.5 rounded-full">
-                  1/2 Nhiệm vụ
+                  {uiCopy.taskCount(1, 2)}
                 </span>
               </div>
               <div className="space-y-1.5">
                 <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="text-base">🎒</span>
-                    <span className="font-semibold line-through text-slate-400">Cất cặp sách gọn gàng</span>
+                    <span className="font-semibold line-through text-slate-400">{uiCopy.packBag}</span>
                   </div>
                   <span className="text-[11px] font-bold text-emerald-600">✓ +5 ⭐</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-indigo-200 dark:border-indigo-800/60 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="text-base">📚</span>
-                    <span className="font-bold text-indigo-700 dark:text-indigo-300">Đọc sách 20 phút</span>
+                    <span className="font-bold text-indigo-700 dark:text-indigo-300">{uiCopy.readBooks}</span>
                   </div>
                   <span className="text-[11px] font-black text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 rounded-md">
                     +15 ⭐
@@ -925,21 +978,21 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                   <span>{t.rewards}</span>
                 </span>
                 <span className="text-[10px] font-black text-pink-600 bg-pink-100 dark:bg-pink-950 px-2 py-0.5 rounded-full">
-                  Kho quà
+                  {uiCopy.rewardStore}
                 </span>
               </div>
               <div className="space-y-1.5">
                 <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="text-base">🎬</span>
-                    <span className="font-semibold">Xem phim cuối tuần</span>
+                    <span className="font-semibold">{uiCopy.weekendMovie}</span>
                   </div>
                   <span className="text-[11px] font-bold text-amber-600">50 ⭐</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="text-base">🍦</span>
-                    <span className="font-semibold">Ăn kem cùng ba mẹ</span>
+                    <span className="font-semibold">{uiCopy.iceCream}</span>
                   </div>
                   <span className="text-[11px] font-bold text-amber-600">30 ⭐</span>
                 </div>
@@ -954,10 +1007,10 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
         <div className="max-w-5xl mx-auto space-y-10">
           <div className="text-center space-y-3">
             <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-              Sự Khác Biệt Giữa Nhắc Nhở Truyền Thống &amp; KidHabit Hero
+              {t.landingComparisonTitle}
             </h2>
             <p className="text-xs sm:text-base text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
-              Chuyển hóa từ việc ba mẹ phải hối thúc sang con chủ động hoàn thành việc tốt mỗi ngày.
+              {t.landingComparisonDesc}
             </p>
           </div>
 
@@ -1037,7 +1090,6 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
               ⚡
             </div>
             <div className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-medium">
-              <span className="font-extrabold text-amber-600 dark:text-amber-400 mr-1">Tiện Dụng Tuyệt Đối:</span>
               {t.landingConvenienceHighlight}
             </div>
           </div>
@@ -1047,7 +1099,7 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
         <div className="flex items-center gap-2 overflow-x-auto pb-3 sm:pb-4 scrollbar-none sm:justify-center">
           {FRAMEWORK_PILLARS.map((pillar, idx) => {
             const isActive = activePillarIndex === idx;
-            const pTitle = pillar.badge[language as keyof typeof pillar.badge] || pillar.badge.vi;
+            const pTitle = pillar.badge[language as keyof typeof pillar.badge] || pillar.badge.en || pillar.badge.vi;
             return (
               <button
                 key={pillar.id}
@@ -1069,9 +1121,9 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
         {/* Active Pillar Showcase Detail Card */}
         {(() => {
           const currentPillar = FRAMEWORK_PILLARS[activePillarIndex];
-          const cBadge = currentPillar.badge[language as keyof typeof currentPillar.badge] || currentPillar.badge.vi;
-          const cTitle = currentPillar.title[language as keyof typeof currentPillar.title] || currentPillar.title.vi;
-          const cMeaning = currentPillar.meaning[language as keyof typeof currentPillar.meaning] || currentPillar.meaning.vi;
+          const cBadge = currentPillar.badge[language as keyof typeof currentPillar.badge] || currentPillar.badge.en || currentPillar.badge.vi;
+          const cTitle = currentPillar.title[language as keyof typeof currentPillar.title] || currentPillar.title.en || currentPillar.title.vi;
+          const cMeaning = currentPillar.meaning[language as keyof typeof currentPillar.meaning] || currentPillar.meaning.en || currentPillar.meaning.vi;
 
           return (
             <div className="mt-5 bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-9 border border-slate-200/80 dark:border-zinc-800 shadow-xl space-y-6 animate-fade-in transition-all">
@@ -1086,7 +1138,7 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                       <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-extrabold border ${currentPillar.badgeBg}`}>
                         {cBadge}
                       </span>
-                      <span className="text-xs text-slate-400 font-semibold">Trụ cột #{activePillarIndex + 1}/8</span>
+                      <span className="text-xs text-slate-400 font-semibold">{uiCopy.pillar(activePillarIndex + 1)}</span>
                     </div>
                     <h3 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white mt-1">
                       {cTitle}
@@ -1096,7 +1148,7 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
 
                 <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-zinc-800/80 px-3.5 py-2 rounded-xl border border-slate-100 dark:border-zinc-700/60 self-start md:self-auto">
                   <span className="text-amber-500 font-black text-sm">✓</span>
-                  <span>Áp dụng 1-chạm vào bảng nhiệm vụ</span>
+                  <span>{uiCopy.oneTap}</span>
                 </div>
               </div>
 
@@ -1104,7 +1156,7 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
               <div className="p-4 rounded-2xl bg-slate-50/80 dark:bg-zinc-800/50 border border-slate-100 dark:border-zinc-800/80">
                 <div className="text-xs font-black uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5">
                   <Compass className="w-3.5 h-3.5 text-indigo-500" />
-                  <span>Ý nghĩa chuyển hóa với con</span>
+                  <span>{uiCopy.meaning}</span>
                 </div>
                 <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-medium">
                   {cMeaning}
@@ -1116,17 +1168,17 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                 <div className="flex items-center justify-between">
                   <div className="text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
                     <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
-                    <span>Ví dụ thói quen thực tế &amp; dễ hiểu (Đã nạp sẵn trong App)</span>
+                    <span>{t.habitTemplates}</span>
                   </div>
                   <span className="text-[11px] text-indigo-600 dark:text-indigo-400 font-bold">
-                    {currentPillar.examples.length} thói quen tiêu biểu
+                    {uiCopy.habitCount(currentPillar.examples.length)}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
                   {currentPillar.examples.map((item, exIdx) => {
-                    const exTitle = item.title[language as keyof typeof item.title] || item.title.vi;
-                    const exDesc = item.desc[language as keyof typeof item.desc] || item.desc.vi;
+                    const exTitle = item.title[language as keyof typeof item.title] || item.title.en || item.title.vi;
+                    const exDesc = item.desc[language as keyof typeof item.desc] || item.desc.en || item.desc.vi;
                     const timeTag =
                       item.timeOfDay === 'morning'
                         ? t.morning
@@ -1234,10 +1286,10 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
             <div className="space-y-6">
               {/* 4-Week Progress Timeline Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {WEEKLY_JOURNEY_PLANS.map((plan, idx) => {
+                {WEEKLY_JOURNEY_PLANS.map((plan) => {
                   const isSelected = selectedPlanId === plan.id;
-                  const pTitle = plan.title[language as keyof typeof plan.title] || plan.title.vi || '';
-                  const pDesc = plan.description[language as keyof typeof plan.description] || plan.description.vi || '';
+                  const pTitle = plan.title[language as keyof typeof plan.title] || plan.title.en || plan.title.vi || '';
+                  const pDesc = plan.description[language as keyof typeof plan.description] || plan.description.en || plan.description.vi || '';
 
                   return (
                     <button
@@ -1254,14 +1306,14 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                         <div className="flex items-center justify-between">
                           <span className="text-2xl">{plan.icon}</span>
                           <span
-                            className="px-2.5 py-0.5 rounded-full text-[10px] font-black text-white"
+                            className="px-2.5 py-0.5 rounded-full text-[10px] font-black text-slate-950"
                             style={{ backgroundColor: plan.themeColor }}
                           >
-                            Tuần {idx + 1}
+                          {getJourneyPeriodLabel(language, plan.type, plan.id)}
                           </span>
                         </div>
-                        <h4 className="font-extrabold text-sm text-slate-900 dark:text-white leading-tight">
-                          {pTitle.replace(/Tuần \d+:\s*/, '')}
+                        <h4 className="font-extrabold text-sm text-slate-900 dark:text-white leading-tight [word-break:auto-phrase]">
+                          {pTitle.replace(/^.*?[：:]\s*/, '')}
                         </h4>
                         <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                           {pDesc}
@@ -1269,9 +1321,9 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                       </div>
 
                       <div className="pt-2 border-t border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-[11px]">
-                        <span className="text-slate-400 font-semibold">{plan.habits.length} việc tốt/ngày</span>
+                        <span className="text-slate-400 font-semibold">{roadmapCopy.habitsPerDay(plan.habits.length)}</span>
                         <span className="text-indigo-600 dark:text-indigo-400 font-bold flex items-center gap-0.5">
-                          <span>Xem chi tiết</span>
+                          <span>{roadmapCopy.details}</span>
                           <ChevronRight className="w-3 h-3" />
                         </span>
                       </div>
@@ -1284,8 +1336,8 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
               {(() => {
                 const currentPlan =
                   WEEKLY_JOURNEY_PLANS.find((p) => p.id === selectedPlanId) || WEEKLY_JOURNEY_PLANS[0];
-                const pTitle = currentPlan.title[language as keyof typeof currentPlan.title] || currentPlan.title.vi || '';
-                const pDesc = currentPlan.description[language as keyof typeof currentPlan.description] || currentPlan.description.vi || '';
+                const pTitle = currentPlan.title[language as keyof typeof currentPlan.title] || currentPlan.title.en || currentPlan.title.vi || '';
+                const pDesc = currentPlan.description[language as keyof typeof currentPlan.description] || currentPlan.description.en || currentPlan.description.vi || '';
 
                 return (
                   <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-slate-200 dark:border-zinc-800 shadow-xl space-y-5">
@@ -1293,12 +1345,12 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                       <div>
                         <div className="flex items-center gap-2">
                           <span
-                            className="px-2.5 py-0.5 rounded-full text-white text-xs font-black"
+                            className="px-2.5 py-0.5 rounded-full text-slate-950 text-xs font-black"
                             style={{ backgroundColor: currentPlan.themeColor }}
                           >
-                            {currentPlan.periodLabel}
+                            {getJourneyPeriodLabel(language, currentPlan.type, currentPlan.id)}
                           </span>
-                          <h3 className="text-base sm:text-xl font-black text-slate-900 dark:text-white">
+                          <h3 className="text-base sm:text-xl font-black text-slate-900 dark:text-white [word-break:auto-phrase]">
                             {pTitle}
                           </h3>
                         </div>
@@ -1319,6 +1371,7 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                       {currentPlan.habits.map((habit, hIdx) => {
+                        const localizedHabit = getJourneyHabitText(currentPlan, hIdx, language);
                         const timeTag =
                           habit.timeOfDay === 'morning'
                             ? t.morning
@@ -1341,19 +1394,19 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                                 </span>
                               </div>
                               <h5 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100 leading-snug">
-                                {habit.title}
+                                {localizedHabit.title}
                               </h5>
                               <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
-                                {habit.description}
+                                {localizedHabit.description}
                               </p>
                             </div>
 
                             <div className="pt-2 border-t border-slate-200/50 dark:border-zinc-700/40 flex items-center justify-between text-[10px] text-slate-400 font-semibold">
                               <span>⏱️ {timeTag}</span>
                               {habit.durationMinutes ? (
-                                <span>{habit.durationMinutes} phút</span>
+                                <span>{roadmapCopy.minutes(habit.durationMinutes)}</span>
                               ) : (
-                                <span className="text-emerald-600">Đã kiểm chứng</span>
+                                <span>{timeTag}</span>
                               )}
                             </div>
                           </div>
@@ -1367,9 +1420,9 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
           ) : (
             /* Monthly Thematic Roadmap View */
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {MONTHLY_JOURNEY_PLANS.map((plan, idx) => {
-                const pTitle = plan.title[language as keyof typeof plan.title] || plan.title.vi || '';
-                const pDesc = plan.description[language as keyof typeof plan.description] || plan.description.vi || '';
+              {MONTHLY_JOURNEY_PLANS.map((plan) => {
+                const pTitle = plan.title[language as keyof typeof plan.title] || plan.title.en || plan.title.vi || '';
+                const pDesc = plan.description[language as keyof typeof plan.description] || plan.description.en || plan.description.vi || '';
 
                 return (
                   <div
@@ -1382,15 +1435,15 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                           {plan.icon}
                         </div>
                         <span
-                          className="px-3 py-1 rounded-full text-xs font-black text-white"
+                          className="px-3 py-1 rounded-full text-xs font-black text-slate-950"
                           style={{ backgroundColor: plan.themeColor }}
                         >
-                          {plan.periodLabel}
+                          {getJourneyPeriodLabel(language, plan.type, plan.id)}
                         </span>
                       </div>
 
                       <div>
-                        <h4 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">
+                        <h4 className="text-base sm:text-lg font-black text-slate-900 dark:text-white [word-break:auto-phrase]">
                           {pTitle}
                         </h4>
                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
@@ -1400,9 +1453,11 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
 
                       <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-zinc-800">
                         <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                          Nhiệm vụ trọng tâm:
+                          {roadmapCopy.focusTasks}
                         </div>
-                        {plan.habits.slice(0, 4).map((h, hIdx) => (
+                        {plan.habits.slice(0, 4).map((h, hIdx) => {
+                          const localizedHabit = getJourneyHabitText(plan, hIdx, language);
+                          return (
                           <div
                             key={hIdx}
                             className="p-2 rounded-xl bg-slate-50 dark:bg-zinc-800 flex items-center justify-between text-xs"
@@ -1410,14 +1465,15 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                             <div className="flex items-center gap-2 truncate">
                               <span>{h.icon}</span>
                               <span className="font-semibold truncate text-slate-700 dark:text-slate-200">
-                                {h.title}
+                                {localizedHabit.title}
                               </span>
                             </div>
                             <span className="text-[10px] font-bold text-amber-600 shrink-0">
                               +{h.points}⭐
                             </span>
                           </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
 
@@ -1426,7 +1482,7 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
                       onClick={onStartDemo}
                       className="w-full py-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                     >
-                      <span>Khám phá lộ trình này</span>
+                      <span>{uiCopy.exploreJourney}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -1439,7 +1495,7 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
           <div className="p-4 sm:p-5 rounded-2xl bg-indigo-950/5 dark:bg-indigo-950/30 border border-indigo-200/80 dark:border-indigo-800 text-xs sm:text-sm text-indigo-900 dark:text-indigo-200 flex items-start gap-3">
             <span className="text-xl">💡</span>
             <div className="leading-relaxed">
-              <span className="font-extrabold mr-1">Không cần tốn công nghĩ việc:</span>
+              <span className="font-extrabold mr-1">{uiCopy.noPlanning}</span>
               {t.landingRoadmapConvenienceTip}
             </div>
           </div>
@@ -1451,7 +1507,7 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
         <div className="text-center space-y-3 mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 text-xs font-bold">
             <Zap className="w-3.5 h-3.5" />
-            <span>Phương pháp khoa học</span>
+            <span>{uiCopy.practiceTools}</span>
           </div>
           <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
             {t.landingPillarsTitle}
@@ -1520,7 +1576,7 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
       <section className="py-12 sm:py-20 px-4 sm:px-6 bg-indigo-900 text-white rounded-3xl max-w-5xl mx-auto my-6 shadow-xl">
         <div className="text-center space-y-3 mb-10 sm:mb-14">
           <span className="text-xs uppercase font-extrabold tracking-widest text-indigo-300">
-            Khởi đầu nhẹ nhàng
+            {uiCopy.gentleStart}
           </span>
           <h2 className="text-2xl sm:text-4xl font-black tracking-tight">
             {t.landingStepsTitle}
@@ -1561,68 +1617,6 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
         </div>
       </section>
 
-      {/* 5. ĐÁNH GIÁ CHÂN THỰC TỪ PHỤ HUYNH */}
-      <section className="py-14 sm:py-24 px-4 sm:px-6 max-w-5xl mx-auto">
-        <div className="text-center space-y-3 mb-10 sm:mb-14">
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-            {t.landingTestimonialsTitle}
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Testimonial 1 */}
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-7 border border-slate-100 dark:border-zinc-800 shadow-sm space-y-4">
-            <div className="flex text-amber-400 gap-1 text-sm">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-current" />
-              ))}
-            </div>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 italic leading-relaxed">
-              {t.landingTestimonial1Quote}
-            </p>
-            <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-pink-100 dark:bg-pink-950 flex items-center justify-center text-sm font-bold text-pink-600">
-                BP
-              </div>
-              <div>
-                <div className="text-xs font-bold text-slate-800 dark:text-slate-100">
-                  {t.landingTestimonial1Author}
-                </div>
-                <div className="text-[11px] text-slate-400">
-                  {t.landingTestimonial1Role}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Testimonial 2 */}
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-7 border border-slate-100 dark:border-zinc-800 shadow-sm space-y-4">
-            <div className="flex text-amber-400 gap-1 text-sm">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-current" />
-              ))}
-            </div>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 italic leading-relaxed">
-              {t.landingTestimonial2Quote}
-            </p>
-            <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-sm font-bold text-indigo-600">
-                MT
-              </div>
-              <div>
-                <div className="text-xs font-bold text-slate-800 dark:text-slate-100">
-                  {t.landingTestimonial2Author}
-                </div>
-                <div className="text-[11px] text-slate-400">
-                  {t.landingTestimonial2Role}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. BOTTOM CALL TO ACTION */}
       <section className="py-14 sm:py-20 px-4 sm:px-6 bg-gradient-to-tr from-indigo-50 via-white to-amber-50 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900 border-t border-slate-200 dark:border-zinc-800 text-center">
         <div className="max-w-2xl mx-auto space-y-5">
           <div className="text-3xl sm:text-4xl">🌟🚀💎</div>
