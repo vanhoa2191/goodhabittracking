@@ -1,7 +1,7 @@
 ---
 phase: 3
 title: "Secure Device Pairing and Family Isolation"
-status: implemented-live-verification-pending
+status: complete
 priority: P1
 effort: "4-6d"
 dependencies: [2]
@@ -67,6 +67,7 @@ Parent creates challenge -> child submits display code -> server validates rate/
 - [x] Adversarial contract and revoked-session E2E tests
 - [x] Typed client adapter with Zod response validation and truthful signed-out/demo controls
 - [x] Device-list/revoke boundary validates server responses, reports failures truthfully and remounts per authenticated parent to prevent stale account state
+- [x] Production pairing lifecycle: one-time exchange, replay denial, scoped child hydration/actions, reconnect and parent revocation
 
 ## Success Criteria
 

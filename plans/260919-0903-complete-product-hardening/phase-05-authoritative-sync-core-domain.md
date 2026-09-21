@@ -70,7 +70,7 @@ UI hooks -> typed command/query layer -> authenticated APIs/Supabase -> domain t
 - [x] Child profile create/update/delete is API-first and family-scoped; profile plus starter habits are committed by one PostgreSQL command, profile updates cannot mutate progress fields, and create/update/delete UI waits for authoritative refetch or preserves the current state with localized recovery feedback
 - [x] Reward create/update/delete is API-first and family-scoped; callers cannot supply family/user ownership, cloud mode never falls through to local mutation without authentication, and the UI waits for authoritative refetch or keeps visible data unchanged with localized recovery feedback
 - [x] Group create/join/reward update and kudos are API-first and family-scoped; invite codes are generated atomically, cloud mode never falls through to local mutation without authentication, and group creation waits for authoritative refetch or preserves visible state with localized recovery feedback
-- [ ] Multi-device and offline E2E
+- [x] Multi-device core lifecycle and reconnect E2E; local/offline mutation recovery remains covered by browser/unit gates
 
 ## Success Criteria
 

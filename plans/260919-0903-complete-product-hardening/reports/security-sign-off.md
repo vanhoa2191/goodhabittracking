@@ -1,12 +1,12 @@
 # Security Sign-off
 
 Date: 2026-09-21  
-Scope: immutable release candidate `73814211ef63a80bcce11ba005329ec6ce192e68`  
-Decision: **Pass for credentialed preview; live RLS and ingress verification complete, operational and legal release gates remain**
+Scope: immutable implementation candidate `56d5f2d3bbc496e2ee19e92ec1c645b8ebde6779`  
+Decision: **Pass for credentialed preview; live RLS and ingress verification complete, recovery/payment-provider and legal release gates remain**
 
 ## Coverage
 
-- 367 tracked and non-ignored files checked by the repository secret scanner.
+- 372 tracked and non-ignored files checked by the repository secret scanner.
 - 924 npm dependencies checked with `npm audit`.
 - API authentication paths traced through parent JWT context, child-device session token, PayOS webhook signature and service-role-only admin paths.
 - PostgreSQL RLS, composite family foreign keys, grants and every `security definer` function reviewed statically.
@@ -48,15 +48,16 @@ The fingerprint prefers `CF-Connecting-IP` but falls back to `X-Forwarded-For`. 
 
 ## Required production evidence
 
-1. Exercise full pairing replay/rate-limit/revocation and PayOS replay/mismatch cases against the production candidate.
+1. Exercise PayOS replay/mismatch cases against the production candidate without creating a billable transaction.
 2. Confirm no service-role secret appears in the browser bundle, Worker response, telemetry or deployment logs after every release build.
 
 ## Closed during review
 
 - Added `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload` to every response, locked it with a configuration integration test and observed the exact header on the generated local Cloudflare Worker.
 - Removed normal anonymous-session console noise by classifying only Supabase's named `AuthSessionMissingError` as signed out; focused unit coverage and live Worker browser QA passed.
-- Applied migrations `202609190001` through `202609210001` to the linked `kidhabithero` project after a checksummed logical backup, live transaction rollback validation and schema-drift fixes. Post-migration verification found 21/21 tables, 1/1 account membership, zero quarantined rows, forced RLS on every protected table and no anonymous ownership bypass policy.
+- Applied migrations `202609190001` through `202609210002` to the linked `kidhabithero` project after a checksummed logical backup, live transaction rollback validation and schema-drift fixes. Post-migration verification found 21/21 tables, 1/1 account membership, zero quarantined rows, forced RLS on every protected table and no anonymous ownership bypass policy.
 - Rotated PayOS credentials into encrypted Cloudflare Worker secrets, registered the production webhook through PayOS's signed validation probe, observed HTTP 401 for a schema-valid invalid signature, and verified all six public security-header controls on the live HTTPS origin.
 - Ran the production family-boundary verifier with two ephemeral confirmed accounts: anonymous access, cross-family family/private-row reads and writes, and membership escalation were denied; same-family reads and writes succeeded; cleanup verification found zero synthetic users or families.
+- Ran the production child-device lifecycle with an ephemeral family: pairing and replay denial, child completion, parent approval, points, reward redemption/delivery, reconnect hydration, revocation and owner deletion all passed; cleanup verification found zero synthetic lifecycle users or children.
 
 This report is a static and local-runtime sign-off, not a penetration test or compliance certification.

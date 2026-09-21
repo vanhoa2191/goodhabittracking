@@ -21,6 +21,8 @@ Không đưa secret vào `wrangler.jsonc`, GitHub Actions log hoặc `NEXT_PUBLI
 
 Sau migration production, chạy `npm run verify:live-boundaries`. Lệnh dùng quyền operator của Supabase CLI để tạo hai tài khoản tổng hợp, kiểm tra anonymous/same-family/cross-family RLS trên dữ liệu live và luôn dọn dữ liệu thử. Không chạy lệnh này trong CI công khai hoặc trên máy không được phép quản trị project.
 
+Sau khi Worker và migration mới cùng được phát hành, chạy `npm run verify:live-lifecycle` để chứng nhận pairing, replay denial, child completion, parent approval, reward delivery, reconnect và revoke bằng dữ liệu tổng hợp tự dọn. Lệnh này cũng chỉ dành cho operator được phép quản trị project.
+
 ## Release candidate gate
 
 Sau khi commit release candidate, export secrets vào shell cục bộ hoặc secret store của CI, đặt `RELEASE_SHA` bằng full SHA đang checkout, rồi chạy:

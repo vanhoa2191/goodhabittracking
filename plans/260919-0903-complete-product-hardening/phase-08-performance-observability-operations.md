@@ -61,9 +61,9 @@ Thin telemetry adapter supports configured production provider without coupling 
 
 - [x] Performance budgets and optimizations
 - [x] Redacted structured telemetry with correlation IDs on critical API failure paths
-- [ ] Production dashboards and alerts
+- [x] Production dashboards and hourly quiet-unless-actionable health/CI/Cloudflare/Supabase monitoring
 - [x] Error boundaries/recovery UX
-- [ ] Backup/restore/rollback drills (local JSON export, deletion and landing-page restore pass on desktop/mobile; production database restore and rollback pending)
+- [ ] Backup/restore/rollback drills (local JSON export, deletion, landing-page restore and production owner deletion pass; isolated database restore is blocked because the current Supabase organization does not include Branching and this host has no container runtime)
 - [x] Security headers and local Worker preview verification
 - [x] Fail-closed runtime readiness and one-command local release verification (database/billing/pairing config, compromised PayOS fingerprints, immutable SHA, CI, production bundle health and desktop/mobile E2E)
 

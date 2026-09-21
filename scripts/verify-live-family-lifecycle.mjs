@@ -219,7 +219,8 @@ try {
       body: JSON.stringify({ type: 'transitionRedemption', redemptionId, decision }),
     });
     assert(
-      transition.response.status === 200 && transition.body?.result?.status === `${decision}d`,
+      transition.response.status === 200
+        && transition.body?.result?.status === (decision === 'approve' ? 'approved' : 'delivered'),
       `Parent reward ${decision} failed.`,
     );
   }
@@ -246,8 +247,18 @@ try {
   const revokedSession = await jsonRequest('/api/child/session', { headers: childHeaders });
   assert(revokedSession.response.status === 401, 'Revoked child session remained active.');
 
+  const familyDelete = await jsonRequest('/api/family', {
+    method: 'DELETE',
+    headers: parentHeaders,
+    body: JSON.stringify({ confirmation: 'DELETE FAMILY' }),
+  });
+  assert(familyDelete.response.status === 200, 'Owner family deletion failed.');
+  const deletedFamily = await admin.from('families').select('id').eq('id', familyId).maybeSingle();
+  assert(!deletedFamily.error && deletedFamily.data === null, 'Deleted family remained accessible.');
+  familyId = undefined;
+
   process.stdout.write(
-    'Live family lifecycle passed: pair, replay denial, child completion, parent approval, reward delivery, reconnect, and revoke.\n',
+    'Live family lifecycle passed: pair, replay denial, child completion, parent approval, reward delivery, reconnect, revoke, and owner deletion.\n',
   );
 } finally {
   await cleanup();

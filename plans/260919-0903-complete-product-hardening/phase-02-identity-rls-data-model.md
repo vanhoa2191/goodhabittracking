@@ -64,7 +64,7 @@ Create the ownership model every later feature depends on: authenticated parent 
 - [x] Strict RLS and negative contract tests
 - [x] Canonical DTO/domain mapping
 - [x] Live-schema reconciliation report and non-destructive rollback script
-- [x] Recoverable logical backup, live rollback validation, eight production migrations and post-migration structural/RLS verification
+- [x] Recoverable logical backup, live rollback validation, nine production migrations and post-migration structural/RLS verification
 - [x] Live anonymous, same-family and cross-family read/write matrix with automatic synthetic-data cleanup
 
 ## Success Criteria
