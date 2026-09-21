@@ -67,9 +67,9 @@ Phases 3 and 4 may run in parallel after Phase 2. Phase 5 may begin after Phase 
 | 4 | [Payment and entitlement integrity](./phase-04-payments-entitlements.md) | P1 | 3-5d | 2 | Production credentials rotated into encrypted Worker secrets; signed PayOS webhook probe accepted; invalid-signature ingress returns 401; credentialed purchase/replay/mismatch E2E pending |
 | 5 | [Authoritative sync and core habit domain](./phase-05-authoritative-sync-core-domain.md) | P1 | 7-10d | 2, 3 | Core lifecycle complete; production child completion -> parent approval -> points -> child redemption -> parent delivery -> reconnect passes with session-derived scope |
 | 6 | [Onboarding, demo separation, trust, and child privacy](./phase-06-onboarding-demo-trust-privacy.md) | P1 | 4-6d | 3, 5 | Local lifecycle E2E complete; credentialed lifecycle pending |
-| 7 | [UX, information architecture, localization, and accessibility](./phase-07-ux-ia-localization-accessibility.md) | P2 | 7-10d | 5, 6 | Locally complete; A11y/responsive gates and all nine-locale surfaces pass, store is a 772-line composition provider, and the portrait guide is a 189-line coordinator backed by three focused panels; final production visual certification remains part of Phase 9 |
+| 7 | [UX, information architecture, localization, and accessibility](./phase-07-ux-ia-localization-accessibility.md) | P2 | 7-10d | 5, 6 | Complete; A11y/responsive gates and all nine-locale surfaces pass, adaptive first-visit language selection is live in production, store is a 772-line composition provider, and the portrait guide is a 189-line coordinator backed by three focused panels |
 | 8 | [Performance, observability, and operations](./phase-08-performance-observability-operations.md) | P2 | 4-6d | 5, 7 | Local gates, telemetry, fail-closed readiness, one-command release verification, JSON restore and hourly production monitoring complete; isolated database restore blocked by current Supabase plan/local runtime |
-| 9 | [Release certification and documentation](./phase-09-release-certification-documentation.md) | P1 | 3-5d | 3-8 | Production candidate deployed; immutable certification/CI, Supabase RLS, PayOS, full two-device lifecycle and production monitor pass; isolated restore and legal evidence pending |
+| 9 | [Release certification and documentation](./phase-09-release-certification-documentation.md) | P1 | 3-5d | 3-8 | Adaptive-locale production candidate deployed from `e5c249e9663ef578aadd0943b0c8cc2aa077515a`; CI, Supabase RLS, PayOS ingress, full two-device lifecycle and production monitor pass; isolated restore, provider-signed PayOS replay/mismatch and legal evidence remain pending |
 
 ## Global Acceptance Criteria
 
@@ -112,6 +112,6 @@ None required to create the plan. Before Phase 2 implementation, confirm access 
 - Full verification tier required: 9 phases.
 - Audit file/path claims checked against current source before plan creation.
 - Local release evidence: [release-evidence.md](./reports/release-evidence.md).
-- Production candidate is live on Cloudflare with migrated Supabase, passing live family-boundary and full two-device lifecycle matrices, rotated PayOS credentials and active hourly monitoring. Isolated database restore evidence, provider-signed PayOS replay/mismatch and launch-market legal review remain.
+- Production candidate `e5c249e9663ef578aadd0943b0c8cc2aa077515a` is live on Cloudflare with adaptive first-visit language selection, migrated Supabase, passing live family-boundary and full two-device lifecycle matrices, rotated PayOS credentials and active hourly monitoring. Isolated database restore evidence, provider-signed PayOS replay/mismatch and launch-market legal review remain.
 
 <!-- slug: complete-product-hardening -->

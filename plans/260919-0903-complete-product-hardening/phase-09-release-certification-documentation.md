@@ -64,7 +64,7 @@ Documentation points to machine-owned migrations, schemas, scripts and tests ins
 - [x] Security/privacy/a11y/performance sign-offs
 - [x] Evergreen docs and verified README
 - [ ] Staged rollout and rollback drill
-- [x] Commit-bound release evidence (GitHub quality/browser CI and production lifecycle passed on `56d5f2d3bbc496e2ee19e92ec1c645b8ebde6779`)
+- [x] Commit-bound release evidence (GitHub quality/browser CI, adaptive locale smoke and production lifecycle passed on `e5c249e9663ef578aadd0943b0c8cc2aa077515a`)
 
 ## Success Criteria
 

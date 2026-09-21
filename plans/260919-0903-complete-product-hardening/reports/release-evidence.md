@@ -1,7 +1,7 @@
 # Release Evidence
 
 Date: 2026-09-21  
-Release candidate implementation commit: `56d5f2d3bbc496e2ee19e92ec1c645b8ebde6779`  
+Release candidate implementation commit: `e5c249e9663ef578aadd0943b0c8cc2aa077515a`
 Evidence scope: immutable implementation candidate with GitHub CI and production lifecycle certification
 
 ## Verified locally
@@ -10,19 +10,19 @@ Evidence scope: immutable implementation candidate with GitHub CI and production
 |---|---|---|
 | Lint | `npm run lint` | Pass, zero warnings |
 | Types | `npm run typecheck` | Pass |
-| Unit/API/integration | `npm run lint`, `npm run typecheck` and `npm run test:unit` after the child-device command boundary was added | Pass, 50 files / 192 tests, including session-derived child commands, PayOS verification-probe compatibility and official SDK canonicalization in addition to live database-readiness rejection, fail-closed configuration readiness, compromised credential rejection, signed-out auth handling, family-scoped domain CRUD, migration syntax, local/cloud transitions, pairing boundaries, billing validation, auth races, backup normalization, nine-locale parity, leaderboard privacy and subscription rules |
-| Browser E2E | The same release harness started the production `next start` bundle on `127.0.0.1:3420`, required `/api/health` readiness, then ran Playwright | Pass, clean 46/46 desktop and mobile run in 2.0 minutes; harness stopped the process and port 3420 was verified clear. This is working-tree evidence because `--allow-dirty` was intentionally used; the real release gate forbids it |
+| Unit/API/integration | `npm test` after the adaptive locale boundary was added | Pass, 51 files / 209 tests, including 17 language-detection cases plus session-derived child commands, PayOS verification-probe compatibility, live database-readiness rejection, fail-closed configuration readiness, compromised credential rejection, signed-out auth handling, family-scoped domain CRUD, migration syntax, local/cloud transitions, pairing boundaries, billing validation, auth races, backup normalization, nine-locale parity, leaderboard privacy and subscription rules |
+| Browser E2E | Production-bundle Playwright on desktop and mobile, with CI Chromium replay | Pass, 74/74 local desktop/mobile tests; GitHub CI Chromium browser job also passed on the implementation commit |
 | Accessibility | Axe serious/critical scan, modal keyboard flow, linked onboarding labels, document locale | Pass on desktop and mobile |
 | Demo isolation | Explicit session sandbox, complete/undo task while observing `/api/domain/commands`, clean real-mode default | Pass, no domain mutation request or local-family contamination |
 | Local lifecycle | Local-only onboarding, consent, seeded-data exclusion, JSON export, deletion, landing-page restore and reload | Pass on desktop and mobile with zero API mutations |
-| Locale rendering | All nine document languages at desktop/mobile widths; localized landing samples, onboarding, demo content, child rewards, badges, header, parent approvals, habits, WIT library, age packs, journeys, rewards, children, analytics, settings, child-device connection and the 16-strength/7-giving guide; all 37 journey habits have native locale content | Pass for scoped rendering and horizontal overflow; guide matrix, giving and parent-modeling views captured at 375px and 1280px under `reports/phase-07-primary/` |
+| Locale rendering | All nine document languages at desktop/mobile widths; adaptive first-visit selection uses saved preference, Cloudflare country and `Accept-Language` in that order, with English fallback; metadata, onboarding, demo content, child rewards, badges, header, parent approvals, habits, WIT library, age packs, journeys, rewards, children, analytics, settings, child-device connection and the 16-strength/7-giving guide are localized | Pass for scoped rendering and horizontal overflow. Cookie/localStorage reconciliation, malformed quality values and unsupported locales are covered by unit/E2E tests; 18 fresh desktop/mobile captures cover all nine locales, including CJK wrapping |
 | Next.js production build | `npm run build` | Pass |
 | Cloudflare bundle | `npm run build:cloudflare` | Pass with OpenNext 1.19.11 |
-| Performance budget | `npm run check:performance` | Pass; total JS 2,092,143 bytes, largest chunk 936,185 bytes |
+| Performance budget | `npm run check:performance` | Pass; total JS 2,095,536 bytes, largest chunk 939,526 bytes |
 | Dependencies | `npm audit --audit-level=high` | Pass, zero known vulnerabilities |
-| Secret scan | `npm run check:secrets` | Pass for 372 tracked and non-ignored files; Cloudflare bundle independently contains zero exposed PayOS credential fingerprint hits |
-| Release preflight | `npm run release:verify` | The clean SHA-bound harness passed on the previous documentation-only release commit; the child-device implementation then passed the same lint, type, unit, build and browser components in GitHub CI plus a production lifecycle probe. The harness rejects exposed credential fingerprints, weak/missing pairing configuration, unsafe feature flags, non-HTTPS origin, dirty candidates and SHA mismatch before certification |
-| GitHub CI | [Run 35551060808](https://github.com/vanhoa2191/goodhabittracking/actions/runs/35551060808) | Pass on `56d5f2d3bbc496e2ee19e92ec1c645b8ebde6779`: quality job 1m11s; Chromium browser job 2m29s |
+| Secret scan | `npm run check:secrets` | Pass for 375 tracked and non-ignored files; Cloudflare bundle independently contains zero exposed PayOS credential fingerprint hits |
+| Release preflight | `npm run release:verify` | The clean SHA-bound harness passed on the previous documentation-only release commit; the adaptive-locale implementation then passed the same lint, type, unit, build and browser components in GitHub CI plus production health and locale probes. The harness rejects exposed credential fingerprints, weak/missing pairing configuration, unsafe feature flags, non-HTTPS origin, dirty candidates and SHA mismatch before certification |
+| GitHub CI | [Run 35581502489](https://github.com/vanhoa2191/goodhabittracking/actions/runs/35581502489) | Pass on `e5c249e9663ef578aadd0943b0c8cc2aa077515a`: quality and Chromium browser jobs succeeded |
 | Operational telemetry | Payment webhook, pairing exchange and domain-command failures emit allowlisted structured events with correlation IDs | Pass in targeted API/unit tests; live health and platform signals are checked by the active hourly monitor |
 | Production monitor | Active hourly Codex heartbeat `Giám sát production KidHabit` checks live dependency readiness, latest GitHub CI, Cloudflare Worker signals and Supabase health when available | Active; quiet while healthy and configured to notify only on a new failure, severity increase, recovery, lost visibility or required user action |
 | Diff hygiene | `git diff --check` | Pass |
@@ -55,8 +55,9 @@ The generated Worker was started with Wrangler on localhost and stopped cleanly 
 
 | Surface | Result |
 |---|---|
-| Cloudflare Worker | `goodhabittracking` deployed at `https://goodhabittracking.vanhoa2191.workers.dev`; child-device implementation version `f88bba8c-9288-4f01-9186-4675993cb208` |
+| Cloudflare Worker | `goodhabittracking` deployed at `https://goodhabittracking.vanhoa2191.workers.dev`; adaptive-locale implementation version `247f181b-1740-4709-b6ca-0f3d34ff6f48` |
 | Runtime health | HTTP 200 `ready`; app, database configuration/connection, billing and pairing checks all true |
+| Adaptive locale smoke | A production request with `kidhabit_language=fr` returned HTTP 200 with `lang=fr` and localized French title and description |
 | PayOS credentials | New `kidhabitprod` channel created; Client ID, API key and checksum key stored as encrypted Worker secrets without entering the repository or release logs |
 | PayOS webhook | Provider validation accepted and persisted `https://goodhabittracking.vanhoa2191.workers.dev/api/payment/webhook` |
 | Invalid webhook signature | Schema-valid request with an invalid signature returns HTTP 401 and a correlation ID without database processing |
@@ -81,8 +82,8 @@ Access and rollout audit updated on 2026-09-21. No secret values were printed or
 
 | Surface | Observed state | Consequence |
 |---|---|---|
-| Git remote | `origin/main` contains child-device implementation `56d5f2d3bbc496e2ee19e92ec1c645b8ebde6779` | The hardening implementation and its scoped child-device boundary are immutable and remotely recoverable |
-| GitHub Actions | [CI run 35551060808](https://github.com/vanhoa2191/goodhabittracking/actions/runs/35551060808) passed both jobs on the implementation candidate | Commit-bound quality and Chromium gates are green |
+| Git remote | `origin/main` contains adaptive-locale implementation `e5c249e9663ef578aadd0943b0c8cc2aa077515a` | The hardening implementation, scoped child-device boundary and adaptive locale behavior are immutable and remotely recoverable |
+| GitHub Actions | [CI run 35581502489](https://github.com/vanhoa2191/goodhabittracking/actions/runs/35581502489) passed both jobs on the implementation candidate | Commit-bound quality and Chromium gates are green |
 | Cloudflare Wrangler | Authenticated with Workers/Pages write access; `goodhabittracking` is deployed and healthy at its HTTPS workers.dev origin | Production candidate, encrypted secrets, security headers and invalid-signature ingress are live; an hourly quiet-unless-actionable production monitor is active |
 | Supabase CLI | Linked to healthy project `kidhabithero`; migrations `202609190001` through `202609210002` are applied and remote history matches local | Live schema rollout and session-derived child command functions are complete |
 | Supabase live verification | Preflight found six empty legacy tables and two absent billing tables; migrations were validated under forced rollback, applied, then verified; the automated live boundary runner exercised anonymous, same-family and cross-family access with ephemeral accounts | 21/21 expected tables exist, 1/1 pre-existing auth user has a family membership, quarantine is empty, all protected tables force RLS, no `auth.uid() IS NULL` policy remains, the live access matrix passes, and cleanup left zero synthetic users/families |
