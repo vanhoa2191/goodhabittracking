@@ -2,6 +2,11 @@
 
 import React, { createContext, useContext, useEffect, useSyncExternalStore } from 'react';
 import type { Language } from '@/types';
+import {
+  detectLanguage,
+  isLanguage,
+  LANGUAGE_PREFERENCE_KEY,
+} from './language-detection';
 import { translations } from './translations';
 
 export interface LanguageOption {
@@ -30,20 +35,7 @@ interface I18nContextType {
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
-const LANGUAGE_STORAGE_KEY = 'kidhabit_language';
 const LANGUAGE_CHANGE_EVENT = 'kidhabit-language-change';
-
-function isLanguage(value: string | null): value is Language {
-  return value === 'vi'
-    || value === 'en'
-    || value === 'zh'
-    || value === 'ja'
-    || value === 'ko'
-    || value === 'fr'
-    || value === 'de'
-    || value === 'it'
-    || value === 'es';
-}
 
 function subscribeToLanguage(onStoreChange: () => void) {
   window.addEventListener('storage', onStoreChange);
@@ -54,24 +46,47 @@ function subscribeToLanguage(onStoreChange: () => void) {
   };
 }
 
-function getLanguageSnapshot(): Language {
-  const savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
-  return isLanguage(savedLanguage) ? savedLanguage : 'vi';
+function readLanguageCookie(): Language | null {
+  const cookiePrefix = `${LANGUAGE_PREFERENCE_KEY}=`;
+  const cookie = document.cookie
+    .split(';')
+    .map((entry) => entry.trim())
+    .find((entry) => entry.startsWith(cookiePrefix));
+  if (!cookie) return null;
+
+  const value = cookie.slice(cookiePrefix.length);
+  return isLanguage(value) ? value : null;
 }
 
-function getServerLanguageSnapshot(): Language {
-  return 'vi';
+function getBrowserLanguage(initialLanguage: Language): Language {
+  return detectLanguage({
+    savedLanguage: readLanguageCookie() ?? localStorage.getItem(LANGUAGE_PREFERENCE_KEY),
+    preferredLocales: [initialLanguage, ...navigator.languages],
+    countryCode: null,
+  });
 }
 
-export function I18nProvider({ children }: { children: React.ReactNode }) {
+function writeLanguageCookie(language: Language): void {
+  const secureAttribute = window.location.protocol === 'https:' ? '; Secure' : '';
+  document.cookie = `${LANGUAGE_PREFERENCE_KEY}=${language}; Path=/; Max-Age=31536000; SameSite=Lax${secureAttribute}`;
+}
+
+export function I18nProvider({
+  children,
+  initialLanguage,
+}: {
+  readonly children: React.ReactNode;
+  readonly initialLanguage: Language;
+}) {
   const language = useSyncExternalStore(
     subscribeToLanguage,
-    getLanguageSnapshot,
-    getServerLanguageSnapshot
+    () => getBrowserLanguage(initialLanguage),
+    () => initialLanguage
   );
 
   const setLanguage = (lang: Language) => {
-    localStorage.setItem(LANGUAGE_STORAGE_KEY, lang);
+    localStorage.setItem(LANGUAGE_PREFERENCE_KEY, lang);
+    writeLanguageCookie(lang);
     window.dispatchEvent(new Event(LANGUAGE_CHANGE_EVENT));
   };
 
@@ -79,7 +94,20 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     document.documentElement.lang = language;
-  }, [language]);
+    document.title = `${t.appName} - ${t.appSlogan}`;
+    const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (description) description.content = t.appSlogan;
+
+    const cookieLanguage = readLanguageCookie();
+    const savedLanguage = localStorage.getItem(LANGUAGE_PREFERENCE_KEY);
+    if (cookieLanguage) {
+      if (savedLanguage !== cookieLanguage) {
+        localStorage.setItem(LANGUAGE_PREFERENCE_KEY, cookieLanguage);
+      }
+    } else if (isLanguage(savedLanguage)) {
+      writeLanguageCookie(savedLanguage);
+    }
+  }, [language, t.appName, t.appSlogan]);
 
   return (
     <I18nContext.Provider value={{ language, setLanguage, t }}>

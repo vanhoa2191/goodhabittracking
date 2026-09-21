@@ -25,6 +25,10 @@ Child device dùng HttpOnly session token. Database chỉ lưu SHA-256 digest v�
 
 Local mode dùng fixture và localStorage, không gọi mutation cloud. UI luôn hiển thị cảnh báo dữ liệu chỉ nằm trên thiết bị và cung cấp export/import JSON.
 
+## Ngôn ngữ thích ứng
+
+Server chọn một trong chín locale theo thứ tự: lựa chọn người dùng đã lưu, quốc gia từ Cloudflare, `Accept-Language`, rồi tiếng Anh. Lựa chọn thủ công được lưu đồng thời vào cookie và localStorage; cookie là nguồn ưu tiên khi hai bản ghi lệch nhau để HTML, metadata SSR và giao diện sau hydration luôn cùng ngôn ngữ.
+
 ## Quyết định bền vững
 
 Xem [`adr/0001-family-tenancy-and-rls.md`](adr/0001-family-tenancy-and-rls.md). Billing và domain rules được biểu diễn bằng migration thay vì logic client để giữ đúng dưới concurrency.

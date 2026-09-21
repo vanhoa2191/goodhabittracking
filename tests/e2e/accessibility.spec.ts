@@ -34,13 +34,17 @@ test('@a11y document language follows the selected locale', async ({ page }) => 
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 });
 
-test('@a11y every supported locale renders without application errors or horizontal overflow', async ({ page }) => {
-  const locales = ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'] as const;
+const locales = ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'] as const;
 
-  for (const locale of locales) {
+for (const locale of locales) {
+  test(`@a11y ${locale} renders without application errors or horizontal overflow`, async ({ page, baseURL }) => {
+    const applicationUrl = new URL(baseURL ?? 'http://127.0.0.1:3000').origin;
+    await page.context().addCookies([{
+      name: 'kidhabit_language',
+      value: locale,
+      url: applicationUrl,
+    }]);
     await page.goto('/');
-    await page.evaluate((nextLocale) => localStorage.setItem('kidhabit_language', nextLocale), locale);
-    await page.reload();
 
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(page.getByText(/application error/i)).toHaveCount(0);
@@ -48,5 +52,5 @@ test('@a11y every supported locale renders without application errors or horizon
       () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
     );
     expect(hasHorizontalOverflow, `${locale} should fit the viewport`).toBe(false);
-  }
-});
+  });
+}

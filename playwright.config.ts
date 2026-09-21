@@ -13,6 +13,7 @@ export default defineConfig({
   reporter: process.env.CI ? [['html', { open: 'never' }], ['github']] : 'list',
   use: {
     baseURL,
+    locale: 'vi-VN',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },

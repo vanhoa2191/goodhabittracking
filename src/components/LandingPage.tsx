@@ -750,12 +750,12 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
         <div className="text-center max-w-3xl mx-auto space-y-5">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800/80 text-indigo-700 dark:text-indigo-300 text-xs sm:text-sm font-bold shadow-xs animate-fade-in">
-            <Sparkles className="w-4 h-4 text-amber-500 fill-amber-400 animate-pulse" />
+            <Sparkles className="w-4 h-4 text-amber-500 fill-amber-400" />
             <span>{t.landingHeroBadge}</span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-slate-900 dark:text-white">
+          <h1 className={`text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-slate-900 dark:text-white ${language === 'ko' ? 'break-keep' : '[word-break:auto-phrase]'}`}>
             {t.landingHeroTitle.split('–')[0]}
             {t.landingHeroTitle.includes('–') && (
               <span className="block mt-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-amber-500 bg-clip-text text-transparent">
