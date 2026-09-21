@@ -6,7 +6,7 @@ import confetti from 'canvas-confetti';
 import type { HabitActivity } from '@/types';
 import { useTranslation } from '@/lib/i18n/context';
 import { sounds } from '@/lib/sound';
-import { useModalFocus } from '@/lib/use-modal-focus';
+import { ModalShell } from '@/components/ui/ModalShell';
 
 interface HabitTimerModalProps {
   activity: HabitActivity | null;
@@ -16,7 +16,6 @@ interface HabitTimerModalProps {
 }
 
 export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: HabitTimerModalProps) {
-  useModalFocus(isOpen, onClose);
   const { t } = useTranslation();
   const initialSeconds = (activity?.durationMinutes || 2) * 60;
   const [timeLeft, setTimeLeft] = useState(initialSeconds);
@@ -88,8 +87,7 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
   const strokeDashoffset = circumference - (progressPercent / 100) * circumference;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-      <div role="dialog" aria-modal="true" aria-label="Đồng hồ thói quen" className="relative w-full max-w-sm max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden text-center">
+    <ModalShell isOpen={isOpen} onClose={onClose} label="Đồng hồ thói quen" maxWidth="sm" mobileSheet={false} className="text-center">
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between text-left">
           <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
@@ -100,7 +98,7 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
               <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 truncate leading-tight">
                 {activity.title}
               </h3>
-              <p className="text-[11px] text-slate-400 mt-0.5 truncate">
+              <p className="text-xs text-slate-400 mt-0.5 truncate">
                 {activity.description || `${activity.durationMinutes || 2} phút rèn luyện`}
               </p>
             </div>
@@ -160,7 +158,7 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
                   <span className="text-3xl sm:text-4xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight font-mono">
                     {formattedTime}
                   </span>
-                  <span className="text-[11px] sm:text-xs text-slate-400 mt-1 font-semibold">
+                  <span className="text-xs sm:text-xs text-slate-400 mt-1 font-semibold">
                     +{activity.points} {t.stars} ⭐
                   </span>
                 </>
@@ -214,7 +212,6 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
             </>
           )}
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

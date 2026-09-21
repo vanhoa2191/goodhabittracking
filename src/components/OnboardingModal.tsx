@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
+import Link from 'next/link';
 import {
   X,
   Sparkles,
@@ -13,7 +14,7 @@ import { useAppStore } from '@/lib/store';
 import { AgeStage } from '@/types';
 import { getStageFromAge, getStageInfo, generateAgeAdaptedHabits } from '@/lib/wit-framework';
 import { sounds } from '@/lib/sound';
-import { useModalFocus } from '@/lib/use-modal-focus';
+import { ModalShell } from '@/components/ui/ModalShell';
 import { useTranslation } from '@/lib/i18n/context';
 import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 
@@ -32,7 +33,6 @@ const PARENT_ROLES = [
 type ParentRole = (typeof PARENT_ROLES)[number];
 
 export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
-  useModalFocus(isOpen, onClose);
   const { language } = useTranslation();
   const copy = getOnboardingCopy(language);
   const {
@@ -144,14 +144,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={copy.dialogLabel}
-        className="relative w-full max-w-2xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 flex flex-col max-h-[92vh] overflow-hidden my-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ModalShell isOpen={isOpen} onClose={onClose} label={copy.dialogLabel} maxWidth="2xl">
         {/* Modal Header */}
         <div className="shrink-0 flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
           <div className="flex items-center gap-3">
@@ -192,7 +185,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   <span className="font-bold block">
                     {copy.philosophyTitle}
                   </span>
-                  <p className="text-[11px] leading-relaxed opacity-90">
+                  <p className="text-xs leading-relaxed opacity-90">
                     {copy.philosophyBody}
                   </p>
                 </div>
@@ -250,7 +243,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   onChange={(e) => setPhoneOrEmail(e.target.value)}
                   className="w-full py-2.5 px-3.5 rounded-2xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
                 />
-                <span className="text-[11px] text-slate-400 mt-1 block">
+                <span className="text-xs text-slate-400 mt-1 block">
                   {copy.contactHelp}
                 </span>
               </div>
@@ -332,14 +325,14 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                     <div className="flex items-center gap-2">
                       <span className="text-2xl">{stageInfo.icon}</span>
                       <div>
-                        <span className="text-[11px] font-black uppercase tracking-wider block opacity-90">
+                        <span className="text-xs font-black uppercase tracking-wider block opacity-90">
                           {copy.stageLabels[currentStage]} &bull; {stageCopy.title}
                         </span>
                         <h4 className="text-sm font-black">{stageCopy.subtitle}</h4>
                       </div>
                     </div>
                   </div>
-                  <p className="text-[11px] opacity-95 leading-relaxed pt-1">
+                  <p className="text-xs opacity-95 leading-relaxed pt-1">
                     {stageCopy.summary}
                   </p>
                 </div>
@@ -400,7 +393,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                           {stageCopy.habitTitles[idx] ?? act.title}
                         </span>
                       </div>
-                      <span className="text-[10px] font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full shrink-0">
+                      <span className="text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full shrink-0">
                         +{act.points} ⭐
                       </span>
                     </div>
@@ -427,6 +420,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               )}
 
               {/* Action Buttons */}
+              <Link href="/docs" className="flex min-h-11 items-center justify-center gap-2 rounded-xl text-sm font-bold text-indigo-700 hover:bg-indigo-50 dark:text-indigo-300 dark:hover:bg-indigo-950/30"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Xem hướng dẫn sử dụng' : 'View user guide'}</Link>
               <div className="flex items-center gap-3 pt-2">
                 <button
                   type="button"
@@ -447,7 +441,6 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
             </form>
           )}
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

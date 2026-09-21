@@ -9,7 +9,8 @@ import {
   FontSizeChoice,
 } from '@/lib/appearance-context';
 import { useTranslation } from '@/lib/i18n/context';
-import { useModalFocus } from '@/lib/use-modal-focus';
+import { ModalShell } from '@/components/ui/ModalShell';
+import { ThemeSelector } from '@/components/ThemeSelector';
 
 interface FontSettingsModalProps {
   isOpen: boolean;
@@ -17,15 +18,13 @@ interface FontSettingsModalProps {
 }
 
 export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
-  useModalFocus(isOpen, onClose);
   const { fontFamily, setFontFamily, fontSize, setFontSize } = useAppearance();
   const { t } = useTranslation();
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-      <div role="dialog" aria-modal="true" aria-label="Cài đặt chữ" className="relative w-full max-w-md max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
+    <ModalShell isOpen={isOpen} onClose={onClose} label="Cài đặt chữ">
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -36,7 +35,7 @@ export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
               <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 leading-tight">
                 {t.fontSettingsTitle}
               </h3>
-              <p className="text-[11px] text-slate-400 mt-0.5">{t.fontSettingsSubtitle}</p>
+              <p className="text-xs text-slate-500 mt-0.5">{t.fontSettingsSubtitle}</p>
             </div>
           </div>
           <button
@@ -50,6 +49,7 @@ export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
 
         {/* Scrollable Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 overscroll-contain">
+          <ThemeSelector />
           {/* 1. Font Size Selection */}
           <div>
             <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-1.5">
@@ -72,7 +72,7 @@ export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
                     }`}
                   >
                     <span className="text-xs font-bold">{item.percentage}</span>
-                    <span className="text-[10px] sm:text-[11px] opacity-80">{item.label.split(' ')[0]}</span>
+                    <span className="text-xs opacity-80">{item.label.split(' ')[0]}</span>
                   </button>
                 );
               })}
@@ -121,7 +121,7 @@ export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
 
           {/* Live Preview Box */}
           <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-indigo-50 dark:from-zinc-800 dark:to-zinc-800 border border-slate-200/80 dark:border-zinc-700 text-center">
-            <span className="text-[11px] font-bold text-slate-400 block mb-1">Xem trước mẫu chữ:</span>
+            <span className="text-xs font-bold text-slate-500 block mb-1">Xem trước mẫu chữ:</span>
             <p className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 leading-relaxed">
               🌟 Chào bé yêu! Hôm nay chúng mình cùng hoàn thành việc tốt và tích sao đổi quà nhé!
             </p>
@@ -138,7 +138,6 @@ export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
             {t.confirm} &amp; {t.close}
           </button>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

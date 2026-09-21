@@ -4,6 +4,8 @@ import React, { createContext, useContext, useEffect, useSyncExternalStore } fro
 
 export type FontFamilyChoice = 'rounded' | 'modern' | 'playful' | 'serif';
 export type FontSizeChoice = 'normal' | 'large' | 'xlarge';
+export type ThemeChoice = 'light' | 'dark' | 'system';
+export type ResolvedTheme = 'light' | 'dark';
 
 export interface FontOption {
   id: FontFamilyChoice;
@@ -51,13 +53,30 @@ interface AppearanceContextType {
   fontSize: FontSizeChoice;
   setFontSize: (size: FontSizeChoice) => void;
   currentFontOption: FontOption;
+  theme: ThemeChoice;
+  resolvedTheme: ResolvedTheme;
+  setTheme: (theme: ThemeChoice) => void;
 }
 
 const AppearanceContext = createContext<AppearanceContextType | undefined>(undefined);
 
 const FONT_FAMILY_STORAGE_KEY = 'kidhabit_font_family';
 const FONT_SIZE_STORAGE_KEY = 'kidhabit_font_size';
+export const THEME_STORAGE_KEY = 'kidhabit_theme';
 const APPEARANCE_CHANGE_EVENT = 'kidhabit-appearance-change';
+
+export function resolveThemeChoice(
+  saved: string | null,
+  prefersDark: boolean,
+): { choice: ThemeChoice; resolved: ResolvedTheme } {
+  const choice: ThemeChoice = saved === 'dark' || saved === 'system' || saved === 'light'
+    ? saved
+    : 'light';
+  return {
+    choice,
+    resolved: choice === 'system' ? (prefersDark ? 'dark' : 'light') : choice,
+  };
+}
 
 function isFontFamilyChoice(value: string | null): value is FontFamilyChoice {
   return value === 'rounded' || value === 'modern' || value === 'playful' || value === 'serif';
@@ -73,6 +92,18 @@ function subscribeToAppearance(onStoreChange: () => void) {
   return () => {
     window.removeEventListener('storage', onStoreChange);
     window.removeEventListener(APPEARANCE_CHANGE_EVENT, onStoreChange);
+  };
+}
+
+function subscribeToTheme(onStoreChange: () => void) {
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+  window.addEventListener('storage', onStoreChange);
+  window.addEventListener(APPEARANCE_CHANGE_EVENT, onStoreChange);
+  media.addEventListener('change', onStoreChange);
+  return () => {
+    window.removeEventListener('storage', onStoreChange);
+    window.removeEventListener(APPEARANCE_CHANGE_EVENT, onStoreChange);
+    media.removeEventListener('change', onStoreChange);
   };
 }
 
@@ -94,6 +125,18 @@ function getServerFontSizeSnapshot(): FontSizeChoice {
   return 'large';
 }
 
+function getThemeSnapshot(): `${ThemeChoice}:${ResolvedTheme}` {
+  const result = resolveThemeChoice(
+    localStorage.getItem(THEME_STORAGE_KEY),
+    window.matchMedia('(prefers-color-scheme: dark)').matches,
+  );
+  return `${result.choice}:${result.resolved}`;
+}
+
+function getServerThemeSnapshot(): `${ThemeChoice}:${ResolvedTheme}` {
+  return 'light:light';
+}
+
 export function AppearanceProvider({ children }: { children: React.ReactNode }) {
   const fontFamily = useSyncExternalStore(
     subscribeToAppearance,
@@ -105,6 +148,12 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
     getFontSizeSnapshot,
     getServerFontSizeSnapshot
   );
+  const themeSnapshot = useSyncExternalStore(
+    subscribeToTheme,
+    getThemeSnapshot,
+    getServerThemeSnapshot,
+  );
+  const [theme, resolvedTheme] = themeSnapshot.split(':') as [ThemeChoice, ResolvedTheme];
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -115,6 +164,11 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
     document.documentElement.style.setProperty('--app-font-scale', String(scaleObj.scale));
   }, [fontFamily, fontSize]);
 
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', resolvedTheme === 'dark');
+    document.documentElement.style.colorScheme = resolvedTheme;
+  }, [resolvedTheme]);
+
   const setFontFamily = (font: FontFamilyChoice) => {
     localStorage.setItem(FONT_FAMILY_STORAGE_KEY, font);
     window.dispatchEvent(new Event(APPEARANCE_CHANGE_EVENT));
@@ -122,6 +176,11 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
   const setFontSize = (size: FontSizeChoice) => {
     localStorage.setItem(FONT_SIZE_STORAGE_KEY, size);
+    window.dispatchEvent(new Event(APPEARANCE_CHANGE_EVENT));
+  };
+
+  const setTheme = (choice: ThemeChoice) => {
+    localStorage.setItem(THEME_STORAGE_KEY, choice);
     window.dispatchEvent(new Event(APPEARANCE_CHANGE_EVENT));
   };
 
@@ -135,6 +194,9 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
         fontSize,
         setFontSize,
         currentFontOption,
+        theme,
+        resolvedTheme,
+        setTheme,
       }}
     >
       {children}

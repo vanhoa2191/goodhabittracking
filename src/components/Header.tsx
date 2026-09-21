@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   Sparkles,
   Lock,
@@ -29,6 +30,8 @@ import { PinModal } from './PinModal';
 import { FontSettingsModal } from './FontSettingsModal';
 import { DeviceConnectModal } from './DeviceConnectModal';
 import { getHeaderCopy } from '@/lib/i18n/header-copy';
+import { BrandMark } from '@/components/BrandMark';
+import { ThemeSelector } from '@/components/ThemeSelector';
 
 interface HeaderProps {
   onToggleLanding?: () => void;
@@ -106,14 +109,12 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
             className={`${hasDashboardAccess && !isLanding ? 'hidden min-[430px]:flex' : 'flex'} items-center gap-2 sm:gap-3 shrink-0 ${onToggleLanding ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`}
             title={t.appName}
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-amber-400 to-indigo-600 flex items-center justify-center text-white shadow-xs">
-              <Sparkles className="w-5 h-5 fill-current" />
-            </div>
+            <BrandMark className="w-9 h-9 sm:w-10 sm:h-10 shrink-0" label={t.appName} />
             <div className="hidden xl:block">
               <span className="font-extrabold text-slate-800 dark:text-slate-100 text-base sm:text-lg tracking-tight block leading-tight">
                 {t.appName}
               </span>
-              <span className="text-[11px] text-slate-400 font-medium block">
+              <span className="text-xs text-slate-400 font-medium block">
                 {t.appSlogan}
               </span>
             </div>
@@ -131,7 +132,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                 <span className="font-semibold text-xs sm:text-sm text-slate-700 dark:text-slate-200 max-w-[65px] sm:max-w-[130px] truncate">
                   {activeChild?.name}
                 </span>
-                <span className="hidden md:inline-flex items-center text-[11px] font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full">
+                <span className="hidden md:inline-flex items-center text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full">
                   ⭐ {activeChild?.points || 0}
                 </span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -142,7 +143,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                 <>
                   <div className="fixed inset-0 z-10" onClick={() => setIsProfileMenuOpen(false)} />
                   <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-56 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-slate-100 dark:border-zinc-800 p-2 z-20 animate-fade-in">
-                    <div className="text-[11px] font-semibold text-slate-400 px-3 py-1 uppercase tracking-wider">
+                    <div className="text-xs font-semibold text-slate-400 px-3 py-1 uppercase tracking-wider">
                       {t.switchProfile}
                     </div>
                     {profiles.map((p) => (
@@ -162,7 +163,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                           <span className="text-2xl">{p.avatar}</span>
                           <div>
                             <div className="text-sm font-medium truncate">{p.name}</div>
-                            <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
+                            <div className="text-xs text-slate-400 flex items-center gap-1.5">
                               <span>⭐ {p.points}</span>
                               <span>•</span>
                               <span>{t.levelPrefix} {p.level}</span>
@@ -180,10 +181,14 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
 
           {/* Right Action Controls */}
           <div className="flex items-center gap-1 sm:gap-2">
+            <Link href="/docs" className="hidden min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-zinc-800 lg:flex"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Tài liệu' : 'Docs'}</Link>
+            <div className="hidden 2xl:block">
+              <ThemeSelector compact />
+            </div>
             {/* Desktop Only: Storage Status (Only when logged in) */}
             {hasDashboardAccess && (
               <div
-                className={`hidden 2xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border ${
+                className={`hidden 2xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${
                   storageMode === 'cloud' && cloudSyncActive
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800'
                     : storageMode === 'cloud'
@@ -204,7 +209,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
               title={t.fontSettingsTitle}
             >
               <Type className="w-4 h-4" />
-              <span className="text-[11px]">Aa</span>
+              <span className="text-xs">Aa</span>
             </button>
 
             {/* Desktop Only: Sound Toggle (xl:flex) */}
@@ -298,7 +303,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                 ) : (
                   <UserIcon className="w-3.5 h-3.5 text-indigo-600" />
                 )}
-                <span className="hidden xl:inline max-w-[80px] truncate text-[11px]">
+                <span className="hidden xl:inline max-w-[80px] truncate text-xs">
                   {currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]}
                 </span>
                 <button
@@ -386,13 +391,13 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                   <>
                     <Unlock className="w-3.5 h-3.5 shrink-0" />
                     <span className="hidden sm:inline whitespace-nowrap">{t.parentMode}</span>
-                    <span className="sm:hidden whitespace-nowrap text-[11px]">{t.parentShort}</span>
+                    <span className="sm:hidden whitespace-nowrap text-xs">{t.parentShort}</span>
                   </>
                 ) : (
                   <>
                     <Lock className="w-3.5 h-3.5 shrink-0" />
                     <span className="hidden sm:inline whitespace-nowrap">{t.parentMode}</span>
-                    <span className="sm:hidden whitespace-nowrap text-[11px]">{t.parentShort}</span>
+                    <span className="sm:hidden whitespace-nowrap text-xs">{t.parentShort}</span>
                   </>
                 )}
               </button>
@@ -405,7 +410,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
               >
                 <Smartphone className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" />
                 <span className="hidden sm:inline whitespace-nowrap">{copy.childCodeButton}</span>
-                <span className="sm:hidden whitespace-nowrap text-[11px]">{copy.childCodeShort}</span>
+                <span className="sm:hidden whitespace-nowrap text-xs">{copy.childCodeShort}</span>
               </button>
             )}
 
@@ -413,6 +418,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
             <div className="relative 2xl:hidden shrink-0">
               <button
                 type="button"
+                data-testid="more-menu"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="min-w-[38px] min-h-[38px] p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all flex items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 border border-slate-200/80 dark:border-zinc-800"
                 aria-label={t.moreMenu}
@@ -506,7 +512,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
 
                     {/* Language Selection Grid (all 9 languages) */}
                     <div>
-                      <div className="text-[11px] font-bold text-slate-400 mb-1.5">
+                      <div className="text-xs font-bold text-slate-400 mb-1.5">
                         {t.language} ({currentLang.label})
                       </div>
                       <div className="grid grid-cols-3 gap-1.5">
@@ -523,11 +529,15 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                             }`}
                           >
                             <span>{lang.flag}</span>
-                            <span className="text-[10px] font-semibold">{lang.code.toUpperCase()}</span>
+                            <span className="text-xs font-semibold">{lang.code.toUpperCase()}</span>
                           </button>
                         ))}
                       </div>
                     </div>
+
+                    <ThemeSelector />
+
+                    <Link href="/docs" onClick={() => setIsMobileMenuOpen(false)} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-indigo-50 px-3 text-sm font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>
 
                     {/* Quick Tools: Font Settings & Sound */}
                     <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100 dark:border-zinc-800">
@@ -617,7 +627,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
 
                     {/* Storage Mode Notice (Only when logged in) */}
                     {hasDashboardAccess && (
-                      <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between text-[11px] text-slate-500">
+                      <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between text-xs text-slate-500">
                         <span className="flex items-center gap-1">
                           <Database className="w-3 h-3 text-indigo-500" />
                           <span>{storageMode === 'cloud' ? (cloudSyncActive ? t.storageCloudConnected : 'Cloud') : t.storageLocalPrivate}</span>

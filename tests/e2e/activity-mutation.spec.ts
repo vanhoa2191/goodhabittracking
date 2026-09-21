@@ -32,3 +32,27 @@ test('a failed cloud habit save keeps the form open and does not change the visi
   );
   await expect(page.getByRole('heading', { name: 'Thói quen không được lưu' })).toHaveCount(0);
 });
+
+test('a failed cloud completion restores the task and removes success feedback', async ({ page }) => {
+  // Given
+  await page.goto('/');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
+  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await page.getByRole('tab', { name: 'Cài đặt' }).click();
+  await page.getByRole('button', { name: /Lưu và đồng bộ đám mây/ }).click();
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  const taskCard = page
+    .getByRole('heading', { name: 'Nhan thí: Tươi cười chào buổi sáng' })
+    .locator('xpath=ancestor::*[@data-task-card][1]');
+  const wasComplete = await taskCard.getAttribute('data-complete');
+
+  // When
+  await taskCard.getByRole('button', { name: /Nhiệm vụ|Đã xong/ }).click();
+
+  // Then
+  await expect(taskCard).toHaveAttribute('data-complete', wasComplete ?? 'false');
+  await expect(taskCard.getByRole('alert')).toContainText('thử lại');
+  await expect(taskCard.getByTestId('point-burst')).toHaveCount(0);
+});

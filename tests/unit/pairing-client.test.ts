@@ -4,6 +4,8 @@ import {
   createPairingChallenge,
   disconnectChildDevice,
   loadChildSession,
+  readPairingCredential,
+  rotatePairingCredential,
 } from '@/lib/store/pairing-client';
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -38,11 +40,56 @@ const childSession = {
 
 describe('pairing client', () => {
   it('returns only a validated challenge code', async () => {
-    const validRequest = vi.fn(async () => jsonResponse({ code: 'ABCD-1234' }));
+    const validRequest = vi.fn(async () => jsonResponse({
+      childId: 'child-1',
+      code: 'ABCD-2345',
+      qrPayload: 'https://kid.example/?pair=token-value',
+      rotatedAt: '2026-09-21T12:00:00.000Z',
+    }));
     const invalidRequest = vi.fn(async () => jsonResponse({ code: 1234 }));
 
-    await expect(createPairingChallenge('child-1', validRequest)).resolves.toBe('ABCD-1234');
+    await expect(createPairingChallenge('child-1', validRequest)).resolves.toBe('ABCD-2345');
     await expect(createPairingChallenge('child-1', invalidRequest)).resolves.toBeNull();
+  });
+
+  it('parses the stable credential contract for parent management', async () => {
+    // Given
+    const credential = {
+      childId: 'child-1',
+      code: 'ABCD-2345',
+      qrPayload: 'https://kid.example/?pair=token-value',
+      rotatedAt: '2026-09-21T12:00:00.000Z',
+    };
+    const request = vi.fn(async () => jsonResponse(credential));
+
+    // When
+    const result = await readPairingCredential('child-1', request);
+
+    // Then
+    expect(result).toEqual(credential);
+    expect(request).toHaveBeenCalledWith('/api/pairing/credentials', expect.objectContaining({
+      method: 'POST',
+    }));
+  });
+
+  it('uses the dedicated rotation boundary', async () => {
+    // Given
+    const credential = {
+      childId: 'child-1',
+      code: 'WXYZ-6789',
+      qrPayload: 'https://kid.example/?pair=rotated-token',
+      rotatedAt: '2026-09-21T12:05:00.000Z',
+    };
+    const request = vi.fn(async () => jsonResponse(credential));
+
+    // When
+    const result = await rotatePairingCredential('child-1', request);
+
+    // Then
+    expect(result).toEqual(credential);
+    expect(request).toHaveBeenCalledWith('/api/pairing/credentials/rotate', expect.objectContaining({
+      method: 'POST',
+    }));
   });
 
   it('stops after a rejected exchange and preserves the server message', async () => {
@@ -71,6 +118,21 @@ describe('pairing client', () => {
       },
     } });
     expect(request).toHaveBeenNthCalledWith(2, '/api/child/session', { cache: 'no-store' });
+  });
+
+  it('exchanges a scanned token without treating it as a manual code', async () => {
+    // Given
+    const request = vi.fn()
+      .mockResolvedValueOnce(jsonResponse({ success: true }))
+      .mockResolvedValueOnce(jsonResponse(childSession));
+
+    // When
+    await connectChildDevice({ token: 'qr-token-with-at-least-thirty-two-characters' }, request);
+
+    // Then
+    expect(request).toHaveBeenNthCalledWith(1, '/api/pairing/exchange', expect.objectContaining({
+      body: JSON.stringify({ token: 'qr-token-with-at-least-thirty-two-characters' }),
+    }));
   });
 
   it('rejects malformed session data instead of hydrating partial state', async () => {

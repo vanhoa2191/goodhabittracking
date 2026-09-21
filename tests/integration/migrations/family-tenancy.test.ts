@@ -56,6 +56,30 @@ const childDeviceCommandsRollback = readFileSync(
   resolve('supabase/rollbacks/202609210002_child_device_commands.rollback.sql'),
   'utf8'
 );
+const persistentPairingMigration = readFileSync(
+  resolve('supabase/migrations/202609210003_persistent_pairing_credentials.sql'),
+  'utf8'
+);
+const persistentPairingRollback = readFileSync(
+  resolve('supabase/rollbacks/202609210003_persistent_pairing_credentials.rollback.sql'),
+  'utf8'
+);
+const habitInstructionsMigration = readFileSync(
+  resolve('supabase/migrations/202609210004_habit_instructions.sql'),
+  'utf8'
+);
+const habitInstructionsRollback = readFileSync(
+  resolve('supabase/rollbacks/202609210004_habit_instructions.rollback.sql'),
+  'utf8'
+);
+const customerAdminMigration = readFileSync(
+  resolve('supabase/migrations/202609210005_customer_admin.sql'),
+  'utf8'
+);
+const customerAdminRollback = readFileSync(
+  resolve('supabase/rollbacks/202609210005_customer_admin.rollback.sql'),
+  'utf8'
+);
 const socialRollback = readFileSync(
   resolve('supabase/rollbacks/202609200002_authoritative_social.rollback.sql'),
   'utf8'
@@ -76,6 +100,12 @@ describe('family tenancy migration', () => {
     await expect(parse(serverTableRlsMigration)).resolves.toBeDefined();
     await expect(parse(childDeviceCommandsMigration)).resolves.toBeDefined();
     await expect(parse(childDeviceCommandsRollback)).resolves.toBeDefined();
+    await expect(parse(persistentPairingMigration)).resolves.toBeDefined();
+    await expect(parse(persistentPairingRollback)).resolves.toBeDefined();
+    await expect(parse(habitInstructionsMigration)).resolves.toBeDefined();
+    await expect(parse(habitInstructionsRollback)).resolves.toBeDefined();
+    await expect(parse(customerAdminMigration)).resolves.toBeDefined();
+    await expect(parse(customerAdminRollback)).resolves.toBeDefined();
     await expect(parse(socialRollback)).resolves.toBeDefined();
   });
 
@@ -90,10 +120,25 @@ describe('family tenancy migration', () => {
       '202609200002_authoritative_social.sql',
       '202609210001_force_server_table_rls.sql',
       '202609210002_child_device_commands.sql',
+      '202609210003_persistent_pairing_credentials.sql',
+      '202609210004_habit_instructions.sql',
+      '202609210005_customer_admin.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
       migrationNames.map((name) => `\\ir migrations/${name}`)
+    );
+  });
+
+  it('keeps customer care notes and tags server-admin only', () => {
+    expect(customerAdminMigration).toContain(
+      'revoke select, insert, update on public.parent_profiles from authenticated'
+    );
+    expect(customerAdminMigration).toContain(
+      'grant update (display_name, email, phone, marketing_consent, updated_at)'
+    );
+    expect(customerAdminMigration).not.toContain(
+      'grant update (customer_tags, admin_notes)'
     );
   });
 
@@ -177,6 +222,30 @@ describe('family tenancy migration', () => {
       'grant execute on function public.complete_child_habit_command(text, uuid, date, uuid) to anon, authenticated'
     );
     expect(childDeviceCommandsRollback).not.toMatch(/drop\s+table/i);
+  });
+
+  it('rotates hash-only persistent credentials without revoking child sessions', () => {
+    expect(persistentPairingMigration).toContain('create table public.pairing_credentials');
+    expect(persistentPairingMigration).toContain('verifier_hash bytea not null');
+    expect(persistentPairingMigration).toContain('token_hash bytea not null unique');
+    expect(persistentPairingMigration).toContain('create or replace function public.rotate_pairing_credential');
+    expect(persistentPairingMigration).toContain('create or replace function public.exchange_pairing_credential');
+    const rotationFunction = persistentPairingMigration.slice(
+      persistentPairingMigration.indexOf('create or replace function public.rotate_pairing_credential'),
+      persistentPairingMigration.indexOf('create or replace function public.exchange_pairing_credential'),
+    );
+    expect(rotationFunction).not.toMatch(/update\s+public\.device_sessions/i);
+    expect(rotationFunction).not.toMatch(/delete\s+from\s+public\.device_sessions/i);
+    expect(persistentPairingMigration).not.toMatch(/\btoken\s+text\b/i);
+    expect(persistentPairingRollback).not.toMatch(/drop\s+table/i);
+  });
+
+  it('adds optional task instructions to storage and child sessions', () => {
+    expect(habitInstructionsMigration).toContain(
+      'add column if not exists instructions text'
+    );
+    expect(habitInstructionsMigration).toContain("'instructions', activity.instructions");
+    expect(habitInstructionsRollback).not.toMatch(/drop\s+table/i);
   });
 
   it('removes anonymous ownership bypasses and public table access', () => {

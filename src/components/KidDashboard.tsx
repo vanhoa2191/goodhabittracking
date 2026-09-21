@@ -33,6 +33,7 @@ import { LeaderboardSection } from './LeaderboardSection';
 import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
 import { localizeDemoActivity, localizeDemoReward } from '@/lib/i18n/demo-content-copy';
 import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
+import { TaskDetailsModal } from './TaskDetailsModal';
 
 export function KidDashboard() {
   const {
@@ -57,6 +58,23 @@ export function KidDashboard() {
   const [selectedTimerActivity, setSelectedTimerActivity] = useState<HabitActivity | null>(null);
   const [wishlistRewardId, setWishlistRewardId] = useState<string | null>(null);
   const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<HabitActivity | null>(null);
+  const [completionError, setCompletionError] = useState<string | null>(null);
+  const [pointBurstId, setPointBurstId] = useState<string | null>(null);
+  const [completionStatusId, setCompletionStatusId] = useState<string | null>(null);
+
+  const completeTask = async (activity: HabitActivity, date: string) => {
+    setCompletionError(null);
+    const saved = await toggleActivity(activity.id, date);
+    if (!saved) {
+      setCompletionError(activity.id);
+      setPointBurstId(null);
+      return;
+    }
+    setCompletionStatusId(activity.id);
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPointBurstId(activity.id);
+    window.setTimeout(() => setPointBurstId((id) => id === activity.id ? null : id), 1200);
+  };
 
   if (!activeChild) {
     return (
@@ -162,7 +180,7 @@ export function KidDashboard() {
                   <Palette className="w-5 h-5 text-white drop-shadow" />
                 </span>
               </button>
-              <div className="absolute -bottom-2 -right-1 bg-amber-400 text-slate-900 font-extrabold text-[11px] px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1 border-2 border-white pointer-events-none">
+              <div className="absolute -bottom-2 -right-1 bg-amber-400 text-slate-900 font-extrabold text-xs px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1 border-2 border-white pointer-events-none">
                 <Flame className="w-3 h-3 fill-current text-orange-600" />
                 {activeChild.streak} {t.streakDays}
               </div>
@@ -202,7 +220,7 @@ export function KidDashboard() {
                 <Star className="w-5 h-5 fill-current" />
               </div>
               <div className="text-2xl font-black">{activeChild.points}</div>
-              <div className="text-[11px] font-semibold text-white/80 uppercase tracking-wide">
+              <div className="text-xs font-semibold text-white/80 uppercase tracking-wide">
                 {t.stars}
               </div>
             </div>
@@ -212,7 +230,7 @@ export function KidDashboard() {
                 <Award className="w-5 h-5" />
               </div>
               <div className="text-2xl font-black">{unlockedBadgeIds.size}</div>
-              <div className="text-[11px] font-semibold text-white/80 uppercase tracking-wide">
+              <div className="text-xs font-semibold text-white/80 uppercase tracking-wide">
                 {t.myBadges}
               </div>
             </div>
@@ -338,7 +356,7 @@ export function KidDashboard() {
                     <h3 className="font-extrabold text-sm text-purple-900 dark:text-purple-200">
                       {copy.infantStage}
                     </h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-200 text-purple-800 dark:bg-purple-800 dark:text-purple-200">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-200 text-purple-800 dark:bg-purple-800 dark:text-purple-200">
                       {copy.infantTag}
                     </span>
                   </div>
@@ -402,6 +420,8 @@ export function KidDashboard() {
                       return (
                         <div
                           key={act.id}
+                          data-task-card
+                          data-complete={isDone ? 'true' : 'false'}
                           className={`relative group rounded-2xl p-4 transition-all duration-200 border ${
                             isDone
                               ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200/80 dark:border-emerald-900/40 opacity-80'
@@ -411,11 +431,12 @@ export function KidDashboard() {
                           }`}
                         >
                           <div className="flex items-start justify-between gap-3">
-                            <div className="flex items-start gap-3 flex-1 min-w-0">
-                              <span className="text-3xl shrink-0 select-none">{act.icon}</span>
-                              <div className="min-w-0">
+                            <div className="flex min-w-0 flex-1 flex-col">
+                              <button type="button" onClick={() => setSelectedTask(act)} aria-label={`${language === 'vi' ? 'Xem chi tiết' : 'View details'}: ${act.title}`} className="flex w-full items-start gap-3 text-left rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+                                <span className="text-3xl shrink-0 select-none">{act.icon}</span>
+                                <div className="min-w-0">
                                 <h4
-                                  className={`font-bold text-sm sm:text-base leading-snug truncate ${
+                                  className={`font-bold text-sm sm:text-base leading-snug ${
                                     isDone
                                       ? 'line-through text-slate-400 dark:text-slate-500'
                                       : 'text-slate-800 dark:text-slate-100'
@@ -424,15 +445,17 @@ export function KidDashboard() {
                                   {act.title}
                                 </h4>
                                 {act.description && (
-                                  <p className="text-xs text-slate-400 truncate mt-0.5">
+                                  <p className="text-sm text-slate-500 mt-1 whitespace-normal">
                                     {act.description}
                                   </p>
                                 )}
+                                </div>
+                              </button>
 
-                                <div className="flex items-center gap-2 mt-2 flex-wrap">
+                              <div className="ml-12 flex items-center gap-2 mt-2 flex-wrap">
                                   {/* Parent Role (Thân Giáo) Tag */}
                                   {act.isParentRole && (
-                                    <span className="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
+                                    <span className="inline-flex items-center gap-1 text-xs font-extrabold px-2 py-0.5 rounded-md bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
                                       <Heart className="w-3 h-3 fill-current text-rose-500" />
                                       {copy.parentRole}
                                     </span>
@@ -440,20 +463,20 @@ export function KidDashboard() {
 
                                   {/* 7 Bo Thi Tag */}
                                   {act.boThi7Key && (
-                                    <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300">
+                                    <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300">
                                       🎁 {act.boThi7Key}
                                     </span>
                                   )}
 
                                   {/* 16 Portraits Tag */}
                                   {act.portrait16Key && (
-                                    <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300">
+                                    <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300">
                                       ✨ {act.portrait16Key}
                                     </span>
                                   )}
 
                                   {/* Points tag */}
-                                  <span className="inline-flex items-center gap-1 text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400">
+                                  <span className="inline-flex items-center gap-1 text-xs font-extrabold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400">
                                     <Star className="w-3 h-3 fill-current" />
                                     +{act.points}
                                   </span>
@@ -461,8 +484,12 @@ export function KidDashboard() {
                                   {/* Timer button if configured */}
                                   {act.durationMinutes && act.durationMinutes > 0 && (
                                     <button
-                                      onClick={() => setSelectedTimerActivity(act)}
-                                      className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                      type="button"
+                                      onClick={(event) => {
+                                        event.stopPropagation();
+                                        setSelectedTimerActivity(act);
+                                      }}
+                                      className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                                     >
                                       <Clock className="w-3 h-3" />
                                       {act.durationMinutes}m {t.timerStart}
@@ -471,18 +498,18 @@ export function KidDashboard() {
 
                                   {/* Requires approval indicator */}
                                   {act.requiresApproval && (
-                                    <span className="inline-flex items-center gap-1 text-[10px] font-medium text-slate-400">
+                                    <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-400">
                                       <Hourglass className="w-3 h-3" />
                                       {t.needApproval}
                                     </span>
                                   )}
-                                </div>
                               </div>
                             </div>
 
                             {/* Action Checkbox Button with Claymorphic Feel & Haptic Feedback */}
                             <button
-                              onClick={() => {
+                              onClick={(event) => {
+                                event.stopPropagation();
                                 if (typeof window !== 'undefined' && 'vibrate' in navigator) {
                                   try {
                                     navigator.vibrate?.(25);
@@ -490,7 +517,7 @@ export function KidDashboard() {
                                     // ignore if unsupported
                                   }
                                 }
-                                toggleActivity(act.id, dateStr);
+                                void completeTask(act, dateStr);
                               }}
                               className={`shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-90 hover:scale-105 border-2 shadow-xs hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                                 isDone
@@ -499,6 +526,7 @@ export function KidDashboard() {
                                   ? 'bg-amber-400 border-amber-500 text-white shadow-amber-200 dark:shadow-none'
                                   : 'bg-slate-50 dark:bg-zinc-800/90 border-slate-200 dark:border-zinc-700 text-slate-400 hover:text-indigo-600 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/50'
                               }`}
+                              aria-label={isDone ? (language === 'vi' ? 'Đã xong' : 'Completed') : (language === 'vi' ? 'Nhiệm vụ' : 'Task')}
                               title={isDone ? t.tickDone : t.tasks}
                             >
                               {isDone ? (
@@ -509,7 +537,10 @@ export function KidDashboard() {
                                 <Circle className="w-6 h-6 stroke-[2.5]" />
                               )}
                             </button>
+                            {pointBurstId === act.id && <span data-testid="point-burst" className="pointer-events-none absolute right-3 top-0 -translate-y-1/2 rounded-full bg-amber-400 px-2 py-1 text-xs font-black text-slate-900 motion-safe:animate-bounce">+{act.points} ⭐</span>}
                           </div>
+                          {completionStatusId === act.id && <span role="status" className="sr-only">{language === 'vi' ? 'Hoàn thành' : 'Completed'}</span>}
+                          {completionError === act.id && <p role="alert" className="mt-3 text-sm font-bold text-rose-600">{language === 'vi' ? 'Chưa lưu được. Con thử lại nhé.' : 'Could not save. Please try again.'}</p>}
                         </div>
                       );
                     })}
@@ -531,7 +562,7 @@ export function KidDashboard() {
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{wishlistReward.icon}</span>
                   <div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-pink-500">
+                    <span className="text-xs font-bold uppercase tracking-wider text-pink-500">
                       {t.myWishlist}
                     </span>
                     <h4 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">
@@ -641,7 +672,7 @@ export function KidDashboard() {
                           </span>
                         </div>
                         <span
-                          className={`font-bold px-2.5 py-1 rounded-full text-[11px] ${
+                          className={`font-bold px-2.5 py-1 rounded-full text-xs ${
                             red.status === 'delivered'
                               ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400'
                               : red.status === 'approved'
@@ -701,7 +732,7 @@ export function KidDashboard() {
                       {badgeName}
                     </h4>
                     {isUnlocked && (
-                      <span className="text-[10px] font-black text-amber-600 bg-amber-100 dark:bg-amber-950/50 px-2 py-0.5 rounded-full">
+                      <span className="text-xs font-black text-amber-600 bg-amber-100 dark:bg-amber-950/50 px-2 py-0.5 rounded-full">
                         ✓ {t.approved}
                       </span>
                     )}
@@ -728,6 +759,7 @@ export function KidDashboard() {
           }
         }}
       />
+      <TaskDetailsModal activity={selectedTask} onClose={() => setSelectedTask(null)} />
 
       {/* Child Mascot / Avatar Picker Modal */}
       {activeChild && (

@@ -890,7 +890,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                     {t.levelPrefix} 3
                   </span>
                 </div>
-                <div className="text-[11px] text-slate-400 flex items-center gap-2 mt-0.5">
+                <div className="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
                   <span>🔥 {uiCopy.streak(7)}</span>
                   <span>•</span>
                   <span className="text-amber-600 font-bold">⭐ 145 sao</span>
@@ -917,7 +917,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                   <span>🌅</span>
                   <span>{t.morning}</span>
                 </span>
-                <span className="text-[10px] font-black text-amber-600 bg-amber-100 dark:bg-amber-950 px-2 py-0.5 rounded-full">
+                <span className="text-xs font-black text-amber-600 bg-amber-100 dark:bg-amber-950 px-2 py-0.5 rounded-full">
                   {uiCopy.doneCount(2, 2)}
                 </span>
               </div>
@@ -927,14 +927,14 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                     <span className="text-base">🛏️</span>
                     <span className="font-semibold line-through text-slate-400">{uiCopy.makeBed}</span>
                   </div>
-                  <span className="text-[11px] font-bold text-emerald-600">✓ +5 ⭐</span>
+                  <span className="text-xs font-bold text-emerald-600">✓ +5 ⭐</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="text-base">🪥</span>
                     <span className="font-semibold line-through text-slate-400">{uiCopy.brushTeeth}</span>
                   </div>
-                  <span className="text-[11px] font-bold text-emerald-600">✓ +10 ⭐</span>
+                  <span className="text-xs font-bold text-emerald-600">✓ +10 ⭐</span>
                 </div>
               </div>
             </div>
@@ -946,7 +946,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                   <span>☀️</span>
                   <span>{t.afternoon}</span>
                 </span>
-                <span className="text-[10px] font-black text-indigo-600 bg-indigo-100 dark:bg-indigo-950 px-2 py-0.5 rounded-full">
+                <span className="text-xs font-black text-indigo-600 bg-indigo-100 dark:bg-indigo-950 px-2 py-0.5 rounded-full">
                   {uiCopy.taskCount(1, 2)}
                 </span>
               </div>
@@ -956,14 +956,14 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                     <span className="text-base">🎒</span>
                     <span className="font-semibold line-through text-slate-400">{uiCopy.packBag}</span>
                   </div>
-                  <span className="text-[11px] font-bold text-emerald-600">✓ +5 ⭐</span>
+                  <span className="text-xs font-bold text-emerald-600">✓ +5 ⭐</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-indigo-200 dark:border-indigo-800/60 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="text-base">📚</span>
                     <span className="font-bold text-indigo-700 dark:text-indigo-300">{uiCopy.readBooks}</span>
                   </div>
-                  <span className="text-[11px] font-black text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 rounded-md">
+                  <span className="text-xs font-black text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 rounded-md">
                     +15 ⭐
                   </span>
                 </div>
@@ -977,7 +977,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                   <span>🎁</span>
                   <span>{t.rewards}</span>
                 </span>
-                <span className="text-[10px] font-black text-pink-600 bg-pink-100 dark:bg-pink-950 px-2 py-0.5 rounded-full">
+                <span className="text-xs font-black text-pink-600 bg-pink-100 dark:bg-pink-950 px-2 py-0.5 rounded-full">
                   {uiCopy.rewardStore}
                 </span>
               </div>
@@ -987,14 +987,14 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                     <span className="text-base">🎬</span>
                     <span className="font-semibold">{uiCopy.weekendMovie}</span>
                   </div>
-                  <span className="text-[11px] font-bold text-amber-600">50 ⭐</span>
+                  <span className="text-xs font-bold text-amber-600">50 ⭐</span>
                 </div>
                 <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="text-base">🍦</span>
                     <span className="font-semibold">{uiCopy.iceCream}</span>
                   </div>
-                  <span className="text-[11px] font-bold text-amber-600">30 ⭐</span>
+                  <span className="text-xs font-bold text-amber-600">30 ⭐</span>
                 </div>
               </div>
             </div>
@@ -1135,7 +1135,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-extrabold border ${currentPillar.badgeBg}`}>
+                      <span className={`px-2.5 py-0.5 rounded-full text-xs font-extrabold border ${currentPillar.badgeBg}`}>
                         {cBadge}
                       </span>
                       <span className="text-xs text-slate-400 font-semibold">{uiCopy.pillar(activePillarIndex + 1)}</span>
@@ -1170,7 +1170,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                     <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
                     <span>{t.habitTemplates}</span>
                   </div>
-                  <span className="text-[11px] text-indigo-600 dark:text-indigo-400 font-bold">
+                  <span className="text-xs text-indigo-600 dark:text-indigo-400 font-bold">
                     {uiCopy.habitCount(currentPillar.examples.length)}
                   </span>
                 </div>
@@ -1198,7 +1198,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                             <div className="w-9 h-9 rounded-xl bg-white dark:bg-zinc-700 flex items-center justify-center text-xl shadow-xs">
                               {item.icon}
                             </div>
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 flex items-center gap-1">
+                            <span className="px-2 py-0.5 rounded-full text-xs font-black bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 flex items-center gap-1">
                               <span>+{item.points}</span>
                               <span>⭐</span>
                             </span>
@@ -1207,18 +1207,18 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                           <h4 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100 leading-snug">
                             {exTitle}
                           </h4>
-                          <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                          <p className="text-xs sm:text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                             {exDesc}
                           </p>
                         </div>
 
-                        <div className="pt-2 border-t border-slate-200/50 dark:border-zinc-700/50 flex items-center justify-between text-[11px] text-slate-400 font-medium">
+                        <div className="pt-2 border-t border-slate-200/50 dark:border-zinc-700/50 flex items-center justify-between text-xs text-slate-400 font-medium">
                           <span className="flex items-center gap-1">
                             <Clock className="w-3 h-3 text-slate-400" />
                             <span>{timeTag}</span>
                           </span>
                           {item.duration ? (
-                            <span className="px-1.5 py-0.5 rounded bg-slate-200/60 dark:bg-zinc-700 font-bold text-[10px] text-slate-600 dark:text-slate-300">
+                            <span className="px-1.5 py-0.5 rounded bg-slate-200/60 dark:bg-zinc-700 font-bold text-xs text-slate-600 dark:text-slate-300">
                               ⏱️ {item.duration}p
                             </span>
                           ) : null}
@@ -1306,7 +1306,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                         <div className="flex items-center justify-between">
                           <span className="text-2xl">{plan.icon}</span>
                           <span
-                            className="px-2.5 py-0.5 rounded-full text-[10px] font-black text-slate-950"
+                            className="px-2.5 py-0.5 rounded-full text-xs font-black text-slate-950"
                             style={{ backgroundColor: plan.themeColor }}
                           >
                           {getJourneyPeriodLabel(language, plan.type, plan.id)}
@@ -1315,12 +1315,12 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                         <h4 className="font-extrabold text-sm text-slate-900 dark:text-white leading-tight [word-break:auto-phrase]">
                           {pTitle.replace(/^.*?[：:]\s*/, '')}
                         </h4>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                           {pDesc}
                         </p>
                       </div>
 
-                      <div className="pt-2 border-t border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-[11px]">
+                      <div className="pt-2 border-t border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
                         <span className="text-slate-400 font-semibold">{roadmapCopy.habitsPerDay(plan.habits.length)}</span>
                         <span className="text-indigo-600 dark:text-indigo-400 font-bold flex items-center gap-0.5">
                           <span>{roadmapCopy.details}</span>
@@ -1389,19 +1389,19 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                             <div className="space-y-1.5">
                               <div className="flex items-center justify-between">
                                 <span className="text-2xl">{habit.icon}</span>
-                                <span className="text-[10px] font-black text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-full">
+                                <span className="text-xs font-black text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-full">
                                   +{habit.points} ⭐
                                 </span>
                               </div>
                               <h5 className="font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-100 leading-snug">
                                 {localizedHabit.title}
                               </h5>
-                              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                                 {localizedHabit.description}
                               </p>
                             </div>
 
-                            <div className="pt-2 border-t border-slate-200/50 dark:border-zinc-700/40 flex items-center justify-between text-[10px] text-slate-400 font-semibold">
+                            <div className="pt-2 border-t border-slate-200/50 dark:border-zinc-700/40 flex items-center justify-between text-xs text-slate-400 font-semibold">
                               <span>⏱️ {timeTag}</span>
                               {habit.durationMinutes ? (
                                 <span>{roadmapCopy.minutes(habit.durationMinutes)}</span>
@@ -1452,7 +1452,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                       </div>
 
                       <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-zinc-800">
-                        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                        <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                           {roadmapCopy.focusTasks}
                         </div>
                         {plan.habits.slice(0, 4).map((h, hIdx) => {
@@ -1468,7 +1468,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                                 {localizedHabit.title}
                               </span>
                             </div>
-                            <span className="text-[10px] font-bold text-amber-600 shrink-0">
+                            <span className="text-xs font-bold text-amber-600 shrink-0">
                               +{h.points}⭐
                             </span>
                           </div>

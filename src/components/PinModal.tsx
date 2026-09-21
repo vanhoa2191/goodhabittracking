@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Lock, X, Delete } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
-import { useModalFocus } from '@/lib/use-modal-focus';
+import { ModalShell } from '@/components/ui/ModalShell';
 
 interface PinModalProps {
   isOpen: boolean;
@@ -13,7 +13,6 @@ interface PinModalProps {
 }
 
 export function PinModal({ isOpen, onClose, onSuccess, verifyPin }: PinModalProps) {
-  useModalFocus(isOpen, onClose);
   const { t } = useTranslation();
   const [pin, setPin] = useState('');
   const [error, setError] = useState(false);
@@ -47,15 +46,7 @@ export function PinModal({ isOpen, onClose, onSuccess, verifyPin }: PinModalProp
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={t.enterPin}
-        className={`relative w-full max-w-sm max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden ${
-          error ? 'animate-shake' : ''
-        }`}
-      >
+    <ModalShell isOpen={isOpen} onClose={onClose} label={t.enterPin} maxWidth="sm" mobileSheet={false} className={error ? 'animate-shake' : ''}>
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -66,7 +57,7 @@ export function PinModal({ isOpen, onClose, onSuccess, verifyPin }: PinModalProp
               <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm sm:text-base leading-tight">
                 {t.enterPin}
               </h3>
-              <p className="text-[11px] text-slate-400 mt-0.5">{t.pinPlaceholder}</p>
+              <p className="text-xs text-slate-400 mt-0.5">{t.pinPlaceholder}</p>
             </div>
           </div>
           <button
@@ -132,7 +123,6 @@ export function PinModal({ isOpen, onClose, onSuccess, verifyPin }: PinModalProp
             </button>
           </div>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

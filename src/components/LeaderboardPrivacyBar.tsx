@@ -30,11 +30,11 @@ export function LeaderboardPrivacyBar({ child, onUpdate }: Props) {
         <span className="text-2xl">{child.avatar}</span>
         <div>
           <div className="font-medium text-slate-600 dark:text-slate-300">{t.currentDisplayMode}{' '}<strong className="text-sm font-extrabold text-indigo-600 dark:text-indigo-400">{child.showRealNameOnLeaderboard ? child.name : (child.nickname || child.name)}</strong></div>
-          <div className="mt-0.5 text-[11px] text-slate-400">{child.showRealNameOnLeaderboard ? `👤 ${t.showRealNameOption} (${t.realName}: ${child.name})` : `🛡️ ${t.showNicknameOnly}`}</div>
+          <div className="mt-0.5 text-xs text-slate-400">{child.showRealNameOnLeaderboard ? `👤 ${t.showRealNameOption} (${t.realName}: ${child.name})` : `🛡️ ${t.showNicknameOnly}`}</div>
         </div>
       </div>
       <button type="button" onClick={() => void togglePrivacy()} disabled={isSaving} aria-busy={isSaving} className={`flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl px-3.5 text-xs font-bold shadow-2xs transition-all disabled:cursor-wait disabled:opacity-60 ${child.showRealNameOnLeaderboard ? 'border border-indigo-200 bg-white text-indigo-700 hover:bg-indigo-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-indigo-300' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}>{child.showRealNameOnLeaderboard ? `🛡️ ${t.showNicknameOnly.split('(')[0].trim()}` : `👤 ${t.showRealNameOption}`}</button>
     </div>
-    {error && <p role="alert" className="text-[11px] font-semibold text-rose-600 dark:text-rose-400">{error}</p>}
+    {error && <p role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">{error}</p>}
   </div>;
 }

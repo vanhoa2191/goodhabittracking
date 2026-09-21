@@ -42,7 +42,7 @@ type Dependencies = {
 };
 
 type HabitActions = {
-  readonly toggleActivity: (activityId: string, date: string) => Promise<void>;
+  readonly toggleActivity: (activityId: string, date: string) => Promise<boolean>;
   readonly approveLog: (logId: string) => void;
   readonly rejectLog: (logId: string) => void;
 };
@@ -76,16 +76,16 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
   return {
     toggleActivity: async (activityId, date) => {
       const childId = dependencies.state.activeChildId;
-      if (!childId) return;
+      if (!childId) return false;
       const activity = dependencies.state.activities.find((candidate) => candidate.id === activityId);
-      if (!activity) return;
+      if (!activity) return false;
       const existingLog = dependencies.state.logs.find((log) =>
         log.activityId === activityId && log.childId === childId && log.date === date,
       );
 
       if (dependencies.storageMode === 'cloud') {
         const user = cloudUser();
-        if (!user && !dependencies.cloud.isFamilyConnected) return;
+        if (!user && !dependencies.cloud.isFamilyConnected) return false;
         try {
           if (!user) {
             if (existingLog) {
@@ -98,7 +98,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
                 commandId: crypto.randomUUID(),
               });
             }
-            await dependencies.cloud.refreshChildSession();
+            if (!await dependencies.cloud.refreshChildSession()) return false;
           } else if (existingLog) {
             await requestDomainCommand({ type: 'undoHabit', logId: existingLog.id });
           } else {
@@ -110,16 +110,17 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
               commandId: crypto.randomUUID(),
             });
           }
-          if (user) await dependencies.cloud.syncCloudFamily(user);
+          if (user && !await dependencies.cloud.syncCloudFamily(user)) return false;
           sounds.playTaskComplete();
+          return true;
         } catch (error: unknown) {
           dependencies.cloud.setCloudSyncActive(false);
           console.error(
             'Saving habit completion failed:',
             error instanceof Error ? error.message : 'unknown',
           );
+          return false;
         }
-        return;
       }
 
       const completedAt = new Date().toISOString();
@@ -141,19 +142,14 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
 
       if (transition.kind === 'undone' || transition.kind === 'pending_approval') {
         sounds.playClick();
-        return;
+        return true;
       }
       sounds.playTaskComplete();
-      confetti({
-        particleCount: 50,
-        spread: 60,
-        origin: { y: 0.7 },
-        colors: ['#3b82f6', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'],
-      });
       if (transition.unlockedBadgeCount > 0) {
         sounds.playLevelUp();
         confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
       }
+      return true;
     },
     approveLog: (logId) => {
       if (dependencies.storageMode === 'cloud') {

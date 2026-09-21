@@ -19,11 +19,17 @@ const recurrenceTypeSchema = z.enum(['daily', 'weekdays', 'weekends', 'custom'])
 const timeOfDaySchema = z.enum(['morning', 'afternoon', 'evening', 'anytime']);
 const ageStageSchema = z.enum(['0-3', '3-6', '6-12', '12-18', 'all']);
 const givingKeySchema = z.enum(['nhan', 'nhan_mat', 'ngon', 'tam', 'phong', 'than', 'toa']);
+const optionalInstructionsSchema = z.string()
+  .trim()
+  .max(2000)
+  .transform((value) => value || undefined)
+  .optional();
 
 const mutableActivityFieldsSchema = z.object({
   childId: z.string().uuid().nullable(),
   title: z.string().trim().min(1).max(160),
   description: z.string().trim().max(1000).optional(),
+  instructions: optionalInstructionsSchema,
   icon: z.string().min(1).max(16),
   category: activityCategorySchema,
   points: z.number().int().min(0).max(10000),

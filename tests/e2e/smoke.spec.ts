@@ -17,11 +17,20 @@ test('demo entry opens the child dashboard without reloading', async ({ page }) 
   await expect(page.getByText(/Chế độ khám phá:/)).toBeVisible();
 });
 
-test('demo child can complete and undo a daily task', async ({ page }) => {
+test('demo child can inspect and independently complete a full task card', async ({ page }) => {
   const domainMutationRequests: string[] = [];
+  const invalidButtonErrors: string[] = [];
   page.on('request', (request) => {
     if (request.url().includes('/api/domain/commands')) {
       domainMutationRequests.push(request.method());
+    }
+  });
+  page.on('console', (message) => {
+    if (
+      message.type() === 'error'
+      && (message.text().includes('cannot be a descendant') || message.text().includes('cannot contain a nested'))
+    ) {
+      invalidButtonErrors.push(message.text());
     }
   });
 
@@ -30,15 +39,44 @@ test('demo child can complete and undo a daily task', async ({ page }) => {
 
   const taskCard = page
     .getByRole('heading', { name: 'Nhan thí: Tươi cười chào buổi sáng' })
-    .locator('xpath=ancestor::div[contains(@class,"relative group")]');
+    .locator('xpath=ancestor::*[@data-task-card][1]');
   const taskToggle = taskCard.getByRole('button', { name: 'Nhiệm vụ' });
 
+  await expect(taskCard.getByText('Nở nụ cười rạng rỡ và khoanh tay chào ông bà, bố mẹ khi ngủ dậy'))
+    .toBeVisible();
+  await taskCard.getByRole('button', { name: /Xem chi tiết/ }).click();
+  const details = page.getByRole('dialog', { name: 'Chi tiết nhiệm vụ' });
+  await expect(details.getByText('Nở nụ cười rạng rỡ và khoanh tay chào ông bà, bố mẹ khi ngủ dậy'))
+    .toBeVisible();
+  await details.getByRole('button', { name: 'Đóng' }).click();
+
   await taskToggle.click();
+  await expect(page.getByRole('dialog', { name: 'Chi tiết nhiệm vụ' })).toHaveCount(0);
+  await expect(taskCard).toHaveAttribute('data-complete', 'true');
+  await expect(taskCard.getByTestId('point-burst')).toContainText('+10');
   await expect(page.getByText('1/6 việc hoàn thành (17%)')).toBeVisible();
 
   await taskCard.getByRole('button', { name: 'Đã xong' }).click();
   await expect(page.getByText('0/6 việc hoàn thành (0%)')).toBeVisible();
   expect(domainMutationRequests).toEqual([]);
+  expect(invalidButtonErrors, 'task cards must not nest interactive buttons').toEqual([]);
+});
+
+test('reduced motion uses static task completion feedback', async ({ page }) => {
+  // Given
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  const taskCard = page
+    .getByRole('heading', { name: 'Nhan thí: Tươi cười chào buổi sáng' })
+    .locator('xpath=ancestor::*[@data-task-card][1]');
+
+  // When
+  await taskCard.getByRole('button', { name: 'Nhiệm vụ' }).click();
+
+  // Then
+  await expect(taskCard.getByRole('status')).toContainText('Hoàn thành');
+  await expect(taskCard.getByTestId('point-burst')).toHaveCount(0);
 });
 
 test('demo reward request can be delivered by a parent in one visible action', async ({ page }) => {
@@ -80,8 +118,7 @@ test('payment status failures are shown instead of reported as pending', async (
           description: 'KIDHABIT 123456',
           accountNumber: '0123456789',
           accountName: 'KIDHABIT HERO',
-          bin: '970422',
-          bankName: 'Ngân hàng nhận thanh toán qua PayOS',
+          bankBin: '970422',
           qrCode: '000201010212',
           vietQrUrl: 'data:image/png;base64,cXJjb2Rl',
           checkoutUrl: 'https://pay.payos.vn/web/123456',
@@ -110,6 +147,51 @@ test('payment status failures are shown instead of reported as pending', async (
 
   await expect(checkoutDialog.getByRole('alert')).toHaveText('Could not read payment status.');
   await expect(checkoutDialog.getByText('Đang kiểm tra...')).toHaveCount(0);
+});
+
+test('payment checkout shows the exact provider response and secure fallback', async ({ page }) => {
+  // Given
+  await page.route('**/api/payment/create', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        success: true,
+        payment: {
+          orderCode: 654321,
+          amount: 399000,
+          description: 'KIDHABIT 654321',
+          accountNumber: '113366668888',
+          accountName: 'CONG TY KIDHABIT',
+          bankBin: '970422',
+          qrCode: '00020101021238570010A000000727',
+          vietQrUrl: 'data:image/png;base64,cXJjb2Rl',
+          checkoutUrl: 'https://pay.payos.vn/web/provider-link-654321',
+          planId: 'yearly',
+        },
+      }),
+    });
+  });
+
+  // When
+  await page.goto('/');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByRole('button', { name: 'PRO' }).click();
+  const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
+  await pricingDialog.getByRole('button', { name: 'Chọn Gói Năm (399k - Tiết kiệm 35%)' }).click();
+  const checkoutDialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
+
+  // Then
+  await expect(checkoutDialog.getByText('CONG TY KIDHABIT')).toBeVisible();
+  await expect(checkoutDialog.getByText('113366668888')).toBeVisible();
+  await expect(checkoutDialog.getByText('970422')).toBeVisible();
+  await expect(checkoutDialog.getByText('399.000 VNĐ')).toBeVisible();
+  await expect(checkoutDialog.getByText('KIDHABIT 654321')).toBeVisible();
+  await expect(checkoutDialog.getByRole('img', { name: 'VietQR PayOS' })).toBeVisible();
+  await expect(checkoutDialog.getByRole('link', { name: 'Mở trang thanh toán bảo mật' }))
+    .toHaveAttribute('href', 'https://pay.payos.vn/web/provider-link-654321');
+  await expect(checkoutDialog.getByText('Ngân hàng nhận thanh toán qua PayOS')).toHaveCount(0);
+  await expect(checkoutDialog.getByText('MBBank')).toHaveCount(0);
 });
 
 test('a family can complete private local-only setup without demo contamination', async ({ page }) => {
@@ -180,7 +262,7 @@ test('demo parent can unlock and navigate every management section', async ({ pa
     ['Quản lý việc', /Nuôi dưỡng tâm thái/],
     ['Lộ trình Tuần \/ Tháng', /Các lộ trình theo tuần và tháng/],
     ['Đổi quà', /Kho quà của bé/],
-    ['Hồ sơ các con', /Mã ghép nối một lần cho từng bé/],
+    ['Hồ sơ các con', /Mã kết nối cố định cho từng bé/],
     ['Thống kê', /Báo cáo thói quen/],
     ['Cài đặt', /Cài đặt phụ huynh/],
   ] as const;
@@ -266,8 +348,8 @@ test('English demo keeps child and parent secondary screens in English', async (
   await expect(guide.getByText('1/5 complete')).toBeVisible();
   await guide.getByRole('button', { name: 'Close guide' }).last().click();
   await page.getByRole('tab', { name: 'Children' }).click();
-  await expect(page.getByText('One-time pairing code for each child')).toBeVisible();
-  await expect(page.getByText('Expires in 10 minutes • One use only')).toBeVisible();
+  await expect(page.getByText('A persistent connection code for each child')).toBeVisible();
+  await expect(page.getByText('Stays active until a parent refreshes it')).toBeVisible();
   await expect(page.getByText('Please sign in with Google to securely sync your family data to the Cloud.')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Create new child codes' })).toBeDisabled();
   await expect(page.getByRole('button', { name: 'Copy code' }).first()).toBeDisabled();

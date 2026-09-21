@@ -119,7 +119,7 @@ interface AppStoreContextType {
   deleteActivity: (id: string) => Promise<boolean>;
 
   logs: ActivityLog[];
-  toggleActivity: (activityId: string, dateStr: string) => Promise<void>;
+  toggleActivity: (activityId: string, dateStr: string) => Promise<boolean>;
   approveLog: (logId: string) => void;
   rejectLog: (logId: string) => void;
 

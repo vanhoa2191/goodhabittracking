@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useState } from 'react';
-import { X, Smartphone, Sparkles, CheckCircle2, ArrowRight, ShieldCheck, AlertCircle, RefreshCw } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { X, Smartphone, Sparkles, CheckCircle2, ArrowRight, ShieldCheck, AlertCircle, RefreshCw, Camera } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAppStore } from '@/lib/store';
 import { sounds } from '@/lib/sound';
-import { useModalFocus } from '@/lib/use-modal-focus';
 import { useTranslation } from '@/lib/i18n/context';
 import { getDeviceConnectCopy } from '@/lib/i18n/device-connect-copy';
+import { ChildQrScanner } from './ChildQrScanner';
+import { ModalShell } from './ui/ModalShell';
 
 interface DeviceConnectModalProps {
   isOpen: boolean;
@@ -16,7 +17,6 @@ interface DeviceConnectModalProps {
 }
 
 export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnectModalProps) {
-  useModalFocus(isOpen, onClose);
   const { language } = useTranslation();
   const copy = getDeviceConnectCopy(language);
   const {
@@ -30,8 +30,54 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
   const [connectedFamilyName, setConnectedFamilyName] = useState<string | null>(null);
   const [connectedChild, setConnectedChild] = useState<{ name?: string; avatar?: string } | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
+  const [deepLinkToken, setDeepLinkToken] = useState<string | null>(null);
+  const handledDeepLink = useRef<string | null>(null);
 
-  if (!isOpen) return null;
+  const closeModal = useCallback(() => {
+    setShowScanner(false);
+    if (typeof window !== 'undefined' && window.location.search.includes('pair=')) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('pair');
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      setDeepLinkToken(null);
+    }
+    onClose();
+  }, [onClose]);
+
+  const connectCredential = useCallback(async (credential: string) => {
+    setLoading(true);
+    setErrorMsg(null);
+    const result = await connectWithFamilyCode(credential);
+    setLoading(false);
+
+    if (result.success) {
+      setIsSuccess(true);
+      setShowScanner(false);
+      setConnectedFamilyName(result.familyName || copy.defaultFamily);
+      if (result.childName || result.childAvatar) {
+        setConnectedChild({ name: result.childName, avatar: result.childAvatar });
+      }
+      sounds.playFanfare();
+      confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+      onSuccess?.();
+      return;
+    }
+    setErrorMsg(result.message || copy.errorFallback);
+  }, [connectWithFamilyCode, copy.defaultFamily, copy.errorFallback, onSuccess]);
+
+  useEffect(() => {
+    const token = new URL(window.location.href).searchParams.get('pair');
+    if (token && token.length >= 32) queueMicrotask(() => setDeepLinkToken(token));
+  }, []);
+
+  useEffect(() => {
+    if (!deepLinkToken || handledDeepLink.current === deepLinkToken) return;
+    handledDeepLink.current = deepLinkToken;
+    void connectCredential(`pair-token:${deepLinkToken}`);
+  }, [connectCredential, deepLinkToken]);
+
+  if (!isOpen && !deepLinkToken) return null;
 
   const handleConnect = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -40,45 +86,16 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
       return;
     }
 
-    setLoading(true);
-    setErrorMsg(null);
-
-    const result = await connectWithFamilyCode(enteredCode);
-
-    setLoading(false);
-
-    if (result.success) {
-      setIsSuccess(true);
-      setConnectedFamilyName(result.familyName || copy.defaultFamily);
-      if (result.childName || result.childAvatar) {
-        setConnectedChild({ name: result.childName, avatar: result.childAvatar });
-      }
-      sounds.playFanfare();
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-      if (onSuccess) onSuccess();
-    } else {
-      setErrorMsg(result.message || copy.errorFallback);
-    }
+    await connectCredential(enteredCode);
   };
 
   const handleFinish = () => {
     setMode('kid');
-    onClose();
+    closeModal();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-fade-in">
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={copy.dialogLabel}
-        className="relative w-full max-w-md max-h-[90dvh] flex flex-col bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl overflow-hidden my-auto border border-slate-100 dark:border-zinc-800"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ModalShell isOpen={isOpen || Boolean(deepLinkToken)} onClose={closeModal} label={copy.dialogLabel} maxWidth="md">
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between bg-gradient-to-r from-indigo-50/50 to-purple-50/50 dark:from-zinc-900 dark:to-zinc-900">
           <div className="flex items-center gap-2.5">
@@ -89,13 +106,13 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
               <h3 className="font-extrabold text-base sm:text-lg text-slate-800 dark:text-slate-100">
                 {isSuccess ? copy.successTitle : copy.title}
               </h3>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 {isSuccess ? copy.successSubtitle : copy.subtitle}
               </p>
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={closeModal}
             aria-label={copy.close}
             className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors"
           >
@@ -114,8 +131,23 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
                 </p>
               </div>
 
-              {/* Form Input */}
-              <form onSubmit={handleConnect} className="space-y-3">
+              {showScanner ? (
+                <ChildQrScanner
+                  onCancel={() => setShowScanner(false)}
+                  onDetected={(token) => void connectCredential(`pair-token:${token}`)}
+                />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setShowScanner(true)}
+                  className="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 text-sm font-extrabold text-white shadow-lg shadow-indigo-200 transition-colors hover:bg-indigo-700 dark:shadow-none"
+                >
+                  <Camera className="h-5 w-5" />
+                  {copy.scanQr}
+                </button>
+              )}
+
+              <form onSubmit={handleConnect} className="space-y-3" aria-label={copy.useManualCode}>
                 <div>
                   <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider text-center">
                     {copy.codeLabel}
@@ -129,10 +161,10 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
                     }}
                     placeholder="VD: 7KPM-4XQ2"
                     maxLength={12}
-                    autoFocus
+                    autoFocus={!showScanner}
                     className="w-full text-center text-xl sm:text-2xl font-mono font-black tracking-widest py-3.5 px-4 rounded-2xl bg-slate-50 dark:bg-zinc-800 border-2 border-indigo-200 dark:border-indigo-800 focus:border-indigo-600 focus:bg-white dark:focus:bg-zinc-900 focus:outline-none transition-all placeholder:text-slate-300 dark:placeholder:text-zinc-600 text-slate-800 dark:text-slate-100 uppercase"
                   />
-                  <p className="text-[11px] text-center text-slate-400 mt-1">
+                  <p className="text-xs text-center text-slate-400 mt-1">
                     {copy.codeHelp}
                   </p>
                 </div>
@@ -169,7 +201,7 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
                   <ShieldCheck className="w-4 h-4 text-emerald-600" />
                   <span>{copy.guide}</span>
                 </div>
-                <ul className="text-slate-500 dark:text-slate-400 space-y-1 pl-4 list-disc text-[11px]">
+                <ul className="text-slate-500 dark:text-slate-400 space-y-1 pl-4 list-disc text-xs">
                   {copy.guideSteps.map((step) => <li key={step}>{step}</li>)}
                 </ul>
               </div>
@@ -210,13 +242,12 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
         <div className="shrink-0 p-3 sm:p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/50 dark:bg-zinc-900/50 flex items-center justify-end">
           <button
             type="button"
-            onClick={onClose}
+            onClick={closeModal}
             className="py-1.5 px-4 rounded-xl text-xs font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
           >
             {isSuccess ? copy.close : copy.later}
           </button>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

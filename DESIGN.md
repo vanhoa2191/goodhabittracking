@@ -6,6 +6,10 @@ This document codifies the visual system already present in the application. It 
 
 KidHabit Hero should feel warm, encouraging, safe, and energetic without becoming noisy. The signature is a rounded family dashboard that pairs indigo-to-purple guidance surfaces with amber rewards and emerald success states. Child-facing screens may be playful; parent controls remain calm, explicit, and trustworthy.
 
+### Brand mark
+
+The KidHabit Hero mark is a growing sprout inside a soft guiding star: indigo-to-purple for guidance, amber for progress and reward, and a white arc for the family journey. It is implemented as the reusable `BrandMark` primitive and as stable SVG assets in `public/`, so the identity remains crisp in the header, browser tab, bookmarks, and installed shortcuts. The mark is decorative when paired with the app name and exposes an accessible label when used alone.
+
 ## 2. Color
 
 The implementation uses Tailwind's semantic ramps rather than project-specific raw hex values. New UI must reuse these roles.
@@ -64,6 +68,13 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 - Disabled: native `disabled`, `cursor-not-allowed`, reduced opacity, no hover color change, and no press transform.
 - Accessibility: visible text or localized `aria-label`; global focus ring remains visible.
 
+### Brand mark
+
+- Structure: the shared `BrandMark` SVG primitive with a square, rounded silhouette.
+- Variants: compact header mark and standalone labelled mark; favicon assets use the same geometry without text.
+- States: static by default; no decorative animation is required for recognition.
+- Accessibility: `aria-hidden` when adjacent to the app name; labelled `role="img"` when standalone.
+
 ### Card and guidance panel
 
 - Structure: semantic content grouped in a rounded bordered surface.
@@ -115,4 +126,3 @@ Target WCAG 2.2 AA: 4.5:1 body-text contrast, 3:1 large-text and component contr
 |---|---|---|---|
 | Compact metadata uses 10-11px text | Existing child and parent cards | Existing dense visual language; global font scale and contrast improvements reduce current risk | Replace with a responsive 12px minimum during the next card-density pass |
 | Reusable primitives are still partly expressed as repeated Tailwind class sets | Existing dashboard components | Refactor is in progress and broad replacement would create visual churn | Consolidate only when a pattern is touched by domain extraction or appears three or more times |
-

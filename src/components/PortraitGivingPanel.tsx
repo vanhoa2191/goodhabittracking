@@ -8,7 +8,7 @@ export function PortraitGivingPanel({ guide }: Props) {
   return (
     <div className="space-y-5">
       <div className="space-y-1.5 rounded-3xl bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 p-4 text-white shadow-md">
-        <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider">{guide.ui.givingTitle}</span>
+        <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-black uppercase tracking-wider">{guide.ui.givingTitle}</span>
         <h3 className="text-base font-black sm:text-lg">{guide.ui.givingSubtitle}</h3>
         <p className="max-w-2xl text-xs leading-relaxed text-pink-100">{guide.ui.givingIntro}</p>
       </div>
@@ -21,7 +21,7 @@ export function PortraitGivingPanel({ guide }: Props) {
               <div>
                 <div className="flex items-center gap-2">
                   <h4 className="text-sm font-black text-slate-800 dark:text-slate-100">{giving.name}</h4>
-                  <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] font-bold text-pink-700 dark:bg-pink-950/60 dark:text-pink-300">{index + 1}/7</span>
+                  <span className="rounded-full bg-pink-100 px-2 py-0.5 text-xs font-bold text-pink-700 dark:bg-pink-950/60 dark:text-pink-300">{index + 1}/7</span>
                 </div>
                 <span className="text-xs font-semibold text-pink-600 dark:text-pink-400">{giving.subName}</span>
               </div>

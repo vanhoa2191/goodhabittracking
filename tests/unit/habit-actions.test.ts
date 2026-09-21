@@ -107,10 +107,14 @@ describe('habit actions', () => {
   beforeEach(() => vi.clearAllMocks());
 
   it('completes a local habit and awards points', async () => {
+    // Given
     const fixture = createState('local');
 
-    await fixture.actions.toggleActivity(activity.id, '2026-09-20');
+    // When
+    const saved = await fixture.actions.toggleActivity(activity.id, '2026-09-20');
 
+    // Then
+    expect(saved).toBe(true);
     expect(fixture.read().logs).toEqual([
       expect.objectContaining({ activityId: activity.id, status: 'completed', pointsAwarded: 20 }),
     ]);
@@ -119,23 +123,31 @@ describe('habit actions', () => {
   });
 
   it('never falls back to local state when cloud authentication is missing', async () => {
+    // Given
     const fixture = createState('cloud');
 
-    await fixture.actions.toggleActivity(activity.id, '2026-09-20');
+    // When
+    const saved = await fixture.actions.toggleActivity(activity.id, '2026-09-20');
     fixture.actions.approveLog('log-1');
     fixture.actions.rejectLog('log-1');
 
+    // Then
+    expect(saved).toBe(false);
     expect(fixture.read()).toEqual({ profiles: [child], logs: [], childBadges: [] });
     expect(requestDomainCommand).not.toHaveBeenCalled();
     expect(fixture.setCloudSyncActive).toHaveBeenCalledWith(false);
   });
 
   it('persists a cloud completion before authoritative sync without optimistic local state', async () => {
+    // Given
     requestDomainCommand.mockResolvedValue({ status: 'completed' });
     const fixture = createState('cloud', user);
 
-    await fixture.actions.toggleActivity(activity.id, '2026-09-20');
+    // When
+    const saved = await fixture.actions.toggleActivity(activity.id, '2026-09-20');
 
+    // Then
+    expect(saved).toBe(true);
     expect(requestDomainCommand).toHaveBeenCalledWith(expect.objectContaining({
       type: 'completeHabit',
       activityId: activity.id,
@@ -147,11 +159,15 @@ describe('habit actions', () => {
   });
 
   it('uses the scoped child command and refreshes the paired session', async () => {
+    // Given
     requestChildDomainCommand.mockResolvedValue({ status: 'pending_approval' });
     const fixture = createState('cloud', null, true);
 
-    await fixture.actions.toggleActivity(activity.id, '2026-09-20');
+    // When
+    const saved = await fixture.actions.toggleActivity(activity.id, '2026-09-20');
 
+    // Then
+    expect(saved).toBe(true);
     expect(requestChildDomainCommand).toHaveBeenCalledWith(expect.objectContaining({
       type: 'completeHabit',
       activityId: activity.id,
@@ -159,6 +175,20 @@ describe('habit actions', () => {
     }));
     expect(fixture.refreshChildSession).toHaveBeenCalledOnce();
     expect(requestDomainCommand).not.toHaveBeenCalled();
+  });
+
+  it('reports a failed cloud completion so the card can roll back', async () => {
+    // Given
+    requestDomainCommand.mockRejectedValue(new Error('offline'));
+    const fixture = createState('cloud', user);
+
+    // When
+    const saved = await fixture.actions.toggleActivity(activity.id, '2026-09-20');
+
+    // Then
+    expect(saved).toBe(false);
+    expect(fixture.read().logs).toEqual([]);
+    expect(fixture.setCloudSyncActive).toHaveBeenCalledWith(false);
   });
 
   it('approves and rejects local pending logs through guarded transitions', () => {

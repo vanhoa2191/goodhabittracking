@@ -92,7 +92,7 @@ export function ChildDevicesPanel() {
                   <div className="text-xs font-bold text-slate-800 dark:text-slate-100">
                     {device.deviceLabel || copy.childDevice} · {child?.name || copy.childProfile}
                   </div>
-                  <div className="text-[11px] text-slate-500 mt-0.5">
+                  <div className="text-xs text-slate-500 mt-0.5">
                     {device.isActive ? copy.active : copy.deviceExpired}
                     {device.lastSeenAt ? ` · ${copy.deviceLastSeen} ${new Intl.DateTimeFormat(language, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(device.lastSeenAt))}` : ''}
                   </div>

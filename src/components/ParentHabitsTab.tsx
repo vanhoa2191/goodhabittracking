@@ -31,6 +31,7 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
     const saved = await createActivity({
       title: localized.title,
       description: localized.description || '',
+      instructions: localized.description || '',
       icon: template.icon,
       category: template.category,
       points: template.points,
@@ -93,7 +94,7 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
           </span>
           <div>
             <h4 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">{t.witSectionTitle}</h4>
-            <p className="text-[11px] text-slate-400">{copy.libraryIntro}</p>
+            <p className="text-xs text-slate-400">{copy.libraryIntro}</p>
           </div>
         </div>
 
@@ -121,9 +122,9 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
                 <div className="flex items-start gap-3">
                   <span className="text-3xl shrink-0 p-1.5 rounded-xl bg-white dark:bg-zinc-700 shadow-xs">{item.icon}</span>
                   <div className="min-w-0 flex-1">
-                    <h5 className="font-extrabold text-xs text-slate-800 dark:text-slate-100 truncate">{localized.title}</h5>
-                    {localized.description && <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-relaxed">{localized.description}</p>}
-                    <div className="flex items-center gap-2 mt-2 text-[10px] font-bold text-slate-400">
+                    <h5 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">{localized.title}</h5>
+                    {localized.description && <p className="text-xs text-slate-500 mt-1 leading-relaxed">{localized.description}</p>}
+                    <div className="flex items-center gap-2 mt-2 text-xs font-bold text-slate-400">
                       <span className="text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 rounded">+{item.points} ⭐</span>
                       {item.durationMinutes ? <span className="bg-slate-200 dark:bg-zinc-700 px-1.5 py-0.5 rounded">{item.durationMinutes} {copy.minutes}</span> : null}
                     </div>
@@ -148,9 +149,10 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
               <div className="flex items-start gap-3">
                 <span className="text-3xl p-2 rounded-2xl bg-slate-50 dark:bg-zinc-800/80">{activity.icon}</span>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 truncate">{localized.title}</h4>
-                  {localized.description && <p className="text-xs text-slate-400 mt-0.5 truncate">{localized.description}</p>}
-                  <div className="flex items-center gap-2 mt-2.5 flex-wrap text-[11px] font-semibold text-slate-500">
+                  <h4 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100">{localized.title}</h4>
+                  {localized.description && <p className="text-sm text-slate-500 mt-1">{localized.description}</p>}
+                  {localized.instructions && <p className="mt-2 whitespace-pre-wrap rounded-xl bg-slate-50 p-2 text-xs text-slate-600 dark:bg-zinc-800 dark:text-slate-300">{localized.instructions}</p>}
+                  <div className="flex items-center gap-2 mt-2.5 flex-wrap text-xs font-semibold text-slate-500">
                     <span className="text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full">+{activity.points} ⭐</span>
                     <span className="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-300 px-2 py-0.5 rounded-full font-bold">{categoryLabel}</span>
                     <span className="bg-slate-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full">{activity.recurrenceType === 'daily' ? t.daily : activity.recurrenceType === 'weekdays' ? t.weekdays : activity.recurrenceType === 'weekends' ? t.weekends : t.custom}</span>

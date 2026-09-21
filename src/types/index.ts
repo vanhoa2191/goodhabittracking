@@ -65,6 +65,7 @@ export interface HabitActivity {
   childId: string | null; // null = all children
   title: string;
   description?: string;
+  instructions?: string;
   icon: string;
   category: ActivityCategory;
   points: number;

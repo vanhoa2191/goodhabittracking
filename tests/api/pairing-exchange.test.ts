@@ -9,11 +9,11 @@ vi.mock('@/lib/supabase/server', () => ({
 
 import { POST } from '@/app/api/pairing/exchange/route';
 
-function request(code = '7KPM-4XQ2') {
+function request(credential: { readonly code: string } | { readonly token: string } = { code: '7KPM-4XQ2' }) {
   return new NextRequest('http://localhost/api/pairing/exchange', {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-forwarded-for': '203.0.113.10' },
-    body: JSON.stringify({ code, deviceLabel: 'Tablet của bé' }),
+    body: JSON.stringify({ ...credential, deviceLabel: 'Tablet của bé' }),
   });
 }
 
@@ -51,5 +51,24 @@ describe('pairing exchange API', () => {
     expect(cookie).toContain('kidhabit_child_session=');
     expect(cookie.toLowerCase()).toContain('httponly');
     expect(JSON.stringify(body)).not.toMatch(/token|pin|profiles|familyId/i);
+  });
+
+  it('exchanges a QR token through the persistent credential boundary', async () => {
+    // Given
+    rpc.mockResolvedValue({
+      data: [{ exchange_status: 'ok', session_expires_at: '2026-10-19T00:00:00.000Z' }],
+      error: null,
+    });
+
+    // When
+    const response = await POST(request({ token: 'qr-token-with-at-least-thirty-two-characters' }));
+
+    // Then
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('exchange_pairing_credential', expect.objectContaining({
+      pairing_token_hash: expect.stringMatching(/^[a-f0-9]{64}$/),
+      manual_code_id: null,
+      manual_verifier_hash: null,
+    }));
   });
 });

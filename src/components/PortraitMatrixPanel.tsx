@@ -39,7 +39,7 @@ export function PortraitMatrixPanel({
             {guide.ui.chooseAge}
           </span>
           {activeChild && (
-            <span className="text-[11px] text-slate-400">
+            <span className="text-xs text-slate-400">
               {guide.ui.currentChild(activeChild.name, activeChild.age || 5)}
             </span>
           )}
@@ -67,7 +67,7 @@ export function PortraitMatrixPanel({
                     <span className="block text-xs font-black text-slate-800 dark:text-slate-100">
                       {onboarding.stageLabels[stage]}
                     </span>
-                    <span className="block max-w-[110px] truncate text-[10px] text-slate-400">
+                    <span className="block max-w-[110px] truncate text-xs text-slate-400">
                       {journey.title}
                     </span>
                   </div>
@@ -81,7 +81,7 @@ export function PortraitMatrixPanel({
       <div className={`space-y-2 rounded-3xl bg-gradient-to-r p-4 text-white shadow-md ${stageInfo.color}`}>
         <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
           <div className="space-y-1">
-            <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider">
+            <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-black uppercase tracking-wider">
               {stageLabel} &bull; {stageJourney.title}
             </span>
             <h3 className="text-base font-black sm:text-lg">{stageJourney.subtitle}</h3>
@@ -118,7 +118,7 @@ export function PortraitMatrixPanel({
                 <span className="rounded-xl bg-slate-50 p-1 text-2xl dark:bg-zinc-700">{item.icon}</span>
                 <div>
                   <span className="block text-xs font-extrabold text-slate-800 sm:text-sm dark:text-slate-100">{item.name}</span>
-                  <span className="block text-[10px] text-slate-400">{guide.ui.categories[item.category]}</span>
+                  <span className="block text-xs text-slate-400">{guide.ui.categories[item.category]}</span>
                 </div>
               </div>
               <div className="rounded-xl border border-slate-100 bg-slate-50 p-2.5 text-xs font-medium leading-relaxed text-slate-700 dark:border-zinc-800 dark:bg-zinc-900/60 dark:text-slate-200">

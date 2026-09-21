@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useCallback, useState } from 'react';
 import { Edit2, Plus, Trash2, X } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import type { Reward } from '@/types';
-import { useModalFocus } from '@/lib/use-modal-focus';
+import { ModalShell } from '@/components/ui/ModalShell';
 import { getParentSecondaryCopy } from '@/lib/i18n/parent-secondary-copy';
 import { localizeDemoReward } from '@/lib/i18n/demo-content-copy';
 import { getRewardMutationCopy } from '@/lib/i18n/reward-mutation-copy';
@@ -33,16 +32,6 @@ export function ParentRewardsTab() {
   const closeModal = useCallback(() => {
     if (!isSaving) setIsModalOpen(false);
   }, [isSaving]);
-  useModalFocus(isModalOpen, closeModal);
-
-  useEffect(() => {
-    if (!isModalOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isModalOpen]);
 
   const openRewardModal = (reward?: Reward) => {
     setMutationError('');
@@ -119,9 +108,7 @@ export function ParentRewardsTab() {
         </div>
       </div>
 
-      {isModalOpen && typeof document !== 'undefined' && createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-          <div role="dialog" aria-modal="true" aria-label={editingReward ? t.editRewardTitle : t.createRewardTitle} className="relative w-full max-w-sm max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
+      <ModalShell isOpen={isModalOpen} onClose={closeModal} label={editingReward ? t.editRewardTitle : t.createRewardTitle} maxWidth="sm">
             <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
               <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center gap-2"><span>🎁</span><span>{editingReward ? t.editRewardTitle : t.createRewardTitle}</span></h3>
               <button type="button" onClick={closeModal} disabled={isSaving} className="p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shrink-0 disabled:cursor-wait disabled:opacity-50" aria-label={t.close}><X className="w-5 h-5" /></button>
@@ -150,10 +137,7 @@ export function ParentRewardsTab() {
               <button type="button" onClick={() => void saveReward()} disabled={isSaving} aria-busy={isSaving} className="py-2.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all shadow-md active:scale-95 disabled:cursor-wait disabled:opacity-60">{isSaving ? mutationCopy.saving : t.save}</button>
               </div>
             </div>
-          </div>
-        </div>,
-        document.body,
-      )}
+      </ModalShell>
     </>
   );
 }

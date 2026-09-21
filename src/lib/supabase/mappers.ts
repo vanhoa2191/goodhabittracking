@@ -29,6 +29,7 @@ const habitActivityRowSchema = z.object({
   child_id: z.string().uuid().nullable(),
   title: z.string().min(1),
   description: z.string().nullable().optional(),
+  instructions: z.string().nullable().optional(),
   icon: z.string().min(1),
   category: z.enum([
     'wisdom',
@@ -92,6 +93,7 @@ export function mapHabitActivityRow(input: unknown): HabitActivity {
     childId: row.child_id,
     title: row.title,
     description: row.description ?? undefined,
+    instructions: row.instructions ?? undefined,
     icon: row.icon,
     category: row.category,
     points: row.points,

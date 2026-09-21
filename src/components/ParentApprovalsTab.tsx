@@ -72,7 +72,7 @@ export function ParentApprovalsTab() {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-extrabold text-sm text-slate-800 dark:text-slate-100">{activity?.title}</span>
-                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">{child?.name}</span>
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">{child?.name}</span>
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5">{copy.rewardCompleted(activity?.points ?? 0, new Intl.DateTimeFormat(language).format(new Date(`${log.date}T00:00:00`)))}</div>
                     </div>
@@ -107,7 +107,7 @@ export function ParentApprovalsTab() {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="font-extrabold text-sm text-slate-800 dark:text-slate-100">{reward?.title}</span>
-                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-pink-100 text-pink-700">{child?.name}</span>
+                        <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-pink-100 text-pink-700">{child?.name}</span>
                       </div>
                       <div className="text-xs text-slate-500 mt-0.5">{copy.redemptionRequested(redemption.pointsSpent, new Intl.DateTimeFormat(language, { hour: '2-digit', minute: '2-digit' }).format(new Date(redemption.requestedAt)))}</div>
                     </div>

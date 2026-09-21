@@ -11,7 +11,7 @@ export function PortraitModelingPanel({ checkedChecklist, guide, onToggleCheckli
   return (
     <div className="space-y-6">
       <div className="space-y-2 rounded-3xl bg-gradient-to-r from-amber-500 via-orange-500 to-indigo-600 p-5 text-white shadow-md">
-        <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider">{guide.ui.modelingTitle}</span>
+        <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-black uppercase tracking-wider">{guide.ui.modelingTitle}</span>
         <h3 className="text-base font-black sm:text-lg">{guide.ui.modelingQuote}</h3>
         <p className="max-w-2xl text-xs leading-relaxed text-amber-100">{guide.ui.modelingIntro}</p>
       </div>
@@ -25,7 +25,7 @@ export function PortraitModelingPanel({ checkedChecklist, guide, onToggleCheckli
           {guide.goldWords.map((item) => (
             <div key={item.word} className="space-y-1 rounded-2xl border border-slate-200/80 bg-slate-50 p-3.5 dark:border-zinc-700/60 dark:bg-zinc-800/60">
               <span className="block text-sm font-black text-indigo-600 dark:text-indigo-400">✨ {item.word}</span>
-              <p className="text-[11px] leading-relaxed text-slate-500 dark:text-slate-400">{item.meaning}</p>
+              <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">{item.meaning}</p>
             </div>
           ))}
         </div>
@@ -37,7 +37,7 @@ export function PortraitModelingPanel({ checkedChecklist, guide, onToggleCheckli
             <CheckCircle2 className="h-5 w-5 text-emerald-600" />
             <div>
               <h4 className="text-sm font-black text-slate-800 dark:text-slate-100">{guide.ui.checklistTitle}</h4>
-              <span className="text-[11px] text-slate-400">{guide.ui.checklistSubtitle}</span>
+              <span className="text-xs text-slate-400">{guide.ui.checklistSubtitle}</span>
             </div>
           </div>
           <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-black text-emerald-600 dark:bg-emerald-950/40">{guide.ui.checklistComplete(checkedChecklist.length)}</span>

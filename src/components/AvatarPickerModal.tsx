@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Sparkles, Palette, Check, X } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
-import { useModalFocus } from '@/lib/use-modal-focus';
+import { ModalShell } from '@/components/ui/ModalShell';
 import { getProfileMutationCopy } from '@/lib/i18n/profile-mutation-copy';
 
 export const AVATAR_OPTIONS = [
@@ -53,7 +53,6 @@ export function AvatarPickerModal({
   currentColor,
   onSave,
 }: AvatarPickerModalProps) {
-  useModalFocus(isOpen, onClose);
   const { t, language } = useTranslation();
   const copy = getProfileMutationCopy(language);
   const [selectedAvatar, setSelectedAvatar] = useState(currentAvatar);
@@ -76,8 +75,7 @@ export function AvatarPickerModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-      <div role="dialog" aria-modal="true" aria-label="Chọn hình đại diện" className="relative w-full max-w-md max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
+    <ModalShell isOpen={isOpen} onClose={onClose} label="Chọn hình đại diện">
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -91,7 +89,7 @@ export function AvatarPickerModal({
               <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 leading-tight">
                 {t.changeAvatar}
               </h3>
-              <p className="text-[11px] text-slate-400 font-medium mt-0.5">
+              <p className="text-xs text-slate-400 font-medium mt-0.5">
                 {t.chooseAvatarTip}
               </p>
             </div>
@@ -161,7 +159,7 @@ export function AvatarPickerModal({
                     >
                       {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                     </span>
-                    <span className="text-[11px] font-bold text-slate-700 dark:text-slate-200 truncate">
+                    <span className="text-xs font-bold text-slate-700 dark:text-slate-200 truncate">
                       {color.name}
                     </span>
                   </button>
@@ -195,7 +193,6 @@ export function AvatarPickerModal({
           </button>
           </div>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

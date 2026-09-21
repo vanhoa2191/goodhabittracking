@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Check, CheckCheck, Compass, X } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { MONTHLY_JOURNEY_PLANS, WEEKLY_JOURNEY_PLANS } from '@/lib/constants';
 import type { HabitActivity, JourneyPlan } from '@/types';
-import { useModalFocus } from '@/lib/use-modal-focus';
+import { ModalShell } from '@/components/ui/ModalShell';
 import { getJourneyPeriodLabel, journeyCopy } from '@/lib/i18n/journey-copy';
 import { getJourneyHabitText } from '@/lib/i18n/journey-content';
 import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
@@ -21,7 +21,7 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
   const [appliedNotice, setAppliedNotice] = useState('');
   const [mutationError, setMutationError] = useState('');
   const [isApplying, setIsApplying] = useState(false);
-  useModalFocus(Boolean(selectedPlan), () => setSelectedPlan(null));
+  const closeModal = useCallback(() => setSelectedPlan(null), []);
 
   const plans = journeyType === 'weekly' ? WEEKLY_JOURNEY_PLANS : MONTHLY_JOURNEY_PLANS;
 
@@ -84,13 +84,13 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
                 <div className="flex items-center gap-3 mb-3">
                   <span className="text-3xl p-2.5 rounded-2xl bg-slate-50 dark:bg-zinc-800/80 shadow-xs">{plan.icon}</span>
                   <div>
-                    <span className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full">{getJourneyPeriodLabel(language, plan.type, plan.id)}</span>
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full">{getJourneyPeriodLabel(language, plan.type, plan.id)}</span>
                     <h4 className="font-extrabold text-base text-slate-800 dark:text-slate-100 mt-1 [word-break:auto-phrase]">{plan.title[language] || plan.title.en || plan.title.vi}</h4>
                   </div>
                 </div>
                 <p className="text-xs text-slate-500 mb-4 leading-relaxed">{plan.description[language] || plan.description.en || plan.description.vi}</p>
                 <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-zinc-800/80">
-                  <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">{copy.includesHabits(plan.habits.length)}</span>
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block">{copy.includesHabits(plan.habits.length)}</span>
                   {plan.habits.map((habit, index) => {
                     const localizedHabit = getJourneyHabitText(plan, index, language);
                     return (
@@ -109,14 +109,13 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
       </div>
 
       {selectedPlan && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-          <div role="dialog" aria-modal="true" aria-label={t.applyJourney} className="relative w-full max-w-md max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
+        <ModalShell isOpen onClose={closeModal} label={t.applyJourney}>
             <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
               <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
                 <span className="text-2xl sm:text-3xl p-1.5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 shrink-0">{selectedPlan.icon}</span>
-                <div className="min-w-0 flex-1"><span className="text-[10px] font-extrabold text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full inline-block">{getJourneyPeriodLabel(language, selectedPlan.type, selectedPlan.id)}</span><h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 mt-0.5 truncate leading-tight [word-break:auto-phrase]">{selectedPlan.title[language] || selectedPlan.title.en || selectedPlan.title.vi}</h3></div>
+                <div className="min-w-0 flex-1"><span className="text-xs font-extrabold text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full inline-block">{getJourneyPeriodLabel(language, selectedPlan.type, selectedPlan.id)}</span><h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 mt-0.5 truncate leading-tight [word-break:auto-phrase]">{selectedPlan.title[language] || selectedPlan.title.en || selectedPlan.title.vi}</h3></div>
               </div>
-              <button type="button" onClick={() => setSelectedPlan(null)} className="p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shrink-0" aria-label={t.close}><X className="w-5 h-5" /></button>
+              <button type="button" onClick={closeModal} className="p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shrink-0" aria-label={t.close}><X className="w-5 h-5" /></button>
             </div>
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
               <p className="text-xs text-slate-500 leading-relaxed">{copy.applyQuestion(selectedPlan.habits.length)}</p>
@@ -131,11 +130,10 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
               {mutationError && <div role="alert" className="p-3 rounded-xl border border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300 text-xs font-bold text-center">{mutationError}</div>}
             </div>
             <div className="shrink-0 p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/70 flex items-center justify-end gap-2.5 pb-safe">
-              <button type="button" onClick={() => setSelectedPlan(null)} className="py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors">{t.cancel}</button>
+              <button type="button" onClick={closeModal} className="py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors">{t.cancel}</button>
               <button type="button" onClick={() => void applyPlan()} disabled={isApplying} aria-busy={isApplying} className="py-2.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-md flex items-center gap-1.5 active:scale-95 disabled:cursor-wait disabled:opacity-60"><Check className="w-4 h-4" />{copy.confirmApply}</button>
             </div>
-          </div>
-        </div>
+        </ModalShell>
       )}
     </>
   );

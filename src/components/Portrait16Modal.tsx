@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useModalFocus } from '@/lib/use-modal-focus';
+import { ModalShell } from '@/components/ui/ModalShell';
 import {
   X,
   BookOpen,
@@ -26,7 +26,6 @@ interface Portrait16ModalProps {
 }
 
 export function Portrait16Modal({ isOpen, onClose }: Portrait16ModalProps) {
-  useModalFocus(isOpen, onClose);
   const { activeChild } = useAppStore();
   const { language } = useTranslation();
   const guide = getPortraitGuideCopy(language);
@@ -60,14 +59,7 @@ export function Portrait16Modal({ isOpen, onClose }: Portrait16ModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/65 backdrop-blur-sm animate-fade-in overflow-y-auto">
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={guide.ui.dialogLabel}
-        className="relative w-full max-w-4xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 flex flex-col max-h-[92vh] overflow-hidden my-auto"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ModalShell isOpen={isOpen} onClose={onClose} label={guide.ui.dialogLabel} maxWidth="4xl">
         {/* Modal Header */}
         <div className="shrink-0 flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 sticky top-0 z-10">
           <div className="flex items-center gap-3">
@@ -79,7 +71,7 @@ export function Portrait16Modal({ isOpen, onClose }: Portrait16ModalProps) {
                 <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 tracking-tight">
                   {guide.ui.headerTitle}
                 </h2>
-                <span className="hidden sm:inline-flex text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+                <span className="hidden sm:inline-flex text-xs font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
                   {guide.ui.ageBadge}
                 </span>
               </div>
@@ -183,7 +175,6 @@ export function Portrait16Modal({ isOpen, onClose }: Portrait16ModalProps) {
             {guide.ui.close}
           </button>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

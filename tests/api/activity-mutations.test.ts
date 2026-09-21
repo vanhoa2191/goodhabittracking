@@ -21,6 +21,7 @@ const activity = {
   childId: null,
   title: 'Đọc sách',
   description: 'Đọc 15 phút',
+  instructions: 'Chọn một cuốn sách và đọc chậm 15 phút.',
   icon: '📚',
   category: 'study',
   points: 20,
@@ -97,6 +98,7 @@ describe('POST /api/domain/activities', () => {
       family_id: 'family-a',
       user_id: 'user-a',
       title: activity.title,
+      instructions: activity.instructions,
     }));
   });
 
@@ -132,15 +134,36 @@ describe('POST /api/domain/activities', () => {
     const updateResponse = await POST(request({
       type: 'update',
       activityId: activity.id,
-      updates: { title: 'Đọc sách cùng ba mẹ', points: 25 },
+      updates: {
+        title: 'Đọc sách cùng ba mẹ',
+        instructions: 'Cùng chọn sách, đặt hẹn giờ rồi đọc.',
+        points: 25,
+      },
     }));
 
     // Then
     expect(updateResponse.status).toBe(200);
-    expect(update).toHaveBeenCalledWith({ title: 'Đọc sách cùng ba mẹ', points: 25 });
+    expect(update).toHaveBeenCalledWith({
+      title: 'Đọc sách cùng ba mẹ',
+      instructions: 'Cùng chọn sách, đặt hẹn giờ rồi đọc.',
+      points: 25,
+    });
     expect(update.mock.results[0]?.value.eq).toHaveBeenCalledWith('family_id', 'family-a');
     expect(update.mock.results[0]?.value.eq.mock.results[0]?.value.eq)
       .toHaveBeenCalledWith('id', activity.id);
+  });
+
+  it('stores blank updated instructions as null so parents can clear guidance', async () => {
+    // Given / When
+    const response = await POST(request({
+      type: 'update',
+      activityId: activity.id,
+      updates: { instructions: '   ' },
+    }));
+
+    // Then
+    expect(response.status).toBe(200);
+    expect(update).toHaveBeenCalledWith({ instructions: null });
   });
 
   it('scopes delete mutations to the authenticated family', async () => {

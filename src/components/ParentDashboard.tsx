@@ -101,6 +101,7 @@ export function ParentDashboard() {
   const [habitForm, setHabitForm] = useState<{
     title: string;
     description: string;
+    instructions: string;
     icon: string;
     category: ActivityCategory;
     points: number;
@@ -113,6 +114,7 @@ export function ParentDashboard() {
   }>({
     title: '',
     description: '',
+    instructions: '',
     icon: '✨',
     category: 'nutrition',
     points: 15,
@@ -157,6 +159,7 @@ export function ParentDashboard() {
       setHabitForm({
         title: habit.title,
         description: habit.description || '',
+        instructions: habit.instructions || '',
         icon: habit.icon,
         category: habit.category,
         points: habit.points,
@@ -172,6 +175,7 @@ export function ParentDashboard() {
       setHabitForm({
         title: '',
         description: '',
+        instructions: '',
         icon: '✨',
         category: 'nutrition',
         points: 15,
@@ -297,7 +301,7 @@ export function ParentDashboard() {
           <div>
             <div className="flex items-center gap-2">
               <h2 className="font-black text-lg tracking-tight">{t.parentMode}</h2>
-              <span className="text-[10px] font-bold bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 px-2 py-0.5 rounded-full">
+              <span className="text-xs font-bold bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 px-2 py-0.5 rounded-full">
                 ADMIN
               </span>
             </div>
@@ -339,7 +343,7 @@ export function ParentDashboard() {
             {tab.icon}
             <span>{tab.label}</span>
             {tab.badge !== undefined && tab.badge > 0 && (
-              <span className="w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] flex items-center justify-center font-black">
+              <span className="w-4 h-4 rounded-full bg-rose-500 text-white text-xs flex items-center justify-center font-black">
                 {tab.badge}
               </span>
             )}
@@ -425,6 +429,19 @@ export function ParentDashboard() {
                   value={habitForm.description}
                   onChange={(e) => setHabitForm({ ...habitForm, description: e.target.value })}
                   className="w-full py-2 px-3 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-xs"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  {language === 'vi' ? 'Cách làm / hướng dẫn cho con' : 'How to do it'}
+                </label>
+                <textarea
+                  value={habitForm.instructions}
+                  onChange={(e) => setHabitForm({ ...habitForm, instructions: e.target.value })}
+                  rows={3}
+                  placeholder={language === 'vi' ? 'Viết từng bước ngắn, dễ hiểu…' : 'Add short, clear steps…'}
+                  className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800"
                 />
               </div>
 
@@ -632,7 +649,7 @@ export function ParentDashboard() {
                     <span>🎂</span>
                     <span>{onboardingCopy.ageLabel} {childForm.age} {onboardingCopy.ageUnit}</span>
                   </label>
-                  <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">
+                  <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">
                     {kidCopy.stageLabels[childForm.ageStage]}
                   </span>
                 </div>
@@ -661,7 +678,7 @@ export function ParentDashboard() {
                   </div>
                 </div>
 
-                <div className="text-[11px] text-amber-900/80 dark:text-amber-200/80 leading-relaxed">
+                <div className="text-xs text-amber-900/80 dark:text-amber-200/80 leading-relaxed">
                   <span>
                     <strong>{kidCopy.stageLabels[childForm.ageStage]}</strong>: {onboardingCopy.stages[childForm.ageStage].summary}
                   </span>
@@ -693,7 +710,7 @@ export function ParentDashboard() {
                   onChange={(e) => setChildForm({ ...childForm, nickname: e.target.value })}
                   className="w-full py-2.5 px-3.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
                 />
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-xs text-slate-400 mt-1">
                   {copy.nicknameHelp}
                 </p>
               </div>
@@ -716,7 +733,7 @@ export function ParentDashboard() {
                     <span className="font-bold text-slate-800 dark:text-slate-200 block">
                       {t.showNicknameOnly}
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
                       {copy.rankingNickname(childForm.nickname.trim() || (childForm.name ? `${onboardingCopy.nicknamePrefix} ${childForm.name.trim().split(/\s+/).pop()}` : copy.nicknameFallback))}
                     </span>
                   </div>
@@ -734,7 +751,7 @@ export function ParentDashboard() {
                     <span className="font-bold text-slate-800 dark:text-slate-200 block">
                       {t.showRealNameOption}
                     </span>
-                    <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
                       {copy.rankingName(childForm.name || copy.realNameFallback)}
                     </span>
                   </div>
@@ -760,7 +777,7 @@ export function ParentDashboard() {
                 <div className="flex items-center gap-2.5">
                   <span className="text-2xl">{childForm.avatar}</span>
                   <div>
-                    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                    <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">
                       {copy.rankingPreview}
                     </div>
                     <div className="text-xs font-black text-indigo-600 dark:text-indigo-400">

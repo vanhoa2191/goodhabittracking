@@ -4,9 +4,10 @@ import type { User } from '@supabase/supabase-js';
 import type { ActivityLog, ChildProfile, HabitActivity, Redemption, Reward } from '@/types';
 import {
   connectChildDevice,
-  createPairingChallenge,
   disconnectChildDevice,
   loadChildSession,
+  readPairingCredential,
+  rotatePairingCredential,
   type ChildSession,
 } from './pairing-client';
 import { LOCAL_STORAGE_PREFIX } from './local-family-persistence';
@@ -81,7 +82,7 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     if (!currentUser) return {};
     try {
       const entries = await Promise.all(profiles.map(async (profile) => (
-        [profile.id, await createPairingChallenge(profile.id)] as const
+        [profile.id, (await readPairingCredential(profile.id))?.code ?? null] as const
       )));
       const codes = Object.fromEntries(
         entries.filter((entry): entry is readonly [string, string] => Boolean(entry[1])),
@@ -98,10 +99,10 @@ export function usePairingLifecycle(dependencies: Dependencies) {
 
   const regenerateChildCode = async (childId: string): Promise<string | null> => {
     try {
-      const code = await createPairingChallenge(childId);
-      if (!code) return null;
-      setChildCodes((previous) => ({ ...previous, [childId]: code }));
-      return code;
+      const credential = await rotatePairingCredential(childId);
+      if (!credential) return null;
+      setChildCodes((previous) => ({ ...previous, [childId]: credential.code }));
+      return credential.code;
     } catch (error: unknown) {
       console.warn('Could not regenerate child code:', error);
       return null;
@@ -126,7 +127,10 @@ export function usePairingLifecycle(dependencies: Dependencies) {
   }, [hydrateChildSession, isLoaded, resetFamilyScope]);
 
   const connectWithFamilyCode = async (code: string): Promise<PairingResult> => {
-    const result = await connectChildDevice(code);
+    const tokenPrefix = 'pair-token:';
+    const result = await connectChildDevice(
+      code.startsWith(tokenPrefix) ? { token: code.slice(tokenPrefix.length) } : { code },
+    );
     if (!result.success) return result;
     hydrateChildSession(result.session);
     return {

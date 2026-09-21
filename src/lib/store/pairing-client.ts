@@ -3,6 +3,17 @@ import type { ActivityLog, ChildProfile, HabitActivity, Redemption, Reward } fro
 
 type Requester = (url: string, init?: RequestInit) => Promise<Response>;
 
+export type PairingCredential = {
+  readonly childId: string;
+  readonly code: string;
+  readonly qrPayload: string;
+  readonly rotatedAt: string;
+};
+
+export type PairingExchangeInput =
+  | { readonly code: string }
+  | { readonly token: string };
+
 export interface ChildSession {
   child: ChildProfile;
   activities: HabitActivity[];
@@ -40,6 +51,7 @@ const activitySchema = z.object({
   childId: z.string().nullable(),
   title: z.string(),
   description: optionalString,
+  instructions: optionalString,
   icon: z.string(),
   category: z.enum([
     'wisdom', 'mindset', 'personality', 'virtue', 'capacity', 'giving', 'nutrition',
@@ -100,6 +112,12 @@ const childSessionSchema = z.object({
 });
 
 const errorSchema = z.object({ error: z.string() });
+const pairingCredentialSchema = z.object({
+  childId: z.string(),
+  code: z.string().regex(/^[A-HJ-NP-Z2-9]{4}-[A-HJ-NP-Z2-9]{4}$/),
+  qrPayload: z.string().url(),
+  rotatedAt: z.string(),
+});
 
 async function readJson(response: Response): Promise<unknown> {
   return response.json().catch(() => null);
@@ -109,14 +127,36 @@ export async function createPairingChallenge(
   childId: string,
   request: Requester = fetch,
 ): Promise<string | null> {
-  const response = await request('/api/pairing/challenges', {
+  return (await readPairingCredential(childId, request))?.code ?? null;
+}
+
+async function requestPairingCredential(
+  url: string,
+  childId: string,
+  request: Requester,
+): Promise<PairingCredential | null> {
+  const response = await request(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ childId }),
   });
   if (!response.ok) return null;
-  const parsed = z.object({ code: z.string().min(1) }).safeParse(await readJson(response));
-  return parsed.success ? parsed.data.code : null;
+  const parsed = pairingCredentialSchema.safeParse(await readJson(response));
+  return parsed.success ? parsed.data : null;
+}
+
+export function readPairingCredential(
+  childId: string,
+  request: Requester = fetch,
+): Promise<PairingCredential | null> {
+  return requestPairingCredential('/api/pairing/credentials', childId, request);
+}
+
+export function rotatePairingCredential(
+  childId: string,
+  request: Requester = fetch,
+): Promise<PairingCredential | null> {
+  return requestPairingCredential('/api/pairing/credentials/rotate', childId, request);
 }
 
 export async function loadChildSession(request: Requester = fetch): Promise<ChildSessionResult> {
@@ -137,14 +177,15 @@ export async function loadChildSession(request: Requester = fetch): Promise<Chil
 }
 
 export async function connectChildDevice(
-  code: string,
+  input: string | PairingExchangeInput,
   request: Requester = fetch,
 ): Promise<ChildSessionResult> {
   try {
+    const credential = typeof input === 'string' ? { code: input } : input;
     const response = await request('/api/pairing/exchange', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code }),
+      body: JSON.stringify(credential),
     });
     const payload = await readJson(response);
     if (!response.ok || !z.object({ success: z.literal(true) }).safeParse(payload).success) {

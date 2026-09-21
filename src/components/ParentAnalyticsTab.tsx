@@ -64,7 +64,7 @@ export function ParentAnalyticsTab() {
 
             return (
               <div key={dateKey} className="flex flex-col items-center gap-2">
-                <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">
+                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
                   {count > 0 ? count : ''}
                 </span>
                 <div className="w-full h-32 bg-slate-50 dark:bg-zinc-800 rounded-2xl flex items-end p-1">
@@ -73,7 +73,7 @@ export function ParentAnalyticsTab() {
                     style={{ height: `${heightPercent}%` }}
                   />
                 </div>
-                <span className="text-[11px] font-semibold text-slate-400">
+                <span className="text-xs font-semibold text-slate-400">
                   {new Intl.DateTimeFormat(language, { weekday: 'short' }).format(date)}
                 </span>
               </div>

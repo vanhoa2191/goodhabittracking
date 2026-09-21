@@ -26,7 +26,7 @@ function PodiumPlace({ entry, place, pointsLabel }: PodiumPlaceProps) {
   const avatarStyle = isWinner
     ? `h-18 w-18 rounded-3xl border-4 ${borderStyle} text-4xl shadow-xl sm:h-20 sm:w-20`
     : `h-14 w-14 rounded-2xl border-2 ${borderStyle} text-3xl shadow-md sm:h-16 sm:w-16`;
-  const rankSize = isWinner ? 'h-7 w-7 text-xs shadow-md' : 'h-6 w-6 text-[11px] shadow-xs';
+  const rankSize = isWinner ? 'h-7 w-7 text-xs shadow-md' : 'h-6 w-6 text-xs shadow-xs';
 
   return <div className={`flex flex-col items-center text-center ${isWinner ? '-mt-6' : ''}`}>
     {isWinner && <Crown className="mb-1 h-6 w-6 text-amber-400" />}
@@ -35,7 +35,7 @@ function PodiumPlace({ entry, place, pointsLabel }: PodiumPlaceProps) {
       <span className={`absolute -bottom-2 -right-1 flex items-center justify-center rounded-full border-2 border-white font-black ${rankSize} ${rankStyle}`}>{place}</span>
     </div>
     <div className={`${isWinner ? 'font-black sm:text-base' : 'font-bold sm:text-sm'} w-full truncate text-xs text-slate-800 dark:text-slate-100`}>{entry.nickname}</div>
-    <div className={`${isWinner ? 'text-xs sm:text-sm' : 'text-[11px]'} mt-0.5 font-black text-amber-600`}>⭐ {entry.points}{isWinner ? ` ${pointsLabel}` : ''}</div>
+    <div className={`${isWinner ? 'text-xs sm:text-sm' : 'text-xs'} mt-0.5 font-black text-amber-600`}>⭐ {entry.points}{isWinner ? ` ${pointsLabel}` : ''}</div>
     <div className={`${columnStyle} mt-3 flex w-full items-center justify-center rounded-t-2xl ${isWinner ? 'text-2xl' : 'text-lg'} font-black`}>{medal}</div>
   </div>;
 }

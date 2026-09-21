@@ -12,10 +12,10 @@ import { createCorrelationId, logOperationalEvent } from '@/lib/observability/lo
 
 export const runtime = 'nodejs';
 
-const requestSchema = z.object({
-  code: z.string().min(1).max(32),
-  deviceLabel: z.string().trim().max(80).optional(),
-});
+const requestSchema = z.union([
+  z.object({ code: z.string().min(1).max(32), token: z.never().optional(), deviceLabel: z.string().trim().max(80).optional() }).strict(),
+  z.object({ token: z.string().min(32).max(200), code: z.never().optional(), deviceLabel: z.string().trim().max(80).optional() }).strict(),
+]);
 
 const statusMessages: Record<string, { status: number; error: string }> = {
   invalid: { status: 404, error: 'Mã ghép nối không đúng. Vui lòng kiểm tra và thử lại.' },
@@ -34,22 +34,29 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Mã ghép nối không hợp lệ.', correlationId }, { status: 400 });
   }
 
-  const normalizedCode = normalizeDisplayCode(parsed.data.code);
-  if (!normalizedCode) {
+  const submittedCode = parsed.data.code;
+  const submittedToken = parsed.data.token;
+  const normalizedCode = submittedCode ? normalizeDisplayCode(submittedCode) : null;
+  if (submittedCode && !normalizedCode) {
     logOperationalEvent('warn', { operation: 'pairing_exchange', reasonCode: 'invalid_code', correlationId, route: request.nextUrl.pathname, status: 404 });
     return NextResponse.json({ error: statusMessages.invalid.error, correlationId }, { status: 404 });
   }
+  const credentialValue = normalizedCode ?? submittedToken;
+  if (!credentialValue) {
+    return NextResponse.json({ error: 'Mã ghép nối không hợp lệ.', correlationId }, { status: 400 });
+  }
 
   const sessionToken = createSessionToken();
-  const [verifierHash, tokenHash, fingerprint] = await Promise.all([
-    sha256Hex(normalizedCode),
+  const [credentialHash, tokenHash, fingerprint] = await Promise.all([
+    sha256Hex(credentialValue),
     sha256Hex(sessionToken),
     requestFingerprint(request),
   ]);
   const supabase = await createServerSupabaseClient();
-  const { data, error } = await supabase.rpc('exchange_pairing_challenge', {
-    code_id: normalizedCode.slice(0, 4),
-    verifier_hash_hex: verifierHash,
+  const { data, error } = await supabase.rpc('exchange_pairing_credential', {
+    manual_code_id: normalizedCode?.slice(0, 4) ?? null,
+    manual_verifier_hash: normalizedCode ? credentialHash : null,
+    pairing_token_hash: submittedToken ? credentialHash : null,
     session_token_hash: tokenHash,
     request_fingerprint_hex: fingerprint,
     requested_device_label: parsed.data.deviceLabel || null,

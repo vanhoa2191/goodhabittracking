@@ -23,6 +23,7 @@ function createRow(
     child_id: activity.childId,
     title: activity.title,
     description: activity.description,
+    instructions: activity.instructions ?? null,
     icon: activity.icon,
     category: activity.category,
     points: activity.points,
@@ -47,6 +48,12 @@ function updateRow(
     ['child_id', updates.childId],
     ['title', updates.title],
     ['description', updates.description],
+    [
+      'instructions',
+      Object.prototype.hasOwnProperty.call(updates, 'instructions')
+        ? updates.instructions ?? null
+        : undefined,
+    ],
     ['icon', updates.icon],
     ['category', updates.category],
     ['points', updates.points],

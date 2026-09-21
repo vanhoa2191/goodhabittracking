@@ -12,6 +12,8 @@ import { translations } from "@/lib/i18n/translations";
 import { AppearanceProvider } from "@/lib/appearance-context";
 import { AppStoreProvider } from "@/lib/store";
 
+const appearanceScript = `(function(){try{var value=localStorage.getItem('kidhabit_theme');var dark=value==='dark'||(value==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',dark);document.documentElement.style.colorScheme=dark?'dark':'light'}catch(_){document.documentElement.classList.remove('dark')}})()`;
+
 const getRequestLanguage = cache(async () => {
   const [requestHeaders, requestCookies] = await Promise.all([headers(), cookies()]);
   return detectLanguage({
@@ -27,6 +29,10 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: `${copy.appName} - ${copy.appSlogan}`,
     description: copy.appSlogan,
+    icons: {
+      icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+      apple: [{ url: '/apple-touch-icon.svg', type: 'image/svg+xml' }],
+    },
   };
 }
 
@@ -38,7 +44,8 @@ export default async function RootLayout({
   const initialLanguage = await getRequestLanguage();
 
   return (
-    <html lang={initialLanguage} className="h-full antialiased">
+    <html lang={initialLanguage} className="h-full antialiased" suppressHydrationWarning>
+      <head><script dangerouslySetInnerHTML={{ __html: appearanceScript }} /></head>
       <body className="min-h-full flex flex-col bg-slate-50/50 dark:bg-zinc-950 text-slate-900 dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
         <AppearanceProvider>
           <I18nProvider initialLanguage={initialLanguage}>
