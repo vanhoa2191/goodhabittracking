@@ -1,13 +1,10 @@
 import { spawn } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 
-const serverOnlyNames = [
-  'PAYOS_CLIENT_ID',
-  'PAYOS_API_KEY',
-  'PAYOS_CHECKSUM_KEY',
-  'SUPABASE_SERVICE_ROLE_KEY',
-  'PAIRING_RATE_LIMIT_SECRET',
-];
+import {
+  prepareCloudflareBuildEnvironment,
+  serverOnlyNames,
+} from './cloudflare-build-environment.mjs';
 const supportedModes = new Set(['build', 'preview', 'deploy']);
 const mode = process.argv[2];
 
@@ -44,10 +41,8 @@ function runOpenNext(command, environment) {
   });
 }
 
-const buildEnvironment = { ...process.env };
-for (const name of serverOnlyNames) delete buildEnvironment[name];
-
 try {
+  const buildEnvironment = prepareCloudflareBuildEnvironment(process.env, mode);
   await runOpenNext('build', buildEnvironment);
   if (mode !== 'build') await runOpenNext(mode, process.env);
 } catch (error) {
