@@ -66,7 +66,7 @@ npm run preview:cloudflare
 npm run deploy:cloudflare
 ```
 
-Thiết lập public build variables và server secrets trong Workers trước khi deploy. Chi tiết tại [`docs/deployment.md`](docs/deployment.md).
+Thiết lập `NEXT_PUBLIC_*` trong môi trường chạy lệnh build/deploy; chỉ tạo Worker runtime secret là chưa đủ vì các giá trị này phải được đóng vào browser bundle. Server secrets tiếp tục được lưu riêng trong Workers. Chi tiết tại [`docs/deployment.md`](docs/deployment.md).
 
 ## Tài liệu
 
