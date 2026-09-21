@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import type { User } from '@supabase/supabase-js';
-import type { ChildProfile, HabitActivity, Reward } from '@/types';
+import type { ActivityLog, ChildProfile, HabitActivity, Redemption, Reward } from '@/types';
 import {
   connectChildDevice,
   createPairingChallenge,
@@ -16,8 +16,10 @@ type FamilySetters = {
   readonly setActiveChildId: Dispatch<SetStateAction<string | null>>;
   readonly setChildCodes: Dispatch<SetStateAction<Record<string, string>>>;
   readonly setIsFamilyConnected: Dispatch<SetStateAction<boolean>>;
+  readonly setLogs: Dispatch<SetStateAction<ActivityLog[]>>;
   readonly setMode: Dispatch<SetStateAction<'kid' | 'parent'>>;
   readonly setProfiles: Dispatch<SetStateAction<ChildProfile[]>>;
+  readonly setRedemptions: Dispatch<SetStateAction<Redemption[]>>;
   readonly setRewards: Dispatch<SetStateAction<Reward[]>>;
 };
 
@@ -45,8 +47,10 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setActiveChildId,
     setChildCodes,
     setIsFamilyConnected,
+    setLogs,
     setMode,
     setProfiles,
+    setRedemptions,
     setRewards,
   } = dependencies.setters;
 
@@ -56,7 +60,9 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setProfiles([session.child]);
     setActiveChildId(session.child.id);
     setActivities(session.activities);
+    setLogs(session.logs);
     setRewards(session.rewards);
+    setRedemptions(session.redemptions);
     setMode('kid');
     localStorage.setItem(`${LOCAL_STORAGE_PREFIX}child_paired`, 'true');
   }, [
@@ -64,8 +70,10 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setActivities,
     setActiveChildId,
     setIsFamilyConnected,
+    setLogs,
     setMode,
     setProfiles,
+    setRedemptions,
     setRewards,
   ]);
 
@@ -128,6 +136,13 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     };
   };
 
+  const refreshChildSession = async (): Promise<boolean> => {
+    const result = await loadChildSession();
+    if (!result.success) return false;
+    hydrateChildSession(result.session);
+    return true;
+  };
+
   const disconnectFamilyCode = (): void => {
     void disconnectChildDevice().catch(() => undefined);
     resetFamilyScope();
@@ -137,6 +152,7 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     connectWithFamilyCode,
     disconnectFamilyCode,
     generateChildCodes,
+    refreshChildSession,
     regenerateChildCode,
   };
 }

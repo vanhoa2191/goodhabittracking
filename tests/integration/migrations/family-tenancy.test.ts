@@ -48,6 +48,14 @@ const serverTableRlsMigration = readFileSync(
   resolve('supabase/migrations/202609210001_force_server_table_rls.sql'),
   'utf8'
 );
+const childDeviceCommandsMigration = readFileSync(
+  resolve('supabase/migrations/202609210002_child_device_commands.sql'),
+  'utf8'
+);
+const childDeviceCommandsRollback = readFileSync(
+  resolve('supabase/rollbacks/202609210002_child_device_commands.rollback.sql'),
+  'utf8'
+);
 const socialRollback = readFileSync(
   resolve('supabase/rollbacks/202609200002_authoritative_social.rollback.sql'),
   'utf8'
@@ -66,6 +74,8 @@ describe('family tenancy migration', () => {
     await expect(parse(profileMigration)).resolves.toBeDefined();
     await expect(parse(socialMigration)).resolves.toBeDefined();
     await expect(parse(serverTableRlsMigration)).resolves.toBeDefined();
+    await expect(parse(childDeviceCommandsMigration)).resolves.toBeDefined();
+    await expect(parse(childDeviceCommandsRollback)).resolves.toBeDefined();
     await expect(parse(socialRollback)).resolves.toBeDefined();
   });
 
@@ -79,6 +89,7 @@ describe('family tenancy migration', () => {
       '202609200001_authoritative_profiles.sql',
       '202609200002_authoritative_social.sql',
       '202609210001_force_server_table_rls.sql',
+      '202609210002_child_device_commands.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
@@ -154,6 +165,18 @@ describe('family tenancy migration', () => {
     expect(pairingMigration).toContain('session_token_hash');
     expect(pairingMigration).not.toContain('data_snapshot');
     expect(pairingMigration).not.toMatch(/parent_?pin/i);
+  });
+
+  it('scopes child commands to the active device session and paired child', () => {
+    expect(childDeviceCommandsMigration).toContain("'child:complete' = any(device.capabilities)");
+    expect(childDeviceCommandsMigration).toContain('device.revoked_at is null');
+    expect(childDeviceCommandsMigration).toContain('device.expires_at > now()');
+    expect(childDeviceCommandsMigration).toContain('family_id = child_session.family_id');
+    expect(childDeviceCommandsMigration).toContain('child_id = child_session.child_id');
+    expect(childDeviceCommandsMigration).toContain(
+      'grant execute on function public.complete_child_habit_command(text, uuid, date, uuid) to anon, authenticated'
+    );
+    expect(childDeviceCommandsRollback).not.toMatch(/drop\s+table/i);
   });
 
   it('removes anonymous ownership bypasses and public table access', () => {

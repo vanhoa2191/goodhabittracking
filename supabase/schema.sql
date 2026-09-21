@@ -6,3 +6,4 @@
 \ir migrations/202609200001_authoritative_profiles.sql
 \ir migrations/202609200002_authoritative_social.sql
 \ir migrations/202609210001_force_server_table_rls.sql
+\ir migrations/202609210002_child_device_commands.sql

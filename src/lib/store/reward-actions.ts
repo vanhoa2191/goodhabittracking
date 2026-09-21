@@ -7,7 +7,7 @@ import {
   rewardMutationSchema,
   type RewardMutation,
 } from '@/lib/domain/reward-mutations';
-import { requestDomainCommand } from './domain-command-client';
+import { requestChildDomainCommand, requestDomainCommand } from './domain-command-client';
 import { requestRewardMutation } from './reward-mutation-client';
 import {
   addReward,
@@ -23,6 +23,7 @@ type Dependencies = {
   readonly activeChildId: string | null;
   readonly currentUser: User | null;
   readonly familyId: string | null;
+  readonly isFamilyConnected: boolean;
   readonly profiles: readonly ChildProfile[];
   readonly redemptions: readonly Redemption[];
   readonly rewards: readonly Reward[];
@@ -31,6 +32,7 @@ type Dependencies = {
   readonly setRedemptions: Dispatch<SetStateAction<Redemption[]>>;
   readonly setRewards: Dispatch<SetStateAction<Reward[]>>;
   readonly storageMode: 'local' | 'cloud';
+  readonly refreshChildSession: () => Promise<boolean>;
   readonly syncCloudFamily: (user: User) => Promise<boolean>;
 };
 
@@ -156,8 +158,30 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
       const user = dependencies.currentUser;
       if (dependencies.storageMode === 'cloud') {
         if (!user) {
-          dependencies.setCloudSyncActive(false);
-          return false;
+          if (!dependencies.isFamilyConnected) {
+            dependencies.setCloudSyncActive(false);
+            return false;
+          }
+          try {
+            const result = await requestChildDomainCommand({
+              type: 'redeemReward',
+              rewardId,
+              commandId: crypto.randomUUID(),
+            });
+            if (result.status === 'insufficient_points' || result.status === 'out_of_stock') {
+              return false;
+            }
+            await dependencies.refreshChildSession();
+            sounds.playRewardRedeem();
+            return true;
+          } catch (error: unknown) {
+            dependencies.setCloudSyncActive(false);
+            console.error(
+              'Redeeming child reward failed:',
+              error instanceof Error ? error.message : 'unknown',
+            );
+            return false;
+          }
         }
         try {
           const result = await requestDomainCommand({

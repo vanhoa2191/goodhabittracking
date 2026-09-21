@@ -1,12 +1,14 @@
 import { z } from 'zod';
-import type { ChildProfile, HabitActivity, Reward } from '@/types';
+import type { ActivityLog, ChildProfile, HabitActivity, Redemption, Reward } from '@/types';
 
 type Requester = (url: string, init?: RequestInit) => Promise<Response>;
 
 export interface ChildSession {
   child: ChildProfile;
   activities: HabitActivity[];
+  logs: ActivityLog[];
   rewards: Reward[];
+  redemptions: Redemption[];
 }
 
 type ChildSessionResult =
@@ -68,10 +70,33 @@ const rewardSchema = z.object({
   createdAt: z.string(),
 });
 
+const activityLogSchema = z.object({
+  id: z.string(),
+  activityId: z.string(),
+  childId: z.string(),
+  date: z.string(),
+  status: z.enum(['completed', 'pending_approval', 'approved', 'rejected']),
+  pointsAwarded: z.number(),
+  completedAt: z.string(),
+  proofNote: optionalString,
+});
+
+const redemptionSchema = z.object({
+  id: z.string(),
+  rewardId: z.string(),
+  childId: z.string(),
+  pointsSpent: z.number(),
+  status: z.enum(['pending', 'approved', 'delivered', 'rejected']),
+  requestedAt: z.string(),
+  resolvedAt: optionalString,
+});
+
 const childSessionSchema = z.object({
   child: childProfileSchema,
   activities: z.array(activitySchema),
+  logs: z.array(activityLogSchema),
   rewards: z.array(rewardSchema),
+  redemptions: z.array(redemptionSchema),
 });
 
 const errorSchema = z.object({ error: z.string() });

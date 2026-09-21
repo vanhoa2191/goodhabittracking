@@ -2,8 +2,14 @@ import type { Dispatch, SetStateAction } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ActivityLog, ChildBadge, ChildProfile, HabitActivity } from '@/types';
 
-const requestDomainCommand = vi.hoisted(() => vi.fn());
-vi.mock('@/lib/store/domain-command-client', () => ({ requestDomainCommand }));
+const { requestChildDomainCommand, requestDomainCommand } = vi.hoisted(() => ({
+  requestChildDomainCommand: vi.fn(),
+  requestDomainCommand: vi.fn(),
+}));
+vi.mock('@/lib/store/domain-command-client', () => ({
+  requestChildDomainCommand,
+  requestDomainCommand,
+}));
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
 vi.mock('@/lib/sound', () => ({
   sounds: {
@@ -56,16 +62,23 @@ function stateSetter<T>(read: () => T[], write: (value: T[]) => void): Dispatch<
   return (action) => write(typeof action === 'function' ? action(read()) : action);
 }
 
-function createState(storageMode: 'local' | 'cloud', currentUser = null as typeof user | null) {
+function createState(
+  storageMode: 'local' | 'cloud',
+  currentUser = null as typeof user | null,
+  isFamilyConnected = false,
+) {
   let profiles = [child];
   let logs: ActivityLog[] = [];
   let childBadges: ChildBadge[] = [];
   const setCloudSyncActive = vi.fn();
   const syncCloudFamily = vi.fn(async () => true);
+  const refreshChildSession = vi.fn(async () => true);
   const actions = createHabitActions({
     cloud: {
       currentUser,
       familyId: currentUser ? 'family-1' : null,
+      isFamilyConnected,
+      refreshChildSession,
       setCloudSyncActive,
       syncCloudFamily,
     },
@@ -85,6 +98,7 @@ function createState(storageMode: 'local' | 'cloud', currentUser = null as typeo
     actions,
     read: () => ({ profiles, logs, childBadges }),
     setCloudSyncActive,
+    refreshChildSession,
     syncCloudFamily,
   };
 }
@@ -130,6 +144,21 @@ describe('habit actions', () => {
     }));
     expect(fixture.syncCloudFamily).toHaveBeenCalledWith(user);
     expect(fixture.read()).toEqual({ profiles: [child], logs: [], childBadges: [] });
+  });
+
+  it('uses the scoped child command and refreshes the paired session', async () => {
+    requestChildDomainCommand.mockResolvedValue({ status: 'pending_approval' });
+    const fixture = createState('cloud', null, true);
+
+    await fixture.actions.toggleActivity(activity.id, '2026-09-20');
+
+    expect(requestChildDomainCommand).toHaveBeenCalledWith(expect.objectContaining({
+      type: 'completeHabit',
+      activityId: activity.id,
+      date: '2026-09-20',
+    }));
+    expect(fixture.refreshChildSession).toHaveBeenCalledOnce();
+    expect(requestDomainCommand).not.toHaveBeenCalled();
   });
 
   it('approves and rejects local pending logs through guarded transitions', () => {

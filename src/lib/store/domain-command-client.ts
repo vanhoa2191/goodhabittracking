@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { domainCommandSchema, type DomainCommand } from '@/lib/domain/commands';
+import {
+  childDomainCommandSchema,
+  domainCommandSchema,
+  type ChildDomainCommand,
+  type DomainCommand,
+} from '@/lib/domain/commands';
 
 const domainCommandResultSchema = z.object({
   status: z.enum([
@@ -62,6 +67,34 @@ export async function requestDomainCommand(
   if (!response.ok || !parsedResponse.data.success) {
     const message = parsedResponse.data.success
       ? 'The change could not be saved.'
+      : parsedResponse.data.error;
+    throw new DomainCommandRequestError(message, response.status);
+  }
+  return parsedResponse.data.result;
+}
+
+export async function requestChildDomainCommand(
+  command: ChildDomainCommand,
+  requester: DomainCommandRequester = globalThis.fetch,
+): Promise<z.infer<typeof domainCommandResultSchema>> {
+  const parsedCommand = childDomainCommandSchema.parse(command);
+  const response = await requester('/api/child/commands', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(parsedCommand),
+  });
+  const input: unknown = await response.json();
+  const parsedResponse = domainCommandResponseSchema.safeParse(input);
+
+  if (!parsedResponse.success) {
+    throw new DomainCommandRequestError(
+      'The server returned an invalid child command response.',
+      response.status,
+    );
+  }
+  if (!response.ok || !parsedResponse.data.success) {
+    const message = parsedResponse.data.success
+      ? 'The child action could not be saved.'
       : parsedResponse.data.error;
     throw new DomainCommandRequestError(message, response.status);
   }

@@ -366,6 +366,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     connectWithFamilyCode,
     disconnectFamilyCode,
     generateChildCodes,
+    refreshChildSession,
     regenerateChildCode,
   } = usePairingLifecycle({
     currentUser,
@@ -378,8 +379,10 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       setActiveChildId: setActiveChildIdState,
       setChildCodes,
       setIsFamilyConnected,
+      setLogs,
       setMode: setModeState,
       setProfiles,
+      setRedemptions,
       setRewards,
     },
   });
@@ -478,6 +481,8 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     cloud: {
       currentUser,
       familyId,
+      isFamilyConnected,
+      refreshChildSession,
       setCloudSyncActive,
       syncCloudFamily: syncFromSupabase,
     },
@@ -498,6 +503,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     activeChildId,
     currentUser,
     familyId,
+    isFamilyConnected,
     profiles,
     redemptions,
     rewards,
@@ -506,6 +512,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     setRedemptions,
     setRewards,
     storageMode,
+    refreshChildSession,
     syncCloudFamily: syncFromSupabase,
   });
   const {

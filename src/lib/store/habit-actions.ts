@@ -10,7 +10,7 @@ import type {
 } from '@/types';
 import { DEFAULT_BADGES } from '@/lib/constants';
 import { sounds } from '@/lib/sound';
-import { requestDomainCommand } from './domain-command-client';
+import { requestChildDomainCommand, requestDomainCommand } from './domain-command-client';
 import { approvePendingLog, rejectPendingLog } from './local-domain-actions';
 import { toggleLocalHabit } from './local-habit-actions';
 
@@ -28,6 +28,8 @@ type HabitState = {
 type CloudContext = {
   readonly currentUser: User | null;
   readonly familyId: string | null;
+  readonly isFamilyConnected: boolean;
+  readonly refreshChildSession: () => Promise<boolean>;
   readonly setCloudSyncActive: Dispatch<SetStateAction<boolean>>;
   readonly syncCloudFamily: (user: User) => Promise<boolean>;
 };
@@ -49,7 +51,9 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
   const cloudUser = (): User | null => {
     const user = dependencies.cloud.currentUser;
     if (!user || !dependencies.cloud.familyId) {
-      dependencies.cloud.setCloudSyncActive(false);
+      if (!dependencies.cloud.isFamilyConnected) {
+        dependencies.cloud.setCloudSyncActive(false);
+      }
       return null;
     }
     return user;
@@ -81,9 +85,21 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
 
       if (dependencies.storageMode === 'cloud') {
         const user = cloudUser();
-        if (!user) return;
+        if (!user && !dependencies.cloud.isFamilyConnected) return;
         try {
-          if (existingLog) {
+          if (!user) {
+            if (existingLog) {
+              await requestChildDomainCommand({ type: 'undoHabit', logId: existingLog.id });
+            } else {
+              await requestChildDomainCommand({
+                type: 'completeHabit',
+                activityId,
+                date,
+                commandId: crypto.randomUUID(),
+              });
+            }
+            await dependencies.cloud.refreshChildSession();
+          } else if (existingLog) {
             await requestDomainCommand({ type: 'undoHabit', logId: existingLog.id });
           } else {
             await requestDomainCommand({
@@ -94,7 +110,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
               commandId: crypto.randomUUID(),
             });
           }
-          await dependencies.cloud.syncCloudFamily(user);
+          if (user) await dependencies.cloud.syncCloudFamily(user);
           sounds.playTaskComplete();
         } catch (error: unknown) {
           dependencies.cloud.setCloudSyncActive(false);

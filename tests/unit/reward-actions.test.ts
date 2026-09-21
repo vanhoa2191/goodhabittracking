@@ -2,9 +2,15 @@ import type { Dispatch, SetStateAction } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ChildProfile, Redemption, Reward } from '@/types';
 
-const requestDomainCommand = vi.hoisted(() => vi.fn());
+const { requestChildDomainCommand, requestDomainCommand } = vi.hoisted(() => ({
+  requestChildDomainCommand: vi.fn(),
+  requestDomainCommand: vi.fn(),
+}));
 const requestRewardMutation = vi.hoisted(() => vi.fn());
-vi.mock('@/lib/store/domain-command-client', () => ({ requestDomainCommand }));
+vi.mock('@/lib/store/domain-command-client', () => ({
+  requestChildDomainCommand,
+  requestDomainCommand,
+}));
 vi.mock('@/lib/store/reward-mutation-client', () => ({ requestRewardMutation }));
 vi.mock('canvas-confetti', () => ({ default: vi.fn() }));
 vi.mock('@/lib/sound', () => ({
@@ -62,6 +68,7 @@ describe('reward actions', () => {
       activeChildId: child.id,
       currentUser: null,
       familyId: null,
+      isFamilyConnected: false,
       profiles,
       redemptions,
       rewards: [reward],
@@ -70,6 +77,7 @@ describe('reward actions', () => {
       setRedemptions: stateSetter(() => redemptions, (value) => { redemptions = value; }),
       setRewards: vi.fn(),
       storageMode: 'local',
+      refreshChildSession: vi.fn(async () => true),
       syncCloudFamily: vi.fn(async () => true),
     });
 
@@ -91,6 +99,7 @@ describe('reward actions', () => {
         created_at: '2026-09-20T00:00:00.000Z',
       },
       familyId: 'family-1',
+      isFamilyConnected: false,
       profiles: [child],
       redemptions: [pendingRedemption],
       rewards: [reward],
@@ -99,6 +108,7 @@ describe('reward actions', () => {
       setRedemptions: vi.fn(),
       setRewards: vi.fn(),
       storageMode: 'cloud',
+      refreshChildSession: vi.fn(async () => true),
       syncCloudFamily,
     });
 
@@ -119,6 +129,7 @@ describe('reward actions', () => {
       activeChildId: child.id,
       currentUser: null,
       familyId: null,
+      isFamilyConnected: false,
       profiles,
       redemptions,
       rewards: [reward],
@@ -127,6 +138,7 @@ describe('reward actions', () => {
       setRedemptions: stateSetter(() => redemptions, (value) => { redemptions = value; }),
       setRewards: vi.fn(),
       storageMode: 'cloud',
+      refreshChildSession: vi.fn(async () => true),
       syncCloudFamily: vi.fn(async () => true),
     });
 
@@ -147,6 +159,7 @@ describe('reward actions', () => {
         created_at: '2026-09-20T00:00:00.000Z',
       },
       familyId: 'family-1',
+      isFamilyConnected: false,
       profiles: [child],
       redemptions: [],
       rewards: [],
@@ -155,6 +168,7 @@ describe('reward actions', () => {
       setRedemptions: vi.fn(),
       setRewards,
       storageMode: 'cloud',
+      refreshChildSession: vi.fn(async () => true),
       syncCloudFamily,
     });
 
@@ -172,5 +186,33 @@ describe('reward actions', () => {
     }));
     expect(syncCloudFamily).toHaveBeenCalledTimes(1);
     expect(setRewards).not.toHaveBeenCalled();
+  });
+
+  it('redeems through the scoped child command on a paired device', async () => {
+    requestChildDomainCommand.mockResolvedValue({ status: 'pending' });
+    const refreshChildSession = vi.fn(async () => true);
+    const actions = createRewardActions({
+      activeChildId: child.id,
+      currentUser: null,
+      familyId: null,
+      isFamilyConnected: true,
+      profiles: [child],
+      redemptions: [],
+      rewards: [reward],
+      setCloudSyncActive: vi.fn(),
+      setProfiles: vi.fn(),
+      setRedemptions: vi.fn(),
+      setRewards: vi.fn(),
+      storageMode: 'cloud',
+      refreshChildSession,
+      syncCloudFamily: vi.fn(async () => true),
+    });
+
+    await expect(actions.claimReward(reward.id)).resolves.toBe(true);
+    expect(requestChildDomainCommand).toHaveBeenCalledWith(expect.objectContaining({
+      type: 'redeemReward',
+      rewardId: reward.id,
+    }));
+    expect(refreshChildSession).toHaveBeenCalledOnce();
   });
 });

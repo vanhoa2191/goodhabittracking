@@ -27,6 +27,23 @@ export const domainCommandSchema = z.discriminatedUnion('type', [
 
 export type DomainCommand = z.infer<typeof domainCommandSchema>;
 
+export const childDomainCommandSchema = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal('completeHabit'),
+    activityId: uuid,
+    date: z.iso.date(),
+    commandId: uuid,
+  }).strict(),
+  z.object({ type: z.literal('undoHabit'), logId: uuid }).strict(),
+  z.object({
+    type: z.literal('redeemReward'),
+    rewardId: uuid,
+    commandId: uuid,
+  }).strict(),
+]);
+
+export type ChildDomainCommand = z.infer<typeof childDomainCommandSchema>;
+
 export const ACTIVITY_LOG_TRANSITIONS = {
   pending_approval: ['approved', 'rejected'],
   completed: [],
