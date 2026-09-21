@@ -61,10 +61,10 @@ Documentation points to machine-owned migrations, schemas, scripts and tests ins
 ## Todo
 
 - [ ] Full automated/manual certification
-- [ ] Security/privacy/a11y/performance sign-offs
+- [x] Security/privacy/a11y/performance sign-offs
 - [x] Evergreen docs and verified README
 - [ ] Staged rollout and rollback drill
-- [ ] Commit-bound release evidence (automated clean-worktree/SHA-bound gate implemented and exercised in working-tree mode; immutable release commit still pending)
+- [x] Commit-bound release evidence (clean-worktree harness and GitHub CI passed on `73814211ef63a80bcce11ba005329ec6ce192e68`)
 
 ## Success Criteria
 

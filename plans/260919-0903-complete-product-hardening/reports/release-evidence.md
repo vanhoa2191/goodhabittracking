@@ -1,8 +1,8 @@
 # Release Evidence
 
 Date: 2026-09-21  
-Base commit: `a992f55dd76b9be12e1f8bdd97cbb0c62f45b1d8`  
-Evidence scope: uncommitted working tree; not a production release certificate
+Release candidate commit: `73814211ef63a80bcce11ba005329ec6ce192e68`  
+Evidence scope: immutable release candidate with clean local certification and GitHub CI
 
 ## Verified locally
 
@@ -21,7 +21,8 @@ Evidence scope: uncommitted working tree; not a production release certificate
 | Performance budget | `npm run check:performance` | Pass; total JS 2,092,143 bytes, largest chunk 936,185 bytes |
 | Dependencies | `npm audit --audit-level=high` | Pass, zero known vulnerabilities |
 | Secret scan | `npm run check:secrets` | Pass for 367 tracked and non-ignored files; Cloudflare bundle independently contains zero exposed PayOS credential fingerprint hits |
-| Release preflight | `npm run release:verify` | Harness verified in dirty-working-tree mode with safe test credentials. It rejects the currently configured exposed PayOS credential fingerprints, weak/missing pairing configuration, unsafe feature flags, non-HTTPS origin, dirty real candidates and SHA mismatch before running certification; clean candidates additionally require live database readiness while `--allow-dirty` is explicitly configuration-only |
+| Release preflight | `npm run release:verify` | Pass on clean commit `73814211ef63a80bcce11ba005329ec6ce192e68` with live Supabase readiness and safe non-production PayOS verifier values. The harness rejects exposed credential fingerprints, weak/missing pairing configuration, unsafe feature flags, non-HTTPS origin, dirty candidates and SHA mismatch before certification |
+| GitHub CI | [Run 35549869780](https://github.com/vanhoa2191/goodhabittracking/actions/runs/35549869780) | Pass on the same immutable commit: quality job 1m10s; Chromium browser job 2m01s |
 | Operational telemetry | Payment webhook, pairing exchange and domain-command failures emit allowlisted structured events with correlation IDs | Pass in targeted API/unit tests; production alert delivery pending |
 | Diff hygiene | `git diff --check` | Pass |
 | Visual QA | Existing localized baseline set plus fresh viewport captures for profile, reward and social create-failure/join-failure/local-success states at desktop 1280×720 and Pixel 7 1082×2202 under `test-results/{profile,reward,social}-mutation-*` | Profile, reward and group dialogs are portaled above the sticky header, lock background scroll, trap focus and retain fixed header/footer around internally scrolling content. Six social captures show full localized error/actions without clipping, 44px modal actions, non-overlapping leaderboard metadata and wrapping group-card content at both viewports; group reward copy and color use the documented amber semantic role. Independent final functional and visual-fidelity verdicts are recorded under `.omo/evidence/` |
@@ -64,14 +65,13 @@ The generated Worker was started with Wrangler on localhost and stopped cleanly 
 
 ## Release blockers
 
-1. The current evidence is bound to an uncommitted working tree. A release candidate needs a commit SHA followed by a fresh CI run.
-2. Full two-device pairing/concurrency, production deletion and restore scenarios still require live E2E evidence against the migrated project.
-3. Production alert delivery and a recovery restore drill remain unverified.
-4. Child-privacy legal review depends on launch markets and remains a product-owner/legal gate.
+1. Full two-device pairing/concurrency, production deletion and restore scenarios still require live E2E evidence against the migrated project.
+2. Production alert delivery and a recovery restore drill remain unverified.
+3. Child-privacy legal review depends on launch markets and remains a product-owner/legal gate.
 
 ## Independent security review
 
-The local source, dependency, secret, auth/RLS, pairing, payment and privacy boundaries were reviewed on 2026-09-21. No Critical or High finding remains in the working tree. The bounded sign-off and its production evidence requirements are recorded in [security-sign-off.md](./security-sign-off.md). HSTS is enforced, while the supported CSP boundary and rejected nonce/SRI experiment are documented there; live RLS and ingress checks remain release blockers rather than being inferred from local tests.
+The source, dependency, secret, auth/RLS, pairing, payment and privacy boundaries were reviewed on 2026-09-21. No Critical or High finding remains in the release candidate. The bounded sign-off and its production evidence requirements are recorded in [security-sign-off.md](./security-sign-off.md). HSTS is enforced, while the supported CSP boundary and rejected nonce/SRI experiment are documented there; live RLS and ingress checks are verified rather than inferred from local tests.
 
 ## Production access audit
 
@@ -79,8 +79,8 @@ Access and rollout audit updated on 2026-09-21. No secret values were printed or
 
 | Surface | Observed state | Consequence |
 |---|---|---|
-| Git remote | `origin/main` and local `HEAD` both point to base commit `a992f55dd76b9be12e1f8bdd97cbb0c62f45b1d8`; the hardening work remains uncommitted | A clean immutable release SHA and CI run do not exist yet |
-| GitHub CLI | Authenticated as `vanhoa2191`; repository remote and default branch are correct; no Actions run exists yet | Release commit, push and commit-bound CI remain pending |
+| Git remote | `origin/main` contains release candidate `73814211ef63a80bcce11ba005329ec6ce192e68` | The hardening implementation and visual evidence are immutable and remotely recoverable |
+| GitHub Actions | [CI run 35549869780](https://github.com/vanhoa2191/goodhabittracking/actions/runs/35549869780) passed both jobs on the release candidate | Commit-bound quality and Chromium gates are green |
 | Cloudflare Wrangler | Authenticated with Workers/Pages write access; `goodhabittracking` is deployed and healthy at its HTTPS workers.dev origin | Production candidate, encrypted secrets, security headers and invalid-signature ingress are live; alert/rollback evidence remains |
 | Supabase CLI | Linked to healthy project `kidhabithero`; migrations `202609190001` through `202609210001` are applied and remote history matches local | Live schema rollout is complete; credentialed behavior matrix remains |
 | Supabase live verification | Preflight found six empty legacy tables and two absent billing tables; migrations were validated under forced rollback, applied, then verified; the automated live boundary runner exercised anonymous, same-family and cross-family access with ephemeral accounts | 21/21 expected tables exist, 1/1 pre-existing auth user has a family membership, quarantine is empty, all protected tables force RLS, no `auth.uid() IS NULL` policy remains, the live access matrix passes, and cleanup left zero synthetic users/families |
@@ -92,4 +92,4 @@ The pre-migration schema/data/role dump, preflight, rollback-validation transcri
 ## Promotion decision
 
 Production candidate: deployed and approved for credentialed behavior testing.  
-General availability: blocked until the remaining immutable CI, full two-device, alert/restore and legal gates are closed.
+General availability: blocked until the remaining full two-device, alert/restore and legal gates are closed.

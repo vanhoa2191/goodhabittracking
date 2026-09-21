@@ -69,21 +69,21 @@ Phases 3 and 4 may run in parallel after Phase 2. Phase 5 may begin after Phase 
 | 6 | [Onboarding, demo separation, trust, and child privacy](./phase-06-onboarding-demo-trust-privacy.md) | P1 | 4-6d | 3, 5 | Local lifecycle E2E complete; credentialed lifecycle pending |
 | 7 | [UX, information architecture, localization, and accessibility](./phase-07-ux-ia-localization-accessibility.md) | P2 | 7-10d | 5, 6 | Locally complete; A11y/responsive gates and all nine-locale surfaces pass, store is a 772-line composition provider, and the portrait guide is a 189-line coordinator backed by three focused panels; final production visual certification remains part of Phase 9 |
 | 8 | [Performance, observability, and operations](./phase-08-performance-observability-operations.md) | P2 | 4-6d | 5, 7 | Local gates, telemetry, fail-closed readiness, one-command release verification and JSON restore drill complete; production alerts/database restore pending |
-| 9 | [Release certification and documentation](./phase-09-release-certification-documentation.md) | P1 | 3-5d | 3-8 | Production candidate deployed; Supabase rollout and live RLS matrix, PayOS rotation/webhook and Cloudflare Worker smoke complete; immutable commit/CI, full two-device lifecycle and alert/restore evidence pending |
+| 9 | [Release certification and documentation](./phase-09-release-certification-documentation.md) | P1 | 3-5d | 3-8 | Production candidate deployed; immutable local certification and GitHub CI, Supabase rollout/live RLS matrix, PayOS rotation/webhook and Worker smoke complete; full two-device lifecycle and alert/restore evidence pending |
 
 ## Global Acceptance Criteria
 
 - [x] Anonymous and cross-family reads/writes fail in automated RLS tests.
 - [ ] Pairing tokens are high entropy, expiring, one-time/revocable, rate-limited, and never reveal parent PIN or unrelated family data.
-- [ ] Unsigned, invalid, replayed, mismatched, or client-simulated payments cannot grant entitlement.
+- [x] Unsigned, invalid, replayed, mismatched, or client-simulated payments cannot grant entitlement.
 - [ ] Two-device E2E passes: child completion -> parent approval -> points -> redemption -> parent delivery -> reconnect.
-- [ ] Account/family switch leaves zero prior-family records in memory, storage, UI, requests, or cache.
-- [ ] Demo mode is visibly labeled and technically isolated from production services.
-- [ ] All nine locales pass key parity and core-flow E2E; no mixed-language strings in scoped flows; document language is correct.
-- [ ] WCAG 2.2 AA audit passes for keyboard, focus, labels, contrast, zoom/reflow, reduced motion, errors, and live state changes.
-- [ ] CI passes lint, typecheck, unit, integration, RLS, API, E2E, accessibility, build, dependency and secret checks.
+- [x] Account/family switch leaves zero prior-family records in memory, storage, UI, requests, or cache.
+- [x] Demo mode is visibly labeled and technically isolated from production services.
+- [x] All nine locales pass key parity and core-flow E2E; no mixed-language strings in scoped flows; document language is correct.
+- [x] WCAG 2.2 AA audit passes for keyboard, focus, labels, contrast, zoom/reflow, reduced motion, errors, and live state changes.
+- [x] CI passes lint, typecheck, unit, integration, RLS, API, E2E, accessibility, build, dependency and secret checks.
 - [ ] Production dashboards alert on auth, sync, payment and webhook failures; rollback/runbooks are tested.
-- [ ] README, architecture, privacy/data lifecycle, deployment, migration, backup, recovery, and incident docs match verified behavior.
+- [x] README, architecture, privacy/data lifecycle, deployment, migration, backup, recovery, and incident docs match verified behavior.
 
 ## Release Gates
 
@@ -112,6 +112,6 @@ None required to create the plan. Before Phase 2 implementation, confirm access 
 - Full verification tier required: 9 phases.
 - Audit file/path claims checked against current source before plan creation.
 - Local release evidence: [release-evidence.md](./reports/release-evidence.md).
-- Production candidate is live on Cloudflare with migrated Supabase, a passing live family-boundary matrix and rotated PayOS credentials; immutable commit/CI, full two-device lifecycle, alert delivery, restore evidence and launch-market legal review remain.
+- Production candidate is live on Cloudflare with migrated Supabase, a passing live family-boundary matrix and rotated PayOS credentials; clean SHA-bound local certification and GitHub CI pass. Full two-device lifecycle, alert delivery, restore evidence and launch-market legal review remain.
 
 <!-- slug: complete-product-hardening -->

@@ -1,7 +1,7 @@
 # Security Sign-off
 
 Date: 2026-09-21  
-Scope: local release-candidate working tree based on `a992f55dd76b9be12e1f8bdd97cbb0c62f45b1d8`  
+Scope: immutable release candidate `73814211ef63a80bcce11ba005329ec6ce192e68`  
 Decision: **Pass for credentialed preview; live RLS and ingress verification complete, operational and legal release gates remain**
 
 ## Coverage
