@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Check, Clock, Copy } from 'lucide-react';
+import { Check, Clock, Copy, ExternalLink } from 'lucide-react';
 import type { PaymentResult } from '@/lib/payos';
 import { useTranslation } from '@/lib/i18n/context';
 
@@ -51,21 +51,21 @@ export function CheckoutPaymentDetails({
             <div className="text-xs font-black text-slate-800 dark:text-slate-100">
               {t.scanWithBankApp}
             </div>
-            <p className="text-[11px] text-slate-400">VCB, MB, Techcom, BIDV, VPBank, ACB, Momo...</p>
+            <p className="text-xs text-slate-400">VCB, MB, Techcom, BIDV, VPBank, ACB, Momo...</p>
           </div>
         </div>
 
         <div className="space-y-3 text-xs">
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700 space-y-1">
-            <div className="text-[10px] uppercase font-bold text-slate-400">{t.bankNameLabel}</div>
+            <div className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400">{t.accountNameLabel}</div>
             <div className="font-bold text-slate-800 dark:text-slate-100">
-              {payment.bankName || 'MBBank'}
+              {payment.accountName}
             </div>
           </div>
 
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700 flex items-center justify-between gap-2">
             <div className="min-w-0">
-              <div className="text-[10px] uppercase font-bold text-slate-400">{t.accountNumberLabel}</div>
+              <div className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400">{t.accountNumberLabel}</div>
               <div className="font-mono font-black text-sm text-slate-900 dark:text-white truncate">
                 {payment.accountNumber}
               </div>
@@ -80,13 +80,15 @@ export function CheckoutPaymentDetails({
           </div>
 
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700">
-            <div className="text-[10px] uppercase font-bold text-slate-400">{t.accountNameLabel}</div>
-            <div className="font-bold text-slate-800 dark:text-slate-100">{payment.accountName}</div>
+            <div className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400">
+              {t.bankNameLabel} / BIN
+            </div>
+            <div className="font-mono font-bold text-slate-800 dark:text-slate-100">{payment.bankBin}</div>
           </div>
 
           <div className="p-3 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/50 flex items-center justify-between gap-2">
             <div>
-              <div className="text-[10px] uppercase font-bold text-indigo-500">{t.exactAmountLabel}</div>
+              <div className="text-xs uppercase font-bold text-indigo-600 dark:text-indigo-400">{t.exactAmountLabel}</div>
               <div className="font-mono font-black text-base text-indigo-700 dark:text-indigo-300">
                 {payment.amount.toLocaleString(language === 'vi' ? 'vi-VN' : 'en-US')} VNĐ
               </div>
@@ -102,12 +104,12 @@ export function CheckoutPaymentDetails({
 
           <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-400 dark:border-amber-600/80 space-y-1.5">
             <div className="flex items-center justify-between">
-              <div className="text-[10px] uppercase font-black text-amber-700 dark:text-amber-300">
+              <div className="text-xs uppercase font-black text-amber-700 dark:text-amber-300">
                 {t.transferMemoLabel}
               </div>
               <button
                 onClick={() => onCopy(payment.description, 'memo')}
-                className="min-h-[34px] py-1 px-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-[11px] font-black transition-all flex items-center gap-1 cursor-pointer active:scale-95 shrink-0"
+                className="min-h-[34px] py-1 px-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-black transition-all flex items-center gap-1 cursor-pointer active:scale-95 shrink-0"
               >
                 {copiedField === 'memo' ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                 <span>{copiedField === 'memo' ? t.copiedAction : t.copyAction}</span>
@@ -116,12 +118,22 @@ export function CheckoutPaymentDetails({
             <div className="font-mono font-black text-sm text-slate-900 dark:text-white bg-white dark:bg-zinc-800 p-2 rounded-xl border border-amber-200 dark:border-amber-800 break-all">
               {payment.description}
             </div>
-            <p className="text-[10px] text-amber-800 dark:text-amber-200 leading-tight">
+            <p className="text-xs text-amber-800 dark:text-amber-200 leading-tight">
               {t.transferMemoWarning}
             </p>
           </div>
         </div>
       </div>
+
+      <a
+        href={payment.checkoutUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex min-h-11 w-full items-center justify-center gap-2 rounded-2xl border border-indigo-200 bg-white px-4 py-2.5 text-sm font-bold text-indigo-700 transition-colors hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-indigo-800 dark:bg-zinc-900 dark:text-indigo-300 dark:hover:bg-indigo-950/40"
+      >
+        <ExternalLink className="h-4 w-4" />
+        <span>{t.secureCheckoutAction}</span>
+      </a>
 
       {copiedField === 'status-pending' && (
         <div className="p-2.5 rounded-xl bg-blue-50 text-blue-700 text-xs font-bold text-center animate-fade-in">

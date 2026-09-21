@@ -7,3 +7,6 @@
 \ir migrations/202609200002_authoritative_social.sql
 \ir migrations/202609210001_force_server_table_rls.sql
 \ir migrations/202609210002_child_device_commands.sql
+\ir migrations/202609210003_persistent_pairing_credentials.sql
+\ir migrations/202609210004_habit_instructions.sql
+\ir migrations/202609210005_customer_admin.sql

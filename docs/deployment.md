@@ -12,7 +12,9 @@
 
 Các lệnh Cloudflare luôn loại server secret khỏi môi trường build để chúng chỉ tồn tại dưới dạng Worker secrets lúc chạy. Không đặt `PAYOS_*`, `SUPABASE_SERVICE_ROLE_KEY` hoặc `PAIRING_RATE_LIMIT_SECRET` trong `.env.local`; wrapper sẽ chặn build nếu phát hiện giá trị.
 4. Khai báo public variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_APP_URL`.
-5. Khai báo encrypted secrets: `SUPABASE_SERVICE_ROLE_KEY`, `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`, `PAIRING_RATE_LIMIT_SECRET`.
+5. Khai báo encrypted secrets: `SUPABASE_SERVICE_ROLE_KEY`, `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`, `PAIRING_RATE_LIMIT_SECRET` và `ADMIN_EMAILS` (danh sách email quản trị, phân cách bằng dấu phẩy).
+
+Trang `/admin` chỉ trả dữ liệu khi tài khoản Google hiện tại có email nằm trong `ADMIN_EMAILS`. Quyền này được kiểm tra lại ở mọi API quản trị; không dựa vào việc ẩn/hiện liên kết trên giao diện. Sau migration `202609210005_customer_admin.sql`, quản trị viên có thể cập nhật gói, ghi chú chăm sóc khách hàng và tạo coupon tặng ngày sử dụng. Việc gửi quảng cáo chỉ áp dụng với khách hàng đã chủ động bật đồng ý nhận tin.
 6. Đặt `NEXT_PUBLIC_APP_URL` đúng custom HTTPS origin.
 7. Đăng ký webhook PayOS tới `https://<origin>/api/payment/webhook`.
 

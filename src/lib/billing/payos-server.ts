@@ -18,6 +18,9 @@ const payOSResponseSchema = z.object({
       accountNumber: z.string(),
       accountName: z.string(),
       bin: z.string(),
+      amount: z.number().int().positive(),
+      description: z.string().min(1),
+      orderCode: z.number().int().positive(),
       qrCode: z.string(),
       checkoutUrl: z.string().url(),
       paymentLinkId: z.string(),
@@ -90,14 +93,21 @@ export async function createPayOSPayment(input: {
   }
 
   const provider = parsed.data.data;
+  if (
+    provider.orderCode !== input.orderCode
+    || provider.amount !== plan.price
+    || provider.description !== description
+  ) {
+    throw new Error('PayOS returned payment details that do not match the order.');
+  }
+
   return {
-    orderCode: input.orderCode,
-    amount: plan.price,
-    description,
+    orderCode: provider.orderCode,
+    amount: provider.amount,
+    description: provider.description,
     accountNumber: provider.accountNumber,
     accountName: provider.accountName,
-    bin: provider.bin,
-    bankName: 'Ngân hàng nhận thanh toán qua PayOS',
+    bankBin: provider.bin,
     qrCode: provider.qrCode,
     vietQrUrl: await QRCode.toDataURL(provider.qrCode, { width: 448, margin: 1 }),
     checkoutUrl: provider.checkoutUrl,

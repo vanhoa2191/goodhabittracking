@@ -8,7 +8,7 @@
 
 - Family tenancy và strict RLS; không có anonymous ownership bypass.
 - UUID canonical, foreign key cùng family và transaction row locks.
-- Pairing one-time, TTL 10 phút, tối đa 5 lần thử, rate limit, token digest, revoke theo thiết bị.
+- Mã ghép nối cố định theo từng bé, lưu dưới dạng digest; phụ huynh có thể chủ động làm mới mã, thu hồi từng thiết bị và hệ thống vẫn áp dụng rate limit.
 - PayOS fail-closed: bắt buộc cấu hình, strict webhook schema, HMAC timing-safe, amount/description/owner check và idempotency key.
 - Trial chỉ dùng một lần; entitlement và giới hạn số bé được kiểm tra ở database.
 - Leaderboard gia đình/công khai mặc định riêng tư; projection công khai không có family/user ID hoặc thời điểm tạo.

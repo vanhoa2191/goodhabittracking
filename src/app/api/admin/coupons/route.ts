@@ -1,0 +1,9 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { isAdminUser } from '@/lib/auth/admin-access';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
+async function actor() { const client = await createServerSupabaseClient(); const { data: { user } } = await client.auth.getUser(); return isAdminUser(user) ? user : null; }
+export async function GET() { if (!await actor()) return NextResponse.json({ error:'Forbidden.' },{status:403}); const { data,error }=await createAdminSupabaseClient().from('coupons').select('*').order('created_at',{ascending:false}); return error?NextResponse.json({error:'Could not load coupons.'},{status:503}):NextResponse.json({coupons:data}); }
+const schema=z.object({code:z.string().trim().toUpperCase().regex(/^[A-Z0-9_-]{3,32}$/),description:z.string().trim().max(200),discountPercent:z.number().int().min(1).max(100).nullable(),bonusDays:z.number().int().min(1).max(3650).nullable(),maxRedemptions:z.number().int().positive().nullable(),expiresAt:z.string().datetime().nullable(),active:z.boolean()}).refine(v=>v.discountPercent!==null||v.bonusDays!==null);
+export async function POST(request:NextRequest){const user=await actor();if(!user)return NextResponse.json({error:'Forbidden.'},{status:403});const parsed=schema.safeParse(await request.json().catch(()=>null));if(!parsed.success)return NextResponse.json({error:'Invalid coupon.'},{status:400});const v=parsed.data;const {error}=await createAdminSupabaseClient().from('coupons').upsert({code:v.code,description:v.description||null,discount_percent:v.discountPercent,bonus_days:v.bonusDays,max_redemptions:v.maxRedemptions,expires_at:v.expiresAt,active:v.active,created_by:user.id,updated_at:new Date().toISOString()},{onConflict:'code'});return error?NextResponse.json({error:'Could not save coupon.'},{status:503}):NextResponse.json({success:true});}

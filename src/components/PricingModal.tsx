@@ -16,7 +16,7 @@ import { useAppStore } from '@/lib/store';
 import { PRICING_PLANS } from '@/lib/payos';
 import { SubscriptionPlan, Language } from '@/types';
 import { useTranslation } from '@/lib/i18n/context';
-import { useModalFocus } from '@/lib/use-modal-focus';
+import { ModalShell } from '@/components/ui/ModalShell';
 
 interface PricingModalProps {
   isOpen: boolean;
@@ -158,75 +158,9 @@ const PLAN_LOCALIZATION: Record<
       cta: '연간 플랜 선택 (399k - 35% 할인)',
     },
   },
-  lifetime: {
-    vi: {
-      name: 'Gói Trọn Đời',
-      desc: 'Đầu tư 1 lần duy nhất, con và cả gia đình sử dụng mãi mãi',
-      period: 'Trọn đời',
-      badge: '💎 HERO VIP TRỌN ĐỜI',
-      cta: 'Sở hữu Trọn Đời (799k)',
-    },
-    en: {
-      name: 'Lifetime Hero Plan',
-      desc: 'One-time investment, perpetual access for your entire family',
-      period: 'Lifetime',
-      badge: '💎 LIFETIME HERO VIP',
-      cta: 'Get Lifetime Access (799k)',
-    },
-    fr: {
-      name: 'Forfait À Vie',
-      desc: 'Investissement unique, accès illimité pour toute votre famille',
-      period: 'À vie',
-      badge: '💎 VIP À VIE',
-      cta: 'Obtenir l’Accès À Vie (799k)',
-    },
-    de: {
-      name: 'Lebenslanges Paket',
-      desc: 'Einmalige Investition, lebenslanger Zugang für die ganze Familie',
-      period: 'Lebenslang',
-      badge: '💎 LEBENSLANGER VIP',
-      cta: 'Lebenslang sichern (799k)',
-    },
-    it: {
-      name: 'Piano a Vita',
-      desc: 'Un solo investimento, accesso per sempre per tutta la tua famiglia',
-      period: 'A vita',
-      badge: '💎 VIP A VITA',
-      cta: 'Ottieni Accesso a Vita (799k)',
-    },
-    es: {
-      name: 'Plan de por Vida',
-      desc: 'Una única inversión, acceso ilimitado para toda la familia',
-      period: 'De por vida',
-      badge: '💎 VIP DE POR VIDA',
-      cta: 'Obtener de por Vida (799k)',
-    },
-    zh: {
-      name: '终身英雄套餐',
-      desc: '仅需一次性投资，全家永久享受所有 Pro 专属特权',
-      period: '终身',
-      badge: '💎 终身尊享 VIP',
-      cta: '终身买断 (799k)',
-    },
-    ja: {
-      name: 'ライフタイムプラン',
-      desc: '1度のお支払いで、ご家族全員がずっと使い続けられる買い切りプラン',
-      period: '買い切り',
-      badge: '💎 永久VIP',
-      cta: '買い切りプランを購入 (799k)',
-    },
-    ko: {
-      name: '평생 소장 플랜',
-      desc: '단 한 번의 투자로 온 가족이 평생 사용하는 프리미엄 혜택',
-      period: '평생',
-      badge: '💎 평생 VIP 소장',
-      cta: '평생 소장하기 (799k)',
-    },
-  },
 };
 
 export function PricingModal({ isOpen, onClose }: PricingModalProps) {
-  useModalFocus(isOpen, onClose);
   const {
     isPro,
     subscriptionPlan,
@@ -265,14 +199,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={t.pricingModalTitle}
-        className="relative w-full max-w-5xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 flex flex-col max-h-[92vh] overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ModalShell isOpen={isOpen} onClose={onClose} label={t.pricingModalTitle} maxWidth="5xl">
         {/* Fixed Modal Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 sticky top-0 z-10">
           <div className="flex items-center gap-3">
@@ -284,7 +211,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                 <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 tracking-tight">
                   {t.pricingModalTitle}
                 </h2>
-                <span className="hidden sm:inline-flex text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+                <span className="hidden sm:inline-flex text-xs font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
                   {t.vietQrOneTouch || 'VietQR 1-Chạm'}
                 </span>
               </div>
@@ -311,7 +238,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
             <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="space-y-1.5 max-w-xl">
                 <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-black tracking-wider uppercase">
+                  <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-xs font-black tracking-wider uppercase">
                     {t.specialOffer}
                   </span>
                   <span className="text-xs font-bold text-amber-200">{t.noCreditCardNeeded}</span>
@@ -383,7 +310,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                   {loc.badge && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                       <span
-                        className={`text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm ${
+                        className={`text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm ${
                           plan.popular
                             ? 'bg-indigo-600 text-white'
                             : 'bg-amber-500 text-white'
@@ -399,7 +326,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                       <h4 className="font-black text-base text-slate-800 dark:text-slate-100 flex items-center justify-between">
                         <span>{loc.name}</span>
                         {plan.savings && (
-                          <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full">
+                          <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full">
                             {plan.savings}
                           </span>
                         )}
@@ -419,12 +346,12 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                         <span className="text-xs text-slate-400 font-medium">{loc.period}</span>
                       </div>
                       {plan.originalPrice && (
-                        <div className="text-[11px] text-slate-400 line-through mt-0.5">
+                        <div className="text-xs text-slate-400 line-through mt-0.5">
                           {plan.originalPrice.toLocaleString(language === 'vi' ? 'vi-VN' : 'en-US')} VNĐ
                         </div>
                       )}
                       {plan.dailyEquivalent && (
-                        <div className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 mt-1">
+                        <div className="text-xs font-bold text-indigo-600 dark:text-indigo-400 mt-1">
                           ⚡ {plan.dailyEquivalent}
                         </div>
                       )}
@@ -525,7 +452,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <h5 className="font-bold text-xs text-slate-800 dark:text-slate-200">{t.noCreditCardNeeded}</h5>
-              <p className="text-[11px] text-slate-400">{t.freeTrialDays}</p>
+              <p className="text-xs text-slate-400">{t.freeTrialDays}</p>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800 space-y-1">
@@ -533,7 +460,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                 <Zap className="w-4 h-4" />
               </div>
               <h5 className="font-bold text-xs text-slate-800 dark:text-slate-200">{t.vietQrOneTouch || 'VietQR'}</h5>
-              <p className="text-[11px] text-slate-400">{t.scanWithBankApp}</p>
+              <p className="text-xs text-slate-400">{t.scanWithBankApp}</p>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800 space-y-1">
@@ -541,7 +468,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                 <HeartHandshake className="w-4 h-4" />
               </div>
               <h5 className="font-bold text-xs text-slate-800 dark:text-slate-200">{t.appName}</h5>
-              <p className="text-[11px] text-slate-400">{t.appSlogan}</p>
+              <p className="text-xs text-slate-400">{t.appSlogan}</p>
             </div>
           </div>
         </div>
@@ -562,7 +489,6 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }

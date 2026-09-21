@@ -27,7 +27,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Không giới hạn số lượng bé',
       'Mở khóa trọn bộ 50+ thói quen & 7 Bố thí',
       'Lộ trình 4 tuần & 12 tháng chuyên sâu',
-      'Đồng bộ Cloud Supabase đa thiết bị',
+      'Đồng bộ đám mây trên nhiều thiết bị',
       'Bảng xếp hạng & Thử thách nhóm',
       'Không tự động trừ tiền khi hết hạn',
     ],
@@ -43,7 +43,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     description: 'Chỉ bằng 1/2 ly trà sữa, tạo dựng nếp sống vững chắc cho con',
     features: [
       'Không giới hạn số lượng bé',
-      'Đồng bộ tức thì Cloud Supabase đa thiết bị',
+      'Đồng bộ tức thì trên nhiều thiết bị',
       'Mở khóa toàn bộ Thư viện thói quen & Lộ trình',
       'Báo cáo phân tích chuyên sâu hàng tuần',
       'Bảng xếp hạng thi đua gia đình & liên minh',
@@ -72,24 +72,6 @@ export const PRICING_PLANS: PricingPlan[] = [
     ],
     ctaText: 'Chọn Gói Năm (399k - Khuyên Dùng)',
   },
-  {
-    id: 'lifetime',
-    name: 'Gói Trọn Đời',
-    badge: '💎 HERO VIP TRỌN ĐỜI',
-    price: 799000,
-    originalPrice: 1500000,
-    savings: 'Tiết kiệm 50%',
-    periodLabel: 'Trọn đời',
-    description: 'Đầu tư 1 lần duy nhất, con và cả gia đình sử dụng mãi mãi',
-    features: [
-      'Sở hữu vĩnh viễn toàn bộ tính năng Pro',
-      'Không bao giờ phải gia hạn thêm bất kỳ khoản phí nào',
-      'Cập nhật miễn phí mọi tính năng mới trong tương lai',
-      'Tặng trọn bộ tài liệu độc quyền & Chứng chỉ KidHero',
-      'Kênh hỗ trợ VIP trọn đời',
-    ],
-    ctaText: 'Sở hữu Trọn Đời (799k)',
-  },
 ];
 
 export function getPricingPlan(planId: SubscriptionPlan): PricingPlan {
@@ -102,8 +84,7 @@ export interface PaymentResult {
   description: string;
   accountNumber: string;
   accountName: string;
-  bin: string;
-  bankName: string;
+  bankBin: string;
   qrCode: string;
   vietQrUrl: string;
   checkoutUrl: string;

@@ -1,0 +1,11 @@
+drop function if exists public.redeem_family_coupon(text);
+drop table if exists public.coupon_redemptions;
+drop table if exists public.coupons;
+drop trigger if exists sync_customer_identity_trigger on auth.users;
+drop function if exists public.sync_customer_identity();
+grant select, insert, update on public.parent_profiles to authenticated;
+alter table public.parent_profiles drop column if exists admin_notes;
+alter table public.parent_profiles drop column if exists customer_tags;
+alter table public.parent_profiles drop column if exists marketing_consent;
+alter table public.parent_profiles drop column if exists phone;
+alter table public.parent_profiles drop column if exists email;

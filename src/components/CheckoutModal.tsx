@@ -13,8 +13,8 @@ import type { PricingPlan } from '@/types';
 import type { PaymentResult } from '@/lib/payos';
 import { createPaymentOrder, readPaymentStatus } from '@/lib/billing/payment-client';
 import { useTranslation } from '@/lib/i18n/context';
-import { useModalFocus } from '@/lib/use-modal-focus';
 import { CheckoutPaymentDetails } from '@/components/CheckoutPaymentDetails';
+import { ModalShell } from '@/components/ui/ModalShell';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -23,9 +23,8 @@ interface CheckoutModalProps {
 }
 
 export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
-  useModalFocus(isOpen, onClose);
   const { syncNow } = useAppStore();
-  const { language, t } = useTranslation();
+  const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
   const [paymentData, setPaymentData] = useState<PaymentResult | null>(null);
@@ -140,14 +139,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   const timeFormatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/65 backdrop-blur-sm animate-fade-in">
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={t.checkoutModalTitle}
-        className="relative w-full max-w-2xl bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 flex flex-col max-h-[92vh] overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ModalShell isOpen={isOpen} onClose={onClose} label={t.checkoutModalTitle} maxWidth="2xl">
         {/* Modal Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 sticky top-0 z-10">
           <div className="flex items-center gap-3">
@@ -159,12 +151,12 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
                 <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 tracking-tight">
                   {t.checkoutModalTitle}
                 </h2>
-                <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
+                <span className="text-xs font-black uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">
                   PayOS 24/7
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                {plan.name} &bull; {plan.price.toLocaleString(language === 'vi' ? 'vi-VN' : 'en-US')} VNĐ
+                {plan.name}
               </p>
             </div>
           </div>
@@ -242,7 +234,6 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+    </ModalShell>
   );
 }
