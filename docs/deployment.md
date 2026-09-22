@@ -21,6 +21,15 @@ Trang `/admin` chỉ trả dữ liệu khi tài khoản Google hiện tại có 
 Không đưa secret vào `wrangler.jsonc`, GitHub Actions log hoặc `NEXT_PUBLIC_*`.
 `PAIRING_RATE_LIMIT_SECRET` phải là giá trị ngẫu nhiên tối thiểu 32 ký tự.
 
+## Tự động phát hành từ `main`
+
+Workflow CI chỉ phát hành Worker sau khi cả kiểm tra chất lượng lẫn kiểm tra trình duyệt đều đạt. Thiết lập một lần trong phần cấu hình của repository GitHub:
+
+1. Secrets: `CLOUDFLARE_API_TOKEN` (quyền Workers deploy) và `CLOUDFLARE_ACCOUNT_ID`.
+2. Variables: `NEXT_PUBLIC_SUPABASE_URL` và `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
+`NEXT_PUBLIC_APP_URL` đã được cố định là origin production trong workflow. Khi thiếu một cấu hình bắt buộc, bước phát hành được bỏ qua; các job kiểm thử vẫn chạy bình thường. Không ghi các giá trị này vào workflow hoặc log CI.
+
 Sau migration production, chạy `npm run verify:live-boundaries`. Lệnh dùng quyền operator của Supabase CLI để tạo hai tài khoản tổng hợp, kiểm tra anonymous/same-family/cross-family RLS trên dữ liệu live và luôn dọn dữ liệu thử. Không chạy lệnh này trong CI công khai hoặc trên máy không được phép quản trị project.
 
 Sau khi Worker và migration mới cùng được phát hành, chạy `npm run verify:live-lifecycle` để chứng nhận mã ghép nối cố định, làm mới mã không ngắt thiết bị cũ, child completion, parent approval, reward delivery, reconnect và revoke bằng dữ liệu tổng hợp tự dọn. Lệnh này cũng chỉ dành cho operator được phép quản trị project.
