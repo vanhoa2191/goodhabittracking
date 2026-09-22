@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Fraunces, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { cookies, headers } from "next/headers";
 import { cache } from "react";
 import "./globals.css";
@@ -11,6 +12,25 @@ import {
 import { translations } from "@/lib/i18n/translations";
 import { AppearanceProvider } from "@/lib/appearance-context";
 import { AppStoreProvider } from "@/lib/store";
+
+const displayFont = Fraunces({
+  axes: ['SOFT', 'opsz'],
+  display: 'swap',
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-display',
+});
+
+const uiFont = Plus_Jakarta_Sans({
+  display: 'swap',
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-ui',
+});
+
+const monoFont = JetBrains_Mono({
+  display: 'swap',
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-mono',
+});
 
 const appearanceScript = `(function(){try{var value=localStorage.getItem('kidhabit_theme');var dark=value==='dark'||(value==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',dark);document.documentElement.style.colorScheme=dark?'dark':'light'}catch(_){document.documentElement.classList.remove('dark')}})()`;
 
@@ -44,9 +64,9 @@ export default async function RootLayout({
   const initialLanguage = await getRequestLanguage();
 
   return (
-    <html lang={initialLanguage} className="h-full antialiased" suppressHydrationWarning>
+    <html lang={initialLanguage} className={`h-full antialiased ${displayFont.variable} ${uiFont.variable} ${monoFont.variable}`} suppressHydrationWarning>
       <head><script dangerouslySetInnerHTML={{ __html: appearanceScript }} /></head>
-      <body className="min-h-full flex flex-col bg-slate-50/50 dark:bg-zinc-950 text-slate-900 dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
+      <body className="min-h-full flex flex-col bg-app-surface dark:bg-zinc-950 text-ink dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
         <AppearanceProvider>
           <I18nProvider initialLanguage={initialLanguage}>
             <AppStoreProvider>{children}</AppStoreProvider>

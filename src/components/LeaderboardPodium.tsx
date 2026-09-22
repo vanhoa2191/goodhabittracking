@@ -3,6 +3,7 @@
 import { Crown, Trophy } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import type { LeaderboardEntry, LeaderboardPeriod } from '@/types';
+import { MascotAvatar } from './MascotAvatar';
 
 type Props = {
   readonly entries: readonly LeaderboardEntry[];
@@ -31,7 +32,7 @@ function PodiumPlace({ entry, place, pointsLabel }: PodiumPlaceProps) {
   return <div className={`flex flex-col items-center text-center ${isWinner ? '-mt-6' : ''}`}>
     {isWinner && <Crown className="mb-1 h-6 w-6 text-amber-400" />}
     <div className="relative mb-2">
-      <div className={`${avatarStyle} flex items-center justify-center`} style={{ backgroundColor: `${entry.themeColor}${isWinner ? '30' : '20'}` }}>{entry.avatar}</div>
+      <div className={`${avatarStyle} flex items-center justify-center`} style={{ backgroundColor: `${entry.themeColor}${isWinner ? '30' : '20'}` }}><MascotAvatar avatar={entry.avatar} alt="" className="h-full w-full" /></div>
       <span className={`absolute -bottom-2 -right-1 flex items-center justify-center rounded-full border-2 border-white font-black ${rankSize} ${rankStyle}`}>{place}</span>
     </div>
     <div className={`${isWinner ? 'font-black sm:text-base' : 'font-bold sm:text-sm'} w-full truncate text-xs text-slate-800 dark:text-slate-100`}>{entry.nickname}</div>

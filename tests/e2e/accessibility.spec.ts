@@ -14,7 +14,6 @@ test('@a11y landing page has no serious or critical accessibility violations', a
 
 test('@a11y pricing dialog traps focus, closes with Escape, and restores focus', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
 
   const opener = page.getByRole('button', { name: 'PRO' });
   await opener.focus();

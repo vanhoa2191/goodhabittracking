@@ -137,7 +137,6 @@ test('payment status failures are shown instead of reported as pending', async (
   });
 
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
   await page.getByRole('button', { name: 'PRO' }).click();
   const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
   await pricingDialog.getByRole('button', { name: 'Nâng cấp Gói Tháng (49k)' }).click();
@@ -177,7 +176,6 @@ test('payment checkout shows the exact provider response and secure fallback', a
 
   // When
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
   await page.getByRole('button', { name: 'PRO' }).click();
   const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
   await pricingDialog.getByRole('button', { name: 'Chọn Gói Năm (399k - Tiết kiệm 32%)' }).click();

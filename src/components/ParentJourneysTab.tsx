@@ -10,6 +10,7 @@ import { ModalShell } from '@/components/ui/ModalShell';
 import { getJourneyPeriodLabel, journeyCopy } from '@/lib/i18n/journey-copy';
 import { getJourneyHabitText } from '@/lib/i18n/journey-content';
 import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
+import { getMascotLabel } from '@/lib/mascots';
 
 export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
   const { profiles, createActivities } = useAppStore();
@@ -123,7 +124,7 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
                 <label htmlFor="journey-target-child" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">{copy.applyTo}</label>
                 <select id="journey-target-child" value={targetChildId} onChange={(event) => setTargetChildId(event.target.value)} className="w-full py-2.5 px-3 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-xs font-semibold">
                   <option value="">{t.allChildren}</option>
-                  {profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.name} ({profile.avatar})</option>)}
+                  {profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.name} ({getMascotLabel(profile.avatar)})</option>)}
                 </select>
               </div>
               {appliedNotice && <div className="p-3 rounded-xl bg-emerald-50 text-emerald-700 text-xs font-bold animate-bounce text-center">✓ {appliedNotice}</div>}

@@ -17,6 +17,8 @@ import { sounds } from '@/lib/sound';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { useTranslation } from '@/lib/i18n/context';
 import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
+import { MASCOTS, getMascotLabel } from '@/lib/mascots';
+import { MascotAvatar } from './MascotAvatar';
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -55,8 +57,8 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   const [childName, setChildName] = useState('');
   const [childNickname, setChildNickname] = useState('');
   const [childAge, setChildAge] = useState<number>(5);
-  const [childAvatar, setChildAvatar] = useState('🌟');
-  const childThemeColor = '#6366f1';
+  const [childAvatar, setChildAvatar] = useState('mascot:leo');
+  const [childThemeColor, setChildThemeColor] = useState('#F59E0B');
   const [autoApplyHabits, setAutoApplyHabits] = useState(true);
   const [hasConsent, setHasConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -341,21 +343,27 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               {/* Avatar Mascot & Color Selection */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                  {copy.luckyMascot(childAvatar)}
+                  {copy.luckyMascot(getMascotLabel(childAvatar))}
                 </label>
-                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
-                  {['🦁', '🐰', '🐼', '👶', '🦊', '🐱', '🐶', '🦄', '🚀', '🌟', '👑', '🦸'].map((emoji) => (
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  {MASCOTS.map((mascot) => (
                     <button
-                      key={emoji}
+                      key={mascot.id}
                       type="button"
-                      onClick={() => setChildAvatar(emoji)}
-                      className={`w-11 h-11 rounded-2xl text-2xl flex items-center justify-center transition-all shrink-0 cursor-pointer ${
-                        childAvatar === emoji
-                          ? 'bg-indigo-100 border-2 border-indigo-600 scale-110 shadow-sm'
-                          : 'bg-slate-50 dark:bg-zinc-800 hover:bg-slate-100'
+                      onClick={() => {
+                        setChildAvatar(mascot.id);
+                        setChildThemeColor(mascot.themeColor);
+                      }}
+                      aria-pressed={childAvatar === mascot.id}
+                      className={`relative flex min-h-28 flex-col items-center justify-center rounded-2xl border p-2 transition-all ${
+                        childAvatar === mascot.id
+                          ? 'border-indigo-600 bg-indigo-50 shadow-sm ring-2 ring-indigo-500/20 dark:bg-indigo-950/30'
+                          : 'border-sand-200 bg-white hover:border-indigo-200 dark:border-zinc-700 dark:bg-zinc-800'
                       }`}
                     >
-                      {emoji}
+                      <MascotAvatar avatar={mascot.id} alt="" priority className="h-20 w-20" />
+                      <span className="mt-1 text-sm font-extrabold text-sand-900 dark:text-slate-100">{mascot.name}</span>
+                      {childAvatar === mascot.id && <span className="absolute right-2 top-2 h-3 w-3 rounded-full bg-indigo-600 ring-2 ring-white" />}
                     </button>
                   ))}
                 </div>

@@ -17,9 +17,9 @@ export interface FontOption {
 export const FONT_OPTIONS: FontOption[] = [
   {
     id: 'rounded',
-    name: 'Phông Tròn Thân Thiện (Mặc định)',
-    cssFont: 'ui-rounded, "Comfortaa", "Nunito", "Quicksand", system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
-    previewSample: 'Nét chữ tròn đáng yêu cho bé',
+    name: 'Phông Rõ Ràng Thân Thiện (Mặc định)',
+    cssFont: 'var(--font-ui), ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
+    previewSample: 'Rõ ràng, ấm áp và dễ đọc',
   },
   {
     id: 'modern',

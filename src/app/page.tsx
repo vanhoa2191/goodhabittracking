@@ -180,7 +180,13 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
+    <div
+      data-testid="app-surface"
+      data-app-mode={showLanding ? 'landing' : mode}
+      className={`min-h-screen flex flex-col justify-between transition-colors ${
+        showLanding ? 'app-mode-landing' : mode === 'kid' ? 'app-mode-kid' : 'app-mode-parent'
+      }`}
+    >
       <div>
         <Header
           onToggleLanding={handleToggleLanding}

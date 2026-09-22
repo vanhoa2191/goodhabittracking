@@ -13,6 +13,7 @@ import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 import { useAgeHabitBundleMutation } from '@/lib/store/use-age-habit-bundle-mutation';
 import { getProfileMutationCopy } from '@/lib/i18n/profile-mutation-copy';
 import { readPairingCredential, type PairingCredential } from '@/lib/store/pairing-client';
+import { MascotAvatar } from './MascotAvatar';
 
 interface ParentChildrenTabProps {
   onAdjustPoints: (childId: string) => void;
@@ -154,7 +155,7 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
           return (
           <div key={child.id} className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800 shadow-xs flex flex-col justify-between gap-5">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-3xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center text-4xl shadow-inner">{child.avatar}</div>
+              <div className="w-16 h-16 rounded-3xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center shadow-inner"><MascotAvatar avatar={child.avatar} alt="" className="h-16 w-16 text-4xl" /></div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h4 className="font-extrabold text-base text-slate-800 dark:text-slate-100 truncate">{child.name}</h4>

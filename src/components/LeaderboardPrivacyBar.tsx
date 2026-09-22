@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useTranslation } from '@/lib/i18n/context';
 import { getProfileMutationCopy } from '@/lib/i18n/profile-mutation-copy';
 import type { ChildProfile } from '@/types';
+import { MascotAvatar } from './MascotAvatar';
 
 type Props = {
   readonly child: ChildProfile;
@@ -27,7 +28,7 @@ export function LeaderboardPrivacyBar({ child, onUpdate }: Props) {
   return <div className="flex animate-fade-in flex-col gap-2 rounded-2xl border border-indigo-100 bg-indigo-50/70 p-3.5 text-xs shadow-xs dark:border-zinc-800 dark:bg-zinc-900/80">
     <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
       <div className="flex items-center gap-3">
-        <span className="text-2xl">{child.avatar}</span>
+        <MascotAvatar avatar={child.avatar} alt="" className="h-11 w-11 text-2xl" />
         <div>
           <div className="font-medium text-slate-600 dark:text-slate-300">{t.currentDisplayMode}{' '}<strong className="text-sm font-extrabold text-indigo-600 dark:text-indigo-400">{child.showRealNameOnLeaderboard ? child.name : (child.nickname || child.name)}</strong></div>
           <div className="mt-0.5 text-xs text-slate-400">{child.showRealNameOnLeaderboard ? `👤 ${t.showRealNameOption} (${t.realName}: ${child.name})` : `🛡️ ${t.showNicknameOnly}`}</div>

@@ -38,6 +38,8 @@ import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 import { getProfileMutationCopy } from '@/lib/i18n/profile-mutation-copy';
 import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
 import { useModalFocus } from '@/lib/use-modal-focus';
+import { MASCOTS, getMascotLabel } from '@/lib/mascots';
+import { MascotAvatar } from './MascotAvatar';
 
 export function ParentDashboard() {
   const {
@@ -147,8 +149,8 @@ export function ParentDashboard() {
     autoLoadAgeHabits: true,
     showRealNameOnLeaderboard: false,
     isPublicOnLeaderboard: false,
-    avatar: '🌟',
-    themeColor: '#6366f1',
+    avatar: 'mascot:leo',
+    themeColor: '#F59E0B',
   });
 
   // Open Habit Create / Edit
@@ -237,8 +239,8 @@ export function ParentDashboard() {
         autoLoadAgeHabits: true,
         showRealNameOnLeaderboard: false,
         isPublicOnLeaderboard: false,
-        avatar: '🦁',
-        themeColor: '#3b82f6',
+        avatar: 'mascot:leo',
+        themeColor: '#F59E0B',
       });
     }
     setIsChildModalOpen(true);
@@ -611,7 +613,7 @@ export function ParentDashboard() {
             {/* Header */}
             <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
               <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                <span className="text-xl">{childForm.avatar}</span>
+                <MascotAvatar avatar={childForm.avatar} alt="" className="h-10 w-10 text-xl" />
                 <span>{editingChild ? t.editChildTitle : t.addChildTitle}</span>
               </h3>
               <button
@@ -775,7 +777,7 @@ export function ParentDashboard() {
               {/* Live Preview of Leaderboard Card */}
               <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/80 border border-slate-200/80 dark:border-zinc-700 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
-                  <span className="text-2xl">{childForm.avatar}</span>
+                  <MascotAvatar avatar={childForm.avatar} alt="" className="h-11 w-11 text-2xl" />
                   <div>
                     <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">
                       {copy.rankingPreview}
@@ -795,21 +797,23 @@ export function ParentDashboard() {
               {/* Mascot Avatar Selection */}
               <div>
                 <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
-                  {copy.mascot(childForm.avatar)}
+                  {copy.mascot(getMascotLabel(childForm.avatar))}
                 </label>
-                <div className="flex gap-2 overflow-x-auto pb-1">
-                  {['🦁', '🐰', '🐼', '🦊', '🐱', '🐶', '🦄', '🚀', '🌟', '👑'].map((emoji) => (
+                <div className="grid grid-cols-3 gap-2">
+                  {MASCOTS.map((mascot) => (
                     <button
                       type="button"
-                      key={emoji}
-                      onClick={() => setChildForm({ ...childForm, avatar: emoji })}
-                      className={`w-10 h-10 rounded-2xl text-2xl flex items-center justify-center transition-all shrink-0 ${
-                        childForm.avatar === emoji
-                          ? 'bg-indigo-100 border-2 border-indigo-600 scale-110'
-                          : 'bg-slate-50 dark:bg-zinc-800 hover:bg-slate-100'
+                      key={mascot.id}
+                      onClick={() => setChildForm({ ...childForm, avatar: mascot.id, themeColor: mascot.themeColor })}
+                      aria-pressed={childForm.avatar === mascot.id}
+                      className={`relative flex min-h-24 flex-col items-center justify-center rounded-2xl border p-1 transition-all ${
+                        childForm.avatar === mascot.id
+                          ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-500/20 dark:bg-indigo-950/30'
+                          : 'border-sand-200 bg-sand-50 dark:border-zinc-700 dark:bg-zinc-800'
                       }`}
                     >
-                      {emoji}
+                      <MascotAvatar avatar={mascot.id} alt="" priority className="h-16 w-16" />
+                      <span className="text-xs font-extrabold text-sand-900 dark:text-slate-100">{mascot.name}</span>
                     </button>
                   ))}
                 </div>

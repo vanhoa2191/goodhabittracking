@@ -9,6 +9,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { getDeviceConnectCopy } from '@/lib/i18n/device-connect-copy';
 import { ChildQrScanner } from './ChildQrScanner';
 import { ModalShell } from './ui/ModalShell';
+import { MascotAvatar } from './MascotAvatar';
 
 interface DeviceConnectModalProps {
   isOpen: boolean;
@@ -210,7 +211,7 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
             <div className="space-y-4 text-center py-2">
               <div className="relative inline-block mx-auto">
                 <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-emerald-400 to-teal-500 text-white flex items-center justify-center mx-auto shadow-lg text-4xl">
-                  {connectedChild?.avatar || '🦁'}
+                  <MascotAvatar avatar={connectedChild?.avatar || '🦁'} alt="" className="h-20 w-20 text-4xl" />
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-emerald-500 border-2 border-white dark:border-zinc-900 text-white flex items-center justify-center">
                   <CheckCircle2 className="w-4 h-4" />

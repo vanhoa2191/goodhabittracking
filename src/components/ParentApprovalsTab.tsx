@@ -5,6 +5,7 @@ import { Check, CheckCircle2, Gift } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { parentApprovalsCopy } from '@/lib/i18n/parent-approvals-copy';
+import { MascotAvatar } from './MascotAvatar';
 
 export function ParentApprovalsTab() {
   const {
@@ -37,7 +38,7 @@ export function ParentApprovalsTab() {
           return (
             <div key={profile.id} className="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-slate-100 dark:border-zinc-800 shadow-xs">
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl">{profile.avatar}</span>
+                <MascotAvatar avatar={profile.avatar} alt="" className="h-12 w-12 text-3xl" />
                 <div>
                   <h4 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">{profile.name}</h4>
                   <div className="flex items-center gap-2 text-xs text-slate-400">

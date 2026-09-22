@@ -32,6 +32,7 @@ import { DeviceConnectModal } from './DeviceConnectModal';
 import { getHeaderCopy } from '@/lib/i18n/header-copy';
 import { BrandMark } from '@/components/BrandMark';
 import { ThemeSelector } from '@/components/ThemeSelector';
+import { MascotAvatar } from '@/components/MascotAvatar';
 
 interface HeaderProps {
   onToggleLanding?: () => void;
@@ -98,10 +99,20 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
   };
 
   const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === language) || SUPPORTED_LANGUAGES[0];
+  const shell = isLanding ? 'landing' : mode;
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-slate-100 dark:border-zinc-800 transition-colors">
+      <header
+        data-app-shell={shell}
+        className={`sticky top-0 z-40 w-full border-b backdrop-blur-md transition-colors before:absolute before:inset-x-0 before:top-0 before:h-[3px] ${
+          shell === 'kid'
+            ? 'bg-kid-surface/95 border-amber-200 before:bg-amber-400 dark:bg-zinc-950/90 dark:border-amber-900'
+            : shell === 'parent'
+              ? 'bg-parent-surface/95 border-sand-200 before:bg-indigo-600 dark:bg-zinc-950/90 dark:border-zinc-800'
+              : 'bg-parent-surface/95 border-sand-200 before:bg-transparent dark:bg-zinc-950/90 dark:border-zinc-800'
+        }`}
+      >
         <div className="max-w-6xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-1.5 sm:gap-2">
           {/* Left: Logo & Slogan */}
           <div
@@ -128,7 +139,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                 className="flex items-center gap-1.5 sm:gap-2 min-h-[38px] sm:min-h-[40px] px-2.5 sm:px-3.5 rounded-full bg-slate-50 dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
-                <span className="text-lg sm:text-xl leading-none">{activeChild?.avatar || '🌟'}</span>
+                <MascotAvatar avatar={activeChild?.avatar || '🌟'} alt="" className="h-7 w-7 text-lg sm:h-8 sm:w-8 sm:text-xl" />
                 <span className="font-semibold text-xs sm:text-sm text-slate-700 dark:text-slate-200 max-w-[65px] sm:max-w-[130px] truncate">
                   {activeChild?.name}
                 </span>
@@ -160,7 +171,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                         }`}
                       >
                         <div className="flex items-center gap-2.5 truncate">
-                          <span className="text-2xl">{p.avatar}</span>
+                          <MascotAvatar avatar={p.avatar} alt="" className="h-10 w-10 text-2xl" />
                           <div>
                             <div className="text-sm font-medium truncate">{p.name}</div>
                             <div className="text-xs text-slate-400 flex items-center gap-1.5">
@@ -343,7 +354,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
             )}
 
             {/* Pro Subscription Badge / Upgrade Button */}
-            <button
+            {(isLanding || mode === 'parent') && <button
               type="button"
               onClick={openPricingModal}
               className={`min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-black transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
@@ -375,7 +386,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                   <span className="sm:hidden font-black">{t.proBadge}</span>
                 </>
               )}
-            </button>
+            </button>}
 
             {/* Mode Switcher (Parent Mode) - Only when logged in */}
             {hasDashboardAccess ? (

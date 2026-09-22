@@ -5,27 +5,8 @@ import { Sparkles, Palette, Check, X } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { getProfileMutationCopy } from '@/lib/i18n/profile-mutation-copy';
-
-export const AVATAR_OPTIONS = [
-  { emoji: '🦁', label: 'Sư tử dũng cảm' },
-  { emoji: '🐰', label: 'Thỏ thông thái' },
-  { emoji: '🐼', label: 'Gấu trúc an vui' },
-  { emoji: '🦊', label: 'Cáo nhanh nhẹn' },
-  { emoji: '🐱', label: 'Mèo đáng yêu' },
-  { emoji: '🐶', label: 'Cún trung thành' },
-  { emoji: '🦄', label: 'Kỳ lân ước mơ' },
-  { emoji: '🚀', label: 'Tàu vũ trụ vươn xa' },
-  { emoji: '⭐', label: 'Ngôi sao sáng' },
-  { emoji: '👑', label: 'Vương miện tự tin' },
-  { emoji: '🐯', label: 'Hổ kiên cường' },
-  { emoji: '🐻', label: 'Gấu ấm áp' },
-  { emoji: '🐬', label: 'Cá heo thân thiện' },
-  { emoji: '🦖', label: 'Khủng long mạnh mẽ' },
-  { emoji: '🦅', label: 'Đại bàng tự do' },
-  { emoji: '🦉', label: 'Cú mèo sáng suốt' },
-  { emoji: '🌺', label: 'Đóa hoa nở nụ cười' },
-  { emoji: '🌈', label: 'Cầu vồng hy vọng' },
-];
+import { MASCOTS } from '@/lib/mascots';
+import { MascotAvatar } from './MascotAvatar';
 
 export const THEME_COLOR_OPTIONS = [
   { hex: '#3b82f6', name: 'Xanh Đại Dương' },
@@ -80,10 +61,10 @@ export function AvatarPickerModal({
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div
-              className="w-10 h-10 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/50 shrink-0"
+              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner border border-white/50 shrink-0"
               style={{ backgroundColor: selectedColor }}
             >
-              {selectedAvatar}
+              <MascotAvatar avatar={selectedAvatar} alt="" priority className="h-11 w-11 text-2xl" />
             </div>
             <div>
               <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 leading-tight">
@@ -111,22 +92,27 @@ export function AvatarPickerModal({
               <Sparkles className="w-3.5 h-3.5 text-amber-500" />
               {t.pickAvatarTitle}
             </label>
-            <div className="grid grid-cols-6 gap-2 max-h-48 overflow-y-auto p-1 bg-slate-50 dark:bg-zinc-800/60 rounded-2xl border border-slate-100 dark:border-zinc-800 overscroll-contain">
-              {AVATAR_OPTIONS.map((item) => {
-                const isSelected = selectedAvatar === item.emoji;
+            <div className="grid grid-cols-2 gap-2 rounded-2xl border border-sand-200 bg-sand-50 p-2 dark:border-zinc-800 dark:bg-zinc-800/60 sm:grid-cols-3">
+              {MASCOTS.map((mascot) => {
+                const isSelected = selectedAvatar === mascot.id;
                 return (
                   <button
                     type="button"
-                    key={item.emoji}
-                    onClick={() => setSelectedAvatar(item.emoji)}
-                    title={item.label}
-                    className={`h-11 sm:h-12 rounded-xl text-xl sm:text-2xl flex items-center justify-center transition-all ${
+                    key={mascot.id}
+                    onClick={() => {
+                      setSelectedAvatar(mascot.id);
+                      setSelectedColor(mascot.themeColor);
+                    }}
+                    aria-pressed={isSelected}
+                    className={`relative flex min-h-28 flex-col items-center justify-center rounded-2xl border p-2 transition-all ${
                       isSelected
-                        ? 'bg-white dark:bg-zinc-700 border-2 border-indigo-600 shadow-md scale-105 z-10'
-                        : 'hover:bg-white/80 dark:hover:bg-zinc-700/60'
+                        ? 'border-indigo-600 bg-white shadow-md ring-2 ring-indigo-500/20 dark:bg-zinc-700'
+                        : 'border-transparent bg-white/70 hover:border-sand-200 hover:bg-white dark:bg-zinc-800/60 dark:hover:bg-zinc-700/60'
                     }`}
                   >
-                    {item.emoji}
+                    <MascotAvatar avatar={mascot.id} alt="" priority className="h-20 w-20" />
+                    <span className="mt-1 text-sm font-extrabold text-sand-900 dark:text-slate-100">{mascot.name}</span>
+                    {isSelected && <span className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-indigo-600 text-white"><Check className="h-4 w-4" /></span>}
                   </button>
                 );
               })}

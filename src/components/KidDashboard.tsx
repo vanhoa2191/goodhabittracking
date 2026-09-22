@@ -34,6 +34,8 @@ import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
 import { localizeDemoActivity, localizeDemoReward } from '@/lib/i18n/demo-content-copy';
 import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
 import { TaskDetailsModal } from './TaskDetailsModal';
+import { MascotAvatar } from './MascotAvatar';
+import { getMascot } from '@/lib/mascots';
 
 export function KidDashboard() {
   const {
@@ -83,6 +85,8 @@ export function KidDashboard() {
       </div>
     );
   }
+
+  const activeMascot = getMascot(activeChild.avatar);
 
   // Date formatting helpers
   const dateStr = selectedDate.toISOString().split('T')[0];
@@ -161,7 +165,12 @@ export function KidDashboard() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8 space-y-6 animate-fade-in">
       {/* Kid Profile Hero Card */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 p-6 sm:p-8 text-white shadow-xl shadow-indigo-100 dark:shadow-none">
+      <div
+        data-testid="kid-hero"
+        data-mascot={activeMascot?.id || 'legacy'}
+        data-theme-color={activeChild.themeColor}
+        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${activeMascot?.heroClass || 'from-amber-200 via-amber-300 to-orange-300'} p-6 sm:p-8 text-sand-900 shadow-xl shadow-amber-100 dark:shadow-none`}
+      >
         {/* Background decorative shapes */}
         <div className="absolute -right-6 -bottom-6 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute left-1/3 -top-10 w-36 h-36 bg-amber-400/20 rounded-full blur-xl pointer-events-none" />
@@ -173,9 +182,9 @@ export function KidDashboard() {
                 type="button"
                 onClick={() => setIsAvatarPickerOpen(true)}
                 title={t.changeAvatar}
-                className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-white/20 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-5xl shadow-inner border border-white/30 transition-transform active:scale-95 group-hover:scale-105 cursor-pointer relative"
+                className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-white/45 hover:bg-white/60 backdrop-blur-md flex items-center justify-center shadow-inner border border-white/60 transition-transform active:scale-95 group-hover:scale-105 cursor-pointer relative"
               >
-                {activeChild.avatar}
+                <MascotAvatar avatar={activeChild.avatar} alt={activeMascot?.name || ''} priority className="h-24 w-24 sm:h-28 sm:w-28 text-5xl" />
                 <span className="absolute inset-0 rounded-3xl bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-bold transition-opacity">
                   <Palette className="w-5 h-5 text-white drop-shadow" />
                 </span>
@@ -202,10 +211,10 @@ export function KidDashboard() {
                   </span>
                 )}
               </div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight">
                 {activeChild.name}
               </h1>
-              <p className="text-sm text-indigo-100 font-medium">
+              <p className="text-sm text-amber-950/80 font-semibold">
                 {activeChild.ageStage === '0-3'
                   ? copy.infantJournal(activeChild.name)
                   : `${t.greeting} ${activeChild.name}! ✨`}

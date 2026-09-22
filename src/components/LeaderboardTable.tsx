@@ -5,6 +5,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { getSocialMutationCopy } from '@/lib/i18n/social-mutation-copy';
 import type { LeaderboardEntry } from '@/types';
 import { LeagueTierBadge } from './LeagueTierBadge';
+import { MascotAvatar } from './MascotAvatar';
 
 type Props = {
   readonly entries: readonly LeaderboardEntry[];
@@ -27,7 +28,7 @@ export function LeaderboardTable({ entries, error, highFiveSuccessId, onSendHigh
       return <div key={entry.childId} className={`grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-2xl border p-3 transition-all sm:flex sm:justify-between sm:p-3.5 ${entry.isCurrentChild ? 'border-indigo-200 bg-indigo-50/70 shadow-xs dark:border-indigo-800 dark:bg-indigo-950/40' : 'border-slate-100 bg-slate-50/60 hover:bg-slate-100/60 dark:border-zinc-800/80 dark:bg-zinc-800/40'}`}>
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-xl text-xs font-black ${entry.rank === 1 ? 'bg-amber-400 text-slate-900 shadow-xs' : entry.rank === 2 ? 'bg-slate-300 text-slate-800' : entry.rank === 3 ? 'bg-amber-600 text-white' : 'bg-white text-slate-500 dark:bg-zinc-800'}`}>{entry.rank}</span>
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/80 text-2xl shadow-inner" style={{ backgroundColor: `${entry.themeColor}25` }}>{entry.avatar}</div>
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/80 shadow-inner" style={{ backgroundColor: `${entry.themeColor}25` }}><MascotAvatar avatar={entry.avatar} alt="" className="h-11 w-11 text-2xl" /></div>
           <div className="min-w-0">
             <div className="flex items-center gap-2"><span className="truncate text-sm font-extrabold text-slate-800 dark:text-slate-100">{entry.nickname}</span>{entry.isCurrentChild && <span className="shrink-0 rounded-full bg-indigo-600 px-2 py-0.5 text-xs font-bold text-white">{copy.currentChildBadge}</span>}</div>
             <div className="mt-0.5 flex min-w-0 flex-col items-start gap-1 text-xs text-slate-400 sm:flex-row sm:items-center sm:gap-2"><span className="flex items-center gap-1 font-semibold text-orange-500"><Flame className="h-3 w-3 fill-current" />{entry.streak} {t.streakDays}</span><span className="hidden sm:inline">•</span><LeagueTierBadge tier={entry.tier} /></div>
