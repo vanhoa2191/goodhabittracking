@@ -17,20 +17,39 @@ export async function PATCH(request: NextRequest) {
   if (!parsed.success) return NextResponse.json({ error: 'Invalid profile.' }, { status: 400 });
   const supabase = await createServerSupabaseClient(); const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
-  const { data, error } = await supabase
+  const profileValues = {
+    display_name: parsed.data.displayName,
+    email: user.email ?? null,
+    phone: parsed.data.phone || null,
+    marketing_consent: parsed.data.marketingConsent,
+    updated_at: new Date().toISOString(),
+  };
+  const profileColumns = 'display_name,email,phone,marketing_consent';
+  const { data: updatedProfile, error: updateError } = await supabase
     .from('parent_profiles')
-    .upsert({
-      user_id: user.id,
-      display_name: parsed.data.displayName,
-      email: user.email ?? null,
-      phone: parsed.data.phone || null,
-      marketing_consent: parsed.data.marketingConsent,
-      updated_at: new Date().toISOString(),
-    }, { onConflict: 'user_id' })
-    .select('display_name,email,phone,marketing_consent')
-    .single();
-  if (error || !data) {
+    .update(profileValues)
+    .eq('user_id', user.id)
+    .select(profileColumns)
+    .maybeSingle();
+  if (updateError) {
+    console.error('account_profile_save_failed', {
+      code: updateError.code,
+    });
     return NextResponse.json({ error: 'Could not save profile.' }, { status: 503 });
   }
-  return NextResponse.json({ success: true, profile: data });
+  if (updatedProfile) {
+    return NextResponse.json({ success: true, profile: updatedProfile });
+  }
+  const { data: insertedProfile, error: insertError } = await supabase
+    .from('parent_profiles')
+    .insert({ user_id: user.id, ...profileValues })
+    .select(profileColumns)
+    .single();
+  if (insertError || !insertedProfile) {
+    console.error('account_profile_save_failed', {
+      code: insertError?.code ?? 'missing_returned_profile',
+    });
+    return NextResponse.json({ error: 'Could not save profile.' }, { status: 503 });
+  }
+  return NextResponse.json({ success: true, profile: insertedProfile });
 }

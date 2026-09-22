@@ -1,17 +1,30 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getUser, single, select, upsert } = vi.hoisted(() => ({
+const {
+  getUser,
+  insert,
+  insertSelect,
+  maybeSingle,
+  single,
+  update,
+  updateEq,
+  updateSelect,
+} = vi.hoisted(() => ({
   getUser: vi.fn(),
+  insert: vi.fn(),
+  insertSelect: vi.fn(),
+  maybeSingle: vi.fn(),
   single: vi.fn(),
-  select: vi.fn(),
-  upsert: vi.fn(),
+  update: vi.fn(),
+  updateEq: vi.fn(),
+  updateSelect: vi.fn(),
 }));
 
 vi.mock('@/lib/supabase/server', () => ({
   createServerSupabaseClient: vi.fn(async () => ({
     auth: { getUser },
-    from: vi.fn(() => ({ upsert })),
+    from: vi.fn(() => ({ insert, update })),
   })),
 }));
 
@@ -42,28 +55,48 @@ describe('PATCH /api/account/profile', () => {
     getUser.mockResolvedValue({
       data: { user: { id: '11111111-1111-4111-8111-111111111111', email: savedProfile.email } },
     });
-    upsert.mockReturnValue({ select });
-    select.mockReturnValue({ single });
+    update.mockReturnValue({ eq: updateEq });
+    updateEq.mockReturnValue({ select: updateSelect });
+    updateSelect.mockReturnValue({ maybeSingle });
+    maybeSingle.mockResolvedValue({ data: savedProfile, error: null });
+    insert.mockReturnValue({ select: insertSelect });
+    insertSelect.mockReturnValue({ single });
     single.mockResolvedValue({ data: savedProfile, error: null });
   });
 
-  it('returns the profile read back from storage after saving', async () => {
+  it('updates an existing profile without upserting its immutable user id', async () => {
     const response = await PATCH(request());
 
-    expect(upsert).toHaveBeenCalledWith(
+    expect(update).toHaveBeenCalledWith(
       expect.objectContaining({ phone: savedProfile.phone }),
-      { onConflict: 'user_id' },
     );
-    expect(select).toHaveBeenCalledWith('display_name,email,phone,marketing_consent');
+    expect(update).toHaveBeenCalledWith(
+      expect.not.objectContaining({ user_id: expect.anything() }),
+    );
+    expect(updateEq).toHaveBeenCalledWith('user_id', '11111111-1111-4111-8111-111111111111');
+    expect(insert).not.toHaveBeenCalled();
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({ success: true, profile: savedProfile });
   });
 
-  it('does not report success when the stored profile cannot be read back', async () => {
-    single.mockResolvedValue({ data: null, error: { message: 'write failed' } });
+  it('inserts a profile only when the signup row is missing', async () => {
+    maybeSingle.mockResolvedValue({ data: null, error: null });
 
     const response = await PATCH(request());
 
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({
+      user_id: '11111111-1111-4111-8111-111111111111',
+      phone: savedProfile.phone,
+    }));
+    expect(response.status).toBe(200);
+  });
+
+  it('does not report success when the stored profile cannot be read back', async () => {
+    maybeSingle.mockResolvedValue({ data: null, error: { code: '42501', message: 'write failed' } });
+
+    const response = await PATCH(request());
+
+    expect(insert).not.toHaveBeenCalled();
     expect(response.status).toBe(503);
     await expect(response.json()).resolves.toEqual({ error: 'Could not save profile.' });
   });
