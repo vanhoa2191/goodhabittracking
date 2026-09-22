@@ -91,6 +91,14 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 - Layout: stack or wrapping cluster; one column on narrow screens.
 - States: normal, empty, warning, and error content must be explicit rather than color-only.
 
+### Framework and reward library cards
+
+- Framework cards show stable ID, age range, title, child-facing meaning, and progress signal before any action.
+- Long activity guidance expands in place with native `details`/`summary`; it must not open a viewport-breaking modal.
+- Stage and domain filters use pressed-state buttons and remain horizontally scrollable or wrapping on narrow screens.
+- Reward suggestions distinguish experiences from material gifts with a visible text label and Lucide icon, never color alone.
+- Added and pending states disable the primary action and expose an explicit text status.
+
 ### Modal
 
 - Structure: labelled dialog, backdrop, heading, content, and action row.

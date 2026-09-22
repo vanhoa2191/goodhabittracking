@@ -33,7 +33,7 @@ describe('Supabase domain mappers', () => {
     });
   });
 
-  it('round-trips WIT activity metadata', () => {
+  it('round-trips framework activity metadata', () => {
     const activity = mapHabitActivityRow({
       id: '11111111-1111-4111-8111-111111111111',
       user_id: '22222222-2222-4222-8222-222222222222',
@@ -54,6 +54,8 @@ describe('Supabase domain mappers', () => {
       is_parent_role: false,
       portrait16_key: 'biet-on',
       bo_thi7_key: 'ngon',
+      framework_habit_id: 'GD3-MQH-01',
+      framework_content_version: '1.0.0',
       created_at: '2026-09-19T00:00:00.000Z',
     });
 
@@ -62,6 +64,8 @@ describe('Supabase domain mappers', () => {
       targetAgeStage: '6-12',
       portrait16Key: 'biet-on',
       boThi7Key: 'ngon',
+      frameworkHabitId: 'GD3-MQH-01',
+      frameworkContentVersion: '1.0.0',
     });
   });
 

@@ -37,6 +37,8 @@ function createRow(
     is_parent_role: activity.isParentRole ?? false,
     portrait16_key: activity.portrait16Key,
     bo_thi7_key: activity.boThi7Key,
+    framework_habit_id: activity.frameworkHabitId,
+    framework_content_version: activity.frameworkContentVersion,
   };
 }
 
@@ -67,6 +69,8 @@ function updateRow(
     ['is_parent_role', updates.isParentRole],
     ['portrait16_key', updates.portrait16Key],
     ['bo_thi7_key', updates.boThi7Key],
+    ['framework_habit_id', updates.frameworkHabitId],
+    ['framework_content_version', updates.frameworkContentVersion],
   ];
   return Object.fromEntries(candidates.filter(([, value]) => value !== undefined));
 }

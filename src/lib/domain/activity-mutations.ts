@@ -43,6 +43,8 @@ const mutableActivityFieldsSchema = z.object({
   isParentRole: z.boolean().optional(),
   portrait16Key: z.string().trim().min(1).max(100).optional(),
   boThi7Key: givingKeySchema.optional(),
+  frameworkHabitId: z.string().regex(/^GD[1-5]-(NT|SK|MQH|HT|TC)-\d{2}$/).optional(),
+  frameworkContentVersion: z.string().trim().min(1).max(40).optional(),
 }).strict();
 
 const activitySchema = mutableActivityFieldsSchema.extend({

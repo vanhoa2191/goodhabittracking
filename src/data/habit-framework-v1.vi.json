@@ -1,0 +1,1458 @@
+{
+  "schemaVersion": "1.0.0",
+  "contentVersion": "1.0.0",
+  "language": "vi",
+  "source": {
+    "file": "KHUNG_THOI_QUEN_0-18_TDTT_TDNT_v1.md",
+    "sha256": "85460efcafe42bc585582954dbb559969126b3e09da79c0929762563773f31d0"
+  },
+  "review": {
+    "structureStatus": "approved",
+    "approvalBasis": "user-directed",
+    "evidenceStatus": "source-only",
+    "recordedAt": "2026-09-22"
+  },
+  "stages": [
+    {
+      "id": "GD1",
+      "ageRange": "0-3",
+      "title": "Nền tảng an toàn & Giác quan",
+      "adultRole": "Làm mẫu và mô tả"
+    },
+    {
+      "id": "GD2",
+      "ageRange": "3-6",
+      "title": "Khám phá & Ý chí",
+      "adultRole": "Làm cùng và nhắc"
+    },
+    {
+      "id": "GD3",
+      "ageRange": "6-12",
+      "title": "Cần cù & Kỹ năng",
+      "adultRole": "Giám sát và cùng làm"
+    },
+    {
+      "id": "GD4",
+      "ageRange": "12-15",
+      "title": "Bản sắc & Cảm xúc",
+      "adultRole": "Đồng hành, cùng tuân luật"
+    },
+    {
+      "id": "GD5",
+      "ageRange": "15-18",
+      "title": "Định hướng & Trách nhiệm",
+      "adultRole": "Cố vấn và hậu thuẫn"
+    }
+  ],
+  "habits": [
+    {
+      "id": "GD1-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "NT",
+      "name": "Vòng lặp phát – đáp (được nhìn thấy, được đáp lại)",
+      "childMeaning": "“Khi con gọi, có người trả lời.”",
+      "successSignal": "trẻ phát tín hiệu (ánh mắt, âm thanh, chỉ tay) và mong đợi được đáp; người lớn đáp trong vòng 3–5 giây.",
+      "activities": [
+        "Nhìn – chờ – đáp: khi trẻ phát âm/bập bẹ, người lớn nhìn vào mắt, nhắc lại âm đó, chờ trẻ đáp lại. 5–10 lượt/lần, 4–6 lần/ngày.",
+        "Trò ú oà (peek-a-boo): dạy \"có – mất – có lại\" = nền của niềm tin đối tượng tồn tại.",
+        "Đặt tên cảm xúc khi trẻ khóc: “Con đang sốt ruột vì không lấy được đồ.” — 1 câu, không giảng giải.",
+        "Bế trẻ ngang tầm mắt 3 lần/ngày, 60 giây mỗi lần, không nói gì, chỉ nhìn và mỉm cười (bố/người chăm sóc thứ hai nếu có thể).",
+        "Điện thoại để xa trong 15 phút chơi cùng con — nghi thức \"để điện thoại ở cửa\".",
+        "Bảng “con gọi – mẹ đáp”: người lớn đếm số lần trong ngày trẻ phát tín hiệu và được đáp (chỉ để tự theo dõi, không cho trẻ biết)."
+      ],
+      "parentGuidance": "người chăm sóc chính làm mẫu; người thứ hai lặp lại y hệt để trẻ hình thành niềm tin vào nhiều người.",
+      "measurement": "tỉ lệ tín hiệu được đáp ≥ 80%/ngày; số lượt nhìn-mắt-duy trì ≥ 5 lượt/ngày.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-03-NhanCachKienToan",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD1-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "NT",
+      "name": "Nếp ngày êm & tự trấn an",
+      "childMeaning": "“Cứ theo thứ tự này thì con thấy an tâm.”",
+      "successSignal": "trẻ tự đi tới chỗ ngủ khi tới nhịp; giảm thời gian khóc khi chuyển hoạt động; có \"vật chuyển tiếp\" tự chọn.",
+      "activities": [
+        "Trình tự cố định trước ngủ (3 bước, luôn cùng thứ tự): tắm → đọc 1 cuốn → hát 1 bài → nằm.",
+        "Nghi thức chuyển tiếp có tín hiệu rõ: dùng cùng 1 câu (“Hết giờ chơi, mình đi tắm nhé”) + cùng 1 cử chỉ bàn tay, trước khi đổi hoạt động 30 giây.",
+        "Góc an tâm: một góc cố định có 1 gối, 1 sách, 1 đèn; trẻ được tự vào đó khi mệt.",
+        "Thở cùng con: người lớn đặt tay lên ngực mình, thở 3 nhịp dài, chỉ cho trẻ bắt chước (3 lượt khi trẻ bực).",
+        "Âm thanh ngày: dùng 1 bài hát riêng cho giờ ngủ, 1 bài riêng cho giờ chơi — không dùng chung.",
+        "Bảng nhịp ngày (hình ảnh): dán 6 thẻ hình cho 6 mốc trong ngày; trẻ tự chỉ thẻ tiếp theo."
+      ],
+      "parentGuidance": "người lớn phải giữ nhịp trước — nhịp đứt do người lớn thì không tính là trẻ thất bại.",
+      "measurement": "thời gian vào giấc (phút) giảm dần qua 4 tuần; số lần nhịp ngày bị phá < 2 tuần.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#9DạngNgười:NG-4-ThanTai(trẻ"
+      ]
+    },
+    {
+      "id": "GD1-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "SK",
+      "name": "Ngủ lành – ngủ đủ",
+      "childMeaning": "“Trời tối là giờ con ngủ để mai lớn thêm.”",
+      "successSignal": "tổng giờ ngủ/24h đạt ngưỡng tuổi; giờ ngủ và giờ thức lệch ≤ 30 phút giữa các ngày.",
+      "activities": [
+        "Đo tổng giờ ngủ 3 ngày liền rồi so với ngưỡng tuổi (12–16h với 4–12 tháng; 11–14h với 1–2 tuổi; 10–13h với 3 tuổi).",
+        "Tối hoá phòng ngủ: tối – mát – yên; không màn hình trong phòng ngủ; đèn ngủ duy nhất 1 chiếc.",
+        "Giảm dần độ mạnh của nghi thức ngủ: từ \"mẹ nằm tới khi con ngủ\" → \"mẹ ngồi cạnh 5 phút\" → \"mẹ ở cửa\" → \"mẹ ở ngoài\". Mỗi bậc giữ tối thiểu 5 ngày.",
+        "Ánh sáng ban mai 15 phút/ngày: đưa trẻ ra ngoài trong 1 giờ đầu sau khi thức để neo nhịp sinh học.",
+        "Bảng ngủ hình dán: mỗi tối trẻ được dán 1 hình mặt trăng; đủ 7 mặt trăng/tuần thì cả nhà làm 1 việc vui (không dùng quà vật chất).",
+        "Trấn an khi trẻ giật mình: vào phòng, nói 1 câu, vỗ 3 nhịp, rời đi — không bế ra khỏi giường."
+      ],
+      "parentGuidance": "cả nhà cùng tắt đèn — trẻ học nhịp từ môi trường, không từ lời nhắc.",
+      "measurement": "số giờ ngủ trung bình/ngày; số lần thức dậy đêm; độ lệch giờ ngủ.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan"
+      ]
+    },
+    {
+      "id": "GD1-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "SK",
+      "name": "Vận động thô & vui chơi với thân thể",
+      "childMeaning": "“Thân con là để chạy, leo, bò, lăn.”",
+      "successSignal": "trẻ có ít nhất 3 kiểu vận động thô thành thạo theo tuổi (lăn, bò, leo ghế thấp, chạy, ném, đá); tự đòi ra ngoài chơi.",
+      "activities": [
+        "Sân chơi vận động tự do tại nhà: gối, thùng giấy, băng dính làm \"đường leo\" đổi mới mỗi tuần.",
+        "Nghi thức 20 phút ra trời mỗi sáng (trước khi học/trước màn hình) — cố định như đánh răng.",
+        "Trò \"đi theo đường dây\": dán băng dính làm đường trên sàn — đi, nhảy, bò theo.",
+        "Nhảy theo nhịp: 1 bài nhạc, trẻ đứng nhảy, người lớn đếm to 1–2–3–4 (vận động + ngôn ngữ + nhịp).",
+        "Bóng và thăng bằng: ném bóng vào giỏ (1m), đứng 1 chân 3 giây, đi theo vạch.",
+        "Bảng \"vận động 5 ô\": mỗi ngày trẻ được tô 1 ô khi hoàn thành 3 vận động nhỏ (bò – ném – nhảy)."
+      ],
+      "parentGuidance": "người lớn chơi cùng, không đứng nhìn; an toàn trước, kết quả sau.",
+      "measurement": "số ngày/tuần có ≥ 180 phút vận động tổng (đếm theo hoạt động tự do); số kỹ năng mới đạt được.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD1-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "MQH",
+      "name": "Ba nghi thức lễ nền: Mắt – Miệng – Tay",
+      "childMeaning": "“Gặp ai thì nhìn, chào, và nói cảm ơn.”",
+      "successSignal": "trẻ chủ động phát ra 3 nghi thức mà không cần nhắc quá 1 lần: (1) nhìn vào mắt, (2) chào/vẫy tay, (3) cảm ơn bằng hành động hoặc tiếng.",
+      "activities": [
+        "Nghi thức \"Bốn bước gặp người\": Dừng lại → Nhìn → Chào → Cười. Người lớn đóng vai khách đến nhà, luyện 2 phút/ngày.",
+        "Bài hát Cảm ơn – Xin lỗi: mỗi ngày hát 1 lần, thay lời để nói về người trong nhà.",
+        "\"Bố thí nụ cười\" luyện tập [BT-1]: trẻ cười với người trong nhà rồi cười với người bán rau/bảo vệ. Người lớn kể lại \"nụ cười của con đã làm bác vui\".",
+        "Ánh mắt 3 giây [BT-2]: khi đưa đồ cho ai, giữ mắt 3 giây. Người lớn đếm to cho trẻ.",
+        "Nói thay trẻ khi trẻ chưa nói được: “Con cảm ơn bà” (người lớn nói, trẻ gật) — nói cho trẻ trong 6 tháng đầu, rồi để trẻ tự nói.",
+        "Tủ sách \"Lời hay\": mỗi tuần 1 cuốn sách về chào – cảm ơn – chia sẻ; đọc trước giờ ngủ."
+      ],
+      "parentGuidance": "người lớn phải làm trước mặt trẻ — trẻ 0–3 học lễ bằng sao chép, không bằng được dạy.",
+      "measurement": "số lần/ngày trẻ tự chào/cảm ơn không cần nhắc; số người trẻ chào tự nhiên trong tuần.",
+      "conceptTags": [
+        "#7Giàu:G4-PhamChat(Lễ)",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-04-PhamChatUuTu",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#9DạngNgười:NG-7-ThayCo",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#7BốThí:BT-3-NgonThi",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD1-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "MQH",
+      "name": "Sẻ chia & luân phiên (turn-taking)",
+      "childMeaning": "“Lượt của con – lượt của bạn.”",
+      "successSignal": "trẻ chờ được tối thiểu 10–20 giây tới lượt; đưa đồ lại cho bạn sau khi chơi; xin phép trước khi lấy.",
+      "activities": [
+        "Trò \"Đến lượt\" 3 phút/ngày: lăn bóng qua lại, mỗi lần tới lượt nói \"Tới con” / “Tới mẹ”.",
+        "Đồ chơi chia hai khay: mỗi khay thuộc một người; muốn lấy khay kia phải hỏi.",
+        "Nghi thức \"Cho bạn mượn\": mỗi ngày trẻ đưa 1 đồ vật cho người khác, người lớn mô tả lại cảm xúc người nhận.",
+        "Giúp việc nhà phiên bản 2 tuổi: bỏ quần áo vào giỏ, lau bàn bằng khăn ướt, cất dép — 3 việc, cùng một giờ mỗi ngày.",
+        "Chơi với 1 bạn/tuần: mời 1 bạn cùng tuổi, có 1 luật do trẻ chọn (“chơi xong mình đổi đồ”).",
+        "Kể chuyện \"hôm nay con đã cho ai\": bữa tối, hỏi 1 câu duy nhất; nếu trẻ không nhớ thì kể việc người lớn đã cho."
+      ],
+      "parentGuidance": "không ép chia sẻ; mô hình hoá việc cho đi trước và để trẻ tự đến.",
+      "measurement": "số lần trẻ tự đưa đồ/chờ lượt trong ngày; số lần trẻ giúp việc nhà không cần nhắc.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach(Bao",
+        "#7Giàu:G4-PhamChat(Nhân)",
+        "#ChânDung:CD-03-NhanCachKienToan",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#7BốThí:BT-6-ThanThi",
+        "#9DạngNgười:NG-2-QuyNhan"
+      ]
+    },
+    {
+      "id": "GD1-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "HT",
+      "name": "Ngôn ngữ sống & sách mỗi ngày",
+      "childMeaning": "“Mỗi ngày có một cuốn sách và một câu chuyện mới.”",
+      "successSignal": "trẻ có vốn từ tương ứng tuổi (khoảng 20 từ lúc 18 tháng → 200–300 từ lúc 24 tháng → 900–1000 từ lúc 3 tuổi); tự mang sách tới đòi đọc.",
+      "activities": [
+        "Đọc 10–15 phút, cùng giờ mỗi ngày (trước ngủ), người lớn chỉ vào chữ khi đọc.",
+        "\"Nói trước – chờ – nói hết\": khi trẻ nói nửa từ, người lớn không nói hộ — chờ 5 giây để trẻ nói xong.",
+        "Đặt tên đồ vật trong 100 khoảnh khắc/ngày: đi siêu thị, đi bộ, tắm — mỗi đồ vật một câu.",
+        "Hộp từ mới: mỗi tuần 3 từ mới, vẽ ra thẻ, trẻ dùng từ đó trong tuần.",
+        "Kể lại chuyện bằng hình: đọc xong, trẻ chỉ 3 tranh theo thứ tự và kể lại (nền của đọc hiểu).",
+        "Hát – đọc thơ có vần: 2 bài/tuần; vần là công cụ dự báo chữ viết mạnh nhất ở tuổi này.",
+        "\"Đọc\" bất cứ chữ nào: biển hiệu, hộp sữa, tên đường — biến môi trường thành sách."
+      ],
+      "parentGuidance": "người lớn đọc trước mặt trẻ để trẻ thấy đọc là việc của người lớn.",
+      "measurement": "số từ mới/tuần; số ngày/tuần đọc đủ 10 phút; thời gian duy trì chú ý vào sách.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-01-SucHocTap"
+      ]
+    },
+    {
+      "id": "GD1-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "TC",
+      "name": "Trật tự & chờ đợi ngắn — hạt giống của tiết chế",
+      "childMeaning": "“Đồ về chỗ của nó – và con biết chờ một chút.”",
+      "successSignal": "trẻ tự cất được ≥ 3 nhóm đồ chơi; chờ được 1–2 phút khi người lớn nói \"chờ mẹ một chút\"; chấp nhận \"không\" mà không khóc quá 1 phút.",
+      "activities": [
+        "Nghi thức \"cất đồ trước khi lấy đồ mới\": 1 luật duy nhất, áp dụng 100% lần.",
+        "Trò chơi chờ: người lớn giấu đồ, đếm 1–5 rồi trẻ được lấy; tăng dần lên 1–10 và 30 giây.",
+        "Hộp \"đồ về chỗ\" có dán hình từng loại đồ — trẻ phân loại (đồng thời là toán học nền + trật tự).",
+        "Nói \"chờ\" một cách cụ thể, không nói \"không\": “Con chờ 2 phút, sau bài hát này mẹ lấy cho con.” — luôn giữ lời.",
+        "Thẻ \"Cái này hôm nay chưa phải của con\": dùng khi trẻ đòi đồ trong siêu thị; trẻ được ghi hình ảnh món đó vào \"sổ mong muốn\" (nền của \"rõ hình mong muốn\").",
+        "Bố thí nụ cười khi bị từ chối [BT-1]: người lớn mô hình hoá \"không được mua thì vẫn cười được\"."
+      ],
+      "parentGuidance": "tuyệt đối không \"chờ\" mà không giữ lời — trẻ 0–3 học giá trị của chữ Tín bằng chính độ nhất quán của người lớn.",
+      "measurement": "số lần trẻ tự cất đồ; thời gian chờ tối đa chịu được; số lần giữ lời/không giữ lời của người lớn (mục tiêu: 100% giữ lời).",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#8TốChất:NTAI-02-KienTri",
+        "#9DạngNgười:NG-4-ThanTai"
+      ]
+    },
+    {
+      "id": "GD2-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "NT",
+      "name": "Gọi tên cảm xúc & 3 nhịp thở",
+      "childMeaning": "“Con biết con đang cảm gì, và con có cách để nguội lại.”",
+      "successSignal": "trẻ tự nói được \"Con đang tức/con đang buồn\" trước khi ném/hét ≥ 1 lần/tuần; tự dùng 3 nhịp thở khi được nhắc 1 lần.",
+      "activities": [
+        "Bảng 5 cảm xúc cơ bản có hình (vui – buồn – tức – sợ – bình yên). Mỗi tối trẻ gắn 1 thẻ vào \"bảng cảm xúc hôm nay\".",
+        "\"Bình tĩnh lại\" 3 bước dạy như bài hát: 1) Đặt tay lên bụng. 2) Thở 3 nhịp. 3) Nói “Con cần 1 phút”. Luyện khi trẻ đang vui (không luyện lúc đang giận).",
+        "Góc bình tĩnh (calm corner): đệm, tai nghe, giấy vẽ. Trẻ được tự vào — không phải nơi phạt.",
+        "Người lớn nói cảm xúc của chính mình: “Mẹ đang sốt ruột, mẹ thở 3 nhịp đây.” — mô hình hoá 5 lần/tuần.",
+        "Kể lại \"lúc con tức\": sau khi nguội, vẽ lại 1 tranh và kể 3 câu (chuyện → cảm xúc → cách xử lý).",
+        "Bố thí tâm thí cho người nhà [BT-4]: mỗi tuần trẻ nói \"Cảm ơn vì...\" cho 1 người — bắt đầu từ việc nhỏ, không phải quà."
+      ],
+      "parentGuidance": "không dạy lúc đang bùng nổ — bình tĩnh cùng trẻ trước, dạy sau khi nguội.",
+      "measurement": "số lần/tuần trẻ tự gọi tên cảm xúc; số lần dùng 3 bước thay vì đánh/ném.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#7BốThí:BT-4-TamThi",
+        "#8TốChất:NTAI-03-DungCamNhanLoi"
+      ]
+    },
+    {
+      "id": "GD2-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "NT",
+      "name": "Nói thật & dũng cảm nhận lỗi",
+      "childMeaning": "“Con nói đúng sự thật và con dám nói \"con làm sai\" — nói thật không bị phạt nặng hơn giấu.”",
+      "successSignal": "trẻ tự nói ra lỗi mà không cần bị tra hỏi ≥ 2 lần/tháng; trẻ không nói dối để tránh hậu quả.",
+      "activities": [
+        "Luật gia đình \"ai nhận lỗi trước, người đó được khen trước\": mỗi lần trẻ nhận lỗi, người lớn nói 1 câu khen vào hành vi dũng cảm, rồi mới bàn cách sửa.",
+        "Đổi ngôn ngữ: \"Cảm ơn\" thay cho \"Xin lỗi\" (nguyên văn tài liệu): “Cảm ơn con đã nói thật cho mẹ.” “Cảm ơn con vì đã chờ.” — dùng ngôn ngữ tích cực.",
+        "Người lớn tự nhận lỗi trước mặt trẻ 1 lần/tuần: “Hôm qua mẹ nóng, mẹ xin lỗi. Mẹ sẽ nói chậm lại.”",
+        "Trò chơi \"đúng – sai – chưa biết\": đưa 3 tình huống, trẻ phân loại; dạy tầng bậc nhận thức 1 (đúng–sai, thật–giả, nên–không nên).",
+        "Sổ \"Lỗi dạy con điều gì\": mỗi lỗi lớn, trẻ vẽ lại và nói \"nếu làm lại, con sẽ...\". Không ghi phạt.",
+        "Quy tắc vàng: không tra khảo. Thay \"Có phải con làm không?\" bằng \"Mình cùng xem chuyện gì xảy ra nhé.\"",
+        "\"Dũng cảm thay đổi\" tuần: mỗi tuần trẻ thử một việc chưa từng làm (gọi món, hỏi đường, chào hàng xóm) [+NTAI-04]."
+      ],
+      "parentGuidance": "người lớn phải hạ hậu quả xuống thấp nhất cho việc nói thật — đây là biến số duy nhất quyết định trẻ trung thực về lâu dài.",
+      "measurement": "số lần trẻ tự nhận lỗi; số lần trẻ nói dối được ghi nhận (mục tiêu: giảm dần về 0 trong 6 tháng).",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-03-NhanCachKienToan",
+        "#ChânDung:CD-04-PhamChatUuTu",
+        "#8TốChất:NTAI-03-DungCamNhanLoi",
+        "#8TốChất:NTAI-08-KhiemTon",
+        "#9DạngNgười:NG-1-CaoNhan"
+      ]
+    },
+    {
+      "id": "GD2-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "SK",
+      "name": "Ngủ đủ & nghi thức tắt màn hình",
+      "childMeaning": "“Tới giờ là màn hình đi ngủ trước con.”",
+      "successSignal": "ngủ 10–13 giờ/24h; không dùng màn hình trong 60 phút trước ngủ; tự đi theo nghi thức 3 bước không cần nhắc quá 1 lần.",
+      "activities": [
+        "\"Trạm sạc của màn hình\" đặt ở phòng khách; mọi thiết bị ngủ ở đó từ 19h30. Trẻ tự bỏ thiết bị vào trạm (nghi thức).",
+        "Đồng hồ cát 45 phút trước ngủ: trẻ tự lật; khi hết cát là vào nghi thức.",
+        "Nghi thức 3 bước cố định: đánh răng → đọc sách → kể 1 việc biết ơn trong ngày.",
+        "Giảm dần thời lượng màn hình: đặt trần 60 phút/ngày (dưới ngưỡng 2 giờ cho lứa lớn hơn) và giảm 10 phút/tuần nếu đang vượt.",
+        "Đêm không đèn xanh: đèn ngủ vàng/đỏ; rèm che sáng mùa hè để neo melatonin.",
+        "Bảng mặt trăng 7 ô: trẻ tự dán, tự đếm — không dùng phần thưởng vật chất."
+      ],
+      "parentGuidance": "người lớn cũng cất điện thoại cùng giờ — luật chung, không luật riêng cho trẻ.",
+      "measurement": "giờ ngủ trung bình; số ngày vi phạm trần màn hình; số đêm trẻ tự vào nghi thức.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD2-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "SK",
+      "name": "Vận động 180 phút & một kỹ năng thể chất mũi nhọn",
+      "childMeaning": "“Con chơi ngoài trời mỗi ngày và con giỏi lên một kỹ năng.”",
+      "successSignal": "≥ 180 phút vận động/ngày; ≥ 60 phút cường độ trung bình–mạnh; 1 kỹ năng có chỉ số đo được tăng sau 8 tuần (ví dụ: bơi 5m → 15m, đạp xe 2 bánh, đứng 1 chân 10 giây).",
+      "activities": [
+        "\"Giờ vàng ngoài trời\" 60 phút trước bữa tối — cố định như một bữa ăn.",
+        "Chọn 1 kỹ năng mũi nhọn mỗi 8 tuần: bơi / đạp xe / nhảy dây / bóng. Ghi chỉ số đầu kỳ – cuối kỳ lên giấy dán tường.",
+        "Nhật ký vận động hình vẽ: mỗi ngày trẻ vẽ 1 hình vận động chính; cuối tuần đếm.",
+        "Đi bộ đường dài gia đình 1 lần/tuần (2–4 km, có ba lô nhỏ cho trẻ tự mang) — vận động + gánh vác + kiên trì.",
+        "Trò nặng nhẹ: bò – nhảy – leo – ném; mỗi dạng 10 phút, dùng như \"bữa ăn vận động\".",
+        "Vệ sinh thân thể trọn bộ: tự đánh răng (2 phút, có đồng hồ cát), tự rửa tay 6 bước, tự mặc đồ — gắn vào CD-06 Thân Hình Người Mẫu.",
+        "Buổi \"thể lực gia đình\" 30 phút/tuần: đếm số lần nhảy dây, số lần plank của từng người, ghi lên bảng chung — biến thể lực thành trò chơi có số liệu."
+      ],
+      "parentGuidance": "người lớn tập cùng; không dùng màn hình làm phần thưởng sau vận động.",
+      "measurement": "phút vận động/ngày; chỉ số của kỹ năng mũi nhọn; số buổi ngoài trời/tuần.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD2-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "MQH",
+      "name": "Bảy bố thí phiên bản mầm: Cười – Mắt – Lời – Ơn",
+      "childMeaning": "“Con có 4 món quà cho người khác mà không cần tiền: nụ cười, ánh mắt, lời nói, lời cảm ơn.”",
+      "successSignal": "mỗi ngày trẻ chủ động cho ít nhất 2 trong 4 món; biết nhìn thấy điểm tốt của người khác và nói ra thành lời.",
+      "activities": [
+        "\"Bốn món quà không tốn tiền\": dạy thành bài đồng dao; mỗi tối trẻ kể đã cho ai món nào.",
+        "Ngôn thí 8 loại lời nói [BT-3]: người lớn ghi 8 thẻ từ (Vui vẻ – Hy vọng – Niềm tin – Trí tuệ – Khích lệ – Xây dựng – Khen ngợi – Khẳng định); mỗi tuần trẻ chọn 2 thẻ để dùng với người khác.",
+        "Nhãn thí 3 tầng [BT-2]: bài luyện \"thấy điều tốt\": trẻ phải nói ra 1 điều tốt của người mà trẻ không thích (mức tầng 1–2).",
+        "Khen ngợi theo 8 tố chất: thay \"giỏi quá\" bằng \"con đã kiên trì hết 20 câu\" / \"con đã dũng cảm nhận lỗi\". Ghi bảng \"8 tố chất của con\" dán tường.",
+        "Bố thí nụ cười ở nơi công cộng [BT-1]: mỗi lần ra ngoài, trẻ cười + chào 1 người lạ (bảo vệ, người bán hàng). Người lớn kể lại phản ứng tích cực.",
+        "Hộp thư biết ơn gia đình: mỗi người viết/vẽ 1 điều biết ơn/tuần, mở hộp cuối tuần.",
+        "Thân thí tại nhà [BT-6]: trẻ chọn 1 người trong nhà để giúp 1 việc không được yêu cầu, 3 lần/tuần."
+      ],
+      "parentGuidance": "khen ngay khi trẻ vừa bố thí (công thức 5 bước: Ghi nhận biết ơn → Làm lớn hình ảnh tốt đẹp → Quảng bá → Bao dung → Đào tạo bồi dưỡng).",
+      "measurement": "số lần/ngày trẻ cho ≥ 2 món quà không tốn tiền; số lần khen ngợi dựa trên 8 tố chất/tuần.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-1-NhanThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-4-TamThi",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD2-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "MQH",
+      "name": "Xin phép – Tự chọn bạn – Nói lời hoà giải",
+      "childMeaning": "“Con hỏi trước khi lấy — và con tự chọn bạn.”",
+      "successSignal": "trẻ xin phép trước 80% trường hợp; tự mời bạn chơi; tự nói lời hoà giải (không cần người lớn đứng giữa) ≥ 1 lần/tuần.",
+      "activities": [
+        "Câu thần chú 3 câu khi xung đột: “Con không thích điều đó.” → “Con muốn…” → “Mình chơi lại nhé.”",
+        "Vai \"người hoà giải\" luân phiên trong nhà: mỗi tuần 1 buổi, trẻ là người đề xuất cách giải quyết.",
+        "Danh sách 5 người bạn: trẻ vẽ 5 gương mặt, mỗi tuần mời 1 bạn chơi/chia sẻ đồ (kết nối = nhân mạch nhí).",
+        "Điện thoại/video call với ông bà định kỳ 1 lần/tuần: trẻ tự bấm gọi, tự kể 3 câu ⇒ NG-2 Quý nhân (giữ duyên với người có ơn).",
+        "\"Cảm ơn cô/chú\" tại chỗ: mỗi lần được giúp, trẻ nói cảm ơn trực tiếp, không phải qua bố mẹ.",
+        "Thẻ \"Con xin phép\": dùng thống nhất ở nhà và ở lớp; người lớn ký vào thẻ khi trẻ xin phép đúng.",
+        "Bố thí phòng thí [BT-5]: khi bạn làm trẻ khó chịu, trẻ luyện 3 bước Biết & đón nhận → Bao dung cho con người → Trân trọng bài học — kể lại bằng tranh."
+      ],
+      "parentGuidance": "không giải quyết xung đột hộ; đứng lùi 3 bước và chỉ nhắc câu thần chú.",
+      "measurement": "tỉ lệ xin phép đúng; số lần tự hoà giải; số bạn trẻ chủ động kết nối/tuần.",
+      "conceptTags": [
+        "#7Giàu:G4-PhamChat(Lễ)",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#7BốThí:BT-5-PhongThi",
+        "#9DạngNgười:NG-2-QuyNhan",
+        "#9DạngNgười:NG-3-NhanMach"
+      ]
+    },
+    {
+      "id": "GD2-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "HT",
+      "name": "Đọc – Kể lại – Hỏi \"vì sao\"",
+      "childMeaning": "“Con đọc, con kể lại được, và con hỏi vì sao.”",
+      "successSignal": "kể lại được câu chuyện có đầu–giữa–cuối; hỏi ≥ 5 câu \"vì sao/tại sao\" mỗi ngày; nhận mặt chữ cái và viết tên mình.",
+      "activities": [
+        "Đọc 15 phút/ngày + \"3 câu kể lại\": nhân vật → chuyện gì → kết quả.",
+        "Hộp câu hỏi: mỗi câu hỏi của trẻ viết ra giấy bỏ hộp; cuối tuần cùng tra 3 câu (dạy nghi vấn thuận chiều mong muốn).",
+        "\"Vì sao\" ngược: người lớn hỏi trẻ \"Con nghĩ vì sao?\" trước khi trả lời — luyện tự tạo giả thuyết.",
+        "Thí nghiệm bếp 1 lần/tuần: nước đá tan, muối tan, cây cần nước — ghi 1 dòng kết luận bằng hình.",
+        "Bảng chữ cái thân thể: vẽ chữ bằng ngón tay, bằng dây, bằng bột — đa giác quan.",
+        "\"Sách tôi làm\": mỗi tháng trẻ \"xuất bản\" 1 cuốn 4 trang do trẻ vẽ và kể, đọc cho cả nhà (nền của CD-08 Quảng Bá Siêu Phàm).",
+        "Đếm trong đời thật: đếm bậc thang, thìa cơm, số xe — toán gắn với thân và môi trường."
+      ],
+      "parentGuidance": "tuyệt đối không trả lời thay; luôn hỏi ngược một câu trước khi cho đáp án.",
+      "measurement": "số câu hỏi/ngày; số sách đọc lại/tuần; số lần kể lại trôi chảy.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#9DạngNgười:NG-8-ChuyenGia"
+      ]
+    },
+    {
+      "id": "GD2-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "TC",
+      "name": "Ba lọ tiền đầu tiên (Cho – Tiêu – Để dành)",
+      "childMeaning": "“Mỗi đồng con nhận đều chia ba phần: cho đi – tiêu – để dành.”",
+      "successSignal": "trẻ tự chia tiền lì xì/quà thành 3 phần theo tỉ lệ đã thống nhất; biết nói \"cái này con không mua vì đang để dành\"; tự chọn 1 người/việc để \"cho đi\".",
+      "activities": [
+        "Ba lọ trong suốt có dán hình: 🎁 Cho đi – 🛒 Tiêu – 🌱 Để dành. Tỉ lệ khởi điểm 20–30–50 (%) và luật do trẻ cùng ký.",
+        "Nghi thức chia tiền lì xì: mỗi lần nhận tiền, trẻ tự bỏ vào 3 lọ trước mặt người lớn (không làm hộ).",
+        "\"Đi chợ một mình\" có ngân sách: đi siêu thị, trẻ cầm 50.000đ, tự chọn, tự trả, tự nhận tiền thừa (có giám sát).",
+        "Bảng giá trị lao động: trẻ làm việc nhà vượt bổn phận (lau xe, xếp giày cả nhà) mới được nhận \"thù lao giá trị\"; việc bổn phận thì không trả tiền — dạy khác biệt giữa bổn phận và giá trị tạo ra.",
+        "Sổ mong muốn: vẽ món đồ muốn mua + số tiền + số ngày cần để dành; dán lên tường, đánh dấu mỗi ngày đủ tiền.",
+        "Buổi \"cho đi\" hằng tháng: trẻ tự quyết định dùng lọ Cho đi để mua gì/tặng ai (từ thiện nhỏ, quà cho ông bà, đồ cho bạn khó khăn).",
+        "Trò chơi đổi hàng – tiền: trẻ đóng vai người bán, người mua; học giá cả – trao đổi – tiền thừa."
+      ],
+      "parentGuidance": "không mua bù khi trẻ tiêu hết tiền — để trẻ sống với quả của quyết định (nguyên lý nhân–quả ở mức an toàn).",
+      "measurement": "số lần tự chia 3 lọ; số món trẻ tự \"không mua\" được; số khoản \"cho đi\" trong năm.",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G4-PhamChat(Nhân,",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-6-ThanThi",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD2-HT-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "HT",
+      "name": "Việc nhà thuộc về con (bổn phận nhỏ)",
+      "childMeaning": "“Con là người đóng góp cho nhà này.”",
+      "successSignal": "trẻ giữ cố định 3 việc nhà theo tuổi (dọn bàn, xếp giày, tưới cây), tự làm không cần nhắc ≥ 5 ngày/tuần.",
+      "activities": [
+        "Bảng việc nhà có hình 3 ô cố định theo giờ (trước ăn – sau ăn – trước ngủ).",
+        "\"Người gánh vác của tuần\": mỗi tuần trẻ nhận 1 vai (người rót nước, người kiểm tra cửa) — gánh vác có tên gọi, mang tính danh dự.",
+        "Tự sửa hậu quả: đổ nước → tự lau; làm rơi → tự nhặt. Người lớn không làm hộ, chỉ đứng cạnh.",
+        "Thời gian tự phục vụ mỗi sáng 15 phút: trẻ tự mặc đồ, tự xếp ba lô, tự chuẩn bị giày.",
+        "Cùng nấu 1 món/tuần: trẻ đảm nhận 1 công đoạn cố định (đập trứng, rửa rau) — kỹ năng sống + sức khỏe + tự hào.",
+        "\"Bảng gánh vác gia đình\" công khai: cả nhà ghi việc của mình; trẻ thấy người lớn cũng gánh vác, không chỉ trẻ.",
+        "Khen theo tố chất: \"Con gánh vác giỏi\" / \"Con kiên trì xếp hết 12 đôi giày\" — gắn nhãn năng lực vào hành vi cụ thể."
+      ],
+      "parentGuidance": "việc nhà không phải hình phạt — cấm dùng việc nhà để trừng phạt.",
+      "measurement": "tỉ lệ ngày tự làm việc nhà; số việc trẻ nhận không cần nhắc; mức độ trẻ gọi tên việc của mình.",
+      "conceptTags": [
+        "#7Giàu:G4-PhamChat(Nghĩa)",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-04-PhamChatUuTut→CD-04-PhamChatUuTu",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-06-GanhVac",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD3-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "NT",
+      "name": "Nhật ký biết ơn & lời khen mỗi tối",
+      "childMeaning": "“Mỗi ngày có ít nhất một điều đáng cảm ơn, và một điều con làm tốt.”",
+      "successSignal": "viết được 3 dòng/tối (1 biết ơn – 1 việc tốt của mình – 1 việc tốt của người khác) ≥ 5 ngày/tuần; biết nói lời khen cụ thể thay vì khen chung.",
+      "activities": [
+        "Sổ 3 dòng/tối: \"Hôm nay con biết ơn… / Con đã làm tốt… / Con thấy ở … điều tốt đẹp…\".",
+        "\"Biết ơn nghịch cảnh\" tuần 1 lần: viết 1 điều không vui và bài học nó mang lại (nền CD-12 Thấu Hiểu Nhân Sinh).",
+        "Bố thí ngôn thí nâng cao [BT-3]: mỗi ngày trẻ phải khen 1 người bằng 1 câu cụ thể, có chi tiết: \"Con thấy bố kiên trì sửa quạt đến 9 giờ.\"",
+        "Bảng \"Tôi thấy điểm tốt\" [BT-2]: dán ảnh 9 người quanh trẻ; mỗi tuần viết 1 điểm tốt cho 3 người khác nhau.",
+        "Nghi thức tối 10 phút: tắt màn hình → 3 dòng → 3 nhịp thở → ngủ. (Thói quen nội tâm gắn vào GD3-SK-01.)",
+        "Thẻ \"Trân trọng – biết ơn\" làm quà: trẻ tự viết thiệp cảm ơn cho 1 người có ơn mỗi tháng (thầy cô, bác giữ xe, bạn).",
+        "Thang đo \"Hôm nay con ở tầng nhận thức nào\": hỏi 1 câu duy nhất — “Hôm nay con thấy việc đó bắt đầu từ con hay từ người khác?” (tập dịch chuyển từ bậc 1 sang bậc 2)."
+      ],
+      "parentGuidance": "người lớn viết cùng — trẻ chỉ bền khi thấy bố mẹ cũng viết.",
+      "measurement": "số ngày/tuần có 3 dòng; số lời khen cụ thể/tuần; số thiệp cảm ơn/tháng.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#7BốThí:BT-4-TamThi",
+        "#8TốChất:NTAI-07-TranTrongBietOn",
+        "#9DạngNgười:NG-1-CaoNhan(nhận"
+      ]
+    },
+    {
+      "id": "GD3-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "NT",
+      "name": "Tự đặt mục tiêu & giữ một thói quen 66 ngày",
+      "childMeaning": "“Con chọn một việc, làm đủ 66 ngày, rồi con thành người khác.”",
+      "successSignal": "hoàn thành ít nhất 1 chu kỳ 66 ngày và 1 chu kỳ 100 ngày trong giai đoạn; biết chia mục tiêu lớn thành 3 bước; biết tự đánh giá cuối tuần.",
+      "activities": [
+        "Chu kỳ 66 ngày: chọn 1 thói quen (đọc 20 phút, plank, viết nhật ký), kẻ ô 66 ngày trên tường, tô mỗi ngày.",
+        "Lễ 100 ngày: làm lễ nhỏ tại gia đình khi trẻ đủ 100 ngày giữ thói quen — tài liệu: \"Nếu kiên trì đứng trong hàng, bạn sẽ được nhận quà.\"",
+        "Công thức 3 bước mục tiêu: Rõ hình ảnh đến đích → Chia bước nhỏ ≤ 1 tuần → Tự đánh dấu hoàn thành.",
+        "\"Bảng tự đánh giá cuối tuần\": 5 câu hỏi tự chấm (1–5): ngủ – vận động – việc nhà – học – một việc tốt. Trẻ chấm trước, bố mẹ chấm sau, so sánh — dạy tự nhận thức.",
+        "Thử thách \"dũng cảm thay đổi\" mỗi tháng: 1 việc khó chưa từng làm, ghi trước – sau.",
+        "Cây kiên trì: vẽ 1 thân cây trên tường; mỗi tuần giữ đủ thói quen thì thêm 1 lá; đủ 10 lá thì thêm 1 quả ghi tên thành tích.",
+        "Cố định hình ảnh tâm trí: mỗi tối trẻ nhắm mắt 30 giây thấy mình đã đạt mục tiêu — kỹ thuật \"cố định hình ảnh tâm trí\" của tài liệu cho tố chất kiên trì."
+      ],
+      "parentGuidance": "người lớn chọn một thói quen của chính mình và chạy chu kỳ 66 ngày song song.",
+      "measurement": "số chu kỳ 66/100 ngày hoàn thành; tỉ lệ ngày giữ thói quen; số mục tiêu trẻ tự chia bước.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD3-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "SK",
+      "name": "Ngủ 9–12h & nghi thức không màn hình",
+      "childMeaning": "“Ngủ là môn võ của trí óc.”",
+      "successSignal": "ngủ 9–12 giờ; giờ ngủ lệch ≤ 30 phút; 60 phút cuối ngày không dùng màn hình giải trí; tự giác vào nghi thức.",
+      "activities": [
+        "\"Giờ giới nghiêm của màn hình\": 20h00 mọi thiết bị vào trạm sạc ở phòng khách — luật chung cả nhà, trẻ không có ngoại lệ nếu người lớn cũng không.",
+        "Nhật ký ngủ 7 ngày: ghi giờ ngủ – giờ thức – cảm giác buổi sáng (1–5). Cùng xem biểu đồ cuối tuần.",
+        "Nghi thức 3 bước cố định: soạn ba lô → 3 dòng biết ơn → 3 nhịp thở.",
+        "Buổi tối tối giản ánh sáng: đèn vàng, không đèn xanh; không tivi phòng ngủ.",
+        "Kế hoạch bù ngủ cuối tuần có trần: ngủ thêm ≤ 1 giờ so với ngày thường (ngủ bù quá nhiều phá nhịp).",
+        "Thẻ \"màn hình đổi lấy gì\": mỗi giờ giảm màn hình, trẻ ghi lại việc mình đã làm thay (đọc – vận động – chơi với em) — biến việc giảm thành hình ảnh đến đích."
+      ],
+      "parentGuidance": "kiểm tra môi trường trước, ý chí sau — nếu thiết bị còn trong phòng ngủ, trẻ thất bại là do thiết kế, không do trẻ.",
+      "measurement": "giờ ngủ trung bình/tuần; số lần vi phạm giới nghiêm; mức năng lượng buổi sáng tự chấm.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD3-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "SK",
+      "name": "60 phút vận động & một môn có chỉ số tiến bộ",
+      "childMeaning": "“Mỗi ngày 60 phút — và mỗi tháng con thấy con số của mình tốt lên.”",
+      "successSignal": "≥ 60 phút/ngày vận động trung bình–mạnh; 1 môn mũi nhọn có nhật ký chỉ số tăng theo tháng; biết khởi động và giãn cơ.",
+      "activities": [
+        "Chọn môn mũi nhọn 6–12 tháng: bơi / võ / bóng bàn / chạy / bóng rổ — cam kết theo chu kỳ 66 ngày rồi mới đổi.",
+        "Nhật ký chỉ số: mỗi tuần ghi 3 con số (số vòng, số mét, số phút plank). Vẽ biểu đồ bằng tay.",
+        "\"Vận động cùng gia đình\" 3 buổi/tuần: đạp xe, chạy bộ, cầu lông — có điểm số thi đua giữa các thành viên, ai cũng có mục tiêu riêng.",
+        "Đi bộ 30 phút sau bữa tối: vừa tiêu hoá vừa là thời gian trò chuyện 1-1 với bố/mẹ (đồng thời là thói quen mối quan hệ).",
+        "Vệ sinh & tư thế người mẫu: bàn học đúng chiều cao, đèn đủ sáng, ngồi thẳng 20-20-20 (20 phút – nhìn xa 20 feet – 20 giây).",
+        "Buổi \"thể lực 5 chỉ số\" mỗi quý: plank, nhảy dây 1 phút, chạy 400m, ngồi gập, đứng 1 chân — ghi bảng so sánh quý.",
+        "Dinh dưỡng cơ bản 5 nhóm: trẻ tự xếp 1 bữa sáng đủ 5 nhóm 1 lần/tuần; học đọc nhãn đường."
+      ],
+      "parentGuidance": "tập cùng, không xem thể thao thay tập; không dùng đồ ngọt/màn hình làm phần thưởng sau tập.",
+      "measurement": "phút vận động/ngày; chỉ số 5 bài kiểm tra thể lực theo quý; số buổi tập/tuần.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-01-SucHocTap"
+      ]
+    },
+    {
+      "id": "GD3-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "MQH",
+      "name": "Giao tiếp thông thái: Nghe hết – Hỏi lại – Nói 3 lớp",
+      "childMeaning": "“Con nghe cho hết, hỏi lại cho đúng, rồi nói theo 3 lớp: sự thật – cảm xúc – mong muốn.”",
+      "successSignal": "không ngắt lời; biết hỏi lại để xác nhận (\"Ý bác là…?\"); nói được 3 lớp khi có bất đồng; biết cảm ơn và xin lỗi không cần nhắc.",
+      "activities": [
+        "Luyện \"Nghe hết câu\": luật nhà — người nói chưa hết câu thì người nghe chưa được trả lời; tính điểm 1 tuần.",
+        "Bài tập nói 3 lớp: “Con thấy… (sự thật) / Con thấy… (cảm xúc) / Con muốn… (mong muốn)” — dùng khi xung đột với bạn/bố mẹ.",
+        "Trò \"phóng viên\": trẻ phỏng vấn 1 người lớn trong nhà 5 câu/tuần về tuổi thơ — đồng thời là nhân duyên + biết ơn + hiểu nhân sinh.",
+        "Bố thí ngôn thí 8 loại lời nói: mỗi tuần luyện 1 loại (vui vẻ, hy vọng, niềm tin, trí tuệ, khích lệ, xây dựng, khen ngợi, khẳng định), ghi lại đã dùng với ai.",
+        "Nói trước đám đông nhỏ: trẻ thuyết trình 3 phút trước gia đình mỗi tháng (nền CD-08 Quảng Bá Siêu Phàm).",
+        "Nghi thức cảm ơn ngoài đời: cảm ơn thầy cô, bác bảo vệ, cô lao công — 1 người/tuần, bằng lời nói trực tiếp.",
+        "\"Đọc vị cuộc nói chuyện\": sau mỗi cuộc trò chuyện quan trọng, trẻ ghi lại: người đó cần gì? mình cho được gì? — nền của nhãn thí tầng 3 (nhìn thấy sự chuyển hoá)."
+      ],
+      "parentGuidance": "người lớn phải nghe hết câu trẻ trước — trẻ học giao tiếp bằng cách được giao tiếp.",
+      "measurement": "số lần ngắt lời (mục tiêu giảm); số lần dùng cấu trúc 3 lớp; số người trẻ chủ động cảm ơn/tuần.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#8TốChất:NTAI-07-TranTrongBietOn",
+        "#9DạngNgười:NG-3-NhanMach"
+      ]
+    },
+    {
+      "id": "GD3-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "MQH",
+      "name": "Nhận diện 9 dạng người quanh con & giữ nhân duyên",
+      "childMeaning": "“Quanh con có những người giúp con theo những cách khác nhau — con phải nhận ra và đối đãi cho đúng.”",
+      "successSignal": "kể tên được ≥ 5 trong 9 dạng người trong đời thực của mình (kèm tên người thật); làm được 1 hành động đối đãi phù hợp với mỗi dạng người trẻ đã nhận ra.",
+      "activities": [
+        "Bảng \"9 người của con\": trẻ vẽ 9 ô, điền tên người thật cho từng dạng (Cao nhân – Quý nhân – Nhân mạch – Thần tài – Nhân tài – Minh sư – Thầy cô – Chuyên gia – Thiện tri thức). Cập nhật mỗi quý.",
+        "Hành động đối đãi chuẩn:",
+        "Nhật ký \"ai đã giúp con tuần này\": mỗi tuần ghi 3 người; cuối tháng chọn 1 người để cảm ơn bằng hành động.",
+        "Gia nhập 1 nhóm/câu lạc bộ và giữ vai trò nhỏ có tên (thư ký nhóm, người giữ đồ) — nền của CD-13 Bác Ái Lĩnh Chúng.",
+        "Mời bạn về nhà 1 lần/tháng, trẻ tự lên \"kế hoạch chơi\" và tự dọn trước – sau.",
+        "Phỏng vấn 1 người làm nghề lạ mỗi quý: hỏi 5 câu cố định (làm gì – khó gì – thích gì – cần học gì – cho con lời khuyên) — nền NG-8 Chuyên gia + CD-11 Tầm Nhìn Thấu Suốt.",
+        "\"Quy tắc bảo vệ nhân duyên\": 3 câu cấm nói sau lưng (nói xấu – phán xét – tiết lộ chuyện riêng của bạn)."
+      ],
+      "parentGuidance": "người lớn nói về người khác bằng ngôn từ tầng cao (thấy điểm tốt, không phán xét) — trẻ sao chép cách bố mẹ nói về người vắng mặt.",
+      "measurement": "số dạng người trẻ nhận ra (mục tiêu ≥ 5 trong 9); số hành động đối đãi đúng/quý; số lần trẻ tự giới thiệu hai người bạn cho nhau.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G4-PhamChat",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#9DạngNgười:NG-1…NG-9",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-6-ThanThi",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-06-GanhVac"
+      ]
+    },
+    {
+      "id": "GD3-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "HT",
+      "name": "Phương pháp học: Đọc chủ động – Ghi chú – Tự kiểm tra",
+      "childMeaning": "“Học không phải là đọc lại — học là tự hỏi rồi tự trả lời.”",
+      "successSignal": "dùng được 3 công cụ (đặt câu hỏi trước khi đọc / ghi chú bằng sơ đồ / tự kiểm tra không nhìn sách) một cách tự giác; biết tự tìm lỗi sai của mình; có 1 chuyên môn mũi nhọn trẻ tự học thêm.",
+      "activities": [
+        "Đọc chủ động 3 bước: (1) Xem tiêu đề → viết 3 câu hỏi; (2) Đọc → trả lời câu hỏi; (3) Tóm tắt bằng 5 gạch đầu dòng.",
+        "Tự kiểm tra (retrieval practice): mỗi tối, 10 câu hỏi tự đặt và trả lời không nhìn sách — dạng ghi nhớ hiệu quả nhất.",
+        "Ôn cách quãng (spaced repetition): lịch 1 ngày – 3 ngày – 7 ngày – 21 ngày; đánh dấu trên lịch.",
+        "Sơ đồ tư duy 1 bài/tuần: vẽ tay, tô màu — trẻ dạy lại cho em/bạn (kỹ thuật \"dạy lại = học lần hai\").",
+        "\"Ngân hàng lỗi\": sổ ghi lỗi sai từng môn + lý do + cách sửa. Mỗi tháng \"thanh toán\" 1 lỗi cũ.",
+        "Chuyên môn mũi nhọn tự chọn: 1 chủ đề trẻ thích (khủng long, lập trình, cờ, vẽ) — mỗi tuần 1 sản phẩm nhỏ, cuối quý 1 sản phẩm lớn (CD-05).",
+        "Đọc \"để học\": từ 8 tuổi, mỗi tuần 1 bài đọc phi hư cấu + 1 bài hư cấu; ghi lại \"3 điều mới học được\".",
+        "Tự chấm trước, bố mẹ chấm sau: rèn tự đánh giá — kỹ năng điều hành bậc cao."
+      ],
+      "parentGuidance": "người lớn hỏi \"Con đã thử cách nào?\" thay vì chỉ ra đáp án; tôn trọng tốc độ của trẻ.",
+      "measurement": "số phiên tự kiểm tra/tuần; điểm tự chấm so với điểm thực (độ lệch giảm dần = tự nhận thức tăng); số sản phẩm mũi nhọn/quý.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#8TốChất:NTAI-02-KienTri",
+        "#9DạngNgười:NG-8-ChuyenGia"
+      ]
+    },
+    {
+      "id": "GD3-HT-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "HT",
+      "name": "Học sâu 25 phút & ngân hàng thời gian",
+      "childMeaning": "“25 phút không bị làm phiền = 2 giờ bị chia cắt.”",
+      "successSignal": "hoàn thành ≥ 2 phiên tập trung sâu 25 phút/ngày; biết tự tạo môi trường không nhiễu; biết quản lý \"ngân hàng thời gian\" của mình.",
+      "activities": [
+        "Pomodoro nhí 25–5: 25 phút tập trung, 5 phút vận động; 2–4 phiên/ngày; dùng đồng hồ cát/đồng hồ bấm giây.",
+        "Nghi thức khởi động 60 giây: dọn bàn → đặt 3 mục tiêu cho phiên → bật \"đèn tập trung\" (đèn riêng).",
+        "Thẻ \"việc khó nhất làm trước\" (eat the frog): mỗi ngày chọn 1 việc khó làm đầu tiên sau giờ ngủ.",
+        "Ngân hàng thời gian: mỗi tuần được cấp 3 giờ rảnh tự do; trẻ tự chia, tự ghi; tiêu quá thì tuần sau trừ — dạy tài chính bằng thời gian trước khi dạy bằng tiền.",
+        "Bảng 2 cột \"Tôi điều khiển / Việc điều khiển tôi\": trẻ phân loại hoạt động; dần dẹp cột 2.",
+        "\"Giờ vàng\" cố định cho môn khó nhất mỗi ngày (cùng một khung giờ) — tận dụng nhịp sinh học.",
+        "Tuần không màn hình 1 buổi: mỗi tuần 1 buổi tối hoàn toàn không màn hình, cả nhà cùng làm — tăng khả năng chịu nhàm chán."
+      ],
+      "parentGuidance": "người lớn không giao thêm việc trong phiên tập trung; tôn trọng đèn \"đang tập trung\".",
+      "measurement": "số phiên tập trung sâu/tuần; số phút ngân hàng thời gian dùng đúng kế hoạch; số lần trẻ tự tạo môi trường không nhiễu.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD3-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "TC",
+      "name": "Ngân sách cá nhân: 4 phong bì",
+      "childMeaning": "“Tiền đi theo 4 đường: cho – tiêu – để dành – đầu tư.”",
+      "successSignal": "ghi chép được thu–chi 1 tháng liền; tự chia 4 phong bì theo tỉ lệ tự ký; biết phân biệt bổn phận và giá trị tạo ra; có khoản tiết kiệm mục tiêu cụ thể.",
+      "activities": [
+        "Nâng từ 3 lọ (GĐ2) lên 4 phong bì: 🎁 Cho đi – 🛒 Tiêu – 🌱 Để dành – 🏦 Đầu tư (tỉ lệ do trẻ đề xuất, bố mẹ chốt, trẻ ký).",
+        "Sổ thu–chi 3 cột (ngày – thu – chi – còn lại), ghi tay mỗi ngày; cuối tháng vẽ biểu đồ bằng tay.",
+        "Ba loại tiền trong nhà: (a) tiền bổn phận — việc nhà, không trả; (b) tiền giá trị — việc vượt bổn phận, trả theo giá thị trường; (c) tiền trí tuệ — sản phẩm trẻ tự làm (sách vẽ, video, đồ thủ công) bán cho người thân theo giá trẻ định. ⇒ dạy G7_Vật chất là quả của giá trị.",
+        "Sản phẩm đầu tiên: mỗi quý trẻ tạo 1 sản phẩm để trao đổi/bán (học quảng bá, nền CD-08).",
+        "Mục tiêu tiết kiệm có hình: dán ảnh món đồ + giá; theo dõi tiến độ mỗi tuần.",
+        "Quy tắc 24 giờ: món đồ > 100.000đ thì phải chờ 24 giờ mới được mua — chống mua bốc đồng.",
+        "\"Ngày không tiêu gì\": mỗi tuần 1 ngày, ghi lại cảm giác và việc mình làm thay — luyện tiết chế + an vui không cần mua.",
+        "Hiến tặng có chủ đích: dùng lọ Cho đi 2 lần/năm, trẻ tự chọn người/việc và tự trao."
+      ],
+      "parentGuidance": "không mua bù, không cho vay dễ; mọi khoản vay đều ghi sổ và có hạn.",
+      "measurement": "số ngày ghi sổ/tuần; tỉ lệ tiết kiệm đạt; số sản phẩm trẻ tạo được; số lần \"chờ 24 giờ\" thành công.",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#7BốThí:BT-6-ThanThi",
+        "#7BốThí:BT-7-ToaThi",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD3-TC-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "TC",
+      "name": "Việc lớn hơn & kiếm tiền bằng giá trị thật",
+      "childMeaning": "“Con không xin tiền — con làm ra giá trị rồi đổi lấy tiền.”",
+      "successSignal": "hoàn thành 1 dự án nhỏ có khách hàng/người nhận thật; biết định giá, biết giới thiệu, biết nhận phản hồi; biết đền đáp tiếp nối.",
+      "activities": [
+        "Dự án bán hàng nhỏ 1 lần/năm: bán nước chanh/kẹo/đồ thủ công ở hội chợ trường hoặc trước nhà. Có bảng giá, có lãi/lỗ, có tổng kết.",
+        "Dự án \"quảng bá cho người khác\" [trước cả quảng bá cho mình]: trẻ làm 1 video/áp phích giới thiệu cho cửa hàng của người thân hoặc một bạn cùng lớp.",
+        "Gánh vác có tên: nhận 1 vai trong lớp/nhóm (lớp phó học tập, người quản lý dụng cụ) — viết ra trách nhiệm cụ thể của vai đó.",
+        "Nhật ký phản hồi: sau mỗi việc, ghi 1 điều người khác khen và 1 điều cần sửa (nền NTAI-03 Dũng cảm nhận lỗi).",
+        "\"Bán cho bố mẹ bằng 1 câu\": thực hành giới thiệu 1 sản phẩm trong 30 giây — nền CD-08 Quảng Bá Siêu Phàm.",
+        "Cho đi từ lãi: trẻ dành 1 phần lãi để tặng/giúp người khác — hoàn tất vòng tạo lập giá trị → bố thí.",
+        "Tham quan 1 nơi làm ra đồ vật (xưởng, nông trại, công ty nhỏ của người quen) 1 lần/quý — thấy giá trị được tạo ra như thế nào."
+      ],
+      "parentGuidance": "hậu thuẫn nhưng không làm thay; để trẻ định giá và chịu kết quả lãi/lỗ.",
+      "measurement": "số dự án hoàn thành/năm; số tiền trẻ tự kiếm; số lần nhận phản hồi và sửa.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G7-VatChat",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-08-QuangBaSieuPham",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#8TốChất:NTAI-06-GanhVac",
+        "#8TốChất:NTAI-04-DungCamThayDoi",
+        "#9DạngNgười:NG-3-NhanMach"
+      ]
+    },
+    {
+      "id": "GD4-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "NT",
+      "name": "Nhật ký nhận thức: từ \"tại họ\" sang \"từ chính tôi\"",
+      "childMeaning": "“Điều gì trong đời con là do con tạo ra, và điều gì không phải do con?”",
+      "successSignal": "phân biệt được tầng bậc 1 (đúng–sai, tốt–xấu) và tầng bậc 2 (cội nguồn từ chính tôi); dùng được 3 bước Biết & đón nhận → Bao dung cho con người → Trân trọng bài học khi gặp nghịch cảnh; bớt đổ lỗi.",
+      "activities": [
+        "Nhật ký 5 dòng/tối: Sự việc → Cảm xúc → Hạt mầm của con trong đó → Người khác cần gì → Con sẽ khác thế nào.",
+        "Bài tập 5 tầng bậc nhận thức: mỗi tuần chọn 1 sự việc khó chịu, viết lại nó dưới 2 góc: bậc 1 (ai đúng ai sai) và bậc 2 (cội nguồn bắt đầu từ tôi). So sánh cảm giác của hai cách nhìn.",
+        "Nghi thức 3 bước \"vượt thoát vấn nạn\" [BT-4, BT-5]: khi có quả bất như ý → (1) đón nhận, (2) bao dung cho con người, (3) trân trọng bài học. Viết ra 1 câu cho mỗi bước.",
+        "\"Sổ quy luật của con\": mỗi tháng ghi 1 quy luật trẻ tự rút ra từ trải nghiệm (ví dụ: \"khi con ngủ < 7h thì con cáu với em\").",
+        "Hỏi ngược 3 lần: khi gặp vấn đề, tự hỏi \"Vì sao?\" 3 lần liên tiếp để tới nguyên nhân gốc (nền NG-8 Chuyên gia).",
+        "Bố thí tâm thí có chủ đích: mỗi tuần viết 1 điều biết ơn cho một người đã làm con khó chịu — người đó là \"cao nhân\" hay \"quý nhân\" cho con điều gì?",
+        "Thử thách nhịn nói 24 giờ: một ngày không nói lời phán xét về ai; ghi lại số lần muốn nói mà không nói."
+      ],
+      "parentGuidance": "người lớn hỏi \"Con thấy phần của con ở đâu?\" thay vì \"Tại sao con lại...\"; không tranh cãi đúng–sai trong lúc trẻ đang bùng nổ cảm xúc.",
+      "measurement": "số lần trẻ tự dùng 3 bước khi nghịch cảnh; số lần trẻ nhận phần trách nhiệm của mình; số \"quy luật\" tự rút ra/tháng.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#7BốThí:BT-4-TamThi",
+        "#7BốThí:BT-5-PhongThi",
+        "#8TốChất:NTAI-03-DungCamNhanLoi",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD4-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "NT",
+      "name": "Luật sắt bản thân (cấp 1) — tự đặt luật, tự giữ",
+      "childMeaning": "“Con có 3 luật của riêng con — và con giữ luật cả khi không ai nhìn.”",
+      "successSignal": "có bản luật viết tay do trẻ tự viết, ≤ 5 điều, có chế tài do trẻ tự định; tỉ lệ tự giữ luật ≥ 80%/tuần trong 3 tháng.",
+      "activities": [
+        "Lễ ký \"Luật sắt của tôi\": trẻ viết 3–5 luật (ví dụ: không điện thoại sau 22h30; không nói dối; tập thể lực 3 buổi/tuần). Bố mẹ không sửa nội dung, chỉ hỏi \"đo thế nào?\".",
+        "Bảng tự chấm 7 ô/tuần dán ở nơi riêng tư (không công khai để không thành sân khấu).",
+        "Chế tài tự định, không do bố mẹ áp: ví dụ vi phạm → tuần sau không dùng mạng xã hội 1 ngày. Bố mẹ chỉ nhắc lại luật trẻ đã ký, không tự nghĩ hình phạt mới.",
+        "Luật chung của nhà, hai bên cùng ký: những luật ảnh hưởng đến cả nhà (giờ yên tĩnh, mượn đồ) được đàm phán và cùng ký giữa bố mẹ và trẻ — trẻ phải có quyền sửa.",
+        "\"Người lớn cũng có luật\": bố mẹ công khai 3 luật của mình (không dùng điện thoại trong bữa ăn; chạy bộ 3 buổi/tuần) — luật phải đối xứng.",
+        "Một buổi/tuần không màn hình (cả nhà) và một buổi/tuần làm việc nhà nặng (cùng nhau).",
+        "Kiểm điểm 10 phút cuối tuần: 3 câu — luật nào giữ được? luật nào không? chỉnh luật thế nào? (cho phép sửa luật để trẻ không bỏ luật)."
+      ],
+      "parentGuidance": "không dùng luật làm vũ khí khi đang giận; chỉ nhắc luật khi hai bên đã bình tĩnh.",
+      "measurement": "tỉ lệ tự giữ luật; số lần sửa luật có lý do; số lần vi phạm và tự báo cáo.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD4-NT-03",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "NT",
+      "name": "Tự điều hoà cảm xúc dưới áp lực (cửa sổ dậy thì)",
+      "childMeaning": "“Con có 4 bước nguội lại, và con biết khi nào mình cần dừng lại.”",
+      "successSignal": "nhận ra 3 dấu hiệu cơ thể báo sắp mất kiểm soát (nóng mặt, tim đập nhanh, giọng to); biết rời khỏi tình huống 5 phút rồi quay lại nói tiếp; không dùng lời xúc phạm.",
+      "activities": [
+        "Bản đồ dấu hiệu cơ thể: trẻ tự vẽ 3 dấu hiệu của mình lên giấy note dán trong phòng.",
+        "Quy trình 4 bước \"DỪNG – THỞ – NÓI – CHỌN\": Dừng nói → Thở 4 nhịp (4-4-4-4) → Nói điều mình thấy → Chọn 1 trong 2 cách xử lý.",
+        "Hợp đồng \"5 phút rời đi\": trong xung đột, trẻ có quyền nói \"Con cần 5 phút\" và rời đi không bị coi là vô lễ; sau 5 phút hai bên nói lại. Đây là luật gia đình có ký kết.",
+        "Nhật ký tình huống nóng: sau mỗi lần mất bình tĩnh, ghi 4 dòng: điều xảy ra – con cảm thấy – con đã làm – con sẽ làm lần sau (nền dũng cảm nhận lỗi, không tự oán trách).",
+        "Nghi thức thể chất xả stress: 20 chống đẩy, 5 phút đi bộ, tắm nước mát — danh sách \"3 cách xả\" do trẻ tự chọn trước.",
+        "Học lại ngôn ngữ tích cực: thay \"Con xin lỗi vì hay cáu\" bằng \"Cảm ơn mẹ đã kiên nhẫn với con\" (nguyên văn tài liệu: lời cảm ơn đã ẩn chứa lời xin lỗi).",
+        "Bố thí nụ cười trong nghịch cảnh [BT-1]: mỗi ngày 1 lần, cười khi đang bực — ghi lại kết quả."
+      ],
+      "parentGuidance": "giữ giọng đều khi trẻ to tiếng; nếu người lớn mất bình tĩnh, phải xin lỗi trước — dạy bằng đối xứng.",
+      "measurement": "số lần dùng quy trình 4 bước; số lần dùng \"5 phút rời đi\" thành công; số lần nói lời xúc phạm (mục tiêu: 0).",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#7BốThí:BT-1-NhanThi",
+        "#7BốThí:BT-5-PhongThi",
+        "#8TốChất:NTAI-03-DungCamNhanLoi"
+      ]
+    },
+    {
+      "id": "GD4-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "SK",
+      "name": "Ngủ 8–10 giờ & kỷ luật giờ ngủ trước 23h",
+      "childMeaning": "“Ngủ là thứ quyết định việc con có cáu hay không — nên nó không phải chuyện phụ.”",
+      "successSignal": "ngủ 8–10 giờ; giờ ngủ lệch ≤ 45 phút; biết chủ động đi ngủ sớm hơn trước ngày có việc quan trọng.",
+      "activities": [
+        "Đo giờ ngủ 7 ngày bằng nhật ký; cùng xem mối liên hệ giờ ngủ ↔ tâm trạng ngày hôm sau (tự khám phá thay vì bị dạy).",
+        "\"Giờ chốt\": chốt giờ tắt thiết bị và giờ đèn tắt, do trẻ tự chọn rồi viết vào Luật sắt.",
+        "Thiết bị sạc ngoài phòng ngủ: đây là biện pháp môi trường quan trọng nhất, vì ý chí tuổi này bị hệ thưởng kéo.",
+        "Chiến lược khi bị dịch nhịp: 3 ngày liên tiếp, mỗi ngày đẩy giờ thức sớm 20 phút + ánh sáng ban mai 15 phút.",
+        "Ngủ trưa ngắn ≤ 25 phút (nếu cần) và không sau 15h.",
+        "Nghi thức hạ nhiệt 30 phút: không học bài mới, không mạng xã hội, tắm nước ấm hoặc đọc giấy.",
+        "Nói lại bằng số liệu 2 tuần/lần: trẻ trình bày bảng ngủ của mình — biến việc ngủ thành việc trẻ làm chủ, không phải việc bố mẹ quản."
+      ],
+      "parentGuidance": "cùng luật — bố mẹ sạc ngoài phòng ngủ và tắt đèn cùng giờ.",
+      "measurement": "giờ ngủ trung bình; độ lệch giờ ngủ; số ngày ngủ < 8 giờ.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD4-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "SK",
+      "name": "Sức khỏe người sắt: tập sức mạnh & dinh dưỡng cơ bản",
+      "childMeaning": "“Con tập để thân con khoẻ và dáng con đẹp — không phải để đẹp trong mắt ai.”",
+      "successSignal": "≥ 60 phút/ngày vận động; 2–3 buổi/tuần rèn sức mạnh/thể lực có nhật ký; biết đọc nhãn dinh dưỡng và chọn được 1 bữa đủ chất.",
+      "activities": [
+        "Lịch tập 3 khối: sức mạnh (2 buổi) – sức bền (2 buổi) – linh hoạt/thăng bằng (hằng ngày 10 phút). Ghi rõ bài và số liệu.",
+        "Nhật ký 4 chỉ số tuần: chống đẩy tối đa, plank, chạy 1km, số buổi tập. Vẽ biểu đồ tiến bộ theo tháng.",
+        "Kỹ thuật trước khối lượng: học đúng động tác cơ bản (squat, hít đất, gập bụng, chùng chân) bằng video/người hướng dẫn — phòng chấn thương là luật.",
+        "\"Một môn thể thao có đối thủ\" 1 buổi/tuần: bóng rổ, cầu lông, võ, bơi — học thắng/thua và luật chơi.",
+        "Dinh dưỡng 3 bữa chuẩn: trẻ tự lên 3 thực đơn/2 tuần; luật \"đủ đạm – đủ rau – nước trước nước ngọt\".",
+        "Cấm tuyệt đối 3 thứ: thuốc lá, rượu bia, chất kích thích — có hợp đồng gia đình viết tay và có kịch bản nói \"không\" khi bị bạn rủ (đóng vai 5 tình huống).",
+        "Quản lý màn hình có luật: trần giờ/ngày do trẻ tự đề xuất + tính năng theo dõi; một ngày/tuần không màn hình.",
+        "Tư thế & ngoại hình: kiểm tra tư thế ngồi học, ba lô 2 quai ≤ 10% cân nặng, vệ sinh cá nhân buổi sáng đủ bộ."
+      ],
+      "parentGuidance": "người lớn tập cùng ít nhất 1 buổi/tuần; không bình phẩm ngoại hình tiêu cực, chỉ bình phẩm chỉ số và nỗ lực.",
+      "measurement": "số buổi tập/tuần; 4 chỉ số thể lực theo tháng; số ngày đạt ≥ 60 phút vận động.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-01-SucHocTap"
+      ]
+    },
+    {
+      "id": "GD4-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "MQH",
+      "name": "Bác ái lĩnh chúng (mức nhỏ): dẫn dắt một nhóm",
+      "childMeaning": "“Con dẫn dắt bằng cách làm gương và giúp người khác giỏi lên.”",
+      "successSignal": "giữ một vai có trách nhiệm thật trong 1 nhóm (lớp, CLB, đội) tối thiểu 3 tháng; dạy lại được một kỹ năng cho ít nhất 2 người; biết nhận lỗi trước nhóm.",
+      "activities": [
+        "Nhận vai có trách nhiệm trong CLB/lớp với nhiệm vụ viết rõ; người lớn không làm hộ.",
+        "\"Dạy lại một kỹ năng\" (tọa thí mức nhỏ) [BT-7]: trẻ dạy 1 bạn kém hơn một kỹ năng mình đã giỏi — tổng kết thành 5 bước để người khác làm theo.",
+        "Tổ chức 1 sự kiện nhóm: chia việc, đặt deadline, tự họp 2 lần — có biên bản 1 trang.",
+        "Quy tắc đối đãi trong nhóm: nhận lỗi trước nhóm khi sai (nền NTAI-03); nói công khai điều tốt của thành viên mỗi buổi họp (nền BT-3 Ngôn thí).",
+        "Nhật ký \"tôi đã giúp ai giỏi lên\": mỗi tháng ghi 3 người và 1 việc cụ thể.",
+        "Bảo vệ người yếu thế: có kịch bản cụ thể khi thấy bắt nạt (không im lặng, không quay clip, báo người lớn, đi cùng bạn bị bắt nạt) — đóng vai 3 tình huống.",
+        "Bố thí thân thí có chủ đích [BT-6]: dành 2 giờ/tháng giúp một người/việc cụ thể (dạy em học, giúp ông bà, dọn khu phố)."
+      ],
+      "parentGuidance": "làm cố vấn, không làm quản lý; để nhóm tự sai và tự sửa; chỉ hỏi 3 câu hỏi mở.",
+      "measurement": "thời gian giữ vai; số người trẻ dạy lại; số sự kiện tổ chức; số lần nhận lỗi trước nhóm.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#9DạngNgười:NG-3-NhanMach",
+        "#9DạngNgười:NG-7-ThayCo",
+        "#7BốThí:BT-6-ThanThi",
+        "#7BốThí:BT-7-ToaThi",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-06-GanhVac"
+      ]
+    },
+    {
+      "id": "GD4-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "MQH",
+      "name": "Giao tiếp nâng cao: Xin lỗi – Cảm ơn – Phản hồi 3 lớp",
+      "childMeaning": "“Con nói được điều khó nói — mà không làm người kia bị thương.”",
+      "successSignal": "xin lỗi được không kèm chữ \"nhưng\"; nhận phản hồi mà không phòng thủ; đưa được phản hồi theo cấu trúc 3 lớp cho bạn/bố mẹ; biết nói \"không\" lịch sự.",
+      "activities": [
+        "Cấu trúc phản hồi 3 lớp: \"Con thấy… (dữ kiện) → Con cảm thấy… → Con đề nghị…\". Luyện 2 lần/tuần theo tình huống thật.",
+        "Xin lỗi 4 phần: nhận việc mình làm → nói ảnh hưởng tới người kia → nói cách sửa → hỏi \"con cần làm gì thêm?\". Cấm chữ \"nhưng\" trong câu xin lỗi.",
+        "Cảm ơn thay xin lỗi: luyện theo nguyên văn tài liệu — \"Cảm ơn bạn vì đã chờ tôi\" thay vì \"Xin lỗi vì tôi đến trễ\".",
+        "Nói \"không\" 3 bước: cảm ơn → nêu lý do ngắn → đề xuất phương án khác. Đóng vai 5 tình huống bị rủ (đi chơi trốn học, thử thuốc, nói xấu bạn).",
+        "Khen ngợi dựa trên 8 tố chất: mỗi tuần nói 3 lời khen trỏ vào tố chất (kiên trì, gánh vác, khiêm tốn, dũng cảm nhận lỗi, trân trọng biết ơn, cống hiến, sức học tập, dũng cảm thay đổi) cho 3 người khác nhau.",
+        "Giao tiếp với người lớn khó tính: bộ 5 câu mẫu (chào – xác nhận điều đã hiểu – hỏi – đề xuất – cảm ơn); luyện với thầy cô/hàng xóm.",
+        "Kiểm tra tin nhắn trước khi gửi (60 giây): 3 câu tự hỏi — có thật không? có cần không? có tử tế không? (nền \"luật sắt bản thân\" áp lên mạng xã hội)."
+      ],
+      "parentGuidance": "người lớn phải nhận phản hồi từ trẻ mà không phạt — nếu trẻ nói thật mà bị mắng, thói quen này chết ngay.",
+      "measurement": "số lần xin lỗi đúng cấu trúc; số lần tự dùng phản hồi 3 lớp; số lần nói \"không\" thành công; số lần kiểm tin nhắn trước khi gửi.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G4-PhamChat(Lễ)",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#8TốChất:NTAI-07-TranTrongBietOn",
+        "#8TốChất:NTAI-08-KhiemTon"
+      ]
+    },
+    {
+      "id": "GD4-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "HT",
+      "name": "Học tập tự chủ: kế hoạch – tự đánh giá – tự chịu kết quả",
+      "childMeaning": "“Con là người chịu trách nhiệm cuối cùng cho việc học của con.”",
+      "successSignal": "tự lập kế hoạch tuần–tháng không cần nhắc; tự đánh giá trước khi có điểm; biết xin giúp đỡ đúng người, đúng lúc; có 1 sản phẩm học tập do trẻ tự khởi xướng.",
+      "activities": [
+        "Kế hoạch tuần 1 trang: 3 mục tiêu + lịch khối thời gian; chỉ trẻ viết, bố mẹ chỉ hỏi \"chỗ nào con cần hỗ trợ?\".",
+        "Ôn cách quãng nâng cao: lịch 1–3–7–21–60 ngày; dùng thẻ ghi nhớ tự làm.",
+        "\"Ngân hàng lỗi\" theo môn + bảng chẩn đoán lỗi: lỗi do hiểu sai / do cẩu thả / do thiếu thời gian — mỗi loại một cách sửa.",
+        "Học theo dự án 1 lần/học kỳ: sản phẩm thật (bài nghiên cứu nhỏ, mô hình, video, ứng dụng) — nền CD-08 Quảng Bá + CD-05 Năng lực.",
+        "Tự kiểm tra \"3 giờ không chú ý\": mỗi tuần 1 lần, tự ngồi 90 phút làm đề trong điều kiện giống thi.",
+        "Hỏi chuyên gia: [NG-8] mỗi học kỳ phỏng vấn/phỏng vấn qua email 1 người giỏi trong lĩnh vực trẻ quan tâm, hỏi 5 câu đã chuẩn bị.",
+        "Đọc sách khó 1 cuốn/tháng: sách dày, phi hư cấu; viết 1 trang tóm tắt + 1 phê bình.",
+        "Nhật ký \"điều con thay đổi cách học\": mỗi tháng 1 điều mới học được về cách học."
+      ],
+      "parentGuidance": "chuyển từ giám sát sang cố vấn: định kỳ 1 tuần/lần hỏi 3 câu (Con đang cố đạt gì? Khó khăn lớn nhất? Con cần gì từ bố mẹ?).",
+      "measurement": "số tuần trẻ tự lập kế hoạch trước; độ lệch giữa tự đánh giá và điểm thực; số sản phẩm theo kỳ; số buổi tự học dài.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD4-HT-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "HT",
+      "name": "Tầm nhìn thấu suốt: đọc sâu – tranh luận hai phía – nhìn hệ thống",
+      "childMeaning": "“Con thấy được nguyên nhân nằm sau việc, và con nhìn được cả hệ thống.”",
+      "successSignal": "đọc 1 cuốn phi hư cấu/tháng; viết được lập luận hai phía cho một vấn đề gây tranh cãi; vẽ được sơ đồ nhân–quả cho 1 vấn đề thật trong đời mình.",
+      "activities": [
+        "Tranh luận hai phía: mỗi 2 tuần, trẻ viết 1 trang cho phía mình không đồng ý — buộc phải hiểu phía đối lập.",
+        "Sơ đồ nhân–duyên–quả: lấy 1 việc thật (điểm kém, cãi với bạn) và vẽ chuỗi Thức – Duyên – Quả rồi tìm điểm can thiệp.",
+        "\"Đọc 5 nguồn\": với một chủ đề, đọc 5 nguồn khác quan điểm, ghi bảng so sánh (nguồn – luận điểm – dữ liệu – thiên lệch).",
+        "Bộ câu hỏi 5 tầng [bậc 1→5]: luyện chuyển góc nhìn trên cùng một sự việc: Đúng/sai → Cội nguồn từ tôi → Tánh không (bản chất không có vấn đề) → Tự nhiên biết (điều phù hợp cần làm) → Bao trùm.",
+        "Nhật ký \"nhận thức tầng bậc\": sau mỗi sự việc lớn, ghi \"con đang ở tầng nào và con có thể lên tầng nào\".",
+        "Tổng kết 15 khái niệm nguồn: với 1 kỹ năng trẻ giỏi, viết ra quy luật – nguyên lý – công thức – phương pháp – môi trường – công cụ của nó (nền Chuyên gia và Tọa thí).",
+        "Xem 1 tài liệu/phim tài liệu + viết 5 nhận định mỗi tháng, có dẫn chứng."
+      ],
+      "parentGuidance": "người lớn chịu thua trong tranh luận khi trẻ lập luận tốt — trẻ cần thấy lập luận quan trọng hơn vai vế.",
+      "measurement": "số cuốn sách/tháng; số bài tranh luận hai phía; số sơ đồ nhân quả vẽ được; số lần trẻ chuyển được lên tầng bậc cao hơn.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#9DạngNgười:NG-1-CaoNhan",
+        "#9DạngNgười:NG-8-ChuyenGia",
+        "#7BốThí:BT-3-NgonThi"
+      ]
+    },
+    {
+      "id": "GD4-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "TC",
+      "name": "Tài chính tuổi teen: tài khoản – ghi chép – thu nhập đầu tiên",
+      "childMeaning": "“Con quản một số tiền thật, ghi lại, và tự chịu trách nhiệm với nó.”",
+      "successSignal": "có tài khoản riêng và ghi chép thu–chi đủ 3 tháng; có thu nhập đầu tiên do tự làm ra; có quỹ dự phòng nhỏ; hiểu lãi suất, lạm phát, lừa đảo tài chính ở mức cơ bản.",
+      "activities": [
+        "Mở tài khoản tiết kiệm + tài khoản chi tiêu, có app theo dõi; trẻ tự quản, bố mẹ chỉ xem khi trẻ cho phép (tôn trọng tự chủ).",
+        "Ngân sách tháng theo 4 phong bì nâng cấp: Cho đi 10% – Tiêu 60% – Để dành 20% – Đầu tư/Học tập 10% (tỉ lệ là điểm khởi đầu, trẻ được đề xuất lại và ký).",
+        "Việc làm đầu tiên: dạy kèm, phụ quán, làm nội dung, thủ công — tối thiểu 1 lần trong giai đoạn; ghi lại đã học được gì về tiền và về người.",
+        "Bài học chống lừa đảo: 5 tình huống giả lập (đầu tư lãi suất cao, việc nhẹ lương cao, vay online, mã giảm giá lạ, app kiếm tiền) — trẻ nhận diện dấu hiệu và nói \"không\".",
+        "Sổ \"giá trị của tiền\": quy đổi 5 món đồ ra số giờ làm việc — dạy giá trị thời gian.",
+        "Một khoản đầu tư học tập/nhỏ có kiểm soát: ví dụ khoá học trẻ tự trả tiền để nâng 1 kỹ năng; hoặc đầu tư siêu nhỏ có giám sát để hiểu lãi kép và rủi ro.",
+        "Bố thí có ngân sách riêng: trẻ tự chọn 1 người/1 việc để cho đi mỗi quý và tự trao tận tay.",
+        "Họp tài chính gia đình 1 lần/tháng: trẻ được nghe/tham gia một phần (kế hoạch chi tiêu lớn) — học bằng hiện thực, không bằng bài giảng."
+      ],
+      "parentGuidance": "không cứu ngân sách khi trẻ tiêu hết; cho vay thì có hợp đồng, lãi và hạn.",
+      "measurement": "số tháng ghi chép đủ; số tiền tự kiếm; sự tồn tại của quỹ dự phòng; kết quả 5 bài kiểm tra chống lừa đảo.",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#7BốThí:BT-6-ThanThi",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD5-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "NT",
+      "name": "Luật sắt bản thân (cấp 2): tuyên ngôn & nhịp tuần",
+      "childMeaning": "“Con viết ra người con muốn trở thành, và lặp lại nó mỗi tuần cho tới khi nó thành thật.”",
+      "successSignal": "có tuyên ngôn cá nhân ≤ 20 câu do trẻ viết; duy trì nhịp tuần (3–5 nghi thức cố định) ≥ 12 tuần liên tiếp; tự kiểm điểm hằng tuần không cần nhắc.",
+      "activities": [
+        "Viết tuyên ngôn: 3 phần — (1) Con là ai khi ở một mình; (2) Con theo 5 giá trị nào; (3) Con muốn trở thành ai, cho ai, vào năm 25 tuổi.",
+        "Nhịp tuần 5 nghi thức: 1 buổi thể lực – 1 buổi học sâu 3 giờ – 1 buổi giúp người – 1 buổi tĩnh lặng/suy ngẫm – 1 buổi gặp người đi trước.",
+        "Kiểm điểm tuần 15 phút (5 câu): luật nào giữ? ai đã giúp con? con đã giúp ai? con thay đổi gì? tuần sau 1 điều chỉnh?",
+        "\"Thử thách rèn khắc kỷ\" 1 lần/tháng: 1 ngày không dùng mạng xã hội; 1 ngày chỉ ăn cơ bản; 1 lần đi bộ/bơi liên tục 60 phút. Mục đích: luyện kham nhẫn (Nhẫn nại + Kiên trì + một chút lỳ lợm — nguyên văn tài liệu).",
+        "Sổ \"điều con đã chịu đựng được\": ghi lại các lần khó chịu mà không phản ứng — bằng chứng của Luật sắt.",
+        "Cố định hình ảnh tâm trí 2 phút/ngày: nhắm mắt, thấy rõ chân dung mình vào năm 25 với 5 giác quan (thấy gì, nghe gì, cảm gì).",
+        "Tự đánh giá theo 16 chân dung: mỗi quý tự chấm 1–10 cho ≥ 5 chân dung bất kỳ, chọn 1 chân dung thấp nhất để tập trung 1 quý."
+      ],
+      "parentGuidance": "làm cố vấn — chỉ hỏi, không ra luật thay; nếu bố mẹ muốn thêm luật, phải đàm phán như hai người trưởng thành.",
+      "measurement": "số tuần giữ nhịp; số lần tự kiểm điểm đúng hạn; điểm tự chấm 16 chân dung theo quý.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD5-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "NT",
+      "name": "Nhận thức sứ mệnh: ước mơ đủ lớn (4 động lực sinh tồn)",
+      "childMeaning": "“Con biết con muốn đi tới đâu, cho ai, và vì sao — chứ không chỉ để kiếm tiền.”",
+      "successSignal": "viết được bản đồ ước mơ có 4 tầng (bản thân – gia đình – tổ chức/cộng đồng – xã hội); phân biệt ước mơ của mình và ước mơ người khác gán cho mình; biết 3 điều kiện để ước mơ đủ lớn: Sứ mệnh + Đam mê + 4 động lực sinh tồn.",
+      "activities": [
+        "Bản đồ ước mơ 4 tầng: vẽ 4 vòng tròn lồng nhau, viết mục tiêu tới năm 25 cho mỗi vòng.",
+        "\"Ước mơ đủ lớn\" đủ 5 tiêu chí: xác định đối tượng mình tạo giá trị và khía cạnh phụng sự (tài, sắc, danh, thực, thuỳ — theo tài liệu về 4 động lực sinh tồn).",
+        "Phỏng vấn 5 người đi trước trong 2 lĩnh vực trẻ quan tâm: hỏi về điểm ngoặt, sai lầm lớn nhất, 3 thứ nên học ở tuổi trẻ — tổng kết 1 trang/người.",
+        "Bài \"ước mơ của ai\": viết ra những kỳ vọng trẻ cảm nhận từ bố mẹ/xã hội, rồi đánh dấu cái nào thật là của mình — nền CD-12 Thấu Hiểu Nhân Sinh.",
+        "Thử 3 môi trường: mỗi năm trải nghiệm ≥ 3 nơi (lớp học thử, tình nguyện, dự án, làm thêm, câu lạc bộ) và viết \"giữ/đổi\".",
+        "Tuyên bố sứ mệnh 1 câu: nói to trước gia đình, dán lên tường, cập nhật mỗi 6 tháng.",
+        "\"Cống hiến mới đủ đầy\": chọn 1 việc cống hiến dài hạn (dạy em nhỏ, dự án môi trường, giúp 1 người) — gắn với NTAI-05."
+      ],
+      "parentGuidance": "không áp ước mơ của mình; nhiệm vụ duy nhất là hỏi \"vì sao\" để trẻ tự làm rõ.",
+      "measurement": "sự tồn tại của bản đồ ước mơ có 4 tầng; số buổi trải nghiệm/năm; trẻ tự phân biệt được ước mơ của mình.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#ChânDung:CD-16-LamNguoiThanhCong",
+        "#9DạngNgười:NG-5-NhanTai",
+        "#9DạngNgười:NG-6-MinhSu",
+        "#8TốChất:NTAI-04-DungCamThayDoi",
+        "#8TốChất:NTAI-06-GanhVac"
+      ]
+    },
+    {
+      "id": "GD5-NT-03",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "NT",
+      "name": "Thấu hiểu nhân sinh: bố thí có chủ đích & công đức – phước đức",
+      "childMeaning": "“Con cho đi một cách có chủ đích — và con hiểu cho đi tạo ra điều gì.”",
+      "successSignal": "thực hành đủ 7 bố thí trong 1 năm học (có ghi chép); biết phân biệt Cho đi (thông tin) – Bố thí (năng lượng) – Tạo lập giá trị (vật chất); giải thích được công đức và phước đức bằng lời của mình.",
+      "activities": [
+        "Thực hành 7 bố thí trong 7 tuần: mỗi tuần tập trung 1 bố thí và ghi kết quả thực tế (xem bảng 7 bố thí ở Phần 3).",
+        "Tọa thí mức thật [BT-7]: dạy lại một kỹ năng cho 1 người kém hơn tới khi người đó tự làm được, rồi tổng kết thành 5–15 bước để người khác dùng tiếp.",
+        "Dự án giúp người 3 tháng: chọn 1 người/1 nhóm cụ thể, giúp có mục tiêu và có kết quả đo được.",
+        "Sổ tam khối đức: theo dõi hằng tuần 3 cột — giúp người vui vẻ (phước đức), giúp người nâng nhận thức (công đức), điều con nhận lại được (không phải để tính toán, để thấy nhân quả).",
+        "\"Nghịch cảnh là cao nhân\": với 3 việc bất như ý lớn nhất trong năm, viết 3 bước đón nhận – bao dung – trân trọng bài học và điều nó dạy.",
+        "Giữ nhân duyên: tự nhận diện 9 dạng người trong đời thật và ghi cách đối đãi đang dùng (nền NG-1…NG-9).",
+        "Nói chuyện tác động nhận thức [BT-3 đỉnh cao]: mỗi tháng 1 cuộc trò chuyện sâu giúp người khác rõ hình – rõ khái niệm – nội tâm cân bằng hướng dương; ghi lại 3 câu hỏi mình đã dùng."
+      ],
+      "parentGuidance": "người lớn không khen bằng lời quá nhiều ở tuổi này — tổ chức cho trẻ gặp người cần giúp thay vì giảng về việc giúp.",
+      "measurement": "số bố thí thực hành đủ/7 trong năm; số người trẻ thực sự giúp giỏi lên; số cuộc trò chuyện tác động nhận thức.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-1…BT-7",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD5-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "SK",
+      "name": "Sức khỏe người sắt (cấp vận động viên): lịch tập – dinh dưỡng – phục hồi",
+      "childMeaning": "“Con có một hệ thống giữ thân mình khoẻ cả năm, không chỉ vài tuần.”",
+      "successSignal": "duy trì lịch tập 4–5 buổi/tuần trong 3 tháng liên tiếp; có dữ liệu tiến bộ; ngủ 8–10 giờ; tự xử lý được chế độ ăn trước–sau tập; biết phục hồi sau chấn thương nhẹ.",
+      "activities": [
+        "Chu kỳ tập 12 tuần có mục tiêu số: sức mạnh + sức bền + linh hoạt; ghi số liệu mỗi buổi.",
+        "\"Bảng sắt\" 5 chỉ số/quý: plank, hít đất, chạy 1km, bật xa, gập bụng 1 phút — so sánh 4 quý trong 2 năm.",
+        "Nạp – tiêu – phục hồi: nhật ký 7 ngày về ăn – ngủ – tập; tìm mối liên hệ (ví dụ: ngủ < 7h → thành tích giảm).",
+        "Kỹ thuật phòng chấn thương: khởi động động (dynamic), giãn sau tập, quy tắc tăng khối lượng ≤ 10%/tuần.",
+        "Một giải đấu/giải chạy thật trong năm: đăng ký, tập có mục tiêu, hoàn thành — trải nghiệm nỗ lực trọn vẹn.",
+        "Luật \"không, cảm ơn\": danh sách chất gây hại + kịch bản nói \"không\" đã luyện trước (nền NTAI-04 Dũng cảm thay đổi + CD-10 Luật sắt).",
+        "Sức khỏe tinh thần: ngủ đủ, 1 buổi/tuần hoàn toàn không mạng, 1 người để nói thật khi quá tải, biết dấu hiệu cần gặp chuyên gia."
+      ],
+      "parentGuidance": "đóng vai người hỗ trợ kế hoạch (đưa đi tập, chuẩn bị bữa), không đóng vai huấn luyện viên — quyền sở hữu kế hoạch thuộc trẻ.",
+      "measurement": "số buổi tập/tuần; chỉ số 5 bài kiểm tra theo quý; giờ ngủ trung bình; sự kiện thể thao hoàn thành.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD5-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "SK",
+      "name": "Quản trị thân & ngoại hình (Thân Hình Người Mẫu)",
+      "childMeaning": "“Con chăm thân mình như chăm một người bạn quan trọng — vì thân này con dùng cả đời.”",
+      "successSignal": "có bộ nghi thức chăm sóc cố định (vệ sinh, tư thế, giấc, trang phục theo bối cảnh); biết chọn trang phục phù hợp 3 tình huống (đi học – gặp người lớn – lễ nghi); giữ tư thế đúng khi học/đứng nói.",
+      "activities": [
+        "Nhịp chăm sóc thân 3 tầng: sáng (15 phút) – sau học (10 phút) – tối (20 phút); viết thành checklist.",
+        "Buổi \"tủ đồ của tôi\": trẻ tự dọn tủ, phân loại theo bối cảnh, bỏ đồ không mặc; định hình phong cách = sự tôn trọng người gặp mình.",
+        "Luyện tư thế – ánh mắt – nụ cười: 5 phút/ngày trước gương với 3 tình huống (chào – xin phép – trình bày 30 giây).",
+        "Ảnh \"trước – sau 12 tuần\": chụp tư thế đứng thẳng mỗi tháng, so sánh cải thiện tư thế.",
+        "Chăm sóc da – tóc – răng có kiến thức: học 3 điều cơ bản, không chạy theo mạng xã hội; quy tắc \"không so sánh ngoại hình trên mạng\".",
+        "Tham gia chăm sóc không gian sống: phòng riêng 15 phút/ngày (nền Luật sắt), ảnh hưởng trực tiếp đến tinh thần.",
+        "Bố thí nụ cười & ánh mắt [BT-1, BT-2]: mỗi ngày bắt đầu bằng việc cho người đầu tiên mình gặp một nụ cười và ánh mắt thật."
+      ],
+      "parentGuidance": "tuyệt đối không bình phẩm tiêu cực ngoại hình trẻ/người khác trước mặt trẻ; chỉ nói về thói quen và tư thế.",
+      "measurement": "tỉ lệ ngày giữ nghi thức chăm sóc; tư thế tự chấm; số buổi luyện trình bày/tuần.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#7BốThí:BT-1-NhanThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD5-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "MQH",
+      "name": "Trở thành duyên lành: 9 dạng người trong 1",
+      "childMeaning": "“Con là người giúp người khác đi lên — theo đủ 9 cách.”",
+      "successSignal": "với mỗi dạng người, trẻ làm được 1 hành động \"trở thành\": cho người khác 1 quan niệm (NG-1), giúp 1 người qua giai đoạn khó (NG-2), kết nối 2 người có ích cho nhau (NG-3), làm người khác \"bội tăng\" mong muốn của họ (NG-4), gánh vác giúp ai đó (NG-5), dẫn dắt 1 người về ước mơ (NG-6), dạy được 1 người (NG-7), cho ai đó tư duy đơn giản hoá vấn đề (NG-8), tiếp nối sứ mệnh của 1 người (NG-9).",
+      "activities": [
+        "Bảng 9 ô \"tôi đã trở thành…\": mỗi ô ghi 1 việc thật đã làm trong 12 tháng.",
+        "Kèm 1 người (mentoring ngược xuôi): nhận 1 người kém hơn với cam kết 3 tháng có mục tiêu.",
+        "Xây dựng nhân mạch có chủ đích: tổ chức 1 nhóm nhỏ theo chủ đề; mỗi tháng mời 1 người mới; tự làm \"người kết nối\".",
+        "Nhật ký \"đối đãi\": mỗi tuần ghi 1 người đã giúp mình và việc mình đã làm lại cho họ (tri ân – trọng ân – báo ân).",
+        "Nói lời cảm ơn sâu 1 lần/tháng: gọi điện/nói trực tiếp với 1 người có ơn, nói rõ tên bài học họ cho mình — đồng thời là cách \"giữ\" cao nhân.",
+        "Thực tập \"không phán xét\": 7 ngày không nói xấu ai; nếu vi phạm, tự ghi và làm lại.",
+        "Xử lý mâu thuẫn bằng 7 bố thí: với 1 xung đột thật, áp dụng Nhan thí → Nhãn thí → Ngôn thí → Tâm thí → Phòng thí theo thứ tự, ghi kết quả."
+      ],
+      "parentGuidance": "trở thành nhân mạch cho con — chủ động giới thiệu con với người tốt, và không đòi báo đáp.",
+      "measurement": "số ô trong bảng 9 dạng người đã hoàn thành; số người trẻ đang kèm; số xung đột được giải bằng 7 bố thí.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#9DạngNgười:NG-1…NG-9",
+        "#7BốThí:BT-3",
+        "#7BốThí:BT-6",
+        "#7BốThí:BT-7"
+      ]
+    },
+    {
+      "id": "GD5-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "MQH",
+      "name": "Quảng bá & truyền thông cá nhân (tạo dấu ấn tốt đẹp)",
+      "childMeaning": "“Con kể câu chuyện về việc mình làm — đúng sự thật, có ích cho người khác.”",
+      "successSignal": "có một kênh/hồ sơ công khai giới thiệu việc mình làm (portfolio, kênh nội dung, bài viết); có ≥ 1 sản phẩm được người ngoài sử dụng/thừa nhận; biết quảng bá cho người khác trước khi quảng bá cho mình.",
+      "activities": [
+        "Hồ sơ năng lực 1 trang: kỹ năng – sản phẩm – đóng góp; cập nhật mỗi 6 tháng.",
+        "Kênh nội dung nhỏ 1 chủ đề: đăng 1 bài/tuần trong 12 tuần (bài học, mẹo, hành trình) — luyện BT-3 Ngôn thí với công chúng.",
+        "Quảng bá cho người khác trước: làm 1 bài/video giới thiệu 1 dự án, 1 bạn, 1 cửa hàng nhỏ — \"trở thành nhà quảng bá trước khi trở thành nhà kinh doanh\".",
+        "Nói trước đám đông thật: ≥ 2 lần/năm thuyết trình với người ngoài gia đình (lớp, CLB, cộng đồng).",
+        "Quy tắc 3 cửa khi đăng nội dung: đúng sự thật – không hại người – có ích cho người đọc.",
+        "Sản phẩm công khai 1 lần/năm: ra mắt 1 sản phẩm/dự án nhỏ có người dùng thật, thu phản hồi.",
+        "Xin phản hồi từ chuyên gia [NG-8]: mỗi quý gửi sản phẩm cho 1 người giỏi hơn và xin 3 góp ý."
+      ],
+      "parentGuidance": "hậu thuẫn kỹ thuật, không làm nội dung thay; không dùng kênh của trẻ để quảng bá cho bố mẹ.",
+      "measurement": "số bài nội dung đăng; số sản phẩm công khai; số lần trình bày trước người ngoài; số phản hồi chuyên gia nhận được.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-08-QuangBaSieuPham",
+        "#ChânDung:CD-07-SucKhoeNguoiSat→CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#9DạngNgười:NG-7-ThayCo",
+        "#7BốThí:BT-3-NgonThi",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD5-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "HT",
+      "name": "Trí tuệ học giả: tự học chuyên sâu & sản phẩm tri thức",
+      "childMeaning": "“Con học để làm ra một cái gì đó — không học để lấy điểm.”",
+      "successSignal": "có 1 lĩnh vực chuyên sâu với sản phẩm cụ thể; biết tự học từ nguồn gốc (sách gốc, tài liệu chuyên ngành, người trong ngành); đạt 1 trong các dạng: bài viết chuyên sâu – dự án thật – kỳ thi/giải thưởng có ý nghĩa.",
+      "activities": [
+        "Chọn 1 mũi nhọn chuyên sâu cho 12 tháng; viết mục tiêu đầu ra đo được.",
+        "Kế hoạch tự học 4 khối: kiến thức nền – kỹ năng thực hành – sản phẩm – phản hồi chuyên gia.",
+        "Đọc tài liệu gốc: mỗi tháng 1 tài liệu gốc chuyên ngành (giáo trình, bài báo, sách gốc) + 1 trang tổng kết.",
+        "Sản phẩm tri thức mỗi quý: bài viết, mô hình, ứng dụng, khoá học mini — phải có người dùng thật.",
+        "\"Tổng kết 15 khái niệm nguồn\" [nền Tọa thí]: với lĩnh vực mũi nhọn, viết quy luật – nguyên lý – chìa khoá – công thức – phương pháp – nguyên tắc – công cụ – môi trường – quan niệm – tâm thái – năng lực – văn hoá – hệ quy chiếu – khái niệm nguồn – mật mã.",
+        "Dạy lại (Feynman): dạy chủ đề đó cho 3 người khác nhau; chỗ nào bí là chỗ chưa hiểu.",
+        "Nhật ký lỗi chuyên môn: ghi sai lầm trong mũi nhọn + nguyên nhân + cách sửa.",
+        "Học cách học: mỗi quý 1 phương pháp mới (ghi nhớ, đọc nhanh, viết luận, thuyết trình) và đánh giá hiệu quả."
+      ],
+      "parentGuidance": "không kiểm tra điểm thay vì hỏi sản phẩm; ưu tiên \"con đã làm ra cái gì\" hơn \"con được mấy điểm\".",
+      "measurement": "số sản phẩm/quý; số tài liệu gốc đọc; số người trẻ dạy lại; chất lượng phản hồi chuyên gia.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#9DạngNgười:NG-8-ChuyenGia",
+        "#9DạngNgười:NG-9-ThienTriThuc",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#7BốThí:BT-7-ToaThi"
+      ]
+    },
+    {
+      "id": "GD5-TC-01",
+      "sourceAliases": [
+        "GD5-HT-02"
+      ],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "TC",
+      "name": "Quản trị tài chính cá nhân: ngân sách – dự phòng – khái niệm đầu tư",
+      "childMeaning": "“Con biết tiền của con ở đâu, đi đâu, và khi nào con có thể bắt đầu đầu tư.”",
+      "successSignal": "ngân sách viết và theo dõi ≥ 6 tháng liên tiếp; có quỹ dự phòng bằng 1–3 tháng chi tiêu cá nhân; giải thích được lãi kép, rủi ro, đa dạng hoá bằng ví dụ số; có thu nhập ổn định từ 1 nguồn ≥ 3 tháng.",
+      "activities": [
+        "Ngân sách 6 tháng có dữ liệu thật: thu – chi – tiết kiệm – cho đi; phân tích 3 tháng gần nhất để tìm 2 điểm rò rỉ.",
+        "Quỹ dự phòng mục tiêu: đặt số tiền = 1–3 tháng chi tiêu; theo dõi tiến độ.",
+        "Hiểu 4 khái niệm trước khi đầu tư: lãi kép – lạm phát – rủi ro – đa dạng hoá; làm 3 bài toán số cụ thể bằng bảng tính.",
+        "Mô phỏng đầu tư siêu nhỏ có giám sát: để hiểu cảm giác lãi/lỗ; luật chỉ dùng tiền không ảnh hưởng đến học tập.",
+        "Chống lừa đảo cấp 2: phân tích 5 vụ lừa đảo thật (đa cấp, tín dụng đen, đầu tư ảo), viết 3 dấu hiệu chung.",
+        "Kế hoạch tài chính sau tốt nghiệp: dự trù thu–chi cho 6 tháng đầu (học đại học/nghề/làm việc) — nền của CD-15 Lục Lộc Đại Thuận.",
+        "Nguyên tắc \"tạo lập giá trị trước tiền\": mỗi khoản thu phải gắn với 1 giá trị đã tạo ra cho người khác; ghi rõ.",
+        "Họp tài chính gia đình 1 lần/tháng: trẻ trình bày ngân sách của mình cho bố mẹ 10 phút."
+      ],
+      "parentGuidance": "làm cố vấn tài chính, nói con số thật; không giấu khó khăn tài chính gia đình ở mức phù hợp lứa tuổi.",
+      "measurement": "số tháng có ngân sách; số tiền quỹ dự phòng; điểm 3 bài kiểm tra khái niệm; số nguồn thu nhập.",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-03-DungCamNhanLoi"
+      ]
+    },
+    {
+      "id": "GD5-HT-03",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "HT",
+      "name": "Lộ trình nghề ước mơ: thử – thu hẹp – cam kết",
+      "childMeaning": "“Con không cần biết chắc — con cần thử đủ, thu hẹp đúng, và cam kết có đường lùi.”",
+      "successSignal": "hoàn thành 3 vòng: thử ≥ 5 môi trường (15–16) → thu hẹp còn 2 (16–17) → cam kết 1 có kế hoạch dự phòng (17–18); có 1 cố vấn nghề (người đi trước) đồng hành ≥ 6 tháng.",
+      "activities": [
+        "Vòng thử – 5 môi trường trong 12 tháng: làm thêm, tình nguyện, khoá học thử, dự án, câu lạc bộ. Mỗi nơi ghi \"thích gì – không thích gì – hợp với tôi ở đâu\".",
+        "Bảng nghề 3 cột: Nghề – Việc hằng ngày là gì – Cần học gì để vào. Làm cho 5 nghề quan tâm (nền tư duy đơn giản hoá của chuyên gia).",
+        "Phỏng vấn 3 người đang làm nghề đó: hỏi 5 câu cố định; xin 1 lời khuyên cụ thể cho tuổi 18.",
+        "Tìm cố vấn [NG-6 Minh sư mức nhỏ]: 1 người đi trước hơn 5–10 năm, gặp 1 lần/tháng, có mục tiêu học hỏi rõ.",
+        "Thử việc/làm thật ≥ 100 giờ trong 1 lĩnh vực — điều kiện không thể thay thế của việc \"biết mình hợp gì\".",
+        "Kế hoạch 2 đường: kế hoạch A (cam kết) + kế hoạch B (dự phòng) với điều kiện chuyển đổi rõ ràng.",
+        "Đồ án/bài thuyết trình \"tôi chọn gì và vì sao\": trình bày trước gia đình + 1 người ngoài làm nghề đó.",
+        "Kiểm tra lại mỗi 6 tháng: có còn đúng với bản đồ ước mơ (GD5-NT-02) không? chỉnh nếu cần — nhưng mục tiêu không đổi khi chỉ là khó khăn (nguyên lý kiên trì: đổi cách làm, không đổi mục tiêu)."
+      ],
+      "parentGuidance": "không chọn nghề thay con; chỉ cung cấp 3 thứ — thông tin, trải nghiệm, cố vấn.",
+      "measurement": "số môi trường đã thử; số buổi gặp cố vấn; số giờ làm thật; sự tồn tại của kế hoạch B.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-16-LamNguoiThanhCong",
+        "#9DạngNgười:NG-6-MinhSu",
+        "#9DạngNgười:NG-8-ChuyenGia",
+        "#8TốChất:NTAI-06-GanhVac",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    }
+  ]
+}

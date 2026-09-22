@@ -1,0 +1,152 @@
+{
+  "schemaVersion": "1.0.0",
+  "contentVersion": "0.0.0",
+  "status": "draft",
+  "sources": [
+    {
+      "id": "SRC-01",
+      "role": "structure",
+      "title": "KHUNG_THOI_QUEN_0-18_TDTT_TDNT_v1.md",
+      "sha256": "85460efcafe42bc585582954dbb559969126b3e09da79c0929762563773f31d0",
+      "topics": ["5 giai đoạn", "47 thói quen", "nhịp thực thi", "đo lường"],
+      "reviewStatus": "source-reviewed"
+    },
+    {
+      "id": "SRC-02",
+      "role": "concept",
+      "title": "DO_HINH_KHAI_NIEM_SO_DO_MAT_MA_TDTT_TDNT_MENTOR_MASTER_THEO_CHU_DE.md",
+      "sha256": "4273a1c4d8981e65afddf33e3df76b0bfc611ff2d85cc902c7f4ad9a0a606f30",
+      "topics": ["Chủ đề 17", "Chủ đề 19", "Chủ đề 32", "Chủ đề 44", "Chủ đề 49"],
+      "reviewStatus": "source-reviewed"
+    }
+  ],
+  "stages": [
+    {
+      "id": "GD1",
+      "ageMinMonths": 0,
+      "ageMaxMonthsExclusive": 36,
+      "name": { "vi": "Nền tảng an toàn & Giác quan" },
+      "adultRole": { "vi": "Làm mẫu và mô tả" },
+      "entranceCriteria": [{ "vi": "Phụ huynh chọn theo sự phát triển thực tế, không chỉ theo tuổi." }],
+      "autonomy": { "adultPercent": 90, "childPercent": 10 }
+    },
+    {
+      "id": "GD2",
+      "ageMinMonths": 36,
+      "ageMaxMonthsExclusive": 72,
+      "name": { "vi": "Khám phá & Ý chí" },
+      "adultRole": { "vi": "Làm cùng và nhắc" },
+      "entranceCriteria": [{ "vi": "Trẻ bắt đầu chủ động lựa chọn và làm theo hướng dẫn ngắn." }],
+      "autonomy": { "adultPercent": 70, "childPercent": 30 }
+    },
+    {
+      "id": "GD3",
+      "ageMinMonths": 72,
+      "ageMaxMonthsExclusive": 144,
+      "name": { "vi": "Cần cù & Kỹ năng" },
+      "adultRole": { "vi": "Giám sát và cùng làm" },
+      "entranceCriteria": [{ "vi": "Trẻ có thể thực hiện chuỗi việc rõ ràng và tự đánh giá đơn giản." }],
+      "autonomy": { "adultPercent": 40, "childPercent": 60 }
+    },
+    {
+      "id": "GD4",
+      "ageMinMonths": 144,
+      "ageMaxMonthsExclusive": 180,
+      "name": { "vi": "Bản sắc & Cảm xúc" },
+      "adultRole": { "vi": "Đồng hành và cùng tuân luật" },
+      "entranceCriteria": [{ "vi": "Trẻ cần nhiều quyền tự chủ hơn và có thể cùng xây quy ước." }],
+      "autonomy": { "adultPercent": 20, "childPercent": 80 }
+    },
+    {
+      "id": "GD5",
+      "ageMinMonths": 180,
+      "ageMaxMonthsExclusive": 216,
+      "name": { "vi": "Định hướng & Trách nhiệm" },
+      "adultRole": { "vi": "Cố vấn và hậu thuẫn" },
+      "entranceCriteria": [{ "vi": "Trẻ có thể tự cam kết, kiểm điểm và điều chỉnh kế hoạch." }],
+      "autonomy": { "adultPercent": 10, "childPercent": 90 }
+    }
+  ],
+  "concepts": [
+    {
+      "id": "WEALTH-01",
+      "kind": "wealth",
+      "name": { "vi": "Giàu Trí tuệ" },
+      "sourceMeaning": { "vi": "Một phương diện của sự trưởng thành toàn diện trong khung nguồn." },
+      "appInterpretation": { "vi": "Đích phát triển dài hạn, không dùng để chấm trẻ giàu hay nghèo." },
+      "sourceRefs": ["SRC-01", "SRC-02"],
+      "reviewStatus": "source-reviewed"
+    },
+    {
+      "id": "ACTION-01",
+      "kind": "action-quality",
+      "name": { "vi": "Đơn giản làm" },
+      "sourceMeaning": { "vi": "Giảm phần không cần thiết để việc dễ hiểu, dễ nhớ và dễ làm." },
+      "appInterpretation": { "vi": "Mỗi hoạt động có tối đa ba bước rõ ràng." },
+      "sourceRefs": ["SRC-02"],
+      "reviewStatus": "source-reviewed"
+    }
+  ],
+  "habits": [
+    {
+      "id": "GD3-HT-01",
+      "status": "draft",
+      "stageIds": ["GD3"],
+      "primaryDomain": "HT",
+      "pairedDomains": ["TC"],
+      "name": { "vi": "Phương pháp học: Đọc chủ động – Ghi chú – Tự kiểm tra" },
+      "purpose": { "vi": "Giúp trẻ hình thành một vòng học có chủ đích và biết tự kiểm tra mức hiểu." },
+      "childMeaning": { "vi": "Con học để tự biết mình đã hiểu phần nào và cần hỏi thêm điều gì." },
+      "parentGuidance": { "vi": "Hỏi về cách con học và tiến bộ, không gắn giá trị của con với điểm số." },
+      "entranceCriteria": [{ "vi": "Trẻ đọc được một đoạn phù hợp lứa tuổi và có thể kể lại ý chính." }],
+      "successSignals": [{ "vi": "Trẻ tự ghi một ý chính và tự đặt một câu hỏi kiểm tra." }],
+      "safetyNotes": [{ "vi": "Điều chỉnh độ dài và hình thức ghi chú theo khả năng đọc của trẻ." }],
+      "conceptLinks": [
+        { "conceptId": "WEALTH-01", "relation": "develops" },
+        { "conceptId": "ACTION-01", "relation": "practices" }
+      ],
+      "activityVariants": [
+        {
+          "id": "GD3-HT-01-V01",
+          "actor": "child",
+          "steps": [
+            { "vi": "Đọc một đoạn ngắn và đánh dấu ý chính." },
+            { "vi": "Viết lại một ý bằng lời của con." },
+            { "vi": "Tự đặt một câu hỏi rồi kiểm tra câu trả lời." }
+          ],
+          "cadence": "daily",
+          "durationMinutes": 25,
+          "adultSupport": 40,
+          "qualityGate": {
+            "simple": true,
+            "joyful": true,
+            "gentle": true,
+            "trusting": true,
+            "regular": true,
+            "intentional": true,
+            "passedCount": 6
+          },
+          "safetyNotes": [{ "vi": "Dừng hoặc rút ngắn khi trẻ quá mệt hay căng thẳng." }]
+        }
+      ],
+      "measurements": [
+        {
+          "id": "GD3-HT-01-M01",
+          "method": { "vi": "Trẻ tự ghi số phiên đã hoàn thành và một điều đã hiểu." },
+          "cadence": "weekly",
+          "selfComparisonOnly": true,
+          "unit": "phiên"
+        }
+      ],
+      "sourceRefs": ["SRC-01", "SRC-02"],
+      "reviewStatus": "source-reviewed",
+      "localizationKey": "habit.gd3.ht.01"
+    }
+  ],
+  "operatingModel": {
+    "minimumQualityGatePassed": 4,
+    "frameworkComparison": "self-only",
+    "pointsAreFrameworkEvidence": false,
+    "healthClaimsRequireIndependentReview": true
+  }
+}

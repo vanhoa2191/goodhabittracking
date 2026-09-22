@@ -1,0 +1,257 @@
+{
+  "contentVersion": "1.0.0",
+  "source": {
+    "file": "KHUNG_THOI_QUEN_0-18_TDTT_TDNT_v1.md",
+    "sha256": "85460efcafe42bc585582954dbb559969126b3e09da79c0929762563773f31d0"
+  },
+  "approval": {
+    "scope": "source structure and transcription",
+    "status": "approved-by-user-direction",
+    "recordedAt": "2026-09-22",
+    "scientificEvidenceStatus": "source-only"
+  },
+  "normalizations": [
+    {
+      "sourceId": "GD5-HT-02",
+      "canonicalId": "GD5-TC-01",
+      "reason": "The source heading is in the Financial domain; canonical ID aligns the domain code while retaining the source ID as an alias."
+    }
+  ],
+  "records": [
+    {
+      "sourceId": "GD1-NT-01",
+      "canonicalId": "GD1-NT-01",
+      "payloadSha256": "87a57d0c5683b81a3a180e3a97c29390de9f69ab39053d12054dcdb994c38245"
+    },
+    {
+      "sourceId": "GD1-NT-02",
+      "canonicalId": "GD1-NT-02",
+      "payloadSha256": "2a8d48c2e0a0422a9aeafa5c005024176b3d6d8473e6b5ed40d72f645876d304"
+    },
+    {
+      "sourceId": "GD1-SK-01",
+      "canonicalId": "GD1-SK-01",
+      "payloadSha256": "c3a0a6d922934d52740a9dc49f254289c4f031e36853336e519a6993cef73160"
+    },
+    {
+      "sourceId": "GD1-SK-02",
+      "canonicalId": "GD1-SK-02",
+      "payloadSha256": "95e5a782d9ec162c2a0929d015067d397181a99e961a6ee89551f2b687b6ec42"
+    },
+    {
+      "sourceId": "GD1-MQH-01",
+      "canonicalId": "GD1-MQH-01",
+      "payloadSha256": "8156f7126d3bd5e7251f4b058878f5379105b7d48ecd5bcdfe01df547ecdbb1b"
+    },
+    {
+      "sourceId": "GD1-MQH-02",
+      "canonicalId": "GD1-MQH-02",
+      "payloadSha256": "064f4e2b9a7bd0f688fdc0203f28fbf92e2b8c52aee85b0f8625cbaaacf74059"
+    },
+    {
+      "sourceId": "GD1-HT-01",
+      "canonicalId": "GD1-HT-01",
+      "payloadSha256": "91c6f111f6d6c9502d54b06e7f63380c867450de67a45b020876bc9145d4e559"
+    },
+    {
+      "sourceId": "GD1-TC-01",
+      "canonicalId": "GD1-TC-01",
+      "payloadSha256": "58d478ea49acaf70f8cde0674485ce54765d5f8758803abba052406965b8ca02"
+    },
+    {
+      "sourceId": "GD2-NT-01",
+      "canonicalId": "GD2-NT-01",
+      "payloadSha256": "8eeceb40b09e85d0d1b1ac3d66dfb02bbec08887fd16ca4795ec0c7ca1888ddd"
+    },
+    {
+      "sourceId": "GD2-NT-02",
+      "canonicalId": "GD2-NT-02",
+      "payloadSha256": "35a89f1a4d7deeb3d77eab285334739f611c54f514e4dda76a1a27d51a5a5019"
+    },
+    {
+      "sourceId": "GD2-SK-01",
+      "canonicalId": "GD2-SK-01",
+      "payloadSha256": "e08c1e95a96f5a68fff9541b5cad2269111b304436a2dbc4ad7fb1189bc33113"
+    },
+    {
+      "sourceId": "GD2-SK-02",
+      "canonicalId": "GD2-SK-02",
+      "payloadSha256": "4fe65d27761b7725e8bb9293ddb928abd3088c7a6a6e29caa762f135ec346f0c"
+    },
+    {
+      "sourceId": "GD2-MQH-01",
+      "canonicalId": "GD2-MQH-01",
+      "payloadSha256": "d53e2dc427bdb946c7b73bf28c22dea586cc98bca26c8d02673f4ade13a0eba0"
+    },
+    {
+      "sourceId": "GD2-MQH-02",
+      "canonicalId": "GD2-MQH-02",
+      "payloadSha256": "790204768cbba0d78699149d1890e488ec3451cf8e11362b9c20236d2ddb8d16"
+    },
+    {
+      "sourceId": "GD2-HT-01",
+      "canonicalId": "GD2-HT-01",
+      "payloadSha256": "8436ed6132ffe88bcd33ea623af22180fcc92efb670d5f5be73b9a31f48dfacb"
+    },
+    {
+      "sourceId": "GD2-TC-01",
+      "canonicalId": "GD2-TC-01",
+      "payloadSha256": "22a703337a1ecaf78398ec6d434dba4853d34910b329b1f6fc550544899fa2c4"
+    },
+    {
+      "sourceId": "GD2-HT-02",
+      "canonicalId": "GD2-HT-02",
+      "payloadSha256": "cdf31200ff1de1bd513b6f4b85a4887b5ddbe224f4645a5bfccb5a562130e876"
+    },
+    {
+      "sourceId": "GD3-NT-01",
+      "canonicalId": "GD3-NT-01",
+      "payloadSha256": "fecabe280133e156a6030082cc520c5f3287e7b1d7f06e0d5dd079c0124910d5"
+    },
+    {
+      "sourceId": "GD3-NT-02",
+      "canonicalId": "GD3-NT-02",
+      "payloadSha256": "a86f19d7c5027e836a6db05dfb31b07f1971037f2fd6cf5f8bd91efea8a6bb56"
+    },
+    {
+      "sourceId": "GD3-SK-01",
+      "canonicalId": "GD3-SK-01",
+      "payloadSha256": "f4dfdfbfc69650d352f80e74a2dcc77bf65273ad23cd092680755ae1a2c6ef9a"
+    },
+    {
+      "sourceId": "GD3-SK-02",
+      "canonicalId": "GD3-SK-02",
+      "payloadSha256": "5cf40ee9a6fd42b62c58a99e22046e4f6caba2b5be67d6bb5b68c27945838cea"
+    },
+    {
+      "sourceId": "GD3-MQH-01",
+      "canonicalId": "GD3-MQH-01",
+      "payloadSha256": "623027e99ea742a6163eb08c0474dc7dec8db37bc0b6ae697e14c86b63dc9ae9"
+    },
+    {
+      "sourceId": "GD3-MQH-02",
+      "canonicalId": "GD3-MQH-02",
+      "payloadSha256": "3b5df88a55b43aaecd219e8ea17ddd20101c2a4249c4058804e6f2d12475c66e"
+    },
+    {
+      "sourceId": "GD3-HT-01",
+      "canonicalId": "GD3-HT-01",
+      "payloadSha256": "2c11efbb53c900ed4aa36fc560219040946b99601421a3f890e770abcecdaa9a"
+    },
+    {
+      "sourceId": "GD3-HT-02",
+      "canonicalId": "GD3-HT-02",
+      "payloadSha256": "01f546fc14cad01ebc9e569f8827adab018b964de6724d7de7adfeaf232e86f4"
+    },
+    {
+      "sourceId": "GD3-TC-01",
+      "canonicalId": "GD3-TC-01",
+      "payloadSha256": "5f2095a9b63e1f20790bc1d3dbf8d0c5fceefcbce78efb98923c9c6714ea5201"
+    },
+    {
+      "sourceId": "GD3-TC-02",
+      "canonicalId": "GD3-TC-02",
+      "payloadSha256": "c598f73acaf7ea39d797f9481ebd3673806e9ed4380527b64e14ba71fa991d29"
+    },
+    {
+      "sourceId": "GD4-NT-01",
+      "canonicalId": "GD4-NT-01",
+      "payloadSha256": "7558b923f71cd9d949b38213edfa9f4118fab58635a1496a414c950b80304b4e"
+    },
+    {
+      "sourceId": "GD4-NT-02",
+      "canonicalId": "GD4-NT-02",
+      "payloadSha256": "d8f100f233514b37e859af370337f43c27c2fe6f6ca6a0bd73099ca342ed8eaf"
+    },
+    {
+      "sourceId": "GD4-NT-03",
+      "canonicalId": "GD4-NT-03",
+      "payloadSha256": "fd9871695ae3754bab16f4148a992af3232bb68660fc4d64ebd86e530339e3fe"
+    },
+    {
+      "sourceId": "GD4-SK-01",
+      "canonicalId": "GD4-SK-01",
+      "payloadSha256": "346b5dd67b3cef631e82e39ab1fe89eaa97d86cf04397b395fc792e1a10d8490"
+    },
+    {
+      "sourceId": "GD4-SK-02",
+      "canonicalId": "GD4-SK-02",
+      "payloadSha256": "9ca0de073d4e42f4f0a5398a669b5384471a15e2055a59d868240976d07d31d7"
+    },
+    {
+      "sourceId": "GD4-MQH-01",
+      "canonicalId": "GD4-MQH-01",
+      "payloadSha256": "e3071832b4041a5223102dc6de9d977586fb79d5579ad1927db93b6d2cf42f87"
+    },
+    {
+      "sourceId": "GD4-MQH-02",
+      "canonicalId": "GD4-MQH-02",
+      "payloadSha256": "4f5bb43dd5e203e20974ff5fd0e23879e2cdf5c507a266ce07559d8cbdb2d42a"
+    },
+    {
+      "sourceId": "GD4-HT-01",
+      "canonicalId": "GD4-HT-01",
+      "payloadSha256": "ea47e3a3a4f2ad30bcf4ed2411f82bf2b2e36102d9f0d0c75714d95bac5ec2c8"
+    },
+    {
+      "sourceId": "GD4-HT-02",
+      "canonicalId": "GD4-HT-02",
+      "payloadSha256": "40c4921dd5828b5700d915d2ed7a9272e59d4e130361328b0220c3f54bfe7c19"
+    },
+    {
+      "sourceId": "GD4-TC-01",
+      "canonicalId": "GD4-TC-01",
+      "payloadSha256": "d8472f84907880474d97c5dd8f49af048e396aa3b84245256e8eaaf147f7cad8"
+    },
+    {
+      "sourceId": "GD5-NT-01",
+      "canonicalId": "GD5-NT-01",
+      "payloadSha256": "aee72801764f36d0f9b5b88533d7c3597b6a2c808a9f38dd216ebce60e8f693a"
+    },
+    {
+      "sourceId": "GD5-NT-02",
+      "canonicalId": "GD5-NT-02",
+      "payloadSha256": "822c7e080d8c1b34d38abe572953015bca715c7958697e58f67edf6cbb5c7890"
+    },
+    {
+      "sourceId": "GD5-NT-03",
+      "canonicalId": "GD5-NT-03",
+      "payloadSha256": "37959d05d4620bbe8665327f39c4335348ca6f2d1102ba8493c5623ec11dcfb8"
+    },
+    {
+      "sourceId": "GD5-SK-01",
+      "canonicalId": "GD5-SK-01",
+      "payloadSha256": "378e782ddf89b720e1e067166cd0c101b9bb1b45c63147757cb91394b93eff68"
+    },
+    {
+      "sourceId": "GD5-SK-02",
+      "canonicalId": "GD5-SK-02",
+      "payloadSha256": "343f65f38eb078f7018ccb158827e667bc57371bee2c0f79f6ed57bbe1051dd6"
+    },
+    {
+      "sourceId": "GD5-MQH-01",
+      "canonicalId": "GD5-MQH-01",
+      "payloadSha256": "6b4e2e72e21eaf98bd9a85d9d8bd419b54600540b2bf9ec6f52ac62f49aa32b4"
+    },
+    {
+      "sourceId": "GD5-MQH-02",
+      "canonicalId": "GD5-MQH-02",
+      "payloadSha256": "ebbc901e7849a0bd7841ad85555cfe3e9792a93118f1581c9976280365f282bd"
+    },
+    {
+      "sourceId": "GD5-HT-01",
+      "canonicalId": "GD5-HT-01",
+      "payloadSha256": "57394ecaa4073a2a3ad8a1b0f73114faec5bff2652343b2c3273e7d1b2eb1844"
+    },
+    {
+      "sourceId": "GD5-HT-02",
+      "canonicalId": "GD5-TC-01",
+      "payloadSha256": "ed1c935b02829c4688da1f1237683b36fe52d00f8a08536efb5fc6b5e5576276"
+    },
+    {
+      "sourceId": "GD5-HT-03",
+      "canonicalId": "GD5-HT-03",
+      "payloadSha256": "58508a1326212e406e500b2bd7bd0d15245ee506463705fb94590f66baa5e48c"
+    }
+  ]
+}

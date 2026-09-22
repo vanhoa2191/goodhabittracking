@@ -57,6 +57,8 @@ const habitActivityRowSchema = z.object({
   is_parent_role: z.boolean().optional(),
   portrait16_key: z.string().nullable().optional(),
   bo_thi7_key: z.enum(['nhan', 'nhan_mat', 'ngon', 'tam', 'phong', 'than', 'toa']).nullable().optional(),
+  framework_habit_id: z.string().nullable().optional(),
+  framework_content_version: z.string().nullable().optional(),
   created_at: z.string(),
 });
 
@@ -107,6 +109,8 @@ export function mapHabitActivityRow(input: unknown): HabitActivity {
     isParentRole: row.is_parent_role ?? false,
     portrait16Key: row.portrait16_key ?? undefined,
     boThi7Key: row.bo_thi7_key ?? undefined,
+    frameworkHabitId: row.framework_habit_id ?? undefined,
+    frameworkContentVersion: row.framework_content_version ?? undefined,
     createdAt: row.created_at,
   };
 }

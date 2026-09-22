@@ -19,11 +19,12 @@
     "release:verify": "node scripts/verify-release-candidate.mjs",
     "verify:live-boundaries": "node scripts/verify-live-family-boundaries.mjs",
     "verify:live-lifecycle": "node scripts/verify-live-family-lifecycle.mjs",
+    "verify:habit-framework": "node scripts/verify-habit-framework-source.mjs",
     "build:cloudflare": "node scripts/run-cloudflare.mjs build",
     "preview:cloudflare": "node scripts/run-cloudflare.mjs preview",
     "deploy:cloudflare": "node scripts/run-cloudflare.mjs deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "ci": "npm run lint && npm run typecheck && npm run test && npm run check:secrets && npm audit --audit-level=high && npm run build:cloudflare && npm run check:performance"
+    "ci": "npm run lint && npm run typecheck && npm run test && npm run verify:habit-framework && npm run check:secrets && npm audit --audit-level=high && npm run build:cloudflare && npm run check:performance"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.19.11",

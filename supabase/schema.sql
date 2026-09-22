@@ -10,3 +10,4 @@
 \ir migrations/202609210003_persistent_pairing_credentials.sql
 \ir migrations/202609210004_habit_instructions.sql
 \ir migrations/202609210005_customer_admin.sql
+\ir migrations/202609220001_framework_habit_refs.sql

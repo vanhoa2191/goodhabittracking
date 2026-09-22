@@ -68,6 +68,8 @@ const activitySchema = z.object({
   isParentRole: z.boolean().nullish().transform((value) => value ?? undefined),
   portrait16Key: optionalString,
   boThi7Key: z.enum(['nhan', 'nhan_mat', 'ngon', 'tam', 'phong', 'than', 'toa']).nullish().transform((value) => value ?? undefined),
+  frameworkHabitId: optionalString,
+  frameworkContentVersion: optionalString,
   createdAt: z.string(),
 });
 

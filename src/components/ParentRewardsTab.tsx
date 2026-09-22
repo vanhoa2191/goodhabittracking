@@ -9,6 +9,7 @@ import { ModalShell } from '@/components/ui/ModalShell';
 import { getParentSecondaryCopy } from '@/lib/i18n/parent-secondary-copy';
 import { localizeDemoReward } from '@/lib/i18n/demo-content-copy';
 import { getRewardMutationCopy } from '@/lib/i18n/reward-mutation-copy';
+import { RewardTemplateLibrary } from './RewardTemplateLibrary';
 
 const EMPTY_REWARD = {
   title: '',
@@ -76,7 +77,7 @@ export function ParentRewardsTab() {
             <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">{t.yourRewards} ({localizedRewards.length})</h3>
             <p className="text-xs text-slate-400">{copy.rewardsIntro}</p>
           </div>
-          <button onClick={() => openRewardModal()} className="py-2.5 px-5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 active:scale-95">
+          <button onClick={() => openRewardModal()} className="py-2.5 px-5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-colors transition-transform shadow-md flex items-center gap-2 active:scale-95">
             <Plus className="w-4 h-4" />
             {t.createRewardTitle}
           </button>
@@ -87,6 +88,8 @@ export function ParentRewardsTab() {
             {mutationError}
           </p>
         )}
+
+        {language === 'vi' && <RewardTemplateLibrary onMutationError={setMutationError} />}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {localizedRewards.map((reward) => (
@@ -134,7 +137,7 @@ export function ParentRewardsTab() {
               {mutationError && <p role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">{mutationError}</p>}
               <div className="flex items-center justify-end gap-2.5">
               <button type="button" onClick={closeModal} disabled={isSaving} className="py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors disabled:cursor-wait disabled:opacity-50">{t.cancel}</button>
-              <button type="button" onClick={() => void saveReward()} disabled={isSaving} aria-busy={isSaving} className="py-2.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all shadow-md active:scale-95 disabled:cursor-wait disabled:opacity-60">{isSaving ? mutationCopy.saving : t.save}</button>
+              <button type="button" onClick={() => void saveReward()} disabled={isSaving} aria-busy={isSaving} className="py-2.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-colors transition-transform shadow-md active:scale-95 disabled:cursor-wait disabled:opacity-60">{isSaving ? mutationCopy.saving : t.save}</button>
               </div>
             </div>
       </ModalShell>

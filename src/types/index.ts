@@ -79,6 +79,8 @@ export interface HabitActivity {
   isParentRole?: boolean; // true = Thân giáo của Ba Mẹ (Rõ hình cho bé 0-3 tuổi)
   portrait16Key?: string; // 16 Chân dung trẻ em
   boThi7Key?: 'nhan' | 'nhan_mat' | 'ngon' | 'tam' | 'phong' | 'than' | 'toa'; // 7 Bố thí
+  frameworkHabitId?: string;
+  frameworkContentVersion?: string;
   createdAt: string;
 }
 

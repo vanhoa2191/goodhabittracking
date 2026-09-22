@@ -71,6 +71,7 @@ Thiết lập `NEXT_PUBLIC_*` trong môi trường chạy lệnh build/deploy; c
 ## Tài liệu
 
 - [`docs/architecture.md`](docs/architecture.md)
+- [`docs/habit-framework-data-contract.md`](docs/habit-framework-data-contract.md)
 - [`docs/security-privacy.md`](docs/security-privacy.md)
 - [`docs/data-recovery.md`](docs/data-recovery.md)
 - [`docs/claims-ledger.md`](docs/claims-ledger.md)

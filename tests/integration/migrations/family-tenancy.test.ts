@@ -80,6 +80,14 @@ const customerAdminRollback = readFileSync(
   resolve('supabase/rollbacks/202609210005_customer_admin.rollback.sql'),
   'utf8'
 );
+const frameworkHabitRefsMigration = readFileSync(
+  resolve('supabase/migrations/202609220001_framework_habit_refs.sql'),
+  'utf8'
+);
+const frameworkHabitRefsRollback = readFileSync(
+  resolve('supabase/rollbacks/202609220001_framework_habit_refs.rollback.sql'),
+  'utf8'
+);
 const socialRollback = readFileSync(
   resolve('supabase/rollbacks/202609200002_authoritative_social.rollback.sql'),
   'utf8'
@@ -106,6 +114,8 @@ describe('family tenancy migration', () => {
     await expect(parse(habitInstructionsRollback)).resolves.toBeDefined();
     await expect(parse(customerAdminMigration)).resolves.toBeDefined();
     await expect(parse(customerAdminRollback)).resolves.toBeDefined();
+    await expect(parse(frameworkHabitRefsMigration)).resolves.toBeDefined();
+    await expect(parse(frameworkHabitRefsRollback)).resolves.toBeDefined();
     await expect(parse(socialRollback)).resolves.toBeDefined();
   });
 
@@ -123,6 +133,7 @@ describe('family tenancy migration', () => {
       '202609210003_persistent_pairing_credentials.sql',
       '202609210004_habit_instructions.sql',
       '202609210005_customer_admin.sql',
+      '202609220001_framework_habit_refs.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(

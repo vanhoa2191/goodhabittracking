@@ -33,6 +33,8 @@ const activity = {
   isActive: true,
   targetAgeStage: 'all',
   isParentRole: false,
+  frameworkHabitId: 'GD3-HT-01',
+  frameworkContentVersion: '1.0.0',
   createdAt: '2026-09-20T00:00:00.000Z',
 } as const;
 
@@ -99,6 +101,8 @@ describe('POST /api/domain/activities', () => {
       user_id: 'user-a',
       title: activity.title,
       instructions: activity.instructions,
+      framework_habit_id: activity.frameworkHabitId,
+      framework_content_version: activity.frameworkContentVersion,
     }));
   });
 
