@@ -14,6 +14,7 @@ const paymentSchema = z.object({
   accountNumber: z.string().min(1),
   accountName: z.string().min(1),
   bankBin: z.string().min(1),
+  bankName: z.string().min(1),
   qrCode: z.string().min(1),
   vietQrUrl: z.string().min(1),
   checkoutUrl: z.string().url(),

@@ -18,7 +18,7 @@ The implementation uses Tailwind's semantic ramps rather than project-specific r
 |---|---|---|---|
 | App surface | `slate-50` / `white` | `zinc-950` / `zinc-900` | Page and card surfaces |
 | Primary text | `slate-800` | `slate-100` | Headings and key values |
-| Secondary text | `slate-500` | `slate-400` | Supporting copy |
+| Secondary text | `slate-600` | `slate-300` | Supporting copy; avoid pale gray on white |
 | Border | `slate-100` / `slate-200` | `zinc-800` / `zinc-700` | Cards, dividers, controls |
 | Primary action | `indigo-600` | `indigo-600` | Main actions, links, focus |
 | Primary hover | `indigo-700` | `indigo-700` | Hover state |
@@ -43,10 +43,19 @@ The primary stack is `ui-rounded`, Comfortaa, Nunito, Quicksand, system UI, and 
 | Section title | `text-base` to `text-lg` | `font-extrabold` or `font-black` | Major sections |
 | Card title | `text-sm` to `text-base` | `font-bold` or `font-extrabold` | Cards and records |
 | Body | `text-sm` | medium/normal | Instructions and descriptions |
-| Supporting | `text-xs` | medium/bold | Metadata and compact controls |
+| Supporting | `text-sm` preferred; `text-xs` only in compact cards | medium/bold | Metadata and compact controls |
 | Micro label | `text-[10px]` to `text-[11px]` | bold | Badges and dense metadata only |
 
 Body instructions should use at least `text-xs`; micro labels are limited to short, nonessential metadata and must remain legible at the configured font scale.
+
+The root font scale is `1.125`. Light-mode supporting text uses at least the `slate-600` contrast role; `slate-400` and `slate-500` utilities are normalized to this role when legacy components still use them.
+
+### Pricing hierarchy
+
+- Trial state is a compact guidance/status row, not a third paid-plan card.
+- Monthly and yearly offers form a balanced two-column comparison at desktop widths and a single-column stack on mobile.
+- Price, billing period, primary benefit, and CTA must be visible in that order without decorative badges competing with the plan name.
+- Payment instructions show the full account number, beneficiary name, resolved bank name, and BIN as separate untruncated values.
 
 ## 4. Spacing & Layout
 

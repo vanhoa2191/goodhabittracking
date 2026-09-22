@@ -51,7 +51,7 @@ export function CheckoutPaymentDetails({
             <div className="text-xs font-black text-slate-800 dark:text-slate-100">
               {t.scanWithBankApp}
             </div>
-            <p className="text-xs text-slate-400">VCB, MB, Techcom, BIDV, VPBank, ACB, Momo...</p>
+            <p className="text-xs text-slate-400">VCB, MB, Techcom, BIDV, VPBank, ACB, MoMo...</p>
           </div>
         </div>
 
@@ -66,7 +66,7 @@ export function CheckoutPaymentDetails({
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700 flex items-center justify-between gap-2">
             <div className="min-w-0">
               <div className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400">{t.accountNumberLabel}</div>
-              <div className="font-mono font-black text-sm text-slate-900 dark:text-white truncate">
+              <div className="break-all font-mono text-base font-black tracking-wide text-slate-950 dark:text-white">
                 {payment.accountNumber}
               </div>
             </div>
@@ -81,9 +81,14 @@ export function CheckoutPaymentDetails({
 
           <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200 dark:border-zinc-700">
             <div className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400">
-              {t.bankNameLabel} / BIN
+              {t.bankNameLabel}
             </div>
-            <div className="font-mono font-bold text-slate-800 dark:text-slate-100">{payment.bankBin}</div>
+            <div className="text-sm font-extrabold text-slate-900 dark:text-slate-100">
+              {payment.bankName}
+            </div>
+            <div className="mt-1 font-mono text-xs font-bold text-slate-600 dark:text-slate-300">
+              BIN {payment.bankBin}
+            </div>
           </div>
 
           <div className="p-3 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/50 flex items-center justify-between gap-2">

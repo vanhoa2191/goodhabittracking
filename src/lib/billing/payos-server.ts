@@ -9,6 +9,7 @@ import {
 import { getPricingPlan, type PaymentResult } from '@/lib/payos';
 import type { PaidPlan } from '@/lib/billing/schemas';
 import { requireSafePayOSConfig } from '@/lib/billing/payos-config';
+import { resolveVietQrBankName } from '@/lib/billing/vietqr-bank-directory';
 
 const payOSResponseSchema = z.object({
   code: z.string(),
@@ -101,6 +102,11 @@ export async function createPayOSPayment(input: {
     throw new Error('PayOS returned payment details that do not match the order.');
   }
 
+  const [bankName, vietQrUrl] = await Promise.all([
+    resolveVietQrBankName(provider.bin),
+    QRCode.toDataURL(provider.qrCode, { width: 448, margin: 1 }),
+  ]);
+
   return {
     orderCode: provider.orderCode,
     amount: provider.amount,
@@ -108,8 +114,9 @@ export async function createPayOSPayment(input: {
     accountNumber: provider.accountNumber,
     accountName: provider.accountName,
     bankBin: provider.bin,
+    bankName,
     qrCode: provider.qrCode,
-    vietQrUrl: await QRCode.toDataURL(provider.qrCode, { width: 448, margin: 1 }),
+    vietQrUrl,
     checkoutUrl: provider.checkoutUrl,
     paymentLinkId: provider.paymentLinkId,
     planId: input.planId,

@@ -54,11 +54,11 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: 'yearly',
     name: 'Gói Đồng Hành',
-    badge: '👑 KHUYÊN DÙNG • TIẾT KIỆM 35%',
+    badge: 'KHUYÊN DÙNG • TIẾT KIỆM 32%',
     popular: true,
     price: 399000,
     originalPrice: 588000,
-    savings: 'Tiết kiệm 35%',
+    savings: 'Tiết kiệm 32%',
     periodLabel: '/ năm',
     dailyEquivalent: '~33.000đ / tháng (~1.100đ/ngày)',
     description: 'Lựa chọn tốt nhất và kinh tế nhất cho cả năm rèn luyện nếp sống',
@@ -85,6 +85,7 @@ export interface PaymentResult {
   accountNumber: string;
   accountName: string;
   bankBin: string;
+  bankName: string;
   qrCode: string;
   vietQrUrl: string;
   checkoutUrl: string;

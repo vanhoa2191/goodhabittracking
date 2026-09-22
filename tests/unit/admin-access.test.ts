@@ -17,4 +17,14 @@ describe('admin and pricing boundaries', () => {
     expect(PRICING_PLANS.map((plan) => plan.id)).toEqual(expect.arrayContaining(['monthly', 'yearly']));
     expect(paidPlanSchema.safeParse('lifetime').success).toBe(false);
   });
+
+  it('keeps the yearly savings claim consistent with the displayed prices', () => {
+    const yearly = PRICING_PLANS.find((plan) => plan.id === 'yearly');
+    if (!yearly?.originalPrice) throw new Error('Yearly plan requires an original price.');
+    const calculatedSavings = Math.round(
+      ((yearly.originalPrice - yearly.price) / yearly.originalPrice) * 100,
+    );
+
+    expect(yearly.savings).toContain(`${calculatedSavings}%`);
+  });
 });

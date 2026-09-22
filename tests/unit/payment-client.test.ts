@@ -12,6 +12,7 @@ const payment = {
   accountNumber: '0123456789',
   accountName: 'KIDHABIT HERO',
   bankBin: '970422',
+  bankName: 'MBBank · Ngân hàng TMCP Quân đội',
   qrCode: '000201010212',
   vietQrUrl: 'data:image/png;base64,cXJjb2Rl',
   checkoutUrl: 'https://pay.payos.vn/web/123456',

@@ -119,6 +119,7 @@ test('payment status failures are shown instead of reported as pending', async (
           accountNumber: '0123456789',
           accountName: 'KIDHABIT HERO',
           bankBin: '970422',
+          bankName: 'MBBank · Ngân hàng TMCP Quân đội',
           qrCode: '000201010212',
           vietQrUrl: 'data:image/png;base64,cXJjb2Rl',
           checkoutUrl: 'https://pay.payos.vn/web/123456',
@@ -164,6 +165,7 @@ test('payment checkout shows the exact provider response and secure fallback', a
           accountNumber: '113366668888',
           accountName: 'CONG TY KIDHABIT',
           bankBin: '970422',
+          bankName: 'MBBank · Ngân hàng TMCP Quân đội',
           qrCode: '00020101021238570010A000000727',
           vietQrUrl: 'data:image/png;base64,cXJjb2Rl',
           checkoutUrl: 'https://pay.payos.vn/web/provider-link-654321',
@@ -178,20 +180,20 @@ test('payment checkout shows the exact provider response and secure fallback', a
   await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
   await page.getByRole('button', { name: 'PRO' }).click();
   const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
-  await pricingDialog.getByRole('button', { name: 'Chọn Gói Năm (399k - Tiết kiệm 35%)' }).click();
+  await pricingDialog.getByRole('button', { name: 'Chọn Gói Năm (399k - Tiết kiệm 32%)' }).click();
   const checkoutDialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
 
   // Then
   await expect(checkoutDialog.getByText('CONG TY KIDHABIT')).toBeVisible();
   await expect(checkoutDialog.getByText('113366668888')).toBeVisible();
-  await expect(checkoutDialog.getByText('970422')).toBeVisible();
+  await expect(checkoutDialog.getByText('MBBank · Ngân hàng TMCP Quân đội')).toBeVisible();
+  await expect(checkoutDialog.getByText('BIN 970422')).toBeVisible();
   await expect(checkoutDialog.getByText('399.000 VNĐ')).toBeVisible();
   await expect(checkoutDialog.getByText('KIDHABIT 654321')).toBeVisible();
   await expect(checkoutDialog.getByRole('img', { name: 'VietQR PayOS' })).toBeVisible();
   await expect(checkoutDialog.getByRole('link', { name: 'Mở trang thanh toán bảo mật' }))
     .toHaveAttribute('href', 'https://pay.payos.vn/web/provider-link-654321');
   await expect(checkoutDialog.getByText('Ngân hàng nhận thanh toán qua PayOS')).toHaveCount(0);
-  await expect(checkoutDialog.getByText('MBBank')).toHaveCount(0);
 });
 
 test('a family can complete private local-only setup without demo contamination', async ({ page }) => {

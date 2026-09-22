@@ -266,7 +266,7 @@ export const vi = {
   rewardsShort: 'Đổi quà',
   sat: 'T7',
   save: 'Lưu lại',
-  scanWithBankApp: 'Quét bằng App Ngân Hàng hoặc Momo',
+  scanWithBankApp: 'Quét bằng ứng dụng ngân hàng hoặc MoMo',
   scopeFamily: 'Gia đình',
   scopeGlobal: 'Toàn cầu',
   scopeGroup: 'Nhóm / Clan',

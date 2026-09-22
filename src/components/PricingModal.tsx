@@ -98,64 +98,64 @@ const PLAN_LOCALIZATION: Record<
       name: 'Gói Đồng Hành',
       desc: 'Lựa chọn tốt nhất và kinh tế nhất cho cả năm rèn luyện nếp sống',
       period: '/ năm',
-      badge: '👑 KHUYÊN DÙNG • TIẾT KIỆM 35%',
-      cta: 'Chọn Gói Năm (399k - Tiết kiệm 35%)',
+      badge: '👑 KHUYÊN DÙNG • TIẾT KIỆM 32%',
+      cta: 'Chọn Gói Năm (399k - Tiết kiệm 32%)',
     },
     en: {
       name: 'Companion Plan',
       desc: 'Best value and most economical for a whole year of habit building',
       period: '/ year',
-      badge: '👑 RECOMMENDED • SAVE 35%',
-      cta: 'Choose Yearly (399k - Save 35%)',
+      badge: '👑 RECOMMENDED • SAVE 32%',
+      cta: 'Choose Yearly (399k - Save 32%)',
     },
     fr: {
       name: 'Forfait Compagnon',
       desc: 'Le meilleur rapport qualité-prix pour accompagner votre enfant toute l’année',
       period: '/ an',
-      badge: '👑 RECOMMANDÉ • -35%',
-      cta: 'Choisir l’Annuel (399k - Économisez 35%)',
+      badge: '👑 RECOMMANDÉ • -32%',
+      cta: 'Choisir l’Annuel (399k - Économisez 32%)',
     },
     de: {
       name: 'Begleiter-Paket',
       desc: 'Die beste und wirtschaftlichste Wahl für ein ganzes Jahr Gewohnheitstraining',
       period: '/ Jahr',
-      badge: '👑 EMPFOHLEN • 35% SPAREN',
-      cta: 'Jahresplan (399k - 35% Rabatt)',
+      badge: '👑 EMPFOHLEN • 32% SPAREN',
+      cta: 'Jahresplan (399k - 32% Rabatt)',
     },
     it: {
       name: 'Piano Compagno',
       desc: 'La scelta migliore e più economica per un intero anno di crescita',
       period: '/ anno',
-      badge: '👑 CONSIGLIATO • RISPARMIA 35%',
-      cta: 'Scegli Annuale (399k - Risparmia 35%)',
+      badge: '👑 CONSIGLIATO • RISPARMIA 32%',
+      cta: 'Scegli Annuale (399k - Risparmia 32%)',
     },
     es: {
       name: 'Plan Compañero',
       desc: 'La mejor y más económica opción para todo un año de crecimiento',
       period: '/ año',
-      badge: '👑 RECOMENDADO • AHORRA 35%',
-      cta: 'Elegir Anual (399k - Ahorra 35%)',
+      badge: '👑 RECOMENDADO • AHORRA 32%',
+      cta: 'Elegir Anual (399k - Ahorra 32%)',
     },
     zh: {
       name: '陪伴成长套餐',
       desc: '最具性价比的全年成长计划，陪伴孩子养成自律品格',
       period: '/ 年',
-      badge: '👑 推荐首选 • 立省 35%',
-      cta: '选择年度特惠 (399k - 省35%)',
+      badge: '👑 推荐首选 • 立省 32%',
+      cta: '选择年度特惠 (399k - 省32%)',
     },
     ja: {
       name: '伴走プラン',
       desc: '1年間の習慣づくりに最もお得で経済的なベストチョイス',
       period: '/ 年',
-      badge: '👑 一番人気 • 35%OFF',
-      cta: '年額プランを選択 (399k - 35%お得)',
+      badge: '👑 一番人気 • 32%OFF',
+      cta: '年額プランを選択 (399k - 32%お得)',
     },
     ko: {
       name: '동행 플랜',
       desc: '1년 동안 꾸준히 습관을 다지기에 가장 경제적이고 효과적인 선택',
       period: '/ 년',
-      badge: '👑 추천 • 35% 할인',
-      cta: '연간 플랜 선택 (399k - 35% 할인)',
+      badge: '👑 추천 • 32% 할인',
+      cta: '연간 플랜 선택 (399k - 32% 할인)',
     },
   },
 };
@@ -176,6 +176,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
   if (!isOpen) return null;
 
   const subDetails = getSubscriptionDetails();
+  const offerLabel = t.specialOffer.replace(/^[🎁👑]\s*/u, '');
 
   const handleActivateTrial = async () => {
     setIsActivatingTrial(true);
@@ -234,39 +235,40 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
         {/* Scrollable Modal Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 scrollbar-thin">
           {/* 1. Highlight Banner: 7-Day Free Trial */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-amber-500 via-indigo-600 to-violet-600 p-5 text-white shadow-lg">
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="space-y-1.5 max-w-xl">
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-xs font-black tracking-wider uppercase">
-                    {t.specialOffer}
+          <div data-testid="trial-summary" className="rounded-3xl border border-indigo-200 bg-indigo-50 p-4 shadow-sm dark:border-indigo-800 dark:bg-indigo-950/40 sm:p-5">
+            <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+              <div className="max-w-2xl space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-600 px-3 py-1 text-xs font-black uppercase tracking-wide text-white">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    {offerLabel}
                   </span>
-                  <span className="text-xs font-bold text-amber-200">{t.noCreditCardNeeded}</span>
+                  <span className="text-sm font-bold text-indigo-800 dark:text-indigo-200">{t.noCreditCardNeeded}</span>
                 </div>
-                <h3 className="text-lg sm:text-xl font-black tracking-tight">
+                <h3 className="text-lg font-black tracking-tight text-slate-950 dark:text-white sm:text-xl">
                   {t.freeTrialTitle}
                 </h3>
-                <p className="text-xs text-indigo-100 leading-relaxed">
+                <p className="text-sm font-medium leading-6 text-slate-700 dark:text-slate-200">
                   {t.freeTrialDesc}
                 </p>
               </div>
 
               <div className="shrink-0">
                 {subscriptionPlan === 'trial' ? (
-                  <div className="px-4 py-2.5 rounded-2xl bg-white/20 backdrop-blur-md text-white text-xs font-bold border border-white/30 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-300" />
+                  <div className="flex items-center gap-2 rounded-2xl border border-emerald-300 bg-white px-4 py-3 text-sm font-extrabold text-emerald-800 shadow-sm dark:border-emerald-800 dark:bg-zinc-900 dark:text-emerald-300">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                     <span>{t.trialActiveRemaining.replace('{days}', String(subDetails.daysRemaining ?? 7))}</span>
                   </div>
                 ) : isPro ? (
-                  <div className="px-4 py-2.5 rounded-2xl bg-white/20 backdrop-blur-md text-white text-xs font-bold border border-white/30 flex items-center gap-2">
-                    <Crown className="w-4 h-4 text-amber-300" />
+                  <div className="flex items-center gap-2 rounded-2xl border border-amber-300 bg-white px-4 py-3 text-sm font-extrabold text-amber-800 shadow-sm dark:border-amber-800 dark:bg-zinc-900 dark:text-amber-300">
+                    <Crown className="w-5 h-5" />
                     <span>{t.yourPlanIs.replace('{plan}', subDetails.label)}</span>
                   </div>
                 ) : (
                   <button
                     onClick={handleActivateTrial}
                     disabled={isActivatingTrial}
-                    className="w-full sm:w-auto min-h-[48px] px-5 py-3 rounded-2xl bg-white text-indigo-700 hover:bg-amber-50 text-xs sm:text-sm font-black shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-wait disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                    className="flex min-h-[48px] w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-5 py-3 text-sm font-black text-white shadow-md transition-colors hover:bg-indigo-700 active:scale-95 disabled:cursor-wait disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 sm:w-auto"
                   >
                     <Sparkles className="w-4 h-4 text-amber-500 fill-current" />
                     <span>{isActivatingTrial ? t.checkingPayment : t.activateTrialBtn}</span>
@@ -275,8 +277,6 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
               </div>
             </div>
 
-            {/* Decorative background circle */}
-            <div className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-white/10 blur-2xl pointer-events-none" />
           </div>
 
           {trialError && (
@@ -286,7 +286,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
           )}
 
           {/* 2. Pricing Plans Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div data-testid="paid-plan-grid" className="mx-auto grid w-full max-w-4xl grid-cols-1 gap-5 lg:grid-cols-2">
             {PRICING_PLANS.filter((p) => p.id !== 'free' && p.id !== 'trial').map((plan) => {
               const isCurrent = subscriptionPlan === plan.id;
               const loc = PLAN_LOCALIZATION[plan.id]?.[language] || PLAN_LOCALIZATION[plan.id]?.vi || {
@@ -296,6 +296,9 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                 badge: plan.badge,
                 cta: plan.ctaText,
               };
+              const badge = plan.popular
+                ? loc.badge?.replace(/^👑\s*/u, '').split('•')[0].trim()
+                : loc.badge?.replace(/^[🎁👑]\s*/u, '');
 
               return (
                 <div
@@ -307,7 +310,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                   }`}
                 >
                   {/* Top Badge */}
-                  {loc.badge && (
+                  {badge && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                       <span
                         className={`text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm ${
@@ -316,7 +319,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                             : 'bg-amber-500 text-white'
                         }`}
                       >
-                        {loc.badge}
+                        {badge}
                       </span>
                     </div>
                   )}
@@ -331,7 +334,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                           </span>
                         )}
                       </h4>
-                      <p className="text-xs text-slate-400 mt-1 min-h-[32px] leading-relaxed">
+                      <p className="mt-2 min-h-[48px] text-sm font-medium leading-6 text-slate-600 dark:text-slate-300">
                         {loc.desc}
                       </p>
                     </div>
@@ -358,11 +361,11 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                     </div>
 
                     {/* Feature list */}
-                    <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+                    <ul className="space-y-2.5 text-sm font-medium text-slate-700 dark:text-slate-200">
                       {plan.features.map((feat, idx) => (
                         <li key={idx} className="flex items-start gap-2">
                           <Check className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                          <span className="leading-tight">{feat}</span>
+                          <span className="leading-5">{feat}</span>
                         </li>
                       ))}
                     </ul>
@@ -398,7 +401,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
             </h4>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-xs text-left">
+              <table className="w-full text-sm text-left">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-zinc-800 text-slate-400 font-bold">
                     <th className="py-2.5 px-3 whitespace-nowrap">{t.tasks}</th>
@@ -460,7 +463,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                 <Zap className="w-4 h-4" />
               </div>
               <h5 className="font-bold text-xs text-slate-800 dark:text-slate-200">{t.vietQrOneTouch || 'VietQR'}</h5>
-              <p className="text-xs text-slate-400">{t.scanWithBankApp}</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{t.scanWithBankApp}</p>
             </div>
 
             <div className="p-3.5 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800 space-y-1">
@@ -468,14 +471,14 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                 <HeartHandshake className="w-4 h-4" />
               </div>
               <h5 className="font-bold text-xs text-slate-800 dark:text-slate-200">{t.appName}</h5>
-              <p className="text-xs text-slate-400">{t.appSlogan}</p>
+              <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{t.appSlogan}</p>
             </div>
           </div>
         </div>
 
         {/* Fixed Modal Footer */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 sm:px-6 py-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/80">
-          <div className="flex items-center gap-2 text-xs text-slate-500">
+          <div className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-300">
             <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>{t.bankStandardNotice}</span>
           </div>
