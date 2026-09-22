@@ -303,9 +303,6 @@ export function ParentDashboard() {
           <div>
             <div className="flex items-center gap-2">
               <h2 className="font-black text-lg tracking-tight">{t.parentMode}</h2>
-              <span className="text-xs font-bold bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 px-2 py-0.5 rounded-full">
-                ADMIN
-              </span>
             </div>
             <p className="text-xs text-slate-300">{t.appSlogan}</p>
           </div>

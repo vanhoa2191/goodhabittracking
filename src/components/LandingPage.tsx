@@ -24,6 +24,7 @@ import { WEEKLY_JOURNEY_PLANS, MONTHLY_JOURNEY_PLANS } from '@/lib/constants';
 import { getJourneyHabitText } from '@/lib/i18n/journey-content';
 import { getJourneyPeriodLabel, journeyCopy } from '@/lib/i18n/journey-copy';
 import { getLandingUiCopy } from '@/lib/i18n/landing-ui-copy';
+import { MascotAvatar } from '@/components/MascotAvatar';
 
 interface LandingPageProps {
   onStartDemo: () => void;
@@ -862,12 +863,12 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
           {/* Trust Social Proof */}
           <div className="pt-6 flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             <div className="flex -space-x-1.5 overflow-hidden">
-              {['🦁', '🐰', '🐼', '🦊', '🦄'].map((mascot, idx) => (
+              {['mascot:leo', 'mascot:bunny', 'mascot:panda', 'mascot:fox', 'mascot:bee'].map((mascot) => (
                 <span
-                  key={idx}
-                  className="inline-block w-6 h-6 rounded-full bg-white dark:bg-zinc-800 text-xs border border-slate-200 dark:border-zinc-700 text-center leading-5 shadow-xs"
+                  key={mascot}
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 shadow-xs"
                 >
-                  {mascot}
+                  <MascotAvatar avatar={mascot} alt="" className="h-7 w-7" />
                 </span>
               ))}
             </div>
@@ -880,8 +881,8 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
           {/* Header Bar in Mockup */}
           <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-zinc-800 mb-5">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 to-indigo-600 flex items-center justify-center text-xl shadow-xs">
-                🦁
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 to-indigo-600 flex items-center justify-center shadow-xs">
+                <MascotAvatar avatar="mascot:leo" alt="" priority className="h-10 w-10" />
               </div>
               <div>
                 <div className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
@@ -1071,7 +1072,17 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
       </section>
 
       {/* 3. BỘ KHUNG THÓI QUEN TOÀN DIỆN (7 KHÍA CẠNH TRƯỞNG THÀNH & 7 VIỆC TỐT) */}
-      <section className="py-14 sm:py-24 px-4 sm:px-6 max-w-6xl mx-auto">
+      <section className="px-4 py-8 sm:px-6 sm:py-12 max-w-6xl mx-auto">
+        <details className="group rounded-3xl border border-indigo-100 bg-white/80 p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/80 sm:p-6">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left [&::-webkit-details-marker]:hidden">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-indigo-600 dark:text-indigo-300">{t.landingFrameworkBadge}</p>
+              <h2 className="mt-1 text-lg font-black text-slate-900 dark:text-white sm:text-xl">{t.landingFrameworkTitle}</h2>
+              <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-300">{t.landingFrameworkSubtitle}</p>
+            </div>
+            <ChevronRight className="h-5 w-5 shrink-0 text-indigo-600 transition-transform group-open:rotate-90" />
+          </summary>
+          <div className="pt-6 sm:pt-8">
         <div className="text-center space-y-3 mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-xs font-bold shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
@@ -1231,10 +1242,22 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
             </div>
           );
         })()}
+          </div>
+        </details>
       </section>
 
       {/* 4. LỘ TRÌNH MẪU ÁP DỤNG 1-CHẠM (SAMPLE ROADMAPS) */}
-      <section className="py-14 sm:py-20 px-4 sm:px-6 bg-slate-50/70 dark:bg-zinc-900/50 border-y border-slate-200/80 dark:border-zinc-800">
+      <section className="px-4 py-8 sm:px-6 sm:py-12 bg-slate-50/70 dark:bg-zinc-900/50 border-y border-slate-200/80 dark:border-zinc-800">
+        <details className="group mx-auto max-w-6xl rounded-3xl border border-emerald-100 bg-white/80 p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/80 sm:p-6">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left [&::-webkit-details-marker]:hidden">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-emerald-700 dark:text-emerald-300">{t.landingRoadmapsBadge}</p>
+              <h2 className="mt-1 text-lg font-black text-slate-900 dark:text-white sm:text-xl">{t.landingRoadmapsTitle}</h2>
+              <p className="mt-1 text-sm font-medium text-slate-600 dark:text-slate-300">{t.landingRoadmapsSubtitle}</p>
+            </div>
+            <ChevronRight className="h-5 w-5 shrink-0 text-emerald-600 transition-transform group-open:rotate-90" />
+          </summary>
+          <div className="pt-6 sm:pt-8">
         <div className="max-w-6xl mx-auto space-y-10">
           <div className="text-center space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs font-bold shadow-xs">
@@ -1500,6 +1523,8 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
             </div>
           </div>
         </div>
+          </div>
+        </details>
       </section>
 
       {/* 5. 4 TRỤ CỘT TÍNH NĂNG NỔI BẬT */}

@@ -52,7 +52,7 @@ export const MASCOTS = [
 export type MascotId = (typeof MASCOTS)[number]['id'];
 
 export function getMascot(avatar: string) {
-  return MASCOTS.find((mascot) => mascot.id === avatar);
+  return MASCOTS.find((mascot) => mascot.id === avatar || mascot.fallback === avatar);
 }
 
 export function getMascotLabel(avatar: string): string {
