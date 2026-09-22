@@ -17,7 +17,20 @@ export async function PATCH(request: NextRequest) {
   if (!parsed.success) return NextResponse.json({ error: 'Invalid profile.' }, { status: 400 });
   const supabase = await createServerSupabaseClient(); const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
-  const { error } = await supabase.from('parent_profiles').upsert({ user_id: user.id, display_name: parsed.data.displayName, email: user.email ?? null, phone: parsed.data.phone || null, marketing_consent: parsed.data.marketingConsent, updated_at: new Date().toISOString() });
-  if (error) return NextResponse.json({ error: 'Could not save profile.' }, { status: 503 });
-  return NextResponse.json({ success: true });
+  const { data, error } = await supabase
+    .from('parent_profiles')
+    .upsert({
+      user_id: user.id,
+      display_name: parsed.data.displayName,
+      email: user.email ?? null,
+      phone: parsed.data.phone || null,
+      marketing_consent: parsed.data.marketingConsent,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: 'user_id' })
+    .select('display_name,email,phone,marketing_consent')
+    .single();
+  if (error || !data) {
+    return NextResponse.json({ error: 'Could not save profile.' }, { status: 503 });
+  }
+  return NextResponse.json({ success: true, profile: data });
 }

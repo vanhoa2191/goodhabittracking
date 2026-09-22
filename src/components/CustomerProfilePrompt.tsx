@@ -66,9 +66,22 @@ export function CustomerProfilePrompt({ userId }: CustomerProfilePromptProps) {
       setError('Chưa lưu được thông tin. Vui lòng thử lại.');
       return;
     }
-    setProfile((current) => current
-      ? { ...current, display_name: name, phone, marketing_consent: marketingConsent }
-      : current);
+    const body: unknown = await response.json().catch(() => null);
+    if (
+      !body
+      || typeof body !== 'object'
+      || !('profile' in body)
+      || !body.profile
+      || typeof body.profile !== 'object'
+    ) {
+      setError('Máy chủ chưa xác nhận thông tin đã lưu. Vui lòng thử lại.');
+      return;
+    }
+    const saved = body.profile as CustomerProfile;
+    setProfile(saved);
+    setName(saved.display_name);
+    setPhone(saved.phone ?? '');
+    setMarketingConsent(saved.marketing_consent);
   };
 
   return (
