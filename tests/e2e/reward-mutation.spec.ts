@@ -17,6 +17,7 @@ async function openParentRewards(page: import('@playwright/test').Page) {
   for (const digit of ['1', '2', '3', '4']) {
     await pinDialog.getByRole('button', { name: digit, exact: true }).click();
   }
+  await page.getByRole('tab', { name: 'Thiết kế' }).click();
   await page.getByRole('tab', { name: /Đổi quà/ }).click();
 }
 

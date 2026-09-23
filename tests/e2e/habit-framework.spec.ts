@@ -14,7 +14,9 @@ async function openParentDashboard(page: Page): Promise<void> {
 test('parent can explore and add a canonical framework habit', async ({ page }) => {
   // Given
   await openParentDashboard(page);
+  await page.getByRole('tab', { name: 'Thiết kế' }).click();
   await page.getByRole('tab', { name: 'Quản lý việc' }).click();
+  await page.getByRole('button', { name: 'Thư viện', exact: true }).click();
 
   // When
   await expect(page.getByRole('heading', { name: 'Khung 47 thói quen 0–18 tuổi' })).toBeVisible();
@@ -32,6 +34,7 @@ test('parent can explore and add a canonical framework habit', async ({ page }) 
 test('parent can add meaningful non-material and material rewards', async ({ page }) => {
   // Given
   await openParentDashboard(page);
+  await page.getByRole('tab', { name: 'Thiết kế' }).click();
   await page.getByRole('tab', { name: 'Đổi quà' }).click();
 
   // When
@@ -46,4 +49,16 @@ test('parent can add meaningful non-material and material rewards', async ({ pag
   // Then
   await expect(page.getByRole('heading', { name: '30 phút riêng cùng ba hoặc mẹ' }).last()).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Một cuốn sách con tự chọn' }).last()).toBeVisible();
+});
+
+test('parent keeps assigned habits separate from the filtered library', async ({ page }) => {
+  await openParentDashboard(page);
+  await page.getByRole('tab', { name: 'Thiết kế' }).click();
+  await expect(page.getByRole('button', { name: 'Đang dùng', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByText('Mã việc').first()).toBeVisible();
+  await expect(page.getByText(/lần hoàn thành trong 7 ngày/).first()).toBeVisible();
+  await page.getByRole('combobox', { name: 'Lọc theo bé' }).selectOption({ index: 1 });
+  await page.getByRole('button', { name: 'Thư viện', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Khung 47 thói quen 0–18 tuổi' })).toBeVisible();
+  await expect(page.getByRole('combobox', { name: 'Lọc theo bé' })).toHaveCount(0);
 });

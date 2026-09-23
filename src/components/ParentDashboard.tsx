@@ -4,14 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Lock,
-  CheckCircle2,
-  Gift,
-  Users,
-  Calendar,
-  BarChart3,
-  Settings,
   ShieldCheck,
-  Compass,
   X,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
@@ -32,6 +25,7 @@ import { ParentRewardsTab } from './ParentRewardsTab';
 import { ParentJourneysTab } from './ParentJourneysTab';
 import { ParentHabitsTab } from './ParentHabitsTab';
 import { ParentChildrenTab } from './ParentChildrenTab';
+import { ParentNavigation, type ParentSection } from './ParentNavigation';
 import { getParentPrimaryCopy } from '@/lib/i18n/parent-primary-copy';
 import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
 import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
@@ -61,9 +55,7 @@ export function ParentDashboard() {
   const onboardingCopy = getOnboardingCopy(language);
   const profileCopy = getProfileMutationCopy(language);
 
-  const [activeTab, setActiveTab] = useState<
-    'approvals' | 'habits' | 'journeys' | 'rewards' | 'children' | 'analytics' | 'settings'
-  >('approvals');
+  const [activeTab, setActiveTab] = useState<ParentSection>('approvals');
 
   // Modal states
   const [isHabitModalOpen, setIsHabitModalOpen] = useState(false);
@@ -317,38 +309,7 @@ export function ParentDashboard() {
         </button>
       </div>
 
-      {/* Navigation Sub-Tabs */}
-      <div role="tablist" aria-label={copy.tablistLabel} className="grid grid-cols-2 gap-1.5 rounded-2xl bg-slate-100 p-1.5 sm:grid-cols-4 lg:grid-cols-7 dark:bg-zinc-900">
-        {[
-          { key: 'approvals', label: t.approvals, icon: <CheckCircle2 className="w-4 h-4" />, badge: pendingLogs.length + pendingRedemptions.length },
-          { key: 'habits', label: t.manageHabits, icon: <Calendar className="w-4 h-4" /> },
-          { key: 'journeys', label: t.journeys, icon: <Compass className="w-4 h-4" /> },
-          { key: 'rewards', label: t.rewards, icon: <Gift className="w-4 h-4" /> },
-          { key: 'children', label: t.manageProfiles, icon: <Users className="w-4 h-4" /> },
-          { key: 'analytics', label: t.analytics, icon: <BarChart3 className="w-4 h-4" /> },
-          { key: 'settings', label: t.settings, icon: <Settings className="w-4 h-4" /> },
-        ].map((tab) => (
-          <button
-            key={tab.key}
-            role="tab"
-            aria-selected={activeTab === tab.key}
-            onClick={() => setActiveTab(tab.key as typeof activeTab)}
-            className={`flex min-h-11 items-center justify-center gap-2 rounded-xl px-2 py-2 text-center text-xs font-bold transition-all ${
-              activeTab === tab.key
-                ? 'bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-sm'
-                : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-            }`}
-          >
-            {tab.icon}
-            <span>{tab.label}</span>
-            {tab.badge !== undefined && tab.badge > 0 && (
-              <span className="w-4 h-4 rounded-full bg-rose-500 text-white text-xs flex items-center justify-center font-black">
-                {tab.badge}
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
+      <ParentNavigation activeSection={activeTab} onSelectSection={setActiveTab} pendingCount={pendingLogs.length + pendingRedemptions.length}>
 
       {activeTab === 'approvals' && <ParentApprovalsTab />}
 
@@ -374,6 +335,7 @@ export function ParentDashboard() {
       {activeTab === 'analytics' && <ParentAnalyticsTab />}
 
       {activeTab === 'settings' && <ParentSettingsTab />}
+      </ParentNavigation>
 
       {/* CREATE / EDIT HABIT MODAL */}
       {isHabitModalOpen && (

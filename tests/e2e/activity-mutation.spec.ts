@@ -17,6 +17,7 @@ test('a failed cloud habit save keeps the form open and does not change the visi
   for (const digit of ['1', '2', '3', '4']) {
     await pinDialog.getByRole('button', { name: digit, exact: true }).click();
   }
+  await page.getByRole('tab', { name: 'Thiết kế' }).click();
   await page.getByRole('tab', { name: 'Quản lý việc' }).click();
   await page.getByRole('button', { name: 'Tạo hoạt động mới' }).click();
   const habitDialog = page.getByRole('dialog', { name: 'Tạo hoạt động mới' });
@@ -40,6 +41,7 @@ test('a failed cloud completion restores the task and removes success feedback',
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
   const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
   for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await page.getByRole('tab', { name: 'Gia đình' }).click();
   await page.getByRole('tab', { name: 'Cài đặt' }).click();
   await page.getByRole('button', { name: /Lưu và đồng bộ đám mây/ }).click();
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();

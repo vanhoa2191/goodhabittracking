@@ -1,7 +1,7 @@
 ---
 phase: 5
 title: "Parent information architecture"
-status: pending
+status: in_progress
 priority: P1
 effort: "5-7 days"
 dependencies: [1]
@@ -15,7 +15,7 @@ Reduce Parent navigation to Today, Design, and Family; separate library from ass
 
 ## Requirements
 
-- [ ] Map every current action/badge to one of three accessible areas.
+- [x] Map every current action/badge to one of three accessible areas.
 - [ ] Create distinct collection Library and In-use panels with stable IDs, filters, progress, and explicit added/pending states.
 
 ## Implementation Steps
@@ -26,7 +26,11 @@ Reduce Parent navigation to Today, Design, and Family; separate library from ass
 ## Todo
 
 - [ ] Participants find pairing in under five seconds.
-- [ ] No management feature is lost.
+- [x] No management feature is lost (all seven former sections remain reachable in browser tests).
+
+## Current evidence and remaining gate
+
+The three-area navigation, collection split, child filter, recent completion counts, and added/pending feedback are implemented. Browser tests cover 375px keyboard use across all nine supported languages and English collection content. Canonical framework habits keep persisted source IDs. Legacy template IDs are currently derived from catalog position, while assignment matching relies on localized titles; persist their source IDs before closing this requirement. The five-second pairing-discovery criterion still needs participant observation.
 
 ## Success Criteria
 

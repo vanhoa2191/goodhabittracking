@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { BookOpenCheck, Check, Plus, ShieldCheck } from 'lucide-react';
 import {
   createActivityFromFrameworkHabit,
@@ -13,6 +13,8 @@ import {
 import { useTranslation } from '@/lib/i18n/context';
 import { useAppStore } from '@/lib/store';
 import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
+import { getParentNavigationCopy } from '@/lib/i18n/parent-navigation-copy';
+import { useSevenDayCutoff } from '@/lib/use-seven-day-cutoff';
 
 const DOMAINS: readonly { readonly id: 'all' | FrameworkDomain; readonly label: string }[] = [
   { id: 'all', label: 'Tất cả' },
@@ -31,11 +33,17 @@ function FrameworkHabitCard({
   habit,
   isAdded,
   isPending,
+  isBusy,
+  completionCount,
+  progressLabel,
   onAdd,
 }: Readonly<{
   habit: FrameworkHabit;
   isAdded: boolean;
   isPending: boolean;
+  isBusy: boolean;
+  completionCount: number;
+  progressLabel: (count: number) => string;
   onAdd: (habit: FrameworkHabit) => Promise<void>;
 }>) {
   return (
@@ -51,6 +59,7 @@ function FrameworkHabitCard({
           <span className="font-bold text-slate-800 dark:text-slate-100">Dấu hiệu tiến bộ: </span>
           {habit.successSignal}
         </p>
+        {isAdded && <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">{progressLabel(completionCount)}</p>}
       </div>
 
       <details className="group rounded-xl border border-slate-200 bg-white p-3 dark:border-zinc-700 dark:bg-zinc-900">
@@ -73,7 +82,7 @@ function FrameworkHabitCard({
 
       <button
         type="button"
-        disabled={isAdded || isPending}
+        disabled={isAdded || isBusy}
         onClick={() => void onAdd(habit)}
         className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-emerald-100 disabled:text-emerald-800 dark:disabled:bg-emerald-950/60 dark:disabled:text-emerald-300"
       >
@@ -85,11 +94,13 @@ function FrameworkHabitCard({
 }
 
 export function HabitFrameworkLibrary({ onMutationError }: HabitFrameworkLibraryProps) {
-  const { activities, createActivity } = useAppStore();
+  const { activities, logs, createActivity } = useAppStore();
   const { language } = useTranslation();
+  const navigationCopy = getParentNavigationCopy(language);
   const [selectedStage, setSelectedStage] = useState<FrameworkStageId>('GD1');
   const [selectedDomain, setSelectedDomain] = useState<'all' | FrameworkDomain>('all');
   const [pendingId, setPendingId] = useState<string | null>(null);
+  const pendingRef = useRef(false);
   const addedIds = useMemo(
     () => new Set(activities.flatMap((activity) => activity.frameworkHabitId ? [activity.frameworkHabitId] : [])),
     [activities],
@@ -98,13 +109,29 @@ export function HabitFrameworkLibrary({ onMutationError }: HabitFrameworkLibrary
     habit.stageId === selectedStage
     && (selectedDomain === 'all' || habit.primaryDomain === selectedDomain),
   );
+  const weekStart = useSevenDayCutoff();
+  const frameworkIdByActivity = new Map(activities.map((activity) => [activity.id, activity.frameworkHabitId]));
+  const completedByHabit = new Map<string, number>();
+  for (const log of logs) {
+    if (weekStart === null || (log.status !== 'completed' && log.status !== 'approved') || new Date(log.completedAt).getTime() < weekStart) continue;
+    const habitId = frameworkIdByActivity.get(log.activityId);
+    if (habitId) completedByHabit.set(habitId, (completedByHabit.get(habitId) ?? 0) + 1);
+  }
 
   const addHabit = async (habit: FrameworkHabit): Promise<void> => {
+    if (pendingRef.current) return;
+    pendingRef.current = true;
     setPendingId(habit.id);
     onMutationError('');
-    const saved = await createActivity(createActivityFromFrameworkHabit(habit, null));
-    setPendingId(null);
-    if (!saved) onMutationError(getActivityMutationError(language));
+    try {
+      const saved = await createActivity(createActivityFromFrameworkHabit(habit, null));
+      if (!saved) onMutationError(getActivityMutationError(language));
+    } catch {
+      onMutationError(getActivityMutationError(language));
+    } finally {
+      pendingRef.current = false;
+      setPendingId(null);
+    }
   };
 
   return (
@@ -140,7 +167,7 @@ export function HabitFrameworkLibrary({ onMutationError }: HabitFrameworkLibrary
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {visibleHabits.map((habit) => (
-          <FrameworkHabitCard key={habit.id} habit={habit} isAdded={addedIds.has(habit.id)} isPending={pendingId === habit.id} onAdd={addHabit} />
+          <FrameworkHabitCard key={habit.id} habit={habit} isAdded={addedIds.has(habit.id)} isPending={pendingId === habit.id} isBusy={pendingId !== null} completionCount={completedByHabit.get(habit.id) ?? 0} progressLabel={navigationCopy.lastSevenDays} onAdd={addHabit} />
         ))}
       </div>
     </section>

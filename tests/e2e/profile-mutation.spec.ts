@@ -17,6 +17,7 @@ async function openParentChildren(page: import('@playwright/test').Page) {
   for (const digit of ['1', '2', '3', '4']) {
     await pinDialog.getByRole('button', { name: digit, exact: true }).click();
   }
+  await page.getByRole('tab', { name: 'Gia đình' }).click();
   await page.getByRole('tab', { name: 'Hồ sơ các con' }).click();
 }
 

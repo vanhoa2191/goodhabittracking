@@ -121,8 +121,9 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 
 ### Parent navigation tabs
 
-- Structure: a labelled tab list with native ARIA tab state and one active panel.
-- Layout: wrapping or horizontal scroll at narrow widths without clipping the active tab.
+- Structure: three primary areas, Today, Design, and Family. Each has a smaller labelled tab list for its existing actions. Today contains approvals and analytics; Design contains habits, journeys, and rewards; Family contains child profiles and settings.
+- The habits section separates current assignments from the library; pairing remains discoverable under Family > Children.
+- Layout: the three areas fit at 375px; secondary tabs wrap without clipping.
 - Accessibility: selected state is programmatic and visually distinct.
 
 ### Pairing-code control

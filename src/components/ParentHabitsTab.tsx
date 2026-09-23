@@ -9,6 +9,8 @@ import { getParentPrimaryCopy } from '@/lib/i18n/parent-primary-copy';
 import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
 import { localizeDemoActivity } from '@/lib/i18n/demo-content-copy';
 import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
+import { getParentNavigationCopy } from '@/lib/i18n/parent-navigation-copy';
+import { useSevenDayCutoff } from '@/lib/use-seven-day-cutoff';
 import { HabitFrameworkLibrary } from './HabitFrameworkLibrary';
 import { LegacyHabitTemplateLibrary } from './LegacyHabitTemplateLibrary';
 
@@ -18,10 +20,15 @@ interface ParentHabitsTabProps {
 }
 
 export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTabProps) {
-  const { activities, profiles, deleteActivity } = useAppStore();
+  const { activities, profiles, logs, deleteActivity } = useAppStore();
   const { t, language } = useTranslation();
   const copy = getParentPrimaryCopy(language);
+  const navigationCopy = getParentNavigationCopy(language);
   const [mutationError, setMutationError] = useState('');
+  const [collection, setCollection] = useState<'inUse' | 'library'>('inUse');
+  const [selectedChildId, setSelectedChildId] = useState('all');
+  const visibleActivities = activities.filter((activity) => selectedChildId === 'all' || activity.childId === null || activity.childId === selectedChildId);
+  const weekStart = useSevenDayCutoff();
 
   const removeActivity = async (activityId: string) => {
     setMutationError('');
@@ -64,24 +71,56 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
         </div>
       )}
 
-      {language === 'vi'
-        ? <HabitFrameworkLibrary onMutationError={setMutationError} />
-        : <LegacyHabitTemplateLibrary onMutationError={setMutationError} />}
+      <div className="flex flex-wrap gap-2 rounded-2xl bg-slate-100 p-1.5 dark:bg-zinc-900" aria-label={t.manageHabits}>
+        {(['inUse', 'library'] as const).map((view) => (
+          <button key={view} type="button" aria-pressed={collection === view} onClick={() => setCollection(view)} className={`min-h-11 rounded-xl px-4 py-2 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${collection === view ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300' : 'text-slate-700 hover:bg-white/60 dark:text-slate-300 dark:hover:bg-zinc-800/60'}`}>
+            {navigationCopy[view]}
+          </button>
+        ))}
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {activities.map((activity) => {
+      {collection === 'library' ? (
+        <section aria-label={navigationCopy.library}>
+          {language === 'vi'
+            ? <HabitFrameworkLibrary onMutationError={setMutationError} />
+            : <LegacyHabitTemplateLibrary onMutationError={setMutationError} />}
+        </section>
+      ) : (
+      <section aria-label={navigationCopy.inUse} className="space-y-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h4 className="text-base font-extrabold text-slate-800 dark:text-slate-100">{navigationCopy.inUse} ({visibleActivities.length})</h4>
+          <select aria-label={navigationCopy.filterByChild} value={selectedChildId} onChange={(event) => setSelectedChildId(event.target.value)} className="min-h-11 max-w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-200">
+            <option value="all">{navigationCopy.allChildren}</option>
+            {profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.name}</option>)}
+          </select>
+        </div>
+        {visibleActivities.length === 0 && (
+          <div className="rounded-2xl border border-slate-200 bg-white p-6 text-sm text-slate-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-200">
+            <p>{navigationCopy.emptyAssignments}</p>
+            <button type="button" onClick={() => setCollection('library')} className="mt-3 min-h-11 rounded-xl bg-indigo-600 px-4 py-2 font-bold text-white hover:bg-indigo-700">{navigationCopy.openLibrary}</button>
+          </div>
+        )}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {visibleActivities.map((activity) => {
           const assignedChild = profiles.find((profile) => profile.id === activity.childId);
           const categoryLabel = t[activity.category as keyof typeof t] || activity.category;
           const localized = localizeAgeAdaptedHabit(localizeDemoActivity(activity, language), language);
+          const completedCount = logs.filter((log) => log.activityId === activity.id
+            && (selectedChildId === 'all' || log.childId === selectedChildId)
+            && (log.status === 'completed' || log.status === 'approved')
+            && weekStart !== null && new Date(log.completedAt).getTime() >= weekStart).length;
           return (
             <div key={activity.id} className="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-slate-100 dark:border-zinc-800 shadow-xs flex flex-col justify-between gap-4">
               <div className="flex items-start gap-3">
                 <span className="text-3xl p-2 rounded-2xl bg-slate-50 dark:bg-zinc-800/80">{activity.icon}</span>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100">{localized.title}</h4>
+                  <p className="mt-1 break-all font-mono text-xs text-slate-600 dark:text-slate-300">{navigationCopy.activityId}: {activity.frameworkHabitId ?? activity.id}</p>
                   {localized.description && <p className="text-sm text-slate-500 mt-1">{localized.description}</p>}
                   {localized.instructions && <p className="mt-2 whitespace-pre-wrap rounded-xl bg-slate-50 p-2 text-xs text-slate-600 dark:bg-zinc-800 dark:text-slate-300">{localized.instructions}</p>}
+                  <p className="mt-2 text-sm font-semibold text-emerald-700 dark:text-emerald-300">{navigationCopy.lastSevenDays(completedCount)}</p>
                   <div className="flex items-center gap-2 mt-2.5 flex-wrap text-xs font-semibold text-slate-500">
+                    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-slate-700 dark:bg-zinc-800 dark:text-slate-200">{activity.isActive ? navigationCopy.active : navigationCopy.paused}</span>
                     <span className="text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full">+{activity.points} ⭐</span>
                     <span className="bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-300 px-2 py-0.5 rounded-full font-bold">{categoryLabel}</span>
                     <span className="bg-slate-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full">{activity.recurrenceType === 'daily' ? t.daily : activity.recurrenceType === 'weekdays' ? t.weekdays : activity.recurrenceType === 'weekends' ? t.weekends : t.custom}</span>
@@ -98,6 +137,8 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
           );
         })}
       </div>
+      </section>
+      )}
     </div>
   );
 }

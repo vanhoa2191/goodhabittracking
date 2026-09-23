@@ -277,6 +277,7 @@ test('a family can complete private local-only setup without demo contamination'
   for (const digit of ['1', '2', '3', '4']) {
     await pinDialog.getByRole('button', { name: digit, exact: true }).click();
   }
+  await page.getByRole('tab', { name: 'Gia đình' }).click();
   await page.getByRole('tab', { name: 'Cài đặt' }).click();
   const downloadPromise = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Xuất dữ liệu dự phòng (JSON)' }).click();
@@ -284,6 +285,7 @@ test('a family can complete private local-only setup without demo contamination'
   const backupPath = await backupDownload.path();
   expect(backupPath).not.toBeNull();
 
+  await page.getByRole('tab', { name: 'Hôm nay' }).click();
   await page.getByRole('tab', { name: 'Thống kê' }).click();
   page.once('dialog', (prompt) => prompt.accept('DELETE FAMILY'));
   await page.getByRole('button', { name: 'Xóa vĩnh viễn dữ liệu gia đình' }).click();
@@ -310,17 +312,19 @@ test('demo parent can unlock and navigate every management section', async ({ pa
   await expect(page.getByRole('heading', { name: 'Phụ huynh' })).toBeVisible();
 
   const sections = [
-    ['Duyệt việc', /Nhiệm vụ chờ bố mẹ duyệt/],
-    ['Quản lý việc', /Nuôi dưỡng tâm thái/],
-    ['Lộ trình Tuần \/ Tháng', /Các lộ trình theo tuần và tháng/],
-    ['Đổi quà', /Kho quà của bé/],
-    ['Hồ sơ các con', /Mã kết nối cố định cho từng bé/],
-    ['Thống kê', /Báo cáo thói quen/],
-    ['Cài đặt', /Cài đặt phụ huynh/],
+    ['Hôm nay', 'Duyệt việc', /Nhiệm vụ chờ bố mẹ duyệt/],
+    ['Thiết kế', 'Quản lý việc', /Nuôi dưỡng tâm thái/],
+    ['Thiết kế', 'Lộ trình Tuần \/ Tháng', /Các lộ trình theo tuần và tháng/],
+    ['Thiết kế', 'Đổi quà', /Kho quà của bé/],
+    ['Gia đình', 'Hồ sơ các con', /Mã kết nối cố định cho từng bé/],
+    ['Hôm nay', 'Thống kê', /Báo cáo thói quen/],
+    ['Gia đình', 'Cài đặt', /Cài đặt phụ huynh/],
   ] as const;
 
-  for (const [tabName, visibleText] of sections) {
+  for (const [areaName, tabName, visibleText] of sections) {
+    await page.getByRole('tablist', { name: 'Khu vực phụ huynh' }).getByRole('tab', { name: areaName }).click();
     await page.getByRole('tab', { name: new RegExp(tabName) }).click();
+    if (tabName === 'Quản lý việc') await page.getByRole('button', { name: 'Thư viện', exact: true }).click();
     await expect(page.getByText(visibleText).first()).toBeVisible();
     if (tabName === 'Lộ trình Tuần \/ Tháng') {
       await page.getByRole('button', { name: 'Áp dụng lộ trình cho bé' }).first().click();
@@ -337,6 +341,29 @@ test('demo parent can unlock and navigate every management section', async ({ pa
   }
 });
 
+test('parent navigation has three areas and opens pairing from Family', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
+  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+
+  const areas = page.getByRole('tablist', { name: 'Khu vực phụ huynh' });
+  await expect(areas.getByRole('tab')).toHaveCount(3);
+  await areas.getByRole('tab', { name: 'Gia đình' }).click();
+  await expect(page.getByText('Mã kết nối cố định cho từng bé')).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath('parent-family-375.png') });
+  await areas.getByRole('tab', { name: 'Thiết kế' }).click();
+  await expect(page.getByRole('tab', { name: 'Quản lý việc' })).toBeVisible();
+  await areas.getByRole('tab', { name: 'Hôm nay' }).click();
+  await expect(page.getByText('Nhiệm vụ chờ bố mẹ duyệt')).toBeVisible();
+  await areas.getByRole('tab', { name: 'Hôm nay' }).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(areas.getByRole('tab', { name: 'Thiết kế' })).toHaveAttribute('aria-selected', 'true');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
 test('an English journey creates localized habits', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
@@ -349,6 +376,7 @@ test('an English journey creates localized habits', async ({ page }) => {
     await pinDialog.getByRole('button', { name: digit, exact: true }).click();
   }
 
+  await page.getByRole('tab', { name: 'Design' }).click();
   await page.getByRole('tab', { name: 'Week & Month Journeys' }).click();
   await page.getByRole('button', { name: 'Apply Journey to Child' }).first().click();
   const journeyDialog = page.getByRole('dialog', { name: 'Apply Journey to Child' });
@@ -375,16 +403,21 @@ test('English demo keeps child and parent secondary screens in English', async (
     await pinDialog.getByRole('button', { name: digit, exact: true }).click();
   }
 
+  await page.getByRole('tab', { name: 'Design' }).click();
   await page.getByRole('tab', { name: 'Rewards' }).click();
   await expect(page.getByText('Create motivating rewards children can earn with their stars.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Watch cartoons for 30 minutes' }).first()).toBeVisible();
+  await page.getByRole('tab', { name: 'Today' }).click();
   await page.getByRole('tab', { name: 'Analytics' }).click();
   await expect(page.getByText('Habit report')).toBeVisible();
+  await page.getByRole('tab', { name: 'Family' }).click();
   await page.getByRole('tab', { name: 'Settings' }).click();
   await expect(page.getByText("Children's devices")).toBeVisible();
   await expect(page.getByText('Backup & restore')).toBeVisible();
 
+  await page.getByRole('tab', { name: 'Design' }).click();
   await page.getByRole('tab', { name: 'Habits' }).click();
+  await page.getByRole('button', { name: 'Library', exact: true }).click();
   await expect(page.getByText('Nurture mindset, character, generosity, and healthy routines.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Wash both hands with soap before eating' })).toBeVisible();
   await expect(page.getByText('Rửa sạch hai tay bằng xà phòng trước khi vào bàn ăn')).toHaveCount(0);
@@ -399,6 +432,7 @@ test('English demo keeps child and parent secondary screens in English', async (
   await guide.getByRole('checkbox', { name: 'Did I make today’s request simple enough to begin?' }).check();
   await expect(guide.getByText('1/5 complete')).toBeVisible();
   await guide.getByRole('button', { name: 'Close guide' }).last().click();
+  await page.getByRole('tab', { name: 'Family' }).click();
   await page.getByRole('tab', { name: 'Children' }).click();
   await expect(page.getByText('A persistent connection code for each child')).toBeVisible();
   await expect(page.getByText('Stays active until a parent refreshes it')).toBeVisible();
