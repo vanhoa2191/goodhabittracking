@@ -22,6 +22,8 @@ The public leaderboard is exposed only through `get_public_leaderboard`. It retu
 
 Device sessions and payment writes are server-only. The migration creates the tenancy anchors but later phases own challenge exchange, capability enforcement, PayOS verification, and entitlement transitions.
 
+For new engagement tables, explicitly revoke Supabase's default `public`/`anon`/`authenticated` table privileges before granting only the intended operations. RLS policies do not replace table privileges: the production project initially allowed authenticated writes to a new quest table despite a select-only grant in the migration.
+
 ## Consequences
 
 - Sharing a family becomes an explicit membership operation instead of duplicating data by account.

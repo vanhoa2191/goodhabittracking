@@ -88,6 +88,18 @@ const frameworkHabitRefsRollback = readFileSync(
   resolve('supabase/rollbacks/202609220001_framework_habit_refs.rollback.sql'),
   'utf8'
 );
+const experienceFoundationMigration = readFileSync(
+  resolve('supabase/migrations/202609230001_experience_foundation.sql'),
+  'utf8'
+);
+const experienceFoundationRollback = readFileSync(
+  resolve('supabase/rollbacks/202609230001_experience_foundation.rollback.sql'),
+  'utf8'
+);
+const experienceFoundationVerification = readFileSync(
+  resolve('supabase/preflight/202609230001_experience_foundation.verify.sql'),
+  'utf8'
+);
 const socialRollback = readFileSync(
   resolve('supabase/rollbacks/202609200002_authoritative_social.rollback.sql'),
   'utf8'
@@ -116,6 +128,9 @@ describe('family tenancy migration', () => {
     await expect(parse(customerAdminRollback)).resolves.toBeDefined();
     await expect(parse(frameworkHabitRefsMigration)).resolves.toBeDefined();
     await expect(parse(frameworkHabitRefsRollback)).resolves.toBeDefined();
+    await expect(parse(experienceFoundationMigration)).resolves.toBeDefined();
+    await expect(parse(experienceFoundationRollback)).resolves.toBeDefined();
+    await expect(parse(experienceFoundationVerification)).resolves.toBeDefined();
     await expect(parse(socialRollback)).resolves.toBeDefined();
   });
 
@@ -134,6 +149,7 @@ describe('family tenancy migration', () => {
       '202609210004_habit_instructions.sql',
       '202609210005_customer_admin.sql',
       '202609220001_framework_habit_refs.sql',
+      '202609230001_experience_foundation.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
@@ -151,6 +167,25 @@ describe('family tenancy migration', () => {
     expect(customerAdminMigration).not.toContain(
       'grant update (customer_tags, admin_notes)'
     );
+  });
+
+  it('keeps experience records family-scoped and protected by forced RLS', () => {
+    expect(experienceFoundationMigration).toContain('create table if not exists public.daily_mascot_letters');
+    expect(experienceFoundationMigration).toContain('create table if not exists public.secret_quests');
+    expect(experienceFoundationMigration).toContain('create table if not exists public.child_wishlists');
+    expect(experienceFoundationMigration).toContain('create table if not exists public.family_engagement_settings');
+    expect(experienceFoundationMigration).toContain('force row level security');
+    expect(experienceFoundationMigration).toContain('public.is_family_member(family_id)');
+    expect(experienceFoundationMigration).toContain('public.can_manage_family(family_id)');
+    expect(experienceFoundationMigration.match(/foreign key \(child_id, family_id\)/g)).toHaveLength(4);
+    expect(experienceFoundationMigration).toContain('foreign key (reward_id, family_id)');
+    expect(experienceFoundationMigration).toContain('grant select on public.daily_mascot_letters, public.secret_quests to authenticated');
+    expect(experienceFoundationMigration).toContain('from public, anon, authenticated');
+    expect(experienceFoundationMigration).not.toMatch(/grant.*(?:insert|update|delete).*public\.secret_quests/i);
+    expect(experienceFoundationRollback).not.toMatch(/drop\s+schema/i);
+    expect(experienceFoundationVerification).toContain('relation.relforcerowsecurity');
+    expect(experienceFoundationVerification).toContain("'child_wishlists_reward_family_fk'");
+    expect(experienceFoundationVerification).toContain("has_table_privilege('anon', 'public.child_engagement_profiles', 'SELECT')");
   });
 
   it('mutates groups and kudos through one family-owned command', () => {

@@ -11,6 +11,9 @@ import type {
   SubscriptionPlan,
 } from '@/types';
 import { getSupabase } from '@/lib/supabase';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
+import { emptyExperienceState, parseExperienceState } from '@/lib/experience-state';
+import type { ExperienceState } from '@/lib/experience-state';
 import {
   mapActivityLogRow,
   mapChildBadgeRow,
@@ -33,6 +36,7 @@ interface CloudFamilyRows {
   readonly groups: readonly unknown[];
   readonly groupMembers: readonly unknown[];
   readonly subscription: unknown | null;
+  readonly experience?: unknown;
 }
 
 export type CloudFamilyReader = (userId: string) => Promise<CloudFamilyRows>;
@@ -50,6 +54,7 @@ export interface CloudFamilySnapshot {
   readonly subscriptionPlan: SubscriptionPlan;
   readonly trialEndsAt: string | null;
   readonly subscriptionEndsAt: string | null;
+  readonly experience: ExperienceState;
 }
 
 const familyIdSchema = z.string().uuid();
@@ -122,6 +127,9 @@ function parseCloudFamilyRows(rows: CloudFamilyRows): CloudFamilySnapshot {
     subscriptionPlan: subscription?.plan ?? 'free',
     trialEndsAt: subscription?.trial_ends_at ?? null,
     subscriptionEndsAt: subscription?.subscription_ends_at ?? null,
+    experience: rows.experience === undefined
+      ? emptyExperienceState
+      : parseExperienceState(rows.experience, familyId),
   };
 }
 
@@ -144,6 +152,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
   }
 
   const familyId = familyIdSchema.parse(membershipResult.data.family_id);
+  const experienceEnabled = defaultExperienceFlags.dailyMascotLetter || defaultExperienceFlags.secretQuest;
   const [
     profilesResult,
     activitiesResult,
@@ -155,6 +164,11 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     groupsResult,
     membersResult,
     subscriptionResult,
+    childEngagementResult,
+    familySettingsResult,
+    lettersResult,
+    questsResult,
+    wishlistsResult,
   ] = await Promise.all([
     supabase.from('child_profiles').select('*').eq('family_id', familyId),
     supabase.from('habit_activities').select('*').eq('family_id', familyId),
@@ -170,6 +184,11 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
       .select('plan, status, trial_ends_at, subscription_ends_at')
       .eq('family_id', familyId)
       .maybeSingle(),
+    experienceEnabled ? supabase.from('child_engagement_profiles').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
+    experienceEnabled ? supabase.from('family_engagement_settings').select('*').eq('family_id', familyId).maybeSingle() : Promise.resolve({ data: null, error: null }),
+    experienceEnabled ? supabase.from('daily_mascot_letters').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
+    experienceEnabled ? supabase.from('secret_quests').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
+    experienceEnabled ? supabase.from('child_wishlists').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
   ]);
 
   const failedResult = [
@@ -183,6 +202,11 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     groupsResult,
     membersResult,
     subscriptionResult,
+    childEngagementResult,
+    familySettingsResult,
+    lettersResult,
+    questsResult,
+    wishlistsResult,
   ].find((result) => result.error);
   if (failedResult?.error) throw failedResult.error;
 
@@ -198,6 +222,13 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     groups: groupsResult.data ?? [],
     groupMembers: membersResult.data ?? [],
     subscription: subscriptionResult.data,
+    experience: {
+      children: childEngagementResult.data ?? [],
+      settings: familySettingsResult.data,
+      letters: lettersResult.data ?? [],
+      quests: questsResult.data ?? [],
+      wishlists: wishlistsResult.data ?? [],
+    },
   };
 }
 

@@ -17,6 +17,7 @@ import { getSupabase, signInWithGoogle, signOutUser } from '@/lib/supabase';
 import { loadCloudFamilySnapshot } from './cloud-family-sync';
 import { startCloudIdentitySession } from './cloud-identity-session';
 import { LOCAL_STORAGE_PREFIX } from './local-family-persistence';
+import type { ExperienceState } from '@/lib/experience-state';
 
 type Setters = {
   readonly setActivities: Dispatch<SetStateAction<HabitActivity[]>>;
@@ -29,6 +30,7 @@ type Setters = {
   readonly setLastSyncTime: Dispatch<SetStateAction<string | null>>;
   readonly setLogs: Dispatch<SetStateAction<ActivityLog[]>>;
   readonly setProfiles: Dispatch<SetStateAction<ChildProfile[]>>;
+  readonly setExperience: Dispatch<SetStateAction<ExperienceState>>;
   readonly setRedemptions: Dispatch<SetStateAction<Redemption[]>>;
   readonly setRewards: Dispatch<SetStateAction<Reward[]>>;
   readonly setSubscriptionEndsAt: Dispatch<SetStateAction<string | null>>;
@@ -56,6 +58,7 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
     setLastSyncTime,
     setLogs,
     setProfiles,
+    setExperience,
     setRedemptions,
     setRewards,
     setSubscriptionEndsAt,
@@ -74,6 +77,7 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
       setFamilyId(snapshot.familyId);
       localStorage.setItem(`${LOCAL_STORAGE_PREFIX}family_id`, snapshot.familyId);
       setProfiles(snapshot.profiles);
+      setExperience(snapshot.experience);
       setActivities(snapshot.activities);
       setLogs(snapshot.logs);
       setRewards(snapshot.rewards);
@@ -104,6 +108,7 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
     setLastSyncTime,
     setLogs,
     setProfiles,
+    setExperience,
     setRedemptions,
     setRewards,
     setSubscriptionEndsAt,

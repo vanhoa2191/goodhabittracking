@@ -26,6 +26,8 @@ import {
 import { getPricingPlan } from './payos';
 import { sounds } from './sound';
 import { isSupabaseConfigured } from './supabase';
+import { emptyExperienceState } from './experience-state';
+import type { ExperienceState } from './experience-state';
 import { generateAgeAdaptedHabits } from './wit-framework';
 import type { User } from '@supabase/supabase-js';
 import { createActivityActions } from './store/activity-actions';
@@ -101,6 +103,7 @@ interface AppStoreContextType {
   setStorageMode: (mode: 'local' | 'cloud') => void;
 
   profiles: ChildProfile[];
+  experience: ExperienceState;
   activeChildId: string | null;
   activeChild: ChildProfile | null;
   setActiveChildId: (id: string) => void;
@@ -178,6 +181,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [storageMode, setStorageModeState] = useState<'local' | 'cloud'>('cloud');
 
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
+  const [experience, setExperience] = useState<ExperienceState>(emptyExperienceState);
   const [activeChildId, setActiveChildIdState] = useState<string | null>(null);
   const [activities, setActivities] = useState<HabitActivity[]>([]);
   const [logs, setLogs] = useState<ActivityLog[]>([]);
@@ -224,6 +228,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     setIsParentUnlocked(false);
     setParentPin('1234');
     setProfiles([]);
+    setExperience(emptyExperienceState);
     setActiveChildIdState(null);
     setActivities([]);
     setLogs([]);
@@ -271,6 +276,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       setLastSyncTime,
       setLogs,
       setProfiles,
+      setExperience,
       setRedemptions,
       setRewards,
       setSubscriptionEndsAt,
@@ -303,6 +309,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       logs,
       parentPin,
       profiles,
+      experience,
       redemptions,
       rewards,
       storageMode,
@@ -324,6 +331,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       setParentPin,
       setParentProfile,
       setProfiles,
+      setExperience,
       setRedemptions,
       setRewards,
       setStorageMode: setStorageModeState,
@@ -702,6 +710,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
         setStorageMode,
 
         profiles,
+        experience,
         activeChildId,
         activeChild,
         setActiveChildId,

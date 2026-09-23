@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
   clearFamilyScopedStorage,
+  loadLocalExperience,
   loadLocalFamilyState,
   persistLocalFamilyState,
+  saveLocalExperience,
 } from '@/lib/store/local-family-persistence';
+import { emptyExperienceState } from '@/lib/experience-state';
 
 function createStorage() {
   const values = new Map<string, string>();
@@ -45,6 +48,7 @@ describe('local family persistence', () => {
     storage.setItem('kidhabit_family_id', 'family-1');
     storage.setItem('kidhabit_language', 'en');
     storage.setItem('kidhabit_storage_mode', 'local');
+    storage.setItem('kidhabit_experience', '{}');
 
     clearFamilyScopedStorage(storage);
 
@@ -52,6 +56,20 @@ describe('local family persistence', () => {
     expect(storage.getItem('kidhabit_family_id')).toBeNull();
     expect(storage.getItem('kidhabit_language')).toBe('en');
     expect(storage.getItem('kidhabit_storage_mode')).toBe('local');
+    expect(storage.getItem('kidhabit_experience')).toBeNull();
+  });
+
+  it('hydrates missing experience data and keeps local data family-scoped', () => {
+    const storage = createStorage();
+    const familyA = '11111111-1111-4111-8111-111111111111';
+    const familyB = '22222222-2222-4222-8222-222222222222';
+    expect(loadLocalExperience(storage, familyA)).toEqual(emptyExperienceState);
+    saveLocalExperience(storage, {
+      ...emptyExperienceState,
+      settings: { family_id: familyA, paused_at: null, pause_reason: null },
+    });
+    expect(loadLocalExperience(storage, familyA).settings?.family_id).toBe(familyA);
+    expect(loadLocalExperience(storage, familyB)).toEqual(emptyExperienceState);
   });
 
   it('identifies demo hydration without reading family data', () => {

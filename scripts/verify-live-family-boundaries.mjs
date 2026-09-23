@@ -142,6 +142,94 @@ try {
     'Same-family private-row read failed.',
   );
 
+  const engagementInsert = await accounts[0].client.from('child_engagement_profiles').insert({
+    family_id: familyIds[0],
+    child_id: childId,
+    mascot_selected_at: new Date().toISOString(),
+  });
+  assert(!engagementInsert.error, 'Same-family engagement write failed.');
+
+  const engagementRead = await accounts[0].client
+    .from('child_engagement_profiles').select('child_id').eq('child_id', childId);
+  assert(
+    !engagementRead.error && engagementRead.data?.length === 1,
+    'Same-family engagement read failed.',
+  );
+
+  const crossEngagementRead = await accounts[1].client
+    .from('child_engagement_profiles').select('child_id').eq('child_id', childId);
+  assert(
+    !crossEngagementRead.error && crossEngagementRead.data?.length === 0,
+    'Cross-family engagement read was not denied.',
+  );
+
+  const crossEngagementInsert = await accounts[1].client.from('child_engagement_profiles').insert({
+    family_id: familyIds[1],
+    child_id: childId,
+  });
+  assert(Boolean(crossEngagementInsert.error), 'Cross-family child reference was accepted.');
+
+  const crossEngagementUpdate = await accounts[1].client
+    .from('child_engagement_profiles')
+    .update({ mascot_selected_at: null })
+    .eq('child_id', childId)
+    .select('child_id');
+  assert(
+    !crossEngagementUpdate.error && crossEngagementUpdate.data?.length === 0,
+    'Cross-family engagement update was not denied.',
+  );
+
+  const pauseSetting = await accounts[0].client.from('family_engagement_settings').insert({
+    family_id: familyIds[0],
+    paused_at: new Date().toISOString(),
+  });
+  assert(!pauseSetting.error, 'Same-family pause write failed.');
+  const crossPauseRead = await accounts[1].client
+    .from('family_engagement_settings').select('family_id').eq('family_id', familyIds[0]);
+  assert(
+    !crossPauseRead.error && crossPauseRead.data?.length === 0,
+    'Cross-family pause read was not denied.',
+  );
+
+  const letterWrite = await accounts[0].client.from('daily_mascot_letters').insert({
+    family_id: familyIds[0], child_id: childId,
+    local_date: '2026-09-23', template_key: 'boundary-check',
+  });
+  assert(Boolean(letterWrite.error), 'Client-generated mascot letter was accepted.');
+  const questWrite = await accounts[0].client.from('secret_quests').insert({
+    family_id: familyIds[0], child_id: childId,
+    local_date: '2026-09-23', quest_key: 'boundary-check',
+    unlocked_at: new Date().toISOString(),
+    expires_at: new Date(Date.now() + 60_000).toISOString(),
+  });
+  assert(Boolean(questWrite.error), 'Client-generated secret quest was accepted.');
+
+  const rewardId = randomUUID();
+  const rewardInsert = await accounts[0].client.from('rewards').insert({
+    id: rewardId, family_id: familyIds[0], user_id: userIds[0],
+    title: `Boundary reward ${runId}`, cost_points: 10, stock: 1, is_active: true,
+  });
+  assert(!rewardInsert.error, 'Same-family reward fixture failed.');
+  const wishlistInsert = await accounts[0].client.from('child_wishlists').insert({
+    family_id: familyIds[0], child_id: childId, reward_id: rewardId,
+  });
+  assert(!wishlistInsert.error, 'Same-family wishlist write failed.');
+  const crossWishlistRead = await accounts[1].client
+    .from('child_wishlists').select('child_id').eq('child_id', childId);
+  assert(
+    !crossWishlistRead.error && crossWishlistRead.data?.length === 0,
+    'Cross-family wishlist read was not denied.',
+  );
+  const secondChildId = randomUUID();
+  const secondChildInsert = await accounts[1].client.from('child_profiles').insert({
+    id: secondChildId, family_id: familyIds[1], name: `Boundary child ${runId}`,
+  });
+  assert(!secondChildInsert.error, 'Second-family child fixture failed.');
+  const crossWishlistInsert = await accounts[1].client.from('child_wishlists').insert({
+    family_id: familyIds[1], child_id: secondChildId, reward_id: rewardId,
+  });
+  assert(Boolean(crossWishlistInsert.error), 'Cross-family reward reference was accepted.');
+
   const crossRead = await accounts[1].client
     .from('families')
     .select('id')

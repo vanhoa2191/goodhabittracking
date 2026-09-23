@@ -13,10 +13,13 @@ import type {
 } from '@/types';
 import { INITIAL_ACTIVITIES, INITIAL_GROUPS, INITIAL_PROFILES, INITIAL_REWARDS } from '@/lib/constants';
 import { isSupabaseConfigured } from '@/lib/supabase';
+import { emptyExperienceState } from '@/lib/experience-state';
+import type { ExperienceState } from '@/lib/experience-state';
 import {
   loadLocalFamilyState,
   LOCAL_STORAGE_PREFIX,
   persistLocalFamilyState,
+  saveLocalExperience,
 } from './local-family-persistence';
 
 type FamilyState = {
@@ -30,6 +33,7 @@ type FamilyState = {
   readonly logs: ActivityLog[];
   readonly parentPin: string;
   readonly profiles: ChildProfile[];
+  readonly experience: ExperienceState;
   readonly redemptions: Redemption[];
   readonly rewards: Reward[];
   readonly storageMode: 'local' | 'cloud';
@@ -52,6 +56,7 @@ type FamilySetters = {
   readonly setParentPin: Dispatch<SetStateAction<string>>;
   readonly setParentProfile: Dispatch<SetStateAction<ParentProfile | null>>;
   readonly setProfiles: Dispatch<SetStateAction<ChildProfile[]>>;
+  readonly setExperience: Dispatch<SetStateAction<ExperienceState>>;
   readonly setRedemptions: Dispatch<SetStateAction<Redemption[]>>;
   readonly setRewards: Dispatch<SetStateAction<Reward[]>>;
   readonly setStorageMode: Dispatch<SetStateAction<'local' | 'cloud'>>;
@@ -77,6 +82,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     logs,
     parentPin,
     profiles,
+    experience,
     redemptions,
     rewards,
     storageMode,
@@ -98,6 +104,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     setParentPin,
     setParentProfile,
     setProfiles,
+    setExperience,
     setRedemptions,
     setRewards,
     setStorageMode,
@@ -113,6 +120,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
           () => crypto.randomUUID(),
         );
         if (hydration.kind === 'demo') {
+          setExperience(emptyExperienceState);
           setProfiles(INITIAL_PROFILES);
           setActiveChildId(INITIAL_PROFILES[0]?.id || null);
           setActivities(INITIAL_ACTIVITIES);
@@ -127,6 +135,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
         setStorageMode(hydration.storageMode);
         setParentProfile(hydration.parentProfile);
         setProfiles(hydration.profiles);
+        setExperience(hydration.experience);
         setActiveChildId(hydration.activeChildId);
         setActivities(hydration.activities);
         setLogs(hydration.logs);
@@ -156,6 +165,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     setParentPin,
     setParentProfile,
     setProfiles,
+    setExperience,
     setRedemptions,
     setRewards,
     setStorageMode,
@@ -176,6 +186,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
       groups,
       kudos,
     });
+    if (storageMode === 'local') saveLocalExperience(localStorage, experience);
   }, [
     activeChildId,
     activities,
@@ -187,6 +198,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     logs,
     parentPin,
     profiles,
+    experience,
     redemptions,
     rewards,
     storageMode,
@@ -208,6 +220,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
   };
 
   const startDemoSession = (): void => {
+    setExperience(emptyExperienceState);
     setMode('kid');
     setIsParentUnlocked(false);
     setParentPin('1234');

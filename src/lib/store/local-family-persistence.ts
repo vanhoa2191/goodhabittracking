@@ -10,6 +10,8 @@ import type {
   Reward,
 } from '@/types';
 import { parseFamilyBackup } from '@/lib/family-backup';
+import { emptyExperienceState, parseExperienceState } from '@/lib/experience-state';
+import type { ExperienceState } from '@/lib/experience-state';
 
 export const LOCAL_STORAGE_PREFIX = 'kidhabit_';
 
@@ -32,6 +34,7 @@ const FAMILY_SCOPED_STORAGE_KEYS = [
   'trial_ends_at',
   'subscription_ends_at',
   'child_paired',
+  'experience',
 ] as const;
 
 interface WritableStorage {
@@ -60,6 +63,7 @@ export type LocalFamilyHydration =
       childBadges: ChildBadge[];
       groups: GroupTeam[];
       kudos: Kudo[];
+      experience: ExperienceState;
     };
 
 interface LocalFamilyState {
@@ -169,7 +173,22 @@ export function loadLocalFamilyState(
     )?.childBadges ?? [],
     groups: parseStoredFragment(local.getItem(`${LOCAL_STORAGE_PREFIX}groups`), 'groups')?.groups ?? [],
     kudos: parseStoredFragment(local.getItem(`${LOCAL_STORAGE_PREFIX}kudos`), 'kudos')?.kudos ?? [],
+    experience: loadLocalExperience(local, familyId),
   };
+}
+
+export function loadLocalExperience(local: ReadableStorage, familyId: string): ExperienceState {
+  const raw = local.getItem(`${LOCAL_STORAGE_PREFIX}experience`);
+  if (!raw) return emptyExperienceState;
+  try {
+    return parseExperienceState(JSON.parse(raw), familyId);
+  } catch {
+    return emptyExperienceState;
+  }
+}
+
+export function saveLocalExperience(local: WritableStorage, state: ExperienceState): void {
+  local.setItem(`${LOCAL_STORAGE_PREFIX}experience`, JSON.stringify(state));
 }
 
 export function clearFamilyScopedStorage(storage: WritableStorage): void {
