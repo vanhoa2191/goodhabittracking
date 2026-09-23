@@ -39,13 +39,13 @@ export function ChildQrScanner({ onCancel, onDetected }: ChildQrScannerProps) {
         setError(copy.cameraUnavailable);
         return;
       }
-      scanner = new QrScanner(video, (result) => {
+      const nextScanner = new QrScanner(video, (result) => {
         const token = extractPairingToken(result.data, window.location.origin);
         if (!token) {
           setError(copy.invalidQr);
           return;
         }
-        scanner?.stop();
+        nextScanner.stop();
         onDetected(token);
       }, {
         preferredCamera: 'environment',
@@ -53,8 +53,9 @@ export function ChildQrScanner({ onCancel, onDetected }: ChildQrScannerProps) {
         highlightCodeOutline: true,
         returnDetailedScanResult: true,
       });
+      scanner = nextScanner;
       try {
-        await scanner.start();
+        await nextScanner.start();
       } catch (caught: unknown) {
         if (!disposed) setError(caught instanceof Error ? copy.cameraDenied : copy.cameraUnavailable);
       }
