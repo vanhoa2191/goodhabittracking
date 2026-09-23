@@ -102,6 +102,7 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 - Variants: neutral record card, indigo-purple guidance panel, status callout.
 - Layout: stack or wrapping cluster; one column on narrow screens.
 - States: normal, empty, warning, and error content must be explicit rather than color-only.
+- The morning letter is a warm amber card below the child hero, not a blocking popup. Its heading and date precede three readable sentences; read state is a text-and-icon badge, and the confirmation button is at least 44px high. On narrow screens the badge moves below the heading rather than compressing it.
 
 ### Framework and reward library cards
 

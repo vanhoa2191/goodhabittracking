@@ -223,11 +223,14 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
               <span className="text-xs">Aa</span>
             </button>
 
-            {/* Desktop Only: Sound Toggle (xl:flex) */}
             <button
+              type="button"
+              data-testid="sound-toggle"
               onClick={toggleSound}
-              className="hidden 2xl:flex min-w-[38px] min-h-[38px] p-2 rounded-xl text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              className={`${shell === 'kid' ? 'flex' : 'hidden 2xl:flex'} min-w-11 min-h-11 p-2 rounded-xl text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500`}
               title={soundEnabled ? t.soundOn : t.soundOff}
+              aria-label={soundEnabled ? t.soundOn : t.soundOff}
+              aria-pressed={soundEnabled}
             >
               {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
             </button>

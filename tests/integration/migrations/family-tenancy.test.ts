@@ -100,6 +100,18 @@ const experienceFoundationVerification = readFileSync(
   resolve('supabase/preflight/202609230001_experience_foundation.verify.sql'),
   'utf8'
 );
+const mascotCooldownMigration = readFileSync(
+  resolve('supabase/migrations/202609230002_mascot_selection_cooldown.sql'),
+  'utf8'
+);
+const mascotCooldownRollback = readFileSync(
+  resolve('supabase/rollbacks/202609230002_mascot_selection_cooldown.rollback.sql'),
+  'utf8'
+);
+const mascotCooldownVerification = readFileSync(
+  resolve('supabase/preflight/202609230002_mascot_selection_cooldown.verify.sql'),
+  'utf8'
+);
 const socialRollback = readFileSync(
   resolve('supabase/rollbacks/202609200002_authoritative_social.rollback.sql'),
   'utf8'
@@ -131,6 +143,9 @@ describe('family tenancy migration', () => {
     await expect(parse(experienceFoundationMigration)).resolves.toBeDefined();
     await expect(parse(experienceFoundationRollback)).resolves.toBeDefined();
     await expect(parse(experienceFoundationVerification)).resolves.toBeDefined();
+    await expect(parse(mascotCooldownMigration)).resolves.toBeDefined();
+    await expect(parse(mascotCooldownRollback)).resolves.toBeDefined();
+    await expect(parse(mascotCooldownVerification)).resolves.toBeDefined();
     await expect(parse(socialRollback)).resolves.toBeDefined();
   });
 
@@ -150,6 +165,8 @@ describe('family tenancy migration', () => {
       '202609210005_customer_admin.sql',
       '202609220001_framework_habit_refs.sql',
       '202609230001_experience_foundation.sql',
+      '202609230002_mascot_selection_cooldown.sql',
+      '202609230003_daily_mascot_letter.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
@@ -186,6 +203,23 @@ describe('family tenancy migration', () => {
     expect(experienceFoundationVerification).toContain('relation.relforcerowsecurity');
     expect(experienceFoundationVerification).toContain("'child_wishlists_reward_family_fk'");
     expect(experienceFoundationVerification).toContain("has_table_privilege('anon', 'public.child_engagement_profiles', 'SELECT')");
+  });
+
+  it('records mascot changes atomically and prevents direct timestamp writes', () => {
+    expect(mascotCooldownMigration).toContain('after update of avatar on public.child_profiles');
+    expect(mascotCooldownMigration).toContain('after insert on public.child_profiles');
+    expect(mascotCooldownMigration).toContain("'🦁', '🐰', '🐼', '🦊', '🐢', '🐝'");
+    expect(mascotCooldownMigration).toContain('if new_mascot_id = old_mascot_id then return new; end if;');
+    expect(mascotCooldownMigration).toContain("interval '168 hours'");
+    expect(mascotCooldownMigration).toContain('revoke insert, update, delete on public.child_engagement_profiles from authenticated');
+    expect(mascotCooldownMigration).toContain('create or replace function public.read_child_mascot_selection(session_token_hash text)');
+    expect(mascotCooldownMigration).toContain('create or replace function public.update_child_mascot_command(');
+    expect(mascotCooldownMigration).toContain('where id = child_session.child_id and family_id = child_session.family_id');
+    expect(mascotCooldownVerification).toContain("has_table_privilege('authenticated', 'public.child_engagement_profiles', 'UPDATE')");
+    expect(mascotCooldownVerification).toContain('owner_role.rolbypassrls');
+    expect(mascotCooldownVerification).toContain('trigger_row.tgfoid');
+    expect(mascotCooldownRollback).toContain('grant insert, update on public.child_engagement_profiles to authenticated');
+    expect(mascotCooldownRollback).toContain('drop function if exists public.update_child_mascot_command(text, text, text)');
   });
 
   it('mutates groups and kudos through one family-owned command', () => {

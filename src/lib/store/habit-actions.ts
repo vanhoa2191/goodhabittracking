@@ -10,6 +10,8 @@ import type {
 } from '@/types';
 import { DEFAULT_BADGES } from '@/lib/constants';
 import { sounds } from '@/lib/sound';
+import { approvalLagBucket, trackProductEvent } from '@/lib/product-analytics';
+import type { ProductEventSink } from '@/lib/product-analytics';
 import { requestChildDomainCommand, requestDomainCommand } from './domain-command-client';
 import { approvePendingLog, rejectPendingLog } from './local-domain-actions';
 import { toggleLocalHabit } from './local-habit-actions';
@@ -39,6 +41,7 @@ type Dependencies = {
   readonly state: HabitState;
   readonly storageMode: 'local' | 'cloud';
   readonly badges?: readonly Badge[];
+  readonly analyticsSink?: ProductEventSink;
 };
 
 type HabitActions = {
@@ -62,8 +65,14 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
   const reviewCloudLog = (logId: string, decision: 'approve' | 'reject'): void => {
     const user = cloudUser();
     if (!user) return;
+    const log = dependencies.state.logs.find((candidate) => candidate.id === logId);
     void requestDomainCommand({ type: 'reviewHabit', logId, decision })
-      .then(() => dependencies.cloud.syncCloudFamily(user))
+      .then(async (result) => {
+        const synced = await dependencies.cloud.syncCloudFamily(user);
+        if (synced && (result.status === 'approved' || result.status === 'rejected')) {
+          trackProductEvent({ event: 'habit_reviewed', decision: result.status, approvalLag: approvalLagBucket(log?.completedAt), mode: 'cloud' }, dependencies.analyticsSink);
+        }
+      })
       .catch((error: unknown) => {
         dependencies.cloud.setCloudSyncActive(false);
         console.error(
@@ -87,30 +96,34 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
         const user = cloudUser();
         if (!user && !dependencies.cloud.isFamilyConnected) return false;
         try {
+          let commandStatus: string;
           if (!user) {
             if (existingLog) {
-              await requestChildDomainCommand({ type: 'undoHabit', logId: existingLog.id });
+              commandStatus = (await requestChildDomainCommand({ type: 'undoHabit', logId: existingLog.id })).status;
             } else {
-              await requestChildDomainCommand({
+              commandStatus = (await requestChildDomainCommand({
                 type: 'completeHabit',
                 activityId,
                 date,
                 commandId: crypto.randomUUID(),
-              });
+              })).status;
             }
             if (!await dependencies.cloud.refreshChildSession()) return false;
           } else if (existingLog) {
-            await requestDomainCommand({ type: 'undoHabit', logId: existingLog.id });
+            commandStatus = (await requestDomainCommand({ type: 'undoHabit', logId: existingLog.id })).status;
           } else {
-            await requestDomainCommand({
+            commandStatus = (await requestDomainCommand({
               type: 'completeHabit',
               activityId,
               childId,
               date,
               commandId: crypto.randomUUID(),
-            });
+            })).status;
           }
           if (user && !await dependencies.cloud.syncCloudFamily(user)) return false;
+          if (commandStatus === 'undone' || commandStatus === 'pending_approval' || commandStatus === 'completed') {
+            trackProductEvent({ event: 'task_ticked', action: commandStatus, mode: 'cloud' }, dependencies.analyticsSink);
+          }
           sounds.playTaskComplete();
           return true;
         } catch (error: unknown) {
@@ -139,6 +152,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
       dependencies.state.setLogs(transition.logs);
       dependencies.state.setProfiles(transition.profiles);
       dependencies.state.setChildBadges(transition.childBadges);
+      trackProductEvent({ event: 'task_ticked', action: transition.kind, mode: 'local' }, dependencies.analyticsSink);
 
       if (transition.kind === 'undone' || transition.kind === 'pending_approval') {
         sounds.playClick();
@@ -147,7 +161,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
       sounds.playTaskComplete();
       if (transition.unlockedBadgeCount > 0) {
         sounds.playLevelUp();
-        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, disableForReducedMotion: true });
       }
       return true;
     },
@@ -166,6 +180,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
       );
       dependencies.state.setLogs(approved.logs);
       dependencies.state.setProfiles(approved.profiles);
+      trackProductEvent({ event: 'habit_reviewed', decision: 'approved', approvalLag: approvalLagBucket(log.completedAt), mode: 'local' }, dependencies.analyticsSink);
       sounds.playTaskComplete();
     },
     rejectLog: (logId) => {
@@ -173,7 +188,10 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
         reviewCloudLog(logId, 'reject');
         return;
       }
+      const log = dependencies.state.logs.find((candidate) => candidate.id === logId);
+      if (!log || log.status !== 'pending_approval') return;
       dependencies.state.setLogs((previous) => rejectPendingLog(previous, logId));
+      trackProductEvent({ event: 'habit_reviewed', decision: 'rejected', approvalLag: approvalLagBucket(log.completedAt), mode: 'local' }, dependencies.analyticsSink);
       sounds.playClick();
     },
   };

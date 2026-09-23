@@ -333,7 +333,7 @@ export const ko = {
   yourPlanIs: '현재 이용 중인 플랜: {plan}',
   yourRewards: '받은 선물 보관함',
   assignLabel: '배정 대상',
-  chooseAvatarTip: '아이가 가장 좋아하는 아바타를 선택하세요',
+  chooseAvatarTip: '친구는 7일에 한 번, 색상은 언제든 바꿀 수 있어요.',
   cloudStorageMode: 'KidHabit Cloud 클라우드 저장',
   completionRate: '완료율',
   evening: '저녁',

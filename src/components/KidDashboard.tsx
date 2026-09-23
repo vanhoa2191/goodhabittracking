@@ -28,7 +28,7 @@ import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { HabitActivity, TimeOfDay } from '@/types';
 import { HabitTimerModal } from './HabitTimerModal';
-import { AvatarPickerModal } from './AvatarPickerModal';
+import { MascotPickerController } from './MascotPickerController';
 import { LeaderboardSection } from './LeaderboardSection';
 import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
 import { localizeDemoActivity, localizeDemoReward } from '@/lib/i18n/demo-content-copy';
@@ -36,6 +36,8 @@ import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
 import { TaskDetailsModal } from './TaskDetailsModal';
 import { MascotAvatar } from './MascotAvatar';
 import { getMascot } from '@/lib/mascots';
+import { MorningMascotLetter } from './MorningMascotLetter';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 
 export function KidDashboard() {
   const {
@@ -48,7 +50,6 @@ export function KidDashboard() {
     redemptions,
     badges,
     childBadges,
-    updateActiveAvatar,
     setIsPortraitModalOpen,
   } = useAppStore();
 
@@ -270,6 +271,15 @@ export function KidDashboard() {
           )}
         </div>
       </div>
+
+      {defaultExperienceFlags.dailyMascotLetter && (
+        <MorningMascotLetter
+          childId={activeChild.id}
+          childName={activeChild.name}
+          avatar={activeChild.avatar}
+          language={language}
+        />
+      )}
 
       {/* Main Tab Navigation */}
       <div className="flex p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1">
@@ -771,15 +781,7 @@ export function KidDashboard() {
       <TaskDetailsModal activity={selectedTask} onClose={() => setSelectedTask(null)} />
 
       {/* Child Mascot / Avatar Picker Modal */}
-      {activeChild && (
-        <AvatarPickerModal
-          isOpen={isAvatarPickerOpen}
-          onClose={() => setIsAvatarPickerOpen(false)}
-          currentAvatar={activeChild.avatar}
-          currentColor={activeChild.themeColor}
-          onSave={updateActiveAvatar}
-        />
-      )}
+      {isAvatarPickerOpen && <MascotPickerController onClose={() => setIsAvatarPickerOpen(false)} />}
     </div>
   );
 }

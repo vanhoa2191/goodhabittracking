@@ -32,7 +32,7 @@ export const vi = {
   checkingPayment: 'Đang kiểm tra...',
   checkoutModalTitle: 'Thanh Toán VietQR Tự Động',
   childName: 'Tên của bé',
-  chooseAvatarTip: 'Bé có thể tự do chọn linh vật và màu đại diện yêu thích bất cứ lúc nào!',
+  chooseAvatarTip: 'Đổi linh vật tối đa một lần mỗi 7 ngày; màu sắc có thể đổi bất cứ lúc nào.',
   chores: 'Việc nhà',
   claimReward: 'Đổi quà này',
   close: 'Đóng',

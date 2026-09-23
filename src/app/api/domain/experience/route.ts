@@ -7,7 +7,6 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 export const runtime = 'nodejs';
 
 const commandSchema = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('selectMascot'), childId: z.string().uuid() }),
   z.object({ type: z.literal('chooseWishlist'), childId: z.string().uuid(), rewardId: z.string().uuid() }),
   z.object({ type: z.literal('pauseFamily') }),
   z.object({ type: z.literal('resumeFamily') }),
@@ -57,16 +56,6 @@ export async function POST(request: NextRequest) {
   const now = new Date().toISOString();
   const command = parsed.data;
   switch (command.type) {
-    case 'selectMascot': {
-      const { error } = await supabase.from('child_engagement_profiles').upsert({
-        family_id: parent.familyId,
-        child_id: command.childId,
-        mascot_selected_at: now,
-        updated_at: now,
-      });
-      if (error) return NextResponse.json({ error: 'Mascot selection could not be saved.' }, { status: 409 });
-      break;
-    }
     case 'chooseWishlist': {
       const { error } = await supabase.from('child_wishlists').upsert({
         family_id: parent.familyId,

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const defaultExperienceFlags = {
-  dailyMascotLetter: false,
+  dailyMascotLetter: process.env.NEXT_PUBLIC_DAILY_MASCOT_LETTER === 'true',
   questCards: false,
   secretQuest: false,
   parentInformationArchitecture: false,

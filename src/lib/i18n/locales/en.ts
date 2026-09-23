@@ -32,7 +32,7 @@ export const en = {
   checkingPayment: 'Checking...',
   checkoutModalTitle: 'Automatic QR Payment',
   childName: 'Child\'s Name',
-  chooseAvatarTip: 'Kids and parents can change the avatar mascot and theme color anytime!',
+  chooseAvatarTip: 'Change your companion once every 7 days; change its color anytime.',
   chores: 'Chores',
   claimReward: 'Redeem Reward',
   close: 'Close',

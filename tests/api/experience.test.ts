@@ -60,20 +60,17 @@ describe('/api/domain/experience', () => {
     expect(upsert).not.toHaveBeenCalled();
   });
 
-  it('uses the authenticated family, not a caller-supplied family', async () => {
+  it('rejects the obsolete timestamp-only mascot command', async () => {
     const response = await POST(request({
       type: 'selectMascot', childId, familyId: '33333333-3333-4333-8333-333333333333',
     }));
-    expect(response.status).toBe(200);
-    expect(upsert).toHaveBeenCalledWith(expect.objectContaining({
-      family_id: familyId,
-      child_id: childId,
-    }));
+    expect(response.status).toBe(400);
+    expect(upsert).not.toHaveBeenCalled();
   });
 
   it('reports a database rejection instead of claiming a cross-family write succeeded', async () => {
     upsert.mockResolvedValue({ error: { code: '23503' } });
-    const response = await POST(request({ type: 'selectMascot', childId }));
+    const response = await POST(request({ type: 'chooseWishlist', childId, rewardId: childId }));
     expect(response.status).toBe(409);
   });
 });

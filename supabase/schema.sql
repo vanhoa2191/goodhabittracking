@@ -12,3 +12,6 @@
 \ir migrations/202609210005_customer_admin.sql
 \ir migrations/202609220001_framework_habit_refs.sql
 \ir migrations/202609230001_experience_foundation.sql
+\ir migrations/202609230002_mascot_selection_cooldown.sql
+\ir migrations/202609230003_daily_mascot_letter.sql
+\ir migrations/202609230004_reject_unknown_mascot_changes.sql

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
 import confetti from 'canvas-confetti';
 import {
   ChildProfile,
@@ -27,6 +27,7 @@ import { getPricingPlan } from './payos';
 import { sounds } from './sound';
 import { isSupabaseConfigured } from './supabase';
 import { emptyExperienceState } from './experience-state';
+import { createSessionTracker, sessionMode } from './product-analytics';
 import type { ExperienceState } from './experience-state';
 import { generateAgeAdaptedHabits } from './wit-framework';
 import type { User } from '@supabase/supabase-js';
@@ -35,6 +36,7 @@ import { createHabitActions } from './store/habit-actions';
 import { createProfileActions } from './store/profile-actions';
 import { createRewardActions } from './store/reward-actions';
 import { createSocialActions } from './store/social-actions';
+import { markLocalLetterRead, openLocalLetter } from './store/local-letter-actions';
 import { requestTrialActivation } from './store/trial-activation-client';
 import { exportFamilyData, importFamilyData } from './store/family-backup-actions';
 import {
@@ -104,6 +106,8 @@ interface AppStoreContextType {
 
   profiles: ChildProfile[];
   experience: ExperienceState;
+  ensureLocalDailyLetter: (childId: string, date: string, templateKey: string) => void;
+  markLocalDailyLetterRead: (childId: string, date: string, templateKey: string) => void;
   activeChildId: string | null;
   activeChild: ChildProfile | null;
   setActiveChildId: (id: string) => void;
@@ -219,6 +223,21 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [isFamilyConnected, setIsFamilyConnected] = useState(false);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const [isDemoSession, setIsDemoSession] = useState(false);
+  const sessionTracker = useRef(createSessionTracker());
+
+  useEffect(() => {
+    const selectedMode = sessionMode({
+      isLoaded,
+      mode,
+      activeChildId,
+      isDemoSession,
+      isFamilyConnected,
+      hasCloudSnapshot: Boolean(currentUser && lastSyncTime),
+      storageMode,
+    });
+    if (selectedMode) sessionTracker.current.enter(selectedMode, activeChildId);
+    else sessionTracker.current.leave();
+  }, [activeChildId, currentUser, isDemoSession, isFamilyConnected, isLoaded, lastSyncTime, mode, storageMode]);
 
   const openConnectModal = () => setIsConnectModalOpen(true);
   const closeConnectModal = () => setIsConnectModalOpen(false);
@@ -392,6 +411,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       setProfiles,
       setRedemptions,
       setRewards,
+      setStorageMode: setStorageModeState,
     },
   });
 
@@ -433,17 +453,20 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     const saved = await createActivities(starterHabits);
     if (!saved) return false;
     sounds.playSuccess();
-    confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+    confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 }, disableForReducedMotion: true });
     return true;
   };
 
   const profileActions = createProfileActions({
     activeChildId,
     currentUser,
+    experience,
     familyId,
+    profiles,
     setActiveChildId: setActiveChildIdState,
     setActivities,
     setCloudSyncActive,
+    setExperience,
     setProfiles,
     storageMode,
     syncCloudFamily: syncFromSupabase,
@@ -536,13 +559,49 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   // Quick avatar & color update for active child
   const updateActiveAvatar = async (avatar: string, themeColor: string): Promise<boolean> => {
     if (!activeChildId) return false;
-    const saved = await updateProfile(activeChildId, { avatar, themeColor });
+    let saved: boolean;
+    if (storageMode === 'cloud' && !currentUser && isFamilyConnected) {
+      try {
+        const response = await fetch('/api/child/mascot', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ avatar, themeColor }),
+        });
+        saved = response.ok && await refreshChildSession();
+      } catch {
+        saved = false;
+      }
+    } else {
+      saved = await updateProfile(activeChildId, { avatar, themeColor });
+    }
     if (!saved) return false;
     sounds.playFanfare();
     try {
-      confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 } });
+      confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 }, disableForReducedMotion: true });
     } catch {}
     return true;
+  };
+
+  const ensureLocalDailyLetter = useCallback((childId: string, date: string, templateKey: string): void => {
+    if (storageMode !== 'local') return;
+    setExperience((previous) => openLocalLetter(
+      previous,
+      familyId ?? '00000000-0000-4000-8000-000000000000',
+      childId,
+      date,
+      templateKey,
+    ));
+  }, [familyId, storageMode]);
+
+  const markLocalDailyLetterRead = (childId: string, date: string, templateKey: string): void => {
+    if (storageMode !== 'local') return;
+    setExperience((previous) => markLocalLetterRead(openLocalLetter(
+      previous,
+      familyId ?? '00000000-0000-4000-8000-000000000000',
+      childId,
+      date,
+      templateKey,
+    ), childId, date, new Date().toISOString()));
   };
 
   const {
@@ -630,7 +689,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
 
     await syncFromSupabase(currentUser);
     sounds.playFanfare();
-    confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 } });
+    confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 }, disableForReducedMotion: true });
     return { success: true };
   };
 
@@ -711,6 +770,8 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
 
         profiles,
         experience,
+        ensureLocalDailyLetter,
+        markLocalDailyLetterRead,
         activeChildId,
         activeChild,
         setActiveChildId,

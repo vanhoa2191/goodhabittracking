@@ -223,6 +223,7 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
         spread: 80,
         origin: { y: 0.5 },
         colors: ['#ec4899', '#f59e0b', '#3b82f6'],
+        disableForReducedMotion: true,
       });
       return true;
     },

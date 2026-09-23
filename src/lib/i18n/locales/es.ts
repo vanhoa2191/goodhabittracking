@@ -32,7 +32,7 @@ export const es = {
   checkingPayment: 'Comprobando...',
   checkoutModalTitle: 'Pago QR Automático',
   childName: 'Nombre del niño',
-  chooseAvatarTip: '¡Puedes cambiar tu mascota y color cuando quieras!',
+  chooseAvatarTip: 'Cambia de compañero una vez cada 7 días; el color cuando quieras.',
   chores: 'Tareas del hogar',
   claimReward: 'Canjear recompensa',
   close: 'Cerrar',

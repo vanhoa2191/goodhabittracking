@@ -32,7 +32,7 @@ export const zh = {
   checkingPayment: '正在确认...',
   checkoutModalTitle: '自动扫码结算',
   childName: '孩子姓名/昵称',
-  chooseAvatarTip: '孩子与家长可以随时自由更换吉祥物与主题颜色！',
+  chooseAvatarTip: '伙伴每 7 天最多更换一次；颜色随时可改。',
   chores: '家务劳动',
   claimReward: '兑换奖励',
   close: '关闭',

@@ -32,7 +32,7 @@ export const ja = {
   checkingPayment: '確認中...',
   checkoutModalTitle: '自動QR決済',
   childName: 'おなまえ',
-  chooseAvatarTip: 'いつでも好きなマスコットやテーマカラーに変更できます！',
+  chooseAvatarTip: '仲間は7日に1回変更できます。色はいつでも変更できます。',
   chores: 'おてつだい',
   claimReward: 'ごほうびと交換',
   close: 'とじる',

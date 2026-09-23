@@ -44,7 +44,7 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
           setIsRunning(false);
           setIsFinished(true);
           sounds.playTimerFinish();
-          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+          confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 }, disableForReducedMotion: true });
           return;
         }
         setTimeLeft((prev) => prev - 1);

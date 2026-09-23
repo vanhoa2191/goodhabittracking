@@ -22,6 +22,7 @@ type FamilySetters = {
   readonly setProfiles: Dispatch<SetStateAction<ChildProfile[]>>;
   readonly setRedemptions: Dispatch<SetStateAction<Redemption[]>>;
   readonly setRewards: Dispatch<SetStateAction<Reward[]>>;
+  readonly setStorageMode: Dispatch<SetStateAction<'local' | 'cloud'>>;
 };
 
 type Dependencies = {
@@ -53,6 +54,7 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setProfiles,
     setRedemptions,
     setRewards,
+    setStorageMode,
   } = dependencies.setters;
 
   const hydrateChildSession = useCallback((session: ChildSession) => {
@@ -63,6 +65,7 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setActivities(session.activities);
     setLogs(session.logs);
     setRewards(session.rewards);
+    setStorageMode('cloud');
     setRedemptions(session.redemptions);
     setMode('kid');
     localStorage.setItem(`${LOCAL_STORAGE_PREFIX}child_paired`, 'true');
@@ -76,6 +79,7 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setProfiles,
     setRedemptions,
     setRewards,
+    setStorageMode,
   ]);
 
   const generateChildCodes = useCallback(async (): Promise<Record<string, string>> => {

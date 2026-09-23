@@ -73,6 +73,7 @@ Thiết lập `NEXT_PUBLIC_*` trong môi trường chạy lệnh build/deploy; c
 - [`docs/architecture.md`](docs/architecture.md)
 - [`docs/habit-framework-data-contract.md`](docs/habit-framework-data-contract.md)
 - [`docs/security-privacy.md`](docs/security-privacy.md)
+- [`docs/product-analytics.md`](docs/product-analytics.md)
 - [`docs/data-recovery.md`](docs/data-recovery.md)
 - [`docs/claims-ledger.md`](docs/claims-ledger.md)
 - [`docs/runbooks/incident-response.md`](docs/runbooks/incident-response.md)
@@ -81,6 +82,6 @@ Thiết lập `NEXT_PUBLIC_*` trong môi trường chạy lệnh build/deploy; c
 
 - Chế độ demo/local chỉ lưu trên thiết bị và không ghi production.
 - Chế độ cloud cần tài khoản, dùng family tenancy và RLS.
-- Mã ghép nối là one-time, có TTL, giới hạn thử và chỉ cấp session cho đúng một bé.
+- Mã ghép nối cố định cho từng bé tới khi phụ huynh làm mới, có giới hạn thử và chỉ cấp phiên cho đúng bé đó.
 - Client không tự cấp Pro; webhook PayOS đã xác minh chữ ký mới kích hoạt entitlement qua transaction idempotent.
 - Leaderboard công khai mặc định tắt; tên thật chỉ hiển thị khi phụ huynh chủ động bật.

@@ -32,7 +32,7 @@ export const de = {
   checkingPayment: 'Wird geprüft...',
   checkoutModalTitle: 'Automatische QR-Zahlung',
   childName: 'Name des Kindes',
-  chooseAvatarTip: 'Du kannst dein Maskottchen jederzeit ändern!',
+  chooseAvatarTip: 'Wechsle deinen Begleiter höchstens einmal alle 7 Tage; die Farbe jederzeit.',
   chores: 'Hausarbeiten',
   claimReward: 'Belohnung einlösen',
   close: 'Schließen',

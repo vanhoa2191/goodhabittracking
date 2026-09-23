@@ -67,6 +67,7 @@ function createState(
   currentUser = null as typeof user | null,
   isFamilyConnected = false,
 ) {
+  const analyticsSink = vi.fn();
   let profiles = [child];
   let logs: ActivityLog[] = [];
   let childBadges: ChildBadge[] = [];
@@ -93,6 +94,7 @@ function createState(
       setChildBadges: stateSetter(() => childBadges, (value) => { childBadges = value; }),
     },
     storageMode,
+    analyticsSink,
   });
   return {
     actions,
@@ -100,6 +102,7 @@ function createState(
     setCloudSyncActive,
     refreshChildSession,
     syncCloudFamily,
+    analyticsSink,
   };
 }
 
@@ -120,6 +123,7 @@ describe('habit actions', () => {
     ]);
     expect(fixture.read().profiles[0]?.points).toBe(20);
     expect(requestDomainCommand).not.toHaveBeenCalled();
+    expect(fixture.analyticsSink).toHaveBeenCalledWith({ event: 'task_ticked', action: 'completed', mode: 'local' });
   });
 
   it('never falls back to local state when cloud authentication is missing', async () => {
@@ -136,6 +140,7 @@ describe('habit actions', () => {
     expect(fixture.read()).toEqual({ profiles: [child], logs: [], childBadges: [] });
     expect(requestDomainCommand).not.toHaveBeenCalled();
     expect(fixture.setCloudSyncActive).toHaveBeenCalledWith(false);
+    expect(fixture.analyticsSink).not.toHaveBeenCalled();
   });
 
   it('persists a cloud completion before authoritative sync without optimistic local state', async () => {
@@ -156,6 +161,7 @@ describe('habit actions', () => {
     }));
     expect(fixture.syncCloudFamily).toHaveBeenCalledWith(user);
     expect(fixture.read()).toEqual({ profiles: [child], logs: [], childBadges: [] });
+    expect(fixture.analyticsSink).toHaveBeenCalledWith({ event: 'task_ticked', action: 'completed', mode: 'cloud' });
   });
 
   it('uses the scoped child command and refreshes the paired session', async () => {
@@ -189,6 +195,32 @@ describe('habit actions', () => {
     expect(saved).toBe(false);
     expect(fixture.read().logs).toEqual([]);
     expect(fixture.setCloudSyncActive).toHaveBeenCalledWith(false);
+    expect(fixture.analyticsSink).not.toHaveBeenCalled();
+  });
+
+  it('does not count a duplicate cloud command as a completed task', async () => {
+    requestDomainCommand.mockResolvedValue({ status: 'duplicate' });
+    const fixture = createState('cloud', user);
+
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20')).toBe(true);
+    expect(fixture.analyticsSink).not.toHaveBeenCalled();
+  });
+
+  it('records a cloud approval only after the server confirms and sync succeeds', async () => {
+    const pending: ActivityLog = {
+      id: 'log-1', activityId: activity.id, childId: child.id,
+      date: '2026-09-20', status: 'pending_approval', pointsAwarded: 0,
+      completedAt: '2026-09-20T01:00:00.000Z',
+    };
+    requestDomainCommand.mockResolvedValue({ status: 'approved' });
+    const fixture = createState('cloud', user);
+    fixture.read().logs.push(pending);
+
+    fixture.actions.approveLog(pending.id);
+
+    await vi.waitFor(() => expect(fixture.analyticsSink).toHaveBeenCalledWith({
+      event: 'habit_reviewed', decision: 'approved', approvalLag: 'over_1d', mode: 'cloud',
+    }));
   });
 
   it('approves and rejects local pending logs through guarded transitions', () => {
@@ -209,6 +241,7 @@ describe('habit actions', () => {
       pointsAwarded: activity.points,
     }));
     expect(approveFixture.read().profiles[0]?.points).toBe(activity.points);
+    expect(approveFixture.analyticsSink).toHaveBeenCalledWith({ event: 'habit_reviewed', decision: 'approved', approvalLag: 'over_1d', mode: 'local' });
 
     const rejectFixture = createState('local');
     rejectFixture.read().logs.push(pending);
@@ -217,5 +250,6 @@ describe('habit actions', () => {
       status: 'rejected',
       pointsAwarded: 0,
     }));
+    expect(rejectFixture.analyticsSink).toHaveBeenCalledWith({ event: 'habit_reviewed', decision: 'rejected', approvalLag: 'over_1d', mode: 'local' });
   });
 });

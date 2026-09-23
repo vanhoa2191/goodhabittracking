@@ -50,10 +50,11 @@ test('demo child can inspect and independently complete a full task card', async
     .toBeVisible();
   await details.getByRole('button', { name: 'Đóng' }).click();
 
+  const pointBurst = expect(taskCard.getByTestId('point-burst')).toContainText('+10');
   await taskToggle.click();
+  await pointBurst;
   await expect(page.getByRole('dialog', { name: 'Chi tiết nhiệm vụ' })).toHaveCount(0);
   await expect(taskCard).toHaveAttribute('data-complete', 'true');
-  await expect(taskCard.getByTestId('point-burst')).toContainText('+10');
   await expect(page.getByText('1/6 việc hoàn thành (17%)')).toBeVisible();
 
   await taskCard.getByRole('button', { name: 'Đã xong' }).click();

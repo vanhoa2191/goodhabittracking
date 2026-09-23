@@ -151,7 +151,7 @@ export function createSocialActions(dependencies: Dependencies): SocialActions {
       };
       dependencies.state.setKudos((previous) => [kudo, ...previous.slice(0, 49)]);
       sounds.playFanfare();
-      confetti({ particleCount: 25, spread: 50, origin: { y: 0.7 } });
+      confetti({ particleCount: 25, spread: 50, origin: { y: 0.7 }, disableForReducedMotion: true });
       return true;
     },
   };
