@@ -47,6 +47,9 @@ function getDemoSessionSnapshot() {
 export default function Home() {
   const {
     mode,
+    isEntryReady,
+    isFamilyConnected,
+    storageMode,
     profiles,
     currentUser,
     loginWithGoogle,
@@ -77,13 +80,14 @@ export default function Home() {
     getServerInAppSessionSnapshot
   );
   const currentUserId = currentUser?.id ?? null;
-  const defaultShowLanding = !currentUser && !sessionInApp && profiles.length === 0;
+  const canOpenApp = Boolean(currentUser || isFamilyConnected || isDemoSession || sessionInApp || (storageMode === 'local' && profiles.length > 0));
+  const defaultShowLanding = !canOpenApp;
   const [landingSelection, setLandingSelection] = useState<{
     userId: string | null;
     showLanding: boolean;
   } | null>(null);
   const [paymentReturnState, setPaymentReturnState] = useState<PaymentReturnState | null>(null);
-  const showLanding = landingSelection?.userId === currentUserId
+  const showLanding = isFamilyConnected && !currentUser ? false : landingSelection?.userId === currentUserId
     ? landingSelection.showLanding
     : defaultShowLanding;
 
@@ -173,11 +177,16 @@ export default function Home() {
   };
 
   const handleToggleLanding = () => {
+    if (!canOpenApp || (isFamilyConnected && !currentUser)) return;
     setLandingSelection({
       userId: currentUserId,
       showLanding: !showLanding,
     });
   };
+
+  if (!isEntryReady) {
+    return <div data-testid="app-surface" data-app-mode="loading" role="status" aria-label={language === 'vi' ? 'Đang mở KidHabit' : 'Opening KidHabit'} className="flex min-h-screen items-center justify-center bg-white text-lg font-semibold text-indigo-700 dark:bg-zinc-950 dark:text-indigo-200">{language === 'vi' ? 'Đang mở KidHabit…' : 'Opening KidHabit…'}</div>;
+  }
 
   return (
     <div
@@ -189,9 +198,9 @@ export default function Home() {
     >
       <div>
         <Header
-          onToggleLanding={handleToggleLanding}
+          onToggleLanding={canOpenApp && !(isFamilyConnected && !currentUser) ? handleToggleLanding : undefined}
           isLanding={showLanding}
-          isDemo={isDemoSession && !currentUser}
+          hasAppSession={canOpenApp}
         />
         {paymentReturnState && (
           <div
@@ -211,10 +220,10 @@ export default function Home() {
         <main>
           {showLanding ? (
             <LandingPage
-              onStartDemo={handleStartDemo}
+              onStartDemo={canOpenApp ? handleToggleLanding : handleStartDemo}
               onStartLocalSetup={handleStartLocalSetup}
               onLoginGoogle={loginWithGoogle}
-              isLoggedIn={Boolean(currentUser || profiles.length > 0)}
+              isLoggedIn={canOpenApp}
             />
           ) : (
             <>
@@ -239,14 +248,7 @@ export default function Home() {
             <span>{t.appName} &bull; {t.appSlogan}</span>
           </p>
           <span className="hidden sm:inline text-slate-300 dark:text-zinc-700">&bull;</span>
-          <button
-            type="button"
-            onClick={handleToggleLanding}
-            className="text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer font-bold"
-          >
-            {showLanding ? t.landingBackToApp : t.landingCtaParentGuide}
-          </button>
-          <Link href="/docs" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>
+          {!(isFamilyConnected && !currentUser) && <Link href="/docs" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>}
         </div>
       </footer>
 

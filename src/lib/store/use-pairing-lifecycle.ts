@@ -28,8 +28,10 @@ type FamilySetters = {
 type Dependencies = {
   readonly currentUser: User | null;
   readonly isLoaded: boolean;
+  readonly isIdentityReady: boolean;
   readonly mode: 'kid' | 'parent';
   readonly onHydrateChildSession?: () => void;
+  readonly onPairingReady: () => void;
   readonly profiles: readonly ChildProfile[];
   readonly resetFamilyScope: () => void;
   readonly setters: FamilySetters;
@@ -44,7 +46,7 @@ type PairingResult = {
 };
 
 export function usePairingLifecycle(dependencies: Dependencies) {
-  const { currentUser, isLoaded, mode, onHydrateChildSession, profiles, resetFamilyScope } = dependencies;
+  const { currentUser, isIdentityReady, isLoaded, mode, onHydrateChildSession, onPairingReady, profiles, resetFamilyScope } = dependencies;
   const {
     setActivities,
     setActiveChildId,
@@ -123,15 +125,23 @@ export function usePairingLifecycle(dependencies: Dependencies) {
   }, [generateChildCodes, isLoaded, mode]);
 
   useEffect(() => {
-    if (!isLoaded || typeof window === 'undefined') return;
-    if (localStorage.getItem(`${LOCAL_STORAGE_PREFIX}child_paired`) !== 'true') return;
+    if (!isLoaded || !isIdentityReady || typeof window === 'undefined') return;
+    if (currentUser) {
+      onPairingReady();
+      return;
+    }
+    if (localStorage.getItem(`${LOCAL_STORAGE_PREFIX}child_paired`) !== 'true') {
+      onPairingReady();
+      return;
+    }
     void loadChildSession()
       .then((result) => {
         if (result.success) hydrateChildSession(result.session);
         else resetFamilyScope();
       })
-      .catch(resetFamilyScope);
-  }, [hydrateChildSession, isLoaded, resetFamilyScope]);
+      .catch(resetFamilyScope)
+      .finally(onPairingReady);
+  }, [currentUser, hydrateChildSession, isIdentityReady, isLoaded, onPairingReady, resetFamilyScope]);
 
   const connectWithFamilyCode = async (code: string): Promise<PairingResult> => {
     const tokenPrefix = 'pair-token:';

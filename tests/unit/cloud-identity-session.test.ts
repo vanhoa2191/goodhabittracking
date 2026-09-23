@@ -24,6 +24,35 @@ function deferredUser() {
 }
 
 describe('cloud identity session', () => {
+  it('marks identity ready only after the initial parent has been loaded', async () => {
+    const initialUser = deferredUser();
+    const sync = deferredUser();
+    const onReady = vi.fn();
+    startCloudIdentitySession({
+      source: { readCurrentUser: () => initialUser.promise, subscribe: () => () => undefined },
+      onUserChanged: async () => { await sync.promise; },
+      onError: vi.fn(),
+      onReady,
+    });
+
+    initialUser.resolve(user);
+    await initialUser.promise;
+    expect(onReady).not.toHaveBeenCalled();
+    sync.resolve(null);
+    await vi.waitFor(() => expect(onReady).toHaveBeenCalledOnce());
+  });
+
+  it('marks a visitor ready after an empty session lookup', async () => {
+    const onReady = vi.fn();
+    startCloudIdentitySession({
+      source: { readCurrentUser: async () => null, subscribe: () => () => undefined },
+      onUserChanged: vi.fn(async () => undefined),
+      onError: vi.fn(),
+      onReady,
+    });
+    await vi.waitFor(() => expect(onReady).toHaveBeenCalledOnce());
+  });
+
   it('emits the current user and unsubscribes cleanly', async () => {
     const unsubscribe = vi.fn();
     const source: CloudIdentitySource = {

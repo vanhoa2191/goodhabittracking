@@ -37,10 +37,10 @@ import { MascotAvatar } from '@/components/MascotAvatar';
 interface HeaderProps {
   onToggleLanding?: () => void;
   isLanding?: boolean;
-  isDemo?: boolean;
+  hasAppSession?: boolean;
 }
 
-export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderProps = {}) {
+export function Header({ onToggleLanding, isLanding, hasAppSession = false }: HeaderProps = {}) {
   const {
     mode,
     setMode,
@@ -70,7 +70,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
   } = useAppStore();
 
   const isAuthenticated = Boolean(currentUser || isFamilyConnected);
-  const hasDashboardAccess = isAuthenticated || isDemo || profiles.length > 0;
+  const hasDashboardAccess = isAuthenticated || hasAppSession;
 
   const { language, setLanguage, t } = useTranslation();
   const copy = getHeaderCopy(language);
@@ -87,6 +87,10 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
   };
 
   const handleParentModeClick = () => {
+    if (currentUser) {
+      setMode('parent');
+      return;
+    }
     if (mode === 'kid') {
       if (isParentUnlocked) {
         setMode('parent');
@@ -100,6 +104,35 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
 
   const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === language) || SUPPORTED_LANGUAGES[0];
   const shell = isLanding ? 'landing' : mode;
+  const landingSwitchLabel = isLanding ? t.landingBackToApp : language === 'vi' ? 'Trang chủ' : 'Home';
+
+  if (isFamilyConnected && !currentUser) {
+    return (
+      <>
+        <header data-app-shell="kid" className="sticky top-0 z-40 w-full border-b border-amber-200 bg-kid-surface/95 px-4 py-3 backdrop-blur-md dark:border-amber-900 dark:bg-zinc-950/90">
+          <div className="mx-auto flex max-w-6xl items-center gap-2 sm:gap-3">
+            <BrandMark className="h-10 w-10 shrink-0" label={t.appName} />
+            <span className="min-w-0 flex-1 truncate text-base font-extrabold text-slate-800 dark:text-slate-100">{activeChild?.name || t.appName}</span>
+            <select
+              aria-label={t.language}
+              value={language}
+              onChange={(event) => setLanguage(event.target.value as typeof language)}
+              className="min-h-11 w-16 rounded-xl border border-amber-200 bg-white px-1 text-sm font-bold text-slate-800 dark:border-amber-900 dark:bg-zinc-900 dark:text-slate-100"
+            >
+              {SUPPORTED_LANGUAGES.map((option) => <option key={option.code} value={option.code}>{option.code.toUpperCase()}</option>)}
+            </select>
+            <button type="button" onClick={() => setIsFontModalOpen(true)} aria-label={t.fontSettingsTitle} title={t.fontSettingsTitle} className="flex min-h-11 min-w-11 items-center justify-center rounded-xl border border-amber-200 bg-white text-slate-700 dark:border-amber-900 dark:bg-zinc-900 dark:text-slate-200">
+              <Type className="h-5 w-5" />
+            </button>
+            <button type="button" onClick={toggleSound} aria-label={soundEnabled ? t.soundOn : t.soundOff} aria-pressed={soundEnabled} className="flex min-h-11 min-w-11 items-center justify-center rounded-xl border border-amber-200 bg-white text-slate-700 dark:border-amber-900 dark:bg-zinc-900 dark:text-slate-200">
+              {soundEnabled ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
+            </button>
+          </div>
+        </header>
+        <FontSettingsModal isOpen={isFontModalOpen} onClose={() => setIsFontModalOpen(false)} />
+      </>
+    );
+  }
 
   return (
     <>
@@ -285,20 +318,19 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
               <span>{copy.portraitGuideShort}</span>
             </button>
 
-            {/* Desktop Only: Landing Page Switcher (xl:flex) */}
             {onToggleLanding && (
               <button
                 type="button"
                 onClick={onToggleLanding}
-                className={`hidden 2xl:flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                className={`flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                   isLanding
                     ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none'
                     : 'bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60'
                 }`}
-                title={isLanding ? t.landingBackToApp : t.landingCtaParentGuide}
+                title={landingSwitchLabel}
               >
                 <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                <span>{isLanding ? t.landingBackToApp : t.landingCtaParentGuide}</span>
+                <span>{landingSwitchLabel}</span>
               </button>
             )}
 
@@ -392,7 +424,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
             </button>}
 
             {/* Mode Switcher (Parent Mode) - Only when logged in */}
-            {hasDashboardAccess ? (
+            {hasDashboardAccess && (!currentUser || mode === 'kid') && (
               <button
                 onClick={handleParentModeClick}
                 className={`min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
@@ -415,7 +447,8 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                   </>
                 )}
               </button>
-            ) : (
+            )}
+            {!hasDashboardAccess && (
               <button
                 type="button"
                 onClick={openConnectModal}
@@ -635,7 +668,7 @@ export function Header({ onToggleLanding, isLanding, isDemo = false }: HeaderPro
                         className="w-full py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 text-xs font-bold text-indigo-700 dark:text-indigo-300 flex items-center justify-center gap-1.5"
                       >
                         <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                        <span>{isLanding ? t.landingBackToApp : t.landingCtaParentGuide}</span>
+                        <span>{landingSwitchLabel}</span>
                       </button>
                     )}
 

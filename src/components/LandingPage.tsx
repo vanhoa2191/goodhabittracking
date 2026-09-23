@@ -904,7 +904,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
               onClick={onStartDemo}
               className="hidden sm:inline-flex py-2 px-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 text-xs font-bold transition-all items-center gap-1 cursor-pointer"
             >
-              <span>{t.landingExploreDemo}</span>
+              <span>{isLoggedIn ? t.landingBackToApp : t.landingExploreDemo}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -1387,7 +1387,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                         onClick={onStartDemo}
                         className="py-2.5 px-5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold transition-all shadow-md flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
                       >
-                        <span>{t.landingApplyRoadmapBtn}</span>
+                        <span>{isLoggedIn ? t.landingBackToApp : t.landingApplyRoadmapBtn}</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
@@ -1505,7 +1505,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                       onClick={onStartDemo}
                       className="w-full py-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                     >
-                      <span>{uiCopy.exploreJourney}</span>
+                      <span>{isLoggedIn ? t.landingBackToApp : uiCopy.exploreJourney}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -1637,7 +1637,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
             onClick={onStartDemo}
             className="py-3.5 px-8 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-extrabold text-sm shadow-xl transition-transform active:scale-95 cursor-pointer"
           >
-            {t.landingStartNow}
+            {isLoggedIn ? t.landingBackToApp : t.landingStartNow}
           </button>
         </div>
       </section>
@@ -1657,7 +1657,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
               onClick={onStartDemo}
               className="w-full sm:w-auto py-3.5 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm shadow-xl transition-all active:scale-95 cursor-pointer"
             >
-              {t.landingStartNow}
+              {isLoggedIn ? t.landingBackToApp : t.landingStartNow}
             </button>
             {!isLoggedIn && (
               <button

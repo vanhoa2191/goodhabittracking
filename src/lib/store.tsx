@@ -51,6 +51,7 @@ import { buildSubscriptionDetails, checkIsPro } from './store/subscription';
 import { adjustProfilePoints } from './store/local-domain-actions';
 
 interface AppStoreContextType {
+  isEntryReady: boolean;
   mode: 'kid' | 'parent';
   setMode: (mode: 'kid' | 'parent') => void;
   parentPin: string;
@@ -179,6 +180,8 @@ const AppStoreContext = createContext<AppStoreContextType | undefined>(undefined
 
 export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isIdentityReady, setIsIdentityReady] = useState(false);
+  const [isPairingReady, setIsPairingReady] = useState(false);
   const [mode, setModeState] = useState<'kid' | 'parent'>('kid');
   const [isParentUnlocked, setIsParentUnlocked] = useState(false);
   const [parentPin, setParentPin] = useState('1234');
@@ -202,6 +205,12 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [cloudSyncActive, setCloudSyncActive] = useState(false);
   const [lastSyncTime, setLastSyncTime] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const onIdentityReady = useCallback(() => setIsIdentityReady(true), []);
+  const onIdentityUser = useCallback(() => {
+    setIsParentUnlocked(true);
+    setModeState('parent');
+  }, []);
+  const onPairingReady = useCallback(() => setIsPairingReady(true), []);
 
   // Subscription & Pro Status
   const [subscriptionPlan, setSubscriptionPlan] = useState<SubscriptionPlan>('free');
@@ -286,6 +295,8 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     syncNow,
   } = useCloudFamilyIdentity({
     currentUser,
+    onIdentityReady,
+    onIdentityUser,
     familyId,
     resetFamilyScope,
     setters: {
@@ -380,7 +391,8 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   };
 
   const setMode = (targetMode: 'kid' | 'parent') => {
-    if (targetMode === 'parent' && !isParentUnlocked) {
+    if (isFamilyConnected && !currentUser) return;
+    if (targetMode === 'parent' && !currentUser && !isParentUnlocked) {
       // Must unlock through PIN modal
       return;
     }
@@ -401,7 +413,9 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     regenerateChildCode,
   } = usePairingLifecycle({
     currentUser,
+    isIdentityReady,
     isLoaded,
+    onPairingReady,
     mode,
     onHydrateChildSession: noteChildSessionHydrated,
     profiles,
@@ -784,6 +798,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   return (
     <AppStoreContext.Provider
       value={{
+        isEntryReady: isLoaded && isIdentityReady && isPairingReady,
         mode,
         setMode,
         parentPin,

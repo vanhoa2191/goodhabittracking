@@ -10,6 +10,7 @@ interface CloudIdentitySessionOptions {
   readonly source?: CloudIdentitySource;
   readonly onUserChanged: (user: User | null) => Promise<void>;
   readonly onError: (error: unknown) => void;
+  readonly onReady?: () => void;
 }
 
 function createSupabaseIdentitySource(): CloudIdentitySource | null {
@@ -39,7 +40,10 @@ function createSupabaseIdentitySource(): CloudIdentitySource | null {
 
 export function startCloudIdentitySession(options: CloudIdentitySessionOptions): () => void {
   const source = options.source ?? createSupabaseIdentitySource();
-  if (!source) return () => undefined;
+  if (!source) {
+    queueMicrotask(() => options.onReady?.());
+    return () => undefined;
+  }
 
   let active = true;
   let authRevision = 0;
@@ -47,6 +51,8 @@ export function startCloudIdentitySession(options: CloudIdentitySessionOptions):
   const notify = (user: User | null) => {
     void options.onUserChanged(user).catch((error: unknown) => {
       if (active) options.onError(error);
+    }).finally(() => {
+      if (active) options.onReady?.();
     });
   };
 
@@ -59,12 +65,15 @@ export function startCloudIdentitySession(options: CloudIdentitySessionOptions):
 
   void currentUserPromise
     .then((user) => {
-      if (active && user && authRevision === initialRevision) notify(user);
+      if (active && authRevision === initialRevision) {
+        if (user) notify(user);
+        else options.onReady?.();
+      }
     })
     .catch((error: unknown) => {
       if (!active) return;
-      if (error instanceof Error && error.name === 'AuthSessionMissingError') return;
-      options.onError(error);
+      if (!(error instanceof Error && error.name === 'AuthSessionMissingError')) options.onError(error);
+      options.onReady?.();
     });
 
   return () => {
