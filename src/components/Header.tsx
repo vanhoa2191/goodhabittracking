@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   Sparkles,
+  House,
   Lock,
   Unlock,
   Volume2,
@@ -322,15 +323,16 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
               <button
                 type="button"
                 onClick={onToggleLanding}
-                className={`flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                aria-label={landingSwitchLabel}
+                className={`${hasDashboardAccess && !isLanding && mode === 'kid' ? 'hidden lg:flex' : 'flex'} ${mode === 'parent' && !isLanding ? 'max-lg:min-w-11 max-lg:justify-center max-lg:px-2' : ''} min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                   isLanding
                     ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none'
                     : 'bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60'
                 }`}
                 title={landingSwitchLabel}
               >
-                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                <span>{landingSwitchLabel}</span>
+                <House className="w-4 h-4" aria-hidden="true" />
+                <span className={mode === 'parent' && !isLanding ? 'hidden lg:inline' : ''}>{landingSwitchLabel}</span>
               </button>
             )}
 
@@ -392,7 +394,7 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
             {(isLanding || mode === 'parent') && <button
               type="button"
               onClick={openPricingModal}
-              className={`min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-black transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
+              className={`max-[429px]:hidden min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-black transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
                 isPro
                   ? subscriptionPlan === 'trial'
                     ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-amber-200 dark:shadow-none animate-pulse'
@@ -427,7 +429,7 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
             {hasDashboardAccess && (!currentUser || mode === 'kid') && (
               <button
                 onClick={handleParentModeClick}
-                className={`min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
+                className={`${mode === 'parent' ? 'max-[429px]:hidden ' : ''}min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
                   mode === 'parent'
                     ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none'
                     : 'bg-amber-100 hover:bg-amber-200 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300'
@@ -467,7 +469,7 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
                 type="button"
                 data-testid="more-menu"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="min-w-[38px] min-h-[38px] p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all flex items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 border border-slate-200/80 dark:border-zinc-800"
+                className="relative z-50 min-w-[38px] min-h-[38px] p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all flex items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 border border-slate-200/80 dark:border-zinc-800"
                 aria-label={t.moreMenu}
               >
                 <MoreVertical className="w-4 h-4" />
@@ -488,6 +490,7 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
                       </span>
                       <button
                         onClick={() => setIsMobileMenuOpen(false)}
+                        aria-label={t.close}
                         className="p-1 text-slate-400 hover:text-slate-600 rounded-lg"
                       >
                         <X className="w-4 h-4" />
@@ -583,6 +586,17 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
                     </div>
 
                     <ThemeSelector />
+
+                    {(isLanding || mode === 'parent') && (
+                      <button
+                        type="button"
+                        onClick={openPricingModal}
+                        className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-amber-50 px-3 text-sm font-bold text-amber-900 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300"
+                      >
+                        <Crown className="h-4 w-4" aria-hidden="true" />
+                        {t.pricingModalTitle}
+                      </button>
+                    )}
 
                     <Link href="/docs" onClick={() => setIsMobileMenuOpen(false)} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-indigo-50 px-3 text-sm font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>
 

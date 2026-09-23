@@ -109,6 +109,24 @@ test('an active family can deliberately visit Home and return to the app', async
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'kid');
 });
 
+test('a parent on a narrow screen can open Home directly and return', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
+  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+
+  await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'parent');
+  const home = page.getByRole('button', { name: 'Trang chủ' }).first();
+  await expect(home).toBeVisible();
+  await home.click();
+  await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'landing');
+  await page.getByRole('button', { name: 'Vào bảng điều khiển' }).last().click();
+  await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'parent');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
 test('returning from the landing page preserves the parent session', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();

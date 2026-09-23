@@ -300,10 +300,10 @@ export function KidDashboard() {
       )}
 
       {/* Main Tab Navigation */}
-      <div className="flex p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1">
+      <div className="grid grid-cols-4 p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1">
         <button
           onClick={() => setActiveTab('tasks')}
-          className={`flex-1 min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 whitespace-nowrap ${
+          className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
             activeTab === 'tasks'
               ? 'bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-sm'
               : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -314,7 +314,7 @@ export function KidDashboard() {
         </button>
         <button
           onClick={() => setActiveTab('leaderboard')}
-          className={`flex-1 min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 whitespace-nowrap ${
+          className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
             activeTab === 'leaderboard'
               ? 'bg-white dark:bg-zinc-800 text-amber-500 shadow-sm'
               : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -326,7 +326,7 @@ export function KidDashboard() {
         </button>
         <button
           onClick={() => setActiveTab('rewards')}
-          className={`flex-1 min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 whitespace-nowrap ${
+          className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
             activeTab === 'rewards'
               ? 'bg-white dark:bg-zinc-800 text-pink-600 dark:text-pink-400 shadow-sm'
               : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -338,7 +338,7 @@ export function KidDashboard() {
         </button>
         <button
           onClick={() => setActiveTab('badges')}
-          className={`flex-1 min-h-[42px] sm:min-h-[44px] py-1.5 sm:py-2 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-1 sm:gap-1.5 cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 whitespace-nowrap ${
+          className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
             activeTab === 'badges'
               ? 'bg-white dark:bg-zinc-800 text-amber-600 dark:text-amber-400 shadow-sm'
               : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
