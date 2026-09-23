@@ -17,6 +17,21 @@ test('demo entry opens the child dashboard without reloading', async ({ page }) 
   await expect(page.getByText(/Chế độ khám phá:/)).toBeVisible();
 });
 
+test('reward goal appears only after the child chooses it', async ({ page }, testInfo) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByRole('button', { name: 'Đổi quà', exact: true }).click();
+  await expect(page.getByText('Mục tiêu quà mơ ước')).toHaveCount(0);
+
+  const rewardCard = page.getByRole('heading', { name: 'Xem phim hoạt hình 30 phút' })
+    .locator('xpath=ancestor::div[contains(@class,"rounded-3xl")][1]');
+  const goalButton = rewardCard.getByRole('button', { name: 'Đặt làm mục tiêu' });
+  await goalButton.click();
+  await expect(goalButton).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByText('Mục tiêu quà mơ ước')).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath('reward-goal.png') });
+});
+
 test('habit fire follows verified completion and undo on mobile', async ({ page }, testInfo) => {
   // Given: a child in the local demo with no verified completion today.
   await page.setViewportSize({ width: 375, height: 812 });

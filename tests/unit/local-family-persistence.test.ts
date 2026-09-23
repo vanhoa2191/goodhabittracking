@@ -67,8 +67,15 @@ describe('local family persistence', () => {
     saveLocalExperience(storage, {
       ...emptyExperienceState,
       settings: { family_id: familyA, paused_at: null, pause_reason: null },
+      wishlists: [{
+        family_id: familyA,
+        child_id: '33333333-3333-4333-8333-333333333333',
+        reward_id: '44444444-4444-4444-8444-444444444444',
+        chosen_at: '2026-09-23T12:00:00.000Z',
+      }],
     });
     expect(loadLocalExperience(storage, familyA).settings?.family_id).toBe(familyA);
+    expect(loadLocalExperience(storage, familyA).wishlists[0]?.reward_id).toBe('44444444-4444-4444-8444-444444444444');
     expect(loadLocalExperience(storage, familyB)).toEqual(emptyExperienceState);
   });
 

@@ -29,6 +29,7 @@ type Dependencies = {
   readonly currentUser: User | null;
   readonly isLoaded: boolean;
   readonly mode: 'kid' | 'parent';
+  readonly onHydrateChildSession?: () => void;
   readonly profiles: readonly ChildProfile[];
   readonly resetFamilyScope: () => void;
   readonly setters: FamilySetters;
@@ -43,7 +44,7 @@ type PairingResult = {
 };
 
 export function usePairingLifecycle(dependencies: Dependencies) {
-  const { currentUser, isLoaded, mode, profiles, resetFamilyScope } = dependencies;
+  const { currentUser, isLoaded, mode, onHydrateChildSession, profiles, resetFamilyScope } = dependencies;
   const {
     setActivities,
     setActiveChildId,
@@ -68,9 +69,11 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setStorageMode('cloud');
     setRedemptions(session.redemptions);
     setMode('kid');
+    onHydrateChildSession?.();
     localStorage.setItem(`${LOCAL_STORAGE_PREFIX}child_paired`, 'true');
   }, [
     resetFamilyScope,
+    onHydrateChildSession,
     setActivities,
     setActiveChildId,
     setIsFamilyConnected,

@@ -15,3 +15,4 @@
 \ir migrations/202609230002_mascot_selection_cooldown.sql
 \ir migrations/202609230003_daily_mascot_letter.sql
 \ir migrations/202609230004_reject_unknown_mascot_changes.sql
+\ir migrations/202609230005_child_wishlist_commands.sql

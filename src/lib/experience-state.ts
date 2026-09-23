@@ -42,6 +42,10 @@ export type DailyMascotLetter = z.infer<typeof dailyLetterRow>;
 export type SecretQuest = z.infer<typeof secretQuestRow>;
 export type ChildWishlist = z.infer<typeof wishlistRow>;
 
+export function parseChildWishlist(input: unknown): ChildWishlist {
+  return wishlistRow.parse(input);
+}
+
 export type ExperienceState = {
   readonly children: readonly ChildEngagement[];
   readonly settings: FamilyEngagementSettings | null;

@@ -188,7 +188,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     experienceEnabled ? supabase.from('family_engagement_settings').select('*').eq('family_id', familyId).maybeSingle() : Promise.resolve({ data: null, error: null }),
     experienceEnabled ? supabase.from('daily_mascot_letters').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
     experienceEnabled ? supabase.from('secret_quests').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
-    experienceEnabled ? supabase.from('child_wishlists').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
+    supabase.from('child_wishlists').select('*').eq('family_id', familyId),
   ]);
 
   const failedResult = [

@@ -40,6 +40,7 @@ import { MorningMascotLetter } from './MorningMascotLetter';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { habitFireForChild, localDayKey } from '@/lib/habit-fire';
 import { getHabitFireCopy } from '@/lib/i18n/habit-fire-copy';
+import { getWishlistSaveError } from '@/lib/i18n/wishlist-copy';
 
 export function KidDashboard() {
   const {
@@ -48,6 +49,8 @@ export function KidDashboard() {
     logs,
     toggleActivity,
     rewards,
+    experience,
+    chooseWishlist,
     claimReward,
     redemptions,
     badges,
@@ -61,7 +64,8 @@ export function KidDashboard() {
   const [activeTab, setActiveTab] = useState<'tasks' | 'leaderboard' | 'rewards' | 'badges'>('tasks');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTimerActivity, setSelectedTimerActivity] = useState<HabitActivity | null>(null);
-  const [wishlistRewardId, setWishlistRewardId] = useState<string | null>(null);
+  const [wishlistError, setWishlistError] = useState(false);
+  const [savingWishlistId, setSavingWishlistId] = useState<string | null>(null);
   const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<HabitActivity | null>(null);
   const [completionError, setCompletionError] = useState<string | null>(null);
@@ -158,7 +162,8 @@ export function KidDashboard() {
 
   // Wishlist goal
   const localizedRewards = rewards.map((reward) => localizeDemoReward(reward, language));
-  const wishlistReward = localizedRewards.find((r) => r.id === wishlistRewardId) || localizedRewards[0] || null;
+  const wishlistRewardId = experience.wishlists.find((row) => row.child_id === activeChild.id)?.reward_id;
+  const wishlistReward = localizedRewards.find((r) => r.id === wishlistRewardId && r.isActive) || null;
   const wishlistProgress = wishlistReward
     ? Math.min(100, Math.round((activeChild.points / wishlistReward.costPoints) * 100))
     : 0;
@@ -616,6 +621,11 @@ export function KidDashboard() {
           )}
 
           {/* Rewards Grid */}
+          {wishlistError && (
+            <p role="alert" className="text-sm font-semibold text-rose-700 dark:text-rose-300">
+              {getWishlistSaveError(language)}
+            </p>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {localizedRewards
               .filter((r) => r.isActive)
@@ -651,7 +661,15 @@ export function KidDashboard() {
 
                     <div className="flex items-center gap-2 pt-2 border-t border-slate-50 dark:border-zinc-800/80">
                       <button
-                        onClick={() => setWishlistRewardId(rew.id)}
+                        onClick={async () => {
+                          setWishlistError(false);
+                          setSavingWishlistId(rew.id);
+                          const saved = await chooseWishlist(rew.id);
+                          setSavingWishlistId(null);
+                          if (!saved) setWishlistError(true);
+                        }}
+                        disabled={savingWishlistId !== null}
+                        aria-pressed={isSelectedGoal}
                         className={`min-w-[44px] min-h-[44px] flex items-center justify-center text-base rounded-xl font-bold transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
                           isSelectedGoal
                             ? 'bg-pink-100 text-pink-600 dark:bg-pink-950/50'

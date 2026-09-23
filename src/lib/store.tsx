@@ -26,7 +26,7 @@ import {
 import { getPricingPlan } from './payos';
 import { sounds } from './sound';
 import { isSupabaseConfigured } from './supabase';
-import { emptyExperienceState } from './experience-state';
+import { emptyExperienceState, parseChildWishlist } from './experience-state';
 import { createSessionTracker, sessionMode } from './product-analytics';
 import type { ExperienceState } from './experience-state';
 import { generateAgeAdaptedHabits } from './wit-framework';
@@ -106,6 +106,7 @@ interface AppStoreContextType {
 
   profiles: ChildProfile[];
   experience: ExperienceState;
+  chooseWishlist: (rewardId: string) => Promise<boolean>;
   ensureLocalDailyLetter: (childId: string, date: string, templateKey: string) => void;
   markLocalDailyLetterRead: (childId: string, date: string, templateKey: string) => void;
   activeChildId: string | null;
@@ -221,9 +222,12 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [familyId, setFamilyId] = useState<string | null>(null);
   const [childCodes, setChildCodes] = useState<Record<string, string>>({});
   const [isFamilyConnected, setIsFamilyConnected] = useState(false);
+  const [childSessionRevision, setChildSessionRevision] = useState(0);
+  const noteChildSessionHydrated = useCallback(() => setChildSessionRevision((revision) => revision + 1), []);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const [isDemoSession, setIsDemoSession] = useState(false);
   const sessionTracker = useRef(createSessionTracker());
+  const wishlistRequestVersion = useRef(0);
 
   useEffect(() => {
     const selectedMode = sessionMode({
@@ -399,6 +403,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     currentUser,
     isLoaded,
     mode,
+    onHydrateChildSession: noteChildSessionHydrated,
     profiles,
     resetFamilyScope,
     setters: {
@@ -417,6 +422,64 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
 
   // Active Child
   const activeChild = profiles.find((p) => p.id === activeChildId) || profiles[0] || null;
+
+  useEffect(() => {
+    if (storageMode !== 'cloud' || currentUser || !isFamilyConnected || !activeChildId) return;
+    const requestVersion = ++wishlistRequestVersion.current;
+    const controller = new AbortController();
+    void fetch('/api/child/wishlist', { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) return;
+        const body: unknown = await response.json();
+        if (!body || typeof body !== 'object' || !('wishlist' in body)) return;
+        const wishlist = body.wishlist === null ? null : parseChildWishlist(body.wishlist);
+        if (controller.signal.aborted || wishlistRequestVersion.current !== requestVersion) return;
+        setExperience((previous) => ({
+          ...previous,
+          wishlists: [...previous.wishlists.filter((row) => row.child_id !== activeChildId), ...(wishlist ? [wishlist] : [])],
+        }));
+      })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, storageMode]);
+
+  const chooseWishlist = async (rewardId: string): Promise<boolean> => {
+    if (!activeChildId || !rewards.some((reward) => reward.id === rewardId && reward.isActive)) return false;
+    if (storageMode === 'local') {
+      const now = new Date().toISOString();
+      setExperience((previous) => ({
+        ...previous,
+        wishlists: [
+          ...previous.wishlists.filter((row) => row.child_id !== activeChildId),
+          { family_id: familyId ?? '00000000-0000-4000-8000-000000000000', child_id: activeChildId, reward_id: rewardId, chosen_at: now },
+        ],
+      }));
+      return true;
+    }
+    try {
+      const paired = !currentUser && isFamilyConnected;
+      const response = await fetch(paired ? '/api/child/wishlist' : '/api/domain/experience', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(paired ? { rewardId } : { type: 'chooseWishlist', childId: activeChildId, rewardId }),
+      });
+      if (!response.ok) return false;
+      if (paired) {
+        const body: unknown = await response.json();
+        if (!body || typeof body !== 'object' || !('wishlist' in body)) return false;
+        const wishlist = parseChildWishlist(body.wishlist);
+        wishlistRequestVersion.current += 1;
+        setExperience((previous) => ({
+          ...previous,
+          wishlists: [...previous.wishlists.filter((row) => row.child_id !== activeChildId), wishlist],
+        }));
+        return true;
+      }
+      return await syncFromSupabase(currentUser);
+    } catch {
+      return false;
+    }
+  };
 
   const setActiveChildId = (id: string) => {
     setActiveChildIdState(id);
@@ -770,6 +833,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
 
         profiles,
         experience,
+        chooseWishlist,
         ensureLocalDailyLetter,
         markLocalDailyLetterRead,
         activeChildId,

@@ -168,6 +168,7 @@ describe('family tenancy migration', () => {
       '202609230002_mascot_selection_cooldown.sql',
       '202609230003_daily_mascot_letter.sql',
       '202609230004_reject_unknown_mascot_changes.sql',
+      '202609230005_child_wishlist_commands.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
