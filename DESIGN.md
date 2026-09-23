@@ -31,6 +31,7 @@ The implementation uses Tailwind's semantic ramps rather than project-specific r
 Rules:
 
 - Color communicates action or state. Kid Mode uses amber warmth; Parent Mode uses indigo guidance.
+- The child habit fire has three honest states: a verified completion today is active, a verified completion yesterday is resting, and an older or absent completion is a fresh start. Pending parental approval is shown separately and never increases the verified-day count.
 - Use at most one prominent gradient per screen, reserved for a meaningful hero or celebration.
 - Disabled controls retain their semantic color at reduced opacity and never look interactive.
 - New semantic colors require an update to this table before use.

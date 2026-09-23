@@ -38,6 +38,8 @@ import { MascotAvatar } from './MascotAvatar';
 import { getMascot } from '@/lib/mascots';
 import { MorningMascotLetter } from './MorningMascotLetter';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
+import { habitFireForChild, localDayKey } from '@/lib/habit-fire';
+import { getHabitFireCopy } from '@/lib/i18n/habit-fire-copy';
 
 export function KidDashboard() {
   const {
@@ -88,10 +90,13 @@ export function KidDashboard() {
   }
 
   const activeMascot = getMascot(activeChild.avatar);
+  const fire = habitFireForChild(logs, activeChild.id, localDayKey(new Date()));
+  const fireCopy = getHabitFireCopy(language);
+  const fireLabel = fire.kind === 'cold' ? fireCopy.cold : fireCopy[fire.kind](fire.days);
 
   // Date formatting helpers
-  const dateStr = selectedDate.toISOString().split('T')[0];
-  const todayStr = new Date().toISOString().split('T')[0];
+  const dateStr = localDayKey(selectedDate);
+  const todayStr = localDayKey(new Date());
   const isToday = dateStr === todayStr;
 
   const handlePrevDay = () => {
@@ -183,6 +188,7 @@ export function KidDashboard() {
                 type="button"
                 onClick={() => setIsAvatarPickerOpen(true)}
                 title={t.changeAvatar}
+                aria-label={t.changeAvatar}
                 className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-white/45 hover:bg-white/60 backdrop-blur-md flex items-center justify-center shadow-inner border border-white/60 transition-transform active:scale-95 group-hover:scale-105 cursor-pointer relative"
               >
                 <MascotAvatar avatar={activeChild.avatar} alt={activeMascot?.name || ''} priority className="h-24 w-24 sm:h-28 sm:w-28 text-5xl" />
@@ -190,10 +196,6 @@ export function KidDashboard() {
                   <Palette className="w-5 h-5 text-white drop-shadow" />
                 </span>
               </button>
-              <div className="absolute -bottom-2 -right-1 bg-amber-400 text-slate-900 font-extrabold text-xs px-2 py-0.5 rounded-full shadow-sm flex items-center gap-1 border-2 border-white pointer-events-none">
-                <Flame className="w-3 h-3 fill-current text-orange-600" />
-                {activeChild.streak} {t.streakDays}
-              </div>
             </div>
 
             <div>
@@ -230,7 +232,7 @@ export function KidDashboard() {
                 <Star className="w-5 h-5 fill-current" />
               </div>
               <div className="text-2xl font-black">{activeChild.points}</div>
-              <div className="text-xs font-semibold text-white/80 uppercase tracking-wide">
+              <div className="text-xs font-semibold text-amber-950 uppercase tracking-wide">
                 {t.stars}
               </div>
             </div>
@@ -240,11 +242,22 @@ export function KidDashboard() {
                 <Award className="w-5 h-5" />
               </div>
               <div className="text-2xl font-black">{unlockedBadgeIds.size}</div>
-              <div className="text-xs font-semibold text-white/80 uppercase tracking-wide">
+              <div className="text-xs font-semibold text-amber-950 uppercase tracking-wide">
                 {t.myBadges}
               </div>
             </div>
           </div>
+        </div>
+
+        <div
+          role="status"
+          data-testid="habit-fire"
+          data-state={fire.kind}
+          className="mt-5 flex w-full flex-wrap items-center gap-2 rounded-2xl border border-white/60 bg-white/90 px-4 py-3 text-sm font-bold text-slate-900"
+        >
+          <Flame aria-hidden="true" className={`h-5 w-5 shrink-0 ${fire.kind === 'active' ? 'fill-orange-500 text-orange-600' : 'text-slate-600'}`} />
+          <span className="min-w-0 flex-1">{fireLabel}</span>
+          {fire.pendingToday && <span className="basis-full"><span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs text-amber-950">{fireCopy.pending}</span></span>}
         </div>
 
         {/* Daily Progress Bar */}

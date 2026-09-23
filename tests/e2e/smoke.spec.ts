@@ -17,6 +17,42 @@ test('demo entry opens the child dashboard without reloading', async ({ page }) 
   await expect(page.getByText(/Chế độ khám phá:/)).toBeVisible();
 });
 
+test('habit fire follows verified completion and undo on mobile', async ({ page }, testInfo) => {
+  // Given: a child in the local demo with no verified completion today.
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await expect(page.getByRole('heading', { name: 'Nguyễn Minh An' })).toBeVisible();
+  const fire = page.getByTestId('habit-fire');
+  const taskCard = page
+    .getByRole('heading', { name: 'Nhan thí: Tươi cười chào buổi sáng' })
+    .locator('xpath=ancestor::*[@data-task-card][1]');
+
+  // When: the child completes today's task.
+  await taskCard.getByRole('button', { name: 'Nhiệm vụ' }).click();
+
+  // Then: the verified day is visible without horizontal overflow.
+  await expect(fire).toHaveAttribute('data-state', 'active');
+  await expect(fire).toContainText('1 ngày liên tiếp');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({ path: testInfo.outputPath('fire-mobile.png') });
+  for (const width of [768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath(`fire-${width}.png`) });
+  }
+
+  // When: the child undoes that completion.
+  await taskCard.getByRole('button', { name: 'Đã xong' }).click();
+
+  // Then: the fire no longer claims a completed day.
+  await expect(fire).toHaveAttribute('data-state', 'cold');
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.screenshot({ path: testInfo.outputPath('fire-cold.png') });
+});
+
 test('demo child can inspect and independently complete a full task card', async ({ page }) => {
   const domainMutationRequests: string[] = [];
   const invalidButtonErrors: string[] = [];
