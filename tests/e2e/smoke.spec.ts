@@ -139,7 +139,7 @@ test('payment status failures are shown instead of reported as pending', async (
   await page.goto('/');
   await page.getByRole('button', { name: 'PRO' }).click();
   const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
-  await pricingDialog.getByRole('button', { name: 'Nâng cấp Gói Tháng (49k)' }).click();
+  await pricingDialog.getByRole('button', { name: 'Chọn gói tháng' }).click();
 
   const checkoutDialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
   await expect(checkoutDialog.getByText('0123456789')).toBeVisible();
@@ -178,7 +178,7 @@ test('payment checkout shows the exact provider response and secure fallback', a
   await page.goto('/');
   await page.getByRole('button', { name: 'PRO' }).click();
   const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
-  await pricingDialog.getByRole('button', { name: 'Chọn Gói Năm (399k - Tiết kiệm 32%)' }).click();
+  await pricingDialog.getByRole('button', { name: 'Chọn gói năm' }).click();
   const checkoutDialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
 
   // Then
