@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { getVisiblePricingOpener } from './open-pricing';
 
 test('@a11y landing page has no serious or critical accessibility violations', async ({ page }) => {
   await page.goto('/');
@@ -15,7 +16,7 @@ test('@a11y landing page has no serious or critical accessibility violations', a
 test('@a11y pricing dialog traps focus, closes with Escape, and restores focus', async ({ page }) => {
   await page.goto('/');
 
-  const opener = page.getByRole('button', { name: 'PRO' });
+  const opener = await getVisiblePricingOpener(page);
   await opener.focus();
   await opener.press('Enter');
 

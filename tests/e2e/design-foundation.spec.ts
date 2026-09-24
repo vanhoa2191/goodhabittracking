@@ -33,5 +33,11 @@ test('kid and parent modes use distinct readable shells', async ({ page }) => {
   // Then: the parent shell is explicit and the subscription control is available there.
   await expect(appSurface).toHaveAttribute('data-app-mode', 'parent');
   await expect(page.locator('header')).toHaveAttribute('data-app-shell', 'parent');
-  await expect(page.getByRole('button', { name: 'PRO' })).toBeVisible();
+  const proBadge = page.getByRole('button', { name: 'PRO', exact: true });
+  if (await proBadge.isVisible()) {
+    await expect(proBadge).toBeVisible();
+  } else {
+    await page.getByTestId('more-menu').click();
+    await expect(page.getByRole('button', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' })).toBeVisible();
+  }
 });

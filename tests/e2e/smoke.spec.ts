@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { openLocalFamilySetup } from './open-local-family-setup';
+import { getVisiblePricingOpener } from './open-pricing';
 
 test('landing page renders without an application error', async ({ page }) => {
   await page.goto('/');
@@ -190,7 +191,7 @@ test('payment status failures are shown instead of reported as pending', async (
   });
 
   await page.goto('/');
-  await page.getByRole('button', { name: 'PRO' }).click();
+  await (await getVisiblePricingOpener(page)).click();
   const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
   await pricingDialog.getByRole('button', { name: 'Chọn gói tháng' }).click();
 
@@ -229,7 +230,7 @@ test('payment checkout shows the exact provider response and secure fallback', a
 
   // When
   await page.goto('/');
-  await page.getByRole('button', { name: 'PRO' }).click();
+  await (await getVisiblePricingOpener(page)).click();
   const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
   await pricingDialog.getByRole('button', { name: 'Chọn gói năm' }).click();
   const checkoutDialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });

@@ -45,7 +45,7 @@ test('a failed cloud completion restores the task and removes success feedback',
   await page.getByRole('tab', { name: 'Gia đình' }).click();
   await page.getByRole('tab', { name: 'Cài đặt' }).click();
   await page.getByRole('button', { name: /Lưu và đồng bộ đám mây/ }).click();
-  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  await page.getByRole('button', { name: 'Bé vui học' }).click();
   const taskCard = page
     .getByRole('heading', { name: 'Nhan thí: Tươi cười chào buổi sáng' })
     .locator('xpath=ancestor::*[@data-task-card][1]');
