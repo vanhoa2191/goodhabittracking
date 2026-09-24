@@ -56,6 +56,7 @@ describe('Supabase domain mappers', () => {
       bo_thi7_key: 'ngon',
       framework_habit_id: 'GD3-MQH-01',
       framework_content_version: '1.0.0',
+      journey_habit_key: 'week-1:0',
       created_at: '2026-09-19T00:00:00.000Z',
     });
 
@@ -66,6 +67,7 @@ describe('Supabase domain mappers', () => {
       boThi7Key: 'ngon',
       frameworkHabitId: 'GD3-MQH-01',
       frameworkContentVersion: '1.0.0',
+      journeyHabitKey: 'week-1:0',
     });
   });
 

@@ -46,6 +46,7 @@ const mutableActivityFieldsSchema = z.object({
   frameworkHabitId: z.string().regex(/^GD[1-5]-(NT|SK|MQH|HT|TC)-\d{2}$/).optional(),
   frameworkContentVersion: z.string().trim().min(1).max(40).optional(),
   legacyTemplateId: z.string().regex(/^WIT-(NUT|GIV|VIR|MIN|PER|WIS|CAP|PHY)-\d{2}$/).optional(),
+  journeyHabitKey: z.string().regex(/^(week|month)-[1-4]:\d{1,2}$/).optional(),
 }).strict();
 
 const activitySchema = mutableActivityFieldsSchema.extend({
@@ -53,7 +54,7 @@ const activitySchema = mutableActivityFieldsSchema.extend({
   createdAt: z.string().datetime(),
 }).strict();
 
-const activityUpdatesSchema = mutableActivityFieldsSchema.partial().refine(
+const activityUpdatesSchema = mutableActivityFieldsSchema.omit({ journeyHabitKey: true }).partial().refine(
   (updates) => Object.keys(updates).length > 0,
   { message: 'At least one activity field is required.' },
 );

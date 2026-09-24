@@ -611,6 +611,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   } = createActivityActions({
     currentUser,
     familyId,
+    getActivities: () => activities,
     setActivities,
     setCloudSyncActive,
     storageMode,

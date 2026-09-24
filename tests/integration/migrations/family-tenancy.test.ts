@@ -24,6 +24,10 @@ const familyPauseHistoryMigration = readFileSync(
   resolve('supabase/migrations/202609240004_family_pause_history.sql'),
   'utf8'
 );
+const journeyHabitIdentityMigration = readFileSync(
+  resolve('supabase/migrations/202609240005_journey_habit_identity.sql'),
+  'utf8'
+);
 const rollback = readFileSync(
   resolve('supabase/rollbacks/202609190001_family_tenancy.rollback.sql'),
   'utf8'
@@ -128,6 +132,14 @@ const mascotCooldownVerification = readFileSync(
   resolve('supabase/preflight/202609230002_mascot_selection_cooldown.verify.sql'),
   'utf8'
 );
+const journeyHabitIdentityVerification = readFileSync(
+  resolve('supabase/preflight/202609240005_journey_habit_identity.verify.sql'),
+  'utf8'
+);
+const journeyHabitIdentityBehavior = readFileSync(
+  resolve('supabase/preflight/202609240005_journey_habit_identity.behavior.sql'),
+  'utf8'
+);
 const socialRollback = readFileSync(
   resolve('supabase/rollbacks/202609200002_authoritative_social.rollback.sql'),
   'utf8'
@@ -167,6 +179,9 @@ describe('family tenancy migration', () => {
     await expect(parse(childSessionLegacyRefMigration)).resolves.toBeDefined();
     await expect(parse(childFamilyPauseMigration)).resolves.toBeDefined();
     await expect(parse(familyPauseHistoryMigration)).resolves.toBeDefined();
+    await expect(parse(journeyHabitIdentityMigration)).resolves.toBeDefined();
+    await expect(parse(journeyHabitIdentityVerification)).resolves.toBeDefined();
+    await expect(parse(journeyHabitIdentityBehavior)).resolves.toBeDefined();
   });
 
   it('keeps the schema manifest aligned with every ordered migration', () => {
@@ -193,6 +208,7 @@ describe('family tenancy migration', () => {
       '202609240002_child_session_legacy_ref.sql',
       '202609240003_child_family_pause.sql',
       '202609240004_family_pause_history.sql',
+      '202609240005_journey_habit_identity.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(

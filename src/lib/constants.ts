@@ -960,6 +960,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
     },
     habits: [
       {
+        id: '0',
         title: 'Nhan thí: Nở nụ cười chào đón người thân',
         description: 'Tươi cười khoanh tay chào ông bà, bố mẹ mỗi sáng',
         icon: '😊',
@@ -968,6 +969,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'morning',
       },
       {
+        id: '1',
         title: 'Đánh răng sáng & tối đúng 2 phút',
         description: 'Vệ sinh răng miệng sạch thơm trước khi đi học',
         icon: '🪥',
@@ -977,6 +979,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         durationMinutes: 2,
       },
       {
+        id: '2',
         title: 'Khoanh tay mời cả nhà trước khi ăn cơm',
         description: 'Lễ phép mời ông bà, bố mẹ cùng dùng bữa',
         icon: '🥢',
@@ -985,6 +988,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'afternoon',
       },
       {
+        id: '3',
         title: 'Ngủ đúng giờ trước 21h30',
         description: 'Giữ đúng lời hứa, ngủ sớm để ngày mai khỏe khoắn',
         icon: '🌙',
@@ -1016,6 +1020,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
     },
     habits: [
       {
+        id: '0',
         title: 'Rửa sạch hai tay bằng xà phòng trước khi ăn',
         description: 'Vệ sinh sạch khuẩn trước bữa ăn',
         icon: '🧼',
@@ -1025,6 +1030,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         durationMinutes: 1,
       },
       {
+        id: '1',
         title: 'Ngồi ăn ngay ngắn, không xem điện thoại / TV',
         description: 'Tập trung vào món ăn và trò chuyện với gia đình',
         icon: '📵',
@@ -1033,6 +1039,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'afternoon',
       },
       {
+        id: '2',
         title: 'Tự xúc ăn gọn gàng & ăn hết phần rau xanh',
         description: 'Không kén ăn, giữ bàn ăn sạch sẽ',
         icon: '🥦',
@@ -1041,6 +1048,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'evening',
       },
       {
+        id: '3',
         title: 'Tự bưng bát đĩa cất vào bồn rửa sau khi ăn',
         description: 'Tự lập dọn dẹp sau bữa ăn',
         icon: '🥣',
@@ -1072,6 +1080,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
     },
     habits: [
       {
+        id: '0',
         title: 'Tự gấp chăn màn & sắp xếp giường ngăn nắp',
         description: 'Gánh vác giữ gìn phòng ngủ sạch đẹp',
         icon: '🛏️',
@@ -1080,6 +1089,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'morning',
       },
       {
+        id: '1',
         title: 'Cất đồ chơi vào giỏ gọn gàng sau khi chơi',
         description: 'Không để đồ chơi bừa bãi',
         icon: '🧸',
@@ -1088,6 +1098,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'evening',
       },
       {
+        id: '2',
         title: 'Lau sạch bàn ăn giúp mẹ sau bữa cơm',
         description: 'Phụ giúp mẹ giữ nhà cửa tinh tươm',
         icon: '🧽',
@@ -1096,6 +1107,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'evening',
       },
       {
+        id: '3',
         title: 'Nói 3 điều biết ơn trước khi đi ngủ',
         description: 'Ghi nhận những điều tốt đẹp nhận được trong ngày',
         icon: '💖',
@@ -1127,6 +1139,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
     },
     habits: [
       {
+        id: '0',
         title: 'Đọc sách nuôi dưỡng tâm hồn 15 phút',
         description: 'Đọc sách bổ ích mở rộng hiểu biết',
         icon: '📚',
@@ -1136,6 +1149,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         durationMinutes: 15,
       },
       {
+        id: '1',
         title: 'Chủ động hoàn thành bài tập về nhà',
         description: 'Tự giác học bài không đợi nhắc nhở',
         icon: '✍️',
@@ -1146,6 +1160,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         requiresApproval: true,
       },
       {
+        id: '2',
         title: 'Chia sẻ 1 bài học ngộ ra tâm đắc trong ngày',
         description: 'Đúc kết bài học hay kể cho bố mẹ nghe',
         icon: '💡',
@@ -1154,6 +1169,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'evening',
       },
       {
+        id: '3',
         title: 'Kiên trì luyện tập nhạc cụ / vẽ tranh 20 phút',
         description: 'Không nản chí, làm đến cùng',
         icon: '🎨',
@@ -1189,6 +1205,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
     },
     habits: [
       {
+        id: '0',
         title: 'Đánh răng sáng & tối đúng 2 phút',
         description: 'Răng sạch thơm mát',
         icon: '🪥',
@@ -1198,6 +1215,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         durationMinutes: 2,
       },
       {
+        id: '1',
         title: 'Tự gấp chăn màn ngăn nắp',
         description: 'Gấp chăn gối sau khi ngủ dậy',
         icon: '🛏️',
@@ -1206,6 +1224,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'morning',
       },
       {
+        id: '2',
         title: 'Rửa tay bằng xà phòng & khoanh tay mời cơm',
         description: 'Văn hóa lễ phép trên bàn ăn',
         icon: '🥢',
@@ -1214,6 +1233,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'afternoon',
       },
       {
+        id: '3',
         title: 'Ăn cơm không màn hình điện thoại & ăn hết rau',
         description: 'Bảo vệ dạ dày và mắt sáng',
         icon: '🥦',
@@ -1222,6 +1242,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'afternoon',
       },
       {
+        id: '4',
         title: 'Tự bưng bát đĩa cất vào bồn rửa',
         description: 'Rèn luyện tính tự phục vụ',
         icon: '🥣',
@@ -1230,6 +1251,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'evening',
       },
       {
+        id: '5',
         title: 'Đi ngủ đúng giờ trước 21h30',
         description: 'Đảm bảo sức khỏe phát triển chiều cao',
         icon: '🌙',
@@ -1261,6 +1283,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
     },
     habits: [
       {
+        id: '0',
         title: 'Nhan thí: Nở nụ cười chào đón người thân',
         description: 'Mỉm cười bắt đầu ngày mới',
         icon: '😊',
@@ -1269,6 +1292,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'morning',
       },
       {
+        id: '1',
         title: 'Ngôn thí: Nói lời khích lệ & cảm ơn',
         description: 'Dùng lời ái ngữ mang lại niềm tin',
         icon: '🗣️',
@@ -1277,6 +1301,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'anytime',
       },
       {
+        id: '2',
         title: 'Phòng thí: Bao dung & tha thứ khi bạn làm sai',
         description: 'Không giận dỗi, vui vẻ hòa đồng',
         icon: '🕊️',
@@ -1285,6 +1310,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'anytime',
       },
       {
+        id: '3',
         title: 'Thân thí: Tận tay giúp đỡ bố mẹ việc nhà',
         description: 'Hành động thực tế phụ giúp gia đình',
         icon: '🤝',
@@ -1293,6 +1319,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'evening',
       },
       {
+        id: '4',
         title: 'Tâm thí: Nói 3 điều trân trọng biết ơn mỗi tối',
         description: 'Nuôi dưỡng hạt mầm biết ơn',
         icon: '💖',
@@ -1324,6 +1351,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
     },
     habits: [
       {
+        id: '0',
         title: 'Phẩm chất Lễ: Đi thưa về trình, dạ vâng',
         description: 'Lễ phép với người lớn',
         icon: '🙇',
@@ -1332,6 +1360,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'morning',
       },
       {
+        id: '1',
         title: 'Phẩm chất Nhân: Yêu thương & sẻ chia đồ ăn ngon',
         description: 'Biết nghĩ cho người khác',
         icon: '❤️',
@@ -1340,6 +1369,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'afternoon',
       },
       {
+        id: '2',
         title: 'Phẩm chất Trí: Đặt câu hỏi hay & tìm hiểu điều mới',
         description: 'Tìm tòi sáng tạo khoa học',
         icon: '🧠',
@@ -1349,6 +1379,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         durationMinutes: 15,
       },
       {
+        id: '3',
         title: 'Phẩm chất Nghĩa: Trách nhiệm với việc được giao',
         description: 'Làm việc nghiêm túc, không bỏ dở',
         icon: '⚖️',
@@ -1357,6 +1388,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'evening',
       },
       {
+        id: '4',
         title: 'Phẩm chất Tín: Giữ đúng lời hứa & giờ giấc',
         description: 'Uy tín từ những việc nhỏ nhất',
         icon: '⏳',
@@ -1388,6 +1420,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
     },
     habits: [
       {
+        id: '0',
         title: 'Đọc sách nuôi dưỡng tâm hồn 20 phút',
         description: 'Mở rộng chân trời tri thức',
         icon: '📚',
@@ -1397,6 +1430,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         durationMinutes: 20,
       },
       {
+        id: '1',
         title: 'Chủ động hoàn thành bài tập về nhà',
         description: 'Tự giác không cần nhắc nhở',
         icon: '✍️',
@@ -1407,6 +1441,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         requiresApproval: true,
       },
       {
+        id: '2',
         title: 'Bài học tâm đắc: Chia sẻ 1 điều ngộ ra',
         description: 'Đúc kết bài học trưởng thành mỗi ngày',
         icon: '💡',
@@ -1415,6 +1450,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         timeOfDay: 'evening',
       },
       {
+        id: '3',
         title: 'Dũng cảm nhận lỗi & sửa đổi chân thành',
         description: 'Trung thực và dũng cảm tiến bộ',
         icon: '🛡️',
@@ -1424,6 +1460,7 @@ export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
         requiresApproval: true,
       },
       {
+        id: '4',
         title: 'Dũng cảm thay đổi: Từ bỏ thói quen chưa tốt',
         description: 'Kiên quyết thay đổi để giỏi hơn',
         icon: '🚀',

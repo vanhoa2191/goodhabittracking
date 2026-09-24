@@ -82,6 +82,7 @@ export interface HabitActivity {
   frameworkHabitId?: string;
   frameworkContentVersion?: string;
   legacyTemplateId?: string;
+  journeyHabitKey?: string;
   createdAt: string;
 }
 
@@ -158,6 +159,7 @@ export interface JourneyPlan {
   icon: string;
   themeColor: string;
   habits: {
+    id: string;
     title: string;
     description: string;
     icon: string;

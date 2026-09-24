@@ -127,6 +127,21 @@ describe('POST /api/domain/activities', () => {
     }));
   });
 
+  it('persists the journey habit identity within the authenticated family', async () => {
+    // Given
+    const journeyActivity = { ...activity, journeyHabitKey: 'week-1:0' };
+
+    // When
+    const response = await POST(request({ type: 'create', activity: journeyActivity }));
+
+    // Then
+    expect(response.status).toBe(200);
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({
+      journey_habit_key: 'week-1:0',
+      family_id: 'family-a',
+    }));
+  });
+
   it('creates an activity bundle in one family-scoped insert', async () => {
     // Given
     const secondActivity = {

@@ -10,11 +10,25 @@ type NewActivity = Omit<HabitActivity, 'id' | 'createdAt'>;
 type ActivityActionsDependencies = {
   readonly currentUser: User | null;
   readonly familyId: string | null;
+  readonly getActivities: () => readonly HabitActivity[];
   readonly setActivities: Dispatch<SetStateAction<HabitActivity[]>>;
   readonly setCloudSyncActive: Dispatch<SetStateAction<boolean>>;
   readonly storageMode: 'local' | 'cloud';
   readonly syncCloudFamily: (user: User) => Promise<boolean>;
 };
+
+function overlapsJourneyAssignment(
+  candidate: Pick<HabitActivity, 'childId' | 'journeyHabitKey'>,
+  existing: readonly HabitActivity[],
+  excludedId?: string,
+): boolean {
+  if (!candidate.journeyHabitKey) return false;
+  return existing.some((activity) => (
+    activity.id !== excludedId
+    && activity.journeyHabitKey === candidate.journeyHabitKey
+    && (activity.childId == null || candidate.childId == null || activity.childId === candidate.childId)
+  ));
+}
 
 type ActivityActions = {
   readonly createActivities: (activities: readonly NewActivity[]) => Promise<boolean>;
@@ -56,7 +70,16 @@ export function createActivityActions(
     if (dependencies.storageMode === 'cloud') {
       return persistCloudActivity({ type: 'createMany', activities: createdActivities });
     }
-    dependencies.setActivities((previous) => [...previous, ...createdActivities]);
+    dependencies.setActivities((previous) => {
+      const accepted = [...previous];
+      const additions = createdActivities.filter((activity) => {
+        if (!activity.journeyHabitKey) return true;
+        if (overlapsJourneyAssignment(activity, accepted)) return false;
+        accepted.push(activity);
+        return true;
+      });
+      return [...previous, ...additions];
+    });
     return true;
   };
 
@@ -74,7 +97,16 @@ export function createActivityActions(
       if (dependencies.storageMode === 'cloud') {
         return persistCloudActivity({ type: 'update', activityId: id, updates });
       }
-      dependencies.setActivities((previous) => updateActivityList(previous, id, updates));
+      if (updates.journeyHabitKey !== undefined) return false;
+      const current = dependencies.getActivities().find((activity) => activity.id === id);
+      if (current && overlapsJourneyAssignment({ ...current, ...updates }, dependencies.getActivities(), id)) {
+        return false;
+      }
+      dependencies.setActivities((previous) => {
+        const latest = previous.find((activity) => activity.id === id);
+        return latest && overlapsJourneyAssignment({ ...latest, ...updates }, previous, id)
+          ? previous : updateActivityList(previous, id, updates);
+      });
       return true;
     },
   };

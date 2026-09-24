@@ -134,6 +134,15 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 - Signed-out behavior: show a localized account requirement; generation, copy, QR, and regenerate controls are natively disabled.
 - Accessibility: each icon/compact action has a localized accessible name; codes use monospace; status text is announced with `role="status"` when appropriate.
 
+### Parent journey map
+
+- Structure: one vertical ordered list per week/month view; the document is the only vertical scroll owner. Each stage is a native `details` disclosure with its period, title, child-specific progress, and a single apply action.
+- States: current, next, completed, and available use text plus icon/number rather than color alone. The selected child sits above the map; the current stage and next stage are summarized before the list.
+- Progress: assignment count and verified-practice count are separate. A stage is complete only after every mapped habit is assigned and has at least one approved/completed log for the selected child. No automatic calendar-based advancement is implied.
+- Data identity: each habit has a stable ID within its journey. Preserve that ID when editing, translating, or reordering a habit; assign a new ID only for a genuinely new habit.
+- Responsive: a single column at all widths; labels wrap and long copy does not force horizontal scrolling. The detail panel expands in document flow instead of an inner scroll region.
+- Accessibility: native ordered list and `summary`, labelled child selector, readable text labels for progress, and keyboard-operable apply/confirmation controls.
+
 ## 6. Motion & Interaction
 
 | Type | Duration | Usage |

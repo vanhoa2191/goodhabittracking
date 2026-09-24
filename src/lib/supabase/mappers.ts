@@ -60,6 +60,7 @@ const habitActivityRowSchema = z.object({
   framework_habit_id: z.string().nullable().optional(),
   framework_content_version: z.string().nullable().optional(),
   legacy_template_id: z.string().nullable().optional(),
+  journey_habit_key: z.string().nullable().optional(),
   created_at: z.string(),
 });
 
@@ -113,6 +114,7 @@ export function mapHabitActivityRow(input: unknown): HabitActivity {
     frameworkHabitId: row.framework_habit_id ?? undefined,
     frameworkContentVersion: row.framework_content_version ?? undefined,
     legacyTemplateId: row.legacy_template_id ?? undefined,
+    journeyHabitKey: row.journey_habit_key ?? undefined,
     createdAt: row.created_at,
   };
 }

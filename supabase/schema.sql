@@ -20,3 +20,4 @@
 \ir migrations/202609240002_child_session_legacy_ref.sql
 \ir migrations/202609240003_child_family_pause.sql
 \ir migrations/202609240004_family_pause_history.sql
+\ir migrations/202609240005_journey_habit_identity.sql

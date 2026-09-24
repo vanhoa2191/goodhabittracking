@@ -328,7 +328,7 @@ test('demo parent can unlock and navigate every management section', async ({ pa
     if (tabName === 'Quản lý việc') await page.getByRole('button', { name: 'Thư viện', exact: true }).click();
     await expect(page.getByText(visibleText).first()).toBeVisible();
     if (tabName === 'Lộ trình Tuần \/ Tháng') {
-      await page.getByRole('button', { name: 'Áp dụng lộ trình cho bé' }).first().click();
+      await page.getByRole('button', { name: /^(Áp dụng lộ trình cho bé|Thêm \d+ việc còn lại)$/ }).first().click();
       const journeyDialog = page.getByRole('dialog', { name: 'Áp dụng lộ trình cho bé' });
       await expect(journeyDialog).toBeVisible();
       await journeyDialog.getByRole('button', { name: 'Đóng' }).click();
@@ -379,12 +379,82 @@ test('an English journey creates localized habits', async ({ page }) => {
 
   await page.getByRole('tab', { name: 'Design' }).click();
   await page.getByRole('tab', { name: 'Week & Month Journeys' }).click();
-  await page.getByRole('button', { name: 'Apply Journey to Child' }).first().click();
+  await page.getByRole('button', { name: /^(Apply Journey to Child|Add \d+ remaining habits)$/ }).first().click();
   const journeyDialog = page.getByRole('dialog', { name: 'Apply Journey to Child' });
   await journeyDialog.getByRole('button', { name: 'Confirm and apply' }).click();
 
   await expect(page.getByRole('heading', { name: 'Kind smile: Greet family warmly' })).toBeVisible();
   await expect(page.getByText('Nhan thí: Nở nụ cười chào đón người thân')).toHaveCount(0);
+
+  await page.getByRole('tab', { name: 'Week & Month Journeys' }).click();
+  await expect(page.getByRole('button', { name: 'All habits in this stage are already on the schedule.' })).toBeDisabled();
+  await page.getByRole('tab', { name: 'Habits' }).click();
+  await expect(page.getByRole('heading', { name: 'Kind smile: Greet family warmly' })).toHaveCount(1);
+});
+
+test('applying a journey to all children adds only their missing assignments', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).first().click();
+  const childIds = await page.evaluate(() => {
+    const snapshot = JSON.parse(sessionStorage.getItem('kidhabit_demo_state') || '{}');
+    return (snapshot.profiles || []).map((profile: { id: string }) => profile.id) as string[];
+  });
+  expect(childIds).toHaveLength(3);
+
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
+  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await page.getByRole('tab', { name: 'Thiết kế' }).click();
+  await page.getByRole('tab', { name: 'Lộ trình Tuần / Tháng' }).click();
+  await page.getByRole('button', { name: /^(Áp dụng lộ trình cho bé|Thêm \d+ việc còn lại)$/ }).first().click();
+  let dialog = page.getByRole('dialog', { name: 'Áp dụng lộ trình cho bé' });
+  await dialog.getByRole('button', { name: 'Xác nhận áp dụng' }).click();
+
+  await page.getByRole('tab', { name: 'Lộ trình Tuần / Tháng' }).click();
+  await page.getByLabel('Xem hành trình của bé').selectOption(childIds[1]);
+  await page.getByRole('button', { name: /^(Áp dụng lộ trình cho bé|Thêm \d+ việc còn lại)$/ }).first().click();
+  dialog = page.getByRole('dialog', { name: 'Áp dụng lộ trình cho bé' });
+  await dialog.getByLabel('Áp dụng cho bé nào?').selectOption('');
+  await dialog.getByRole('button', { name: 'Xác nhận áp dụng' }).click();
+
+  await expect.poll(() => page.evaluate(() => {
+    const snapshot = JSON.parse(sessionStorage.getItem('kidhabit_demo_state') || '{}');
+    return (snapshot.activities || [])
+      .filter((item: { journeyHabitKey?: string }) => item.journeyHabitKey === 'week-1:0')
+      .map((item: { childId: string | null }) => item.childId)
+      .sort();
+  })).toEqual([...childIds].sort());
+});
+
+test('parent journey map shows weekly and monthly stages without mobile overflow', async ({ page }, testInfo) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).first().click();
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
+  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await page.getByRole('tab', { name: 'Thiết kế' }).click();
+  await page.getByRole('tab', { name: 'Lộ trình Tuần / Tháng' }).click();
+
+  for (const width of [375, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await expect(page.getByRole('listitem').filter({ hasText: 'Tuần 1:' })).toBeVisible();
+    await expect(page.getByText('Đang thực hành').first()).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath(`journey-weekly-${width}.png`), fullPage: true });
+
+    await page.getByRole('button', { name: 'Lộ trình Tháng Phát Triển' }).click();
+    await expect(page.getByRole('listitem').filter({ hasText: 'Tháng 4:' })).toHaveCount(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath(`journey-monthly-${width}.png`), fullPage: true });
+    await page.getByRole('button', { name: 'Lộ trình 4 Tuần Nền Tảng' }).click();
+  }
+
+  const nextStage = page.getByRole('listitem').filter({ hasText: 'Tuần 2:' }).locator('details');
+  await expect(nextStage).not.toHaveAttribute('open');
+  await nextStage.locator('summary').focus();
+  await page.keyboard.press('Enter');
+  await expect(nextStage).toHaveAttribute('open', '');
+  await expect(nextStage.getByRole('button', { name: 'Áp dụng lộ trình cho bé' })).toBeVisible();
 });
 
 test('English demo keeps child and parent secondary screens in English', async ({ page }) => {

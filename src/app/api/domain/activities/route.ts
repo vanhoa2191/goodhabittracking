@@ -40,6 +40,7 @@ function createRow(
     framework_habit_id: activity.frameworkHabitId,
     framework_content_version: activity.frameworkContentVersion,
     legacy_template_id: activity.legacyTemplateId,
+    journey_habit_key: activity.journeyHabitKey,
   };
 }
 

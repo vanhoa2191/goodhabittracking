@@ -4,6 +4,7 @@ import { getJourneyPeriodLabel, journeyCopy } from '@/lib/i18n/journey-copy';
 import { getJourneyHabitText } from '@/lib/i18n/journey-content';
 import { MONTHLY_JOURNEY_PLANS, WEEKLY_JOURNEY_PLANS } from '@/lib/constants';
 import { translatedJourneyHabits } from '@/lib/i18n/journey-content-translations';
+import { journeyMapCopy } from '@/lib/i18n/journey-map-copy';
 
 const languages: Language[] = ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'];
 
@@ -16,6 +17,11 @@ describe('journey interface localization', () => {
       expect(copy.applyQuestion(4)).toContain('4');
       expect(copy.applyTo).toBeTruthy();
       expect(copy.confirmApply).toBeTruthy();
+      expect(journeyMapCopy[language].current).toBeTruthy();
+      expect(journeyMapCopy[language].next).toBeTruthy();
+      expect(journeyMapCopy[language].alreadyApplied).toBeTruthy();
+      expect(journeyMapCopy[language].assigned(1, 4)).toContain('4');
+      expect(journeyMapCopy[language].practiced(1, 4)).toContain('4');
       expect(getJourneyPeriodLabel(language, 'weekly', 'week-2')).toBeTruthy();
       expect(getJourneyPeriodLabel(language, 'monthly', 'month-3')).toBeTruthy();
     }
