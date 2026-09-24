@@ -44,7 +44,7 @@ export function LegacyHabitTemplateLibrary({ onMutationError }: LegacyHabitTempl
     if (pendingRef.current) return;
     pendingRef.current = true;
     const localized = localizeWitTemplate(template, templateIndex, language);
-    const templateId = `${selectedPackKey}-${templateIndex + 1}`;
+    const templateId = template.id;
     setPendingId(templateId);
     onMutationError('');
     try {
@@ -60,6 +60,7 @@ export function LegacyHabitTemplateLibrary({ onMutationError }: LegacyHabitTempl
         timeOfDay: template.timeOfDay,
         durationMinutes: template.durationMinutes || 0,
         requiresApproval: Boolean(template.requiresApproval),
+        legacyTemplateId: template.id,
         childId: null,
         isActive: true,
       });
@@ -97,9 +98,10 @@ export function LegacyHabitTemplateLibrary({ onMutationError }: LegacyHabitTempl
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {currentPack.items.map((item, index) => {
           const localized = localizeWitTemplate(item, index, language);
-          const templateId = `${currentPack.key}-${index + 1}`;
+          const templateId = item.id;
           const titles = SUPPORTED_LANGUAGES.map((option) => localizeWitTemplate(item, index, option.code).title);
-          const matchingIds = new Set(activities.filter((activity) => titles.includes(activity.title)).map((activity) => activity.id));
+          const matchingIds = new Set(activities.filter((activity) => activity.legacyTemplateId === templateId
+            || (!activity.legacyTemplateId && !activity.frameworkHabitId && titles.includes(activity.title))).map((activity) => activity.id));
           const isAdded = matchingIds.size > 0;
           const completionCount = logs.filter((log) => matchingIds.has(log.activityId)
             && (log.status === 'completed' || log.status === 'approved')

@@ -16,3 +16,5 @@
 \ir migrations/202609230003_daily_mascot_letter.sql
 \ir migrations/202609230004_reject_unknown_mascot_changes.sql
 \ir migrations/202609230005_child_wishlist_commands.sql
+\ir migrations/202609240001_legacy_template_refs.sql
+\ir migrations/202609240002_child_session_legacy_ref.sql

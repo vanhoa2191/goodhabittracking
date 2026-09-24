@@ -30,7 +30,7 @@ Reduce Parent navigation to Today, Design, and Family; separate library from ass
 
 ## Current evidence and remaining gate
 
-The three-area navigation, collection split, child filter, recent completion counts, and added/pending feedback are implemented. Browser tests cover 375px keyboard use across all nine supported languages and English collection content. Canonical framework habits keep persisted source IDs. Legacy template IDs are currently derived from catalog position, while assignment matching relies on localized titles; persist their source IDs before closing this requirement. The five-second pairing-discovery criterion still needs participant observation.
+The three-area navigation, collection split, child filter, recent completion counts, and added/pending feedback are implemented. Browser tests cover 375px keyboard use across all nine supported languages and English collection content. Canonical framework habits keep persisted source IDs. All 36 legacy templates now have explicit catalog IDs, and new assignments persist them through the activity API, database, and paired-child session; old rows without an ID retain title matching only as a compatibility path. The five-second pairing-discovery criterion still needs participant observation. A controlled backfill of old rows is still needed before claiming the stable-ID requirement fully closed.
 
 ## Success Criteria
 

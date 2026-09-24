@@ -81,6 +81,7 @@ export interface HabitActivity {
   boThi7Key?: 'nhan' | 'nhan_mat' | 'ngon' | 'tam' | 'phong' | 'than' | 'toa'; // 7 Bố thí
   frameworkHabitId?: string;
   frameworkContentVersion?: string;
+  legacyTemplateId?: string;
   createdAt: string;
 }
 

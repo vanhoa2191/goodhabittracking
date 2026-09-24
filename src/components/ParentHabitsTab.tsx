@@ -115,7 +115,7 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
                 <span className="text-3xl p-2 rounded-2xl bg-slate-50 dark:bg-zinc-800/80">{activity.icon}</span>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100">{localized.title}</h4>
-                  <p className="mt-1 break-all font-mono text-xs text-slate-600 dark:text-slate-300">{navigationCopy.activityId}: {activity.frameworkHabitId ?? activity.id}</p>
+                  <p className="mt-1 break-all font-mono text-xs text-slate-600 dark:text-slate-300">{navigationCopy.activityId}: {activity.frameworkHabitId ?? activity.legacyTemplateId ?? activity.id}</p>
                   {localized.description && <p className="text-sm text-slate-500 mt-1">{localized.description}</p>}
                   {localized.instructions && <p className="mt-2 whitespace-pre-wrap rounded-xl bg-slate-50 p-2 text-xs text-slate-600 dark:bg-zinc-800 dark:text-slate-300">{localized.instructions}</p>}
                   <p className="mt-2 text-sm font-semibold text-emerald-700 dark:text-emerald-300">{navigationCopy.lastSevenDays(completedCount)}</p>

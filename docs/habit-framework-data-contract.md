@@ -144,7 +144,7 @@ Một thói quen có thể có nhiều cách thực hành. Mỗi biến thể ph
 
 ### 4.5. `HabitActivity` hiện hữu
 
-[`src/types/index.ts`](../src/types/index.ts) và các migration trong [`supabase/migrations`](../supabase/migrations) sở hữu nhiệm vụ thực tế của gia đình: lịch, giờ, điểm, phê duyệt và trạng thái. Nhiệm vụ áp dụng từ thư viện hiện lưu `frameworkHabitId` và `frameworkContentVersion`; nhiệm vụ do phụ huynh tự tạo có thể không có hai trường này.
+[`src/types/index.ts`](../src/types/index.ts) và các migration trong [`supabase/migrations`](../supabase/migrations) sở hữu nhiệm vụ thực tế của gia đình: lịch, giờ, điểm, phê duyệt và trạng thái. Nhiệm vụ áp dụng từ khung 0–18 lưu `frameworkHabitId` và `frameworkContentVersion`. Bộ mẫu WIT cũ là một danh mục khác, lưu `legacyTemplateId` dạng `WIT-<nhóm>-<số>`; không dùng mã WIT để thay cho ID khung 0–18. Nhiệm vụ do phụ huynh tự tạo có thể không có mã nguồn nào. Bản ghi cũ chưa có `legacyTemplateId` vẫn được đối chiếu tên hiển thị cho mục đích nhận diện trong thư viện; không suy diễn rằng tên đã sửa là cùng một mẫu.
 
 Điểm, sao, streak và phần thưởng là **lớp tạo động lực của sản phẩm**, không phải bằng chứng rằng trẻ đã đạt một sự giàu, chân dung hay tố chất. Không dùng chúng để xếp hạng mức trưởng thành theo framework.
 

@@ -39,6 +39,7 @@ function createRow(
     bo_thi7_key: activity.boThi7Key,
     framework_habit_id: activity.frameworkHabitId,
     framework_content_version: activity.frameworkContentVersion,
+    legacy_template_id: activity.legacyTemplateId,
   };
 }
 
@@ -71,6 +72,7 @@ function updateRow(
     ['bo_thi7_key', updates.boThi7Key],
     ['framework_habit_id', updates.frameworkHabitId],
     ['framework_content_version', updates.frameworkContentVersion],
+    ['legacy_template_id', updates.legacyTemplateId],
   ];
   return Object.fromEntries(candidates.filter(([, value]) => value !== undefined));
 }

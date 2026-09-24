@@ -59,6 +59,7 @@ const habitActivityRowSchema = z.object({
   bo_thi7_key: z.enum(['nhan', 'nhan_mat', 'ngon', 'tam', 'phong', 'than', 'toa']).nullable().optional(),
   framework_habit_id: z.string().nullable().optional(),
   framework_content_version: z.string().nullable().optional(),
+  legacy_template_id: z.string().nullable().optional(),
   created_at: z.string(),
 });
 
@@ -111,6 +112,7 @@ export function mapHabitActivityRow(input: unknown): HabitActivity {
     boThi7Key: row.bo_thi7_key ?? undefined,
     frameworkHabitId: row.framework_habit_id ?? undefined,
     frameworkContentVersion: row.framework_content_version ?? undefined,
+    legacyTemplateId: row.legacy_template_id ?? undefined,
     createdAt: row.created_at,
   };
 }

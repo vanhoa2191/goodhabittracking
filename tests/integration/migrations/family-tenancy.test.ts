@@ -8,6 +8,14 @@ const migration = readFileSync(
   'utf8'
 );
 const schemaManifest = readFileSync(resolve('supabase/schema.sql'), 'utf8');
+const legacyTemplateRefsMigration = readFileSync(
+  resolve('supabase/migrations/202609240001_legacy_template_refs.sql'),
+  'utf8'
+);
+const childSessionLegacyRefMigration = readFileSync(
+  resolve('supabase/migrations/202609240002_child_session_legacy_ref.sql'),
+  'utf8'
+);
 const rollback = readFileSync(
   resolve('supabase/rollbacks/202609190001_family_tenancy.rollback.sql'),
   'utf8'
@@ -147,6 +155,8 @@ describe('family tenancy migration', () => {
     await expect(parse(mascotCooldownRollback)).resolves.toBeDefined();
     await expect(parse(mascotCooldownVerification)).resolves.toBeDefined();
     await expect(parse(socialRollback)).resolves.toBeDefined();
+    await expect(parse(legacyTemplateRefsMigration)).resolves.toBeDefined();
+    await expect(parse(childSessionLegacyRefMigration)).resolves.toBeDefined();
   });
 
   it('keeps the schema manifest aligned with every ordered migration', () => {
@@ -169,11 +179,19 @@ describe('family tenancy migration', () => {
       '202609230003_daily_mascot_letter.sql',
       '202609230004_reject_unknown_mascot_changes.sql',
       '202609230005_child_wishlist_commands.sql',
+      '202609240001_legacy_template_refs.sql',
+      '202609240002_child_session_legacy_ref.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
       migrationNames.map((name) => `\\ir migrations/${name}`)
     );
+  });
+
+  it('includes the stable legacy template ID in paired child sessions', () => {
+    expect(childSessionLegacyRefMigration).toContain("'legacyTemplateId', activity.legacy_template_id");
+    expect(childSessionLegacyRefMigration).toContain('activity.family_id = child_session.family_id');
+    expect(childSessionLegacyRefMigration).toContain('activity.is_active');
   });
 
   it('keeps customer care notes and tags server-admin only', () => {

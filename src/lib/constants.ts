@@ -454,6 +454,7 @@ export const INITIAL_GROUPS: import('@/types').GroupTeam[] = [
 ];
 
 export interface HabitTemplate {
+  id: string;
   title: string;
   category: ActivityCategory;
   points: number;
@@ -488,6 +489,7 @@ export const WIT_HABIT_PACKS: {
     color: 'from-emerald-500 to-green-600',
     items: [
       {
+        id: 'WIT-NUT-01',
         title: 'Rửa sạch hai tay bằng xà phòng trước khi vào bàn ăn',
         category: 'nutrition',
         pack: 'nutrition',
@@ -498,6 +500,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Vệ sinh bàn tay sạch khuẩn để ăn ngon và bảo vệ đường tiêu hóa khỏe mạnh',
       },
       {
+        id: 'WIT-NUT-02',
         title: 'Phẩm chất Lễ: Khoanh tay mời cả nhà trước khi ăn cơm',
         category: 'nutrition',
         pack: 'nutrition',
@@ -507,6 +510,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Lễ phép mời ông bà, bố mẹ và anh chị em cùng dùng bữa',
       },
       {
+        id: 'WIT-NUT-03',
         title: 'Văn hóa bàn ăn: Ngồi ngay ngắn, không xem điện thoại / TV',
         category: 'nutrition',
         pack: 'nutrition',
@@ -516,6 +520,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Tập trung nhai kỹ, cảm nhận vị ngon món ăn và trò chuyện vui vẻ cùng gia đình',
       },
       {
+        id: 'WIT-NUT-04',
         title: 'Tự xúc ăn gọn gàng, không để rơi vãi thức ăn ra bàn',
         category: 'nutrition',
         pack: 'nutrition',
@@ -525,6 +530,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Giữ bàn ăn sạch sẽ, không bốc tay hay vung vãi cơm thức ăn',
       },
       {
+        id: 'WIT-NUT-05',
         title: 'Ăn đa dạng các món & vui vẻ ăn hết phần rau xanh',
         category: 'nutrition',
         pack: 'nutrition',
@@ -534,6 +540,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Không kén ăn, bổ sung nhiều vitamin và chất xơ từ rau củ tươi ngon',
       },
       {
+        id: 'WIT-NUT-06',
         title: 'Nhai kỹ no lâu, không ngậm thức ăn trong miệng',
         category: 'nutrition',
         pack: 'nutrition',
@@ -543,6 +550,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Nhai đều đặn, nuốt nhẹ nhàng, ăn xong bữa đúng giờ không quá 30 phút',
       },
       {
+        id: 'WIT-NUT-07',
         title: 'Thân thí: Tự bưng bát đĩa cất vào bồn rửa sau khi ăn',
         category: 'nutrition',
         pack: 'nutrition',
@@ -552,6 +560,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Chủ động dọn phần ăn của mình, rèn luyện tính tự lập và phụ giúp mẹ',
       },
       {
+        id: 'WIT-NUT-08',
         title: 'Lấy khăn sạch lau bàn ăn giúp mẹ sau bữa cơm',
         category: 'nutrition',
         pack: 'nutrition',
@@ -561,6 +570,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Lau sạch bề mặt bàn ăn, để lại không gian sạch bong cho cả gia đình',
       },
       {
+        id: 'WIT-NUT-09',
         title: 'Uống đủ nước ấm sau bữa ăn, không uống nước ngọt có ga',
         category: 'nutrition',
         pack: 'nutrition',
@@ -580,6 +590,7 @@ export const WIT_HABIT_PACKS: {
     color: 'from-pink-500 to-rose-500',
     items: [
       {
+        id: 'WIT-GIV-01',
         title: 'Nhan thí: Nở nụ cười chào đón người thân',
         category: 'giving',
         pack: 'giving',
@@ -589,6 +600,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Bố thí nụ cười tươi tắn mỗi sáng gặp ông bà, bố mẹ và thầy cô',
       },
       {
+        id: 'WIT-GIV-02',
         title: 'Nhãn thí: Ánh mắt trìu mến & nhìn nhận điểm tốt của bạn',
         category: 'giving',
         pack: 'giving',
@@ -598,6 +610,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Bố thí ánh mắt chứa đựng sự công nhận và yêu thương dành cho mọi người',
       },
       {
+        id: 'WIT-GIV-03',
         title: 'Ngôn thí: Nói lời ái ngữ, khích lệ & khen ngợi',
         category: 'giving',
         pack: 'giving',
@@ -607,6 +620,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Dùng lời nói mang lại niềm tin, hy vọng, khen ngợi và động viên bạn bè',
       },
       {
+        id: 'WIT-GIV-04',
         title: 'Tâm thí: Trân trọng biết ơn người khác giúp mình',
         category: 'giving',
         pack: 'giving',
@@ -616,6 +630,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Bày tỏ lòng biết ơn chân thành trước bữa ăn và sự chăm sóc của gia đình',
       },
       {
+        id: 'WIT-GIV-05',
         title: 'Phòng thí: Bao dung & tha thứ khi bạn vô ý làm phiền',
         category: 'giving',
         pack: 'giving',
@@ -625,6 +640,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Không giận dỗi, vui vẻ tha thứ và thông cảm khi bạn lỡ làm hỏng việc',
       },
       {
+        id: 'WIT-GIV-06',
         title: 'Thân thí: Tận tay giúp đỡ xách đồ, dọn dẹp',
         category: 'giving',
         pack: 'giving',
@@ -634,6 +650,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Hành động thực tế hỗ trợ bố mẹ xách túi đồ, cất ghế, phụ việc nhà',
       },
       {
+        id: 'WIT-GIV-07',
         title: 'Tọa thí: Nhường chỗ & chia sẻ kinh nghiệm cho em',
         category: 'giving',
         pack: 'giving',
@@ -653,6 +670,7 @@ export const WIT_HABIT_PACKS: {
     color: 'from-amber-500 to-yellow-500',
     items: [
       {
+        id: 'WIT-VIR-01',
         title: 'Phẩm chất Nhân: Yêu thương & chia sẻ món ngon',
         category: 'virtue',
         pack: 'virtue',
@@ -662,6 +680,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Nuôi dưỡng lòng trắc ẩn, biết chia sẻ đồ ăn, đồ chơi với người khác',
       },
       {
+        id: 'WIT-VIR-02',
         title: 'Phẩm chất Lễ: Lễ phép chào hỏi & cảm ơn, xin lỗi',
         category: 'virtue',
         pack: 'virtue',
@@ -671,6 +690,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Đi thưa về trình, khoanh tay chào người lớn và nói năng dạ vâng',
       },
       {
+        id: 'WIT-VIR-03',
         title: 'Phẩm chất Nghĩa: Có trách nhiệm với việc được giao',
         category: 'virtue',
         pack: 'virtue',
@@ -680,6 +700,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Ý thức trách nhiệm hoàn thành nhiệm vụ và tri ân những điều nhận được',
       },
       {
+        id: 'WIT-VIR-04',
         title: 'Phẩm chất Trí: Đặt câu hỏi hay & tìm hiểu điều mới',
         category: 'virtue',
         pack: 'virtue',
@@ -690,6 +711,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Lắng nghe sáng suốt, tìm tòi nguyên lý hoạt động của thế giới xung quanh',
       },
       {
+        id: 'WIT-VIR-05',
         title: 'Phẩm chất Tín: Giữ đúng lời hứa & đúng giờ hẹn',
         category: 'virtue',
         pack: 'virtue',
@@ -709,6 +731,7 @@ export const WIT_HABIT_PACKS: {
     color: 'from-indigo-500 to-blue-500',
     items: [
       {
+        id: 'WIT-MIN-01',
         title: 'Tâm thái An vui: Mỉm cười bắt đầu ngày mới',
         category: 'mindset',
         pack: 'mindset',
@@ -718,6 +741,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Giữ tâm trạng bình an, không cáu gắt hay mè nheo buổi sáng',
       },
       {
+        id: 'WIT-MIN-02',
         title: 'Tâm thái Bao dung: Tôn trọng sự khác biệt của bạn',
         category: 'mindset',
         pack: 'mindset',
@@ -727,6 +751,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Chấp nhận và tôn trọng sở thích riêng của bạn bè, không chê bai',
       },
       {
+        id: 'WIT-MIN-03',
         title: 'Trân trọng biết ơn: Viết/Nói 3 điều biết ơn mỗi ngày',
         category: 'mindset',
         pack: 'mindset',
@@ -746,6 +771,7 @@ export const WIT_HABIT_PACKS: {
     color: 'from-purple-500 to-indigo-500',
     items: [
       {
+        id: 'WIT-PER-01',
         title: 'Nhân cách Vui vẻ: Mang lại tiếng cười cho gia đình',
         category: 'personality',
         pack: 'personality',
@@ -755,6 +781,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Kể chuyện cười, hát vui vẻ hoặc hỏi thăm để bố mẹ vui sau giờ làm',
       },
       {
+        id: 'WIT-PER-02',
         title: 'Nhân cách Khiêm tốn: Lắng nghe không ngắt lời',
         category: 'personality',
         pack: 'personality',
@@ -764,6 +791,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Biết ghi nhận thành tích của người khác và khiêm tốn học hỏi',
       },
       {
+        id: 'WIT-PER-03',
         title: 'Nhân cách Chân thật: Trung thực nhận lỗi khi làm sai',
         category: 'personality',
         pack: 'personality',
@@ -774,6 +802,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Dũng cảm nói thật, nhận lỗi chân thành và sẵn sàng sửa đổi',
       },
       {
+        id: 'WIT-PER-04',
         title: 'Nhân cách Hy vọng & Niềm tin: Động viên bạn bè vượt khó',
         category: 'personality',
         pack: 'personality',
@@ -793,6 +822,7 @@ export const WIT_HABIT_PACKS: {
     color: 'from-emerald-500 to-teal-500',
     items: [
       {
+        id: 'WIT-WIS-01',
         title: 'Sức học tập: Đọc sách nuôi dưỡng tâm hồn 15 phút',
         category: 'wisdom',
         pack: 'wisdom',
@@ -803,6 +833,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Đọc truyện tranh đạo đức, sách khoa học hoặc sách phát triển tư duy',
       },
       {
+        id: 'WIT-WIS-02',
         title: 'Bài học tâm đắc: Chia sẻ 1 điều ngộ ra trong ngày',
         category: 'wisdom',
         pack: 'wisdom',
@@ -812,6 +843,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Đúc kết bài học hay từ câu chuyện ở lớp, ở nhà hoặc sách vở',
       },
       {
+        id: 'WIT-WIS-03',
         title: 'Chủ động hoàn thành bài tập về nhà không cần nhắc',
         category: 'wisdom',
         pack: 'wisdom',
@@ -833,6 +865,7 @@ export const WIT_HABIT_PACKS: {
     color: 'from-cyan-500 to-blue-600',
     items: [
       {
+        id: 'WIT-CAP-01',
         title: 'Gánh vác: Tự gấp chăn màn & sắp xếp giường',
         category: 'capacity',
         pack: 'capacity',
@@ -842,6 +875,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Gánh vác trách nhiệm giữ gìn không gian sống ngăn nắp sạch đẹp',
       },
       {
+        id: 'WIT-CAP-02',
         title: 'Kiên trì: Luyện tập nhạc cụ / vẽ tranh / viết chữ',
         category: 'capacity',
         pack: 'capacity',
@@ -852,6 +886,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Rèn luyện tính kiên nhẫn, không bỏ cuộc giữa chừng',
       },
       {
+        id: 'WIT-CAP-03',
         title: 'Dũng cảm thay đổi: Từ bỏ 1 thói quen chưa tốt',
         category: 'capacity',
         pack: 'capacity',
@@ -872,6 +907,7 @@ export const WIT_HABIT_PACKS: {
     color: 'from-orange-500 to-amber-600',
     items: [
       {
+        id: 'WIT-PHY-01',
         title: 'Vận động thể thao / Thể dục buổi sáng 15 phút',
         category: 'physical',
         pack: 'physical',
@@ -882,6 +918,7 @@ export const WIT_HABIT_PACKS: {
         description: 'Tập thể dục, hít thở không khí trong lành, tăng cường sức bền',
       },
       {
+        id: 'WIT-PHY-02',
         title: 'Đánh răng sáng & tối đúng 2 phút',
         category: 'physical',
         pack: 'physical',

@@ -135,6 +135,26 @@ describe('pairing client', () => {
     }));
   });
 
+  it('preserves a WIT identity from a paired child session', async () => {
+    const activity = {
+      id: 'activity-1', childId: 'child-1', title: 'Drink water', description: null,
+      instructions: null, icon: '💧', category: 'nutrition', points: 5,
+      recurrenceType: 'daily', recurrenceDays: [], timeOfDay: 'anytime',
+      durationMinutes: null, requiresApproval: false, isActive: true,
+      targetAgeStage: 'all', isParentRole: false, portrait16Key: null,
+      boThi7Key: null, frameworkHabitId: null, frameworkContentVersion: null,
+      legacyTemplateId: 'WIT-NUT-01', createdAt: '2026-09-01T00:00:00.000Z',
+    };
+    const request = vi.fn(async () => jsonResponse({ ...childSession, activities: [activity] }));
+
+    const result = await loadChildSession(request);
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.session.activities[0].legacyTemplateId).toBe('WIT-NUT-01');
+    }
+  });
+
   it('rejects malformed session data instead of hydrating partial state', async () => {
     const request = vi.fn(async () => jsonResponse({ child: { id: 'child-1' } }));
 

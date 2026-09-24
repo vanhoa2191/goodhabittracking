@@ -106,6 +106,27 @@ describe('POST /api/domain/activities', () => {
     }));
   });
 
+  it('persists a legacy catalog identity without relying on the activity title', async () => {
+    // Given
+    const legacyActivity = {
+      ...activity,
+      title: 'A custom family title',
+      frameworkHabitId: undefined,
+      frameworkContentVersion: undefined,
+      legacyTemplateId: 'WIT-NUT-01',
+    };
+
+    // When
+    const response = await POST(request({ type: 'create', activity: legacyActivity }));
+
+    // Then
+    expect(response.status).toBe(200);
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({
+      title: 'A custom family title',
+      legacy_template_id: 'WIT-NUT-01',
+    }));
+  });
+
   it('creates an activity bundle in one family-scoped insert', async () => {
     // Given
     const secondActivity = {

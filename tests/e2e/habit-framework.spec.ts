@@ -62,3 +62,25 @@ test('parent keeps assigned habits separate from the filtered library', async ({
   await expect(page.getByRole('heading', { name: 'Khung 47 thói quen 0–18 tuổi' })).toBeVisible();
   await expect(page.getByRole('combobox', { name: 'Lọc theo bé' })).toHaveCount(0);
 });
+
+test('a legacy template keeps its catalog ID after joining the active collection', async ({ page }) => {
+  // Given
+  await page.goto('/');
+  await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
+  await page.reload();
+  await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
+  await page.getByRole('button', { name: /^Parent/ }).click();
+  const pinDialog = page.getByRole('dialog');
+  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await page.getByRole('tab', { name: 'Design' }).click();
+  await page.getByRole('tab', { name: 'Habits' }).click();
+  await page.getByRole('button', { name: 'Library', exact: true }).click();
+  const card = page.locator('[data-template-id="WIT-NUT-01"]');
+
+  // When
+  await card.getByRole('button', { name: 'Add to child' }).click();
+  await page.getByRole('button', { name: 'In use', exact: true }).click();
+
+  // Then
+  await expect(page.getByText('Task ID: WIT-NUT-01')).toBeVisible();
+});

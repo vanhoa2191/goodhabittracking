@@ -45,6 +45,7 @@ const mutableActivityFieldsSchema = z.object({
   boThi7Key: givingKeySchema.optional(),
   frameworkHabitId: z.string().regex(/^GD[1-5]-(NT|SK|MQH|HT|TC)-\d{2}$/).optional(),
   frameworkContentVersion: z.string().trim().min(1).max(40).optional(),
+  legacyTemplateId: z.string().regex(/^WIT-(NUT|GIV|VIR|MIN|PER|WIS|CAP|PHY)-\d{2}$/).optional(),
 }).strict();
 
 const activitySchema = mutableActivityFieldsSchema.extend({

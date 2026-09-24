@@ -70,6 +70,7 @@ const activitySchema = z.object({
   boThi7Key: z.enum(['nhan', 'nhan_mat', 'ngon', 'tam', 'phong', 'than', 'toa']).nullish().transform((value) => value ?? undefined),
   frameworkHabitId: optionalString,
   frameworkContentVersion: optionalString,
+  legacyTemplateId: optionalString,
   createdAt: z.string(),
 });
 
