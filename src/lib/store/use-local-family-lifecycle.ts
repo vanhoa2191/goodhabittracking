@@ -130,7 +130,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
           setParentPin(snapshot?.pin ?? '1234');
           setParentProfile(snapshot?.parentProfile ?? null);
           setExperience(snapshot
-            ? loadLocalExperience(sessionStorage, '00000000-0000-4000-8000-000000000000')
+            ? loadLocalExperience(sessionStorage, '00000000-0000-4000-8000-000000000000', true)
             : emptyExperienceState);
           setProfiles(demoProfiles);
           setActiveChildId(snapshot?.activeChildId && demoProfiles.some((profile) => profile.id === snapshot.activeChildId)

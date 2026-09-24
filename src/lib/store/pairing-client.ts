@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { FamilyPausePeriod } from '@/lib/experience-state';
 import type { ActivityLog, ChildProfile, HabitActivity, Redemption, Reward } from '@/types';
 
 type Requester = (url: string, init?: RequestInit) => Promise<Response>;
@@ -15,6 +16,8 @@ export type PairingExchangeInput =
   | { readonly token: string };
 
 export interface ChildSession {
+  familyPausedAt: string | null;
+  familyPausePeriods: FamilyPausePeriod[];
   child: ChildProfile;
   activities: HabitActivity[];
   logs: ActivityLog[];
@@ -107,6 +110,11 @@ const redemptionSchema = z.object({
 });
 
 const childSessionSchema = z.object({
+  familyPausedAt: z.string().datetime().nullable(),
+  familyPausePeriods: z.array(z.object({
+    startedAt: z.string().datetime({ offset: true }),
+    endedAt: z.string().datetime({ offset: true }).nullable(),
+  })).default([]),
   child: childProfileSchema,
   activities: z.array(activitySchema),
   logs: z.array(activityLogSchema),

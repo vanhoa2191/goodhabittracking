@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
+import { openLocalFamilySetup } from './open-local-family-setup';
 
 async function completeLocalSetup(page: import('@playwright/test').Page) {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Thiết lập trên thiết bị này' }).click();
+  await openLocalFamilySetup(page);
   const setupDialog = page.getByRole('dialog', { name: 'Thiết lập gia đình' });
   await setupDialog.getByLabel('Tên của Ba Mẹ / Người nuôi dưỡng *').fill('Mẹ Kiểm Thử');
   await setupDialog.getByRole('button', { name: /Tiếp Tục/ }).click();

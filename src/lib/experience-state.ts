@@ -2,6 +2,10 @@ import { z } from 'zod';
 
 const uuid = z.string().uuid();
 const timestamp = z.string().datetime({ offset: true });
+const pausePeriodRow = z.object({
+  startedAt: timestamp,
+  endedAt: timestamp.nullable(),
+});
 
 const childEngagementRow = z.object({
   family_id: uuid,
@@ -12,6 +16,7 @@ const familySettingsRow = z.object({
   family_id: uuid,
   paused_at: timestamp.nullable(),
   pause_reason: z.string().nullable(),
+  pause_periods: z.array(pausePeriodRow).default([]),
 });
 const dailyLetterRow = z.object({
   family_id: uuid,
@@ -38,6 +43,7 @@ const wishlistRow = z.object({
 
 export type ChildEngagement = z.infer<typeof childEngagementRow>;
 export type FamilyEngagementSettings = z.infer<typeof familySettingsRow>;
+export type FamilyPausePeriod = z.infer<typeof pausePeriodRow>;
 export type DailyMascotLetter = z.infer<typeof dailyLetterRow>;
 export type SecretQuest = z.infer<typeof secretQuestRow>;
 export type ChildWishlist = z.infer<typeof wishlistRow>;
@@ -70,8 +76,16 @@ const experienceRows = z.object({
   wishlists: z.array(wishlistRow),
 });
 
-export function parseExperienceState(input: unknown, familyId: string): ExperienceState {
-  const state = experienceRows.parse(input);
+const demoChildId = z.string().min(1);
+const demoExperienceRows = experienceRows.extend({
+  children: z.array(childEngagementRow.extend({ child_id: demoChildId })),
+  letters: z.array(dailyLetterRow.extend({ child_id: demoChildId })),
+  quests: z.array(secretQuestRow.extend({ child_id: demoChildId })),
+  wishlists: z.array(wishlistRow.extend({ child_id: demoChildId, reward_id: z.string().min(1) })),
+});
+
+export function parseExperienceState(input: unknown, familyId: string, isDemo = false): ExperienceState {
+  const state = (isDemo ? demoExperienceRows : experienceRows).parse(input);
   const rows = [
     ...state.children,
     ...state.letters,

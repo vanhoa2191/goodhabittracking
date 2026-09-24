@@ -13,8 +13,9 @@ export async function GET() {
   }
 
   const supabase = await createServerSupabaseClient();
+  const sessionTokenHash = await sha256Hex(token);
   const { data, error } = await supabase.rpc('get_child_session', {
-    session_token_hash: await sha256Hex(token),
+    session_token_hash: sessionTokenHash,
   });
 
   if (error) {
@@ -26,7 +27,19 @@ export async function GET() {
     return response;
   }
 
-  return NextResponse.json(data);
+  const pause = await supabase.rpc('get_child_family_pause_state', {
+    session_token_hash: sessionTokenHash,
+  });
+  if (pause.error) {
+    return NextResponse.json({ error: 'Không thể tải trạng thái gia đình.' }, { status: 503 });
+  }
+  if (!pause.data) {
+    const response = NextResponse.json({ error: 'Phiên đã hết hạn hoặc bị thu hồi.' }, { status: 401 });
+    response.cookies.delete(CHILD_SESSION_COOKIE);
+    return response;
+  }
+
+  return NextResponse.json({ ...data, familyPausedAt: pause.data.pausedAt, familyPausePeriods: pause.data.pausePeriods });
 }
 
 export async function DELETE() {

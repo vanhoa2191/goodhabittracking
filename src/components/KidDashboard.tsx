@@ -40,6 +40,7 @@ import { MorningMascotLetter } from './MorningMascotLetter';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { habitFireForChild, localDayKey } from '@/lib/habit-fire';
 import { getHabitFireCopy } from '@/lib/i18n/habit-fire-copy';
+import { familyPauseCopy } from '@/lib/i18n/family-pause-copy';
 import { getWishlistSaveError } from '@/lib/i18n/wishlist-copy';
 
 export function KidDashboard() {
@@ -50,6 +51,8 @@ export function KidDashboard() {
     toggleActivity,
     rewards,
     experience,
+    isFamilyPaused,
+    familyPausePeriods,
     chooseWishlist,
     claimReward,
     redemptions,
@@ -71,6 +74,7 @@ export function KidDashboard() {
   const [completionError, setCompletionError] = useState<string | null>(null);
   const [pointBurstId, setPointBurstId] = useState<string | null>(null);
   const [completionStatusId, setCompletionStatusId] = useState<string | null>(null);
+  const visibleTab = isFamilyPaused && activeTab === 'leaderboard' ? 'tasks' : activeTab;
 
   const completeTask = async (activity: HabitActivity, date: string) => {
     setCompletionError(null);
@@ -94,7 +98,7 @@ export function KidDashboard() {
   }
 
   const activeMascot = getMascot(activeChild.avatar);
-  const fire = habitFireForChild(logs, activeChild.id, localDayKey(new Date()));
+  const fire = habitFireForChild(logs, activeChild.id, localDayKey(new Date()), familyPausePeriods);
   const fireCopy = getHabitFireCopy(language);
   const fireLabel = fire.kind === 'cold' ? fireCopy.cold : fireCopy[fire.kind](fire.days);
 
@@ -254,7 +258,7 @@ export function KidDashboard() {
           </div>
         </div>
 
-        <div
+        {isFamilyPaused ? <div role="status" data-testid="family-pause-child" className="mt-5 rounded-2xl border border-white/60 bg-white/90 px-4 py-3 text-sm font-bold text-slate-900">{familyPauseCopy[language].childMessage}</div> : <div
           role="status"
           data-testid="habit-fire"
           data-state={fire.kind}
@@ -263,10 +267,10 @@ export function KidDashboard() {
           <Flame aria-hidden="true" className={`h-5 w-5 shrink-0 ${fire.kind === 'active' ? 'fill-orange-500 text-orange-600' : 'text-slate-600'}`} />
           <span className="min-w-0 flex-1">{fireLabel}</span>
           {fire.pendingToday && <span className="basis-full"><span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs text-amber-950">{fireCopy.pending}</span></span>}
-        </div>
+        </div>}
 
         {/* Daily Progress Bar */}
-        <div className="mt-6 pt-5 border-t border-white/20">
+        {!isFamilyPaused && <div className="mt-6 pt-5 border-t border-white/20">
           <div className="flex justify-between items-center text-xs font-bold mb-2">
             <span className="flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 text-amber-300" />
@@ -287,7 +291,7 @@ export function KidDashboard() {
               🎉 {t.congratsAllDone}
             </div>
           )}
-        </div>
+        </div>}
       </div>
 
       {defaultExperienceFlags.dailyMascotLetter && (
@@ -300,11 +304,11 @@ export function KidDashboard() {
       )}
 
       {/* Main Tab Navigation */}
-      <div className="grid grid-cols-4 p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1">
+      <div className={`grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>
         <button
           onClick={() => setActiveTab('tasks')}
           className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
-            activeTab === 'tasks'
+            visibleTab === 'tasks'
               ? 'bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-sm'
               : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
@@ -312,10 +316,10 @@ export function KidDashboard() {
           <CheckCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
           <span>{t.tasks}</span>
         </button>
-        <button
+        {!isFamilyPaused && <button
           onClick={() => setActiveTab('leaderboard')}
           className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-            activeTab === 'leaderboard'
+            visibleTab === 'leaderboard'
               ? 'bg-white dark:bg-zinc-800 text-amber-500 shadow-sm'
               : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
@@ -323,11 +327,11 @@ export function KidDashboard() {
           <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 shrink-0" />
           <span className="hidden sm:inline">{t.leaderboard}</span>
           <span className="sm:hidden">{t.bxhShort}</span>
-        </button>
+        </button>}
         <button
           onClick={() => setActiveTab('rewards')}
           className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
-            activeTab === 'rewards'
+            visibleTab === 'rewards'
               ? 'bg-white dark:bg-zinc-800 text-pink-600 dark:text-pink-400 shadow-sm'
               : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
@@ -339,7 +343,7 @@ export function KidDashboard() {
         <button
           onClick={() => setActiveTab('badges')}
           className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
-            activeTab === 'badges'
+            visibleTab === 'badges'
               ? 'bg-white dark:bg-zinc-800 text-amber-600 dark:text-amber-400 shadow-sm'
               : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
           }`}
@@ -351,7 +355,7 @@ export function KidDashboard() {
       </div>
 
       {/* TAB 1: DAILY TASKS */}
-      {activeTab === 'tasks' && (
+      {visibleTab === 'tasks' && (
         <div className="space-y-6">
           {/* Day Selector */}
           <div className="flex items-center justify-between bg-white dark:bg-zinc-900 rounded-2xl p-2.5 shadow-xs border border-slate-100 dark:border-zinc-800">
@@ -590,7 +594,7 @@ export function KidDashboard() {
       )}
 
       {/* TAB 2: REWARDS & WISHLIST */}
-      {activeTab === 'rewards' && (
+      {visibleTab === 'rewards' && (
         <div className="space-y-6">
           {/* Wishlist Goal Tracker */}
           {wishlistReward && (
@@ -750,7 +754,7 @@ export function KidDashboard() {
       )}
 
       {/* TAB 3: BADGES */}
-      {activeTab === 'badges' && (
+      {visibleTab === 'badges' && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {badges.map((b) => {
             const isUnlocked = unlockedBadgeIds.has(b.id);
@@ -796,7 +800,7 @@ export function KidDashboard() {
       )}
 
       {/* TAB: LEADERBOARD & LEAGUE COMPETITION */}
-      {activeTab === 'leaderboard' && <LeaderboardSection />}
+      {visibleTab === 'leaderboard' && <LeaderboardSection />}
 
       {/* Habit Timer Modal */}
       <HabitTimerModal

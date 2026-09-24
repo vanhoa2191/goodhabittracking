@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openLocalFamilySetup } from './open-local-family-setup';
 
 test('a child can choose a 3D companion and keep its paired theme', async ({ page }) => {
   await page.goto('/');
@@ -43,7 +44,7 @@ test('sound control stays visible in the child header across screen sizes', asyn
 
 test('a local family sees the next mascot change date after saving a choice', async ({ page }, testInfo) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Thiết lập trên thiết bị này' }).click();
+  await openLocalFamilySetup(page);
   const setup = page.getByRole('dialog', { name: 'Thiết lập gia đình' });
   await setup.getByLabel('Tên của Ba Mẹ / Người nuôi dưỡng *').fill('Mẹ Kiểm Thử');
   await setup.getByRole('button', { name: /Tiếp Tục/ }).click();
@@ -88,6 +89,7 @@ test('a paired child saves a mascot through the child session and then sees the 
     status: 200,
     contentType: 'application/json',
     body: JSON.stringify({
+      familyPausedAt: null,
       child: {
         id: childId,
         name: 'Bé Kiểm Thử',

@@ -68,7 +68,7 @@ describe('local family persistence', () => {
     expect(loadLocalExperience(storage, familyA)).toEqual(emptyExperienceState);
     saveLocalExperience(storage, {
       ...emptyExperienceState,
-      settings: { family_id: familyA, paused_at: null, pause_reason: null },
+      settings: { family_id: familyA, paused_at: null, pause_reason: null, pause_periods: [] },
       wishlists: [{
         family_id: familyA,
         child_id: '33333333-3333-4333-8333-333333333333',
@@ -79,6 +79,30 @@ describe('local family persistence', () => {
     expect(loadLocalExperience(storage, familyA).settings?.family_id).toBe(familyA);
     expect(loadLocalExperience(storage, familyA).wishlists[0]?.reward_id).toBe('44444444-4444-4444-8444-444444444444');
     expect(loadLocalExperience(storage, familyB)).toEqual(emptyExperienceState);
+  });
+
+  it('restores a paused demo family from tab storage', () => {
+    const storage = createStorage();
+    const demoFamilyId = '00000000-0000-4000-8000-000000000000';
+    saveLocalExperience(storage, {
+      ...emptyExperienceState,
+      settings: { family_id: demoFamilyId, paused_at: '2026-09-24T10:00:00.000Z', pause_reason: null, pause_periods: [] },
+    });
+
+    expect(loadLocalExperience(storage, demoFamilyId).settings?.paused_at).toBe('2026-09-24T10:00:00.000Z');
+  });
+
+  it('accepts demo child identities only for demo hydration', () => {
+    const storage = createStorage();
+    const demoFamilyId = '00000000-0000-4000-8000-000000000000';
+    saveLocalExperience(storage, {
+      ...emptyExperienceState,
+      settings: { family_id: demoFamilyId, paused_at: '2026-09-24T10:00:00.000Z', pause_reason: null, pause_periods: [] },
+      letters: [{ family_id: demoFamilyId, child_id: 'child-1', local_date: '2026-09-24', template_key: 'leo_1', read_at: null }],
+    });
+
+    expect(loadLocalExperience(storage, demoFamilyId)).toEqual(emptyExperienceState);
+    expect(loadLocalExperience(storage, demoFamilyId, true).settings?.paused_at).toBe('2026-09-24T10:00:00.000Z');
   });
 
   it('identifies demo hydration without reading family data', () => {

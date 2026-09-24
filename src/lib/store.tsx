@@ -28,7 +28,7 @@ import { sounds } from './sound';
 import { isSupabaseConfigured } from './supabase';
 import { emptyExperienceState, parseChildWishlist } from './experience-state';
 import { createSessionTracker, sessionMode } from './product-analytics';
-import type { ExperienceState } from './experience-state';
+import type { ExperienceState, FamilyPausePeriod } from './experience-state';
 import { generateAgeAdaptedHabits } from './wit-framework';
 import type { User } from '@supabase/supabase-js';
 import { createActivityActions } from './store/activity-actions';
@@ -36,6 +36,7 @@ import { createHabitActions } from './store/habit-actions';
 import { createProfileActions } from './store/profile-actions';
 import { createRewardActions } from './store/reward-actions';
 import { createSocialActions } from './store/social-actions';
+import { createFamilyPauseAction } from './store/family-pause-actions';
 import { markLocalLetterRead, openLocalLetter } from './store/local-letter-actions';
 import { requestTrialActivation } from './store/trial-activation-client';
 import { exportFamilyData, importFamilyData } from './store/family-backup-actions';
@@ -108,6 +109,9 @@ interface AppStoreContextType {
 
   profiles: ChildProfile[];
   experience: ExperienceState;
+  isFamilyPaused: boolean;
+  familyPausePeriods: readonly FamilyPausePeriod[];
+  setFamilyPaused: (paused: boolean) => Promise<boolean>;
   chooseWishlist: (rewardId: string) => Promise<boolean>;
   ensureLocalDailyLetter: (childId: string, date: string, templateKey: string) => void;
   markLocalDailyLetterRead: (childId: string, date: string, templateKey: string) => void;
@@ -243,6 +247,8 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [familyId, setFamilyId] = useState<string | null>(null);
   const [childCodes, setChildCodes] = useState<Record<string, string>>({});
   const [isFamilyConnected, setIsFamilyConnected] = useState(false);
+  const [pairedFamilyPausedAt, setPairedFamilyPausedAt] = useState<string | null>(null);
+  const [pairedFamilyPausePeriods, setPairedFamilyPausePeriods] = useState<FamilyPausePeriod[]>([]);
   const [childSessionRevision, setChildSessionRevision] = useState(0);
   const noteChildSessionHydrated = useCallback(() => setChildSessionRevision((revision) => revision + 1), []);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
@@ -287,6 +293,8 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     setFamilyId(null);
     setChildCodes({});
     setIsFamilyConnected(false);
+    setPairedFamilyPausedAt(null);
+    setPairedFamilyPausePeriods([]);
     setCloudSyncActive(false);
     setLastSyncTime(null);
 
@@ -426,6 +434,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     regenerateChildCode,
   } = usePairingLifecycle({
     currentUser,
+    isFamilyConnected,
     isIdentityReady,
     isLoaded,
     onPairingReady,
@@ -440,6 +449,8 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       setIsFamilyConnected,
       setLogs,
       setMode: setModeState,
+      setPairedFamilyPausedAt,
+      setPairedFamilyPausePeriods,
       setProfiles,
       setRedemptions,
       setRewards,
@@ -507,6 +518,14 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       return false;
     }
   };
+
+  const setFamilyPaused = createFamilyPauseAction({
+    currentUser,
+    familyId: isDemoSession ? '00000000-0000-4000-8000-000000000000' : familyId,
+    setExperience,
+    storageMode,
+    syncCloudFamily: () => currentUser ? syncFromSupabase(currentUser) : Promise.resolve(false),
+  });
 
   const setActiveChildId = (id: string) => {
     setActiveChildIdState(id);
@@ -861,6 +880,9 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
 
         profiles,
         experience,
+        isFamilyPaused: Boolean(isFamilyConnected && !currentUser ? pairedFamilyPausedAt : experience.settings?.paused_at),
+        familyPausePeriods: isFamilyConnected && !currentUser ? pairedFamilyPausePeriods : experience.settings?.pause_periods ?? [],
+        setFamilyPaused,
         chooseWishlist,
         ensureLocalDailyLetter,
         markLocalDailyLetterRead,

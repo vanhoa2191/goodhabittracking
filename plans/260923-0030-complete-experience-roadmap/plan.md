@@ -1,7 +1,7 @@
 ---
 title: "KidHabit Hero Complete Experience Roadmap"
 description: "Complete the remaining approved KidHabit experience work with measurable child engagement and staged releases."
-status: pending
+status: in_progress
 priority: P1
 effort: "12-16 engineering weeks plus experiment observation"
 issue: null

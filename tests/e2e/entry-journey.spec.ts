@@ -59,6 +59,7 @@ test('a returning child sees only the child surface without a parent or sales en
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify({
+        familyPausedAt: null,
         child: {
           id: '11111111-1111-4111-8111-111111111111',
           name: 'Bé kiểm thử',

@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import type { User } from '@supabase/supabase-js';
+import type { FamilyPausePeriod } from '@/lib/experience-state';
 import type { ActivityLog, ChildProfile, HabitActivity, Redemption, Reward } from '@/types';
 import {
   connectChildDevice,
@@ -19,6 +20,8 @@ type FamilySetters = {
   readonly setIsFamilyConnected: Dispatch<SetStateAction<boolean>>;
   readonly setLogs: Dispatch<SetStateAction<ActivityLog[]>>;
   readonly setMode: Dispatch<SetStateAction<'kid' | 'parent'>>;
+  readonly setPairedFamilyPausedAt: Dispatch<SetStateAction<string | null>>;
+  readonly setPairedFamilyPausePeriods: Dispatch<SetStateAction<FamilyPausePeriod[]>>;
   readonly setProfiles: Dispatch<SetStateAction<ChildProfile[]>>;
   readonly setRedemptions: Dispatch<SetStateAction<Redemption[]>>;
   readonly setRewards: Dispatch<SetStateAction<Reward[]>>;
@@ -28,6 +31,7 @@ type FamilySetters = {
 type Dependencies = {
   readonly currentUser: User | null;
   readonly isLoaded: boolean;
+  readonly isFamilyConnected: boolean;
   readonly isIdentityReady: boolean;
   readonly mode: 'kid' | 'parent';
   readonly onHydrateChildSession?: () => void;
@@ -46,7 +50,7 @@ type PairingResult = {
 };
 
 export function usePairingLifecycle(dependencies: Dependencies) {
-  const { currentUser, isIdentityReady, isLoaded, mode, onHydrateChildSession, onPairingReady, profiles, resetFamilyScope } = dependencies;
+  const { currentUser, isFamilyConnected, isIdentityReady, isLoaded, mode, onHydrateChildSession, onPairingReady, profiles, resetFamilyScope } = dependencies;
   const {
     setActivities,
     setActiveChildId,
@@ -54,6 +58,8 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setIsFamilyConnected,
     setLogs,
     setMode,
+    setPairedFamilyPausedAt,
+    setPairedFamilyPausePeriods,
     setProfiles,
     setRedemptions,
     setRewards,
@@ -71,6 +77,8 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setStorageMode('cloud');
     setRedemptions(session.redemptions);
     setMode('kid');
+    setPairedFamilyPausedAt(session.familyPausedAt);
+    setPairedFamilyPausePeriods(session.familyPausePeriods);
     onHydrateChildSession?.();
     localStorage.setItem(`${LOCAL_STORAGE_PREFIX}child_paired`, 'true');
   }, [
@@ -81,6 +89,8 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setIsFamilyConnected,
     setLogs,
     setMode,
+    setPairedFamilyPausedAt,
+    setPairedFamilyPausePeriods,
     setProfiles,
     setRedemptions,
     setRewards,
@@ -142,6 +152,29 @@ export function usePairingLifecycle(dependencies: Dependencies) {
       .catch(resetFamilyScope)
       .finally(onPairingReady);
   }, [currentUser, hydrateChildSession, isIdentityReady, isLoaded, onPairingReady, resetFamilyScope]);
+
+  useEffect(() => {
+    if (!isLoaded || !isFamilyConnected || currentUser || mode !== 'kid') return;
+    let active = true;
+    const refreshPause = () => {
+      if (document.visibilityState !== 'visible') return;
+      void loadChildSession().then((result) => {
+        if (active && result.success) {
+          setPairedFamilyPausedAt(result.session.familyPausedAt);
+          setPairedFamilyPausePeriods(result.session.familyPausePeriods);
+        }
+      }).catch((error: unknown) => {
+        if (!(error instanceof TypeError)) console.warn('Could not refresh family pause state:', error);
+      });
+    };
+    window.addEventListener('focus', refreshPause);
+    const timer = window.setInterval(refreshPause, 60_000);
+    return () => {
+      active = false;
+      window.removeEventListener('focus', refreshPause);
+      window.clearInterval(timer);
+    };
+  }, [currentUser, isFamilyConnected, isLoaded, mode, setPairedFamilyPausedAt, setPairedFamilyPausePeriods]);
 
   const connectWithFamilyCode = async (code: string): Promise<PairingResult> => {
     const tokenPrefix = 'pair-token:';

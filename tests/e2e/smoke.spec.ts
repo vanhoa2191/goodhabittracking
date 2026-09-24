@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openLocalFamilySetup } from './open-local-family-setup';
 
 test('landing page renders without an application error', async ({ page }) => {
   await page.goto('/');
@@ -255,7 +256,7 @@ test('a family can complete private local-only setup without demo contamination'
   });
 
   await page.goto('/');
-  await page.getByRole('button', { name: 'Thiết lập trên thiết bị này' }).click();
+  await openLocalFamilySetup(page);
 
   const dialog = page.getByRole('dialog', { name: 'Thiết lập gia đình' });
   await dialog.getByLabel('Tên của Ba Mẹ / Người nuôi dưỡng *').fill('Mẹ Kiểm Thử');
@@ -453,7 +454,7 @@ test('English local setup keeps both onboarding steps fully localized', async ({
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
   await page.reload();
-  await page.getByRole('button', { name: 'Set up on this device' }).click();
+  await openLocalFamilySetup(page, 'Set up on this device');
 
   const dialog = page.getByRole('dialog', { name: 'Set up your family' });
   await expect(dialog.getByText('Step 1 of 2: Caregiver details')).toBeVisible();

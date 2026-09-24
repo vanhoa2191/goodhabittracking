@@ -75,11 +75,9 @@ export async function POST(request: NextRequest) {
     }
     case 'pauseFamily':
     case 'resumeFamily': {
-      const { error } = await supabase.from('family_engagement_settings').upsert({
-        family_id: parent.familyId,
-        paused_at: command.type === 'pauseFamily' ? now : null,
-        pause_reason: null,
-        updated_at: now,
+      const { error } = await supabase.rpc('set_family_pause_state', {
+        target_family_id: parent.familyId,
+        should_pause: command.type === 'pauseFamily',
       });
       if (error) return NextResponse.json({ error: 'Family setting could not be saved.' }, { status: 409 });
       break;

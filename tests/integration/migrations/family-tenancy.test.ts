@@ -16,6 +16,14 @@ const childSessionLegacyRefMigration = readFileSync(
   resolve('supabase/migrations/202609240002_child_session_legacy_ref.sql'),
   'utf8'
 );
+const childFamilyPauseMigration = readFileSync(
+  resolve('supabase/migrations/202609240003_child_family_pause.sql'),
+  'utf8'
+);
+const familyPauseHistoryMigration = readFileSync(
+  resolve('supabase/migrations/202609240004_family_pause_history.sql'),
+  'utf8'
+);
 const rollback = readFileSync(
   resolve('supabase/rollbacks/202609190001_family_tenancy.rollback.sql'),
   'utf8'
@@ -157,6 +165,8 @@ describe('family tenancy migration', () => {
     await expect(parse(socialRollback)).resolves.toBeDefined();
     await expect(parse(legacyTemplateRefsMigration)).resolves.toBeDefined();
     await expect(parse(childSessionLegacyRefMigration)).resolves.toBeDefined();
+    await expect(parse(childFamilyPauseMigration)).resolves.toBeDefined();
+    await expect(parse(familyPauseHistoryMigration)).resolves.toBeDefined();
   });
 
   it('keeps the schema manifest aligned with every ordered migration', () => {
@@ -181,6 +191,8 @@ describe('family tenancy migration', () => {
       '202609230005_child_wishlist_commands.sql',
       '202609240001_legacy_template_refs.sql',
       '202609240002_child_session_legacy_ref.sql',
+      '202609240003_child_family_pause.sql',
+      '202609240004_family_pause_history.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(

@@ -192,11 +192,11 @@ export function clearDemoFamilyState(session: WritableStorage): void {
   session.removeItem(`${LOCAL_STORAGE_PREFIX}experience`);
 }
 
-export function loadLocalExperience(local: ReadableStorage, familyId: string): ExperienceState {
+export function loadLocalExperience(local: ReadableStorage, familyId: string, isDemo = false): ExperienceState {
   const raw = local.getItem(`${LOCAL_STORAGE_PREFIX}experience`);
   if (!raw) return emptyExperienceState;
   try {
-    return parseExperienceState(JSON.parse(raw), familyId);
+    return parseExperienceState(JSON.parse(raw), familyId, isDemo);
   } catch {
     return emptyExperienceState;
   }

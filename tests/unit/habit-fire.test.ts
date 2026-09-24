@@ -50,4 +50,13 @@ describe('habit fire', () => {
       log('2024-02-28', 'completed'),
     ], childId, '2024-03-01')).toEqual({ kind: 'resting', days: 2, pendingToday: false });
   });
+
+  it('keeps verified days connected across a family break without counting break days', () => {
+    expect(habitFireForChild([
+      log('2026-09-20', 'approved'),
+      log('2026-09-19', 'completed'),
+    ], childId, '2026-09-24', [
+      { startedAt: '2026-09-21T00:00:00.000Z', endedAt: '2026-09-23T23:59:59.000Z' },
+    ])).toEqual({ kind: 'resting', days: 2, pendingToday: false });
+  });
 });

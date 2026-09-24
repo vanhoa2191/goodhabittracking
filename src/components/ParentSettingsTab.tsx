@@ -3,10 +3,11 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Check, Database, Download, Lock, ShieldCheck, Upload } from 'lucide-react';
+import { Check, Database, Download, Lock, PauseCircle, PlayCircle, ShieldCheck, Upload } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getParentSettingsCopy } from '@/lib/i18n/parent-settings-copy';
+import { familyPauseCopy } from '@/lib/i18n/family-pause-copy';
 import { ChildDevicesPanel } from '@/components/ChildDevicesPanel';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { AccountProfileCard } from '@/components/AccountProfileCard';
@@ -21,13 +22,35 @@ export function ParentSettingsTab() {
     loginWithGoogle,
     logout,
     cloudSyncActive,
+    experience,
+    setFamilyPaused,
     exportData,
     importData,
   } = useAppStore();
   const { t, language } = useTranslation();
   const copy = getParentSettingsCopy(language);
+  const pauseCopy = familyPauseCopy[language];
+  const isPaused = Boolean(experience.settings?.paused_at);
   const [newPinInput, setNewPinInput] = useState('');
   const [pinChangeNotice, setPinChangeNotice] = useState('');
+  const [isConfirmingPause, setIsConfirmingPause] = useState(false);
+  const [isSavingPause, setIsSavingPause] = useState(false);
+  const [pauseError, setPauseError] = useState(false);
+
+  const handleFamilyPause = async () => {
+    setIsSavingPause(true);
+    setPauseError(false);
+    try {
+      const saved = await setFamilyPaused(!isPaused);
+      if (saved) setIsConfirmingPause(false);
+      else setPauseError(true);
+    } catch (error: unknown) {
+      if (!(error instanceof Error)) throw error;
+      setPauseError(true);
+    } finally {
+      setIsSavingPause(false);
+    }
+  };
 
   const handleSavePin = () => {
     if (/^\d{4}$/.test(newPinInput)) {
@@ -65,6 +88,26 @@ export function ParentSettingsTab() {
       <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">{t.parentSettings}</h3>
 
       <ChildDevicesPanel key={currentUser?.id ?? 'signed-out'} />
+
+      <section className="rounded-3xl border border-sand-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900" aria-labelledby="family-pause-title">
+        <h4 id="family-pause-title" className="flex items-center gap-2 text-base font-extrabold text-sand-900 dark:text-slate-100">
+          {isPaused ? <PauseCircle aria-hidden="true" className="h-5 w-5 text-amber-700" /> : <PlayCircle aria-hidden="true" className="h-5 w-5 text-indigo-600" />}
+          {pauseCopy.title}
+        </h4>
+        <p className="mt-2 text-sm text-slate-700 dark:text-slate-300" role="status">{isPaused ? pauseCopy.paused : pauseCopy.active}</p>
+        {isConfirmingPause ? (
+          <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
+            <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{isPaused ? pauseCopy.confirmResume : pauseCopy.confirmPause}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button type="button" onClick={() => void handleFamilyPause()} disabled={isSavingPause} aria-busy={isSavingPause} className="min-h-11 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white hover:bg-indigo-700 disabled:opacity-60">{isPaused ? pauseCopy.resume : pauseCopy.pause}</button>
+              <button type="button" onClick={() => setIsConfirmingPause(false)} disabled={isSavingPause} className="min-h-11 rounded-xl border border-sand-200 px-4 text-sm font-semibold text-slate-700 dark:border-zinc-700 dark:text-slate-200">{pauseCopy.cancel}</button>
+            </div>
+          </div>
+        ) : (
+          <button type="button" onClick={() => { setPauseError(false); setIsConfirmingPause(true); }} className="mt-4 min-h-11 rounded-xl border border-indigo-200 px-4 text-sm font-bold text-indigo-700 hover:bg-indigo-50 dark:border-indigo-700 dark:text-indigo-300 dark:hover:bg-zinc-800">{isPaused ? pauseCopy.resume : pauseCopy.pause}</button>
+        )}
+        {pauseError && <p role="alert" className="mt-3 text-sm font-semibold text-rose-700 dark:text-rose-300">{pauseCopy.error}</p>}
+      </section>
 
       {currentUser && <AccountProfileCard />}
 

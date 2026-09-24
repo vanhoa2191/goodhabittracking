@@ -18,3 +18,5 @@
 \ir migrations/202609230005_child_wishlist_commands.sql
 \ir migrations/202609240001_legacy_template_refs.sql
 \ir migrations/202609240002_child_session_legacy_ref.sql
+\ir migrations/202609240003_child_family_pause.sql
+\ir migrations/202609240004_family_pause_history.sql

@@ -1,13 +1,14 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { z } from 'zod';
+import { openLocalFamilySetup } from './open-local-family-setup';
 
 test.use({ timezoneId: 'Asia/Ho_Chi_Minh' });
 
 test('a local child reads one morning letter and keeps it after reload', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-09-23T01:00:00.000Z'));
   await page.goto('/');
-  await page.getByRole('button', { name: 'Thiết lập trên thiết bị này' }).click();
+  await openLocalFamilySetup(page);
   const setup = page.getByRole('dialog', { name: 'Thiết lập gia đình' });
   await setup.getByLabel('Tên của Ba Mẹ / Người nuôi dưỡng *').fill('Mẹ Kiểm Thử');
   await setup.getByRole('button', { name: /Tiếp Tục/ }).click();
@@ -49,6 +50,7 @@ test('a paired child reads through the child session and preserves the server te
     status: 200,
     contentType: 'application/json',
     body: JSON.stringify({
+      familyPausedAt: null,
       child: {
         id: childId, name: 'Bé Kiểm Thử', avatar: 'mascot:leo', themeColor: '#F59E0B',
         points: 0, totalEarned: 0, level: 1, streak: 0, createdAt: '2026-09-23T00:00:00.000Z',

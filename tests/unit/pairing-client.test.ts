@@ -16,6 +16,8 @@ function jsonResponse(body: unknown, status = 200): Response {
 }
 
 const childSession = {
+  familyPausedAt: null,
+  familyPausePeriods: [],
   child: {
     id: 'child-1',
     name: 'Bé An',
@@ -152,6 +154,20 @@ describe('pairing client', () => {
     expect(result.success).toBe(true);
     if (result.success) {
       expect(result.session.activities[0].legacyTemplateId).toBe('WIT-NUT-01');
+    }
+  });
+
+  it('reads an active family pause from a paired child session', async () => {
+    const pausedAt = '2026-09-24T10:00:00.000Z';
+    const familyPausePeriods = [{ startedAt: pausedAt, endedAt: null }];
+    const request = vi.fn(async () => jsonResponse({ ...childSession, familyPausedAt: pausedAt, familyPausePeriods }));
+
+    const result = await loadChildSession(request);
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.session.familyPausedAt).toBe(pausedAt);
+      expect(result.session.familyPausePeriods).toEqual(familyPausePeriods);
     }
   });
 
