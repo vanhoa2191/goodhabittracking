@@ -28,6 +28,18 @@ const journeyHabitIdentityMigration = readFileSync(
   resolve('supabase/migrations/202609240005_journey_habit_identity.sql'),
   'utf8'
 );
+const dailyLetterReadTransitionMigration = readFileSync(
+  resolve('supabase/migrations/202609240006_daily_letter_read_transition.sql'),
+  'utf8'
+);
+const wishlistChangeTransitionMigration = readFileSync(
+  resolve('supabase/migrations/202609240007_wishlist_change_transition.sql'),
+  'utf8'
+);
+const wishlistChangeTransitionVerification = readFileSync(
+  resolve('supabase/preflight/202609240007_wishlist_change_transition.verify.sql'),
+  'utf8'
+);
 const rollback = readFileSync(
   resolve('supabase/rollbacks/202609190001_family_tenancy.rollback.sql'),
   'utf8'
@@ -180,6 +192,9 @@ describe('family tenancy migration', () => {
     await expect(parse(childFamilyPauseMigration)).resolves.toBeDefined();
     await expect(parse(familyPauseHistoryMigration)).resolves.toBeDefined();
     await expect(parse(journeyHabitIdentityMigration)).resolves.toBeDefined();
+    await expect(parse(dailyLetterReadTransitionMigration)).resolves.toBeDefined();
+    await expect(parse(wishlistChangeTransitionMigration)).resolves.toBeDefined();
+    await expect(parse(wishlistChangeTransitionVerification)).resolves.toBeDefined();
     await expect(parse(journeyHabitIdentityVerification)).resolves.toBeDefined();
     await expect(parse(journeyHabitIdentityBehavior)).resolves.toBeDefined();
   });
@@ -209,11 +224,36 @@ describe('family tenancy migration', () => {
       '202609240003_child_family_pause.sql',
       '202609240004_family_pause_history.sql',
       '202609240005_journey_habit_identity.sql',
+      '202609240006_daily_letter_read_transition.sql',
+      '202609240007_wishlist_change_transition.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
       migrationNames.map((name) => `\\ir migrations/${name}`)
     );
+  });
+
+  it('reports a daily letter read only on the first persisted read transition', () => {
+    expect(dailyLetterReadTransitionMigration).toContain('newly_read := mark_read and affected_rows = 1;');
+    expect(dailyLetterReadTransitionMigration).toContain('if mark_read and not newly_read then');
+    expect(dailyLetterReadTransitionMigration).toContain('and read_at is null;');
+    expect(dailyLetterReadTransitionMigration).toContain('newly_read := affected_rows = 1;');
+    expect(dailyLetterReadTransitionMigration).toContain("'newly_read', newly_read");
+  });
+
+  it('reports a wishlist change only when the stored reward differs', () => {
+    expect(wishlistChangeTransitionMigration).toContain('create or replace function public.choose_child_wishlist(');
+    expect(wishlistChangeTransitionMigration).toContain('create or replace function public.choose_parent_wishlist(');
+    expect(wishlistChangeTransitionMigration.match(/on conflict \(child_id\) do update/g)).toHaveLength(2);
+    expect(wishlistChangeTransitionMigration.match(/where child_wishlists\.reward_id is distinct from excluded\.reward_id/g)).toHaveLength(2);
+    expect(wishlistChangeTransitionMigration.match(/changed := found;/g)).toHaveLength(2);
+    expect(wishlistChangeTransitionMigration.match(/if not changed then/g)).toHaveLength(2);
+    expect(wishlistChangeTransitionMigration.match(/'changed', changed/g)).toHaveLength(2);
+    expect(wishlistChangeTransitionMigration).toContain('public.can_manage_family(target_family_id)');
+    expect(wishlistChangeTransitionMigration).toContain("'child_unavailable'");
+    expect(wishlistChangeTransitionMigration).toContain("'reward_unavailable'");
+    expect(wishlistChangeTransitionMigration).toContain("'session_invalid'");
+    expect(wishlistChangeTransitionVerification).toContain('choose_parent_wishlist(uuid,uuid,uuid)');
   });
 
   it('includes the stable legacy template ID in paired child sessions', () => {

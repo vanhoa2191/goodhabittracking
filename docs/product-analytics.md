@@ -14,7 +14,7 @@ The application defines a strict, content-free event boundary in [`src/lib/produ
 | `secret_quest_completed` | A secret quest was completed | mode |
 | `wishlist_selected` | A wishlist item was selected | mode |
 
-`session_started`, `task_ticked`, and `habit_reviewed` are connected to their corresponding app flows, but the destination remains unconfigured. The remaining event names are reserved for their future product flows. Failed saves and duplicate cloud commands must not emit an event.
+`session_started`, `task_ticked`, `habit_reviewed`, `mascot_selected`, `mascot_letter_read`, and `wishlist_selected` are connected to their corresponding app flows. Mascot events require an actual mascot change; a color-only update does not count. Letter and wishlist events follow successful state changes. The destination remains unconfigured, and the application provides neither a sink nor analytics opt-in by default, so these events do not leave the device. `secret_quest_completed` is reserved for its future product flow. Failed saves and duplicate cloud commands must not emit an event; the latter depends on the atomic transition results introduced by migrations `202609240006` and `202609240007`.
 
 ## Dashboard definitions and prerequisites
 
@@ -27,4 +27,4 @@ The application defines a strict, content-free event boundary in [`src/lib/produ
 | Completion rate | completed eligible quests / eligible quests shown | eligibility/exposure event, excluding unavailable tasks |
 | NPS | % promoters (9–10) minus % detractors (0–6) | optional parent-only survey; never ask the child |
 
-None of these dashboard figures is available yet. Do not infer them from event counts or show them as real performance data. Before configuring PostHog or another vendor, obtain the required parental opt-in, document retention/deletion and regional processing, and validate the destination in non-production. Production collection stays disabled until those gates pass.
+None of these dashboard figures is available yet. Do not infer them from event counts or show them as real performance data. The store accepts an event sink only when its explicit `analyticsOptIn` gate is true; no application entry point sets that gate today. Before configuring PostHog or another vendor, obtain and persist the required parental opt-in, document retention/deletion and regional processing, and validate the destination in non-production. Production collection stays disabled until those gates pass.

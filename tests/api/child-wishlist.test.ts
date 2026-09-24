@@ -41,12 +41,20 @@ describe('paired child wishlist API', () => {
   });
 
   it('saves only a reward ID through the child session', async () => {
-    rpc.mockResolvedValue({ data: { status: 'saved', wishlist }, error: null });
+    rpc.mockResolvedValue({ data: { status: 'saved', wishlist, changed: true }, error: null });
     const response = await POST(request({ rewardId }));
     expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ wishlist, changed: true });
     expect(rpc).toHaveBeenCalledWith('choose_child_wishlist', {
       session_token_hash: 'hashed-child-session', target_reward_id: rewardId,
     });
+  });
+
+  it('reports an unchanged choice without a new selection', async () => {
+    rpc.mockResolvedValue({ data: { status: 'saved', wishlist, changed: false }, error: null });
+    const response = await POST(request({ rewardId }));
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ wishlist, changed: false });
   });
 
   it('rejects malformed choices, unavailable rewards, and revoked sessions', async () => {

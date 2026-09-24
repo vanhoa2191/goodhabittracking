@@ -56,7 +56,8 @@ export async function POST(request: NextRequest) {
   if (data?.status === 'reward_unavailable') return NextResponse.json({ error: 'Reward is unavailable.' }, { status: 409 });
   if (data?.status !== 'saved') return NextResponse.json({ error: 'Goal could not be saved.' }, { status: 503 });
   try {
-    return NextResponse.json({ wishlist: parseChildWishlist(data.wishlist) });
+    const parsed = z.object({ changed: z.boolean(), wishlist: z.unknown() }).parse(data);
+    return NextResponse.json({ wishlist: parseChildWishlist(parsed.wishlist), changed: parsed.changed });
   } catch {
     return NextResponse.json({ error: 'Goal could not be saved.' }, { status: 503 });
   }

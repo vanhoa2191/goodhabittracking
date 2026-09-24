@@ -1,17 +1,15 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getParentContext, from, upsert, childLookup, rewardLookup } = vi.hoisted(() => ({
+const { getParentContext, from, rpc } = vi.hoisted(() => ({
   getParentContext: vi.fn(),
   from: vi.fn(),
-  upsert: vi.fn(),
-  childLookup: vi.fn(),
-  rewardLookup: vi.fn(),
+  rpc: vi.fn(),
 }));
 
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/supabase/server', () => ({
-  createServerSupabaseClient: vi.fn(async () => ({ from })),
+  createServerSupabaseClient: vi.fn(async () => ({ from, rpc })),
 }));
 
 import { GET, POST } from '@/app/api/domain/experience/route';
@@ -31,21 +29,12 @@ describe('/api/domain/experience', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     getParentContext.mockResolvedValue({ familyId, user: { id: 'parent' } });
-    upsert.mockResolvedValue({ error: null });
-    childLookup.mockResolvedValue({ data: { id: childId }, error: null });
-    rewardLookup.mockResolvedValue({ data: { id: childId }, error: null });
+    rpc.mockResolvedValue({ data: { status: 'saved', changed: true }, error: null });
     from.mockImplementation((table: string) => ({
-      upsert,
       select: () => ({
         eq: () => table === 'family_engagement_settings'
           ? { maybeSingle: async () => ({ data: null, error: null }) }
-          : table === 'child_profiles' || table === 'rewards'
-            ? { eq: () => ({
-              ...(table === 'child_profiles'
-                ? { maybeSingle: childLookup }
-                : { eq: () => ({ maybeSingle: rewardLookup }) }),
-            }) }
-            : Promise.resolve({ data: [], error: null }),
+          : Promise.resolve({ data: [], error: null }),
       }),
     }));
   });
@@ -67,7 +56,7 @@ describe('/api/domain/experience', () => {
 
   it('rejects malformed commands without a database mutation', async () => {
     expect((await POST(request({ type: 'chooseWishlist', childId }))).status).toBe(400);
-    expect(upsert).not.toHaveBeenCalled();
+    expect(rpc).not.toHaveBeenCalled();
   });
 
   it('rejects the obsolete timestamp-only mascot command', async () => {
@@ -75,19 +64,31 @@ describe('/api/domain/experience', () => {
       type: 'selectMascot', childId, familyId: '33333333-3333-4333-8333-333333333333',
     }));
     expect(response.status).toBe(400);
-    expect(upsert).not.toHaveBeenCalled();
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it.each([true, false])('reports whether the parent choice changed: %s', async (changed) => {
+    rpc.mockResolvedValue({ data: { status: 'saved', changed }, error: null });
+    const response = await POST(request({ type: 'chooseWishlist', childId, rewardId: childId }));
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ success: true, changed });
+    expect(rpc).toHaveBeenCalledWith('choose_parent_wishlist', {
+      target_family_id: familyId,
+      target_child_id: childId,
+      target_reward_id: childId,
+    });
   });
 
   it('reports a database rejection instead of claiming a cross-family write succeeded', async () => {
-    upsert.mockResolvedValue({ error: { code: '23503' } });
+    rpc.mockResolvedValue({ data: null, error: { code: '23503' } });
     const response = await POST(request({ type: 'chooseWishlist', childId, rewardId: childId }));
-    expect(response.status).toBe(409);
+    expect(response.status).toBe(503);
   });
 
   it('does not save an inactive or foreign reward', async () => {
-    rewardLookup.mockResolvedValue({ data: null, error: null });
+    rpc.mockResolvedValue({ data: { status: 'reward_unavailable' }, error: null });
     const response = await POST(request({ type: 'chooseWishlist', childId, rewardId: childId }));
     expect(response.status).toBe(409);
-    expect(upsert).not.toHaveBeenCalled();
+    expect(rpc).toHaveBeenCalledOnce();
   });
 });

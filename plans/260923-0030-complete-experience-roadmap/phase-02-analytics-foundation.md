@@ -29,7 +29,7 @@ Measure child outcomes without recording child content; PostHog remains a no-op 
 - [ ] Demo and authenticated flows emit valid payloads.
 - [x] Missing configuration creates no network call or error.
 
-The event boundary and session/task/review instrumentation are implemented. Future engagement events still need their UI flows; all analytics delivery still needs a consent gate, a configured destination, and non-production event verification. Dashboard definitions and measurement prerequisites are documented in [`docs/product-analytics.md`](../../docs/product-analytics.md).
+The event boundary and session/task/review instrumentation are implemented. Existing mascot selection, morning letter, and wishlist flows now have post-save hooks; the evening secret quest still needs its UI and event. The store has an opt-in gate that defaults off, but a durable parental consent flow, configured destination, and non-production event verification remain open. The daily-letter and wishlist commands need additive migrations `202609240006` and `202609240007` for atomic first-read and changed-choice results; both migrations and their verifiers remain unapplied pending the production backup decision. Dashboard definitions and measurement prerequisites are documented in [`docs/product-analytics.md`](../../docs/product-analytics.md).
 
 ## Success Criteria
 

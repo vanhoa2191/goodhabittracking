@@ -30,6 +30,29 @@ export function trackProductEvent(payload: ProductEvent, sink?: ProductEventSink
   }
 }
 
+export function createProductAnalyticsGate() {
+  let sink: ProductEventSink | undefined;
+  return {
+    setSink(nextSink: ProductEventSink | undefined): void {
+      sink = nextSink;
+    },
+    record(event: ProductEvent): boolean {
+      return trackProductEvent(event, sink);
+    },
+  };
+}
+
+export function recordLocalWishlistSelection(
+  selections: Map<string, string>,
+  childId: string,
+  rewardId: string,
+  savedRewardId?: string,
+): boolean {
+  const previousRewardId = selections.get(childId) ?? savedRewardId;
+  selections.set(childId, rewardId);
+  return previousRewardId !== rewardId;
+}
+
 export function createSessionTracker(sink?: ProductEventSink) {
   let activeMode: 'demo' | 'local' | 'cloud' | null = null;
   let activeChildId: string | null = null;

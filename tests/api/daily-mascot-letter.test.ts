@@ -40,8 +40,10 @@ describe('daily mascot letter API', () => {
   afterEach(() => vi.useRealTimers());
 
   it('opens a letter only for the child named by the paired session', async () => {
+    rpc.mockResolvedValue({ data: { status: 'ready', template_key: 'leo_1', read_at: null, newly_read: false }, error: null });
     const response = await GET(getRequest());
     expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ templateKey: 'leo_1', readAt: null, newlyRead: false });
     expect(rpc).toHaveBeenCalledWith('open_daily_mascot_letter', {
       target_child_id: childId,
       target_local_date: '2026-09-23',
@@ -74,6 +76,30 @@ describe('daily mascot letter API', () => {
       mark_read: true,
       session_token_hash: 'hashed-child-session',
     });
+  });
+
+  it.each([true, false])('passes through newlyRead=%s from a successful POST without exposing IDs', async (newlyRead) => {
+    rpc.mockResolvedValue({
+      data: {
+        status: 'ready', template_key: 'leo_1', read_at: '2026-09-23T09:00:00Z',
+        newly_read: newlyRead, child_id: childId, family_id: '00000000-0000-4000-8000-000000000099',
+      },
+      error: null,
+    });
+
+    const response = await POST(postRequest({ childId, date: '2026-09-23' }));
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({
+      templateKey: 'leo_1', readAt: '2026-09-23T09:00:00Z', newlyRead,
+    });
+  });
+
+  it('defaults newlyRead to false when an older RPC omits newly_read', async () => {
+    const response = await POST(postRequest({ childId, date: '2026-09-23' }));
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ templateKey: 'leo_1', readAt: null, newlyRead: false });
   });
 
   it('rejects a missing session, bad child ID, and dates outside the local-day window', async () => {

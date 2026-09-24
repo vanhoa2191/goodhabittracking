@@ -15,6 +15,7 @@ const letterResponse = z.object({
   status: z.literal('ready'),
   template_key: z.string().regex(/^(leo|bunny|panda|fox|turtle|bee)_[0-2]$/),
   read_at: z.string().datetime({ offset: true }).nullable(),
+  newly_read: z.boolean().default(false),
 });
 
 function isCurrentLocalDate(date: string): boolean {
@@ -49,7 +50,7 @@ async function openLetter(childId: string, date: string, markRead: boolean) {
 
   const parsed = letterResponse.safeParse(data);
   if (!parsed.success) return NextResponse.json({ error: 'Letter could not be loaded.' }, { status: 503 });
-  return NextResponse.json({ templateKey: parsed.data.template_key, readAt: parsed.data.read_at });
+  return NextResponse.json({ templateKey: parsed.data.template_key, readAt: parsed.data.read_at, newlyRead: parsed.data.newly_read });
 }
 
 export async function GET(request: NextRequest) {

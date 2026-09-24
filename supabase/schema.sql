@@ -21,3 +21,5 @@
 \ir migrations/202609240003_child_family_pause.sql
 \ir migrations/202609240004_family_pause_history.sql
 \ir migrations/202609240005_journey_habit_identity.sql
+\ir migrations/202609240006_daily_letter_read_transition.sql
+\ir migrations/202609240007_wishlist_change_transition.sql

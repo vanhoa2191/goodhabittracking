@@ -11,6 +11,7 @@ import { useAppStore } from '@/lib/store';
 const cloudLetterSchema = z.object({
   templateKey: z.string().regex(/^(leo|bunny|panda|fox|turtle|bee)_[0-2]$/),
   readAt: z.string().datetime({ offset: true }).nullable(),
+  newlyRead: z.boolean().optional(),
 });
 
 type CloudLetterState =
@@ -25,7 +26,7 @@ type Props = {
 };
 
 export function MorningMascotLetter({ childId, childName, avatar, language }: Props) {
-  const { ensureLocalDailyLetter, experience, markLocalDailyLetterRead, storageMode } = useAppStore();
+  const { ensureLocalDailyLetter, experience, markLocalDailyLetterRead, recordCloudDailyLetterRead, storageMode } = useAppStore();
   const [now, setNow] = useState<Date | null>(null);
   const [cloudState, setCloudState] = useState<CloudLetterState | null>(null);
   const [retryCount, setRetryCount] = useState(0);
@@ -111,6 +112,7 @@ export function MorningMascotLetter({ childId, childName, avatar, language }: Pr
       }
       const parsed = cloudLetterSchema.parse(await response.json());
       setCloudState({ key: stateKey ?? '', kind: 'ready', ...parsed });
+      if (parsed.newlyRead) recordCloudDailyLetterRead();
     } catch (error: unknown) {
       if (error instanceof Error) {
         setReadErrorKey(stateKey);

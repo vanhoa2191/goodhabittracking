@@ -1,9 +1,71 @@
-import { describe, expect, it, vi } from 'vitest';
-import { approvalLagBucket, createSessionTracker, parseProductEvent, sessionMode, trackProductEvent } from '@/lib/product-analytics';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { approvalLagBucket, createProductAnalyticsGate, createSessionTracker, parseProductEvent, recordLocalWishlistSelection, sessionMode, trackProductEvent } from '@/lib/product-analytics';
+
+afterEach(() => vi.restoreAllMocks());
 
 describe('product analytics boundary', () => {
+  it('stops delivery immediately after consent is revoked', () => {
+    const gate = createProductAnalyticsGate();
+    const sink = vi.fn();
+    const event = { event: 'mascot_letter_read', mode: 'cloud' } as const;
+
+    gate.setSink(sink);
+    expect(gate.record(event)).toBe(true);
+    gate.setSink(undefined);
+    expect(gate.record(event)).toBe(false);
+    expect(sink).toHaveBeenCalledExactlyOnceWith(event);
+  });
+
+  it('keeps one active session when its destination changes', () => {
+    const gate = createProductAnalyticsGate();
+    const firstSink = vi.fn();
+    const nextSink = vi.fn();
+    const session = createSessionTracker((event) => { gate.record(event); });
+
+    gate.setSink(firstSink);
+    session.enter('local', 'child-1');
+    gate.setSink(nextSink);
+    session.enter('local', 'child-1');
+
+    expect(firstSink).toHaveBeenCalledExactlyOnceWith({ event: 'session_started', mode: 'local' });
+    expect(nextSink).not.toHaveBeenCalled();
+  });
+
+  it('counts each changed local choice even before a rerender', () => {
+    const selections = new Map<string, string>();
+
+    expect(recordLocalWishlistSelection(selections, 'child-1', 'reward-a', 'reward-a')).toBe(false);
+    expect(recordLocalWishlistSelection(selections, 'child-1', 'reward-b', 'reward-a')).toBe(true);
+    expect(recordLocalWishlistSelection(selections, 'child-1', 'reward-a', 'reward-a')).toBe(true);
+    expect(recordLocalWishlistSelection(selections, 'child-1', 'reward-a', 'reward-a')).toBe(false);
+  });
+
   it('does nothing without a configured destination', () => {
+    const request = vi.spyOn(globalThis, 'fetch');
+
     expect(trackProductEvent({ event: 'session_started', mode: 'demo' })).toBe(false);
+    expect(trackProductEvent({ event: 'mascot_selected', mode: 'local' })).toBe(false);
+    expect(trackProductEvent({ event: 'mascot_letter_read', mode: 'cloud' })).toBe(false);
+    expect(trackProductEvent({ event: 'wishlist_selected', mode: 'local' })).toBe(false);
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { event: 'mascot_selected', mode: 'local' },
+    { event: 'mascot_selected', mode: 'cloud' },
+    { event: 'mascot_letter_read', mode: 'local' },
+    { event: 'mascot_letter_read', mode: 'cloud' },
+    { event: 'wishlist_selected', mode: 'local' },
+    { event: 'wishlist_selected', mode: 'cloud' },
+  ] as const)('forwards only the allowlisted $event payload in $mode mode', (event) => {
+    const sink = vi.fn();
+
+    expect(trackProductEvent(event, sink)).toBe(true);
+    expect(sink).toHaveBeenCalledExactlyOnceWith(event);
+    expect(parseProductEvent({ ...event, childId: 'child-1' })).toBeNull();
+    expect(parseProductEvent({ ...event, childName: 'An' })).toBeNull();
+    expect(parseProductEvent({ ...event, templateKey: 'leo_1' })).toBeNull();
+    expect(parseProductEvent({ ...event, rewardId: 'reward-1' })).toBeNull();
   });
 
   it('rejects unexpected personal fields and unknown events', () => {

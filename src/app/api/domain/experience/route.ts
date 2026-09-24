@@ -53,25 +53,22 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) return NextResponse.json({ error: 'Invalid command.' }, { status: 400 });
 
   const supabase = await createServerSupabaseClient();
-  const now = new Date().toISOString();
   const command = parsed.data;
   switch (command.type) {
     case 'chooseWishlist': {
-      const [child, reward] = await Promise.all([
-        supabase.from('child_profiles').select('id').eq('family_id', parent.familyId).eq('id', command.childId).maybeSingle(),
-        supabase.from('rewards').select('id').eq('family_id', parent.familyId).eq('id', command.rewardId).eq('is_active', true).maybeSingle(),
-      ]);
-      if (child.error || reward.error) return NextResponse.json({ error: 'Wishlist could not be checked.' }, { status: 503 });
-      if (!child.data || !reward.data) return NextResponse.json({ error: 'Child or reward is unavailable.' }, { status: 409 });
-      const { error } = await supabase.from('child_wishlists').upsert({
-        family_id: parent.familyId,
-        child_id: command.childId,
-        reward_id: command.rewardId,
-        chosen_at: now,
-        updated_at: now,
+      const { data, error } = await supabase.rpc('choose_parent_wishlist', {
+        target_family_id: parent.familyId,
+        target_child_id: command.childId,
+        target_reward_id: command.rewardId,
       });
-      if (error) return NextResponse.json({ error: 'Wishlist could not be saved.' }, { status: 409 });
-      break;
+      if (error) return NextResponse.json({ error: 'Wishlist could not be saved.' }, { status: 503 });
+      if (data?.status === 'session_invalid') return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
+      if (data?.status === 'child_unavailable' || data?.status === 'reward_unavailable') {
+        return NextResponse.json({ error: 'Child or reward is unavailable.' }, { status: 409 });
+      }
+      const saved = z.object({ status: z.literal('saved'), changed: z.boolean() }).safeParse(data);
+      if (!saved.success) return NextResponse.json({ error: 'Wishlist could not be saved.' }, { status: 503 });
+      return NextResponse.json({ success: true, changed: saved.data.changed });
     }
     case 'pauseFamily':
     case 'resumeFamily': {

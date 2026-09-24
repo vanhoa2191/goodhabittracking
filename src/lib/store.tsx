@@ -1,7 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useRef, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, useCallback } from 'react';
 import confetti from 'canvas-confetti';
+import { z } from 'zod';
 import {
   ChildProfile,
   HabitActivity,
@@ -27,7 +28,8 @@ import { getPricingPlan } from './payos';
 import { sounds } from './sound';
 import { isSupabaseConfigured } from './supabase';
 import { emptyExperienceState, parseChildWishlist } from './experience-state';
-import { createSessionTracker, sessionMode } from './product-analytics';
+import { createProductAnalyticsGate, createSessionTracker, recordLocalWishlistSelection, sessionMode } from './product-analytics';
+import type { ProductEventSink } from './product-analytics';
 import type { ExperienceState, FamilyPausePeriod } from './experience-state';
 import { generateAgeAdaptedHabits } from './wit-framework';
 import type { User } from '@supabase/supabase-js';
@@ -51,6 +53,7 @@ import { useCloudFamilyIdentity } from './store/use-cloud-family-identity';
 import { buildLeaderboard } from './store/leaderboard';
 import { buildSubscriptionDetails, checkIsPro } from './store/subscription';
 import { adjustProfilePoints } from './store/local-domain-actions';
+import { getMascot } from './mascots';
 
 interface AppStoreContextType {
   isEntryReady: boolean;
@@ -115,6 +118,7 @@ interface AppStoreContextType {
   chooseWishlist: (rewardId: string) => Promise<boolean>;
   ensureLocalDailyLetter: (childId: string, date: string, templateKey: string) => void;
   markLocalDailyLetterRead: (childId: string, date: string, templateKey: string) => void;
+  recordCloudDailyLetterRead: () => void;
   activeChildId: string | null;
   activeChild: ChildProfile | null;
   setActiveChildId: (id: string) => void;
@@ -183,7 +187,20 @@ interface AppStoreContextType {
 
 const AppStoreContext = createContext<AppStoreContextType | undefined>(undefined);
 
-export function AppStoreProvider({ children }: { children: React.ReactNode }) {
+export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = false }: {
+  children: React.ReactNode;
+  analyticsSink?: ProductEventSink;
+  analyticsOptIn?: boolean;
+}) {
+  const permittedAnalyticsSink = analyticsOptIn ? analyticsSink : undefined;
+  const analyticsGate = useMemo(() => createProductAnalyticsGate(), []);
+  useLayoutEffect(() => {
+    analyticsGate.setSink(permittedAnalyticsSink);
+    return () => analyticsGate.setSink(undefined);
+  }, [analyticsGate, permittedAnalyticsSink]);
+  const guardedAnalyticsSink = useCallback<ProductEventSink>((event) => {
+    analyticsGate.record(event);
+  }, [analyticsGate]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isIdentityReady, setIsIdentityReady] = useState(false);
   const [isPairingReady, setIsPairingReady] = useState(false);
@@ -252,8 +269,18 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [childSessionRevision, setChildSessionRevision] = useState(0);
   const noteChildSessionHydrated = useCallback(() => setChildSessionRevision((revision) => revision + 1), []);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
-  const sessionTracker = useRef(createSessionTracker());
+  const sessionTracker = useMemo(() => createSessionTracker(guardedAnalyticsSink), [guardedAnalyticsSink]);
   const wishlistRequestVersion = useRef(0);
+  const localWishlistSelections = useRef(new Map<string, string>());
+  const recordedLocalLetterReads = useRef(new Set<string>());
+
+  useEffect(() => {
+    localWishlistSelections.current.clear();
+    if (storageMode !== 'local') return;
+    for (const selection of experience.wishlists) {
+      localWishlistSelections.current.set(selection.child_id, selection.reward_id);
+    }
+  }, [experience.wishlists, storageMode]);
 
   useEffect(() => {
     const selectedMode = sessionMode({
@@ -265,9 +292,9 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       hasCloudSnapshot: Boolean(currentUser && lastSyncTime),
       storageMode,
     });
-    if (selectedMode) sessionTracker.current.enter(selectedMode, activeChildId);
-    else sessionTracker.current.leave();
-  }, [activeChildId, currentUser, isDemoSession, isFamilyConnected, isLoaded, lastSyncTime, mode, storageMode]);
+    if (selectedMode) sessionTracker.enter(selectedMode, activeChildId);
+    else sessionTracker.leave();
+  }, [activeChildId, currentUser, isDemoSession, isFamilyConnected, isLoaded, lastSyncTime, mode, sessionTracker, storageMode]);
 
   const openConnectModal = () => setIsConnectModalOpen(true);
   const closeConnectModal = () => setIsConnectModalOpen(false);
@@ -483,6 +510,12 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
 
   const chooseWishlist = async (rewardId: string): Promise<boolean> => {
     if (!activeChildId || !rewards.some((reward) => reward.id === rewardId && reward.isActive)) return false;
+    const selectedChildId = activeChildId;
+    const recordLocalSelection = () => {
+      const savedRewardId = experience.wishlists.find((row) => row.child_id === selectedChildId)?.reward_id;
+      if (!recordLocalWishlistSelection(localWishlistSelections.current, selectedChildId, rewardId, savedRewardId)) return;
+      analyticsGate.record({ event: 'wishlist_selected', mode: 'local' });
+    };
     if (storageMode === 'local') {
       const now = new Date().toISOString();
       setExperience((previous) => ({
@@ -492,6 +525,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
           { family_id: familyId ?? '00000000-0000-4000-8000-000000000000', child_id: activeChildId, reward_id: rewardId, chosen_at: now },
         ],
       }));
+      recordLocalSelection();
       return true;
     }
     try {
@@ -504,16 +538,21 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       if (!response.ok) return false;
       if (paired) {
         const body: unknown = await response.json();
-        if (!body || typeof body !== 'object' || !('wishlist' in body)) return false;
-        const wishlist = parseChildWishlist(body.wishlist);
+        const parsed = z.object({ wishlist: z.unknown(), changed: z.boolean() }).parse(body);
+        const wishlist = parseChildWishlist(parsed.wishlist);
         wishlistRequestVersion.current += 1;
         setExperience((previous) => ({
           ...previous,
           wishlists: [...previous.wishlists.filter((row) => row.child_id !== activeChildId), wishlist],
         }));
+        if (parsed.changed) analyticsGate.record({ event: 'wishlist_selected', mode: 'cloud' });
         return true;
       }
-      return await syncFromSupabase(currentUser);
+      const result: unknown = await response.json();
+      const parsed = z.object({ success: z.literal(true), changed: z.boolean() }).parse(result);
+      if (parsed.changed) analyticsGate.record({ event: 'wishlist_selected', mode: 'cloud' });
+      const synced = await syncFromSupabase(currentUser);
+      return synced;
     } catch {
       return false;
     }
@@ -638,6 +677,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       setChildBadges,
     },
     storageMode,
+    analyticsSink: guardedAnalyticsSink,
   });
 
   const rewardActions = createRewardActions({
@@ -669,6 +709,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   // Quick avatar & color update for active child
   const updateActiveAvatar = async (avatar: string, themeColor: string): Promise<boolean> => {
     if (!activeChildId) return false;
+    const previousMascotId = getMascot(activeChild?.avatar ?? '')?.id;
     let saved: boolean;
     if (storageMode === 'cloud' && !currentUser && isFamilyConnected) {
       try {
@@ -685,6 +726,10 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       saved = await updateProfile(activeChildId, { avatar, themeColor });
     }
     if (!saved) return false;
+    const selectedMascotId = getMascot(avatar)?.id;
+    if (selectedMascotId && selectedMascotId !== previousMascotId) {
+      analyticsGate.record({ event: 'mascot_selected', mode: storageMode });
+    }
     sounds.playFanfare();
     try {
       confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 }, disableForReducedMotion: true });
@@ -705,6 +750,10 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
 
   const markLocalDailyLetterRead = (childId: string, date: string, templateKey: string): void => {
     if (storageMode !== 'local') return;
+    const wasRead = experience.letters.some((letter) => (
+      letter.child_id === childId && letter.local_date === date && letter.read_at !== null
+    ));
+    const eventKey = `${childId}:${date}`;
     setExperience((previous) => markLocalLetterRead(openLocalLetter(
       previous,
       familyId ?? '00000000-0000-4000-8000-000000000000',
@@ -712,6 +761,14 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       date,
       templateKey,
     ), childId, date, new Date().toISOString()));
+    if (!wasRead && !recordedLocalLetterReads.current.has(eventKey)) {
+      recordedLocalLetterReads.current.add(eventKey);
+      analyticsGate.record({ event: 'mascot_letter_read', mode: 'local' });
+    }
+  };
+
+  const recordCloudDailyLetterRead = (): void => {
+    analyticsGate.record({ event: 'mascot_letter_read', mode: 'cloud' });
   };
 
   const {
@@ -887,6 +944,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
         chooseWishlist,
         ensureLocalDailyLetter,
         markLocalDailyLetterRead,
+        recordCloudDailyLetterRead,
         activeChildId,
         activeChild,
         setActiveChildId,
