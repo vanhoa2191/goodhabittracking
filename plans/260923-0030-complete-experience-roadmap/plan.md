@@ -28,7 +28,7 @@ Implement every remaining approved UI-audit and execution-plan item. Preserve co
 
 ## Current evidence
 
-- Landing is lighter and responsive, but remains 4,604px desktop / 6,732px mobile with six competing CTAs.
+- Landing now has one primary action, a secondary demo path, and collapsed supporting content; the 1280px page measures 2,360px without overflow at 375px.
 - Kid cards have details, haptic, sound, and completion feedback; they are not yet swipeable quests.
 - Six mascot masters and hero palettes exist; letters, expression/season variants, and durable engagement state do not.
 - Parent navigation has seven tabs; Habits mixes library and assigned records; Journeys is a grid, not a vertical map.
@@ -62,7 +62,7 @@ All phases -------------------------------------------------> Release validation
 - [ ] Core child events are measured without sensitive child content.
 - [ ] A child can complete three quests without parental explanation in moderated testing.
 - [ ] Parent navigation has three named areas; pairing is found in under five seconds by test participants.
-- [ ] Landing has one primary hero CTA and no overflow at 375px.
+- [x] Landing has one primary hero CTA and no overflow at 375px.
 - [ ] No payment, pairing, profile, entitlement, or family-isolation behavior regresses.
 - [ ] Rollout uses flags, health checks, logs, and a documented rollback path.
 

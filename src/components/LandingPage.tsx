@@ -6,17 +6,11 @@ import {
   CheckCircle2,
   XCircle,
   Clock,
-  Trophy,
-  ShieldCheck,
-  BookOpen,
   ArrowRight,
   Star,
-  Zap,
   Flame,
   Compass,
   ChevronRight,
-  Smartphone,
-  Upload,
 } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { useAppStore } from '@/lib/store';
@@ -756,7 +750,7 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
           </div>
 
           {/* Main Headline */}
-          <h1 className={`text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-slate-900 dark:text-white ${language === 'ko' ? 'break-keep' : '[word-break:auto-phrase]'}`}>
+          <h1 className={`font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] text-slate-900 dark:text-white ${language === 'ko' ? 'break-keep' : '[word-break:auto-phrase]'}`}>
             {t.landingHeroTitle.split('–')[0]}
             {t.landingHeroTitle.includes('–') && (
               <span className="block mt-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-amber-500 bg-clip-text text-transparent">
@@ -770,89 +764,57 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
             {t.landingHeroDesc}
           </p>
 
-          {/* CTA Action Buttons */}
-          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3.5 max-w-lg mx-auto flex-wrap">
-            {/* Google Sign In */}
-            {!isLoggedIn ? (
-              <button
-                type="button"
-                onClick={onLoginGoogle}
-                className="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-white dark:bg-zinc-800 hover:bg-slate-50 dark:hover:bg-zinc-700 border border-slate-200 dark:border-zinc-700 text-slate-800 dark:text-white text-sm font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2.5 active:scale-95 cursor-pointer"
-              >
-                <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
-                  <path
-                    fill="#4285F4"
-                    d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.02 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
-                  />
-                  <path
-                    fill="#EA4335"
-                    d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                  />
-                </svg>
-                <span>{t.landingCtaGoogle}</span>
-              </button>
-            ) : null}
-
-            {!isLoggedIn && (
-              <button
-                type="button"
-                onClick={onStartLocalSetup}
-                className="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-sm font-bold transition-all shadow-xs flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
-              >
-                <ShieldCheck className="w-4 h-4" />
-                <span>{t.landingCtaLocalSetup}</span>
-              </button>
-            )}
-
-            {!isLoggedIn && (
-              <label className="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-slate-50 dark:bg-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-700 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-slate-200 text-sm font-bold transition-all shadow-xs flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
-                <Upload className="w-4 h-4" />
-                <span>{t.importData}</span>
-                <input
-                  type="file"
-                  accept="application/json,.json"
-                  className="sr-only"
-                  aria-label={t.importData}
-                  onChange={(event) => {
-                    const file = event.target.files?.[0];
-                    if (file) handleRestore(file);
-                    event.target.value = '';
-                  }}
-                />
-              </label>
-            )}
-
-            {/* Child Enter with Code */}
-            {!isLoggedIn && (
-              <button
-                type="button"
-                onClick={openConnectModal}
-                className="w-full sm:w-auto py-3.5 px-5 rounded-2xl bg-purple-50 hover:bg-purple-100 dark:bg-zinc-800 dark:hover:bg-zinc-700 border border-purple-200/80 dark:border-zinc-700 text-purple-700 dark:text-purple-300 text-sm font-bold transition-all shadow-xs flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
-                title={uiCopy.childCodeTitle}
-              >
-                <Smartphone className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0" />
-                <span>{uiCopy.childCodeButton}</span>
-              </button>
-            )}
-
-            {/* Direct Try Demo / Back to App */}
+          <div className="flex flex-col items-center justify-center gap-3 pt-3 sm:flex-row">
             <button
               type="button"
-              onClick={onStartDemo}
-              className="w-full sm:w-auto py-3.5 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-extrabold transition-all shadow-lg hover:shadow-indigo-500/25 flex items-center justify-center gap-2 active:scale-95 cursor-pointer"
+              data-testid="landing-primary-action"
+              onClick={isLoggedIn ? onStartDemo : onLoginGoogle}
+              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3 text-base font-extrabold text-white shadow-lg transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 sm:w-auto"
             >
-              <span>{isLoggedIn ? t.landingBackToApp : t.landingCtaDemo}</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>{isLoggedIn ? t.landingBackToApp : t.landingCtaGoogle}</span>
+              <ArrowRight className="h-5 w-5" aria-hidden="true" />
             </button>
+            {!isLoggedIn && (
+              <button
+                type="button"
+                onClick={onStartDemo}
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-indigo-200 bg-white px-6 py-3 text-base font-bold text-indigo-700 transition-colors hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 sm:w-auto dark:border-indigo-800 dark:bg-zinc-900 dark:text-indigo-200 dark:hover:bg-zinc-800"
+              >
+                {t.landingCtaDemo}
+              </button>
+            )}
           </div>
+
+          {!isLoggedIn && (
+            <details className="group mx-auto max-w-lg pt-1 text-center">
+              <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-1 text-sm font-semibold text-slate-700 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-200 [&::-webkit-details-marker]:hidden">
+                {uiCopy.otherWays}
+                <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" aria-hidden="true" />
+              </summary>
+              <div className="flex flex-col items-stretch justify-center gap-2 pt-2 sm:flex-row sm:flex-wrap">
+                <button type="button" onClick={onStartLocalSetup} className="min-h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-800 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-100">
+                  {t.landingCtaLocalSetup}
+                </button>
+                <button type="button" onClick={openConnectModal} className="min-h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-800 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-100" title={uiCopy.childCodeTitle}>
+                  {uiCopy.childCodeButton}
+                </button>
+                <label className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-800 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-100">
+                  {t.importData}
+                  <input
+                    type="file"
+                    accept="application/json,.json"
+                    className="sr-only"
+                    aria-label={t.importData}
+                    onChange={(event) => {
+                      const file = event.target.files?.[0];
+                      if (file) handleRestore(file);
+                      event.target.value = '';
+                    }}
+                  />
+                </label>
+              </div>
+            </details>
+          )}
 
           {restoreNotice && (
             <p role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">
@@ -860,147 +822,19 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
             </p>
           )}
 
-          {/* Trust Social Proof */}
-          <div className="pt-6 flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-            <div className="flex -space-x-1.5 overflow-hidden">
-              {['mascot:leo', 'mascot:bunny', 'mascot:panda', 'mascot:fox', 'mascot:bee'].map((mascot) => (
-                <span
-                  key={mascot}
-                  className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 shadow-xs"
-                >
-                  <MascotAvatar avatar={mascot} alt="" className="h-7 w-7" />
-                </span>
-              ))}
-            </div>
-            <span className="font-semibold">{t.landingTrustedBy}</span>
-          </div>
         </div>
 
-        {/* Hero Interactive App Mockup Preview */}
-        <div className="mt-10 sm:mt-14 max-w-4xl mx-auto bg-white/90 dark:bg-zinc-900/90 rounded-3xl p-4 sm:p-7 shadow-2xl border border-slate-200/80 dark:border-zinc-800 backdrop-blur-md">
-          {/* Header Bar in Mockup */}
-          <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-zinc-800 mb-5">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 to-indigo-600 flex items-center justify-center shadow-xs">
-                <MascotAvatar avatar="mascot:leo" alt="" priority className="h-10 w-10" />
-              </div>
-              <div>
-                <div className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
-                  <span>{uiCopy.mockChildName}</span>
-                  <span className="text-amber-500 text-xs font-black bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full">
-                    {t.levelPrefix} 3
-                  </span>
-                </div>
-                <div className="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
-                  <span>🔥 {uiCopy.streak(7)}</span>
-                  <span>•</span>
-                  <span className="text-amber-600 font-bold">⭐ 145 sao</span>
-                </div>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={onStartDemo}
-              className="hidden sm:inline-flex py-2 px-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 text-xs font-bold transition-all items-center gap-1 cursor-pointer"
-            >
-              <span>{isLoggedIn ? t.landingBackToApp : t.landingExploreDemo}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {/* Routine Demo Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {/* Morning Sample */}
-            <div className="p-3.5 rounded-2xl bg-amber-50/60 dark:bg-zinc-800/60 border border-amber-200/60 dark:border-zinc-700/60 space-y-2.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
-                  <span>🌅</span>
-                  <span>{t.morning}</span>
-                </span>
-                <span className="text-xs font-black text-amber-600 bg-amber-100 dark:bg-amber-950 px-2 py-0.5 rounded-full">
-                  {uiCopy.doneCount(2, 2)}
-                </span>
-              </div>
-              <div className="space-y-1.5">
-                <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">🛏️</span>
-                    <span className="font-semibold line-through text-slate-400">{uiCopy.makeBed}</span>
-                  </div>
-                  <span className="text-xs font-bold text-emerald-600">✓ +5 ⭐</span>
-                </div>
-                <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">🪥</span>
-                    <span className="font-semibold line-through text-slate-400">{uiCopy.brushTeeth}</span>
-                  </div>
-                  <span className="text-xs font-bold text-emerald-600">✓ +10 ⭐</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Afternoon Sample */}
-            <div className="p-3.5 rounded-2xl bg-indigo-50/60 dark:bg-zinc-800/60 border border-indigo-200/60 dark:border-zinc-700/60 space-y-2.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-indigo-800 dark:text-indigo-300 flex items-center gap-1.5">
-                  <span>☀️</span>
-                  <span>{t.afternoon}</span>
-                </span>
-                <span className="text-xs font-black text-indigo-600 bg-indigo-100 dark:bg-indigo-950 px-2 py-0.5 rounded-full">
-                  {uiCopy.taskCount(1, 2)}
-                </span>
-              </div>
-              <div className="space-y-1.5">
-                <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">🎒</span>
-                    <span className="font-semibold line-through text-slate-400">{uiCopy.packBag}</span>
-                  </div>
-                  <span className="text-xs font-bold text-emerald-600">✓ +5 ⭐</span>
-                </div>
-                <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-indigo-200 dark:border-indigo-800/60 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">📚</span>
-                    <span className="font-bold text-indigo-700 dark:text-indigo-300">{uiCopy.readBooks}</span>
-                  </div>
-                  <span className="text-xs font-black text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-1.5 py-0.5 rounded-md">
-                    +15 ⭐
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Evening / Reward Sample */}
-            <div className="p-3.5 rounded-2xl bg-pink-50/60 dark:bg-zinc-800/60 border border-pink-200/60 dark:border-zinc-700/60 space-y-2.5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-pink-800 dark:text-pink-300 flex items-center gap-1.5">
-                  <span>🎁</span>
-                  <span>{t.rewards}</span>
-                </span>
-                <span className="text-xs font-black text-pink-600 bg-pink-100 dark:bg-pink-950 px-2 py-0.5 rounded-full">
-                  {uiCopy.rewardStore}
-                </span>
-              </div>
-              <div className="space-y-1.5">
-                <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">🎬</span>
-                    <span className="font-semibold">{uiCopy.weekendMovie}</span>
-                  </div>
-                  <span className="text-xs font-bold text-amber-600">50 ⭐</span>
-                </div>
-                <div className="p-2.5 rounded-xl bg-white dark:bg-zinc-800 border border-slate-100 dark:border-zinc-700/50 flex items-center justify-between text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="text-base">🍦</span>
-                    <span className="font-semibold">{uiCopy.iceCream}</span>
-                  </div>
-                  <span className="text-xs font-bold text-amber-600">30 ⭐</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div aria-hidden="true" className="relative mx-auto mt-8 flex h-52 max-w-md items-end justify-center overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-amber-100 via-white to-indigo-100 dark:from-amber-950/40 dark:via-zinc-900 dark:to-indigo-950/50 sm:mt-10 sm:h-60">
+          <div className="absolute bottom-3 h-11 w-64 rounded-full bg-indigo-300/30 blur-xl dark:bg-indigo-400/20" />
+          <MascotAvatar avatar="mascot:bunny" alt="" className="relative z-10 mb-3 h-24 w-24 -rotate-6 sm:h-28 sm:w-28" />
+          <MascotAvatar avatar="mascot:leo" alt="" priority sizes="(max-width: 640px) 144px, 176px" className="relative z-20 mb-2 h-36 w-36 sm:h-44 sm:w-44" />
+          <MascotAvatar avatar="mascot:panda" alt="" className="relative z-10 mb-3 h-24 w-24 rotate-6 sm:h-28 sm:w-28" />
+          <span className="absolute left-6 top-5 text-2xl text-amber-500">★</span>
+          <span className="absolute right-7 top-7 text-xl text-indigo-500">✦</span>
         </div>
+        {!isLoggedIn && (
+          <p className="mx-auto mt-3 max-w-md text-center text-sm font-medium text-slate-700 dark:text-slate-200">{t.landingTrustedBy}</p>
+        )}
       </section>
 
       {/* 2. BEFORE VS AFTER (CHẠM NỖI ĐAU PHỤ HUYNH) */}
@@ -1527,150 +1361,6 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
         </details>
       </section>
 
-      {/* 5. 4 TRỤ CỘT TÍNH NĂNG NỔI BẬT */}
-      <section className="py-14 sm:py-24 px-4 sm:px-6 max-w-6xl mx-auto">
-        <div className="text-center space-y-3 mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-300 text-xs font-bold">
-            <Zap className="w-3.5 h-3.5" />
-            <span>{uiCopy.practiceTools}</span>
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-            {t.landingPillarsTitle}
-          </h2>
-          <p className="text-xs sm:text-base text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
-            {t.landingPillarsSubtitle}
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Pillar 1: Biorhythm */}
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800 shadow-sm hover:shadow-md transition-shadow space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 flex items-center justify-center text-amber-600">
-              <Clock className="w-6 h-6" />
-            </div>
-            <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100">
-              {t.landingPillar1Title}
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              {t.landingPillar1Desc}
-            </p>
-          </div>
-
-          {/* Pillar 2: Gamification */}
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800 shadow-sm hover:shadow-md transition-shadow space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 flex items-center justify-center text-indigo-600">
-              <Trophy className="w-6 h-6" />
-            </div>
-            <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100">
-              {t.landingPillar2Title}
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              {t.landingPillar2Desc}
-            </p>
-          </div>
-
-          {/* Pillar 3: Privacy & Security */}
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800 shadow-sm hover:shadow-md transition-shadow space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 flex items-center justify-center text-emerald-600">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100">
-              {t.landingPillar3Title}
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              {t.landingPillar3Desc}
-            </p>
-          </div>
-
-          {/* Pillar 4: Holistic Habits */}
-          <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800 shadow-sm hover:shadow-md transition-shadow space-y-4">
-            <div className="w-12 h-12 rounded-2xl bg-pink-50 dark:bg-pink-950/60 flex items-center justify-center text-pink-600">
-              <BookOpen className="w-6 h-6" />
-            </div>
-            <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100">
-              {t.landingPillar4Title}
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              {t.landingPillar4Desc}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. 3 BƯỚC BẮT ĐẦU ĐƠN GIẢN */}
-      <section className="py-12 sm:py-20 px-4 sm:px-6 bg-indigo-900 text-white rounded-3xl max-w-5xl mx-auto my-6 shadow-xl">
-        <div className="text-center space-y-3 mb-10 sm:mb-14">
-          <span className="text-xs uppercase font-extrabold tracking-widest text-indigo-300">
-            {uiCopy.gentleStart}
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-black tracking-tight">
-            {t.landingStepsTitle}
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-          {/* Step 1 */}
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
-            <div className="text-3xl">🦁</div>
-            <h3 className="font-bold text-base text-white">{t.landingStep1Title}</h3>
-            <p className="text-xs text-indigo-200 leading-relaxed">{t.landingStep1Desc}</p>
-          </div>
-
-          {/* Step 2 */}
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
-            <div className="text-3xl">📅</div>
-            <h3 className="font-bold text-base text-white">{t.landingStep2Title}</h3>
-            <p className="text-xs text-indigo-200 leading-relaxed">{t.landingStep2Desc}</p>
-          </div>
-
-          {/* Step 3 */}
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/15 space-y-3">
-            <div className="text-3xl">⭐</div>
-            <h3 className="font-bold text-base text-white">{t.landingStep3Title}</h3>
-            <p className="text-xs text-indigo-200 leading-relaxed">{t.landingStep3Desc}</p>
-          </div>
-        </div>
-
-        <div className="text-center pt-10">
-          <button
-            type="button"
-            onClick={onStartDemo}
-            className="py-3.5 px-8 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-extrabold text-sm shadow-xl transition-transform active:scale-95 cursor-pointer"
-          >
-            {isLoggedIn ? t.landingBackToApp : t.landingStartNow}
-          </button>
-        </div>
-      </section>
-
-      <section className="py-14 sm:py-20 px-4 sm:px-6 bg-gradient-to-tr from-indigo-50 via-white to-amber-50 dark:from-zinc-900 dark:via-zinc-950 dark:to-zinc-900 border-t border-slate-200 dark:border-zinc-800 text-center">
-        <div className="max-w-2xl mx-auto space-y-5">
-          <div className="text-3xl sm:text-4xl">🌟🚀💎</div>
-          <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-            {t.landingCtaBottomTitle}
-          </h2>
-          <p className="text-xs sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-lg mx-auto">
-            {t.landingCtaBottomDesc}
-          </p>
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button
-              type="button"
-              onClick={onStartDemo}
-              className="w-full sm:w-auto py-3.5 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm shadow-xl transition-all active:scale-95 cursor-pointer"
-            >
-              {isLoggedIn ? t.landingBackToApp : t.landingStartNow}
-            </button>
-            {!isLoggedIn && (
-              <button
-                type="button"
-                onClick={onLoginGoogle}
-                className="w-full sm:w-auto py-3.5 px-6 rounded-2xl bg-white dark:bg-zinc-800 hover:bg-slate-50 border border-slate-200 dark:border-zinc-700 text-slate-700 dark:text-slate-200 font-bold text-sm transition-all active:scale-95 cursor-pointer"
-              >
-                {t.landingCtaGoogle}
-              </button>
-            )}
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

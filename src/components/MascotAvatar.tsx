@@ -7,6 +7,7 @@ type MascotAvatarProps = {
   readonly className?: string;
   readonly imageClassName?: string;
   readonly priority?: boolean;
+  readonly sizes?: string;
 };
 
 export function MascotAvatar({
@@ -15,6 +16,7 @@ export function MascotAvatar({
   className = '',
   imageClassName = '',
   priority = false,
+  sizes = '(max-width: 640px) 96px, 128px',
 }: MascotAvatarProps) {
   const mascot = getMascot(avatar);
 
@@ -29,7 +31,7 @@ export function MascotAvatar({
         alt={alt}
         fill
         priority={priority}
-        sizes="(max-width: 640px) 96px, 128px"
+        sizes={sizes}
         className={`object-contain drop-shadow-sm ${imageClassName}`}
       />
     </span>

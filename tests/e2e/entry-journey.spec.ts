@@ -92,10 +92,24 @@ test('a returning child sees only the child surface without a parent or sales en
 });
 
 test('a first-time visitor sees the landing page before choosing a journey', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.goto('/');
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'landing');
   await expect(page.getByRole('button', { name: 'Trang chủ' })).toHaveCount(0);
+  await expect(page.getByTestId('landing-primary-action')).toHaveCount(1);
+  await expect(page.getByRole('button', { name: /Khám phá thử ngay/ })).toHaveCount(1);
+  await expect(page.locator('main details')).toHaveCount(3);
+  await expect(page.locator('main details').first()).not.toHaveAttribute('open', '');
+  await expect(page.locator('main details').nth(1)).not.toHaveAttribute('open', '');
+  const desktopHeight = await page.evaluate(() => document.documentElement.scrollHeight);
+  expect(desktopHeight).toBeLessThanOrEqual(2495);
+  await page.setViewportSize({ width: 768, height: 1024 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.setViewportSize({ width: 375, height: 812 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: testInfo.outputPath('first-visit.png') });
+  await page.locator('main details').first().locator('summary').click();
+  await expect(page.locator('main details').first().getByRole('button', { name: 'Bé vào bằng mã' })).toBeVisible();
 });
 
 test('an active family can deliberately visit Home and return to the app', async ({ page }) => {
@@ -103,7 +117,9 @@ test('an active family can deliberately visit Home and return to the app', async
   await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'kid');
 
-  await page.getByRole('button', { name: 'Trang chủ' }).first().click();
+  const home = page.getByRole('button', { name: 'Trang chủ' }).first();
+  if (!(await home.isVisible())) await page.getByRole('button', { name: 'Menu' }).click();
+  await home.click();
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'landing');
   await page.getByRole('button', { name: 'Vào bảng điều khiển' }).last().click();
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'kid');
