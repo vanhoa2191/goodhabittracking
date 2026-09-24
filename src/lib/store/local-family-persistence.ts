@@ -10,10 +10,12 @@ import type {
   Reward,
 } from '@/types';
 import { parseFamilyBackup } from '@/lib/family-backup';
+import type { FamilyBackup } from '@/lib/family-backup';
 import { emptyExperienceState, parseExperienceState } from '@/lib/experience-state';
 import type { ExperienceState } from '@/lib/experience-state';
 
 export const LOCAL_STORAGE_PREFIX = 'kidhabit_';
+const DEMO_STATE_KEY = `${LOCAL_STORAGE_PREFIX}demo_state`;
 
 const FAMILY_SCOPED_STORAGE_KEYS = [
   'pin',
@@ -47,7 +49,7 @@ interface ReadableStorage extends WritableStorage {
 }
 
 export type LocalFamilyHydration =
-  | { kind: 'demo' }
+  | { kind: 'demo'; snapshot?: FamilyBackup }
   | {
       kind: 'family';
       pin: string | null;
@@ -127,7 +129,8 @@ export function loadLocalFamilyState(
   createFamilyId: () => string,
 ): LocalFamilyHydration {
   if (session.getItem('kidhabit_demo_session') === 'true') {
-    return { kind: 'demo' };
+    const snapshot = parseFamilyBackup(session.getItem(DEMO_STATE_KEY) ?? '');
+    return snapshot ? { kind: 'demo', snapshot } : { kind: 'demo' };
   }
 
   local.removeItem(`${LOCAL_STORAGE_PREFIX}family_code`);
@@ -175,6 +178,18 @@ export function loadLocalFamilyState(
     kudos: parseStoredFragment(local.getItem(`${LOCAL_STORAGE_PREFIX}kudos`), 'kudos')?.kudos ?? [],
     experience: loadLocalExperience(local, familyId),
   };
+}
+
+export function persistDemoFamilyState(
+  session: WritableStorage,
+  state: Omit<FamilyBackup, 'version' | 'exportedAt'>,
+): void {
+  session.setItem(DEMO_STATE_KEY, JSON.stringify({ version: 2, ...state }));
+}
+
+export function clearDemoFamilyState(session: WritableStorage): void {
+  session.removeItem(DEMO_STATE_KEY);
+  session.removeItem(`${LOCAL_STORAGE_PREFIX}experience`);
 }
 
 export function loadLocalExperience(local: ReadableStorage, familyId: string): ExperienceState {

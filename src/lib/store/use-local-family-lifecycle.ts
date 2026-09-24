@@ -18,6 +18,9 @@ import type { ExperienceState } from '@/lib/experience-state';
 import {
   loadLocalFamilyState,
   LOCAL_STORAGE_PREFIX,
+  clearDemoFamilyState,
+  loadLocalExperience,
+  persistDemoFamilyState,
   persistLocalFamilyState,
   saveLocalExperience,
 } from './local-family-persistence';
@@ -32,6 +35,7 @@ type FamilyState = {
   readonly kudos: Kudo[];
   readonly logs: ActivityLog[];
   readonly parentPin: string;
+  readonly parentProfile: ParentProfile | null;
   readonly profiles: ChildProfile[];
   readonly experience: ExperienceState;
   readonly redemptions: Redemption[];
@@ -81,6 +85,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     kudos,
     logs,
     parentPin,
+    parentProfile,
     profiles,
     experience,
     redemptions,
@@ -120,12 +125,24 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
           () => crypto.randomUUID(),
         );
         if (hydration.kind === 'demo') {
-          setExperience(emptyExperienceState);
-          setProfiles(INITIAL_PROFILES);
-          setActiveChildId(INITIAL_PROFILES[0]?.id || null);
-          setActivities(INITIAL_ACTIVITIES);
-          setRewards(INITIAL_REWARDS);
-          setGroups(INITIAL_GROUPS);
+          const snapshot = hydration.snapshot;
+          const demoProfiles = snapshot?.profiles ?? INITIAL_PROFILES;
+          setParentPin(snapshot?.pin ?? '1234');
+          setParentProfile(snapshot?.parentProfile ?? null);
+          setExperience(snapshot
+            ? loadLocalExperience(sessionStorage, '00000000-0000-4000-8000-000000000000')
+            : emptyExperienceState);
+          setProfiles(demoProfiles);
+          setActiveChildId(snapshot?.activeChildId && demoProfiles.some((profile) => profile.id === snapshot.activeChildId)
+            ? snapshot.activeChildId
+            : demoProfiles[0]?.id ?? null);
+          setActivities(snapshot?.activities ?? INITIAL_ACTIVITIES);
+          setLogs(snapshot?.logs ?? []);
+          setRewards(snapshot?.rewards ?? INITIAL_REWARDS);
+          setRedemptions(snapshot?.redemptions ?? []);
+          setChildBadges(snapshot?.childBadges ?? []);
+          setGroups(snapshot?.groups ?? INITIAL_GROUPS);
+          setKudos(snapshot?.kudos ?? []);
           setStorageMode('local');
           setIsDemoSession(true);
           return;
@@ -172,7 +189,26 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
   ]);
 
   useEffect(() => {
-    if (!isLoaded || isDemoSession || typeof window === 'undefined') return;
+    if (!isLoaded || typeof window === 'undefined') return;
+    if (isDemoSession) {
+      if (sessionStorage.getItem('kidhabit_demo_session') !== 'true') return;
+      persistDemoFamilyState(sessionStorage, {
+        pin: parentPin,
+        parentProfile,
+        storageMode: 'local',
+        activeChildId,
+        profiles,
+        activities,
+        logs,
+        rewards,
+        redemptions,
+        childBadges,
+        groups,
+        kudos,
+      });
+      saveLocalExperience(sessionStorage, experience);
+      return;
+    }
     persistLocalFamilyState(localStorage, {
       pin: parentPin,
       storageMode,
@@ -197,6 +233,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     kudos,
     logs,
     parentPin,
+    parentProfile,
     profiles,
     experience,
     redemptions,
@@ -209,6 +246,8 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
   }, [isLoaded, syncNow]);
 
   const startLocalFamilySetup = (): void => {
+    clearDemoFamilyState(sessionStorage);
+    sessionStorage.removeItem('kidhabit_demo_session');
     resetFamilyScope();
     setIsDemoSession(false);
     const localFamilyId = crypto.randomUUID();
@@ -220,7 +259,10 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
   };
 
   const startDemoSession = (): void => {
+    clearDemoFamilyState(sessionStorage);
     setExperience(emptyExperienceState);
+    setFamilyId(null);
+    setParentProfile(null);
     setMode('kid');
     setIsParentUnlocked(false);
     setParentPin('1234');
@@ -238,6 +280,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
   };
 
   const deleteLocalFamilyData = (): void => {
+    clearDemoFamilyState(sessionStorage);
     resetFamilyScope();
     setIsDemoSession(false);
     sessionStorage.removeItem('kidhabit_in_app');

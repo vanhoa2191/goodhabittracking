@@ -23,7 +23,7 @@ Child device dùng HttpOnly session token. Database chỉ lưu SHA-256 digest v�
 
 ## Local/demo
 
-Local mode dùng fixture và localStorage, không gọi mutation cloud. UI luôn hiển thị cảnh báo dữ liệu chỉ nằm trên thiết bị và cung cấp export/import JSON.
+Local mode lưu trong localStorage, không gọi mutation cloud. Demo dùng dữ liệu mẫu và lưu thay đổi trong sessionStorage của tab để giữ trạng thái khi tải lại; khi thiết lập gia đình hoặc đăng nhập, dữ liệu demo bị xóa và không trộn với dữ liệu thật. UI luôn hiển thị cảnh báo dữ liệu chỉ nằm trên thiết bị và cung cấp export/import JSON cho gia đình local.
 
 ## Ngôn ngữ thích ứng
 

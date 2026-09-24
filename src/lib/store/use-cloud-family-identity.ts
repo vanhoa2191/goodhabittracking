@@ -43,12 +43,13 @@ type Dependencies = {
   readonly familyId: string | null;
   readonly resetFamilyScope: () => void;
   readonly onIdentityReady: () => void;
+  readonly onIdentityStart: () => void;
   readonly onIdentityUser: () => void;
   readonly setters: Setters;
 };
 
 export function useCloudFamilyIdentity(dependencies: Dependencies) {
-  const { currentUser, familyId, resetFamilyScope, onIdentityReady, onIdentityUser } = dependencies;
+  const { currentUser, familyId, resetFamilyScope, onIdentityReady, onIdentityStart, onIdentityUser } = dependencies;
   const {
     setActivities,
     setChildBadges,
@@ -126,6 +127,7 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
     onUserChanged: async (user) => {
       setCurrentUser(user);
       if (user) {
+        onIdentityStart();
         await syncCloudFamily(user);
         onIdentityUser();
       }
@@ -133,7 +135,7 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
     },
     onReady: onIdentityReady,
     onError: (error) => console.error('Supabase auth failed:', error),
-  }), [onIdentityReady, onIdentityUser, resetFamilyScope, setCurrentUser, syncCloudFamily]);
+  }), [onIdentityReady, onIdentityStart, onIdentityUser, resetFamilyScope, setCurrentUser, syncCloudFamily]);
 
   const loginWithGoogle = async (): Promise<void> => {
     sounds.playClick();

@@ -43,6 +43,7 @@ describe('family backup store actions', () => {
     const localStorage = createStorage();
     const sessionStorage = createStorage();
     sessionStorage.setItem('kidhabit_demo_session', 'true');
+    sessionStorage.setItem('kidhabit_demo_state', JSON.stringify(validBackup));
 
     const imported = importFamilyData(
       JSON.stringify({ ...validBackup, activeChildId: 'missing-child' }),
@@ -54,6 +55,7 @@ describe('family backup store actions', () => {
     expect(imported).toBe(true);
     expect(apply).toHaveBeenCalledWith(expect.objectContaining({ activeChildId: 'child-1' }));
     expect(sessionStorage.getItem('kidhabit_demo_session')).toBeNull();
+    expect(sessionStorage.getItem('kidhabit_demo_state')).toBeNull();
     expect(localStorage.getItem('kidhabit_local_family_session')).toBe('true');
   });
 });

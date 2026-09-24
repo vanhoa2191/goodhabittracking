@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
+  clearDemoFamilyState,
   clearFamilyScopedStorage,
   loadLocalExperience,
   loadLocalFamilyState,
   persistLocalFamilyState,
+  persistDemoFamilyState,
   saveLocalExperience,
 } from '@/lib/store/local-family-persistence';
 import { emptyExperienceState } from '@/lib/experience-state';
@@ -88,6 +90,48 @@ describe('local family persistence', () => {
 
     expect(state).toEqual({ kind: 'demo' });
     expect(localStorage.getItem('kidhabit_family_id')).toBeNull();
+  });
+
+  it('restores a demo assignment from tab storage without reading a real family', () => {
+    const localStorage = createStorage();
+    const sessionStorage = createStorage();
+    localStorage.setItem('kidhabit_activities', 'not-demo-data');
+    sessionStorage.setItem('kidhabit_demo_session', 'true');
+    sessionStorage.setItem('kidhabit_demo_state', JSON.stringify({
+      version: 2,
+      activeChildId: 'child-1',
+      profiles: [],
+      activities: [{
+        id: 'activity-1', title: 'Drink water', icon: '💧', category: 'nutrition',
+        timeOfDay: 'anytime', createdAt: '2026-09-24T00:00:00.000Z',
+      }],
+      logs: [], rewards: [], redemptions: [], childBadges: [], groups: [], kudos: [],
+    }));
+
+    const state = loadLocalFamilyState(localStorage, sessionStorage, () => 'generated-family');
+
+    expect(state).toMatchObject({ kind: 'demo', snapshot: { activities: [{ id: 'activity-1' }] } });
+    expect(localStorage.getItem('kidhabit_family_id')).toBeNull();
+  });
+
+  it('keeps demo changes separate and clears them when leaving the demo', () => {
+    const localStorage = createStorage();
+    const sessionStorage = createStorage();
+    sessionStorage.setItem('kidhabit_demo_session', 'true');
+    localStorage.setItem('kidhabit_activities', 'real-family-data');
+    persistDemoFamilyState(sessionStorage, {
+      pin: '1234', activeChildId: null, profiles: [], activities: [], logs: [],
+      rewards: [], redemptions: [], childBadges: [], groups: [], kudos: [],
+    });
+    saveLocalExperience(sessionStorage, emptyExperienceState);
+
+    expect(loadLocalFamilyState(localStorage, sessionStorage, () => 'family').kind).toBe('demo');
+    expect(localStorage.getItem('kidhabit_activities')).toBe('real-family-data');
+
+    clearDemoFamilyState(sessionStorage);
+    expect(sessionStorage.getItem('kidhabit_demo_state')).toBeNull();
+    expect(sessionStorage.getItem('kidhabit_experience')).toBeNull();
+    expect(localStorage.getItem('kidhabit_activities')).toBe('real-family-data');
   });
 
   it('restores valid keys when a neighboring JSON collection is malformed', () => {

@@ -84,3 +84,29 @@ test('a legacy template keeps its catalog ID after joining the active collection
   // Then
   await expect(page.getByText('Task ID: WIT-NUT-01')).toBeVisible();
 });
+
+test('a demo assignment remains available after reloading the same tab', async ({ page }) => {
+  // Given
+  await page.goto('/');
+  await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
+  await page.reload();
+  await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
+  await page.getByRole('button', { name: /^Parent/ }).click();
+  for (const digit of ['1', '2', '3', '4']) {
+    await page.getByRole('dialog').getByRole('button', { name: digit, exact: true }).click();
+  }
+  await page.getByRole('tab', { name: 'Design' }).click();
+  await page.getByRole('button', { name: 'Library', exact: true }).click();
+  await page.locator('[data-template-id="WIT-NUT-01"]').getByRole('button', { name: 'Add to child' }).click();
+
+  // When
+  await page.reload();
+  await page.getByRole('button', { name: /^Parent/ }).click();
+  for (const digit of ['1', '2', '3', '4']) {
+    await page.getByRole('dialog').getByRole('button', { name: digit, exact: true }).click();
+  }
+  await page.getByRole('tab', { name: 'Design' }).click();
+
+  // Then
+  await expect(page.getByText('Task ID: WIT-NUT-01')).toBeVisible();
+});

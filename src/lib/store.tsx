@@ -40,6 +40,7 @@ import { markLocalLetterRead, openLocalLetter } from './store/local-letter-actio
 import { requestTrialActivation } from './store/trial-activation-client';
 import { exportFamilyData, importFamilyData } from './store/family-backup-actions';
 import {
+  clearDemoFamilyState,
   clearFamilyScopedStorage,
   LOCAL_STORAGE_PREFIX,
 } from './store/local-family-persistence';
@@ -205,7 +206,18 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [cloudSyncActive, setCloudSyncActive] = useState(false);
   const [lastSyncTime, setLastSyncTime] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isDemoSession, setIsDemoSession] = useState(false);
   const onIdentityReady = useCallback(() => setIsIdentityReady(true), []);
+  const onIdentityStart = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      if (sessionStorage.getItem('kidhabit_demo_session') === 'true') {
+        setStorageModeState('cloud');
+      }
+      clearDemoFamilyState(sessionStorage);
+      sessionStorage.removeItem('kidhabit_demo_session');
+    }
+    setIsDemoSession(false);
+  }, []);
   const onIdentityUser = useCallback(() => {
     setIsParentUnlocked(true);
     setModeState('parent');
@@ -234,7 +246,6 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const [childSessionRevision, setChildSessionRevision] = useState(0);
   const noteChildSessionHydrated = useCallback(() => setChildSessionRevision((revision) => revision + 1), []);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
-  const [isDemoSession, setIsDemoSession] = useState(false);
   const sessionTracker = useRef(createSessionTracker());
   const wishlistRequestVersion = useRef(0);
 
@@ -296,6 +307,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   } = useCloudFamilyIdentity({
     currentUser,
     onIdentityReady,
+    onIdentityStart,
     onIdentityUser,
     familyId,
     resetFamilyScope,
@@ -342,6 +354,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
       kudos,
       logs,
       parentPin,
+      parentProfile,
       profiles,
       experience,
       redemptions,
@@ -518,7 +531,7 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
         onboardedAt: prev?.onboardedAt || new Date().toISOString(),
         ...profileUpdates,
       };
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && !isDemoSession) {
         localStorage.setItem(`${LOCAL_STORAGE_PREFIX}parent_profile`, JSON.stringify(updated));
       }
       return updated;
