@@ -14,7 +14,11 @@ The application defines a strict, content-free event boundary in [`src/lib/produ
 | `secret_quest_completed` | A secret quest was completed | mode |
 | `wishlist_selected` | A wishlist item was selected | mode |
 
-`session_started`, `task_ticked`, `habit_reviewed`, `mascot_selected`, `mascot_letter_read`, and `wishlist_selected` are connected to their corresponding app flows. Mascot events require an actual mascot change; a color-only update does not count. Letter and wishlist events follow successful state changes. The destination remains unconfigured, and the application provides neither a sink nor analytics opt-in by default, so these events do not leave the device. `secret_quest_completed` is reserved for its future product flow. Failed saves and duplicate cloud commands must not emit an event; the latter depends on the atomic transition results introduced by migrations `202609240006` and `202609240007`.
+`session_started`, `task_ticked`, `habit_reviewed`, `mascot_selected`, `mascot_letter_read`, and `wishlist_selected` are connected to their corresponding app flows. Mascot events require an actual mascot change; a color-only update does not count. Letter and wishlist events follow successful state changes. The destination remains unconfigured, so these events do not leave the device even after a parent opts in. `secret_quest_completed` is reserved for its future product flow. Failed saves and duplicate cloud commands must not emit an event; the latter depends on the atomic transition results introduced by migrations `202609240006` and `202609240007`.
+
+## Parental consent gate
+
+Authenticated parents can explicitly enable or revoke anonymous measurement in family settings. The choice is stored per family, parent, consent type, and policy version; the default is off when no record exists. Revocation is retained as a timestamp rather than deleting the consent history. The application loads this durable choice into the store's `analyticsOptIn` gate, but it still does not configure an event sink or send analytics requests. Migration `202609250002_analytics_parent_consent.sql` extends the existing consent scope for this record and must be applied before the production UI is deployed.
 
 ## Dashboard definitions and prerequisites
 
@@ -27,4 +31,4 @@ The application defines a strict, content-free event boundary in [`src/lib/produ
 | Completion rate | completed eligible quests / eligible quests shown | eligibility/exposure event, excluding unavailable tasks |
 | NPS | % promoters (9–10) minus % detractors (0–6) | optional parent-only survey; never ask the child |
 
-None of these dashboard figures is available yet. Do not infer them from event counts or show them as real performance data. The store accepts an event sink only when its explicit `analyticsOptIn` gate is true; no application entry point sets that gate today. Before configuring PostHog or another vendor, obtain and persist the required parental opt-in, document retention/deletion and regional processing, and validate the destination in non-production. Production collection stays disabled until those gates pass.
+None of these dashboard figures is available yet. Do not infer them from event counts or show them as real performance data. The store accepts an event sink only when its explicit `analyticsOptIn` gate is true, and the application now derives that gate from the authenticated parent's durable choice. Before configuring PostHog or another vendor, document retention/deletion and regional processing, add a stable pseudonymous identifier, and validate the destination in non-production. Production collection stays disabled until those gates pass.

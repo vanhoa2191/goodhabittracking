@@ -11,7 +11,7 @@ import {
 } from "@/lib/i18n/language-detection";
 import { translations } from "@/lib/i18n/translations";
 import { AppearanceProvider } from "@/lib/appearance-context";
-import { AppStoreProvider } from "@/lib/store";
+import { AnalyticsConsentProvider } from "@/lib/analytics-consent-context";
 
 const displayFont = Fraunces({
   axes: ['SOFT', 'opsz'],
@@ -69,7 +69,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col bg-app-surface dark:bg-zinc-950 text-ink dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
         <AppearanceProvider>
           <I18nProvider initialLanguage={initialLanguage}>
-            <AppStoreProvider>{children}</AppStoreProvider>
+            <AnalyticsConsentProvider>{children}</AnalyticsConsentProvider>
           </I18nProvider>
         </AppearanceProvider>
       </body>

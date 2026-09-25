@@ -228,6 +228,7 @@ describe('family tenancy migration', () => {
       '202609240007_wishlist_change_transition.sql',
       '202609240008_legacy_template_backfill.sql',
       '202609250001_child_task_deferrals.sql',
+      '202609250002_analytics_parent_consent.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
