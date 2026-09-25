@@ -85,6 +85,60 @@ test('a legacy template keeps its catalog ID after joining the active collection
   await expect(page.getByText('Task ID: WIT-NUT-01')).toBeVisible();
 });
 
+test('a custom habit with a template title does not occupy the legacy library card', async ({ page }, testInfo) => {
+  test.setTimeout(60_000);
+  await page.goto('/');
+  await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
+  await page.reload();
+  await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
+  await page.getByRole('button', { name: /^Parent/ }).click();
+  for (const digit of ['1', '2', '3', '4']) {
+    await page.getByRole('dialog').getByRole('button', { name: digit, exact: true }).click();
+  }
+  await page.getByRole('tab', { name: 'Design' }).click();
+  await page.getByRole('tab', { name: 'Habits' }).click();
+  await page.getByRole('button', { name: 'Library', exact: true }).click();
+  const card = page.locator('[data-template-id="WIT-NUT-01"]');
+  const templateTitle = await card.getByRole('heading').textContent();
+  expect(templateTitle).toBeTruthy();
+
+  await page.getByRole('button', { name: 'In use', exact: true }).click();
+  await page.getByRole('button', { name: 'Create New Habit' }).click();
+  const habitDialog = page.getByRole('dialog', { name: 'Create New Habit' });
+  await habitDialog.getByPlaceholder('For example: Wash hands before eating…').fill(templateTitle ?? '');
+  await habitDialog.getByRole('button', { name: 'Save', exact: true }).click();
+  await expect(habitDialog).toHaveCount(0);
+
+  await page.getByRole('button', { name: 'Library', exact: true }).click();
+  await expect(card.getByRole('button', { name: 'Add to child' })).toBeEnabled();
+  await page.addStyleTag({ content: 'nextjs-portal { display: none !important; }' });
+  for (const width of [375, 768, 1280]) {
+    await page.setViewportSize({ width, height: 812 });
+    await expect(card).toBeVisible();
+    await card.evaluate((element) => {
+      const bounds = element.getBoundingClientRect();
+      window.scrollTo(0, Math.max(0, window.scrollY + bounds.top - (window.innerHeight - bounds.height) / 2));
+    });
+    await expect.poll(() => card.evaluate((element) => element.getBoundingClientRect().top)).toBeGreaterThan(96);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await card.screenshot({ path: testInfo.outputPath(`legacy-template-available-${width}.png`) });
+  }
+  await page.setViewportSize({ width: 375, height: 812 });
+  for (const locale of ['zh', 'ja', 'ko']) {
+    const menuButton = page.getByTestId('more-menu');
+    await menuButton.click();
+    await menuButton.locator('xpath=..').getByRole('button', { name: new RegExp(`${locale.toUpperCase()}$`) }).click();
+    await menuButton.click();
+    await expect(page.locator('html')).toHaveAttribute('lang', locale);
+    await expect(card.getByRole('button')).toBeEnabled();
+    await card.evaluate((element) => {
+      const bounds = element.getBoundingClientRect();
+      window.scrollTo(0, Math.max(0, window.scrollY + bounds.top - (window.innerHeight - bounds.height) / 2));
+    });
+    await card.screenshot({ path: testInfo.outputPath(`legacy-template-available-${locale}-375.png`) });
+  }
+});
+
 test('a demo assignment remains available after reloading the same tab', async ({ page }) => {
   // Given
   await page.goto('/');

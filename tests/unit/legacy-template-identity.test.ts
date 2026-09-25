@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { WIT_HABIT_PACKS } from '@/lib/constants';
 import { activityMutationSchema } from '@/lib/domain/activity-mutations';
 import { mapHabitActivityRow } from '@/lib/supabase/mappers';
+import { localizeWitTemplate } from '@/lib/i18n/wit-template-copy';
+import { SUPPORTED_LANGUAGES } from '@/lib/i18n/context';
+import { matchesLegacyTemplateAssignment } from '@/lib/legacy-template-identity';
+import type { HabitActivity } from '@/types';
 
 describe('legacy habit template identity', () => {
   it('has an explicit, unique identifier for every template', () => {
@@ -66,5 +70,64 @@ describe('legacy habit template identity', () => {
 
     // Then
     expect(result.success).toBe(true);
+  });
+
+  it('recognizes an exact old template but not a custom habit with only its title', () => {
+    const template = WIT_HABIT_PACKS[0].items[0];
+    const localized = SUPPORTED_LANGUAGES.map(({ code }) => localizeWitTemplate(template, 0, code));
+    const english = localizeWitTemplate(template, 0, 'en');
+    const activity: HabitActivity = {
+      id: '11111111-1111-4111-8111-111111111111',
+      childId: null,
+      title: english.title,
+      description: english.description,
+      instructions: english.description,
+      icon: template.icon,
+      category: template.category,
+      points: template.points,
+      recurrenceType: 'daily',
+      recurrenceDays: [0, 1, 2, 3, 4, 5, 6],
+      timeOfDay: template.timeOfDay,
+      durationMinutes: template.durationMinutes ?? 0,
+      requiresApproval: Boolean(template.requiresApproval),
+      isActive: true,
+      createdAt: '2026-09-24T00:00:00.000Z',
+    };
+
+    for (const copy of localized) {
+      expect(matchesLegacyTemplateAssignment({
+        ...activity,
+        title: copy.title,
+        description: copy.description,
+        instructions: copy.description,
+      }, template, localized)).toBe(true);
+    }
+    expect(matchesLegacyTemplateAssignment({ ...activity, description: 'A different goal' }, template, localized)).toBe(false);
+    expect(matchesLegacyTemplateAssignment({ ...activity, recurrenceType: 'weekdays' }, template, localized)).toBe(false);
+  });
+
+  it('uses a persisted template ID after edits and rejects a different ID', () => {
+    const giving = WIT_HABIT_PACKS.find((pack) => pack.key === 'giving');
+    if (!giving) throw new Error('The giving template pack is missing');
+    const template = giving.items[1];
+    const copies = SUPPORTED_LANGUAGES.map(({ code }) => localizeWitTemplate(template, 1, code));
+    const activity: HabitActivity = {
+      id: '11111111-1111-4111-8111-111111111111',
+      childId: null,
+      title: 'A parent-edited title',
+      icon: template.icon,
+      category: template.category,
+      points: template.points,
+      recurrenceType: 'daily',
+      recurrenceDays: [0, 1, 2, 3, 4, 5, 6],
+      timeOfDay: template.timeOfDay,
+      requiresApproval: false,
+      isActive: true,
+      legacyTemplateId: template.id,
+      createdAt: '2026-09-24T00:00:00.000Z',
+    };
+
+    expect(matchesLegacyTemplateAssignment(activity, template, copies)).toBe(true);
+    expect(matchesLegacyTemplateAssignment({ ...activity, legacyTemplateId: giving.items[2].id }, template, copies)).toBe(false);
   });
 });

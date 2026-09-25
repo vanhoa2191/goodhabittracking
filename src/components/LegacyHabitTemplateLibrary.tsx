@@ -11,6 +11,7 @@ import { SUPPORTED_LANGUAGES } from '@/lib/i18n/context';
 import { localizeWitTemplate } from '@/lib/i18n/wit-template-copy';
 import { useAppStore } from '@/lib/store';
 import { useSevenDayCutoff } from '@/lib/use-seven-day-cutoff';
+import { matchesLegacyTemplateAssignment } from '@/lib/legacy-template-identity';
 
 type LegacyHabitTemplateLibraryProps = Readonly<{
   onMutationError: (message: string) => void;
@@ -99,9 +100,9 @@ export function LegacyHabitTemplateLibrary({ onMutationError }: LegacyHabitTempl
         {currentPack.items.map((item, index) => {
           const localized = localizeWitTemplate(item, index, language);
           const templateId = item.id;
-          const titles = SUPPORTED_LANGUAGES.map((option) => localizeWitTemplate(item, index, option.code).title);
-          const matchingIds = new Set(activities.filter((activity) => activity.legacyTemplateId === templateId
-            || (!activity.legacyTemplateId && !activity.frameworkHabitId && titles.includes(activity.title))).map((activity) => activity.id));
+          const localizedCopies = SUPPORTED_LANGUAGES.map((option) => localizeWitTemplate(item, index, option.code));
+          const matchingIds = new Set(activities.filter((activity) =>
+            matchesLegacyTemplateAssignment(activity, item, localizedCopies)).map((activity) => activity.id));
           const isAdded = matchingIds.size > 0;
           const completionCount = logs.filter((log) => matchingIds.has(log.activityId)
             && (log.status === 'completed' || log.status === 'approved')
@@ -110,7 +111,7 @@ export function LegacyHabitTemplateLibrary({ onMutationError }: LegacyHabitTempl
             <article key={templateId} data-template-id={templateId} className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-zinc-700 dark:bg-zinc-800/60">
               <div className="space-y-1">
                 <p className="font-mono text-xs text-slate-600 dark:text-slate-300">{navigationCopy.activityId}: {templateId}</p>
-                <h5 className="text-sm font-extrabold text-slate-800 dark:text-slate-100">{localized.title}</h5>
+                <h5 className="text-balance text-sm font-extrabold text-slate-800 dark:text-slate-100">{localized.title}</h5>
                 {localized.description && <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{localized.description}</p>}
                 {isAdded && <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">{navigationCopy.lastSevenDays(completionCount)}</p>}
               </div>
