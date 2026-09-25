@@ -23,3 +23,4 @@
 \ir migrations/202609240005_journey_habit_identity.sql
 \ir migrations/202609240006_daily_letter_read_transition.sql
 \ir migrations/202609240007_wishlist_change_transition.sql
+\ir migrations/202609240008_legacy_template_backfill.sql
