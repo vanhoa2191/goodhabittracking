@@ -169,6 +169,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     lettersResult,
     questsResult,
     wishlistsResult,
+    deferredTasksResult,
   ] = await Promise.all([
     supabase.from('child_profiles').select('*').eq('family_id', familyId),
     supabase.from('habit_activities').select('*').eq('family_id', familyId),
@@ -189,6 +190,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     experienceEnabled ? supabase.from('daily_mascot_letters').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
     experienceEnabled ? supabase.from('secret_quests').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
     supabase.from('child_wishlists').select('*').eq('family_id', familyId),
+    supabase.from('child_task_deferrals').select('*').eq('family_id', familyId),
   ]);
 
   const failedResult = [
@@ -207,6 +209,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     lettersResult,
     questsResult,
     wishlistsResult,
+    deferredTasksResult,
   ].find((result) => result.error);
   if (failedResult?.error) throw failedResult.error;
 
@@ -228,6 +231,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
       letters: lettersResult.data ?? [],
       quests: questsResult.data ?? [],
       wishlists: wishlistsResult.data ?? [],
+      deferredTasks: deferredTasksResult.data ?? [],
     },
   };
 }

@@ -16,6 +16,13 @@ import { GET, POST } from '@/app/api/domain/experience/route';
 
 const familyId = '11111111-1111-4111-8111-111111111111';
 const childId = '22222222-2222-4222-8222-222222222222';
+const deferredTask = {
+  family_id: familyId,
+  child_id: childId,
+  activity_id: childId,
+  local_date: '2026-09-25',
+  deferred_at: '2026-09-25T12:00:00.000Z',
+};
 
 function request(body: unknown): NextRequest {
   return new NextRequest('http://localhost/api/domain/experience', {
@@ -50,7 +57,7 @@ describe('/api/domain/experience', () => {
     const response = await GET();
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({
-      children: [], settings: null, letters: [], quests: [], wishlists: [],
+      children: [], settings: null, letters: [], quests: [], wishlists: [], deferredTasks: [],
     });
   });
 
@@ -90,5 +97,29 @@ describe('/api/domain/experience', () => {
     const response = await POST(request({ type: 'chooseWishlist', childId, rewardId: childId }));
     expect(response.status).toBe(409);
     expect(rpc).toHaveBeenCalledOnce();
+  });
+
+  it('saves a dated task deferral through the parent family boundary', async () => {
+    rpc.mockResolvedValue({ data: { status: 'saved', changed: true, deferredTask }, error: null });
+    const response = await POST(request({
+      type: 'setTaskDeferred', childId, activityId: childId, date: '2026-09-25', deferred: true,
+    }));
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ success: true, changed: true, deferredTask });
+    expect(rpc).toHaveBeenCalledWith('set_parent_task_deferral', {
+      target_family_id: familyId,
+      target_child_id: childId,
+      target_activity_id: childId,
+      target_local_date: '2026-09-25',
+      should_defer: true,
+    });
+  });
+
+  it('rejects a completed task deferral without a false success', async () => {
+    rpc.mockResolvedValue({ data: { status: 'already_complete' }, error: null });
+    const response = await POST(request({
+      type: 'setTaskDeferred', childId, activityId: childId, date: '2026-09-25', deferred: true,
+    }));
+    expect(response.status).toBe(409);
   });
 });

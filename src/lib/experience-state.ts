@@ -40,6 +40,13 @@ const wishlistRow = z.object({
   reward_id: uuid,
   chosen_at: timestamp,
 });
+const deferredTaskRow = z.object({
+  family_id: uuid,
+  child_id: uuid,
+  activity_id: uuid,
+  local_date: z.iso.date(),
+  deferred_at: timestamp,
+});
 
 export type ChildEngagement = z.infer<typeof childEngagementRow>;
 export type FamilyEngagementSettings = z.infer<typeof familySettingsRow>;
@@ -47,9 +54,18 @@ export type FamilyPausePeriod = z.infer<typeof pausePeriodRow>;
 export type DailyMascotLetter = z.infer<typeof dailyLetterRow>;
 export type SecretQuest = z.infer<typeof secretQuestRow>;
 export type ChildWishlist = z.infer<typeof wishlistRow>;
+export type DeferredTask = z.infer<typeof deferredTaskRow>;
 
 export function parseChildWishlist(input: unknown): ChildWishlist {
   return wishlistRow.parse(input);
+}
+
+export function parseDeferredTask(input: unknown): DeferredTask {
+  return deferredTaskRow.parse(input);
+}
+
+export function parseDeferredTasks(input: unknown): DeferredTask[] {
+  return z.array(deferredTaskRow).parse(input);
 }
 
 export type ExperienceState = {
@@ -58,6 +74,7 @@ export type ExperienceState = {
   readonly letters: readonly DailyMascotLetter[];
   readonly quests: readonly SecretQuest[];
   readonly wishlists: readonly ChildWishlist[];
+  readonly deferredTasks: readonly DeferredTask[];
 };
 
 export const emptyExperienceState: ExperienceState = {
@@ -66,6 +83,7 @@ export const emptyExperienceState: ExperienceState = {
   letters: [],
   quests: [],
   wishlists: [],
+  deferredTasks: [],
 };
 
 const experienceRows = z.object({
@@ -74,6 +92,7 @@ const experienceRows = z.object({
   letters: z.array(dailyLetterRow),
   quests: z.array(secretQuestRow),
   wishlists: z.array(wishlistRow),
+  deferredTasks: z.array(deferredTaskRow).default([]),
 });
 
 const demoChildId = z.string().min(1);
@@ -82,6 +101,7 @@ const demoExperienceRows = experienceRows.extend({
   letters: z.array(dailyLetterRow.extend({ child_id: demoChildId })),
   quests: z.array(secretQuestRow.extend({ child_id: demoChildId })),
   wishlists: z.array(wishlistRow.extend({ child_id: demoChildId, reward_id: z.string().min(1) })),
+  deferredTasks: z.array(deferredTaskRow.extend({ child_id: demoChildId, activity_id: z.string().min(1) })).default([]),
 });
 
 export function parseExperienceState(input: unknown, familyId: string, isDemo = false): ExperienceState {
@@ -91,10 +111,34 @@ export function parseExperienceState(input: unknown, familyId: string, isDemo = 
     ...state.letters,
     ...state.quests,
     ...state.wishlists,
+    ...state.deferredTasks,
     ...(state.settings ? [state.settings] : []),
   ];
   if (rows.some((row) => row.family_id !== familyId)) {
     throw new Error('Experience state contains another family.');
   }
   return state;
+}
+
+export function setDeferredTask(
+  state: ExperienceState,
+  task: DeferredTask,
+  deferred: boolean,
+): ExperienceState {
+  const exists = state.deferredTasks.some((row) =>
+    row.child_id === task.child_id
+    && row.activity_id === task.activity_id
+    && row.local_date === task.local_date,
+  );
+  if (exists === deferred) return state;
+  return {
+    ...state,
+    deferredTasks: deferred
+      ? [...state.deferredTasks, task]
+      : state.deferredTasks.filter((row) =>
+          row.child_id !== task.child_id
+          || row.activity_id !== task.activity_id
+          || row.local_date !== task.local_date,
+        ),
+  };
 }

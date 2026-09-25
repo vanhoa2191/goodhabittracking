@@ -1,6 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ActivityLog, ChildBadge, ChildProfile, HabitActivity } from '@/types';
+import { emptyExperienceState } from '@/lib/experience-state';
+import type { ExperienceState } from '@/lib/experience-state';
 
 const { requestChildDomainCommand, requestDomainCommand } = vi.hoisted(() => ({
   requestChildDomainCommand: vi.fn(),
@@ -71,6 +73,7 @@ function createState(
   let profiles = [child];
   let logs: ActivityLog[] = [];
   let childBadges: ChildBadge[] = [];
+  let experience: ExperienceState = emptyExperienceState;
   const setCloudSyncActive = vi.fn();
   const syncCloudFamily = vi.fn(async () => true);
   const refreshChildSession = vi.fn(async () => true);
@@ -92,6 +95,7 @@ function createState(
       setProfiles: stateSetter(() => profiles, (value) => { profiles = value; }),
       setLogs: stateSetter(() => logs, (value) => { logs = value; }),
       setChildBadges: stateSetter(() => childBadges, (value) => { childBadges = value; }),
+      setExperience: (action) => { experience = typeof action === 'function' ? action(experience) : action; },
     },
     storageMode,
     analyticsSink,
@@ -99,6 +103,8 @@ function createState(
   return {
     actions,
     read: () => ({ profiles, logs, childBadges }),
+    readExperience: () => experience,
+    setExperience: (value: ExperienceState) => { experience = value; },
     setCloudSyncActive,
     refreshChildSession,
     syncCloudFamily,
@@ -124,6 +130,23 @@ describe('habit actions', () => {
     expect(fixture.read().profiles[0]?.points).toBe(20);
     expect(requestDomainCommand).not.toHaveBeenCalled();
     expect(fixture.analyticsSink).toHaveBeenCalledWith({ event: 'task_ticked', action: 'completed', mode: 'local' });
+  });
+
+  it('clears a local deferral when the task is completed so undo does not restore it', async () => {
+    const fixture = createState('local');
+    fixture.setExperience({
+      ...emptyExperienceState,
+      deferredTasks: [{
+        family_id: '11111111-1111-4111-8111-111111111111',
+        child_id: child.id,
+        activity_id: activity.id,
+        local_date: '2026-09-20',
+        deferred_at: '2026-09-20T00:00:00.000Z',
+      }],
+    });
+
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20')).toBe(true);
+    expect(fixture.readExperience().deferredTasks).toEqual([]);
   });
 
   it('never falls back to local state when cloud authentication is missing', async () => {

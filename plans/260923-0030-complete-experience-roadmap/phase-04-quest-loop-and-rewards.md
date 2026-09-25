@@ -30,6 +30,7 @@ Turn daily tasks into accessible quests with a bounded evening surprise, persist
 
 - [x] Show a three-state fire from verified daily logs, with pending approval separate and undo reflected immediately; unit and desktop/mobile browser checks cover active, resting, and cold states.
 - [x] Save a child's reward goal locally and in the cloud for parents and paired child devices; reject inactive or cross-family rewards. Production migration `202609230005` is applied and invalid child sessions fail closed. A real paired-session write remains to verify with an authorized test child.
+- [ ] Quest defer/complete is implemented with tap, keyboard, and touch paths. Local demo and paired-response browser scenarios pass; migration `202609250001` and its read-only verifier are prepared but not applied to production. Real PostgreSQL family-isolation and concurrent transition checks remain release gates after a verified logical backup.
 - [ ] Early/expired quest attempts fail calmly.
 - [ ] Three children complete three quests without instruction.
 

@@ -105,6 +105,7 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 - Layout: stack or wrapping cluster; one column on narrow screens.
 - States: normal, empty, warning, and error content must be explicit rather than color-only.
 - The morning letter is a warm amber card below the child hero, not a blocking popup. Its heading and date precede three readable sentences; read state is a text-and-icon badge, and the confirmation button is at least 44px high. On narrow screens the badge moves below the heading rather than compressing it.
+- Child quest cards retain their visible completion button and add a labelled `Để sau` / `Làm ngay` control. Deferred cards move to a clearly named group for the selected day; they remain in that day's total and never earn points. Pending approval and completed cards cannot be deferred.
 
 ### Framework and reward library cards
 
@@ -155,6 +156,7 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 - Motion must communicate state or affordance; no decorative hover motion on noninteractive content.
 - `prefers-reduced-motion` reduces animations and smooth scrolling globally.
 - Disabled controls do not animate on hover or press.
+- Child quest cards may use a horizontal touch swipe as a shortcut: right completes, left defers. The page keeps native vertical scrolling (`touch-action: pan-y`); a swipe requires a clear horizontal threshold and rebounds to rest. Visible buttons provide the same actions for keyboard, mouse, and reduced-motion users. State changes only after the authoritative save succeeds; errors leave the card in place.
 
 ## 7. Depth & Surface
 

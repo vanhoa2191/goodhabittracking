@@ -12,6 +12,8 @@ import { DEFAULT_BADGES } from '@/lib/constants';
 import { sounds } from '@/lib/sound';
 import { approvalLagBucket, trackProductEvent } from '@/lib/product-analytics';
 import type { ProductEventSink } from '@/lib/product-analytics';
+import { setDeferredTask } from '@/lib/experience-state';
+import type { ExperienceState } from '@/lib/experience-state';
 import { requestChildDomainCommand, requestDomainCommand } from './domain-command-client';
 import { approvePendingLog, rejectPendingLog } from './local-domain-actions';
 import { toggleLocalHabit } from './local-habit-actions';
@@ -25,6 +27,7 @@ type HabitState = {
   readonly setProfiles: Dispatch<SetStateAction<ChildProfile[]>>;
   readonly setLogs: Dispatch<SetStateAction<ActivityLog[]>>;
   readonly setChildBadges: Dispatch<SetStateAction<ChildBadge[]>>;
+  readonly setExperience: Dispatch<SetStateAction<ExperienceState>>;
 };
 
 type CloudContext = {
@@ -152,6 +155,14 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
       dependencies.state.setLogs(transition.logs);
       dependencies.state.setProfiles(transition.profiles);
       dependencies.state.setChildBadges(transition.childBadges);
+      if (transition.kind !== 'undone') {
+        dependencies.state.setExperience((previous) => {
+          const deferred = previous.deferredTasks.find((row) =>
+            row.child_id === childId && row.activity_id === activityId && row.local_date === date,
+          );
+          return deferred ? setDeferredTask(previous, deferred, false) : previous;
+        });
+      }
       trackProductEvent({ event: 'task_ticked', action: transition.kind, mode: 'local' }, dependencies.analyticsSink);
 
       if (transition.kind === 'undone' || transition.kind === 'pending_approval') {

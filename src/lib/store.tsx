@@ -27,7 +27,7 @@ import {
 import { getPricingPlan } from './payos';
 import { sounds } from './sound';
 import { isSupabaseConfigured } from './supabase';
-import { emptyExperienceState, parseChildWishlist } from './experience-state';
+import { emptyExperienceState, parseChildWishlist, parseDeferredTask, setDeferredTask as updateDeferredTask } from './experience-state';
 import { createProductAnalyticsGate, createSessionTracker, recordLocalWishlistSelection, sessionMode } from './product-analytics';
 import type { ProductEventSink } from './product-analytics';
 import type { ExperienceState, FamilyPausePeriod } from './experience-state';
@@ -40,6 +40,7 @@ import { createRewardActions } from './store/reward-actions';
 import { createSocialActions } from './store/social-actions';
 import { createFamilyPauseAction } from './store/family-pause-actions';
 import { markLocalLetterRead, openLocalLetter } from './store/local-letter-actions';
+import { loadChildTaskDeferrals } from './store/task-deferral-client';
 import { requestTrialActivation } from './store/trial-activation-client';
 import { exportFamilyData, importFamilyData } from './store/family-backup-actions';
 import {
@@ -116,6 +117,7 @@ interface AppStoreContextType {
   familyPausePeriods: readonly FamilyPausePeriod[];
   setFamilyPaused: (paused: boolean) => Promise<boolean>;
   chooseWishlist: (rewardId: string) => Promise<boolean>;
+  setTaskDeferred: (activityId: string, date: string, deferred: boolean) => Promise<boolean>;
   ensureLocalDailyLetter: (childId: string, date: string, templateKey: string) => void;
   markLocalDailyLetterRead: (childId: string, date: string, templateKey: string) => void;
   recordCloudDailyLetterRead: () => void;
@@ -271,6 +273,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const sessionTracker = useMemo(() => createSessionTracker(guardedAnalyticsSink), [guardedAnalyticsSink]);
   const wishlistRequestVersion = useRef(0);
+  const deferralRequestVersion = useRef(0);
   const localWishlistSelections = useRef(new Map<string, string>());
   const recordedLocalLetterReads = useRef(new Set<string>());
 
@@ -508,6 +511,25 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     return () => controller.abort();
   }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, storageMode]);
 
+  useEffect(() => {
+    if (storageMode !== 'cloud' || currentUser || !isFamilyConnected || !activeChildId) return;
+    let cancelled = false;
+    const requestVersion = deferralRequestVersion.current;
+    void loadChildTaskDeferrals()
+      .then((deferredTasks) => {
+        if (cancelled || requestVersion !== deferralRequestVersion.current || !deferredTasks) return;
+        setExperience((previous) => ({
+          ...previous,
+          deferredTasks: [
+            ...previous.deferredTasks.filter((row) => row.child_id !== activeChildId),
+            ...deferredTasks,
+          ],
+        }));
+      })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, storageMode]);
+
   const chooseWishlist = async (rewardId: string): Promise<boolean> => {
     if (!activeChildId || !rewards.some((reward) => reward.id === rewardId && reward.isActive)) return false;
     const selectedChildId = activeChildId;
@@ -553,6 +575,56 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       if (parsed.changed) analyticsGate.record({ event: 'wishlist_selected', mode: 'cloud' });
       const synced = await syncFromSupabase(currentUser);
       return synced;
+    } catch {
+      return false;
+    }
+  };
+
+  const setTaskDeferred = async (activityId: string, date: string, deferred: boolean): Promise<boolean> => {
+    if (!activeChildId) return false;
+    const childId = activeChildId;
+    const activity = activities.find((row) => row.id === activityId);
+    if (!activity?.isActive || (activity.childId !== null && activity.childId !== childId)) return false;
+    if (deferred && logs.some((log) => log.childId === childId && log.activityId === activityId
+      && log.date === date && log.status !== 'rejected')) return false;
+
+    if (storageMode === 'local') {
+      setExperience((previous) => updateDeferredTask(previous, {
+        family_id: familyId ?? '00000000-0000-4000-8000-000000000000',
+        child_id: childId,
+        activity_id: activityId,
+        local_date: date,
+        deferred_at: new Date().toISOString(),
+      }, deferred));
+      return true;
+    }
+
+    const paired = !currentUser && isFamilyConnected;
+    if (!paired && !currentUser) return false;
+    try {
+      const response = await fetch(paired ? '/api/child/task-deferrals' : '/api/domain/experience', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(paired
+          ? { activityId, date, deferred }
+          : { type: 'setTaskDeferred', childId, activityId, date, deferred }),
+      });
+      if (!response.ok) return false;
+      const result: unknown = await response.json();
+      const saved = z.object({ deferredTask: z.unknown().nullable() }).parse(result);
+      const canonical = saved.deferredTask === null ? null : parseDeferredTask(saved.deferredTask);
+      if (deferred !== (canonical !== null)
+        || (canonical && (canonical.child_id !== childId
+          || canonical.activity_id !== activityId || canonical.local_date !== date))) return false;
+      deferralRequestVersion.current += 1;
+      setExperience((previous) => {
+        if (canonical) return updateDeferredTask(previous, canonical, true);
+        const existing = previous.deferredTasks.find((row) =>
+          row.child_id === childId && row.activity_id === activityId && row.local_date === date,
+        );
+        return existing ? updateDeferredTask(previous, existing, false) : previous;
+      });
+      return true;
     } catch {
       return false;
     }
@@ -675,6 +747,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       setProfiles,
       setLogs,
       setChildBadges,
+      setExperience,
     },
     storageMode,
     analyticsSink: guardedAnalyticsSink,
@@ -942,6 +1015,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         familyPausePeriods: isFamilyConnected && !currentUser ? pairedFamilyPausePeriods : experience.settings?.pause_periods ?? [],
         setFamilyPaused,
         chooseWishlist,
+        setTaskDeferred,
         ensureLocalDailyLetter,
         markLocalDailyLetterRead,
         recordCloudDailyLetterRead,

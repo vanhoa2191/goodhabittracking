@@ -243,9 +243,9 @@ export default function Home() {
 
       <footer className="w-full py-6 border-t border-slate-100 dark:border-zinc-800 text-center text-xs text-slate-400 px-4">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 font-medium">
-          <p className="flex items-center justify-center gap-1.5">
-            <span>⭐</span>
-            <span>{t.appName} &bull; {t.appSlogan}</span>
+          <p className="flex w-full min-w-0 max-w-full items-start justify-center gap-1.5 sm:w-auto">
+            <span className="shrink-0">⭐</span>
+            <span className="min-w-0 break-words">{t.appName} &bull; {t.appSlogan}</span>
           </p>
           <span className="hidden sm:inline text-slate-300 dark:text-zinc-700">&bull;</span>
           {!(isFamilyConnected && !currentUser) && <Link href="/docs" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>}

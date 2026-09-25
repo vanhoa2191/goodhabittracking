@@ -42,6 +42,8 @@ import { habitFireForChild, localDayKey } from '@/lib/habit-fire';
 import { getHabitFireCopy } from '@/lib/i18n/habit-fire-copy';
 import { familyPauseCopy } from '@/lib/i18n/family-pause-copy';
 import { getWishlistSaveError } from '@/lib/i18n/wishlist-copy';
+import { getKidQuestCopy } from '@/lib/i18n/kid-quest-copy';
+import { QuestSwipeSurface } from './QuestSwipeSurface';
 
 export function KidDashboard() {
   const {
@@ -49,6 +51,7 @@ export function KidDashboard() {
     activities,
     logs,
     toggleActivity,
+    setTaskDeferred,
     rewards,
     experience,
     isFamilyPaused,
@@ -63,6 +66,7 @@ export function KidDashboard() {
 
   const { t, language } = useTranslation();
   const copy = getKidDashboardCopy(language);
+  const questCopy = getKidQuestCopy(language);
 
   const [activeTab, setActiveTab] = useState<'tasks' | 'leaderboard' | 'rewards' | 'badges'>('tasks');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -74,11 +78,15 @@ export function KidDashboard() {
   const [completionError, setCompletionError] = useState<string | null>(null);
   const [pointBurstId, setPointBurstId] = useState<string | null>(null);
   const [completionStatusId, setCompletionStatusId] = useState<string | null>(null);
+  const [savingTaskId, setSavingTaskId] = useState<string | null>(null);
   const visibleTab = isFamilyPaused && activeTab === 'leaderboard' ? 'tasks' : activeTab;
 
   const completeTask = async (activity: HabitActivity, date: string) => {
+    if (savingTaskId === activity.id) return;
     setCompletionError(null);
+    setSavingTaskId(activity.id);
     const saved = await toggleActivity(activity.id, date);
+    setSavingTaskId(null);
     if (!saved) {
       setCompletionError(activity.id);
       setPointBurstId(null);
@@ -87,6 +95,15 @@ export function KidDashboard() {
     setCompletionStatusId(activity.id);
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPointBurstId(activity.id);
     window.setTimeout(() => setPointBurstId((id) => id === activity.id ? null : id), 1200);
+  };
+
+  const changeTaskDeferral = async (activity: HabitActivity, date: string, deferred: boolean) => {
+    if (savingTaskId === activity.id) return;
+    setCompletionError(null);
+    setSavingTaskId(activity.id);
+    const saved = await setTaskDeferred(activity.id, date, deferred);
+    setSavingTaskId(null);
+    if (!saved) setCompletionError(activity.id);
   };
 
   if (!activeChild) {
@@ -151,6 +168,11 @@ export function KidDashboard() {
       .filter((l) => l.status === 'pending_approval')
       .map((l) => l.activityId)
   );
+  const deferredActivityIds = new Set(
+    experience.deferredTasks
+      .filter((row) => row.child_id === activeChild.id && row.local_date === dateStr)
+      .map((row) => row.activity_id),
+  );
 
   const completedCount = dueActivities.filter((a) => completedActivityIds.has(a.id)).length;
   const totalDue = dueActivities.length;
@@ -162,6 +184,10 @@ export function KidDashboard() {
     { key: 'afternoon', title: t.afternoon, icon: <Sunset className="w-4 h-4" />, color: 'text-orange-500 bg-orange-50 dark:bg-orange-950/30' },
     { key: 'evening', title: t.evening, icon: <Moon className="w-4 h-4" />, color: 'text-indigo-500 bg-indigo-50 dark:bg-indigo-950/30' },
     { key: 'anytime', title: t.anytime, icon: <Zap className="w-4 h-4" />, color: 'text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30' },
+  ];
+  const taskSections: { key: TimeOfDay | 'deferred'; title: string; icon: React.ReactNode; color: string }[] = [
+    ...timeSections,
+    { key: 'deferred', title: questCopy.deferredTitle, icon: <Hourglass className="w-4 h-4" />, color: 'text-amber-800 bg-amber-100 dark:text-amber-300 dark:bg-amber-950/30' },
   ];
 
   // Wishlist goal
@@ -440,8 +466,12 @@ export function KidDashboard() {
               <p className="font-semibold text-slate-600 dark:text-slate-300">{t.noTasksToday}</p>
             </div>
           ) : (
-            timeSections.map((sec) => {
-              const secActivities = dueActivities.filter((a) => a.timeOfDay === sec.key);
+            taskSections.map((sec) => {
+              const secActivities = dueActivities.filter((activity) => {
+                const completed = completedActivityIds.has(activity.id) || pendingApprovalIds.has(activity.id);
+                const deferred = deferredActivityIds.has(activity.id) && !completed;
+                return sec.key === 'deferred' ? deferred : activity.timeOfDay === sec.key && !deferred;
+              });
               if (secActivities.length === 0) return null;
 
               return (
@@ -457,17 +487,31 @@ export function KidDashboard() {
                     {secActivities.map((act) => {
                       const isDone = completedActivityIds.has(act.id);
                       const isPending = pendingApprovalIds.has(act.id);
+                      const isDeferred = deferredActivityIds.has(act.id) && !isDone && !isPending;
+                      const isSaving = savingTaskId === act.id;
 
                       return (
-                        <div
+                        <QuestSwipeSurface
                           key={act.id}
+                          completeLabel={t.tickDone}
+                          deferLabel={questCopy.defer}
+                          canComplete={!isDone && !isPending && !isSaving}
+                          canDefer={!isDeferred && !isDone && !isPending && !isSaving}
+                          onComplete={() => { void completeTask(act, dateStr); }}
+                          onDefer={() => { void changeTaskDeferral(act, dateStr, true); }}
+                        >
+                        <div
                           data-task-card
+                          data-activity-id={act.id}
                           data-complete={isDone ? 'true' : 'false'}
+                          data-deferred={isDeferred ? 'true' : 'false'}
                           className={`relative group rounded-2xl p-4 transition-all duration-200 border ${
                             isDone
                               ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200/80 dark:border-emerald-900/40 opacity-80'
                               : isPending
                               ? 'bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900/40'
+                              : isDeferred
+                              ? 'bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900/40'
                               : 'bg-white dark:bg-zinc-900 border-slate-100 dark:border-zinc-800/80 hover:shadow-md hover:border-indigo-100 dark:hover:border-indigo-900/30'
                           }`}
                         >
@@ -523,7 +567,7 @@ export function KidDashboard() {
                                   </span>
 
                                   {/* Timer button if configured */}
-                                  {act.durationMinutes && act.durationMinutes > 0 && (
+                                  {act.durationMinutes != null && act.durationMinutes > 0 && (
                                     <button
                                       type="button"
                                       onClick={(event) => {
@@ -549,6 +593,8 @@ export function KidDashboard() {
 
                             {/* Action Checkbox Button with Claymorphic Feel & Haptic Feedback */}
                             <button
+                              type="button"
+                              disabled={isSaving}
                               onClick={(event) => {
                                 event.stopPropagation();
                                 if (typeof window !== 'undefined' && 'vibrate' in navigator) {
@@ -580,9 +626,23 @@ export function KidDashboard() {
                             </button>
                             {pointBurstId === act.id && <span data-testid="point-burst" className="pointer-events-none absolute right-3 top-0 -translate-y-1/2 rounded-full bg-amber-400 px-2 py-1 text-xs font-black text-slate-900 motion-safe:animate-bounce">+{act.points} ⭐</span>}
                           </div>
+                          {!isDone && !isPending && (
+                            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3 dark:border-zinc-700/70">
+                              <span className="text-sm text-slate-600 dark:text-slate-300">{questCopy.swipeHint}</span>
+                              <button
+                                type="button"
+                                disabled={isSaving}
+                                onClick={() => { void changeTaskDeferral(act, dateStr, !isDeferred); }}
+                                className="min-h-11 rounded-xl border border-amber-300 bg-amber-50 px-3 text-sm font-bold text-amber-900 hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200 dark:hover:bg-amber-950/70"
+                              >
+                                {isSaving ? questCopy.saving : isDeferred ? questCopy.doNow : questCopy.defer}
+                              </button>
+                            </div>
+                          )}
                           {completionStatusId === act.id && <span role="status" className="sr-only">{language === 'vi' ? 'Hoàn thành' : 'Completed'}</span>}
-                          {completionError === act.id && <p role="alert" className="mt-3 text-sm font-bold text-rose-600">{language === 'vi' ? 'Chưa lưu được. Con thử lại nhé.' : 'Could not save. Please try again.'}</p>}
+                          {completionError === act.id && <p role="alert" className="mt-3 text-sm font-bold text-rose-600">{questCopy.saveError}</p>}
                         </div>
+                        </QuestSwipeSurface>
                       );
                     })}
                   </div>
