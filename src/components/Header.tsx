@@ -147,7 +147,7 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
               : 'bg-parent-surface/95 border-sand-200 before:bg-transparent dark:bg-zinc-950/90 dark:border-zinc-800'
         }`}
       >
-        <div className="max-w-6xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-1.5 sm:gap-2">
+        <div className="mx-auto flex h-16 w-full max-w-[1536px] items-center justify-between gap-1.5 px-3 sm:gap-2 sm:px-6">
           {/* Left: Logo & Slogan */}
           <div
             onClick={onToggleLanding ? onToggleLanding : undefined}
