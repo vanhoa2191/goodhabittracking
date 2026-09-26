@@ -9,6 +9,19 @@ function deferred() {
   return { promise, release };
 }
 
+test('an anonymous visitor does not request persisted analytics consent', async ({ page }) => {
+  let requestCount = 0;
+  await page.route('**/api/privacy/analytics-consent', (route) => {
+    requestCount += 1;
+    return route.fulfill({ status: 401, contentType: 'application/json', body: JSON.stringify({ error: 'unauthorized' }) });
+  });
+
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+
+  expect(requestCount).toBe(0);
+});
+
 test('a signed-in parent can manage anonymous measurement across responsive and CJK layouts', async ({ page }, testInfo) => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   test.skip(!supabaseUrl, 'The browser auth client requires public Supabase configuration.');
@@ -84,7 +97,7 @@ test('a signed-in parent can manage anonymous measurement across responsive and 
     element.scrollIntoView({ block: 'center', behavior: 'auto' });
   });
   await expect(consent).toBeDisabled();
-  await expect(page.getByText('Đang tải lựa chọn…')).toBeVisible();
+  await expect(vietnameseConsentCard.getByText('Đang tải lựa chọn…')).toBeVisible();
   await page.screenshot({ path: testInfo.outputPath('analytics-consent-vi-loading-mobile.png') });
 
   initialLoadReleased = true;

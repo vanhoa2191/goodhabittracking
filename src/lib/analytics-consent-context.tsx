@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { z } from 'zod';
 import { AppStoreProvider } from '@/lib/store';
-import { isSupabaseConfigured } from '@/lib/supabase/browser';
+import { getBrowserSupabase, isSupabaseConfigured } from '@/lib/supabase/browser';
 
 const consentResponse = z.strictObject({ enabled: z.boolean() });
 
@@ -52,9 +52,17 @@ export function AnalyticsConsentProvider({ children }: Readonly<{ children: Reac
   useEffect(() => {
     if (!canPersistConsent) return;
 
+    const supabase = getBrowserSupabase();
+    if (!supabase) return;
+
     const controller = new AbortController();
-    void fetch('/api/privacy/analytics-consent', { signal: controller.signal })
+    void supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        if (!session || controller.signal.aborted) return null;
+        return fetch('/api/privacy/analytics-consent', { signal: controller.signal });
+      })
       .then(async (response) => {
+        if (!response) return { enabled: false };
         if (!response.ok) return null;
         const parsed = consentResponse.safeParse(await response.json());
         return parsed.success ? parsed.data : null;
@@ -76,6 +84,14 @@ export function AnalyticsConsentProvider({ children }: Readonly<{ children: Reac
 
   const save = useCallback(async (nextEnabled: boolean) => {
     if (!canPersistConsent) return;
+
+    const supabase = getBrowserSupabase();
+    if (!supabase) return;
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      setHasError(true);
+      return;
+    }
 
     const previous = consent;
     dispatch({ type: 'save-started', enabled: nextEnabled });
