@@ -20,6 +20,7 @@
     "verify:live-boundaries": "node scripts/verify-live-family-boundaries.mjs",
     "verify:live-lifecycle": "node scripts/verify-live-family-lifecycle.mjs",
     "verify:habit-framework": "node scripts/verify-habit-framework-source.mjs",
+    "report:experiment": "node --experimental-strip-types --no-warnings scripts/report-safe-evolve-experiment.mjs",
     "build:cloudflare": "node scripts/run-cloudflare.mjs build",
     "preview:cloudflare": "node scripts/run-cloudflare.mjs preview",
     "deploy:cloudflare": "node scripts/run-cloudflare.mjs deploy",

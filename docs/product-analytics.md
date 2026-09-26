@@ -32,3 +32,15 @@ Authenticated parents can explicitly enable or revoke anonymous measurement in f
 | NPS | % promoters (9–10) minus % detractors (0–6) | optional parent-only survey; never ask the child |
 
 None of these dashboard figures is available yet. Do not infer them from event counts or show them as real performance data. The store accepts an event sink only when its explicit `analyticsOptIn` gate is true, and the application now derives that gate from the authenticated parent's durable choice. Before configuring PostHog or another vendor, document retention/deletion and regional processing, add a stable pseudonymous identifier, and validate the destination in non-production. Production collection stays disabled until those gates pass.
+
+## Safe versus Evolve pre-registration
+
+The `safe-vs-evolve-v1` analysis contract is pre-registered in [`src/lib/experiment-report.ts`](../src/lib/experiment-report.ts). Safe is the control experience; Evolve is the feature-flagged engagement experience. The North Star is completed tasks per child-facing session. The mandatory stop guardrail is the Evolve arm's average child-session duration: if it exceeds 480 seconds, pause Evolve and reduce engagement prompts before any restart.
+
+The reporter accepts only aggregate-ready observations with an opaque, externally salted participant key, arm, exposure state, and bounded session summaries. Its strict boundary rejects extra fields such as names, free text, full identifiers, timestamps, pairing data, and payment data. It never emits participant keys. Generate a report with:
+
+```bash
+npm run report:experiment -- /absolute/path/to/anonymized-observations.json
+```
+
+The output reports assigned sample, actual exposure, completed tasks per session, and the eight-minute guardrail. It is deliberately descriptive-only until a baseline, minimum detectable effect, power, and approved sample size are registered. It cannot declare a winning arm. With no real consented export, the experiment remains not started; do not substitute demo or synthetic fixtures for product evidence.

@@ -29,6 +29,8 @@ Add Dream City, one-sentence journal, consented parent reminder, and controlled 
 - [x] No push is sent without explicit device permission and parent consent. This release provides in-app reminders and only records browser readiness after an explicit permission action; it does not send push notifications.
 - [ ] Experiment reports sample, exposure, North Star, and guardrails.
 
+The strict `safe-vs-evolve-v1` reporter and CLI now compute those four fields from an anonymized export, reject personal or duplicate records, and stop Evolve above the 480-second average-session guardrail. The experiment itself has not started: analytics destination validation, a stable salted pseudonym, retention/regional-processing decisions, baseline, power, and approved sample size remain required before collecting real exposure.
+
 ## Success Criteria
 
 Pause or reduce engagement loops if session duration exceeds the eight-minute guardrail.
