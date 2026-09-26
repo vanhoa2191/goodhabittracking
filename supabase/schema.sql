@@ -26,3 +26,4 @@
 \ir migrations/202609240008_legacy_template_backfill.sql
 \ir migrations/202609250001_child_task_deferrals.sql
 \ir migrations/202609250002_analytics_parent_consent.sql
+\ir migrations/202609260001_child_journal.sql

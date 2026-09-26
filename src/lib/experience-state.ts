@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { journalEntrySchema } from '@/lib/child-journal';
+import type { JournalEntry } from '@/lib/child-journal';
 
 const uuid = z.string().uuid();
 const timestamp = z.string().datetime({ offset: true });
@@ -75,6 +77,7 @@ export type ExperienceState = {
   readonly quests: readonly SecretQuest[];
   readonly wishlists: readonly ChildWishlist[];
   readonly deferredTasks: readonly DeferredTask[];
+  readonly journalEntries: readonly JournalEntry[];
 };
 
 export const emptyExperienceState: ExperienceState = {
@@ -84,6 +87,7 @@ export const emptyExperienceState: ExperienceState = {
   quests: [],
   wishlists: [],
   deferredTasks: [],
+  journalEntries: [],
 };
 
 const experienceRows = z.object({
@@ -93,6 +97,7 @@ const experienceRows = z.object({
   quests: z.array(secretQuestRow),
   wishlists: z.array(wishlistRow),
   deferredTasks: z.array(deferredTaskRow).default([]),
+  journalEntries: z.array(journalEntrySchema).default([]),
 });
 
 const demoChildId = z.string().min(1);
@@ -102,6 +107,7 @@ const demoExperienceRows = experienceRows.extend({
   quests: z.array(secretQuestRow.extend({ child_id: demoChildId })),
   wishlists: z.array(wishlistRow.extend({ child_id: demoChildId, reward_id: z.string().min(1) })),
   deferredTasks: z.array(deferredTaskRow.extend({ child_id: demoChildId, activity_id: z.string().min(1) })).default([]),
+  journalEntries: z.array(journalEntrySchema.extend({ child_id: demoChildId })).default([]),
 });
 
 export function parseExperienceState(input: unknown, familyId: string, isDemo = false): ExperienceState {
@@ -112,12 +118,25 @@ export function parseExperienceState(input: unknown, familyId: string, isDemo = 
     ...state.quests,
     ...state.wishlists,
     ...state.deferredTasks,
+    ...state.journalEntries,
     ...(state.settings ? [state.settings] : []),
   ];
   if (rows.some((row) => row.family_id !== familyId)) {
     throw new Error('Experience state contains another family.');
   }
   return state;
+}
+
+export function setJournalEntry(state: ExperienceState, entry: JournalEntry): ExperienceState {
+  return {
+    ...state,
+    journalEntries: [
+      ...state.journalEntries.filter((row) => (
+        row.child_id !== entry.child_id || row.local_date !== entry.local_date
+      )),
+      entry,
+    ],
+  };
 }
 
 export function setDeferredTask(

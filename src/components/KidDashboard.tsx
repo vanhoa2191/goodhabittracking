@@ -44,6 +44,7 @@ import { familyPauseCopy } from '@/lib/i18n/family-pause-copy';
 import { getWishlistSaveError } from '@/lib/i18n/wishlist-copy';
 import { getKidQuestCopy } from '@/lib/i18n/kid-quest-copy';
 import { QuestSwipeSurface } from './QuestSwipeSurface';
+import { DailyJournalCard } from './DailyJournalCard';
 
 export function KidDashboard() {
   const {
@@ -328,6 +329,8 @@ export function KidDashboard() {
           language={language}
         />
       )}
+
+      {defaultExperienceFlags.dailyJournal && activeChild.ageStage !== '0-3' && <DailyJournalCard />}
 
       {/* Main Tab Navigation */}
       <div className={`grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>

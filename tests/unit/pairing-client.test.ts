@@ -180,6 +180,18 @@ describe('pairing client', () => {
     });
   });
 
+  it('identifies a revoked child session so the open device can clear its data', async () => {
+    const request = vi.fn(async () => new Response(JSON.stringify({ error: 'Session expired.' }), {
+      status: 401,
+      headers: { 'content-type': 'application/json' },
+    }));
+
+    await expect(loadChildSession(request)).resolves.toMatchObject({
+      success: false,
+      sessionInvalid: true,
+    });
+  });
+
   it('revokes the server session with DELETE', async () => {
     const request = vi.fn(async () => jsonResponse({ success: true }));
 

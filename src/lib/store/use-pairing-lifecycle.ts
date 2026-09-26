@@ -162,6 +162,8 @@ export function usePairingLifecycle(dependencies: Dependencies) {
         if (active && result.success) {
           setPairedFamilyPausedAt(result.session.familyPausedAt);
           setPairedFamilyPausePeriods(result.session.familyPausePeriods);
+        } else if (active && !result.success && result.sessionInvalid) {
+          resetFamilyScope();
         }
       }).catch((error: unknown) => {
         if (!(error instanceof TypeError)) console.warn('Could not refresh family pause state:', error);
@@ -174,7 +176,7 @@ export function usePairingLifecycle(dependencies: Dependencies) {
       window.removeEventListener('focus', refreshPause);
       window.clearInterval(timer);
     };
-  }, [currentUser, isFamilyConnected, isLoaded, mode, setPairedFamilyPausedAt, setPairedFamilyPausePeriods]);
+  }, [currentUser, isFamilyConnected, isLoaded, mode, resetFamilyScope, setPairedFamilyPausedAt, setPairedFamilyPausePeriods]);
 
   const connectWithFamilyCode = async (code: string): Promise<PairingResult> => {
     const tokenPrefix = 'pair-token:';
@@ -192,7 +194,10 @@ export function usePairingLifecycle(dependencies: Dependencies) {
 
   const refreshChildSession = async (): Promise<boolean> => {
     const result = await loadChildSession();
-    if (!result.success) return false;
+    if (!result.success) {
+      if (result.sessionInvalid) resetFamilyScope();
+      return false;
+    }
     hydrateChildSession(result.session);
     return true;
   };

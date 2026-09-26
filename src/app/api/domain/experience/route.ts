@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { parseDeferredTask, parseExperienceState } from '@/lib/experience-state';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
@@ -24,15 +25,18 @@ export async function GET() {
   if (!parent) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
 
   const supabase = await createServerSupabaseClient();
-  const [children, settings, letters, quests, wishlists, deferredTasks] = await Promise.all([
+  const [children, settings, letters, quests, wishlists, deferredTasks, journalEntries] = await Promise.all([
     supabase.from('child_engagement_profiles').select('*').eq('family_id', parent.familyId),
     supabase.from('family_engagement_settings').select('*').eq('family_id', parent.familyId).maybeSingle(),
     supabase.from('daily_mascot_letters').select('*').eq('family_id', parent.familyId),
     supabase.from('secret_quests').select('*').eq('family_id', parent.familyId),
     supabase.from('child_wishlists').select('*').eq('family_id', parent.familyId),
     supabase.from('child_task_deferrals').select('*').eq('family_id', parent.familyId),
+    defaultExperienceFlags.dailyJournal
+      ? supabase.from('child_journal_entries').select('*').eq('family_id', parent.familyId)
+      : Promise.resolve({ data: [], error: null }),
   ]);
-  if ([children, settings, letters, quests, wishlists, deferredTasks].some((result) => result.error)) {
+  if ([children, settings, letters, quests, wishlists, deferredTasks, journalEntries].some((result) => result.error)) {
     return NextResponse.json({ error: 'Experience state could not be loaded.' }, { status: 503 });
   }
 
@@ -43,6 +47,7 @@ export async function GET() {
     quests: quests.data ?? [],
     wishlists: wishlists.data ?? [],
     deferredTasks: deferredTasks.data ?? [],
+    journalEntries: journalEntries.data ?? [],
   }, parent.familyId);
   return NextResponse.json(parsed);
 }

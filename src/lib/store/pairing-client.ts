@@ -27,7 +27,7 @@ export interface ChildSession {
 
 type ChildSessionResult =
   | { success: true; session: ChildSession }
-  | { success: false; message: string };
+  | { success: false; message: string; sessionInvalid?: boolean };
 
 const optionalString = z.string().nullish().transform((value) => value ?? undefined);
 const optionalNumber = z.number().nullish().transform((value) => value ?? undefined);
@@ -178,6 +178,7 @@ export async function loadChildSession(request: Requester = fetch): Promise<Chil
     return {
       success: false,
       message: failure.success ? failure.data.error : 'Không thể tải dữ liệu của bé.',
+      ...(response.status === 401 ? { sessionInvalid: true } : {}),
     };
   }
 

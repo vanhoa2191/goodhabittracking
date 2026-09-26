@@ -41,6 +41,8 @@ import { createSocialActions } from './store/social-actions';
 import { createFamilyPauseAction } from './store/family-pause-actions';
 import { markLocalLetterRead, openLocalLetter } from './store/local-letter-actions';
 import { loadChildTaskDeferrals } from './store/task-deferral-client';
+import { createJournalActions } from './store/journal-actions';
+import { loadChildJournal, mergeChildJournalEntries } from './store/journal-client';
 import { requestTrialActivation } from './store/trial-activation-client';
 import { exportFamilyData, importFamilyData } from './store/family-backup-actions';
 import {
@@ -55,6 +57,7 @@ import { buildLeaderboard } from './store/leaderboard';
 import { buildSubscriptionDetails, checkIsPro } from './store/subscription';
 import { adjustProfilePoints } from './store/local-domain-actions';
 import { getMascot } from './mascots';
+import { defaultExperienceFlags } from './experience-flags';
 
 interface AppStoreContextType {
   isEntryReady: boolean;
@@ -118,6 +121,7 @@ interface AppStoreContextType {
   setFamilyPaused: (paused: boolean) => Promise<boolean>;
   chooseWishlist: (rewardId: string) => Promise<boolean>;
   setTaskDeferred: (activityId: string, date: string, deferred: boolean) => Promise<boolean>;
+  saveJournalEntry: (date: string, text: string) => Promise<boolean>;
   ensureLocalDailyLetter: (childId: string, date: string, templateKey: string) => void;
   markLocalDailyLetterRead: (childId: string, date: string, templateKey: string) => void;
   recordCloudDailyLetterRead: () => void;
@@ -274,6 +278,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const sessionTracker = useMemo(() => createSessionTracker(guardedAnalyticsSink), [guardedAnalyticsSink]);
   const wishlistRequestVersion = useRef(0);
   const deferralRequestVersion = useRef(0);
+  const journalScopeVersion = useRef(0);
   const localWishlistSelections = useRef(new Map<string, string>());
   const recordedLocalLetterReads = useRef(new Set<string>());
 
@@ -303,6 +308,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const closeConnectModal = () => setIsConnectModalOpen(false);
 
   const resetFamilyScope = useCallback(() => {
+    journalScopeVersion.current += 1;
     setModeState('kid');
     setIsParentUnlocked(false);
     setParentPin('1234');
@@ -512,6 +518,34 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, storageMode]);
 
   useEffect(() => {
+    if (!defaultExperienceFlags.dailyJournal
+      || storageMode !== 'cloud' || currentUser || !isFamilyConnected || !activeChildId) return;
+    let cancelled = false;
+    const scopeVersion = journalScopeVersion.current;
+    void loadChildJournal()
+      .then((result) => {
+        if (cancelled || scopeVersion !== journalScopeVersion.current) return;
+        if (result.status === 'unauthorized') {
+          resetFamilyScope();
+          return;
+        }
+        if (result.status !== 'ready') return;
+        setExperience((previous) => {
+          if (scopeVersion !== journalScopeVersion.current) return previous;
+          return {
+            ...previous,
+            journalEntries: mergeChildJournalEntries(previous.journalEntries, result.entries, activeChildId),
+          };
+        });
+      })
+      .catch((error: unknown) => {
+        if (!(error instanceof Error)) throw error;
+        console.warn('Could not load child journal:', error.message);
+      });
+    return () => { cancelled = true; };
+  }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, resetFamilyScope, storageMode]);
+
+  useEffect(() => {
     if (storageMode !== 'cloud' || currentUser || !isFamilyConnected || !activeChildId) return;
     let cancelled = false;
     const requestVersion = deferralRequestVersion.current;
@@ -637,6 +671,18 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     storageMode,
     syncCloudFamily: () => currentUser ? syncFromSupabase(currentUser) : Promise.resolve(false),
   });
+
+  const saveJournalEntry = (date: string, text: string): Promise<boolean> => createJournalActions({
+    activeChildId,
+    familyId,
+    hasParentSession: Boolean(currentUser),
+    isFamilyConnected,
+    getScopeVersion: () => journalScopeVersion.current,
+    now: () => new Date(),
+    request: fetch,
+    setExperience,
+    storageMode,
+  }).saveJournalEntry(date, text);
 
   const setActiveChildId = (id: string) => {
     setActiveChildIdState(id);
@@ -1016,6 +1062,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         setFamilyPaused,
         chooseWishlist,
         setTaskDeferred,
+        saveJournalEntry,
         ensureLocalDailyLetter,
         markLocalDailyLetterRead,
         recordCloudDailyLetterRead,

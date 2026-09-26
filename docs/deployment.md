@@ -32,6 +32,8 @@ Workflow CI chỉ phát hành Worker sau khi cả kiểm tra chất lượng l�
 
 Thư mascot hằng ngày được giữ sau cờ build `NEXT_PUBLIC_DAILY_MASCOT_LETTER=true`. Mặc định cờ tắt để chưa phát hành giao diện khi đường ghi của phiên thiết bị con chưa được kiểm chứng trên production. Chỉ bật ở môi trường build sau khi kiểm tra phiên hợp lệ và quyền family; cần build/deploy lại để thay đổi cờ.
 
+Nhật ký một câu của trẻ dùng cờ build `NEXT_PUBLIC_DAILY_JOURNAL=true`, mặc định tắt. Trước khi bật, áp migration `202609260001_child_journal.sql` và kiểm tra phiên thiết bị con, quyền đọc trong gia đình, thao tác lưu, tải lại và xuất CSV. Thay đổi cờ cần build/deploy lại.
+
 Sau migration production, chạy `npm run verify:live-boundaries`. Lệnh dùng quyền operator của Supabase CLI để tạo hai tài khoản tổng hợp, kiểm tra anonymous/same-family/cross-family RLS trên dữ liệu live và luôn dọn dữ liệu thử. Không chạy lệnh này trong CI công khai hoặc trên máy không được phép quản trị project.
 
 Sau khi Worker và migration mới cùng được phát hành, chạy `npm run verify:live-lifecycle` để chứng nhận mã ghép nối cố định, làm mới mã không ngắt thiết bị cũ, child completion, parent approval, reward delivery, reconnect và revoke bằng dữ liệu tổng hợp tự dọn. Lệnh này cũng chỉ dành cho operator được phép quản trị project.

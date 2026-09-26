@@ -5,6 +5,8 @@ import { BarChart3 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getParentSecondaryCopy } from '@/lib/i18n/parent-secondary-copy';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
+import { ParentJournalPanel } from '@/components/ParentJournalPanel';
 
 export function ParentAnalyticsTab() {
   const { logs, currentUser, logout, deleteLocalFamilyData } = useAppStore();
@@ -81,6 +83,8 @@ export function ParentAnalyticsTab() {
           })}
         </div>
       </div>
+
+      {defaultExperienceFlags.dailyJournal && <ParentJournalPanel />}
 
       <div className="rounded-3xl border border-rose-200 bg-rose-50 p-6 dark:border-rose-900 dark:bg-rose-950/30">
           <h4 className="text-sm font-bold text-rose-800 dark:text-rose-200">{copy.deleteFamily}</h4>
