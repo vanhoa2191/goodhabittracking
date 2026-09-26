@@ -114,6 +114,7 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 - Stage and domain filters use pressed-state buttons and remain horizontally scrollable or wrapping on narrow screens.
 - Reward suggestions distinguish experiences from material gifts with a visible text label and Lucide icon, never color alone.
 - Added and pending states disable the primary action and expose an explicit text status.
+- The child Dream City appears inside Rewards as a warm, in-flow section. Each permanent building shows its name, exact point cost, built/locked state, and a 44px build action. A successful build changes both the available balance and building state; errors are announced as text. The same available points pay for family rewards, while lifetime earned progress stays unchanged.
 
 ### Modal
 

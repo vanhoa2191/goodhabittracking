@@ -7,7 +7,7 @@ export const defaultExperienceFlags = {
   parentInformationArchitecture: false,
   journeyMap: false,
   landingSafe: false,
-  dreamCity: false,
+  dreamCity: process.env.NEXT_PUBLIC_DREAM_CITY === 'true',
   dailyJournal: process.env.NEXT_PUBLIC_DAILY_JOURNAL === 'true',
   parentReengagement: false,
 } as const;

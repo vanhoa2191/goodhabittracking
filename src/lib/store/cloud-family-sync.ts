@@ -171,6 +171,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     wishlistsResult,
     deferredTasksResult,
     journalEntriesResult,
+    cityPurchasesResult,
   ] = await Promise.all([
     supabase.from('child_profiles').select('*').eq('family_id', familyId),
     supabase.from('habit_activities').select('*').eq('family_id', familyId),
@@ -195,6 +196,9 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     defaultExperienceFlags.dailyJournal
       ? supabase.from('child_journal_entries').select('*').eq('family_id', familyId)
       : Promise.resolve({ data: [], error: null }),
+    defaultExperienceFlags.dreamCity
+      ? supabase.from('child_city_purchases').select('*').eq('family_id', familyId)
+      : Promise.resolve({ data: [], error: null }),
   ]);
 
   const failedResult = [
@@ -215,6 +219,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     wishlistsResult,
     deferredTasksResult,
     journalEntriesResult,
+    cityPurchasesResult,
   ].find((result) => result.error);
   if (failedResult?.error) throw failedResult.error;
 
@@ -238,6 +243,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
       wishlists: wishlistsResult.data ?? [],
       deferredTasks: deferredTasksResult.data ?? [],
       journalEntries: journalEntriesResult.data ?? [],
+      cityPurchases: cityPurchasesResult.data ?? [],
     },
   };
 }

@@ -45,6 +45,7 @@ import { getWishlistSaveError } from '@/lib/i18n/wishlist-copy';
 import { getKidQuestCopy } from '@/lib/i18n/kid-quest-copy';
 import { QuestSwipeSurface } from './QuestSwipeSurface';
 import { DailyJournalCard } from './DailyJournalCard';
+import { DreamCityCard } from './DreamCityCard';
 
 export function KidDashboard() {
   const {
@@ -659,6 +660,7 @@ export function KidDashboard() {
       {/* TAB 2: REWARDS & WISHLIST */}
       {visibleTab === 'rewards' && (
         <div className="space-y-6">
+          {defaultExperienceFlags.dreamCity && <DreamCityCard />}
           {/* Wishlist Goal Tracker */}
           {wishlistReward && (
             <div className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950/30 dark:to-purple-950/30 rounded-3xl p-5 border border-pink-100 dark:border-pink-900/30">

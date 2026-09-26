@@ -25,7 +25,7 @@ export async function GET() {
   if (!parent) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
 
   const supabase = await createServerSupabaseClient();
-  const [children, settings, letters, quests, wishlists, deferredTasks, journalEntries] = await Promise.all([
+  const [children, settings, letters, quests, wishlists, deferredTasks, journalEntries, cityPurchases] = await Promise.all([
     supabase.from('child_engagement_profiles').select('*').eq('family_id', parent.familyId),
     supabase.from('family_engagement_settings').select('*').eq('family_id', parent.familyId).maybeSingle(),
     supabase.from('daily_mascot_letters').select('*').eq('family_id', parent.familyId),
@@ -35,8 +35,11 @@ export async function GET() {
     defaultExperienceFlags.dailyJournal
       ? supabase.from('child_journal_entries').select('*').eq('family_id', parent.familyId)
       : Promise.resolve({ data: [], error: null }),
+    defaultExperienceFlags.dreamCity
+      ? supabase.from('child_city_purchases').select('*').eq('family_id', parent.familyId)
+      : Promise.resolve({ data: [], error: null }),
   ]);
-  if ([children, settings, letters, quests, wishlists, deferredTasks, journalEntries].some((result) => result.error)) {
+  if ([children, settings, letters, quests, wishlists, deferredTasks, journalEntries, cityPurchases].some((result) => result.error)) {
     return NextResponse.json({ error: 'Experience state could not be loaded.' }, { status: 503 });
   }
 
@@ -48,6 +51,7 @@ export async function GET() {
     wishlists: wishlists.data ?? [],
     deferredTasks: deferredTasks.data ?? [],
     journalEntries: journalEntries.data ?? [],
+    cityPurchases: cityPurchases.data ?? [],
   }, parent.familyId);
   return NextResponse.json(parsed);
 }

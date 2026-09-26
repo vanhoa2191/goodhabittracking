@@ -1,7 +1,7 @@
 ---
 phase: 8
 title: "Long-term engagement and experiments"
-status: pending
+status: in_progress
 priority: P2
 effort: "8-12 days plus four weeks observation"
 dependencies: [2, 4, 6, 7]
@@ -15,8 +15,8 @@ Add Dream City, one-sentence journal, consented parent reminder, and controlled 
 
 ## Requirements
 
-- [ ] City purchases use authoritative points and never reset progress.
-- [ ] Journal is child-safe, reviewable by parent, exportable, and excluded from analytics.
+- [ ] City purchases use authoritative points and never reset progress. Implementation is feature-flagged locally; the database migration and live purchase flow still need release verification.
+- [x] Journal is child-safe, reviewable by parent, exportable, and excluded from analytics.
 
 ## Implementation Steps
 
@@ -31,3 +31,7 @@ Add Dream City, one-sentence journal, consented parent reminder, and controlled 
 ## Success Criteria
 
 Pause or reduce engagement loops if session duration exceeds the eight-minute guardrail.
+
+## Current release gate
+
+Dream City is disabled by default. Do not enable it in production until the database migration, backup, family isolation, and authenticated parent/paired-child purchase flows pass live preflight. Parent reminders and the controlled experiment remain open work.

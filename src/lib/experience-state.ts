@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { journalEntrySchema } from '@/lib/child-journal';
 import type { JournalEntry } from '@/lib/child-journal';
+import { cityPurchaseSchema } from '@/lib/dream-city';
+import type { CityPurchase } from '@/lib/dream-city';
 
 const uuid = z.string().uuid();
 const timestamp = z.string().datetime({ offset: true });
@@ -78,6 +80,7 @@ export type ExperienceState = {
   readonly wishlists: readonly ChildWishlist[];
   readonly deferredTasks: readonly DeferredTask[];
   readonly journalEntries: readonly JournalEntry[];
+  readonly cityPurchases: readonly CityPurchase[];
 };
 
 export const emptyExperienceState: ExperienceState = {
@@ -88,6 +91,7 @@ export const emptyExperienceState: ExperienceState = {
   wishlists: [],
   deferredTasks: [],
   journalEntries: [],
+  cityPurchases: [],
 };
 
 const experienceRows = z.object({
@@ -98,6 +102,7 @@ const experienceRows = z.object({
   wishlists: z.array(wishlistRow),
   deferredTasks: z.array(deferredTaskRow).default([]),
   journalEntries: z.array(journalEntrySchema).default([]),
+  cityPurchases: z.array(cityPurchaseSchema).default([]),
 });
 
 const demoChildId = z.string().min(1);
@@ -108,6 +113,7 @@ const demoExperienceRows = experienceRows.extend({
   wishlists: z.array(wishlistRow.extend({ child_id: demoChildId, reward_id: z.string().min(1) })),
   deferredTasks: z.array(deferredTaskRow.extend({ child_id: demoChildId, activity_id: z.string().min(1) })).default([]),
   journalEntries: z.array(journalEntrySchema.extend({ child_id: demoChildId })).default([]),
+  cityPurchases: z.array(cityPurchaseSchema.extend({ child_id: demoChildId })).default([]),
 });
 
 export function parseExperienceState(input: unknown, familyId: string, isDemo = false): ExperienceState {
@@ -119,6 +125,7 @@ export function parseExperienceState(input: unknown, familyId: string, isDemo = 
     ...state.wishlists,
     ...state.deferredTasks,
     ...state.journalEntries,
+    ...state.cityPurchases,
     ...(state.settings ? [state.settings] : []),
   ];
   if (rows.some((row) => row.family_id !== familyId)) {

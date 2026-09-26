@@ -27,3 +27,4 @@
 \ir migrations/202609250001_child_task_deferrals.sql
 \ir migrations/202609250002_analytics_parent_consent.sql
 \ir migrations/202609260001_child_journal.sql
+\ir migrations/202609260002_dream_city.sql

@@ -58,6 +58,8 @@ import { buildSubscriptionDetails, checkIsPro } from './store/subscription';
 import { adjustProfilePoints } from './store/local-domain-actions';
 import { getMascot } from './mascots';
 import { defaultExperienceFlags } from './experience-flags';
+import { buildLocalCityItem, cityItems, parseCityPurchase, parseCityPurchases } from './dream-city';
+import type { CityItemId } from './dream-city';
 
 interface AppStoreContextType {
   isEntryReady: boolean;
@@ -122,6 +124,7 @@ interface AppStoreContextType {
   chooseWishlist: (rewardId: string) => Promise<boolean>;
   setTaskDeferred: (activityId: string, date: string, deferred: boolean) => Promise<boolean>;
   saveJournalEntry: (date: string, text: string) => Promise<boolean>;
+  buildCityItem: (itemId: CityItemId) => Promise<'built' | 'already_built' | 'insufficient_points' | 'error'>;
   ensureLocalDailyLetter: (childId: string, date: string, templateKey: string) => void;
   markLocalDailyLetterRead: (childId: string, date: string, templateKey: string) => void;
   recordCloudDailyLetterRead: () => void;
@@ -279,6 +282,10 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const wishlistRequestVersion = useRef(0);
   const deferralRequestVersion = useRef(0);
   const journalScopeVersion = useRef(0);
+  const cityScopeVersion = useRef(0);
+  const pendingCityItems = useRef(new Set<string>());
+  const locallyBuiltCityItems = useRef(new Set<string>());
+  const localCityBalances = useRef(new Map<string, number>());
   const localWishlistSelections = useRef(new Map<string, string>());
   const recordedLocalLetterReads = useRef(new Set<string>());
 
@@ -289,6 +296,10 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       localWishlistSelections.current.set(selection.child_id, selection.reward_id);
     }
   }, [experience.wishlists, storageMode]);
+
+  useEffect(() => {
+    localCityBalances.current = new Map(profiles.map((profile) => [profile.id, profile.points]));
+  }, [profiles]);
 
   useEffect(() => {
     const selectedMode = sessionMode({
@@ -309,6 +320,10 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
 
   const resetFamilyScope = useCallback(() => {
     journalScopeVersion.current += 1;
+    cityScopeVersion.current += 1;
+    pendingCityItems.current.clear();
+    locallyBuiltCityItems.current.clear();
+    localCityBalances.current.clear();
     setModeState('kid');
     setIsParentUnlocked(false);
     setParentPin('1234');
@@ -384,7 +399,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
 
   const {
     deleteLocalFamilyData,
-    startDemoSession,
+    startDemoSession: beginDemoSession,
     startLocalFamilySetup,
   } = useLocalFamilyLifecycle({
     resetFamilyScope,
@@ -429,6 +444,14 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     },
     syncNow,
   });
+
+  const startDemoSession = () => {
+    cityScopeVersion.current += 1;
+    pendingCityItems.current.clear();
+    locallyBuiltCityItems.current.clear();
+    localCityBalances.current.clear();
+    beginDemoSession();
+  };
 
   // PIN security
   const unlockParent = (enteredPin: string): boolean => {
@@ -541,6 +564,36 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       .catch((error: unknown) => {
         if (!(error instanceof Error)) throw error;
         console.warn('Could not load child journal:', error.message);
+      });
+    return () => { cancelled = true; };
+  }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, resetFamilyScope, storageMode]);
+
+  useEffect(() => {
+    if (!defaultExperienceFlags.dreamCity
+      || storageMode !== 'cloud' || currentUser || !isFamilyConnected || !activeChildId) return;
+    let cancelled = false;
+    const scopeVersion = cityScopeVersion.current;
+    void fetch('/api/child/city', { cache: 'no-store' })
+      .then(async (response) => {
+        if (response.status === 401) {
+          if (!cancelled && scopeVersion === cityScopeVersion.current) resetFamilyScope();
+          return;
+        }
+        if (!response.ok) return;
+        const payload: unknown = await response.json();
+        const parsed = z.object({ purchases: z.unknown() }).safeParse(payload);
+        if (!parsed.success || cancelled || scopeVersion !== cityScopeVersion.current) return;
+        const loaded = parseCityPurchases(parsed.data.purchases).filter((purchase) => purchase.child_id === activeChildId);
+        setExperience((previous) => {
+          if (scopeVersion !== cityScopeVersion.current) return previous;
+          const purchases = new Map(previous.cityPurchases.map((purchase) => [`${purchase.child_id}:${purchase.item_id}`, purchase]));
+          for (const purchase of loaded) purchases.set(`${purchase.child_id}:${purchase.item_id}`, purchase);
+          return { ...previous, cityPurchases: [...purchases.values()] };
+        });
+      })
+      .catch((error: unknown) => {
+        if (!(error instanceof Error)) throw error;
+        console.warn('Could not load child city:', error.message);
       });
     return () => { cancelled = true; };
   }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, resetFamilyScope, storageMode]);
@@ -683,6 +736,71 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     setExperience,
     storageMode,
   }).saveJournalEntry(date, text);
+
+  const buildCityItem = async (itemId: CityItemId): Promise<'built' | 'already_built' | 'insufficient_points' | 'error'> => {
+    if (!defaultExperienceFlags.dreamCity || !activeChild) return 'error';
+    const childId = activeChild.id;
+    const scopeVersion = cityScopeVersion.current;
+    const key = `${scopeVersion}:${childId}`;
+    const itemKey = `${scopeVersion}:${childId}:${itemId}`;
+    if (pendingCityItems.current.has(key)) return 'error';
+    if (storageMode === 'local' && locallyBuiltCityItems.current.has(itemKey)) return 'already_built';
+    pendingCityItems.current.add(key);
+    try {
+      if (storageMode === 'local') {
+        const builtIds = experience.cityPurchases.filter((purchase) => purchase.child_id === childId).map((purchase) => purchase.item_id);
+        const outcome = buildLocalCityItem({
+          points: localCityBalances.current.get(childId) ?? activeChild.points,
+          totalEarned: activeChild.totalEarned,
+        }, builtIds, itemId);
+        if (outcome.status !== 'built') return outcome.status;
+        const item = cityItems.find((candidate) => candidate.id === itemId);
+        if (!item || scopeVersion !== cityScopeVersion.current) return 'error';
+        const purchase = {
+          family_id: familyId ?? '00000000-0000-4000-8000-000000000000',
+          child_id: childId,
+          item_id: itemId,
+          points_spent: item.cost,
+          purchased_at: new Date().toISOString(),
+        };
+        locallyBuiltCityItems.current.add(itemKey);
+        localCityBalances.current.set(childId, outcome.points);
+        setProfiles((previous) => previous.map((profile) => profile.id === childId ? { ...profile, points: outcome.points } : profile));
+        setExperience((previous) => ({ ...previous, cityPurchases: [...previous.cityPurchases, purchase] }));
+        return 'built';
+      }
+      const paired = !currentUser && isFamilyConnected;
+      if (!currentUser && !paired) return 'error';
+      const response = await fetch(paired ? '/api/child/city' : '/api/domain/city', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(paired ? { itemId } : { childId, itemId }),
+      });
+      if (response.status === 409) return 'insufficient_points';
+      if (!response.ok) return 'error';
+      const payload: unknown = await response.json();
+      const parsed = z.object({
+        status: z.enum(['built', 'already_built']),
+        purchase: z.unknown(),
+        remainingPoints: z.number().int().nonnegative(),
+      }).safeParse(payload);
+      if (!parsed.success || scopeVersion !== cityScopeVersion.current) return 'error';
+      const purchase = parseCityPurchase(parsed.data.purchase);
+      if (purchase.child_id !== childId || purchase.item_id !== itemId
+        || (familyId !== null && purchase.family_id !== familyId)) return 'error';
+      setProfiles((previous) => previous.map((profile) => profile.id === childId ? { ...profile, points: parsed.data.remainingPoints } : profile));
+      setExperience((previous) => previous.cityPurchases.some((row) => row.child_id === childId && row.item_id === itemId)
+        ? previous
+        : { ...previous, cityPurchases: [...previous.cityPurchases, purchase] });
+      return parsed.data.status;
+    } catch (error: unknown) {
+      if (!(error instanceof Error)) throw error;
+      console.warn('Could not build city item:', error.message);
+      return 'error';
+    } finally {
+      pendingCityItems.current.delete(key);
+    }
+  };
 
   const setActiveChildId = (id: string) => {
     setActiveChildIdState(id);
@@ -1063,6 +1181,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         chooseWishlist,
         setTaskDeferred,
         saveJournalEntry,
+        buildCityItem,
         ensureLocalDailyLetter,
         markLocalDailyLetterRead,
         recordCloudDailyLetterRead,
