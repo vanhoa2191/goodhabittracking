@@ -548,10 +548,6 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     void loadChildJournal()
       .then((result) => {
         if (cancelled || scopeVersion !== journalScopeVersion.current) return;
-        if (result.status === 'unauthorized') {
-          resetFamilyScope();
-          return;
-        }
         if (result.status !== 'ready') return;
         setExperience((previous) => {
           if (scopeVersion !== journalScopeVersion.current) return previous;
@@ -566,7 +562,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         console.warn('Could not load child journal:', error.message);
       });
     return () => { cancelled = true; };
-  }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, resetFamilyScope, storageMode]);
+  }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, storageMode]);
 
   useEffect(() => {
     if (!defaultExperienceFlags.dreamCity

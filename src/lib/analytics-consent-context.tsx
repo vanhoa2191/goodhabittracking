@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { z } from 'zod';
 import { AppStoreProvider } from '@/lib/store';
+import { isSupabaseConfigured } from '@/lib/supabase/browser';
 
 const consentResponse = z.strictObject({ enabled: z.boolean() });
 
@@ -42,12 +43,15 @@ type AnalyticsConsentContextValue = {
 const AnalyticsConsentContext = createContext<AnalyticsConsentContextValue | null>(null);
 
 export function AnalyticsConsentProvider({ children }: Readonly<{ children: React.ReactNode }>) {
+  const canPersistConsent = isSupabaseConfigured();
   const [consent, dispatch] = useReducer(reduceAnalyticsConsent, { displayedEnabled: false, committedEnabled: false });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(canPersistConsent);
   const [isSaving, setIsSaving] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
+    if (!canPersistConsent) return;
+
     const controller = new AbortController();
     void fetch('/api/privacy/analytics-consent', { signal: controller.signal })
       .then(async (response) => {
@@ -68,9 +72,11 @@ export function AnalyticsConsentProvider({ children }: Readonly<{ children: Reac
         if (!controller.signal.aborted) setIsLoading(false);
       });
     return () => controller.abort();
-  }, []);
+  }, [canPersistConsent]);
 
   const save = useCallback(async (nextEnabled: boolean) => {
+    if (!canPersistConsent) return;
+
     const previous = consent;
     dispatch({ type: 'save-started', enabled: nextEnabled });
     setIsSaving(true);
@@ -95,7 +101,7 @@ export function AnalyticsConsentProvider({ children }: Readonly<{ children: Reac
     } finally {
       setIsSaving(false);
     }
-  }, [consent]);
+  }, [canPersistConsent, consent]);
 
   const value = useMemo(() => ({ enabled: consent.displayedEnabled, isLoading, isSaving, hasError, save }), [consent.displayedEnabled, hasError, isLoading, isSaving, save]);
   return (

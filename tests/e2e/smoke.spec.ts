@@ -71,6 +71,7 @@ test('habit fire follows verified completion and undo on mobile', async ({ page 
 });
 
 test('demo child can inspect and independently complete a full task card', async ({ page }) => {
+  await page.clock.setFixedTime(new Date('2026-09-25T05:00:00.000Z'));
   const domainMutationRequests: string[] = [];
   const invalidButtonErrors: string[] = [];
   page.on('request', (request) => {

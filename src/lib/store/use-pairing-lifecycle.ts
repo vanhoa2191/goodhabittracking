@@ -144,13 +144,20 @@ export function usePairingLifecycle(dependencies: Dependencies) {
       onPairingReady();
       return;
     }
+    let cancelled = false;
     void loadChildSession()
       .then((result) => {
+        if (cancelled) return;
         if (result.success) hydrateChildSession(result.session);
         else resetFamilyScope();
       })
-      .catch(resetFamilyScope)
-      .finally(onPairingReady);
+      .catch(() => {
+        if (!cancelled) resetFamilyScope();
+      })
+      .finally(() => {
+        if (!cancelled) onPairingReady();
+      });
+    return () => { cancelled = true; };
   }, [currentUser, hydrateChildSession, isIdentityReady, isLoaded, onPairingReady, resetFamilyScope]);
 
   useEffect(() => {
