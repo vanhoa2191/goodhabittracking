@@ -12,6 +12,7 @@ import {
 import { translations } from "@/lib/i18n/translations";
 import { AppearanceProvider } from "@/lib/appearance-context";
 import { AnalyticsConsentProvider } from "@/lib/analytics-consent-context";
+import { ParentReminderProvider } from "@/lib/parent-reminder-context";
 
 const displayFont = Fraunces({
   axes: ['SOFT', 'opsz'],
@@ -69,7 +70,7 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col bg-app-surface dark:bg-zinc-950 text-ink dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
         <AppearanceProvider>
           <I18nProvider initialLanguage={initialLanguage}>
-            <AnalyticsConsentProvider>{children}</AnalyticsConsentProvider>
+            <AnalyticsConsentProvider><ParentReminderProvider>{children}</ParentReminderProvider></AnalyticsConsentProvider>
           </I18nProvider>
         </AppearanceProvider>
       </body>

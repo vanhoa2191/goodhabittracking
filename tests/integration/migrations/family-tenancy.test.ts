@@ -231,6 +231,7 @@ describe('family tenancy migration', () => {
       '202609250002_analytics_parent_consent.sql',
       '202609260001_child_journal.sql',
       '202609260002_dream_city.sql',
+      '202609260003_parent_reminder_consent.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(

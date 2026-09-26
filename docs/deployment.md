@@ -36,6 +36,8 @@ Nhật ký một câu của trẻ dùng cờ build `NEXT_PUBLIC_DAILY_JOURNAL=tr
 
 Thành phố ước mơ dùng cờ build `NEXT_PUBLIC_DREAM_CITY=true`, mặc định tắt. Trước khi bật, áp migration `202609260002_dream_city.sql`; kiểm tra quyền gia đình và phiên thiết bị con, trừ điểm đúng một lần khi mua trùng hoặc đồng thời, giữ nguyên `total_earned`, và tải lại công trình đã xây. Không bật cờ hoặc deploy trước khi hoàn tất backup, preflight và kiểm thử cách ly gia đình. Thay đổi cờ cần build/deploy lại.
 
+Nhắc phụ huynh dùng cờ build `NEXT_PUBLIC_PARENT_REENGAGEMENT=true`, mặc định tắt. Trước khi bật, áp migration `202609260003_parent_reminder_consent.sql`; kiểm tra mặc định tắt, bật/tắt đồng thuận, trạng thái quyền thông báo của thiết bị và lời nhắc trong ứng dụng. Phiên bản này không gửi push; quyền trình duyệt chỉ được yêu cầu sau thao tác rõ ràng của phụ huynh.
+
 Sau migration production, chạy `npm run verify:live-boundaries`. Lệnh dùng quyền operator của Supabase CLI để tạo hai tài khoản tổng hợp, kiểm tra anonymous/same-family/cross-family RLS trên dữ liệu live và luôn dọn dữ liệu thử. Không chạy lệnh này trong CI công khai hoặc trên máy không được phép quản trị project.
 
 Sau khi Worker và migration mới cùng được phát hành, chạy `npm run verify:live-lifecycle` để chứng nhận mã ghép nối cố định, làm mới mã không ngắt thiết bị cũ, child completion, parent approval, reward delivery, reconnect và revoke bằng dữ liệu tổng hợp tự dọn. Lệnh này cũng chỉ dành cho operator được phép quản trị project.

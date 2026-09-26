@@ -6,6 +6,8 @@ import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { parentApprovalsCopy } from '@/lib/i18n/parent-approvals-copy';
 import { MascotAvatar } from './MascotAvatar';
+import { ParentReminderBanner } from './ParentReminderBanner';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 
 export function ParentApprovalsTab() {
   const {
@@ -16,6 +18,7 @@ export function ParentApprovalsTab() {
     rejectLog,
     rewards,
     redemptions,
+    experience,
     deliverRedemption,
     rejectRedemption,
   } = useAppStore();
@@ -23,10 +26,13 @@ export function ParentApprovalsTab() {
   const copy = parentApprovalsCopy[language];
   const pendingLogs = logs.filter((log) => log.status === 'pending_approval');
   const pendingRedemptions = redemptions.filter((redemption) => redemption.status === 'pending');
+  const pendingCount = pendingLogs.length + pendingRedemptions.length;
+  const familyPaused = Boolean(experience.settings?.paused_at);
   const today = new Date().toISOString().split('T')[0];
 
   return (
     <div className="space-y-6">
+      {defaultExperienceFlags.parentReengagement && <ParentReminderBanner pendingCount={pendingCount} familyPaused={familyPaused} />}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {profiles.map((profile) => {
           const doneCount = logs.filter(

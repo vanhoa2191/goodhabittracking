@@ -106,6 +106,7 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 - States: normal, empty, warning, and error content must be explicit rather than color-only.
 - The morning letter is a warm amber card below the child hero, not a blocking popup. Its heading and date precede three readable sentences; read state is a text-and-icon badge, and the confirmation button is at least 44px high. On narrow screens the badge moves below the heading rather than compressing it.
 - Child quest cards retain their visible completion button and add a labelled `Để sau` / `Làm ngay` control. Deferred cards move to a clearly named group for the selected day; they remain in that day's total and never earn points. Pending approval and completed cards cannot be deferred.
+- Parent reminders are opt-in guidance, never advertising. The setting explains in-app versus device delivery, requests browser permission only from an explicit button, and keeps the actionable Today reminder in normal document flow.
 
 ### Framework and reward library cards
 

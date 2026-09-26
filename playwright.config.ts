@@ -21,7 +21,11 @@ export default defineConfig({
     ? undefined
     : {
         command: 'npm run dev -- --hostname 127.0.0.1',
-        env: { NEXT_PUBLIC_DAILY_MASCOT_LETTER: 'true', NEXT_PUBLIC_DAILY_JOURNAL: 'true' },
+        env: {
+          NEXT_PUBLIC_DAILY_MASCOT_LETTER: 'true',
+          NEXT_PUBLIC_DAILY_JOURNAL: 'true',
+          NEXT_PUBLIC_PARENT_REENGAGEMENT: 'true',
+        },
         url: baseURL,
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,

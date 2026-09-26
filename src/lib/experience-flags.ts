@@ -9,7 +9,7 @@ export const defaultExperienceFlags = {
   landingSafe: false,
   dreamCity: process.env.NEXT_PUBLIC_DREAM_CITY === 'true',
   dailyJournal: process.env.NEXT_PUBLIC_DAILY_JOURNAL === 'true',
-  parentReengagement: false,
+  parentReengagement: process.env.NEXT_PUBLIC_PARENT_REENGAGEMENT === 'true',
 } as const;
 
 export type ExperienceFlag = keyof typeof defaultExperienceFlags;

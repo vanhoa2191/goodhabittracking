@@ -12,6 +12,8 @@ import { ChildDevicesPanel } from '@/components/ChildDevicesPanel';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { AccountProfileCard } from '@/components/AccountProfileCard';
 import { AnalyticsConsentCard } from '@/components/AnalyticsConsentCard';
+import { ParentReminderConsentCard } from '@/components/ParentReminderConsentCard';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 
 export function ParentSettingsTab() {
   const {
@@ -112,6 +114,7 @@ export function ParentSettingsTab() {
 
       {currentUser && <AccountProfileCard />}
       {currentUser && <AnalyticsConsentCard />}
+      {currentUser && defaultExperienceFlags.parentReengagement && <ParentReminderConsentCard />}
 
       <Link href="/docs" className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{language === 'vi' ? 'Mở tài liệu hướng dẫn' : 'Open user guide'}</Link>
 
