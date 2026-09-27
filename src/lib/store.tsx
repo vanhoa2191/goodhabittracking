@@ -234,6 +234,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const [lastSyncTime, setLastSyncTime] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isDemoSession, setIsDemoSession] = useState(false);
+  const identityModeInitializedRef = useRef(false);
   const onIdentityReady = useCallback(() => setIsIdentityReady(true), []);
   const onIdentityStart = useCallback(() => {
     if (typeof window !== 'undefined') {
@@ -246,6 +247,8 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     setIsDemoSession(false);
   }, []);
   const onIdentityUser = useCallback(() => {
+    if (identityModeInitializedRef.current) return;
+    identityModeInitializedRef.current = true;
     setIsParentUnlocked(true);
     setModeState('parent');
   }, []);
@@ -316,6 +319,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const closeConnectModal = () => setIsConnectModalOpen(false);
 
   const resetFamilyScope = useCallback(() => {
+    identityModeInitializedRef.current = false;
     journalScopeVersion.current += 1;
     cityScopeVersion.current += 1;
     pendingCityItems.current.clear();

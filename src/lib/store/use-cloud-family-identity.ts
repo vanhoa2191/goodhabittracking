@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import type { User } from '@supabase/supabase-js';
 import type {
@@ -50,6 +50,11 @@ type Dependencies = {
 
 export function useCloudFamilyIdentity(dependencies: Dependencies) {
   const { currentUser, familyId, resetFamilyScope, onIdentityReady, onIdentityStart, onIdentityUser } = dependencies;
+  const familyIdRef = useRef(familyId);
+  const currentUserRef = useRef(currentUser);
+  useEffect(() => {
+    familyIdRef.current = familyId;
+  }, [familyId]);
   const {
     setActivities,
     setChildBadges,
@@ -76,7 +81,7 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
     }
     try {
       const snapshot = await loadCloudFamilySnapshot(user.id);
-      if (familyId && familyId !== snapshot.familyId) resetFamilyScope();
+      if (familyIdRef.current && familyIdRef.current !== snapshot.familyId) resetFamilyScope();
       setFamilyId(snapshot.familyId);
       localStorage.setItem(`${LOCAL_STORAGE_PREFIX}family_id`, snapshot.familyId);
       setProfiles(snapshot.profiles);
@@ -100,7 +105,6 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
       return false;
     }
   }, [
-    familyId,
     resetFamilyScope,
     setActivities,
     setChildBadges,
@@ -125,11 +129,15 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
 
   useEffect(() => startCloudIdentitySession({
     onUserChanged: async (user) => {
+      const identityChanged = currentUserRef.current?.id !== user?.id;
+      currentUserRef.current = user;
       setCurrentUser(user);
       if (user) {
-        onIdentityStart();
+        if (identityChanged) {
+          onIdentityStart();
+          onIdentityUser();
+        }
         await syncCloudFamily(user);
-        onIdentityUser();
       }
       else resetFamilyScope();
     },
@@ -148,6 +156,7 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
   const logout = async (): Promise<void> => {
     sounds.playClick();
     await signOutUser();
+    currentUserRef.current = null;
     resetFamilyScope();
     setCurrentUser(null);
   };
