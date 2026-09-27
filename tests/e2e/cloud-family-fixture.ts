@@ -70,8 +70,7 @@ export async function installCloudFamilyFixture(
   baseURL: string | undefined,
   options: CloudFamilyFixtureOptions = {},
 ): Promise<void> {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  if (!supabaseUrl) throw new Error('NEXT_PUBLIC_SUPABASE_URL is required for the cloud E2E fixture.');
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://e2e-test.supabase.co';
   const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
   if (!projectRef) throw new Error('Supabase project reference is unavailable.');
 

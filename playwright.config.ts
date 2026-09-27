@@ -3,6 +3,8 @@ import { defineConfig, devices } from '@playwright/test';
 const externalBaseUrl = process.env.PLAYWRIGHT_BASE_URL;
 const baseURL = externalBaseUrl ?? 'http://127.0.0.1:3000';
 const localBrowserChannel = process.env.PLAYWRIGHT_USE_SYSTEM_CHROME ? 'chrome' : undefined;
+const e2eSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://e2e-test.supabase.co';
+const e2eSupabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'e2e-anon-key';
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -22,6 +24,8 @@ export default defineConfig({
     : {
         command: 'npm run dev -- --hostname 127.0.0.1',
         env: {
+          NEXT_PUBLIC_SUPABASE_URL: e2eSupabaseUrl,
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: e2eSupabaseAnonKey,
           NEXT_PUBLIC_DAILY_MASCOT_LETTER: 'true',
           NEXT_PUBLIC_DAILY_JOURNAL: 'true',
           NEXT_PUBLIC_PARENT_REENGAGEMENT: 'true',
