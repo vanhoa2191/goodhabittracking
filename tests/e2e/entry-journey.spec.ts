@@ -3,7 +3,7 @@ import { loadEnvConfig } from '@next/env';
 
 loadEnvConfig(process.cwd());
 
-test('a signed-in parent opens the parent dashboard on return', async ({ page }, testInfo) => {
+test('a signed-in parent opens the parent dashboard on return', async ({ page, baseURL }, testInfo) => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   test.skip(!supabaseUrl, 'The browser auth client requires public Supabase configuration.');
   const projectRef = new URL(supabaseUrl!).hostname.split('.')[0];
@@ -22,7 +22,7 @@ test('a signed-in parent opens the parent dashboard on return', async ({ page },
   await page.context().addCookies([{
     name: `sb-${projectRef}-auth-token`,
     value: `base64-${Buffer.from(JSON.stringify(session)).toString('base64url')}`,
-    url: 'http://127.0.0.1:3000/',
+    url: new URL(baseURL ?? 'http://127.0.0.1:3000').origin,
   }]);
   await page.route('**/auth/v1/user', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(user) }));
   await page.route('**/rest/v1/**', (route) => {
