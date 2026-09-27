@@ -46,13 +46,13 @@ Existing `lifetime` subscriptions are grandfathered indefinitely with their curr
 
 ## Acceptance Criteria
 
-- [ ] Pricing and checkout expose exactly 29k, 49k, and 399k paid offers plus explicit trial guidance.
-- [ ] 29k permits one child and rejects a second child with a clear upgrade path at the server boundary.
-- [ ] 49k and 399k retain current entitlements and existing subscribers remain active.
-- [ ] Existing lifetime families retain indefinite access, while no new lifetime checkout can be created.
-- [ ] PayOS activation occurs only for the matching signed order, expected amount, and family.
-- [ ] Duplicate callbacks are idempotent and cannot extend or duplicate the subscription incorrectly.
-- [ ] Expiry never deletes family data or silently downgrades existing records.
+- [x] Pricing and checkout expose exactly 29k, 49k, and 399k paid offers plus explicit trial guidance.
+- [x] 29k permits one child and rejects a second child with a clear upgrade path at the server boundary.
+- [x] 49k and 399k retain current entitlements and existing subscribers remain active.
+- [x] Existing lifetime families retain indefinite access, while no new lifetime checkout can be created.
+- [x] PayOS activation occurs only for the matching signed order, expected amount, and family.
+- [x] Duplicate callbacks are idempotent and cannot extend or duplicate the subscription incorrectly.
+- [x] Expiry never deletes family data or silently downgrades existing records.
 
 ## Validation
 

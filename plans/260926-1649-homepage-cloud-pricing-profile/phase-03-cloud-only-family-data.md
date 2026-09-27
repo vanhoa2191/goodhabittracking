@@ -41,12 +41,12 @@ Remove the local/cloud product choice and make cloud persistence authoritative f
 
 ## Acceptance Criteria
 
-- [ ] No user-facing local/cloud mode choice remains.
-- [ ] Authenticated family-domain mutations have no browser-local authoritative or fallback path.
-- [ ] Refreshing or using a second device returns the same server state.
-- [ ] Demo remains usable without sign-in and cannot contaminate authenticated data.
-- [ ] UI preferences still persist locally as intended.
-- [ ] Any legacy local-data decision is based on observed shipped data, not assumption.
+- [x] No user-facing local/cloud mode choice remains.
+- [x] Authenticated family-domain mutations have no browser-local authoritative or fallback path.
+- [x] Refreshing or using a second device returns the same server state.
+- [x] Demo remains usable without sign-in and cannot contaminate authenticated data.
+- [x] UI preferences still persist locally as intended.
+- [x] Any legacy local-data decision is based on observed shipped data, not assumption.
 
 ## Validation
 

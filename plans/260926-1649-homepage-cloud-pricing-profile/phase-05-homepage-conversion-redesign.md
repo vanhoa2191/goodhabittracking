@@ -36,12 +36,12 @@ Rebuild the public homepage into a concise, truthful sales journey that demonstr
 
 ## Acceptance Criteria
 
-- [ ] A first-time visitor can understand audience, mechanism, product, trial, price, and next action without signing in.
-- [ ] Product previews represent current working UI rather than decorative placeholders.
-- [ ] Returning parents and paired children do not have to pass through the sales page.
-- [ ] Every CTA and footer link has a real destination and keyboard behavior.
-- [ ] Pricing comparison is readable at 375px without horizontal scrolling or ambiguous plan limits.
-- [ ] No unverified social proof or outcome claim ships.
+- [x] A first-time visitor can understand audience, mechanism, product, trial, price, and next action without signing in.
+- [x] Product previews represent current working UI rather than decorative placeholders.
+- [x] Returning parents and paired children do not have to pass through the sales page.
+- [x] Every CTA and footer link has a real destination and keyboard behavior.
+- [x] Pricing comparison is readable at 375px without horizontal scrolling or ambiguous plan limits.
+- [x] No unverified social proof or outcome claim ships.
 
 ## Validation
 

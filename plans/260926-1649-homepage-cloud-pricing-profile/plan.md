@@ -1,7 +1,7 @@
 ---
 title: "KidHabit Homepage, Cloud-Only Data, Pricing, and Profile Reliability"
 description: "Repair child-profile creation, simplify family data to cloud-only persistence, introduce the 29k one-child tier, and rebuild the homepage from verified product proof."
-status: in-progress
+status: completed
 priority: P1
 effort: "12-18 engineering days plus controlled production verification"
 issue: null
@@ -18,9 +18,9 @@ created: 2026-09-26
 
 Deliver the approved product change as one coherent customer journey: a new visitor understands and trusts KidHabit on the homepage; signs in; uses cloud sync without choosing a storage mode; creates a child profile successfully; and can choose among the 7-day trial, 29k one-child plan, 49k family monthly plan, or 399k family yearly plan.
 
-This plan changes product, billing, persistence, and conversion surfaces together. It does not implement anything until approved.
+This plan changed product, billing, persistence, and conversion surfaces together and was released on 2026-09-27.
 
-## Decisions Proposed for Approval
+## Approved Decisions
 
 | Area | Proposed decision |
 |---|---|
@@ -71,18 +71,18 @@ Reference analysis --------------+--> homepage redesign
 
 ## Cross-Plan Dependency
 
-This change supersedes parts of Phase 7 and must complete before Phase 9 of `260923-0030-complete-experience-roadmap`. That roadmap must not be certified complete against the old landing, free-tier, or local-storage assumptions.
+This change supersedes parts of Phase 7 of `260923-0030-complete-experience-roadmap` and unblocks the remaining roadmap work. See [release evidence](./reports/release-evidence.md).
 
 ## Global Acceptance Criteria
 
-- [ ] A signed-in parent can create the first child and receive a specific recoverable error for any rejected save.
-- [ ] Family-domain data is cloud-authoritative; no user-facing storage-mode choice or local family mutation path remains.
-- [ ] Demo remains usable without an account and is visibly isolated from real family data.
-- [ ] Pricing shows only trial guidance and the 29k, 49k, and 399k offers with the approved Vietnamese names.
-- [ ] PayOS amount, order plan, webhook activation, subscription state, and child limit agree for all three paid plans.
-- [ ] Existing data and 49k/399k entitlements are preserved through migration and rollback.
-- [ ] Homepage follows the approved section hierarchy, uses only verified claims, and passes 375/768/1280 plus nine-locale visual/accessibility checks.
-- [ ] CI, migrations, Cloudflare deploy, `/api/health`, and controlled production smoke tests pass.
+- [x] A signed-in parent can create the first child and receive a specific recoverable error for any rejected save.
+- [x] Family-domain data is cloud-authoritative; no user-facing storage-mode choice or local family mutation path remains.
+- [x] Demo remains usable without an account and is visibly isolated from real family data.
+- [x] Pricing shows only trial guidance and the 29k, 49k, and 399k offers with the approved Vietnamese names.
+- [x] PayOS amount, order plan, webhook activation, subscription state, and child limit agree for all three paid plans.
+- [x] Existing data and 49k/399k entitlements are preserved through migration and rollback.
+- [x] Homepage follows the approved section hierarchy, uses only verified claims, and passes 375/768/1280 plus nine-locale visual/accessibility checks.
+- [x] CI, migrations, Cloudflare deploy, `/api/health`, and controlled production smoke tests pass.
 
 ## Non-Goals
 
@@ -91,8 +91,8 @@ This change supersedes parts of Phase 7 and must complete before Phase 9 of `260
 - No automatic conversion or charging of existing users.
 - No removal of local theme, language, font, demo, or short-lived session preferences.
 
-## Approval Boundary
+## Release Record
 
-Approval authorizes implementation, migrations, tests, and deployment described here. Until approval, no source code, database, pricing, or production behavior changes.
+Implementation, migrations, tests, and deployment are complete. The release record contains only sanitized operational evidence and no secret, personal, family, or payment data.
 
 <!-- slug: homepage-cloud-pricing-profile -->

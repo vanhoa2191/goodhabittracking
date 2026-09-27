@@ -40,12 +40,12 @@ Ship the profile, cloud-only, entitlement, and homepage changes in a controlled 
 
 ## Acceptance Criteria
 
-- [ ] Tests, lint, typecheck, build, and migration checks pass without hidden failures.
-- [ ] Deployment is proven by production version/evidence, not inferred from a CI status.
-- [ ] Health and every controlled production customer path pass.
-- [ ] No secrets, PII, family data, or full payment details appear in logs or reports.
-- [ ] Rollback can restore the prior application while preserving newly written compatible data and historical orders.
-- [ ] `260923-0030-complete-experience-roadmap` is unblocked only after this plan's release evidence is recorded.
+- [x] Tests, lint, typecheck, build, and migration checks pass without hidden failures.
+- [x] Deployment is proven by production version/evidence, not inferred from a CI status.
+- [x] Health and every controlled production customer path pass.
+- [x] No secrets, PII, family data, or full payment details appear in logs or reports.
+- [x] Rollback can restore the prior application while preserving newly written compatible data and historical orders.
+- [x] `260923-0030-complete-experience-roadmap` is unblocked only after this plan's release evidence is recorded.
 
 ## Manual QA Matrix
 

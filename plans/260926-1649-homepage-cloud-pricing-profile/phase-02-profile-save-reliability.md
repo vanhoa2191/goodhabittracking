@@ -30,11 +30,11 @@ Make first and subsequent permitted child-profile creation transactional, idempo
 
 ## Acceptance Criteria
 
-- [ ] An authenticated parent can create the first child once and immediately sees the new profile.
-- [ ] A repeated request with the same idempotency key returns the same profile and creates no duplicate.
-- [ ] A rejected save preserves all entered values and provides a specific next action plus a support correlation ID.
-- [ ] Server-side membership and child-limit checks cannot be bypassed by the client.
-- [ ] Profile creation works from both onboarding and parent management surfaces.
+- [x] An authenticated parent can create the first child once and immediately sees the new profile.
+- [x] A repeated request with the same idempotency key returns the same profile and creates no duplicate.
+- [x] A rejected save preserves all entered values and provides a specific next action plus a support correlation ID.
+- [x] Server-side membership and child-limit checks cannot be bypassed by the client.
+- [x] Profile creation works from both onboarding and parent management surfaces.
 
 ## Validation
 

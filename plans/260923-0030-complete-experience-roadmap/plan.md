@@ -7,7 +7,7 @@ effort: "12-16 engineering weeks plus experiment observation"
 issue: null
 branch: main
 tags: [feature, frontend, backend, analytics, accessibility, experimental]
-blockedBy: [260926-1649-homepage-cloud-pricing-profile]
+blockedBy: []
 blocks: []
 created: 2026-09-23
 ---
@@ -28,7 +28,7 @@ Implement every remaining approved UI-audit and execution-plan item. Preserve co
 
 ## Current evidence
 
-- Landing now has one primary action, a secondary demo path, and collapsed supporting content; the 1280px page measures 2,360px without overflow at 375px.
+- Landing now has one primary action, a secondary demo path, truthful product proof, and collapsed supporting content; production checks show no horizontal overflow at 375px, 768px, or 1280px.
 - Kid cards have details, haptic, sound, and completion feedback; they are not yet swipeable quests.
 - Six mascot masters and hero palettes exist; letters, expression/season variants, and durable engagement state do not.
 - Parent navigation has seven tabs; Habits mixes library and assigned records; Journeys is a grid, not a vertical map.
