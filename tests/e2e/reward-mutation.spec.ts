@@ -1,32 +1,27 @@
 import { expect, test } from '@playwright/test';
-import { openLocalFamilySetup } from './open-local-family-setup';
-
-async function completeLocalSetup(page: import('@playwright/test').Page) {
-  await page.goto('/');
-  await openLocalFamilySetup(page);
-  const setupDialog = page.getByRole('dialog', { name: 'Thiết lập gia đình' });
-  await setupDialog.getByLabel('Tên của Ba Mẹ / Người nuôi dưỡng *').fill('Mẹ Kiểm Thử');
-  await setupDialog.getByRole('button', { name: /Tiếp Tục/ }).click();
-  await setupDialog.getByLabel('Họ và Tên bé *').fill('Bé Ban Đầu');
-  await setupDialog.getByRole('checkbox', { name: /Tôi là cha mẹ/ }).check();
-  await setupDialog.getByRole('button', { name: /Hoàn Tất/ }).click();
-}
+import { installCloudFamilyFixture } from './cloud-family-fixture';
 
 async function openParentRewards(page: import('@playwright/test').Page) {
-  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) {
-    await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  if (await page.getByTestId('app-surface').getAttribute('data-app-mode') === 'kid') {
+    await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+    const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
+    for (const digit of ['1', '2', '3', '4']) {
+      await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+    }
   }
   await page.getByRole('tab', { name: 'Thiết kế' }).click();
   await page.getByRole('tab', { name: /Đổi quà/ }).click();
 }
 
-test('a failed cloud reward save keeps the modal open and visible data unchanged', async ({ page }, testInfo) => {
+test('a failed cloud reward save keeps the modal open and visible data unchanged', async ({ page, baseURL }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await completeLocalSetup(page);
-  await page.evaluate(() => localStorage.setItem('kidhabit_storage_mode', 'cloud'));
-  await page.reload();
+  await installCloudFamilyFixture(page, baseURL);
+  await page.route('**/api/domain/rewards', (route) => route.fulfill({
+    status: 503,
+    contentType: 'application/json',
+    body: JSON.stringify({ success: false, error: 'Temporary failure' }),
+  }));
+  await page.goto('/');
   await openParentRewards(page);
   await page.getByRole('button', { name: 'Tạo phần thưởng mới' }).click();
   const rewardDialog = page.getByRole('dialog', { name: 'Tạo phần thưởng mới' });
@@ -42,9 +37,10 @@ test('a failed cloud reward save keeps the modal open and visible data unchanged
   await page.screenshot({ path: testInfo.outputPath('reward-cloud-error.png') });
 });
 
-test('a local reward save closes the modal and persists after reload', async ({ page }, testInfo) => {
+test('a demo reward save closes the modal and persists after reload', async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await completeLocalSetup(page);
+  await page.goto('/');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
   await openParentRewards(page);
   await page.getByRole('button', { name: 'Tạo phần thưởng mới' }).click();
   const rewardDialog = page.getByRole('dialog', { name: 'Tạo phần thưởng mới' });
@@ -58,5 +54,5 @@ test('a local reward save closes the modal and persists after reload', async ({ 
   await openParentRewards(page);
   await expect(page.getByText('Chuyến đi cuối tuần', { exact: true })).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({ path: testInfo.outputPath('reward-local-success.png') });
+  await page.screenshot({ path: testInfo.outputPath('reward-demo-success.png') });
 });

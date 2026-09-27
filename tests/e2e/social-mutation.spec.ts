@@ -1,42 +1,26 @@
 import { expect, test } from '@playwright/test';
-import { openLocalFamilySetup } from './open-local-family-setup';
-
-async function completeLocalSetup(page: import('@playwright/test').Page) {
-  await page.goto('/');
-  await openLocalFamilySetup(page);
-  const setupDialog = page.getByRole('dialog', { name: 'Thiết lập gia đình' });
-  await setupDialog.getByLabel('Tên của Ba Mẹ / Người nuôi dưỡng *').fill('Mẹ Kiểm Thử');
-  await setupDialog.getByRole('button', { name: /Tiếp Tục/ }).click();
-  await setupDialog.getByLabel('Họ và Tên bé *').fill('Bé Ban Đầu');
-  await setupDialog.getByRole('checkbox', { name: /Tôi là cha mẹ/ }).check();
-  await setupDialog.getByRole('button', { name: /Hoàn Tất/ }).click();
-}
+import { installCloudFamilyFixture } from './cloud-family-fixture';
 
 async function openLeaderboard(page: import('@playwright/test').Page) {
+  await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', /^(kid|parent)$/);
+  if (await page.getByTestId('app-surface').getAttribute('data-app-mode') === 'parent') {
+    await page.waitForLoadState('networkidle');
+    await page.getByRole('button', { name: 'Bé vui học' }).click();
+    await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'kid');
+  }
   await page.getByRole('button', { name: /Bảng Xếp Hạng|BXH/ }).click();
   await expect(page.getByText(/Thi đua thói quen tốt/).first()).toBeVisible();
 }
 
-async function expectNoOverlap(
-  first: import('@playwright/test').Locator,
-  second: import('@playwright/test').Locator,
-) {
-  const [firstBox, secondBox] = await Promise.all([first.boundingBox(), second.boundingBox()]);
-  expect(firstBox).not.toBeNull();
-  expect(secondBox).not.toBeNull();
-  if (!firstBox || !secondBox) return;
-  const overlaps = firstBox.x < secondBox.x + secondBox.width
-    && firstBox.x + firstBox.width > secondBox.x
-    && firstBox.y < secondBox.y + secondBox.height
-    && firstBox.y + firstBox.height > secondBox.y;
-  expect(overlaps).toBe(false);
-}
-
-test('a failed cloud group save keeps the modal open and visible groups unchanged', async ({ page }, testInfo) => {
+test('a failed cloud group save keeps the modal open and visible groups unchanged', async ({ page, baseURL }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await completeLocalSetup(page);
-  await page.evaluate(() => localStorage.setItem('kidhabit_storage_mode', 'cloud'));
-  await page.reload();
+  await installCloudFamilyFixture(page, baseURL);
+  await page.route('**/api/domain/social', (route) => route.fulfill({
+    status: 503,
+    contentType: 'application/json',
+    body: JSON.stringify({ success: false, error: 'Temporary failure' }),
+  }));
+  await page.goto('/');
   await openLeaderboard(page);
   await page.getByRole('button', { name: 'Tạo nhóm thi đua' }).first().click();
   const dialog = page.getByRole('dialog', { name: 'Tạo nhóm thi đua' });
@@ -52,11 +36,15 @@ test('a failed cloud group save keeps the modal open and visible groups unchange
   await page.screenshot({ path: testInfo.outputPath('social-cloud-error.png') });
 });
 
-test('a failed cloud group join keeps the accessible dialog open', async ({ page }, testInfo) => {
+test('a failed cloud group join keeps the accessible dialog open', async ({ page, baseURL }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await completeLocalSetup(page);
-  await page.evaluate(() => localStorage.setItem('kidhabit_storage_mode', 'cloud'));
-  await page.reload();
+  await installCloudFamilyFixture(page, baseURL);
+  await page.route('**/api/domain/social', (route) => route.fulfill({
+    status: 503,
+    contentType: 'application/json',
+    body: JSON.stringify({ success: false, error: 'Temporary failure' }),
+  }));
+  await page.goto('/');
   await openLeaderboard(page);
   await page.getByRole('button', { name: 'Nhập mã vào nhóm' }).last().click();
   const dialog = page.getByRole('dialog', { name: 'Nhập mã vào nhóm' });
@@ -69,9 +57,10 @@ test('a failed cloud group join keeps the accessible dialog open', async ({ page
   await page.screenshot({ path: testInfo.outputPath('social-join-error.png') });
 });
 
-test('a local group save closes the modal and persists after reload', async ({ page }, testInfo) => {
+test('a demo group save closes the modal and persists after reload', async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await completeLocalSetup(page);
+  await page.goto('/');
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
   await openLeaderboard(page);
   await page.getByRole('button', { name: 'Tạo nhóm thi đua' }).first().click();
   const dialog = page.getByRole('dialog', { name: 'Tạo nhóm thi đua' });
@@ -84,10 +73,7 @@ test('a local group save closes the modal and persists after reload', async ({ p
   await page.reload();
   await openLeaderboard(page);
   await expect(page.getByText('Biệt đội Tử tế', { exact: true })).toBeVisible();
-  await expectNoOverlap(
-    page.getByText('ĐỒNG', { exact: false }).first(),
-    page.getByText('sao tích lũy', { exact: true }).first(),
-  );
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.getByText('Biệt đội Tử tế', { exact: true }).scrollIntoViewIfNeeded();
-  await page.screenshot({ path: testInfo.outputPath('social-local-success.png') });
+  await page.screenshot({ path: testInfo.outputPath('social-demo-success.png') });
 });

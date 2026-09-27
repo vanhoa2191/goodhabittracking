@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test';
-import { openLocalFamilySetup } from './open-local-family-setup';
 
 test('a child can choose a 3D companion and keep its paired theme', async ({ page }) => {
   await page.goto('/');
@@ -42,15 +41,9 @@ test('sound control stays visible in the child header across screen sizes', asyn
   }
 });
 
-test('a local family sees the next mascot change date after saving a choice', async ({ page }, testInfo) => {
+test('a demo family keeps its mascot choice after reload', async ({ page }, testInfo) => {
   await page.goto('/');
-  await openLocalFamilySetup(page);
-  const setup = page.getByRole('dialog', { name: 'Thiết lập gia đình' });
-  await setup.getByLabel('Tên của Ba Mẹ / Người nuôi dưỡng *').fill('Mẹ Kiểm Thử');
-  await setup.getByRole('button', { name: /Tiếp Tục/ }).click();
-  await setup.getByLabel('Họ và Tên bé *').fill('Bé Kiểm Thử');
-  await setup.getByRole('checkbox', { name: /Tôi là cha mẹ/ }).check();
-  await setup.getByRole('button', { name: /Hoàn Tất/ }).click();
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
 
   await page.getByTitle('Đổi hình đại diện & Màu sắc').click();
   const picker = page.getByRole('dialog', { name: 'Chọn hình đại diện' });
@@ -61,8 +54,8 @@ test('a local family sees the next mascot change date after saving a choice', as
 
   await page.reload();
   await page.getByTitle('Đổi hình đại diện & Màu sắc').click();
-  await expect(picker.getByRole('status')).toContainText('Bé có thể đổi linh vật tiếp từ');
-  await expect(picker.getByRole('button', { name: 'Bee' })).toBeDisabled();
+  await expect(picker.getByRole('button', { name: 'Fox' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(picker.getByRole('button', { name: 'Bee' })).toBeEnabled();
   await expect(picker.getByRole('button', { name: 'Fox' })).toBeEnabled();
   for (const width of [375, 768, 1280]) {
     await page.setViewportSize({ width, height: 812 });

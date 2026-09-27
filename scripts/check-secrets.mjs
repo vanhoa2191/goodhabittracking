@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { readFileSync, statSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 
 const trackedFiles = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'], { encoding: 'utf8' })
   .split('\0')
@@ -17,6 +17,7 @@ const detectors = [
 const findings = [];
 
 for (const file of trackedFiles) {
+  if (!existsSync(file)) continue;
   if (statSync(file).size > 1_000_000) continue;
 
   const content = readFileSync(file, 'utf8');

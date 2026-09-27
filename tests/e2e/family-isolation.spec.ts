@@ -45,7 +45,7 @@ test('revoked child session clears all stale family data before use', async ({ p
 
   expect(familyState.marker).toBeNull();
   expect(familyState.familyId).toBeNull();
-  expect(familyState.profiles).not.toContain('FAMILY_A_SECRET');
-  expect(familyState.activities).not.toContain('FAMILY_A_SECRET');
+  expect(familyState.profiles).toBeNull();
+  expect(familyState.activities).toBeNull();
   expect(leakedRequests).toEqual([]);
 });

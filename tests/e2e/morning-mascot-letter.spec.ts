@@ -1,20 +1,13 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { z } from 'zod';
-import { openLocalFamilySetup } from './open-local-family-setup';
 
 test.use({ timezoneId: 'Asia/Ho_Chi_Minh' });
 
-test('a local child reads one morning letter and keeps it after reload', async ({ page }, testInfo) => {
+test('a demo child reads one morning letter and keeps it after reload', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-09-23T01:00:00.000Z'));
   await page.goto('/');
-  await openLocalFamilySetup(page);
-  const setup = page.getByRole('dialog', { name: 'Thiết lập gia đình' });
-  await setup.getByLabel('Tên của Ba Mẹ / Người nuôi dưỡng *').fill('Mẹ Kiểm Thử');
-  await setup.getByRole('button', { name: /Tiếp Tục/ }).click();
-  await setup.getByLabel('Họ và Tên bé *').fill('Bé Kiểm Thử');
-  await setup.getByRole('checkbox', { name: /Tôi là cha mẹ/ }).check();
-  await setup.getByRole('button', { name: /Hoàn Tất/ }).click();
+  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
 
   const letter = page.getByTestId('morning-mascot-letter');
   await expect(letter).toContainText('Thư buổi sáng từ Leo');
