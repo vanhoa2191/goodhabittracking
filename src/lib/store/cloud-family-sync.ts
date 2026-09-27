@@ -78,7 +78,7 @@ const groupMemberRowSchema = z.object({
 });
 
 const subscriptionRowSchema = z.object({
-  plan: z.enum(['free', 'trial', 'monthly', 'yearly', 'lifetime']),
+  plan: z.enum(['free', 'trial', 'solo_monthly', 'monthly', 'yearly', 'lifetime']),
   status: z.string(),
   trial_ends_at: z.string().nullable().optional(),
   subscription_ends_at: z.string().nullable().optional(),

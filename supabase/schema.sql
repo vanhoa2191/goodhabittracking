@@ -29,3 +29,5 @@
 \ir migrations/202609260001_child_journal.sql
 \ir migrations/202609260002_dream_city.sql
 \ir migrations/202609260003_parent_reminder_consent.sql
+\ir migrations/202609270001_idempotent_profile_mutations.sql
+\ir migrations/202609270002_solo_plan_entitlements.sql

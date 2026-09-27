@@ -65,7 +65,7 @@ function stateSetter<T>(read: () => T[], write: (value: T[]) => void): Dispatch<
 }
 
 function createState(
-  storageMode: 'local' | 'cloud',
+  sessionType: 'demo' | 'cloud',
   currentUser = null as typeof user | null,
   isFamilyConnected = false,
 ) {
@@ -97,7 +97,7 @@ function createState(
       setChildBadges: stateSetter(() => childBadges, (value) => { childBadges = value; }),
       setExperience: (action) => { experience = typeof action === 'function' ? action(experience) : action; },
     },
-    storageMode,
+    isDemoSession: sessionType === 'demo',
     analyticsSink,
   });
   return {
@@ -117,7 +117,7 @@ describe('habit actions', () => {
 
   it('completes a local habit and awards points', async () => {
     // Given
-    const fixture = createState('local');
+    const fixture = createState('demo');
 
     // When
     const saved = await fixture.actions.toggleActivity(activity.id, '2026-09-20');
@@ -133,7 +133,7 @@ describe('habit actions', () => {
   });
 
   it('clears a local deferral when the task is completed so undo does not restore it', async () => {
-    const fixture = createState('local');
+    const fixture = createState('demo');
     fixture.setExperience({
       ...emptyExperienceState,
       deferredTasks: [{
@@ -256,7 +256,7 @@ describe('habit actions', () => {
       pointsAwarded: 0,
       completedAt: '2026-09-20T01:00:00.000Z',
     };
-    const approveFixture = createState('local');
+    const approveFixture = createState('demo');
     approveFixture.read().logs.push(pending);
     approveFixture.actions.approveLog(pending.id);
     expect(approveFixture.read().logs[0]).toEqual(expect.objectContaining({
@@ -266,7 +266,7 @@ describe('habit actions', () => {
     expect(approveFixture.read().profiles[0]?.points).toBe(activity.points);
     expect(approveFixture.analyticsSink).toHaveBeenCalledWith({ event: 'habit_reviewed', decision: 'approved', approvalLag: 'over_1d', mode: 'local' });
 
-    const rejectFixture = createState('local');
+    const rejectFixture = createState('demo');
     rejectFixture.read().logs.push(pending);
     rejectFixture.actions.rejectLog(pending.id);
     expect(rejectFixture.read().logs[0]).toEqual(expect.objectContaining({

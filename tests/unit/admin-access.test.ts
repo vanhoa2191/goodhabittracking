@@ -12,10 +12,12 @@ describe('admin and pricing boundaries', () => {
     expect(isAdminUser(user('other@example.com'), 'owner@example.com')).toBe(false);
   });
 
-  it('removes lifetime from sale while keeping monthly and yearly', () => {
+  it('removes lifetime and free from sale while keeping all three paid offers', () => {
     expect(PRICING_PLANS.map((plan) => plan.id)).not.toContain('lifetime');
-    expect(PRICING_PLANS.map((plan) => plan.id)).toEqual(expect.arrayContaining(['monthly', 'yearly']));
+    expect(PRICING_PLANS.map((plan) => plan.id)).not.toContain('free');
+    expect(PRICING_PLANS.map((plan) => plan.id)).toEqual(expect.arrayContaining(['solo_monthly', 'monthly', 'yearly']));
     expect(paidPlanSchema.safeParse('lifetime').success).toBe(false);
+    expect(paidPlanSchema.safeParse('solo_monthly').success).toBe(true);
   });
 
   it('keeps the yearly savings claim consistent with the displayed prices', () => {

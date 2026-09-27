@@ -49,10 +49,16 @@ describe('profile mutation client', () => {
     const requester = vi.fn<ProfileMutationRequester>(async () => new Response(JSON.stringify({
       success: false,
       error: 'The child profile could not be saved.',
+      errorCode: 'child_limit_reached',
+      correlationId: '22222222-2222-4222-8222-222222222222',
     }), { status: 409 }));
 
     await expect(requestProfileMutation({
       type: 'update', profileId: profile.id, updates: { name: 'Bé Minh' },
-    }, requester)).rejects.toMatchObject({ status: 409 });
+    }, requester)).rejects.toMatchObject({
+      status: 409,
+      code: 'child_limit_reached',
+      correlationId: '22222222-2222-4222-8222-222222222222',
+    });
   });
 });

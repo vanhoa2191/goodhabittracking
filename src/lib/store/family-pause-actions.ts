@@ -5,7 +5,7 @@ type Dependencies = {
   readonly currentUser: { readonly id: string } | null;
   readonly familyId: string | null;
   readonly setExperience: Dispatch<SetStateAction<ExperienceState>>;
-  readonly storageMode: 'local' | 'cloud';
+  readonly isDemoSession: boolean;
   readonly syncCloudFamily: () => Promise<boolean>;
   readonly requester?: typeof fetch;
 };
@@ -14,7 +14,7 @@ export function createFamilyPauseAction({
   currentUser,
   familyId,
   setExperience,
-  storageMode,
+  isDemoSession,
   syncCloudFamily,
   requester = fetch,
 }: Dependencies): (paused: boolean) => Promise<boolean> {
@@ -45,7 +45,7 @@ export function createFamilyPauseAction({
 
   return async (paused) => {
     if (!familyId) return false;
-    if (storageMode === 'local') {
+    if (isDemoSession) {
       applyLocally(paused, familyId);
       return true;
     }
@@ -63,14 +63,11 @@ export function createFamilyPauseAction({
       throw error;
     }
     if (!response.ok) return false;
-    let refreshed: boolean;
     try {
-      refreshed = await syncCloudFamily();
+      await syncCloudFamily();
     } catch (error: unknown) {
       if (!(error instanceof TypeError)) throw error;
-      refreshed = false;
     }
-    if (!refreshed) applyLocally(paused, familyId);
     return true;
   };
 }

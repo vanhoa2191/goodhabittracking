@@ -12,7 +12,7 @@ describe('family pause action', () => {
       currentUser: null,
       familyId,
       setExperience,
-      storageMode: 'local',
+      isDemoSession: true,
       syncCloudFamily: vi.fn(async () => false),
     });
 
@@ -31,7 +31,7 @@ describe('family pause action', () => {
       currentUser: { id: 'user-a' },
       familyId,
       setExperience,
-      storageMode: 'cloud',
+      isDemoSession: false,
       syncCloudFamily: vi.fn(async () => true),
       requester: vi.fn(async () => new Response(null, { status: 409 })),
     });
@@ -46,12 +46,12 @@ describe('family pause action', () => {
       currentUser: { id: 'user-a' },
       familyId,
       setExperience: (update) => { experience = typeof update === 'function' ? update(experience) : update; },
-      storageMode: 'cloud',
+      isDemoSession: false,
       syncCloudFamily: vi.fn(async () => false),
       requester: vi.fn(async () => new Response(null, { status: 200 })),
     });
 
     await expect(setPaused(true)).resolves.toBe(true);
-    expect(experience.settings?.paused_at).toBeTruthy();
+    expect(experience.settings).toBeNull();
   });
 });

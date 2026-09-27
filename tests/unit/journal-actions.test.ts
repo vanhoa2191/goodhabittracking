@@ -18,7 +18,7 @@ describe('journal actions', () => {
       isFamilyConnected: false,
       request,
       setExperience: (updater) => { state = updater(state); },
-      storageMode: 'local',
+      isDemoSession: true,
       now: () => new Date('2026-09-26T12:00:00.000Z'),
     });
 
@@ -50,7 +50,7 @@ describe('journal actions', () => {
       isFamilyConnected: true,
       request,
       setExperience: (updater) => { state = updater(state); },
-      storageMode: 'cloud',
+      isDemoSession: false,
       now: () => new Date('2026-09-26T12:00:00.000Z'),
     });
 
@@ -68,7 +68,7 @@ describe('journal actions', () => {
       isFamilyConnected: false,
       request: vi.fn(),
       setExperience: vi.fn(),
-      storageMode: 'cloud',
+      isDemoSession: false,
       now: () => new Date('2026-09-26T12:00:00.000Z'),
     });
 
@@ -87,7 +87,7 @@ describe('journal actions', () => {
       getScopeVersion: () => scopeVersion,
       request: () => new Promise<Response>((resolve) => { resolveRequest = resolve; }),
       setExperience: (updater) => { state = updater(state); },
-      storageMode: 'cloud',
+      isDemoSession: false,
       now: () => new Date('2026-09-26T12:00:00.000Z'),
     });
 

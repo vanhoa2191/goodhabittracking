@@ -17,11 +17,9 @@ import { emptyExperienceState } from '@/lib/experience-state';
 import type { ExperienceState } from '@/lib/experience-state';
 import {
   loadLocalFamilyState,
-  LOCAL_STORAGE_PREFIX,
   clearDemoFamilyState,
   loadLocalExperience,
   persistDemoFamilyState,
-  persistLocalFamilyState,
   saveLocalExperience,
 } from './local-family-persistence';
 
@@ -53,7 +51,6 @@ type FamilySetters = {
   readonly setIsDemoSession: Dispatch<SetStateAction<boolean>>;
   readonly setIsParentUnlocked: Dispatch<SetStateAction<boolean>>;
   readonly setIsLoaded: Dispatch<SetStateAction<boolean>>;
-  readonly setIsOnboardingOpen: Dispatch<SetStateAction<boolean>>;
   readonly setKudos: Dispatch<SetStateAction<Kudo[]>>;
   readonly setLogs: Dispatch<SetStateAction<ActivityLog[]>>;
   readonly setMode: Dispatch<SetStateAction<'kid' | 'parent'>>;
@@ -67,14 +64,13 @@ type FamilySetters = {
 };
 
 type Dependencies = {
-  readonly resetFamilyScope: () => void;
   readonly state: FamilyState;
   readonly setters: FamilySetters;
   readonly syncNow: () => Promise<void>;
 };
 
 export function useLocalFamilyLifecycle(dependencies: Dependencies) {
-  const { resetFamilyScope, syncNow } = dependencies;
+  const { syncNow } = dependencies;
   const {
     activeChildId,
     activities,
@@ -101,7 +97,6 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     setGroups,
     setIsDemoSession,
     setIsLoaded,
-    setIsOnboardingOpen,
     setIsParentUnlocked,
     setKudos,
     setLogs,
@@ -147,20 +142,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
           setIsDemoSession(true);
           return;
         }
-        if (hydration.pin) setParentPin(hydration.pin);
-        setFamilyId(hydration.familyId);
-        setStorageMode(hydration.storageMode);
-        setParentProfile(hydration.parentProfile);
-        setProfiles(hydration.profiles);
-        setExperience(hydration.experience);
-        setActiveChildId(hydration.activeChildId);
-        setActivities(hydration.activities);
-        setLogs(hydration.logs);
-        setRewards(hydration.rewards);
-        setRedemptions(hydration.redemptions);
-        setChildBadges(hydration.childBadges);
-        setGroups(hydration.groups);
-        setKudos(hydration.kudos);
+        setStorageMode('cloud');
       } catch (error: unknown) {
         console.error('Error loading local data:', error);
       } finally {
@@ -209,20 +191,6 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
       saveLocalExperience(sessionStorage, experience);
       return;
     }
-    persistLocalFamilyState(localStorage, {
-      pin: parentPin,
-      storageMode,
-      activeChildId,
-      profiles,
-      activities,
-      logs,
-      rewards,
-      redemptions,
-      childBadges,
-      groups,
-      kudos,
-    });
-    if (storageMode === 'local') saveLocalExperience(localStorage, experience);
   }, [
     activeChildId,
     activities,
@@ -245,19 +213,6 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     if (isLoaded && isSupabaseConfigured()) queueMicrotask(() => void syncNow());
   }, [isLoaded, syncNow]);
 
-  const startLocalFamilySetup = (): void => {
-    clearDemoFamilyState(sessionStorage);
-    sessionStorage.removeItem('kidhabit_demo_session');
-    resetFamilyScope();
-    setIsDemoSession(false);
-    const localFamilyId = crypto.randomUUID();
-    setFamilyId(localFamilyId);
-    setStorageMode('local');
-    localStorage.setItem(`${LOCAL_STORAGE_PREFIX}family_id`, localFamilyId);
-    localStorage.setItem(`${LOCAL_STORAGE_PREFIX}storage_mode`, 'local');
-    setIsOnboardingOpen(true);
-  };
-
   const startDemoSession = (): void => {
     clearDemoFamilyState(sessionStorage);
     setExperience(emptyExperienceState);
@@ -279,13 +234,5 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     setIsDemoSession(true);
   };
 
-  const deleteLocalFamilyData = (): void => {
-    clearDemoFamilyState(sessionStorage);
-    resetFamilyScope();
-    setIsDemoSession(false);
-    sessionStorage.removeItem('kidhabit_in_app');
-    sessionStorage.removeItem('kidhabit_demo_session');
-  };
-
-  return { deleteLocalFamilyData, startDemoSession, startLocalFamilySetup };
+  return { startDemoSession };
 }

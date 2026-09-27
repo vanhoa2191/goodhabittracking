@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { z } from 'zod';
 
 type Subscription = {
-  readonly plan: 'free' | 'trial' | 'monthly' | 'yearly';
+  readonly plan: 'free' | 'trial' | 'solo_monthly' | 'monthly' | 'yearly' | 'lifetime';
   readonly status: 'active' | 'inactive' | 'cancelled';
   readonly subscription_ends_at: string | null;
   readonly trial_ends_at: string | null;
@@ -33,7 +33,7 @@ type Coupon = {
 };
 
 const inputClass = 'min-h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm dark:border-zinc-700 dark:bg-zinc-800';
-const planSchema = z.enum(['free', 'trial', 'monthly', 'yearly']);
+const planSchema = z.enum(['free', 'trial', 'solo_monthly', 'monthly', 'yearly', 'lifetime']);
 const subscriptionStatusSchema = z.enum(['active', 'inactive', 'cancelled']);
 
 function toDateInput(value: string | null | undefined) {
@@ -217,10 +217,12 @@ export function AdminCustomerManager() {
                     <div className="grid gap-2 sm:grid-cols-2">
                       <label className="text-xs font-bold">Gói
                         <select value={customer.subscription?.plan ?? 'free'} disabled={!customer.familyId} onChange={(event) => updateSubscription(customer, { plan: planSchema.parse(event.target.value) })} className={`${inputClass} mt-1`}>
-                          <option value="free">Miễn phí</option>
+                          <option value="free">Chưa có gói</option>
                           <option value="trial">Dùng thử</option>
-                          <option value="monthly">Theo tháng</option>
-                          <option value="yearly">Theo năm</option>
+                          <option value="solo_monthly">Gói Một Bé</option>
+                          <option value="monthly">Gói Gia Đình · Tháng</option>
+                          <option value="yearly">Gói Gia Đình · Năm</option>
+                          <option value="lifetime">Trọn đời (đã cấp trước đây)</option>
                         </select>
                       </label>
                       <label className="text-xs font-bold">Trạng thái

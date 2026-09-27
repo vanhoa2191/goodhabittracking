@@ -42,7 +42,7 @@ type CloudContext = {
 type Dependencies = {
   readonly cloud: CloudContext;
   readonly state: HabitState;
-  readonly storageMode: 'local' | 'cloud';
+  readonly isDemoSession: boolean;
   readonly badges?: readonly Badge[];
   readonly analyticsSink?: ProductEventSink;
 };
@@ -95,7 +95,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
         log.activityId === activityId && log.childId === childId && log.date === date,
       );
 
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         const user = cloudUser();
         if (!user && !dependencies.cloud.isFamilyConnected) return false;
         try {
@@ -177,7 +177,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
       return true;
     },
     approveLog: (logId) => {
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         reviewCloudLog(logId, 'approve');
         return;
       }
@@ -195,7 +195,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
       sounds.playTaskComplete();
     },
     rejectLog: (logId) => {
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         reviewCloudLog(logId, 'reject');
         return;
       }

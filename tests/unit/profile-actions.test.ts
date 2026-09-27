@@ -3,7 +3,10 @@ import type { ChildProfile, HabitActivity } from '@/types';
 import { emptyExperienceState } from '@/lib/experience-state';
 
 const requestProfileMutation = vi.hoisted(() => vi.fn());
-vi.mock('@/lib/store/profile-mutation-client', () => ({ requestProfileMutation }));
+vi.mock('@/lib/store/profile-mutation-client', async (importOriginal) => ({
+  ...await importOriginal<typeof import('@/lib/store/profile-mutation-client')>(),
+  requestProfileMutation,
+}));
 
 import { createProfileActions } from '@/lib/store/profile-actions';
 
@@ -38,11 +41,14 @@ describe('profile actions', () => {
       setCloudSyncActive: vi.fn(),
       setExperience: vi.fn(),
       setProfiles,
-      storageMode: 'cloud',
+      isDemoSession: false,
       syncCloudFamily: vi.fn(async () => true),
     });
 
-    await expect(actions.createProfile(baseProfile)).resolves.toBe(false);
+    await expect(actions.createProfile(baseProfile)).resolves.toMatchObject({
+      success: false,
+      code: 'profile_service_unavailable',
+    });
     expect(profiles).toEqual([]);
     expect(setProfiles).not.toHaveBeenCalled();
   });
@@ -67,11 +73,14 @@ describe('profile actions', () => {
       setCloudSyncActive: vi.fn(),
       setExperience: vi.fn(),
       setProfiles: vi.fn(),
-      storageMode: 'cloud',
+      isDemoSession: false,
       syncCloudFamily,
     });
 
-    await expect(actions.createProfile({ ...baseProfile, ageStage: '3-6' })).resolves.toBe(true);
+    await expect(actions.createProfile({ ...baseProfile, ageStage: '3-6' })).resolves.toMatchObject({
+      success: true,
+      refreshed: true,
+    });
     expect(requestProfileMutation).toHaveBeenCalledWith(expect.objectContaining({
       type: 'create',
       profile: expect.objectContaining({ name: 'Bé An', ageStage: '3-6' }),
@@ -81,6 +90,73 @@ describe('profile actions', () => {
     }));
     expect(syncCloudFamily).toHaveBeenCalledTimes(1);
     expect(setActiveChildId).toHaveBeenCalledWith(expect.any(String));
+  });
+
+  it('treats a committed profile as saved when the follow-up refresh fails', async () => {
+    requestProfileMutation.mockResolvedValue({
+      profileId: '11111111-1111-4111-8111-111111111111',
+    });
+    const setActiveChildId = vi.fn();
+    const actions = createProfileActions({
+      activeChildId: null,
+      currentUser: {
+        id: 'user-a', app_metadata: {}, user_metadata: {}, aud: 'authenticated',
+        created_at: '2026-09-20T00:00:00.000Z',
+      },
+      experience: emptyExperienceState,
+      familyId: 'family-a',
+      profiles: [],
+      setActiveChildId,
+      setActivities: vi.fn(),
+      setCloudSyncActive: vi.fn(),
+      setExperience: vi.fn(),
+      setProfiles: vi.fn(),
+      isDemoSession: false,
+      syncCloudFamily: vi.fn(async () => false),
+    });
+
+    await expect(actions.createProfile(baseProfile)).resolves.toMatchObject({
+      success: true,
+      refreshed: false,
+    });
+    expect(setActiveChildId).toHaveBeenCalledWith('11111111-1111-4111-8111-111111111111');
+  });
+
+  it('reuses the caller request ID for idempotent create retries', async () => {
+    requestProfileMutation.mockImplementation(async (mutation) => ({
+      profileId: mutation.type === 'create' ? mutation.profile.id : mutation.profileId,
+    }));
+    const actions = createProfileActions({
+      activeChildId: null,
+      currentUser: {
+        id: 'user-a', app_metadata: {}, user_metadata: {}, aud: 'authenticated',
+        created_at: '2026-09-20T00:00:00.000Z',
+      },
+      experience: emptyExperienceState,
+      familyId: 'family-a',
+      profiles: [],
+      setActiveChildId: vi.fn(),
+      setActivities: vi.fn(),
+      setCloudSyncActive: vi.fn(),
+      setExperience: vi.fn(),
+      setProfiles: vi.fn(),
+      isDemoSession: false,
+      syncCloudFamily: vi.fn(async () => true),
+    });
+    const requestId = '33333333-3333-4333-8333-333333333333';
+
+    await actions.createProfile(baseProfile, requestId);
+    await actions.createProfile(baseProfile, requestId);
+
+    expect(requestProfileMutation).toHaveBeenCalledTimes(2);
+    expect(requestProfileMutation).toHaveBeenNthCalledWith(1, expect.objectContaining({
+      type: 'create',
+      profile: expect.objectContaining({ id: requestId }),
+    }));
+    expect(requestProfileMutation).toHaveBeenNthCalledWith(2, expect.objectContaining({
+      type: 'create',
+      profile: expect.objectContaining({ id: requestId }),
+    }));
   });
 
   it('keeps local profile creation fully local', async () => {
@@ -97,11 +173,11 @@ describe('profile actions', () => {
       setCloudSyncActive: vi.fn(),
       setExperience: vi.fn(),
       setProfiles: vi.fn((updater) => { profiles = updater(profiles); }),
-      storageMode: 'local',
+      isDemoSession: true,
       syncCloudFamily: vi.fn(async () => false),
     });
 
-    await expect(actions.createProfile({ ...baseProfile, ageStage: '3-6' })).resolves.toBe(true);
+    await expect(actions.createProfile({ ...baseProfile, ageStage: '3-6' })).resolves.toMatchObject({ success: true });
     expect(profiles).toHaveLength(1);
     expect(activities.length).toBeGreaterThan(0);
     expect(requestProfileMutation).not.toHaveBeenCalled();
@@ -128,7 +204,7 @@ describe('profile actions', () => {
         setCloudSyncActive: vi.fn(),
         setExperience,
         setProfiles,
-        storageMode: 'local' as const,
+        isDemoSession: true,
         syncCloudFamily: vi.fn(async () => false),
       };
 
@@ -161,11 +237,11 @@ describe('profile actions', () => {
       setCloudSyncActive: vi.fn(),
       setExperience: vi.fn((updater) => { experience = updater(experience); }),
       setProfiles: vi.fn(),
-      storageMode: 'local',
+      isDemoSession: true,
       syncCloudFamily: vi.fn(async () => false),
     });
 
-    await expect(actions.createProfile({ ...baseProfile, avatar: 'mascot:bee' })).resolves.toBe(true);
+    await expect(actions.createProfile({ ...baseProfile, avatar: 'mascot:bee' })).resolves.toMatchObject({ success: true });
     expect(experience.children).toEqual([expect.objectContaining({
       family_id: familyId,
       mascot_selected_at: expect.any(String),

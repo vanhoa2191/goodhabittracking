@@ -9,7 +9,7 @@ import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { ParentJournalPanel } from '@/components/ParentJournalPanel';
 
 export function ParentAnalyticsTab() {
-  const { logs, currentUser, logout, deleteLocalFamilyData } = useAppStore();
+  const { logs, currentUser, logout } = useAppStore();
   const { t, language } = useTranslation();
   const copy = getParentSecondaryCopy(language);
   const [isDeletingFamily, setIsDeletingFamily] = useState(false);
@@ -20,11 +20,7 @@ export function ParentAnalyticsTab() {
 
     setIsDeletingFamily(true);
     try {
-      if (!currentUser) {
-        deleteLocalFamilyData();
-        window.location.reload();
-        return;
-      }
+      if (!currentUser) throw new Error(copy.deleteFamilyError);
       const response = await fetch('/api/family', {
         method: 'DELETE',
         headers: { 'content-type': 'application/json' },

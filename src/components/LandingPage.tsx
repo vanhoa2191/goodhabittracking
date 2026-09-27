@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import {
   Sparkles,
   CheckCircle2,
@@ -11,21 +12,53 @@ import {
   Flame,
   Compass,
   ChevronRight,
+  Gift,
 } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
+import type { Language } from '@/types';
 import { useAppStore } from '@/lib/store';
 import { WEEKLY_JOURNEY_PLANS, MONTHLY_JOURNEY_PLANS } from '@/lib/constants';
 import { getJourneyHabitText } from '@/lib/i18n/journey-content';
 import { getJourneyPeriodLabel, journeyCopy } from '@/lib/i18n/journey-copy';
 import { getLandingUiCopy } from '@/lib/i18n/landing-ui-copy';
+import { PRICING_PLANS } from '@/lib/payos';
+import { getLandingSalesCopy } from '@/lib/i18n/landing-sales-copy';
 import { MascotAvatar } from '@/components/MascotAvatar';
 
 interface LandingPageProps {
   onStartDemo: () => void;
-  onStartLocalSetup: () => void;
   onLoginGoogle: () => void;
   isLoggedIn?: boolean;
 }
+
+const PRICING_SECTION_COPY: Record<Language, {
+  title: string;
+  description: string;
+  trial: string;
+  action: string;
+}> = {
+  vi: { title: 'Chọn gói phù hợp với gia đình', description: 'Dùng thử 7 ngày trước khi quyết định. Không cần thẻ tín dụng và không tự động trừ tiền.', trial: '7 ngày trải nghiệm đầy đủ', action: 'Xem quyền lợi và thanh toán' },
+  en: { title: 'Choose the right plan for your family', description: 'Try everything for 7 days before deciding. No credit card and no automatic charge.', trial: '7-day full trial', action: 'See benefits and checkout' },
+  fr: { title: 'Choisissez le forfait adapté à votre famille', description: 'Essayez toutes les fonctions pendant 7 jours, sans carte ni prélèvement automatique.', trial: 'Essai complet de 7 jours', action: 'Voir les avantages et payer' },
+  de: { title: 'Wählen Sie das passende Familienpaket', description: 'Testen Sie 7 Tage lang alle Funktionen, ohne Kreditkarte und ohne automatische Abbuchung.', trial: '7 Tage vollständig testen', action: 'Leistungen und Zahlung ansehen' },
+  it: { title: 'Scegli il piano giusto per la famiglia', description: 'Prova tutto per 7 giorni, senza carta e senza addebito automatico.', trial: 'Prova completa di 7 giorni', action: 'Vedi vantaggi e pagamento' },
+  es: { title: 'Elige el plan adecuado para tu familia', description: 'Prueba todo durante 7 días, sin tarjeta ni cobro automático.', trial: 'Prueba completa de 7 días', action: 'Ver ventajas y pagar' },
+  zh: { title: '选择适合家庭的方案', description: '先免费体验全部功能 7 天，无需信用卡，也不会自动扣款。', trial: '7 天完整体验', action: '查看权益并付款' },
+  ja: { title: 'ご家族に合うプランを選ぶ', description: 'まず7日間すべての機能を体験。カード不要で、自動課金もありません。', trial: '7日間フル体験', action: '特典と支払いを見る' },
+  ko: { title: '가족에게 맞는 플랜을 선택하세요', description: '먼저 7일 동안 모든 기능을 체험하세요. 카드가 필요 없고 자동 결제되지 않습니다.', trial: '7일 전체 체험', action: '혜택 및 결제 보기' },
+};
+
+const BILLING_PERIOD_COPY: Record<Language, { month: string; year: string }> = {
+  vi: { month: '/tháng', year: '/năm' },
+  en: { month: '/month', year: '/year' },
+  fr: { month: '/mois', year: '/an' },
+  de: { month: '/Monat', year: '/Jahr' },
+  it: { month: '/mese', year: '/anno' },
+  es: { month: '/mes', year: '/año' },
+  zh: { month: '/月', year: '/年' },
+  ja: { month: '/月', year: '/年' },
+  ko: { month: '/월', year: '/년' },
+};
 
 const FRAMEWORK_PILLARS = [
   {
@@ -715,25 +748,16 @@ const FRAMEWORK_PILLARS = [
   },
 ];
 
-export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isLoggedIn }: LandingPageProps) {
+export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingPageProps) {
   const { t, language } = useTranslation();
   const roadmapCopy = journeyCopy[language];
   const uiCopy = getLandingUiCopy(language);
-  const { openConnectModal, importData } = useAppStore();
+  const { openConnectModal, openPricingModal } = useAppStore();
+  const pricingCopy = PRICING_SECTION_COPY[language];
+  const salesCopy = getLandingSalesCopy(language);
   const [activePillarIndex, setActivePillarIndex] = useState(0);
   const [roadmapType, setRoadmapType] = useState<'weekly' | 'monthly'>('weekly');
   const [selectedPlanId, setSelectedPlanId] = useState<string>('week-1');
-  const [restoreNotice, setRestoreNotice] = useState<string | null>(null);
-
-  const handleRestore = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const content = typeof event.target?.result === 'string' ? event.target.result : '';
-      setRestoreNotice(content && importData(content) ? null : uiCopy.backupInvalid);
-    };
-    reader.onerror = () => setRestoreNotice(uiCopy.backupReadError);
-    reader.readAsText(file);
-  };
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-indigo-50/50 via-white to-amber-50/30 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 text-slate-800 dark:text-slate-100 transition-colors">
@@ -792,34 +816,11 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
                 <ChevronRight className="h-4 w-4 transition-transform group-open:rotate-90" aria-hidden="true" />
               </summary>
               <div className="flex flex-col items-stretch justify-center gap-2 pt-2 sm:flex-row sm:flex-wrap">
-                <button type="button" onClick={onStartLocalSetup} className="min-h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-800 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-100">
-                  {t.landingCtaLocalSetup}
-                </button>
                 <button type="button" onClick={openConnectModal} className="min-h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-800 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-100" title={uiCopy.childCodeTitle}>
                   {uiCopy.childCodeButton}
                 </button>
-                <label className="inline-flex min-h-11 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-800 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-100">
-                  {t.importData}
-                  <input
-                    type="file"
-                    accept="application/json,.json"
-                    className="sr-only"
-                    aria-label={t.importData}
-                    onChange={(event) => {
-                      const file = event.target.files?.[0];
-                      if (file) handleRestore(file);
-                      event.target.value = '';
-                    }}
-                  />
-                </label>
               </div>
             </details>
-          )}
-
-          {restoreNotice && (
-            <p role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">
-              {restoreNotice}
-            </p>
           )}
 
         </div>
@@ -835,6 +836,42 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
         {!isLoggedIn && (
           <p className="mx-auto mt-3 max-w-md text-center text-sm font-medium text-slate-700 dark:text-slate-200">{t.landingTrustedBy}</p>
         )}
+
+        <div className="mx-auto mt-8 max-w-3xl rounded-3xl border border-slate-200 bg-white p-4 text-left shadow-xl shadow-indigo-100/70 dark:border-zinc-700 dark:bg-zinc-900 dark:shadow-none sm:p-6">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <p className="text-xs font-extrabold uppercase tracking-wide text-indigo-600 dark:text-indigo-300">{salesCopy.previewLabel}</p>
+              <h2 className="mt-1 text-lg font-black text-slate-950 dark:text-white sm:text-xl">{salesCopy.previewTitle}</h2>
+            </div>
+            <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-black text-amber-900 dark:bg-amber-950 dark:text-amber-200">45 ⭐</span>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-[1.3fr_0.7fr]">
+            <div className="space-y-2">
+              {salesCopy.previewTasks.map((task, index) => (
+                <div key={task} className="flex min-h-12 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-zinc-700 dark:bg-zinc-800">
+                  <CheckCircle2 className={`h-5 w-5 shrink-0 ${index === 0 ? 'text-emerald-600' : 'text-indigo-500'}`} aria-hidden="true" />
+                  <span className="min-w-0 flex-1 text-sm font-bold text-slate-800 dark:text-slate-100">{task}</span>
+                  <span className="text-xs font-black text-amber-700 dark:text-amber-300">+{index === 0 ? 10 : 20}</span>
+                </div>
+              ))}
+            </div>
+            <div className="flex min-h-24 flex-col justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 p-4 text-white">
+              <Gift className="h-6 w-6 text-amber-300" aria-hidden="true" />
+              <p className="mt-2 text-sm font-extrabold leading-5">{salesCopy.previewReward}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-label={salesCopy.assurances.join(', ')} className="border-y border-indigo-100 bg-white px-4 py-5 dark:border-zinc-800 dark:bg-zinc-950 sm:px-6">
+        <ul className="mx-auto grid max-w-5xl gap-3 sm:grid-cols-3">
+          {salesCopy.assurances.map((item) => (
+            <li key={item} className="flex min-h-11 items-center gap-2 rounded-2xl bg-indigo-50/70 px-4 py-3 text-sm font-bold text-slate-800 dark:bg-indigo-950/30 dark:text-slate-100">
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" aria-hidden="true" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* 2. BEFORE VS AFTER (CHẠM NỖI ĐAU PHỤ HUYNH) */}
@@ -905,7 +942,45 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
         </div>
       </section>
 
-      {/* 3. BỘ KHUNG THÓI QUEN TOÀN DIỆN (7 KHÍA CẠNH TRƯỞNG THÀNH & 7 VIỆC TỐT) */}
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-20">
+        <div className="text-center">
+          <h2 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">{t.landingPillarsTitle}</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm font-medium leading-6 text-slate-700 dark:text-slate-300 sm:text-base">{t.landingPillarsSubtitle}</p>
+        </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {[
+            { icon: <Clock className="h-6 w-6" aria-hidden="true" />, title: t.landingPillar1Title, body: t.landingPillar1Desc },
+            { icon: <Star className="h-6 w-6" aria-hidden="true" />, title: t.landingPillar2Title, body: t.landingPillar2Desc },
+            { icon: <Compass className="h-6 w-6" aria-hidden="true" />, title: salesCopy.safetyTitle, body: salesCopy.safetyBody },
+          ].map((surface) => (
+            <article key={surface.title} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-6">
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">{surface.icon}</span>
+              <h3 className="mt-4 text-lg font-black text-slate-950 dark:text-white">{surface.title}</h3>
+              <p className="mt-2 text-sm font-medium leading-6 text-slate-700 dark:text-slate-300">{surface.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="border-y border-slate-200 bg-slate-50 px-4 py-12 dark:border-zinc-800 dark:bg-zinc-900/60 sm:px-6 sm:py-16">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-center text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">{t.landingStepsTitle}</h2>
+          <ol className="mt-8 grid gap-4 md:grid-cols-3">
+            {[
+              { title: t.landingStep1Title, body: t.landingStep1Desc },
+              { title: t.landingStep2Title, body: t.landingStep2Desc },
+              { title: t.landingStep3Title, body: t.landingStep3Desc },
+            ].map((step, index) => (
+              <li key={step.title} className="rounded-3xl border border-slate-200 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900 sm:p-6">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-sm font-black text-white">{index + 1}</span>
+                <h3 className="mt-4 text-base font-black text-slate-950 dark:text-white">{step.title.replace(/^\d+[.)]?\s*/, '')}</h3>
+                <p className="mt-2 text-sm font-medium leading-6 text-slate-700 dark:text-slate-300">{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
       <section className="px-4 py-8 sm:px-6 sm:py-12 max-w-6xl mx-auto">
         <details className="group rounded-3xl border border-indigo-100 bg-white/80 p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/80 sm:p-6">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left [&::-webkit-details-marker]:hidden">
@@ -1359,6 +1434,98 @@ export function LandingPage({ onStartDemo, onStartLocalSetup, onLoginGoogle, isL
         </div>
           </div>
         </details>
+      </section>
+
+      <section className="border-t border-indigo-100 bg-white px-4 py-14 dark:border-zinc-800 dark:bg-zinc-950 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-2xl text-center">
+            <span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-extrabold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300">
+              {pricingCopy.trial}
+            </span>
+            <h2 className="mt-4 text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">{pricingCopy.title}</h2>
+            <p className="mt-3 text-sm font-medium leading-6 text-slate-700 dark:text-slate-300 sm:text-base">{pricingCopy.description}</p>
+          </div>
+
+          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+            {PRICING_PLANS.map((plan) => {
+              if (plan.id !== 'solo_monthly' && plan.id !== 'monthly' && plan.id !== 'yearly') return null;
+              const localizedPlan = salesCopy.plans[plan.id];
+              return (
+              <article key={plan.id} className={`relative flex flex-col rounded-3xl border bg-white p-5 shadow-sm dark:bg-zinc-900 sm:p-6 ${plan.popular ? 'border-2 border-indigo-600 shadow-xl shadow-indigo-100 dark:shadow-none' : 'border-slate-200 dark:border-zinc-800'}`}>
+                {localizedPlan.badge && (
+                  <span className={`self-start rounded-full px-3 py-1 text-xs font-black ${plan.popular ? 'bg-indigo-600 text-white' : 'bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200'}`}>
+                    {localizedPlan.badge}
+                  </span>
+                )}
+                <h3 className="mt-4 text-lg font-black text-slate-950 dark:text-white">{localizedPlan.name}</h3>
+                <div className="mt-3 flex flex-wrap items-baseline gap-1.5">
+                  <span className="text-3xl font-black text-slate-950 dark:text-white">{plan.price.toLocaleString('vi-VN')}</span>
+                  <span className="text-sm font-bold text-slate-700 dark:text-slate-300">VNĐ {plan.id === 'yearly' ? BILLING_PERIOD_COPY[language].year : BILLING_PERIOD_COPY[language].month}</span>
+                </div>
+                {plan.savings && <p className="mt-1 text-xs font-extrabold text-emerald-700 dark:text-emerald-300">{plan.savings}</p>}
+                <p className="mt-4 text-sm font-extrabold leading-6 text-slate-800 dark:text-slate-200">{localizedPlan.limit}</p>
+                <ul className="mt-5 flex-1 space-y-3">
+                  {(language === 'vi' ? plan.features.slice(0, 3) : salesCopy.assurances.slice(1)).map((feature) => (
+                    <li key={feature} className="flex items-start gap-2 text-sm font-medium leading-5 text-slate-700 dark:text-slate-200">
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden="true" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+              );
+            })}
+          </div>
+
+          <div className="mt-7 text-center">
+            <button type="button" onClick={openPricingModal} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3 text-sm font-black text-white shadow-lg transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
+              {pricingCopy.action}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-slate-200 bg-slate-50 px-4 py-12 dark:border-zinc-800 dark:bg-zinc-900/60 sm:px-6 sm:py-16">
+        <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="rounded-3xl bg-indigo-950 p-6 text-white sm:p-8">
+            <CheckCircle2 className="h-8 w-8 text-emerald-400" aria-hidden="true" />
+            <h2 className="mt-4 text-2xl font-black">{salesCopy.safetyTitle}</h2>
+            <p className="mt-3 text-sm font-medium leading-6 text-indigo-100">{salesCopy.safetyBody}</p>
+            <Link href="/docs" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-black text-indigo-800 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">
+              {salesCopy.docs}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+          <div>
+            <h2 className="text-2xl font-black text-slate-950 dark:text-white">{salesCopy.faqTitle}</h2>
+            <div className="mt-4 space-y-3">
+              {salesCopy.faq.map((item) => (
+                <details key={item.question} className="group rounded-2xl border border-slate-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">
+                  <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-sm font-black text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-white [&::-webkit-details-marker]:hidden">
+                    {item.question}
+                    <ChevronRight className="h-5 w-5 shrink-0 text-indigo-600 transition-transform group-open:rotate-90" aria-hidden="true" />
+                  </summary>
+                  <p className="pt-2 text-sm font-medium leading-6 text-slate-700 dark:text-slate-300">{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-gradient-to-br from-indigo-700 to-violet-700 px-4 py-14 text-center text-white sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-2xl">
+          <h2 className="text-3xl font-black tracking-tight sm:text-4xl">{salesCopy.finalTitle}</h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm font-medium leading-6 text-indigo-100 sm:text-base">{salesCopy.finalBody}</p>
+          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <button type="button" onClick={isLoggedIn ? onStartDemo : onLoginGoogle} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-black text-indigo-700 shadow-lg hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto">
+              {isLoggedIn ? t.landingBackToApp : t.landingCtaGoogle}
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <Link href="/docs" className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-white/50 px-6 py-3 text-sm font-black text-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto">{salesCopy.docs}</Link>
+          </div>
+        </div>
       </section>
 
     </div>

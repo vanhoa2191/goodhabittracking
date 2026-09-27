@@ -53,7 +53,6 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
     setActiveChildId,
     activeChild,
     cloudSyncActive,
-    storageMode,
     currentUser,
     loginWithGoogle,
     logout,
@@ -234,16 +233,14 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
             {hasDashboardAccess && (
               <div
                 className={`hidden 2xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${
-                  storageMode === 'cloud' && cloudSyncActive
+                  cloudSyncActive
                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800'
-                    : storageMode === 'cloud'
-                    ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-800'
-                    : 'bg-slate-50 text-slate-600 border-slate-200 dark:bg-zinc-900 dark:text-slate-400 dark:border-zinc-800'
+                    : 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-800'
                 }`}
-                title={storageMode === 'cloud' ? (cloudSyncActive ? t.storageCloudConnected : 'Cloud') : t.storageLocalPrivate}
+                title={cloudSyncActive ? t.storageCloudConnected : t.cloudStorageMode}
               >
                 <Database className="w-3 h-3" />
-                <span>{storageMode === 'cloud' ? (cloudSyncActive ? t.storageCloudConnected : 'Cloud') : t.storageLocalPrivate}</span>
+                <span>{cloudSyncActive ? t.storageCloudConnected : t.cloudStorageMode}</span>
               </div>
             )}
 
@@ -691,7 +688,7 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
                       <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between text-xs text-slate-500">
                         <span className="flex items-center gap-1">
                           <Database className="w-3 h-3 text-indigo-500" />
-                          <span>{storageMode === 'cloud' ? (cloudSyncActive ? t.storageCloudConnected : 'Cloud') : t.storageLocalPrivate}</span>
+                          <span>{cloudSyncActive ? t.storageCloudConnected : t.cloudStorageMode}</span>
                         </span>
                       </div>
                     )}

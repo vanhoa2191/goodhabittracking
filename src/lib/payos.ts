@@ -2,21 +2,6 @@ import { PricingPlan, SubscriptionPlan } from '@/types';
 
 export const PRICING_PLANS: PricingPlan[] = [
   {
-    id: 'free',
-    name: 'Gói Miễn Phí',
-    badge: 'STARTER',
-    price: 0,
-    periodLabel: 'Vĩnh viễn',
-    description: 'Bắt đầu thói quen nền tảng cho 1 bé, lưu trên thiết bị',
-    features: [
-      'Quản lý tối đa 1 bé',
-      'Thói quen hàng ngày cơ bản',
-      'Đổi quà & Tích điểm thưởng',
-      'Lưu trữ cục bộ an toàn trên máy',
-    ],
-    ctaText: 'Đang sử dụng',
-  },
-  {
     id: 'trial',
     name: 'Dùng Thử 7 Ngày',
     badge: '🎁 MIỄN PHÍ 0Đ',
@@ -34,9 +19,25 @@ export const PRICING_PLANS: PricingPlan[] = [
     ctaText: 'Kích hoạt 7 ngày dùng thử',
   },
   {
+    id: 'solo_monthly',
+    name: 'Gói Một Bé',
+    badge: 'Khởi đầu nhẹ nhàng',
+    price: 29000,
+    periodLabel: '/ tháng',
+    dailyEquivalent: '~970đ / ngày',
+    description: 'Đầy đủ trải nghiệm cốt lõi cho hành trình của một bé',
+    features: [
+      'Quản lý 1 hồ sơ bé',
+      'Đồng bộ đám mây trên nhiều thiết bị',
+      'Toàn bộ thư viện thói quen, lộ trình và phần thưởng',
+    ],
+    ctaText: 'Chọn Gói Một Bé',
+  },
+  {
     id: 'monthly',
-    name: 'Gói Siêu Nhân',
-    badge: 'LINH HOẠT',
+    name: 'Gói Gia Đình · Tháng',
+    badge: 'Phổ biến nhất',
+    popular: true,
     price: 49000,
     periodLabel: '/ tháng',
     dailyEquivalent: '~1.600đ / ngày',
@@ -49,33 +50,34 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Bảng xếp hạng thi đua gia đình & liên minh',
       'Hỗ trợ kỹ thuật nhanh chóng',
     ],
-    ctaText: 'Nâng cấp Gói Tháng (49k)',
+    ctaText: 'Chọn Gói Gia Đình · Tháng',
   },
   {
     id: 'yearly',
-    name: 'Gói Đồng Hành',
-    badge: 'KHUYÊN DÙNG • TIẾT KIỆM 32%',
-    popular: true,
+    name: 'Gói Gia Đình · Năm',
+    badge: 'Tiết kiệm nhất',
     price: 399000,
     originalPrice: 588000,
-    savings: 'Tiết kiệm 32%',
+    savings: 'Tiết kiệm 189.000đ (32%)',
     periodLabel: '/ năm',
     dailyEquivalent: '~33.000đ / tháng (~1.100đ/ngày)',
     description: 'Lựa chọn tốt nhất và kinh tế nhất cho cả năm rèn luyện nếp sống',
     features: [
-      'Tất cả quyền lợi của Gói Siêu Nhân',
+      'Tất cả quyền lợi của Gói Gia Đình · Tháng',
       'Quản lý không giới hạn số bé',
       'Tặng Ebook: Cẩm nang nuôi dạy con & 7 Bố thí',
       'Quyền ưu tiên tham gia giải đấu mùa hè',
       'Hỗ trợ ưu tiên 1-1 qua Zalo từ chuyên gia',
       'Tiết kiệm 189.000đ so với trả từng tháng',
     ],
-    ctaText: 'Chọn Gói Năm (399k - Khuyên Dùng)',
+    ctaText: 'Chọn Gói Gia Đình · Năm',
   },
 ];
 
 export function getPricingPlan(planId: SubscriptionPlan): PricingPlan {
-  return PRICING_PLANS.find((p) => p.id === planId) || PRICING_PLANS[0];
+  const plan = PRICING_PLANS.find((candidate) => candidate.id === planId);
+  if (!plan) throw new Error('Unsupported pricing plan.');
+  return plan;
 }
 
 export interface PaymentResult {

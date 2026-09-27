@@ -13,7 +13,7 @@ type ActivityActionsDependencies = {
   readonly getActivities: () => readonly HabitActivity[];
   readonly setActivities: Dispatch<SetStateAction<HabitActivity[]>>;
   readonly setCloudSyncActive: Dispatch<SetStateAction<boolean>>;
-  readonly storageMode: 'local' | 'cloud';
+  readonly isDemoSession: boolean;
   readonly syncCloudFamily: (user: User) => Promise<boolean>;
 };
 
@@ -67,7 +67,7 @@ export function createActivityActions(
       id: crypto.randomUUID(),
       createdAt,
     }));
-    if (dependencies.storageMode === 'cloud') {
+    if (!dependencies.isDemoSession) {
       return persistCloudActivity({ type: 'createMany', activities: createdActivities });
     }
     dependencies.setActivities((previous) => {
@@ -87,14 +87,14 @@ export function createActivityActions(
     createActivities,
     createActivity: (activity) => createActivities([activity]),
     deleteActivity: async (id) => {
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         return persistCloudActivity({ type: 'delete', activityId: id });
       }
       dependencies.setActivities((previous) => removeActivity(previous, id));
       return true;
     },
     updateActivity: async (id, updates) => {
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         return persistCloudActivity({ type: 'update', activityId: id, updates });
       }
       if (updates.journeyHabitKey !== undefined) return false;

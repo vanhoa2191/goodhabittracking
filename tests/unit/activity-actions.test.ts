@@ -32,7 +32,7 @@ describe('activity actions', () => {
       getActivities: () => state,
       setActivities,
       setCloudSyncActive,
-      storageMode: 'local',
+      isDemoSession: true,
       syncCloudFamily: vi.fn(async () => true),
     });
 
@@ -60,7 +60,7 @@ describe('activity actions', () => {
       getActivities: () => state,
       setActivities,
       setCloudSyncActive: () => undefined,
-      storageMode: 'local',
+      isDemoSession: true,
       syncCloudFamily: vi.fn(async () => true),
     });
 
@@ -83,7 +83,7 @@ describe('activity actions', () => {
       getActivities: () => state,
       setActivities,
       setCloudSyncActive: () => undefined,
-      storageMode: 'local',
+      isDemoSession: true,
       syncCloudFamily: vi.fn(async () => true),
     });
 
@@ -107,7 +107,7 @@ describe('activity actions', () => {
       getActivities: () => state,
       setActivities,
       setCloudSyncActive: () => undefined,
-      storageMode: 'local',
+      isDemoSession: true,
       syncCloudFamily: vi.fn(async () => true),
     });
 

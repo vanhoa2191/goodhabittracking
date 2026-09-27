@@ -29,7 +29,7 @@ import { ParentNavigation, type ParentSection } from './ParentNavigation';
 import { getParentPrimaryCopy } from '@/lib/i18n/parent-primary-copy';
 import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
 import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
-import { getProfileMutationCopy } from '@/lib/i18n/profile-mutation-copy';
+import { getProfileMutationCopy, getProfileMutationError } from '@/lib/i18n/profile-mutation-copy';
 import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
 import { useModalFocus } from '@/lib/use-modal-focus';
 import { MASCOTS, getMascotLabel } from '@/lib/mascots';
@@ -67,6 +67,7 @@ export function ParentDashboard() {
   const [editingChild, setEditingChild] = useState<ChildProfile | null>(null);
   const [isSavingChild, setIsSavingChild] = useState(false);
   const [childSaveError, setChildSaveError] = useState('');
+  const [childCreateRequestId, setChildCreateRequestId] = useState(() => crypto.randomUUID());
 
   const closeChildModal = useCallback(() => {
     if (!isSavingChild) setIsChildModalOpen(false);
@@ -222,6 +223,7 @@ export function ParentDashboard() {
       });
     } else {
       setEditingChild(null);
+      setChildCreateRequestId(crypto.randomUUID());
       setChildForm({
         name: '',
         nickname: '',
@@ -243,6 +245,7 @@ export function ParentDashboard() {
     setIsSavingChild(true);
     setChildSaveError('');
     let saved: boolean;
+    let failureMessage = '';
     if (editingChild) {
       saved = await updateProfile(editingChild.id, {
         name: childForm.name,
@@ -256,7 +259,7 @@ export function ParentDashboard() {
         themeColor: childForm.themeColor,
       });
     } else {
-      saved = await createProfile({
+      const result = await createProfile({
         name: childForm.name,
         nickname: childForm.nickname.trim() || undefined,
         age: childForm.age,
@@ -270,14 +273,18 @@ export function ParentDashboard() {
         totalEarned: 0,
         level: 1,
         streak: 0,
-      });
+      }, childCreateRequestId);
+      saved = result.success;
+      if (!result.success) {
+        failureMessage = getProfileMutationError(language, result);
+      }
     }
     setIsSavingChild(false);
     if (saved) {
       setIsChildModalOpen(false);
       return;
     }
-    setChildSaveError(profileCopy.saveError);
+    setChildSaveError(failureMessage || profileCopy.saveError);
   };
 
   // Approvals items

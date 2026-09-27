@@ -208,7 +208,7 @@ export interface Kudo {
   sentAt: string;
 }
 
-export type SubscriptionPlan = 'free' | 'trial' | 'monthly' | 'yearly' | 'lifetime';
+export type SubscriptionPlan = 'free' | 'trial' | 'solo_monthly' | 'monthly' | 'yearly' | 'lifetime';
 
 export interface PricingPlan {
   id: SubscriptionPlan;

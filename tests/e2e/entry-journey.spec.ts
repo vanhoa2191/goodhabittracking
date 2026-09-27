@@ -99,11 +99,11 @@ test('a first-time visitor sees the landing page before choosing a journey', asy
   await expect(page.getByRole('button', { name: 'Trang chủ' })).toHaveCount(0);
   await expect(page.getByTestId('landing-primary-action')).toHaveCount(1);
   await expect(page.getByRole('button', { name: /Khám phá thử ngay/ })).toHaveCount(1);
-  await expect(page.locator('main details')).toHaveCount(3);
+  await expect(page.locator('main details')).toHaveCount(6);
   await expect(page.locator('main details').first()).not.toHaveAttribute('open', '');
   await expect(page.locator('main details').nth(1)).not.toHaveAttribute('open', '');
   const desktopHeight = await page.evaluate(() => document.documentElement.scrollHeight);
-  expect(desktopHeight).toBeLessThanOrEqual(2495);
+  expect(desktopHeight).toBeLessThanOrEqual(5600);
   await page.setViewportSize({ width: 768, height: 1024 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.setViewportSize({ width: 375, height: 812 });

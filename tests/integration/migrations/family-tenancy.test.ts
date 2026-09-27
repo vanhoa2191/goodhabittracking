@@ -156,6 +156,14 @@ const socialRollback = readFileSync(
   resolve('supabase/rollbacks/202609200002_authoritative_social.rollback.sql'),
   'utf8'
 );
+const idempotentProfileMutation = readFileSync(
+  resolve('supabase/migrations/202609270001_idempotent_profile_mutations.sql'),
+  'utf8'
+);
+const soloPlanEntitlementsMigration = readFileSync(
+  resolve('supabase/migrations/202609270002_solo_plan_entitlements.sql'),
+  'utf8'
+);
 
 describe('family tenancy migration', () => {
   it('is valid PostgreSQL syntax', async () => {
@@ -169,6 +177,8 @@ describe('family tenancy migration', () => {
     await expect(parse(privacyMigration)).resolves.toBeDefined();
     await expect(parse(profileMigration)).resolves.toBeDefined();
     await expect(parse(socialMigration)).resolves.toBeDefined();
+    await expect(parse(idempotentProfileMutation)).resolves.toBeDefined();
+    await expect(parse(soloPlanEntitlementsMigration)).resolves.toBeDefined();
     await expect(parse(serverTableRlsMigration)).resolves.toBeDefined();
     await expect(parse(childDeviceCommandsMigration)).resolves.toBeDefined();
     await expect(parse(childDeviceCommandsRollback)).resolves.toBeDefined();
@@ -232,11 +242,19 @@ describe('family tenancy migration', () => {
       '202609260001_child_journal.sql',
       '202609260002_dream_city.sql',
       '202609260003_parent_reminder_consent.sql',
+      '202609270001_idempotent_profile_mutations.sql',
+      '202609270002_solo_plan_entitlements.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
       migrationNames.map((name) => `\\ir migrations/${name}`)
     );
+  });
+
+  it('makes child profile creation idempotent before the child-limit trigger runs', () => {
+    expect(idempotentProfileMutation).toContain('where child.id = target_profile_id;');
+    expect(idempotentProfileMutation).toContain("raise exception 'profile_conflict';");
+    expect(idempotentProfileMutation).toContain("return jsonb_build_object('profileId', target_profile_id);");
   });
 
   it('reports a daily letter read only on the first persisted read transition', () => {

@@ -49,8 +49,6 @@ export default function Home() {
     mode,
     isEntryReady,
     isFamilyConnected,
-    storageMode,
-    profiles,
     currentUser,
     loginWithGoogle,
     isPricingModalOpen,
@@ -62,7 +60,6 @@ export default function Home() {
     closeOnboarding,
     isPortraitModalOpen,
     setIsPortraitModalOpen,
-    startLocalFamilySetup,
     startDemoSession,
     syncNow,
   } = useAppStore();
@@ -80,7 +77,7 @@ export default function Home() {
     getServerInAppSessionSnapshot
   );
   const currentUserId = currentUser?.id ?? null;
-  const canOpenApp = Boolean(currentUser || isFamilyConnected || isDemoSession || sessionInApp || (storageMode === 'local' && profiles.length > 0));
+  const canOpenApp = Boolean(currentUser || isFamilyConnected || isDemoSession || sessionInApp);
   const defaultShowLanding = !canOpenApp;
   const [landingSelection, setLandingSelection] = useState<{
     userId: string | null;
@@ -168,14 +165,6 @@ export default function Home() {
     setLandingSelection({ userId: currentUserId, showLanding: false });
   };
 
-  const handleStartLocalSetup = () => {
-    startLocalFamilySetup();
-    sessionStorage.setItem(IN_APP_SESSION_KEY, 'true');
-    sessionStorage.removeItem(DEMO_SESSION_KEY);
-    window.dispatchEvent(new Event(IN_APP_SESSION_EVENT));
-    setLandingSelection({ userId: currentUserId, showLanding: false });
-  };
-
   const handleToggleLanding = () => {
     if (!canOpenApp || (isFamilyConnected && !currentUser)) return;
     setLandingSelection({
@@ -221,7 +210,6 @@ export default function Home() {
           {showLanding ? (
             <LandingPage
               onStartDemo={canOpenApp ? handleToggleLanding : handleStartDemo}
-              onStartLocalSetup={handleStartLocalSetup}
               onLoginGoogle={loginWithGoogle}
               isLoggedIn={canOpenApp}
             />
@@ -230,7 +218,7 @@ export default function Home() {
               {isDemoSession && !currentUser && (
                 <div role="status" className="mx-auto mt-3 flex max-w-5xl flex-col gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
                   <span><strong>{demoCopy.label}</strong> {demoCopy.notice}</span>
-                  <button type="button" onClick={handleStartLocalSetup} className="min-h-11 rounded-xl bg-amber-600 px-4 font-bold text-white hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">
+                  <button type="button" onClick={loginWithGoogle} className="min-h-11 rounded-xl bg-amber-600 px-4 font-bold text-white hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">
                     {demoCopy.setup}
                   </button>
                 </div>

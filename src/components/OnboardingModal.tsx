@@ -17,6 +17,7 @@ import { sounds } from '@/lib/sound';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { useTranslation } from '@/lib/i18n/context';
 import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
+import { getProfileMutationCopy, getProfileMutationError } from '@/lib/i18n/profile-mutation-copy';
 import { MASCOTS, getMascotLabel } from '@/lib/mascots';
 import { MascotAvatar } from './MascotAvatar';
 
@@ -37,11 +38,14 @@ type ParentRole = (typeof PARENT_ROLES)[number];
 export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   const { language } = useTranslation();
   const copy = getOnboardingCopy(language);
+  const profileCopy = getProfileMutationCopy(language);
   const {
     parentProfile,
     updateParentProfile,
     createProfile,
     currentUser,
+    isPro,
+    activateFreeTrial,
   } = useAppStore();
 
   const [step, setStep] = useState<1 | 2>(1);
@@ -63,6 +67,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   const [hasConsent, setHasConsent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [profileRequestId] = useState(() => crypto.randomUUID());
   const bodyRef = useRef<HTMLDivElement>(null);
 
   if (!isOpen) return null;
@@ -113,13 +118,24 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
       });
       if (!response.ok) {
         setIsSubmitting(false);
-        setSubmitError(copy.saveError);
+        setSubmitError(profileCopy.privacyError);
         return;
+      }
+
+      if (!isPro) {
+        const trialResult = await activateFreeTrial();
+        if (!trialResult.success) {
+          setIsSubmitting(false);
+          setSubmitError(language === 'vi'
+            ? 'Không thể bắt đầu 7 ngày dùng thử. Nếu bạn đã dùng thử trước đó, vui lòng chọn một gói để tiếp tục.'
+            : 'Could not start the 7-day trial. If you have already used it, please choose a plan to continue.');
+          return;
+        }
       }
     }
 
     // Create child profile with age & ageStage
-    const profileSaved = await createProfile({
+    const profileResult = await createProfile({
       name: childName.trim(),
       nickname: childNickname.trim() || `${copy.nicknamePrefix} ${childName.trim().split(/\s+/).pop()}`,
       avatar: childAvatar,
@@ -133,10 +149,10 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
       ageStage: autoApplyHabits ? currentStage : undefined,
       showRealNameOnLeaderboard: false,
       isPublicOnLeaderboard: false,
-    });
-    if (!profileSaved) {
+    }, profileRequestId);
+    if (!profileResult.success) {
       setIsSubmitting(false);
-      setSubmitError(copy.saveError);
+      setSubmitError(getProfileMutationError(language, profileResult));
       return;
     }
 
@@ -443,7 +459,11 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   className="flex-1 py-3 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-wait disabled:opacity-60"
                 >
                   <Sparkles className="w-4 h-4 text-amber-300 fill-current" />
-                  <span>{isSubmitting ? copy.saving : copy.complete}</span>
+                  <span>{isSubmitting
+                    ? copy.saving
+                    : currentUser && !isPro
+                      ? (language === 'vi' ? 'Bắt đầu 7 ngày dùng thử & tạo hồ sơ' : 'Start the 7-day trial & create profile')
+                      : copy.complete}</span>
                 </button>
               </div>
             </form>

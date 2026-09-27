@@ -76,7 +76,7 @@ describe('reward actions', () => {
       setProfiles: stateSetter(() => profiles, (value) => { profiles = value; }),
       setRedemptions: stateSetter(() => redemptions, (value) => { redemptions = value; }),
       setRewards: vi.fn(),
-      storageMode: 'local',
+      isDemoSession: true,
       refreshChildSession: vi.fn(async () => true),
       syncCloudFamily: vi.fn(async () => true),
     });
@@ -107,7 +107,7 @@ describe('reward actions', () => {
       setProfiles: vi.fn(),
       setRedemptions: vi.fn(),
       setRewards: vi.fn(),
-      storageMode: 'cloud',
+      isDemoSession: false,
       refreshChildSession: vi.fn(async () => true),
       syncCloudFamily,
     });
@@ -137,7 +137,7 @@ describe('reward actions', () => {
       setProfiles: stateSetter(() => profiles, (value) => { profiles = value; }),
       setRedemptions: stateSetter(() => redemptions, (value) => { redemptions = value; }),
       setRewards: vi.fn(),
-      storageMode: 'cloud',
+      isDemoSession: false,
       refreshChildSession: vi.fn(async () => true),
       syncCloudFamily: vi.fn(async () => true),
     });
@@ -167,7 +167,7 @@ describe('reward actions', () => {
       setProfiles: vi.fn(),
       setRedemptions: vi.fn(),
       setRewards,
-      storageMode: 'cloud',
+      isDemoSession: false,
       refreshChildSession: vi.fn(async () => true),
       syncCloudFamily,
     });
@@ -203,7 +203,7 @@ describe('reward actions', () => {
       setProfiles: vi.fn(),
       setRedemptions: vi.fn(),
       setRewards: vi.fn(),
-      storageMode: 'cloud',
+      isDemoSession: false,
       refreshChildSession,
       syncCloudFamily: vi.fn(async () => true),
     });

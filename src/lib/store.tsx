@@ -26,7 +26,6 @@ import {
 } from './constants';
 import { getPricingPlan } from './payos';
 import { sounds } from './sound';
-import { isSupabaseConfigured } from './supabase';
 import { emptyExperienceState, parseChildWishlist, parseDeferredTask, setDeferredTask as updateDeferredTask } from './experience-state';
 import { createProductAnalyticsGate, createSessionTracker, recordLocalWishlistSelection, sessionMode } from './product-analytics';
 import type { ProductEventSink } from './product-analytics';
@@ -36,6 +35,7 @@ import type { User } from '@supabase/supabase-js';
 import { createActivityActions } from './store/activity-actions';
 import { createHabitActions } from './store/habit-actions';
 import { createProfileActions } from './store/profile-actions';
+import type { ProfileCreateResult } from './store/profile-actions';
 import { createRewardActions } from './store/reward-actions';
 import { createSocialActions } from './store/social-actions';
 import { createFamilyPauseAction } from './store/family-pause-actions';
@@ -44,11 +44,9 @@ import { loadChildTaskDeferrals } from './store/task-deferral-client';
 import { createJournalActions } from './store/journal-actions';
 import { loadChildJournal, mergeChildJournalEntries } from './store/journal-client';
 import { requestTrialActivation } from './store/trial-activation-client';
-import { exportFamilyData, importFamilyData } from './store/family-backup-actions';
 import {
   clearDemoFamilyState,
   clearFamilyScopedStorage,
-  LOCAL_STORAGE_PREFIX,
 } from './store/local-family-persistence';
 import { usePairingLifecycle } from './store/use-pairing-lifecycle';
 import { useLocalFamilyLifecycle } from './store/use-local-family-lifecycle';
@@ -82,9 +80,7 @@ interface AppStoreContextType {
   setIsOnboardingOpen: (open: boolean) => void;
   openOnboarding: () => void;
   closeOnboarding: () => void;
-  startLocalFamilySetup: () => void;
   startDemoSession: () => void;
-  deleteLocalFamilyData: () => void;
 
   // 16 Portraits & 7 Givings Framework Modal
   isPortraitModalOpen: boolean;
@@ -114,7 +110,7 @@ interface AppStoreContextType {
   closeCheckoutModal: () => void;
 
   storageMode: 'local' | 'cloud';
-  setStorageMode: (mode: 'local' | 'cloud') => void;
+  isDemoSession: boolean;
 
   profiles: ChildProfile[];
   experience: ExperienceState;
@@ -131,7 +127,10 @@ interface AppStoreContextType {
   activeChildId: string | null;
   activeChild: ChildProfile | null;
   setActiveChildId: (id: string) => void;
-  createProfile: (profile: Omit<ChildProfile, 'id' | 'createdAt'>) => Promise<boolean>;
+  createProfile: (
+    profile: Omit<ChildProfile, 'id' | 'createdAt'>,
+    requestId?: string,
+  ) => Promise<ProfileCreateResult>;
   updateProfile: (id: string, updates: Partial<ChildProfile>) => Promise<boolean>;
   deleteProfile: (id: string) => Promise<boolean>;
   adjustPoints: (childId: string, amount: number, reason?: string) => void;
@@ -190,8 +189,6 @@ interface AppStoreContextType {
   connectWithFamilyCode: (code: string) => Promise<{ success: boolean; message?: string; childName?: string; childAvatar?: string; familyName?: string }>;
   disconnectFamilyCode: () => void;
 
-  exportData: () => string;
-  importData: (jsonData: string) => boolean;
 }
 
 const AppStoreContext = createContext<AppStoreContextType | undefined>(undefined);
@@ -291,11 +288,11 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
 
   useEffect(() => {
     localWishlistSelections.current.clear();
-    if (storageMode !== 'local') return;
+    if (!isDemoSession) return;
     for (const selection of experience.wishlists) {
       localWishlistSelections.current.set(selection.child_id, selection.reward_id);
     }
-  }, [experience.wishlists, storageMode]);
+  }, [experience.wishlists, isDemoSession]);
 
   useEffect(() => {
     localCityBalances.current = new Map(profiles.map((profile) => [profile.id, profile.points]));
@@ -390,19 +387,9 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     },
   });
 
-  const setStorageMode = (newMode: 'local' | 'cloud') => {
-    setStorageModeState(newMode);
-    if (newMode === 'cloud' && isSupabaseConfigured()) {
-      syncNow();
-    }
-  };
-
   const {
-    deleteLocalFamilyData,
     startDemoSession: beginDemoSession,
-    startLocalFamilySetup,
   } = useLocalFamilyLifecycle({
-    resetFamilyScope,
     state: {
       activeChildId,
       activities,
@@ -429,7 +416,6 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       setGroups,
       setIsDemoSession,
       setIsLoaded,
-      setIsOnboardingOpen,
       setIsParentUnlocked,
       setKudos,
       setLogs,
@@ -521,7 +507,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const activeChild = profiles.find((p) => p.id === activeChildId) || profiles[0] || null;
 
   useEffect(() => {
-    if (storageMode !== 'cloud' || currentUser || !isFamilyConnected || !activeChildId) return;
+    if (isDemoSession || currentUser || !isFamilyConnected || !activeChildId) return;
     const requestVersion = ++wishlistRequestVersion.current;
     const controller = new AbortController();
     void fetch('/api/child/wishlist', { signal: controller.signal })
@@ -538,11 +524,11 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       })
       .catch(() => undefined);
     return () => controller.abort();
-  }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, storageMode]);
+  }, [activeChildId, childSessionRevision, currentUser, isDemoSession, isFamilyConnected]);
 
   useEffect(() => {
     if (!defaultExperienceFlags.dailyJournal
-      || storageMode !== 'cloud' || currentUser || !isFamilyConnected || !activeChildId) return;
+      || isDemoSession || currentUser || !isFamilyConnected || !activeChildId) return;
     let cancelled = false;
     const scopeVersion = journalScopeVersion.current;
     void loadChildJournal()
@@ -562,11 +548,11 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         console.warn('Could not load child journal:', error.message);
       });
     return () => { cancelled = true; };
-  }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, storageMode]);
+  }, [activeChildId, childSessionRevision, currentUser, isDemoSession, isFamilyConnected]);
 
   useEffect(() => {
     if (!defaultExperienceFlags.dreamCity
-      || storageMode !== 'cloud' || currentUser || !isFamilyConnected || !activeChildId) return;
+      || isDemoSession || currentUser || !isFamilyConnected || !activeChildId) return;
     let cancelled = false;
     const scopeVersion = cityScopeVersion.current;
     void fetch('/api/child/city', { cache: 'no-store' })
@@ -592,10 +578,10 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         console.warn('Could not load child city:', error.message);
       });
     return () => { cancelled = true; };
-  }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, resetFamilyScope, storageMode]);
+  }, [activeChildId, childSessionRevision, currentUser, isDemoSession, isFamilyConnected, resetFamilyScope]);
 
   useEffect(() => {
-    if (storageMode !== 'cloud' || currentUser || !isFamilyConnected || !activeChildId) return;
+    if (isDemoSession || currentUser || !isFamilyConnected || !activeChildId) return;
     let cancelled = false;
     const requestVersion = deferralRequestVersion.current;
     void loadChildTaskDeferrals()
@@ -611,7 +597,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       })
       .catch(() => undefined);
     return () => { cancelled = true; };
-  }, [activeChildId, childSessionRevision, currentUser, isFamilyConnected, storageMode]);
+  }, [activeChildId, childSessionRevision, currentUser, isDemoSession, isFamilyConnected]);
 
   const chooseWishlist = async (rewardId: string): Promise<boolean> => {
     if (!activeChildId || !rewards.some((reward) => reward.id === rewardId && reward.isActive)) return false;
@@ -621,7 +607,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       if (!recordLocalWishlistSelection(localWishlistSelections.current, selectedChildId, rewardId, savedRewardId)) return;
       analyticsGate.record({ event: 'wishlist_selected', mode: 'local' });
     };
-    if (storageMode === 'local') {
+    if (isDemoSession) {
       const now = new Date().toISOString();
       setExperience((previous) => ({
         ...previous,
@@ -671,7 +657,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     if (deferred && logs.some((log) => log.childId === childId && log.activityId === activityId
       && log.date === date && log.status !== 'rejected')) return false;
 
-    if (storageMode === 'local') {
+    if (isDemoSession) {
       setExperience((previous) => updateDeferredTask(previous, {
         family_id: familyId ?? '00000000-0000-4000-8000-000000000000',
         child_id: childId,
@@ -717,7 +703,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     currentUser,
     familyId: isDemoSession ? '00000000-0000-4000-8000-000000000000' : familyId,
     setExperience,
-    storageMode,
+    isDemoSession,
     syncCloudFamily: () => currentUser ? syncFromSupabase(currentUser) : Promise.resolve(false),
   });
 
@@ -730,7 +716,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     now: () => new Date(),
     request: fetch,
     setExperience,
-    storageMode,
+    isDemoSession,
   }).saveJournalEntry(date, text);
 
   const buildCityItem = async (itemId: CityItemId): Promise<'built' | 'already_built' | 'insufficient_points' | 'error'> => {
@@ -740,10 +726,10 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     const key = `${scopeVersion}:${childId}`;
     const itemKey = `${scopeVersion}:${childId}:${itemId}`;
     if (pendingCityItems.current.has(key)) return 'error';
-    if (storageMode === 'local' && locallyBuiltCityItems.current.has(itemKey)) return 'already_built';
+    if (isDemoSession && locallyBuiltCityItems.current.has(itemKey)) return 'already_built';
     pendingCityItems.current.add(key);
     try {
-      if (storageMode === 'local') {
+      if (isDemoSession) {
         const builtIds = experience.cityPurchases.filter((purchase) => purchase.child_id === childId).map((purchase) => purchase.item_id);
         const outcome = buildLocalCityItem({
           points: localCityBalances.current.get(childId) ?? activeChild.points,
@@ -821,9 +807,6 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         onboardedAt: prev?.onboardedAt || new Date().toISOString(),
         ...profileUpdates,
       };
-      if (typeof window !== 'undefined' && !isDemoSession) {
-        localStorage.setItem(`${LOCAL_STORAGE_PREFIX}parent_profile`, JSON.stringify(updated));
-      }
       return updated;
     });
   };
@@ -848,22 +831,16 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     setCloudSyncActive,
     setExperience,
     setProfiles,
-    storageMode,
+    isDemoSession,
     syncCloudFamily: syncFromSupabase,
   });
 
   // Profile Management
   const createProfile = async (
     profileData: Omit<ChildProfile, 'id' | 'createdAt'>,
-  ): Promise<boolean> => {
-    // Enforce Free plan limit (1 child max)
-    if (!isPro && profiles.length >= 1) {
-      sounds.playClick();
-      alert('Gói Miễn Phí (Starter) hỗ trợ tối đa 1 bé. Vui lòng kích hoạt Dùng thử 7 ngày hoặc nâng cấp Pro để quản lý không giới hạn số bé!');
-      setIsPricingModalOpen(true);
-      return false;
-    }
-    return profileActions.createProfile(profileData);
+    requestId?: string,
+  ): Promise<ProfileCreateResult> => {
+    return profileActions.createProfile(profileData, requestId);
   };
 
   const updateProfile = profileActions.updateProfile;
@@ -885,7 +862,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     getActivities: () => activities,
     setActivities,
     setCloudSyncActive,
-    storageMode,
+    isDemoSession,
     syncCloudFamily: syncFromSupabase,
   });
 
@@ -909,7 +886,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       setChildBadges,
       setExperience,
     },
-    storageMode,
+    isDemoSession,
     analyticsSink: guardedAnalyticsSink,
   });
 
@@ -925,7 +902,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     setProfiles,
     setRedemptions,
     setRewards,
-    storageMode,
+    isDemoSession,
     refreshChildSession,
     syncCloudFamily: syncFromSupabase,
   });
@@ -944,7 +921,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     if (!activeChildId) return false;
     const previousMascotId = getMascot(activeChild?.avatar ?? '')?.id;
     let saved: boolean;
-    if (storageMode === 'cloud' && !currentUser && isFamilyConnected) {
+    if (!isDemoSession && !currentUser && isFamilyConnected) {
       try {
         const response = await fetch('/api/child/mascot', {
           method: 'POST',
@@ -961,7 +938,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     if (!saved) return false;
     const selectedMascotId = getMascot(avatar)?.id;
     if (selectedMascotId && selectedMascotId !== previousMascotId) {
-      analyticsGate.record({ event: 'mascot_selected', mode: storageMode });
+      analyticsGate.record({ event: 'mascot_selected', mode: isDemoSession ? 'local' : 'cloud' });
     }
     sounds.playFanfare();
     try {
@@ -971,7 +948,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   };
 
   const ensureLocalDailyLetter = useCallback((childId: string, date: string, templateKey: string): void => {
-    if (storageMode !== 'local') return;
+    if (!isDemoSession) return;
     setExperience((previous) => openLocalLetter(
       previous,
       familyId ?? '00000000-0000-4000-8000-000000000000',
@@ -979,10 +956,10 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       date,
       templateKey,
     ));
-  }, [familyId, storageMode]);
+  }, [familyId, isDemoSession]);
 
   const markLocalDailyLetterRead = (childId: string, date: string, templateKey: string): void => {
-    if (storageMode !== 'local') return;
+    if (!isDemoSession) return;
     const wasRead = experience.letters.some((letter) => (
       letter.child_id === childId && letter.local_date === date && letter.read_at !== null
     ));
@@ -1022,7 +999,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       setGroups,
       setKudos,
     },
-    storageMode,
+    isDemoSession,
   });
 
   // Leaderboard Calculation across scopes (global, group, family) and periods (daily, weekly, monthly)
@@ -1036,49 +1013,6 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     scope,
     period,
   });
-
-  // Data Export & Import
-  const exportData = (): string => exportFamilyData({
-      pin: parentPin,
-      storageMode,
-      activeChildId,
-      parentProfile,
-      subscriptionPlan,
-      trialEndsAt,
-      subscriptionEndsAt,
-      profiles,
-      activities,
-      logs,
-      rewards,
-      redemptions,
-      childBadges,
-      groups,
-      kudos,
-    });
-
-  const importData = (jsonData: string): boolean => importFamilyData(
-    jsonData,
-    (parsed) => {
-      if (parsed.pin) setParentPin(parsed.pin);
-      setStorageModeState(parsed.storageMode ?? 'local');
-      setParentProfile(parsed.parentProfile ?? null);
-      setSubscriptionPlan(parsed.subscriptionPlan ?? 'free');
-      setTrialEndsAt(parsed.trialEndsAt ?? null);
-      setSubscriptionEndsAt(parsed.subscriptionEndsAt ?? null);
-      setProfiles(parsed.profiles);
-      setActivities(parsed.activities);
-      setLogs(parsed.logs);
-      setRewards(parsed.rewards);
-      setRedemptions(parsed.redemptions);
-      setChildBadges(parsed.childBadges);
-      setGroups(parsed.groups);
-      setKudos(parsed.kudos);
-      setActiveChildIdState(parsed.activeChildId);
-      setIsDemoSession(false);
-    },
-    localStorage,
-    sessionStorage,
-  );
 
   // Subscription Operations
   const activateFreeTrial = async (): Promise<{ success: boolean; error?: string }> => {
@@ -1141,9 +1075,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         setIsOnboardingOpen,
         openOnboarding,
         closeOnboarding,
-        startLocalFamilySetup,
         startDemoSession,
-        deleteLocalFamilyData,
 
         // 16 Portraits & 7 Givings Framework
         isPortraitModalOpen,
@@ -1167,7 +1099,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         closeCheckoutModal,
 
         storageMode,
-        setStorageMode,
+        isDemoSession,
 
         profiles,
         experience,
@@ -1240,8 +1172,6 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         connectWithFamilyCode,
         disconnectFamilyCode,
 
-        exportData,
-        importData,
       }}
     >
       {children}

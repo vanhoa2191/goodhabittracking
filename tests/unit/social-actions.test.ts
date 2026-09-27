@@ -45,7 +45,7 @@ describe('social actions', () => {
         setGroups: stateSetter(() => groups, (value) => { groups = value; }),
         setKudos: vi.fn(),
       },
-      storageMode: 'local',
+      isDemoSession: true,
     });
 
     await expect(actions.createGroup({
@@ -83,7 +83,7 @@ describe('social actions', () => {
         setGroups: stateSetter(() => groups, (value) => { groups = value; }),
         setKudos: stateSetter(() => kudos, (value) => { kudos = value; }),
       },
-      storageMode: 'cloud',
+      isDemoSession: false,
     });
 
     await expect(actions.createGroup({
@@ -124,7 +124,7 @@ describe('social actions', () => {
         setGroups,
         setKudos: vi.fn(),
       },
-      storageMode: 'cloud',
+      isDemoSession: false,
     });
 
     await expect(actions.createGroup({

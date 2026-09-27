@@ -8,6 +8,11 @@ export interface SubscriptionDetails {
   statusText: string;
 }
 
+export interface SubscriptionCapabilities {
+  readonly canWrite: boolean;
+  readonly maxChildren: number | null;
+}
+
 export function checkIsPro(
   plan: SubscriptionPlan,
   trialEndsAt: string | null,
@@ -15,7 +20,7 @@ export function checkIsPro(
   now = Date.now(),
 ): boolean {
   if (plan === 'lifetime') return true;
-  if (plan === 'monthly' || plan === 'yearly') {
+  if (plan === 'solo_monthly' || plan === 'monthly' || plan === 'yearly') {
     if (!subscriptionEndsAt) return true;
     return new Date(subscriptionEndsAt).getTime() > now;
   }
@@ -24,6 +29,19 @@ export function checkIsPro(
     return new Date(trialEndsAt).getTime() > now;
   }
   return false;
+}
+
+export function buildSubscriptionCapabilities(
+  plan: SubscriptionPlan,
+  trialEndsAt: string | null,
+  subscriptionEndsAt: string | null,
+  now = Date.now(),
+): SubscriptionCapabilities {
+  const canWrite = checkIsPro(plan, trialEndsAt, subscriptionEndsAt, now);
+  return {
+    canWrite,
+    maxChildren: canWrite && plan === 'solo_monthly' ? 1 : canWrite ? null : 0,
+  };
 }
 
 function daysUntil(date: string, now: number): number {
@@ -39,8 +57,8 @@ export function buildSubscriptionDetails(
   now = Date.now(),
 ): SubscriptionDetails {
   let daysRemaining: number | null = null;
-  let label = 'Miễn phí';
-  let statusText = 'Gói Miễn Phí (Tối đa 1 bé)';
+  let label = 'Chưa có gói';
+  let statusText = 'Chưa kích hoạt dùng thử hoặc gói trả phí';
 
   if (plan === 'lifetime') {
     label = 'Trọn Đời';
@@ -53,13 +71,21 @@ export function buildSubscriptionDetails(
     } else {
       statusText = 'Gói Năm (Đang hoạt động)';
     }
-  } else if (plan === 'monthly') {
-    label = 'Gói Tháng';
+  } else if (plan === 'solo_monthly') {
+    label = 'Gói Một Bé';
     if (subscriptionEndsAt) {
       daysRemaining = daysUntil(subscriptionEndsAt, now);
-      statusText = `Gói Tháng (${daysRemaining} ngày còn lại)`;
+      statusText = `Gói Một Bé (${daysRemaining} ngày còn lại)`;
     } else {
-      statusText = 'Gói Tháng (Đang hoạt động)';
+      statusText = 'Gói Một Bé (Đang hoạt động)';
+    }
+  } else if (plan === 'monthly') {
+    label = 'Gói Gia Đình · Tháng';
+    if (subscriptionEndsAt) {
+      daysRemaining = daysUntil(subscriptionEndsAt, now);
+      statusText = `Gói Gia Đình · Tháng (${daysRemaining} ngày còn lại)`;
+    } else {
+      statusText = 'Gói Gia Đình · Tháng (Đang hoạt động)';
     }
   } else if (plan === 'trial') {
     label = 'Dùng Thử';

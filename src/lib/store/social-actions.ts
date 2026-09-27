@@ -25,7 +25,7 @@ type CloudContext = {
 type Dependencies = {
   readonly cloud: CloudContext;
   readonly state: SocialState;
-  readonly storageMode: 'local' | 'cloud';
+  readonly isDemoSession: boolean;
 };
 
 type SocialActions = {
@@ -69,7 +69,7 @@ export function createSocialActions(dependencies: Dependencies): SocialActions {
 
   return {
     createGroup: async (groupData) => {
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         return persistCloudMutation({
           type: 'createGroup',
           group: {
@@ -95,7 +95,7 @@ export function createSocialActions(dependencies: Dependencies): SocialActions {
     joinGroup: async (inviteCode) => {
       const child = dependencies.state.activeChild;
       if (!child) return false;
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         return persistCloudMutation({
           type: 'joinGroup',
           inviteCode: inviteCode.trim().toUpperCase(),
@@ -116,7 +116,7 @@ export function createSocialActions(dependencies: Dependencies): SocialActions {
       return true;
     },
     updateGroupReward: async (groupId, rewardType, customRewardText) => {
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         return persistCloudMutation({
           type: 'updateGroupReward',
           groupId,
@@ -133,7 +133,7 @@ export function createSocialActions(dependencies: Dependencies): SocialActions {
     sendKudo: async (toChildId, emoji = '👏') => {
       const child = dependencies.state.activeChild;
       if (!child || child.id === toChildId) return false;
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         return persistCloudMutation({
           type: 'sendKudo',
           fromChildId: child.id,

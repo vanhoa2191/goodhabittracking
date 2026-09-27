@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildSubscriptionDetails, checkIsPro } from '@/lib/store/subscription';
+import { buildSubscriptionCapabilities, buildSubscriptionDetails, checkIsPro } from '@/lib/store/subscription';
 
 const now = Date.parse('2026-09-20T00:00:00.000Z');
 
@@ -43,5 +43,12 @@ describe('subscription domain', () => {
       daysRemaining: 0,
       statusText: 'Dùng thử Pro (0 ngày còn lại)',
     });
+  });
+
+  it('exposes the child limit for each sellable entitlement', () => {
+    expect(buildSubscriptionCapabilities('free', null, null, now)).toEqual({ canWrite: false, maxChildren: 0 });
+    expect(buildSubscriptionCapabilities('solo_monthly', null, '2026-10-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: 1 });
+    expect(buildSubscriptionCapabilities('monthly', null, '2026-10-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: null });
+    expect(buildSubscriptionCapabilities('yearly', null, '2027-09-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: null });
   });
 });

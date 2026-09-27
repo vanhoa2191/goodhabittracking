@@ -26,7 +26,7 @@ type Props = {
 };
 
 export function MorningMascotLetter({ childId, childName, avatar, language }: Props) {
-  const { ensureLocalDailyLetter, experience, markLocalDailyLetterRead, recordCloudDailyLetterRead, storageMode } = useAppStore();
+  const { ensureLocalDailyLetter, experience, isDemoSession, markLocalDailyLetterRead, recordCloudDailyLetterRead } = useAppStore();
   const [now, setNow] = useState<Date | null>(null);
   const [cloudState, setCloudState] = useState<CloudLetterState | null>(null);
   const [retryCount, setRetryCount] = useState(0);
@@ -46,7 +46,7 @@ export function MorningMascotLetter({ childId, childName, avatar, language }: Pr
 
   useEffect(() => {
     if (!date || !templateKey || !stateKey) return;
-    if (storageMode === 'local') {
+    if (isDemoSession) {
       queueMicrotask(() => ensureLocalDailyLetter(childId, date, templateKey));
       return;
     }
@@ -77,7 +77,7 @@ export function MorningMascotLetter({ childId, childName, avatar, language }: Pr
     }
     void loadLetter();
     return () => controller.abort();
-  }, [childId, date, ensureLocalDailyLetter, retryCount, stateKey, storageMode, templateKey]);
+  }, [childId, date, ensureLocalDailyLetter, isDemoSession, retryCount, stateKey, templateKey]);
 
   if (!candidate || !now || !stateKey) return null;
 
@@ -85,8 +85,8 @@ export function MorningMascotLetter({ childId, childName, avatar, language }: Pr
   const cloudReady = cloudState?.key === stateKey && cloudState.kind === 'ready' ? cloudState : null;
   const cloudError = cloudState?.key === stateKey && cloudState.kind === 'error';
   const readError = readErrorKey === stateKey;
-  const selectedTemplate = storageMode === 'local' ? localRow?.template_key ?? templateKey : cloudReady?.templateKey;
-  const readAt = storageMode === 'local' ? localRow?.read_at ?? null : cloudReady?.readAt ?? null;
+  const selectedTemplate = isDemoSession ? localRow?.template_key ?? templateKey : cloudReady?.templateKey;
+  const readAt = isDemoSession ? localRow?.read_at ?? null : cloudReady?.readAt ?? null;
   const letter = selectedTemplate ? letterFromTemplateKey(selectedTemplate, language, childName, now) : null;
   const isVietnamese = language === 'vi';
   const letterMascot = selectedTemplate ? getMascot(`mascot:${selectedTemplate.split('_')[0]}`) : null;
@@ -94,7 +94,7 @@ export function MorningMascotLetter({ childId, childName, avatar, language }: Pr
 
   async function markRead() {
     if (!letter || readAt || saving) return;
-    if (storageMode === 'local') {
+    if (isDemoSession) {
       markLocalDailyLetterRead(childId, letter.date, letter.templateKey);
       return;
     }

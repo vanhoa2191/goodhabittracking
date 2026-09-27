@@ -25,134 +25,145 @@ const PLAN_LOCALIZATION: Record<
   string,
   Record<Language, { name: string; desc: string; period: string; badge?: string; cta: string }>
 > = {
+  solo_monthly: {
+    vi: { name: 'Gói Một Bé', desc: 'Đầy đủ trải nghiệm cốt lõi cho một bé', period: '/ tháng', badge: 'Khởi đầu nhẹ nhàng', cta: 'Chọn Gói Một Bé' },
+    en: { name: 'One Child Plan', desc: 'The complete core experience for one child', period: '/ month', badge: 'A gentle start', cta: 'Choose One Child' },
+    fr: { name: 'Forfait Un Enfant', desc: 'L’expérience essentielle complète pour un enfant', period: '/ mois', badge: 'Pour bien commencer', cta: 'Choisir Un Enfant' },
+    de: { name: 'Ein-Kind-Paket', desc: 'Das vollständige Kernerlebnis für ein Kind', period: '/ Monat', badge: 'Sanfter Einstieg', cta: 'Ein-Kind-Paket wählen' },
+    it: { name: 'Piano Un Bambino', desc: 'L’esperienza essenziale completa per un bambino', period: '/ mese', badge: 'Un inizio leggero', cta: 'Scegli Un Bambino' },
+    es: { name: 'Plan Un Niño', desc: 'La experiencia esencial completa para un niño', period: '/ mes', badge: 'Un comienzo sencillo', cta: 'Elegir Un Niño' },
+    zh: { name: '单宝贝套餐', desc: '为一个孩子提供完整的核心体验', period: '/ 月', badge: '轻松起步', cta: '选择单宝贝套餐' },
+    ja: { name: 'お子さま1人プラン', desc: 'お子さま1人向けの基本機能をすべて利用できます', period: '/ 月', badge: 'やさしくスタート', cta: '1人プランを選ぶ' },
+    ko: { name: '아이 한 명 플랜', desc: '아이 한 명을 위한 모든 핵심 기능', period: '/ 월', badge: '가볍게 시작', cta: '아이 한 명 플랜 선택' },
+  },
   monthly: {
     vi: {
-      name: 'Gói Siêu Nhân',
-      desc: 'Linh hoạt theo từng tháng',
+      name: 'Gói Gia Đình · Tháng',
+      desc: 'Đầy đủ cho cả gia đình, linh hoạt theo tháng',
       period: '/ tháng',
-      badge: 'Linh hoạt',
-      cta: 'Chọn gói tháng',
+      badge: 'Phổ biến nhất',
+      cta: 'Chọn Gói Gia Đình · Tháng',
     },
     en: {
-      name: 'Super Hero Plan',
-      desc: 'Less than half a milk tea, building solid habits for your child',
+      name: 'Family · Monthly',
+      desc: 'The complete family experience with flexible monthly billing',
       period: '/ month',
-      badge: 'Flexible',
-      cta: 'Upgrade Monthly (49k)',
+      badge: 'Most popular',
+      cta: 'Choose Family · Monthly',
     },
     fr: {
-      name: 'Forfait Super-Héros',
-      desc: 'Moins cher qu’un goûter, bâtissez des habitudes durables pour votre enfant',
+      name: 'Famille · Mensuel',
+      desc: 'L’expérience complète pour toute la famille, payée au mois',
       period: '/ mois',
-      badge: 'Flexible',
-      cta: 'Passer au Mensuel (49k)',
+      badge: 'Le plus populaire',
+      cta: 'Choisir Famille · Mensuel',
     },
     de: {
-      name: 'Superhelden-Paket',
-      desc: 'Weniger als ein Snack, baut nachhaltige Gewohnheiten für Ihr Kind auf',
+      name: 'Familie · Monatlich',
+      desc: 'Das vollständige Familienerlebnis mit flexibler Monatszahlung',
       period: '/ Monat',
-      badge: 'Flexibel',
-      cta: 'Monatsplan wählen (49k)',
+      badge: 'Am beliebtesten',
+      cta: 'Familie · Monatlich wählen',
     },
     it: {
-      name: 'Piano Supereroe',
-      desc: 'Meno di una merenda, crea solide abitudini quotidiane per tuo figlio',
+      name: 'Famiglia · Mensile',
+      desc: 'L’esperienza completa per la famiglia con pagamento mensile',
       period: '/ mese',
-      badge: 'Flessibile',
-      cta: 'Passa al Mensile (49k)',
+      badge: 'Più popolare',
+      cta: 'Scegli Famiglia · Mensile',
     },
     es: {
-      name: 'Plan Superhéroe',
-      desc: 'Menos que un snack, construye hábitos sólidos para tus hijos',
+      name: 'Familia · Mensual',
+      desc: 'La experiencia completa para la familia con pago mensual',
       period: '/ mes',
-      badge: 'Flexible',
-      cta: 'Mejorar a Mensual (49k)',
+      badge: 'Más popular',
+      cta: 'Elegir Familia · Mensual',
     },
     zh: {
-      name: '超级英雄套餐',
-      desc: '不到半杯奶茶的费用，为孩子培养坚实的好习惯',
+      name: '家庭 · 月付',
+      desc: '全家完整体验，按月灵活付费',
       period: '/ 月',
-      badge: '灵活便捷',
-      cta: '升级月度会员 (49k)',
+      badge: '最受欢迎',
+      cta: '选择家庭月付',
     },
     ja: {
-      name: 'スーパーヒーロープラン',
-      desc: 'おやつ1回分以下の手頃さで、お子様の一生モノの良い習慣を育みます',
+      name: 'ファミリー · 月額',
+      desc: '家族全員で使える基本機能を月ごとに利用',
       period: '/ 月',
-      badge: 'お手軽',
-      cta: '月額プランに登録 (49k)',
+      badge: '一番人気',
+      cta: 'ファミリー月額を選ぶ',
     },
     ko: {
-      name: '슈퍼 히어로 플랜',
-      desc: '간식 한 번 가격으로, 아이의 평생 좋은 습관을 만들어 줍니다',
+      name: '가족 · 월간',
+      desc: '온 가족을 위한 전체 기능과 유연한 월간 결제',
       period: '/ 월',
-      badge: '유연한 선택',
-      cta: '월간 플랜 업그레이드 (49k)',
+      badge: '가장 인기',
+      cta: '가족 월간 선택',
     },
   },
   yearly: {
     vi: {
-      name: 'Gói Đồng Hành',
+      name: 'Gói Gia Đình · Năm',
       desc: 'Tối ưu chi phí cho cả năm đồng hành',
       period: '/ năm',
-      badge: '👑 KHUYÊN DÙNG',
-      cta: 'Chọn gói năm',
+      badge: 'Tiết kiệm nhất',
+      cta: 'Chọn Gói Gia Đình · Năm',
     },
     en: {
-      name: 'Companion Plan',
-      desc: 'Best value and most economical for a whole year of habit building',
+      name: 'Family · Yearly',
+      desc: 'The best value for a full year with the whole family',
       period: '/ year',
-      badge: '👑 RECOMMENDED • SAVE 32%',
-      cta: 'Choose Yearly (399k - Save 32%)',
+      badge: 'Best savings',
+      cta: 'Choose Family · Yearly',
     },
     fr: {
-      name: 'Forfait Compagnon',
-      desc: 'Le meilleur rapport qualité-prix pour accompagner votre enfant toute l’année',
+      name: 'Famille · Annuel',
+      desc: 'Le meilleur tarif pour toute la famille pendant un an',
       period: '/ an',
-      badge: '👑 RECOMMANDÉ • -32%',
-      cta: 'Choisir l’Annuel (399k - Économisez 32%)',
+      badge: 'Meilleure économie',
+      cta: 'Choisir Famille · Annuel',
     },
     de: {
-      name: 'Begleiter-Paket',
-      desc: 'Die beste und wirtschaftlichste Wahl für ein ganzes Jahr Gewohnheitstraining',
+      name: 'Familie · Jährlich',
+      desc: 'Der beste Preis für ein ganzes Jahr mit der Familie',
       period: '/ Jahr',
-      badge: '👑 EMPFOHLEN • 32% SPAREN',
-      cta: 'Jahresplan (399k - 32% Rabatt)',
+      badge: 'Beste Ersparnis',
+      cta: 'Familie · Jährlich wählen',
     },
     it: {
-      name: 'Piano Compagno',
-      desc: 'La scelta migliore e più economica per un intero anno di crescita',
+      name: 'Famiglia · Annuale',
+      desc: 'Il miglior valore per un anno intero con la famiglia',
       period: '/ anno',
-      badge: '👑 CONSIGLIATO • RISPARMIA 32%',
-      cta: 'Scegli Annuale (399k - Risparmia 32%)',
+      badge: 'Miglior risparmio',
+      cta: 'Scegli Famiglia · Annuale',
     },
     es: {
-      name: 'Plan Compañero',
-      desc: 'La mejor y más económica opción para todo un año de crecimiento',
+      name: 'Familia · Anual',
+      desc: 'La mejor relación calidad-precio para todo un año en familia',
       period: '/ año',
-      badge: '👑 RECOMENDADO • AHORRA 32%',
-      cta: 'Elegir Anual (399k - Ahorra 32%)',
+      badge: 'Mayor ahorro',
+      cta: 'Elegir Familia · Anual',
     },
     zh: {
-      name: '陪伴成长套餐',
-      desc: '最具性价比的全年成长计划，陪伴孩子养成自律品格',
+      name: '家庭 · 年付',
+      desc: '全家使用一整年的最优价格',
       period: '/ 年',
-      badge: '👑 推荐首选 • 立省 32%',
-      cta: '选择年度特惠 (399k - 省32%)',
+      badge: '最省钱',
+      cta: '选择家庭年付',
     },
     ja: {
-      name: '伴走プラン',
-      desc: '1年間の習慣づくりに最もお得で経済的なベストチョイス',
+      name: 'ファミリー · 年額',
+      desc: '家族全員で1年間使える最もお得なプラン',
       period: '/ 年',
-      badge: '👑 一番人気 • 32%OFF',
-      cta: '年額プランを選択 (399k - 32%お得)',
+      badge: '最もお得',
+      cta: 'ファミリー年額を選ぶ',
     },
     ko: {
-      name: '동행 플랜',
-      desc: '1년 동안 꾸준히 습관을 다지기에 가장 경제적이고 효과적인 선택',
+      name: '가족 · 연간',
+      desc: '온 가족이 1년 동안 사용하는 가장 경제적인 플랜',
       period: '/ 년',
-      badge: '👑 추천 • 32% 할인',
-      cta: '연간 플랜 선택 (399k - 32% 할인)',
+      badge: '최고의 절약',
+      cta: '가족 연간 선택',
     },
   },
 };
@@ -283,8 +294,8 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
           )}
 
           {/* 2. Pricing Plans Grid */}
-          <div data-testid="paid-plan-grid" className="mx-auto grid w-full max-w-4xl grid-cols-1 gap-4 lg:grid-cols-2">
-            {PRICING_PLANS.filter((p) => p.id !== 'free' && p.id !== 'trial').map((plan) => {
+          <div data-testid="paid-plan-grid" className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 lg:grid-cols-3">
+            {PRICING_PLANS.filter((p) => p.id !== 'trial').map((plan) => {
               const isCurrent = subscriptionPlan === plan.id;
               const loc = PLAN_LOCALIZATION[plan.id]?.[language] || PLAN_LOCALIZATION[plan.id]?.vi || {
                 name: plan.name,
@@ -293,9 +304,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                 badge: plan.badge,
                 cta: plan.ctaText,
               };
-              const badge = plan.popular
-                ? loc.badge?.replace(/^👑\s*/u, '').split('•')[0].trim()
-                : undefined;
+              const badge = loc.badge?.replace(/^👑\s*/u, '').split('•')[0].trim() || plan.badge;
 
               return (
                 <div
@@ -323,7 +332,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
 
                   <div className="space-y-3 pt-1">
                     <div>
-                      <h4 className="font-black text-base text-slate-800 dark:text-slate-100 flex items-center justify-between">
+                      <h4 className="font-black text-base text-slate-800 dark:text-slate-100 flex items-start justify-between gap-3">
                         <span>{loc.name}</span>
                         {plan.savings && (
                           <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full">

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Check, Database, Download, Lock, PauseCircle, PlayCircle, ShieldCheck, Upload } from 'lucide-react';
+import { Database, Lock, PauseCircle, PlayCircle, ShieldCheck } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getParentSettingsCopy } from '@/lib/i18n/parent-settings-copy';
@@ -19,16 +19,12 @@ export function ParentSettingsTab() {
   const {
     parentPin,
     updateParentPin,
-    storageMode,
-    setStorageMode,
     currentUser,
     loginWithGoogle,
     logout,
     cloudSyncActive,
     experience,
     setFamilyPaused,
-    exportData,
-    importData,
   } = useAppStore();
   const { t, language } = useTranslation();
   const copy = getParentSettingsCopy(language);
@@ -64,26 +60,6 @@ export function ParentSettingsTab() {
       return;
     }
     setPinChangeNotice(copy.pinInvalid);
-  };
-
-  const handleExport = () => {
-    const data = exportData();
-    const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement('a');
-    anchor.href = url;
-    anchor.download = `kidhabit_backup_${new Date().toISOString().split('T')[0]}.json`;
-    anchor.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const handleImport = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const content = event.target?.result as string;
-      alert(content && importData(content) ? copy.importSuccess : copy.importInvalid);
-    };
-    reader.readAsText(file);
   };
 
   return (
@@ -136,23 +112,6 @@ export function ParentSettingsTab() {
       </div>
 
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800 space-y-4">
-        <div>
-          <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2"><Database className="w-4 h-4 text-indigo-600" />{t.storageModeLabel}</h4>
-          <p className="text-xs text-slate-400 mt-1">{t.storageModeTip}</p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <button type="button" onClick={() => setStorageMode('local')} className={`p-4 rounded-2xl border text-left transition-all ${storageMode === 'local' ? 'border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/30 ring-2 ring-indigo-500/20' : 'border-slate-200 dark:border-zinc-800 hover:border-slate-300'}`}>
-            <div className="flex items-center justify-between mb-1.5"><span className="font-extrabold text-xs text-slate-800 dark:text-slate-100 flex items-center gap-1.5">📱 {t.localStorageMode}</span>{storageMode === 'local' && <Check className="w-4 h-4 text-indigo-600" />}</div>
-            <p className="text-xs text-slate-500">{copy.localDescription}</p>
-          </button>
-          <button type="button" onClick={() => setStorageMode('cloud')} className={`p-4 rounded-2xl border text-left transition-all ${storageMode === 'cloud' ? 'border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/30 ring-2 ring-emerald-500/20' : 'border-slate-200 dark:border-zinc-800 hover:border-slate-300'}`}>
-            <div className="flex items-center justify-between mb-1.5"><span className="font-extrabold text-xs text-slate-800 dark:text-slate-100 flex items-center gap-1.5">☁️ {t.cloudStorageMode}</span>{storageMode === 'cloud' && <Check className="w-4 h-4 text-emerald-600" />}</div>
-            <p className="text-xs text-slate-500">{copy.cloudDescription}</p>
-          </button>
-        </div>
-      </div>
-
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800 space-y-4">
         <div className="flex items-center justify-between">
           <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-indigo-600" />{copy.accountAccess}</h4>
           {currentUser && <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">{copy.verified}</span>}
@@ -184,13 +143,6 @@ export function ParentSettingsTab() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
-        <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 mb-2 flex items-center gap-2"><Download className="w-4 h-4 text-indigo-600" />{copy.backupRestore}</h4>
-        <div className="flex items-center gap-3">
-          <button onClick={handleExport} className="py-2 px-4 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 text-xs font-bold transition-colors flex items-center gap-1.5"><Download className="w-3.5 h-3.5" />{t.exportData}</button>
-          <label className="py-2 px-4 rounded-xl bg-slate-100 dark:bg-zinc-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 text-xs font-bold transition-colors flex items-center gap-1.5 cursor-pointer"><Upload className="w-3.5 h-3.5" />{t.importData}<input type="file" accept=".json" className="hidden" onChange={(event) => { const file = event.target.files?.[0]; if (file) handleImport(file); }} /></label>
-        </div>
-      </div>
     </div>
   );
 }

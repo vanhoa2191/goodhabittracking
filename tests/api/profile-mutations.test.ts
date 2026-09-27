@@ -44,6 +44,7 @@ describe('POST /api/domain/profiles', () => {
     getParentContext.mockResolvedValue(null);
     const response = await POST(request({ type: 'delete', profileId: profile.id }));
     expect(response.status).toBe(401);
+    await expect(response.json()).resolves.toMatchObject({ errorCode: 'authentication_required' });
     expect(rpc).not.toHaveBeenCalled();
   });
 
@@ -52,6 +53,7 @@ describe('POST /api/domain/profiles', () => {
       type: 'create', profile: { ...profile, familyId: 'family-b' }, starterActivities: [],
     }));
     expect(response.status).toBe(400);
+    await expect(response.json()).resolves.toMatchObject({ errorCode: 'invalid_profile_mutation' });
     expect(rpc).not.toHaveBeenCalled();
   });
 
@@ -81,7 +83,29 @@ describe('POST /api/domain/profiles', () => {
   it('rejects malformed command results instead of reporting false success', async () => {
     rpc.mockResolvedValue({ data: { profileId: 'not-a-uuid' }, error: null });
     const response = await POST(request({ type: 'delete', profileId: profile.id }));
+    expect(response.status).toBe(500);
+    await expect(response.json()).resolves.toMatchObject({
+      success: false,
+      errorCode: 'profile_mutation_failed',
+    });
+  });
+
+  it('maps the child limit to a stable recoverable error code', async () => {
+    rpc.mockResolvedValue({
+      data: null,
+      error: { code: 'P0001', message: 'free_plan_child_limit_reached' },
+    });
+    const response = await POST(request({ type: 'create', profile, starterActivities: [] }));
     expect(response.status).toBe(409);
-    await expect(response.json()).resolves.toMatchObject({ success: false });
+    await expect(response.json()).resolves.toMatchObject({ errorCode: 'child_limit_reached' });
+  });
+
+  it('reports a temporary service failure without exposing the database error', async () => {
+    rpc.mockRejectedValue(new Error('connection contained private details'));
+    const response = await POST(request({ type: 'create', profile, starterActivities: [] }));
+    expect(response.status).toBe(503);
+    const body = await response.json();
+    expect(body).toMatchObject({ errorCode: 'profile_service_unavailable' });
+    expect(JSON.stringify(body)).not.toContain('private details');
   });
 });

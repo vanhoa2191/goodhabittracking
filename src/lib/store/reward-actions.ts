@@ -31,7 +31,7 @@ type Dependencies = {
   readonly setProfiles: Dispatch<SetStateAction<ChildProfile[]>>;
   readonly setRedemptions: Dispatch<SetStateAction<Redemption[]>>;
   readonly setRewards: Dispatch<SetStateAction<Reward[]>>;
-  readonly storageMode: 'local' | 'cloud';
+  readonly isDemoSession: boolean;
   readonly refreshChildSession: () => Promise<boolean>;
   readonly syncCloudFamily: (user: User) => Promise<boolean>;
 };
@@ -128,21 +128,21 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
         id: crypto.randomUUID(),
         createdAt: new Date().toISOString(),
       };
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         return persistReward({ type: 'create', reward: mutationReward(reward) });
       }
       dependencies.setRewards((previous) => addReward(previous, reward));
       return true;
     },
     updateReward: async (id, updates) => {
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         return persistReward({ type: 'update', rewardId: id, updates: mutationUpdates(updates) });
       }
       dependencies.setRewards((previous) => updateRewardList(previous, id, updates));
       return true;
     },
     deleteReward: async (id) => {
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         return persistReward({ type: 'delete', rewardId: id });
       }
       dependencies.setRewards((previous) => removeReward(previous, id));
@@ -156,7 +156,7 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
       if (!reward || !child || child.points < reward.costPoints) return false;
 
       const user = dependencies.currentUser;
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         if (!user) {
           if (!dependencies.isFamilyConnected) {
             dependencies.setCloudSyncActive(false);
@@ -228,7 +228,7 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
       return true;
     },
     approveRedemption: (redemptionId) => {
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         if (!dependencies.currentUser) {
           dependencies.setCloudSyncActive(false);
           return;
@@ -241,7 +241,7 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
     },
     deliverRedemption: (redemptionId) => {
       const user = dependencies.currentUser;
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         if (!user) {
           dependencies.setCloudSyncActive(false);
           return;
@@ -270,7 +270,7 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
       sounds.playLevelUp();
     },
     rejectRedemption: (redemptionId) => {
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         if (!dependencies.currentUser) {
           dependencies.setCloudSyncActive(false);
           return;

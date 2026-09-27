@@ -4,8 +4,6 @@ import { setJournalEntry } from '@/lib/experience-state';
 import type { ExperienceState } from '@/lib/experience-state';
 
 type Requester = (url: string, init?: RequestInit) => Promise<Response>;
-type StorageMode = 'local' | 'cloud';
-
 type JournalActionDependencies = {
   readonly activeChildId: string | null;
   readonly familyId: string | null;
@@ -15,7 +13,7 @@ type JournalActionDependencies = {
   readonly getScopeVersion: () => number;
   readonly request: Requester;
   readonly setExperience: (updater: (previous: ExperienceState) => ExperienceState) => void;
-  readonly storageMode: StorageMode;
+  readonly isDemoSession: boolean;
 };
 
 const journalResponse = z.object({ entry: z.unknown() });
@@ -29,7 +27,7 @@ export function createJournalActions(dependencies: JournalActionDependencies) {
     const text = normalizeJournalText(input);
     if (!childId || !text || !isCurrentScope()) return false;
 
-    if (dependencies.storageMode === 'local') {
+    if (dependencies.isDemoSession) {
       const timestamp = dependencies.now().toISOString();
       dependencies.setExperience((previous) => {
         if (!isCurrentScope()) return previous;

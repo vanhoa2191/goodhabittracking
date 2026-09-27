@@ -6,7 +6,11 @@ import { profileMutationSchema, type ProfileMutation } from '@/lib/domain/profil
 import { getMascot } from '@/lib/mascots';
 import { getMascotChangeAvailableAt } from '@/lib/mascot-selection';
 import { generateAgeAdaptedHabits } from '@/lib/wit-framework';
-import { requestProfileMutation } from './profile-mutation-client';
+import {
+  ProfileMutationRequestError,
+  requestProfileMutation,
+  type ProfileMutationErrorCode,
+} from './profile-mutation-client';
 import { addProfile, removeProfile, updateProfileList } from './local-domain-actions';
 
 type NewProfile = Omit<ChildProfile, 'id' | 'createdAt'>;
@@ -22,15 +26,23 @@ type Dependencies = {
   readonly setCloudSyncActive: Dispatch<SetStateAction<boolean>>;
   readonly setExperience: Dispatch<SetStateAction<ExperienceState>>;
   readonly setProfiles: Dispatch<SetStateAction<ChildProfile[]>>;
-  readonly storageMode: 'local' | 'cloud';
+  readonly isDemoSession: boolean;
   readonly syncCloudFamily: (user: User) => Promise<boolean>;
 };
 
 type ProfileActions = {
-  readonly createProfile: (profile: NewProfile) => Promise<boolean>;
+  readonly createProfile: (profile: NewProfile, requestId?: string) => Promise<ProfileCreateResult>;
   readonly deleteProfile: (id: string) => Promise<boolean>;
   readonly updateProfile: (id: string, updates: Partial<ChildProfile>) => Promise<boolean>;
 };
+
+export type ProfileCreateResult =
+  | { readonly success: true; readonly profileId: string; readonly refreshed: boolean }
+  | {
+      readonly success: false;
+      readonly code: ProfileMutationErrorCode;
+      readonly correlationId?: string;
+    };
 
 function mutationProfile(profile: ChildProfile) {
   return profileMutationSchema.options[0].shape.profile.parse({
@@ -84,32 +96,35 @@ export function createProfileActions(dependencies: Dependencies): ProfileActions
     });
   };
 
-  const persist = async (mutation: ProfileMutation): Promise<boolean> => {
+  const persist = async (mutation: ProfileMutation): Promise<ProfileCreateResult> => {
     if (!dependencies.currentUser || !dependencies.familyId) {
       dependencies.setCloudSyncActive(false);
-      return false;
+      return { success: false, code: 'authentication_required' };
     }
     try {
       const result = await requestProfileMutation(mutation);
       const synced = await dependencies.syncCloudFamily(dependencies.currentUser);
-      if (synced && mutation.type === 'create') {
+      if (!synced) dependencies.setCloudSyncActive(false);
+      if (mutation.type === 'create') {
         dependencies.setActiveChildId(result.profileId);
       }
-      return synced;
+      return { success: true, profileId: result.profileId, refreshed: synced };
     } catch (error: unknown) {
       dependencies.setCloudSyncActive(false);
       console.error(
         'Saving child profile failed:',
         error instanceof Error ? error.message : 'unknown',
       );
-      return false;
+      return error instanceof ProfileMutationRequestError
+        ? { success: false, code: error.code, correlationId: error.correlationId }
+        : { success: false, code: 'profile_service_unavailable' };
     }
   };
 
   return {
-    createProfile: async (profileData) => {
+    createProfile: async (profileData, requestId = crypto.randomUUID()) => {
       const createdAt = new Date().toISOString();
-      const profile: ChildProfile = { ...profileData, id: crypto.randomUUID(), createdAt };
+      const profile: ChildProfile = { ...profileData, id: requestId, createdAt };
       const starterActivities: HabitActivity[] = profile.ageStage
         ? generateAgeAdaptedHabits(profile.id, profile.ageStage).map((activity) => ({
             ...activity,
@@ -117,7 +132,7 @@ export function createProfileActions(dependencies: Dependencies): ProfileActions
             createdAt,
           }))
         : [];
-      if (dependencies.storageMode === 'cloud') {
+      if (!dependencies.isDemoSession) {
         return persist({
           type: 'create',
           profile: mutationProfile(profile),
@@ -133,11 +148,11 @@ export function createProfileActions(dependencies: Dependencies): ProfileActions
       if (initialMascot && initialMascot.id !== 'mascot:leo') {
         recordLocalMascotSelection(profile.id);
       }
-      return true;
+      return { success: true, profileId: profile.id, refreshed: true };
     },
     updateProfile: async (id, updates) => {
-      if (dependencies.storageMode === 'cloud') {
-        return persist({ type: 'update', profileId: id, updates: mutationUpdates(updates) });
+      if (!dependencies.isDemoSession) {
+        return (await persist({ type: 'update', profileId: id, updates: mutationUpdates(updates) })).success;
       }
       const currentProfile = dependencies.profiles.find((profile) => profile.id === id);
       const changedMascot = currentProfile !== undefined
@@ -155,8 +170,8 @@ export function createProfileActions(dependencies: Dependencies): ProfileActions
       return true;
     },
     deleteProfile: async (id) => {
-      if (dependencies.storageMode === 'cloud') {
-        return persist({ type: 'delete', profileId: id });
+      if (!dependencies.isDemoSession) {
+        return (await persist({ type: 'delete', profileId: id })).success;
       }
       dependencies.setProfiles((previous) => {
         const removal = removeProfile(previous, id, dependencies.activeChildId);

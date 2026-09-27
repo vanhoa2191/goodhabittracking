@@ -16,13 +16,13 @@ const selectionStateSchema = z.object({
 type CheckStatus = 'loading' | 'ready' | 'error';
 
 export function MascotPickerController({ onClose }: { readonly onClose: () => void }) {
-  const { activeChild, currentUser, experience, isFamilyConnected, storageMode, updateActiveAvatar } = useAppStore();
-  const isPairedChild = storageMode === 'cloud' && !currentUser && isFamilyConnected;
+  const { activeChild, currentUser, experience, isDemoSession, isFamilyConnected, updateActiveAvatar } = useAppStore();
+  const isPairedChild = !isDemoSession && !currentUser && isFamilyConnected;
   const [cloudSelectedAt, setCloudSelectedAt] = useState<string | null>(null);
-  const [status, setStatus] = useState<CheckStatus>(storageMode === 'cloud' ? 'loading' : 'ready');
+  const [status, setStatus] = useState<CheckStatus>(isDemoSession ? 'ready' : 'loading');
 
   useEffect(() => {
-    if (storageMode !== 'cloud' || !activeChild) return;
+    if (isDemoSession || !activeChild) return;
     const controller = new AbortController();
     const childId = activeChild.id;
 
@@ -56,12 +56,12 @@ export function MascotPickerController({ onClose }: { readonly onClose: () => vo
 
     void loadSelection();
     return () => controller.abort();
-  }, [activeChild, isPairedChild, storageMode]);
+  }, [activeChild, isDemoSession, isPairedChild]);
 
   if (!activeChild) return null;
-  const selectedAt = storageMode === 'cloud'
-    ? cloudSelectedAt
-    : experience.children.find((child) => child.child_id === activeChild.id)?.mascot_selected_at ?? null;
+  const selectedAt = isDemoSession
+    ? experience.children.find((child) => child.child_id === activeChild.id)?.mascot_selected_at ?? null
+    : cloudSelectedAt;
 
   return (
     <AvatarPickerModal

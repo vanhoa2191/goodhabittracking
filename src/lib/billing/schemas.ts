@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const paidPlanSchema = z.enum(['monthly', 'yearly']);
+export const paidPlanSchema = z.enum(['solo_monthly', 'monthly', 'yearly']);
 
 export const createPaymentRequestSchema = z
   .object({
