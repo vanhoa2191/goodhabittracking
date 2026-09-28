@@ -4,7 +4,6 @@ import { installCloudFamilyFixture } from './cloud-family-fixture';
 async function openLeaderboard(page: import('@playwright/test').Page) {
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', /^(kid|parent)$/);
   if (await page.getByTestId('app-surface').getAttribute('data-app-mode') === 'parent') {
-    await page.waitForLoadState('networkidle');
     await page.getByRole('button', { name: 'Bé vui học' }).click();
     await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'kid');
   }

@@ -1,4 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import { setupOrUnlockParent } from './pin-helper';
 
 test.use({ viewport: { width: 375, height: 812 } });
 
@@ -19,8 +20,11 @@ async function expectSafeBodyPortal(page: Page, dialog: Locator) {
 }
 
 test('pricing dialog stays in the mobile viewport after deep scrolling', async ({ page }) => {
-  // Given a demo session scrolled to the end of the document.
+  // Given a parent session scrolled to the end of the document.
   await page.goto('/');
+  await page.getByTestId('landing-primary-action').click();
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  await setupOrUnlockParent(page);
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await page.getByTestId('more-menu').click();
   const opener = page.getByRole('button', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
@@ -39,7 +43,6 @@ test('pricing dialog stays in the mobile viewport after deep scrolling', async (
 test('habit timer traps focus inside a mobile body portal', async ({ page }) => {
   // Given a demo child dashboard scrolled near the end of the document.
   await page.goto('/');
-  await page.waitForLoadState('networkidle');
   await page.getByTestId('landing-primary-action').click();
   await expect(page.getByRole('heading', { name: 'Nguyễn Minh An' })).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));

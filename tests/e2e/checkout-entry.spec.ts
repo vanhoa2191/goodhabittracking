@@ -33,7 +33,7 @@ for (const query of ['', 'plan=', 'plan=trial', 'plan=lifetime', 'plan=unknown',
   test(`invalid intent ${query || 'missing'} recovers to marketing pricing`, async ({ page }) => {
     await page.goto(`/checkout?${query}`);
     await expect(page.getByRole('heading', { name: 'Gói thanh toán không hợp lệ' })).toBeVisible();
-    const origin = process.env.NEXT_PUBLIC_MARKETING_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? 'https://goodhabittracking.vanhoa2191.workers.dev';
+    const origin = process.env.NEXT_PUBLIC_MARKETING_URL ?? 'https://www.example.test';
     await expect(page.getByRole('link', { name: 'Xem bảng giá' })).toHaveAttribute('href', new URL('/pricing', origin).href);
     await expect(page.getByRole('button', { name: 'Đăng nhập để thanh toán' })).toHaveCount(0);
     await expect(page.getByRole('dialog')).toHaveCount(0);

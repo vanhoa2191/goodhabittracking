@@ -22,7 +22,7 @@ export default defineConfig({
   webServer: externalBaseUrl
     ? undefined
     : {
-        command: 'npm run dev -- --hostname 127.0.0.1',
+        command: 'npm run dev -- --webpack --hostname 127.0.0.1',
         env: {
           NEXT_PUBLIC_SUPABASE_URL: e2eSupabaseUrl,
           NEXT_PUBLIC_SUPABASE_ANON_KEY: e2eSupabaseAnonKey,

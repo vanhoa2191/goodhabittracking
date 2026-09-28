@@ -67,7 +67,7 @@ test('a legacy template keeps its catalog ID after joining the active collection
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
   await page.reload();
-  await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: /^Parent/ }).click();
   await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Design' }).click();
@@ -88,7 +88,7 @@ test('a custom habit with a template title does not occupy the legacy library ca
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
   await page.reload();
-  await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: /^Parent/ }).click();
   await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Design' }).click();
@@ -143,7 +143,7 @@ test('a demo assignment remains available after reloading the same tab', async (
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
   await page.reload();
-  await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: /^Parent/ }).click();
   await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Design' }).click();

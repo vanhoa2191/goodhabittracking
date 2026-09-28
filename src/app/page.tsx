@@ -127,6 +127,7 @@ export default function Home() {
           {renderGateway ? (
             <AppEntryGate
               isLoading={!isEntryReady}
+              language={language}
               marketingHomeUrl={marketingOrigin.href}
               onOpenPairing={openConnectModal}
               onStartDemo={handleStartDemo}

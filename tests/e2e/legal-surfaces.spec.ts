@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { installCloudFamilyFixture } from './cloud-family-fixture';
 import { getVisiblePricingOpener } from './open-pricing';
 
 for (const entry of [
@@ -16,18 +17,20 @@ for (const entry of [
   });
 }
 
-test('draft policy routes stay noindex and hidden from the product footer', async ({ page }) => {
+test('draft policy routes stay noindex while the app footer points to the marketing site', async ({ page }) => {
   test.skip(process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true', 'Publication gate is enabled in this run.');
   await page.goto('/privacy');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
   await page.goto('/');
-  await expect(page.locator('footer').getByRole('link', { name: 'Quyền riêng tư' })).toHaveCount(0);
-  await expect(page.locator('footer').getByRole('link', { name: 'Điều khoản' })).toHaveCount(0);
-  await expect(page.locator('footer').getByRole('link', { name: 'Liên hệ' })).toHaveCount(0);
+  const footer = page.locator('footer');
+  await expect(footer.getByRole('link', { name: 'Quyền riêng tư' })).toHaveAttribute('href', 'https://www.example.test/privacy/');
+  await expect(footer.getByRole('link', { name: 'Điều khoản' })).toHaveAttribute('href', 'https://www.example.test/terms/');
+  await expect(footer.getByRole('link', { name: 'Liên hệ' })).toHaveAttribute('href', 'https://www.example.test/contact/');
 });
 
-test('approved checkout waits for explicit policy acceptance before creating an order', async ({ page }) => {
+test('approved checkout waits for explicit policy acceptance before creating an order', async ({ page, baseURL }) => {
   test.skip(process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED !== 'true', 'Publication gate is disabled in this run.');
+  await installCloudFamilyFixture(page, baseURL);
   let createRequests = 0;
   await page.route('**/api/payment/create', (route) => {
     createRequests += 1;
