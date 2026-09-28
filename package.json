@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:marketing": "node scripts/build-marketing.mjs",
     "start": "next start -H 0.0.0.0",
+    "preview:marketing": "node scripts/preview-marketing.mjs",
+    "deploy:marketing": "npm run build:marketing && node scripts/run-marketing-pages.mjs deploy",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
