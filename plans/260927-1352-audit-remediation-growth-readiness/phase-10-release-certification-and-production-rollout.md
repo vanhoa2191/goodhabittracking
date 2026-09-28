@@ -50,6 +50,7 @@ Chứng nhận toàn bộ hành trình trên staging/production, rollout theo l�
 ## Verification evidence
 
 - `npm run verify:live-boundaries` passed against the configured Supabase project: anonymous access denied, same-family access allowed, cross-family access denied. The verifier used synthetic accounts/fixtures and cleaned them up in `finally`; this does not replace migration backup/preflight or exact-SHA production certification.
+- `npm run verify:live-lifecycle` passed against the configured production origin: persistent pairing, credential rotation, child completion, parent approval, reward delivery, reconnect, revoke and owner deletion. The verifier used one synthetic family and cleaned it up in `finally`; this does not prove PayOS, device-camera or release-SHA coverage.
 
 ## Success Criteria
 

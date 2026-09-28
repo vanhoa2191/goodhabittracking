@@ -105,6 +105,15 @@ try {
   assert(!membership.error && membership.data?.family_id, 'Synthetic family bootstrap failed.');
   familyId = membership.data.family_id;
 
+  const entitlementFixture = await admin.from('user_subscriptions').upsert({
+    family_id: familyId,
+    user_id: userId,
+    plan: 'solo_monthly',
+    status: 'active',
+    subscription_ends_at: new Date(Date.now() + 86_400_000).toISOString(),
+  }, { onConflict: 'family_id' });
+  assert(!entitlementFixture.error, 'Synthetic entitlement fixture failed.');
+
   const childFixture = await admin.from('child_profiles').insert({
     id: childId,
     family_id: familyId,
