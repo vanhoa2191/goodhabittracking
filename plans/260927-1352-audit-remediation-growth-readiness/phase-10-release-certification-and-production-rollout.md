@@ -51,6 +51,8 @@ Chứng nhận toàn bộ hành trình trên staging/production, rollout theo l�
 
 - `npm run verify:live-boundaries` passed against the configured Supabase project: anonymous access denied, same-family access allowed, cross-family access denied. The verifier used synthetic accounts/fixtures and cleaned them up in `finally`; this does not replace migration backup/preflight or exact-SHA production certification.
 - `npm run verify:live-lifecycle` passed against the configured production origin: persistent pairing, credential rotation, child completion, parent approval, reward delivery, reconnect, revoke and owner deletion. The verifier used one synthetic family and cleaned it up in `finally`; this does not prove PayOS, device-camera or release-SHA coverage.
+- Supabase migration preflight listed exactly four pending migrations (`202609270004` through `202609280003`); `supabase db push --yes` applied them, and a subsequent migration list showed local/remote parity. Production `/api/health` then returned HTTP 200 with `status=ready` and all dependency checks true.
+- Supabase Free has no managed scheduled backup/PITR available in the dashboard; local schema-only dump was not produced because Docker/Podman and `pg_dump` are unavailable. Backup/rollback evidence remains open for the release gate.
 
 ## Success Criteria
 
