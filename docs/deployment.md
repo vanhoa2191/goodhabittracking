@@ -4,16 +4,16 @@
 
 Repository tạo hai bản phát hành độc lập:
 
-- Website giới thiệu: HTML/CSS/JS tĩnh tại `dist/marketing`, triển khai vào Cloudflare Pages project `kidhabit-home`; origin tạm là `https://kidhabit-home.pages.dev`.
+- Website giới thiệu: HTML/CSS/JS tĩnh tại `dist/marketing`, triển khai bằng Cloudflare Workers Static Assets với service `kidhabit-home`; origin tạm là `https://kidhabit-home.vanhoa2191.workers.dev`.
 - Ứng dụng: Next.js full-stack tại `https://goodhabittracking.vanhoa2191.workers.dev`, triển khai bằng OpenNext lên Cloudflare Workers. Origin này giữ auth, QR, PWA, API, PayOS và dữ liệu gia đình.
 
 Không chuyển route động sang Pages, không chia sẻ cookie giữa hai origin và không đặt Supabase/PayOS secret trong marketing build. Xem [Cloudflare OpenNext guide](https://developers.cloudflare.com/workers/framework-guides/web-apps/opennext/).
 
 ## First setup
 
-1. Tạo Workers project `goodhabittracking` và Pages project `kidhabit-home` trong cùng Cloudflare account.
+1. Tạo hai Workers service độc lập trong cùng Cloudflare account: `goodhabittracking` cho app và `kidhabit-home` cho static marketing.
 2. App build/deploy: `npm run build:cloudflare` và `npm run deploy:cloudflare`.
-3. Marketing build/deploy: `npm run build:marketing`, `npm run verify:marketing-release -- --dir dist/marketing --app-origin https://goodhabittracking.vanhoa2191.workers.dev --marketing-origin https://kidhabit-home.pages.dev`, rồi `npm run deploy:marketing`.
+3. Marketing build/deploy: `npm run build:marketing`, `npm run verify:marketing-release -- --dir dist/marketing --app-origin https://goodhabittracking.vanhoa2191.workers.dev --marketing-origin https://kidhabit-home.vanhoa2191.workers.dev`, rồi `npm run deploy:marketing`. Wrangler 4.135 chuyển Pages project mới sang Workers Static Assets; không dùng lại root `wrangler.jsonc` của app cho service marketing.
 
 Các lệnh Cloudflare luôn loại server secret khỏi môi trường build để chúng chỉ tồn tại dưới dạng Worker secrets lúc chạy. Không đặt `PAYOS_*`, `SUPABASE_SERVICE_ROLE_KEY` hoặc `PAIRING_RATE_LIMIT_SECRET` trong `.env.local`; wrapper sẽ chặn build nếu phát hiện giá trị.
 4. Khai báo public variables `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_MARKETING_URL` và `NEXT_PUBLIC_DEPLOY_TARGET=app` trong **môi trường build app**. Marketing build chỉ nhận `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_MARKETING_URL` và `NEXT_PUBLIC_DEPLOY_TARGET=marketing`.
@@ -44,7 +44,7 @@ Hai origin tạm đã được cố định trong workflow. Khi thiếu Cloudfla
 
 ## Thứ tự rollout và rollback hai bề mặt
 
-1. Build và deploy Pages trước; chạy verifier trên URL live, kiểm tra ba CTA mở đúng app checkout.
+1. Build và deploy static marketing service trước; chạy verifier trên URL live, kiểm tra ba CTA mở đúng app checkout.
 2. Chỉ khi Pages xanh mới deploy Worker có app gateway/noindex mới.
 3. Kiểm tra `/api/health` trả HTTP 200, `status=ready` và mọi dependency check là `true`; sau đó kiểm tra guest, parent, child, PWA và payment return.
 4. Rollback app bằng redeploy Worker commit trước. Rollback marketing bằng deployment Pages trước hoặc build/deploy commit marketing trước. Không rollback schema bằng cách xóa dữ liệu.

@@ -23,7 +23,7 @@ Kết quả mong muốn:
 
 | Bề mặt | Domain tạm | Vai trò |
 |---|---|---|
-| Homepage | `https://kidhabit-home.pages.dev` | HTML/CSS/JS tĩnh, SEO, selling point, bảng giá, tài liệu công khai |
+| Homepage | `https://kidhabit-home.vanhoa2191.workers.dev` | HTML/CSS/JS tĩnh, SEO, selling point, bảng giá, tài liệu công khai |
 | App | `https://goodhabittracking.vanhoa2191.workers.dev` | Đăng nhập, app phụ huynh/trẻ, checkout, API, PayOS, QR, admin, PWA |
 
 Tên Pages là tên mong muốn và phải được kiểm tra khả dụng khi tạo project. Domain thật sau này chỉ thay origin cấu hình, không thay luồng nghiệp vụ.
@@ -176,7 +176,7 @@ Root app không còn là sales page. Root app chỉ quyết định parent, chil
 ## 9. Cấu hình
 
 ```text
-NEXT_PUBLIC_MARKETING_URL=https://kidhabit-home.pages.dev
+NEXT_PUBLIC_MARKETING_URL=https://kidhabit-home.vanhoa2191.workers.dev
 NEXT_PUBLIC_APP_URL=https://goodhabittracking.vanhoa2191.workers.dev
 NEXT_PUBLIC_DEPLOY_TARGET=marketing|app
 ```

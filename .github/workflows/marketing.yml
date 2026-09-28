@@ -14,7 +14,7 @@ concurrency:
 
 env:
   NEXT_PUBLIC_APP_URL: https://goodhabittracking.vanhoa2191.workers.dev
-  NEXT_PUBLIC_MARKETING_URL: https://kidhabit-home.pages.dev
+  NEXT_PUBLIC_MARKETING_URL: https://kidhabit-home.vanhoa2191.workers.dev
   NEXT_PUBLIC_DEPLOY_TARGET: marketing
 
 jobs:

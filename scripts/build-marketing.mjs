@@ -61,7 +61,7 @@ const invokedDirectly = process.argv[1] && import.meta.url === pathToFileURL(res
 if (invokedDirectly) {
   const result = await buildMarketingSite({
     appOrigin: process.env.NEXT_PUBLIC_APP_URL ?? 'https://goodhabittracking.vanhoa2191.workers.dev',
-    marketingOrigin: process.env.NEXT_PUBLIC_MARKETING_URL ?? 'https://kidhabit-home.pages.dev',
+    marketingOrigin: process.env.NEXT_PUBLIC_MARKETING_URL ?? 'https://kidhabit-home.vanhoa2191.workers.dev',
     outputDir: process.env.MARKETING_OUTPUT_DIR ?? join(projectRoot, 'dist', 'marketing'),
   });
   process.stdout.write(`Built ${result.pages} marketing pages in ${result.outputDir}\n`);

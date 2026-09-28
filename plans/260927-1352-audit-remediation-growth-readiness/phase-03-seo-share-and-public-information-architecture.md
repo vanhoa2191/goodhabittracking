@@ -11,7 +11,7 @@ dependencies: [2]
 
 ## Overview
 
-Tách public marketing thành artifact HTML tĩnh trên Cloudflare Pages để crawler, link preview và khách mới nhận nội dung đúng; app Worker chỉ giải quyết đăng nhập, trẻ ghép thiết bị, checkout và phiên quay lại.
+Tách public marketing thành artifact HTML tĩnh trên Cloudflare Workers Static Assets để crawler, link preview và khách mới nhận nội dung đúng; app Worker chỉ giải quyết đăng nhập, trẻ ghép thiết bị, checkout và phiên quay lại.
 
 ## Context links
 

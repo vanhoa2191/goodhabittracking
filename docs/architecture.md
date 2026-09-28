@@ -1,6 +1,6 @@
 # Architecture
 
-KidHabit Hero phát hành hai artifact độc lập từ cùng repository: website giới thiệu tĩnh trên Cloudflare Pages và ứng dụng modular monolith Next.js 16 trên Cloudflare Workers. Browser chỉ giữ UI state và public Supabase client. Mọi quyết định nhạy cảm nằm ở Worker route hoặc PostgreSQL function.
+KidHabit Hero phát hành hai artifact độc lập từ cùng repository: website giới thiệu bằng Cloudflare Workers Static Assets và ứng dụng modular monolith Next.js 16 bằng OpenNext Worker. Browser chỉ giữ UI state và public Supabase client. Mọi quyết định nhạy cảm nằm ở app Worker route hoặc PostgreSQL function.
 
 ## Ranh giới
 
@@ -13,7 +13,7 @@ KidHabit Hero phát hành hai artifact độc lập từ cùng repository: websi
 - `apps/marketing`: nội dung bán hàng và tài liệu công khai, không import auth, API, PayOS hoặc Supabase.
 - `dist/marketing`: artifact HTML/CSS/JS tĩnh do `npm run build:marketing` tạo, không commit vào Git.
 
-Website marketing sở hữu canonical, sitemap, robots và nội dung công khai. App origin luôn `noindex`, sở hữu PWA, đăng nhập, QR, checkout, callback và API. Link mua hàng đi từ Pages tới `/checkout?plan=...` trên app origin; entitlement vẫn gắn với `family_id`, không gắn với email.
+Website marketing sở hữu canonical, sitemap, robots và nội dung công khai. App origin luôn `noindex`, sở hữu PWA, đăng nhập, QR, checkout, callback và API. Link mua hàng đi từ marketing origin tới `/checkout?plan=...` trên app origin; entitlement vẫn gắn với `family_id`, không gắn với email.
 
 ## Dòng dữ liệu cloud
 

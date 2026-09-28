@@ -54,7 +54,7 @@ jobs:
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       OPERATIONS_CRON_SECRET: ${{ secrets.LIFECYCLE_CRON_SECRET }}
       NEXT_PUBLIC_APP_URL: https://goodhabittracking.vanhoa2191.workers.dev
-      NEXT_PUBLIC_MARKETING_URL: https://kidhabit-home.pages.dev
+      NEXT_PUBLIC_MARKETING_URL: https://kidhabit-home.vanhoa2191.workers.dev
       NEXT_PUBLIC_DEPLOY_TARGET: app
     steps:
       - id: configuration

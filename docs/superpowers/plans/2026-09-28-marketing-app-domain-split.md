@@ -2,18 +2,18 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Phát hành homepage KidHabit dạng static HTML trên Cloudflare Pages và giữ ứng dụng, checkout PayOS, API và PWA trên Cloudflare Worker hiện tại với hành trình chọn gói liền mạch.
+**Goal:** Phát hành homepage KidHabit dạng static HTML trên một Cloudflare static service riêng và giữ ứng dụng, checkout PayOS, API và PWA trên Cloudflare Worker hiện tại với hành trình chọn gói liền mạch.
 
 **Architecture:** Một repository tạo hai artifact độc lập. Marketing artifact là HTML/CSS/JS tĩnh và chỉ điều hướng top-level tới app; app artifact giữ auth, cookie, API, checkout, webhook và PWA cùng origin. Subscription tiếp tục thuộc `family_id`, còn `user_id` là tài khoản thực hiện mua; email không phải khóa entitlement.
 
-**Tech Stack:** Next.js 16, React 19, TypeScript, Vitest, Playwright, Cloudflare Workers/OpenNext, Cloudflare Pages static assets, Supabase Auth/Postgres, PayOS.
+**Tech Stack:** Next.js 16, React 19, TypeScript, Vitest, Playwright, Cloudflare Workers/OpenNext, Cloudflare Workers Static Assets, Supabase Auth/Postgres, PayOS.
 
 **Spec:** `docs/superpowers/specs/2026-09-28-marketing-app-domain-split-design.md`
 
 ## Global Constraints
 
 - Domain app tạm giữ nguyên `https://goodhabittracking.vanhoa2191.workers.dev` để không mất session, PWA, QR và callback hiện tại.
-- Domain homepage mong muốn là `https://kidhabit-home.pages.dev`; xác minh tên project trước khi deploy.
+- Domain homepage tạm là `https://kidhabit-home.vanhoa2191.workers.dev`, được Wrangler 4.135 cấp cho static service `kidhabit-home`.
 - Homepage phải hiển thị trực tiếp ba gói `solo_monthly`, `monthly`, `yearly`; không có gói miễn phí hoặc trọn đời trong bảng giá bán.
 - Homepage không nhận Supabase, PayOS, service-role, pairing hoặc lifecycle secret.
 - Mọi OAuth, tạo đơn, PayOS return/cancel/webhook, caregiver invite, QR và API chạy trên app origin.
@@ -328,7 +328,7 @@ Expected: FAIL because the release verifier does not exist.
 
 - [ ] **Step 3: Implement independent build/deploy jobs and docs**
 
-Marketing deploy builds only `dist/marketing` and deploys to Pages project `kidhabit-home`. App deploy keeps OpenNext Worker configuration and secrets. Parameterize smoke URLs without logging credentials. Document Cloudflare Pages setup, Supabase redirect allowlist, PayOS callback ownership, rollout and rollback.
+Marketing deploy builds only `dist/marketing` and deploys to Workers Static Assets service `kidhabit-home`. App deploy keeps the separate OpenNext Worker configuration and secrets. Parameterize smoke URLs without logging credentials. Document static-service setup, Supabase redirect allowlist, PayOS callback ownership, rollout and rollback.
 
 - [ ] **Step 4: Reconcile the existing 10-phase plan**
 
@@ -367,7 +367,7 @@ Expected: all required gates PASS; pre-existing unrelated failures are documente
 
 - [ ] **Step 3: Deploy homepage first**
 
-Create or reuse Cloudflare Pages project `kidhabit-home`, deploy `dist/marketing`, record the returned production URL and run `verify:marketing-release` against it. Do not change app root yet if live marketing verification fails.
+Create or reuse Cloudflare static service `kidhabit-home`, deploy `dist/marketing`, record the returned production URL and run `verify:marketing-release` against it. Do not change app root yet if live marketing verification fails.
 
 - [ ] **Step 4: Configure provider allowlists and deploy app**
 

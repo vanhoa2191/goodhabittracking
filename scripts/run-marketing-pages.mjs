@@ -20,8 +20,9 @@ delete childEnv.INIT_CWD;
 delete childEnv.npm_config_local_prefix;
 childEnv.PWD = stagingRoot;
 
-const args = ['pages', command, stagingArtifact];
-args.push('--project-name', 'kidhabit-home');
+const args = [command, stagingArtifact];
+args.push('--name', 'kidhabit-home');
+args.push('--compatibility-date', '2026-09-28');
 args.push(...forwardedArgs);
 
 const child = spawn(executable, args, {
