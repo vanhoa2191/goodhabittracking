@@ -1,14 +1,12 @@
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
+import { setupOrUnlockParent } from './pin-helper';
 
 async function openParentDashboard(page: Page): Promise<void> {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) {
-    await pinDialog.getByRole('button', { name: digit, exact: true }).click();
-  }
+  await setupOrUnlockParent(page);
 }
 
 test('parent can explore and add a canonical framework habit', async ({ page }) => {
@@ -38,6 +36,7 @@ test('parent can add meaningful non-material and material rewards', async ({ pag
   await page.getByRole('tab', { name: 'Đổi quà' }).click();
 
   // When
+  await page.getByText('Khám phá thư viện quà tặng ý nghĩa').click();
   await expect(page.getByRole('heading', { name: 'Gợi ý quà tặng ý nghĩa' })).toBeVisible();
   await page.getByRole('button', { name: 'Quà phi vật chất' }).click();
   const experienceCard = page.getByRole('heading', { name: '30 phút riêng cùng ba hoặc mẹ' }).locator('xpath=ancestor::article[1]');
@@ -70,8 +69,7 @@ test('a legacy template keeps its catalog ID after joining the active collection
   await page.reload();
   await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
   await page.getByRole('button', { name: /^Parent/ }).click();
-  const pinDialog = page.getByRole('dialog');
-  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Design' }).click();
   await page.getByRole('tab', { name: 'Habits' }).click();
   await page.getByRole('button', { name: 'Library', exact: true }).click();
@@ -92,9 +90,7 @@ test('a custom habit with a template title does not occupy the legacy library ca
   await page.reload();
   await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
   await page.getByRole('button', { name: /^Parent/ }).click();
-  for (const digit of ['1', '2', '3', '4']) {
-    await page.getByRole('dialog').getByRole('button', { name: digit, exact: true }).click();
-  }
+  await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Design' }).click();
   await page.getByRole('tab', { name: 'Habits' }).click();
   await page.getByRole('button', { name: 'Library', exact: true }).click();
@@ -108,8 +104,11 @@ test('a custom habit with a template title does not occupy the legacy library ca
   await habitDialog.getByPlaceholder('For example: Wash hands before eating…').fill(templateTitle ?? '');
   await habitDialog.getByRole('button', { name: 'Save', exact: true }).click();
   await expect(habitDialog).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: templateTitle ?? '', exact: true })).toBeVisible();
 
-  await page.getByRole('button', { name: 'Library', exact: true }).click();
+  const libraryButton = page.getByRole('button', { name: 'Library', exact: true });
+  await libraryButton.click();
+  await expect(libraryButton).toHaveAttribute('aria-pressed', 'true');
   await expect(card.getByRole('button', { name: 'Add to child' })).toBeEnabled();
   await page.addStyleTag({ content: 'nextjs-portal { display: none !important; }' });
   for (const width of [375, 768, 1280]) {
@@ -146,9 +145,7 @@ test('a demo assignment remains available after reloading the same tab', async (
   await page.reload();
   await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
   await page.getByRole('button', { name: /^Parent/ }).click();
-  for (const digit of ['1', '2', '3', '4']) {
-    await page.getByRole('dialog').getByRole('button', { name: digit, exact: true }).click();
-  }
+  await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Design' }).click();
   await page.getByRole('button', { name: 'Library', exact: true }).click();
   await page.locator('[data-template-id="WIT-NUT-01"]').getByRole('button', { name: 'Add to child' }).click();
@@ -156,9 +153,7 @@ test('a demo assignment remains available after reloading the same tab', async (
   // When
   await page.reload();
   await page.getByRole('button', { name: /^Parent/ }).click();
-  for (const digit of ['1', '2', '3', '4']) {
-    await page.getByRole('dialog').getByRole('button', { name: digit, exact: true }).click();
-  }
+  await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Design' }).click();
 
   // Then

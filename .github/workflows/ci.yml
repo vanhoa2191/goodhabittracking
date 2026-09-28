@@ -52,6 +52,7 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      OPERATIONS_CRON_SECRET: ${{ secrets.LIFECYCLE_CRON_SECRET }}
     steps:
       - id: configuration
         env:
@@ -79,3 +80,17 @@ jobs:
           NEXT_PUBLIC_APP_URL: https://goodhabittracking.vanhoa2191.workers.dev
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      - if: steps.configuration.outputs.ready == 'true'
+        name: Verify production health after deploy
+        run: |
+          curl --fail --silent --show-error --retry 5 --retry-all-errors \
+            --retry-delay 5 --max-time 15 \
+            https://goodhabittracking.vanhoa2191.workers.dev/api/health | \
+            jq -e '(.status == "ready") and ((.checks // {}) | to_entries | all(.value == true))' >/dev/null
+          if [ -n "$OPERATIONS_CRON_SECRET" ]; then
+            curl --fail --silent --show-error --retry 5 --retry-all-errors \
+              --retry-delay 5 --max-time 15 \
+              --header "Authorization: Bearer $OPERATIONS_CRON_SECRET" \
+              https://goodhabittracking.vanhoa2191.workers.dev/api/internal/operations/health | \
+              jq -e '.status == "ready"' >/dev/null
+          fi

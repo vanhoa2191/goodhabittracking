@@ -240,7 +240,7 @@ export const ja = {
   physical: '体力・健康',
   pickAvatarTitle: 'マスコットをえらぶ',
   pickColorTitle: 'ラッキーカラーをえらぶ',
-  pinPlaceholder: '4桁のPIN（初期値: 1234）',
+  pinPlaceholder: '4桁のPINを入力',
   planActivated: '有効化済み',
   points: 'ポイント',
   pointsCount: '獲得スター',

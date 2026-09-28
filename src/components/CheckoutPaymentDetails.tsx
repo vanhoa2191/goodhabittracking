@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Check, Clock, Copy, ExternalLink } from 'lucide-react';
 import type { PaymentResult } from '@/lib/payos';
 import { useTranslation } from '@/lib/i18n/context';
+import { formatCurrency } from '@/lib/i18n/formatters';
 
 interface CheckoutPaymentDetailsProps {
   readonly payment: PaymentResult;
@@ -95,7 +96,7 @@ export function CheckoutPaymentDetails({
             <div>
               <div className="text-xs uppercase font-bold text-indigo-600 dark:text-indigo-400">{t.exactAmountLabel}</div>
               <div className="font-mono font-black text-base text-indigo-700 dark:text-indigo-300">
-                {payment.amount.toLocaleString(language === 'vi' ? 'vi-VN' : 'en-US')} VNĐ
+                {formatCurrency(payment.amount, language)}
               </div>
             </div>
             <button

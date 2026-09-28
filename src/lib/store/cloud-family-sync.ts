@@ -26,6 +26,7 @@ import {
 
 interface CloudFamilyRows {
   readonly familyId: string;
+  readonly familyRole: FamilyRole;
   readonly profiles: readonly unknown[];
   readonly activities: readonly unknown[];
   readonly logs: readonly unknown[];
@@ -41,8 +42,11 @@ interface CloudFamilyRows {
 
 export type CloudFamilyReader = (userId: string) => Promise<CloudFamilyRows>;
 
+export type FamilyRole = 'owner' | 'parent' | 'guardian' | 'caregiver';
+
 export interface CloudFamilySnapshot {
   readonly familyId: string;
+  readonly familyRole: FamilyRole;
   readonly profiles: ChildProfile[];
   readonly activities: HabitActivity[];
   readonly logs: ActivityLog[];
@@ -58,6 +62,7 @@ export interface CloudFamilySnapshot {
 }
 
 const familyIdSchema = z.string().uuid();
+const familyRoleSchema = z.enum(['owner', 'parent', 'guardian', 'caregiver']);
 
 const groupRowSchema = z.object({
   id: z.string().uuid(),
@@ -101,6 +106,7 @@ function parseCloudFamilyRows(rows: CloudFamilyRows): CloudFamilySnapshot {
 
   return {
     familyId,
+    familyRole: familyRoleSchema.parse(rows.familyRole),
     profiles: rows.profiles.map(mapChildProfileRow),
     activities: rows.activities.map(mapHabitActivityRow),
     logs: rows.logs.map(mapActivityLogRow),
@@ -141,7 +147,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
 
   const membershipResult = await supabase
     .from('family_memberships')
-    .select('family_id')
+    .select('family_id, role')
     .eq('user_id', userId)
     .order('created_at', { ascending: true })
     .limit(1)
@@ -225,6 +231,7 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
 
   return {
     familyId,
+    familyRole: familyRoleSchema.parse(membershipResult.data.role),
     profiles: profilesResult.data ?? [],
     activities: activitiesResult.data ?? [],
     logs: logsResult.data ?? [],

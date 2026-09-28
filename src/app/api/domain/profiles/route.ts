@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { profileMutationSchema } from '@/lib/domain/profile-mutations';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
+import { recordOperationalSignal } from '@/lib/observability/operational-signal';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { z } from 'zod';
 
@@ -97,6 +98,12 @@ export async function POST(request: NextRequest) {
       route: request.nextUrl.pathname,
       status: 503,
     });
+    await recordOperationalSignal({
+      signalType: 'profile_mutation_failure',
+      reasonCode: 'profile_service_unavailable',
+      correlationId,
+      status: 503,
+    });
     return failure(
       'Profile service is temporarily unavailable.',
       'profile_service_unavailable',
@@ -114,6 +121,12 @@ export async function POST(request: NextRequest) {
       reasonCode: classified.code,
       correlationId,
       route: request.nextUrl.pathname,
+      status: classified.status,
+    });
+    await recordOperationalSignal({
+      signalType: 'profile_mutation_failure',
+      reasonCode: classified.code,
+      correlationId,
       status: classified.status,
     });
     return failure(

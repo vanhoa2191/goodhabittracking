@@ -240,7 +240,7 @@ export const en = {
   physical: 'Physical',
   pickAvatarTitle: 'Choose Your Mascot',
   pickColorTitle: 'Choose Your Lucky Color',
-  pinPlaceholder: '4-digit PIN (default: 1234)',
+  pinPlaceholder: 'Enter your 4-digit PIN',
   planActivated: 'Activated',
   points: 'Points',
   pointsCount: 'stars earned',

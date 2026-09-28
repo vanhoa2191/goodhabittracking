@@ -57,7 +57,7 @@ export function RewardTemplateLibrary({ onMutationError }: RewardTemplateLibrary
 
       <div className="flex flex-wrap gap-2" aria-label="Loại quà tặng">
         {FILTERS.map((item) => (
-          <button key={item.id} type="button" onClick={() => setFilter(item.id)} aria-pressed={filter === item.id} className={`rounded-full border px-3 py-2 text-sm font-bold transition-colors ${filter === item.id ? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300' : 'border-slate-200 text-slate-600 hover:border-amber-300 dark:border-zinc-700 dark:text-slate-300'}`}>
+          <button key={item.id} type="button" onClick={() => setFilter(item.id)} aria-pressed={filter === item.id} className={`min-h-11 rounded-full border px-3 py-2 text-sm font-bold transition-colors ${filter === item.id ? 'border-amber-500 bg-amber-50 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300' : 'border-slate-200 text-slate-600 hover:border-amber-300 dark:border-zinc-700 dark:text-slate-300'}`}>
             {item.label}
           </button>
         ))}
@@ -78,7 +78,7 @@ export function RewardTemplateLibrary({ onMutationError }: RewardTemplateLibrary
                   <p className="text-sm font-black text-amber-700 dark:text-amber-300">Gợi ý {template.costPoints} sao</p>
                 </div>
               </div>
-              <button type="button" disabled={isAdded || pendingId === template.id} onClick={() => void addReward(template.id)} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-amber-500 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-amber-600 disabled:cursor-not-allowed disabled:bg-emerald-100 disabled:text-emerald-800 dark:disabled:bg-emerald-950/60 dark:disabled:text-emerald-300">
+              <button type="button" disabled={isAdded || pendingId === template.id} onClick={() => void addReward(template.id)} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-amber-700 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-amber-800 disabled:cursor-not-allowed disabled:bg-emerald-100 disabled:text-emerald-800 dark:disabled:bg-emerald-950/60 dark:disabled:text-emerald-300">
                 {isAdded ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
                 {isAdded ? 'Đã có trong kho quà' : pendingId === template.id ? 'Đang thêm…' : 'Thêm vào kho quà'}
               </button>

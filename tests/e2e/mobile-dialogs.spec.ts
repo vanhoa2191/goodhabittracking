@@ -40,7 +40,7 @@ test('habit timer traps focus inside a mobile body portal', async ({ page }) => 
   // Given a demo child dashboard scrolled near the end of the document.
   await page.goto('/');
   await page.waitForLoadState('networkidle');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await expect(page.getByRole('heading', { name: 'Nguyễn Minh An' })).toBeVisible();
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   const opener = page.getByRole('button', { name: /\d+m Bắt đầu/ }).first();

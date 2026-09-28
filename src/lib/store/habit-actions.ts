@@ -127,7 +127,8 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
           if (commandStatus === 'undone' || commandStatus === 'pending_approval' || commandStatus === 'completed') {
             trackProductEvent({ event: 'task_ticked', action: commandStatus, mode: 'cloud' }, dependencies.analyticsSink);
           }
-          sounds.playTaskComplete();
+          if (commandStatus === 'undone') sounds.playClick();
+          else sounds.playTaskComplete();
           return true;
         } catch (error: unknown) {
           dependencies.cloud.setCloudSyncActive(false);

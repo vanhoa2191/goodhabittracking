@@ -61,11 +61,37 @@ test('admin can update customer care data, subscription and a gift coupon', asyn
     });
   });
 
+  await page.route('**/api/admin/billing-cases', async (route) => {
+    if (route.request().method() === 'POST' || route.request().method() === 'PATCH') {
+      requests.push({ path: `billing-${route.request().method().toLowerCase()}`, body: route.request().postDataJSON() });
+      await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' });
+      return;
+    }
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        cases: [{
+          id: '44444444-4444-4444-8444-444444444444',
+          family_id: '22222222-2222-4222-8222-222222222222',
+          user_id: '11111111-1111-4111-8111-111111111111',
+          order_code: 123456,
+          case_type: 'refund',
+          reason_code: 'duplicate_payment',
+          status: 'reviewing',
+          resolution_code: 'manual_refund_required',
+          created_at: '2026-09-28T00:00:00.000Z',
+        }],
+      }),
+    });
+  });
+
   await page.goto('/admin');
   await expect(page.getByRole('heading', { name: 'Quản trị khách hàng' })).toBeVisible();
   await expect(page.getByText('customer@example.com')).toBeVisible();
+  await page.getByLabel('Lý do thao tác quản trị').fill('Cập nhật theo yêu cầu chăm sóc khách hàng');
 
-  await page.getByLabel('Gói').selectOption('yearly');
+  await page.getByLabel('Gói đăng ký').selectOption('yearly');
   await page.getByLabel('Ngày hết hạn', { exact: true }).fill('2027-12-31');
   await page.getByRole('button', { name: 'Lưu gói đăng ký' }).click();
   await expect.poll(() => requests.some((request) => request.path === 'subscription')).toBe(true);
@@ -74,17 +100,34 @@ test('admin can update customer care data, subscription and a gift coupon', asyn
     plan: 'yearly',
     status: 'active',
     endsAt: '2027-12-31T23:59:59.000Z',
+    reason: 'Cập nhật theo yêu cầu chăm sóc khách hàng',
   });
 
+  await page.getByLabel('Lý do thao tác quản trị').fill('Cập nhật thông tin liên hệ khách hàng');
   await page.getByLabel('Số điện thoại').fill('0911222333');
   await page.getByLabel(/Nhãn chăm sóc/).fill('ưu tiên, giới thiệu');
   await page.getByRole('button', { name: 'Lưu hồ sơ khách hàng' }).click();
   await expect.poll(() => requests.some((request) => request.path === 'customer')).toBe(true);
 
+  await page.getByLabel('Lý do thao tác quản trị').fill('Tặng ưu đãi theo yêu cầu chăm sóc khách hàng');
   await page.getByPlaceholder('VD: TANG30NGAY').fill('TANG45');
   await page.getByLabel('Số ngày tặng').fill('45');
   await page.getByRole('button', { name: 'Tạo coupon' }).click();
   await expect.poll(() => requests.some((request) => request.path === 'coupon')).toBe(true);
+
+  await page.getByLabel('Lý do thao tác quản trị').fill('Ghi nhận yêu cầu hỗ trợ thanh toán');
+  await page.getByLabel('Khách hàng cần hỗ trợ', { exact: true }).selectOption('11111111-1111-4111-8111-111111111111');
+  await page.getByLabel('Loại yêu cầu').selectOption('cancellation');
+  await page.getByLabel('Lý do yêu cầu').selectOption('changed_mind');
+  await page.getByLabel('Mã đơn hàng').fill('123456');
+  await page.getByRole('button', { name: 'Tạo hồ sơ hỗ trợ' }).click();
+  await expect.poll(() => requests.some((request) => request.path === 'billing-post')).toBe(true);
+
+  await page.getByLabel('Lý do thao tác quản trị').fill('Hoàn tất xử lý yêu cầu của khách hàng');
+  await page.getByLabel('Trạng thái').last().selectOption('completed');
+  await page.getByLabel('Kết quả xử lý').selectOption('manual_refund_confirmed');
+  await page.getByRole('button', { name: 'Lưu xử lý' }).click();
+  await expect.poll(() => requests.some((request) => request.path === 'billing-patch')).toBe(true);
 
   await page.screenshot({ path: testInfo.outputPath('admin-customer-management.png'), fullPage: true });
 });

@@ -33,6 +33,12 @@ Authenticated parents can explicitly enable or revoke anonymous measurement in f
 
 None of these dashboard figures is available yet. Do not infer them from event counts or show them as real performance data. The store accepts an event sink only when its explicit `analyticsOptIn` gate is true, and the application now derives that gate from the authenticated parent's durable choice. Before configuring PostHog or another vendor, document retention/deletion and regional processing, add a stable pseudonymous identifier, and validate the destination in non-production. Production collection stays disabled until those gates pass.
 
+## Public conversion funnel contract
+
+[`src/lib/public-funnel.ts`](../src/lib/public-funnel.ts) defines the intended sequence `landing_view -> demo_started -> demo_value_reached -> signup_started -> profile_created -> trial_started -> checkout_started -> paid_activated`. Payloads are strict and content-free: locale, coarse market, a bounded value-event label, provider, or plan may be present; names, email, child/family/user IDs, free text, timestamps, pairing codes, IP-derived location, and payment details are rejected.
+
+The contract is not a collection destination. `recordConsentedPublicFunnelEvent` emits only when explicit consent is true and a sink was deliberately supplied. No sink is configured in production, so the funnel dashboard remains unavailable and must not be presented as measured. Before activation, the owner must approve the vendor/destination, retention and deletion period, processing region, consent copy, and staging validation. Landing visitors without consent are not tracked by this contract.
+
 ## Safe versus Evolve pre-registration
 
 The `safe-vs-evolve-v1` analysis contract is pre-registered in [`src/lib/experiment-report.ts`](../src/lib/experiment-report.ts). Safe is the control experience; Evolve is the feature-flagged engagement experience. The North Star is completed tasks per child-facing session. The mandatory stop guardrail is the Evolve arm's average child-session duration: if it exceeds 480 seconds, pause Evolve and reduce engagement prompts before any restart.

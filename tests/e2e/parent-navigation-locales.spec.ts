@@ -1,14 +1,14 @@
 import { expect, test } from '@playwright/test';
+import { setupOrUnlockParent } from './pin-helper';
 
 const locales = ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'] as const;
 
 test('the parent areas stay usable by keyboard at 375px in every supported language', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await setupOrUnlockParent(page);
 
   for (const locale of locales) {
     const menuButton = page.getByTestId('more-menu');

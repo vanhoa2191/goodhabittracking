@@ -85,8 +85,8 @@ export function ParentApprovalsTab() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 self-end sm:self-auto">
-                    <button onClick={() => rejectLog(log.id)} className="py-1.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition-colors">{t.reject}</button>
-                    <button onClick={() => approveLog(log.id)} className="py-1.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"><Check className="w-3.5 h-3.5" />{t.approve}</button>
+                    <button onClick={() => rejectLog(log.id)} className="min-h-11 rounded-xl bg-rose-50 px-3 py-1.5 text-xs font-bold text-rose-600 transition-colors hover:bg-rose-100">{t.reject}</button>
+                    <button onClick={() => approveLog(log.id)} className="flex min-h-11 items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-1.5 text-xs font-bold text-white shadow-xs transition-all hover:bg-emerald-700"><Check className="w-3.5 h-3.5" />{t.approve}</button>
                   </div>
                 </div>
               );
@@ -120,8 +120,8 @@ export function ParentApprovalsTab() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 self-end sm:self-auto">
-                    <button onClick={() => rejectRedemption(redemption.id)} className="py-1.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition-colors">{t.reject}</button>
-                    <button onClick={() => deliverRedemption(redemption.id)} className="py-1.5 px-4 rounded-xl bg-pink-600 hover:bg-pink-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5"><Gift className="w-3.5 h-3.5" />{t.delivered}</button>
+                    <button onClick={() => rejectRedemption(redemption.id)} className="min-h-11 rounded-xl bg-rose-50 px-3 py-1.5 text-xs font-bold text-rose-600 transition-colors hover:bg-rose-100">{t.reject}</button>
+                    <button onClick={() => deliverRedemption(redemption.id)} className="flex min-h-11 items-center gap-1.5 rounded-xl bg-pink-600 px-4 py-1.5 text-xs font-bold text-white shadow-xs transition-all hover:bg-pink-700"><Gift className="w-3.5 h-3.5" />{t.delivered}</button>
                   </div>
                 </div>
               );

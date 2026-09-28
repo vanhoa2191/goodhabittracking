@@ -24,6 +24,7 @@ import { getLandingUiCopy } from '@/lib/i18n/landing-ui-copy';
 import { PRICING_PLANS } from '@/lib/payos';
 import { getLandingSalesCopy } from '@/lib/i18n/landing-sales-copy';
 import { MascotAvatar } from '@/components/MascotAvatar';
+import { getPublishableProof } from '@/lib/public-proof';
 
 interface LandingPageProps {
   onStartDemo: () => void;
@@ -758,6 +759,14 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
   const [activePillarIndex, setActivePillarIndex] = useState(0);
   const [roadmapType, setRoadmapType] = useState<'weekly' | 'monthly'>('weekly');
   const [selectedPlanId, setSelectedPlanId] = useState<string>('week-1');
+  const showExpandedLandingCatalog = false;
+  const proofCards = language === 'vi'
+    ? getPublishableProof().filter((proof) => proof.kind === 'product').map((proof) => ({ icon: proof.icon, title: proof.title, body: proof.statement }))
+    : [
+        { icon: <Clock className="h-6 w-6" aria-hidden="true" />, title: t.landingPillar1Title, body: t.landingPillar1Desc },
+        { icon: <Star className="h-6 w-6" aria-hidden="true" />, title: t.landingPillar2Title, body: t.landingPillar2Desc },
+        { icon: <Compass className="h-6 w-6" aria-hidden="true" />, title: salesCopy.safetyTitle, body: salesCopy.safetyBody },
+      ];
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-indigo-50/50 via-white to-amber-50/30 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 text-slate-800 dark:text-slate-100 transition-colors">
@@ -792,19 +801,19 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
             <button
               type="button"
               data-testid="landing-primary-action"
-              onClick={isLoggedIn ? onStartDemo : onLoginGoogle}
+              onClick={onStartDemo}
               className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-6 py-3 text-base font-extrabold text-white shadow-lg transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 sm:w-auto"
             >
-              <span>{isLoggedIn ? t.landingBackToApp : t.landingCtaGoogle}</span>
+              <span>{isLoggedIn ? t.landingBackToApp : t.landingCtaDemo}</span>
               <ArrowRight className="h-5 w-5" aria-hidden="true" />
             </button>
             {!isLoggedIn && (
               <button
                 type="button"
-                onClick={onStartDemo}
+                onClick={onLoginGoogle}
                 className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-indigo-200 bg-white px-6 py-3 text-base font-bold text-indigo-700 transition-colors hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 sm:w-auto dark:border-indigo-800 dark:bg-zinc-900 dark:text-indigo-200 dark:hover:bg-zinc-800"
               >
-                {t.landingCtaDemo}
+                {t.landingCtaGoogle}
               </button>
             )}
           </div>
@@ -944,15 +953,11 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
 
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-20">
         <div className="text-center">
-          <h2 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">{t.landingPillarsTitle}</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-sm font-medium leading-6 text-slate-700 dark:text-slate-300 sm:text-base">{t.landingPillarsSubtitle}</p>
+          <h2 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">{language === 'vi' ? 'Những điều bạn có thể kiểm tra ngay' : t.landingPillarsTitle}</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm font-medium leading-6 text-slate-700 dark:text-slate-300 sm:text-base">{language === 'vi' ? 'Không dùng lời chứng thực hoặc con số chưa có nguồn. Đây là các hành vi đang hoạt động trong sản phẩm.' : t.landingPillarsSubtitle}</p>
         </div>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {[
-            { icon: <Clock className="h-6 w-6" aria-hidden="true" />, title: t.landingPillar1Title, body: t.landingPillar1Desc },
-            { icon: <Star className="h-6 w-6" aria-hidden="true" />, title: t.landingPillar2Title, body: t.landingPillar2Desc },
-            { icon: <Compass className="h-6 w-6" aria-hidden="true" />, title: salesCopy.safetyTitle, body: salesCopy.safetyBody },
-          ].map((surface) => (
+          {proofCards.map((surface) => (
             <article key={surface.title} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-6">
               <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">{surface.icon}</span>
               <h3 className="mt-4 text-lg font-black text-slate-950 dark:text-white">{surface.title}</h3>
@@ -981,6 +986,7 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
         </div>
       </section>
 
+      {showExpandedLandingCatalog ? <>
       <section className="px-4 py-8 sm:px-6 sm:py-12 max-w-6xl mx-auto">
         <details className="group rounded-3xl border border-indigo-100 bg-white/80 p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/80 sm:p-6">
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-left [&::-webkit-details-marker]:hidden">
@@ -1436,7 +1442,32 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
         </details>
       </section>
 
-      <section className="border-t border-indigo-100 bg-white px-4 py-14 dark:border-zinc-800 dark:bg-zinc-950 sm:px-6 sm:py-20">
+      </> : (
+        <section className="border-y border-slate-200 bg-white px-4 py-12 dark:border-zinc-800 dark:bg-zinc-950 sm:px-6 sm:py-16">
+          <div className="mx-auto max-w-6xl">
+            <div className="text-center">
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-indigo-700 dark:text-indigo-300">{language === 'vi' ? 'Khám phá sản phẩm' : 'Explore the product'}</p>
+              <h2 className="mt-3 text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-4xl">{language === 'vi' ? 'Xem đúng phần bạn cần, không phải đọc một trang thật dài' : 'Go straight to the information you need'}</h2>
+            </div>
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
+              {[
+                { href: '/framework', icon: '🧭', title: language === 'vi' ? 'Khung thói quen' : 'Habit framework', body: language === 'vi' ? '16 định hướng và 7 cách trao tặng, có gợi ý theo giai đoạn tuổi.' : 'Age-aware habit and character guidance.' },
+                { href: '/roadmaps', icon: '🗺️', title: language === 'vi' ? 'Lộ trình thực hành' : 'Practice roadmaps', body: language === 'vi' ? 'Hành trình theo tuần và theo tháng để gia đình bắt đầu vừa sức.' : 'Weekly and monthly paths for a manageable start.' },
+                { href: '/pricing', icon: '✨', title: language === 'vi' ? 'Bảng giá rõ ràng' : 'Clear pricing', body: language === 'vi' ? 'Ba gói trả phí, 7 ngày trải nghiệm và không tự động gia hạn.' : 'Three paid plans, a 7-day trial and no automatic renewal.' },
+              ].map((item) => (
+                <Link key={item.href} href={item.href} className="group rounded-3xl border border-slate-200 bg-slate-50 p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-indigo-800 sm:p-6">
+                  <span aria-hidden="true" className="text-3xl">{item.icon}</span>
+                  <h3 className="mt-4 text-lg font-black text-slate-950 dark:text-white">{item.title}</h3>
+                  <p className="mt-2 text-sm font-medium leading-6 text-slate-700 dark:text-slate-300">{item.body}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-black text-indigo-700 dark:text-indigo-300">{language === 'vi' ? 'Xem chi tiết' : 'View details'} <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {showExpandedLandingCatalog ? <section className="border-t border-indigo-100 bg-white px-4 py-14 dark:border-zinc-800 dark:bg-zinc-950 sm:px-6 sm:py-20">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-2xl text-center">
             <span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-extrabold text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-300">
@@ -1482,11 +1513,30 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
               {pricingCopy.action}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
+            <div>
+              <Link href="/pricing" className="mt-3 inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-bold text-indigo-700 hover:bg-indigo-50 dark:text-indigo-300 dark:hover:bg-zinc-900">
+                {language === 'vi' ? 'Xem bảng giá đầy đủ' : 'View full pricing'}
+              </Link>
+            </div>
           </div>
         </div>
-      </section>
+      </section> : (
+        <section className="bg-indigo-950 px-4 py-12 text-white sm:px-6 sm:py-16">
+          <div className="mx-auto flex max-w-5xl flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <span className="inline-flex rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-black text-emerald-300">{pricingCopy.trial}</span>
+              <h2 className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">{pricingCopy.title}</h2>
+              <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-indigo-100">{pricingCopy.description}</p>
+            </div>
+            <div className="flex shrink-0 flex-col gap-2 sm:items-end">
+              <button type="button" onClick={openPricingModal} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-white px-5 text-sm font-black text-indigo-800 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">{pricingCopy.action}<ArrowRight aria-hidden="true" className="h-4 w-4" /></button>
+              <Link href="/pricing" className="inline-flex min-h-11 items-center justify-center rounded-xl px-3 text-sm font-bold text-indigo-100 hover:bg-white/10">{language === 'vi' ? 'So sánh đầy đủ 3 gói' : 'Compare all plans'}</Link>
+            </div>
+          </div>
+        </section>
+      )}
 
-      <section className="border-t border-slate-200 bg-slate-50 px-4 py-12 dark:border-zinc-800 dark:bg-zinc-900/60 sm:px-6 sm:py-16">
+      {showExpandedLandingCatalog ? <section className="border-t border-slate-200 bg-slate-50 px-4 py-12 dark:border-zinc-800 dark:bg-zinc-900/60 sm:px-6 sm:py-16">
         <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[0.8fr_1.2fr]">
           <div className="rounded-3xl bg-indigo-950 p-6 text-white sm:p-8">
             <CheckCircle2 className="h-8 w-8 text-emerald-400" aria-hidden="true" />
@@ -1512,21 +1562,41 @@ export function LandingPage({ onStartDemo, onLoginGoogle, isLoggedIn }: LandingP
             </div>
           </div>
         </div>
-      </section>
+      </section> : (
+        <section className="border-t border-slate-200 bg-slate-50 px-4 py-8 dark:border-zinc-800 dark:bg-zinc-900/60 sm:px-6">
+          <div className="mx-auto flex max-w-5xl flex-col gap-4 rounded-3xl bg-indigo-950 p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
+            <div>
+              <h2 className="text-xl font-black sm:text-2xl">{salesCopy.safetyTitle}</h2>
+              <p className="mt-2 max-w-2xl text-sm font-medium leading-6 text-indigo-100">{salesCopy.safetyBody}</p>
+            </div>
+            <Link href="/docs" className="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-2xl bg-white px-5 text-sm font-black text-indigo-800 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white">{salesCopy.docs}<ArrowRight aria-hidden="true" className="h-4 w-4" /></Link>
+          </div>
+        </section>
+      )}
 
       <section className="bg-gradient-to-br from-indigo-700 to-violet-700 px-4 py-14 text-center text-white sm:px-6 sm:py-20">
         <div className="mx-auto max-w-2xl">
           <h2 className="text-3xl font-black tracking-tight sm:text-4xl">{salesCopy.finalTitle}</h2>
           <p className="mx-auto mt-4 max-w-xl text-sm font-medium leading-6 text-indigo-100 sm:text-base">{salesCopy.finalBody}</p>
           <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <button type="button" onClick={isLoggedIn ? onStartDemo : onLoginGoogle} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-black text-indigo-700 shadow-lg hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto">
-              {isLoggedIn ? t.landingBackToApp : t.landingCtaGoogle}
+            <button type="button" onClick={onStartDemo} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-black text-indigo-700 shadow-lg hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto">
+              {isLoggedIn ? t.landingBackToApp : t.landingCtaDemo}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
+            {!isLoggedIn && <button type="button" onClick={onLoginGoogle} className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-white/50 px-6 py-3 text-sm font-black text-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto">{t.landingCtaGoogle}</button>}
             <Link href="/docs" className="inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-white/50 px-6 py-3 text-sm font-black text-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white sm:w-auto">{salesCopy.docs}</Link>
           </div>
         </div>
       </section>
+
+      {!isLoggedIn && (
+        <div className="sticky bottom-0 z-30 border-t border-indigo-100 bg-white/95 px-3 py-3 shadow-[0_-8px_30px_rgba(15,23,42,0.12)] backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95 sm:hidden">
+          <div className="mx-auto flex max-w-md gap-2">
+            <button type="button" onClick={onStartDemo} className="min-h-12 flex-1 rounded-2xl bg-indigo-600 px-4 text-sm font-black text-white">{language === 'vi' ? 'Dùng thử ngay' : t.landingCtaDemo}</button>
+            <button type="button" onClick={onLoginGoogle} aria-label={t.landingCtaGoogle} className="min-h-12 rounded-2xl border border-indigo-200 bg-white px-4 text-sm font-black text-indigo-700 dark:border-indigo-800 dark:bg-zinc-900 dark:text-indigo-200">Google</button>
+          </div>
+        </div>
+      )}
 
     </div>
   );

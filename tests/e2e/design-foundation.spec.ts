@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
+import { setupOrUnlockParent } from './pin-helper';
 
 test('kid and parent modes use distinct readable shells', async ({ page }) => {
   // Given: a family is exploring the child experience.
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
 
   // Then: the child shell is warm, uses the emotional display face, and has no sales CTA.
   const appSurface = page.getByTestId('app-surface');
@@ -25,10 +26,7 @@ test('kid and parent modes use distinct readable shells', async ({ page }) => {
 
   // When: the parent unlocks the management area.
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) {
-    await pinDialog.getByRole('button', { name: digit, exact: true }).click();
-  }
+  await setupOrUnlockParent(page);
 
   // Then: the parent shell is explicit and the subscription control is available there.
   await expect(appSurface).toHaveAttribute('data-app-mode', 'parent');

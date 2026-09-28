@@ -1,0 +1,64 @@
+name: Production observability
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: production-observability
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CRON_SECRET: ${{ secrets.LIFECYCLE_CRON_SECRET }}
+      REPOSITORY: ${{ github.repository }}
+      PRODUCTION_ORIGIN: https://goodhabittracking.vanhoa2191.workers.dev
+      ALERT_TITLE: "KidHabit production alert"
+    steps:
+      - name: Check production and notify on state change
+        shell: bash
+        run: |
+          set -euo pipefail
+          healthy=true
+          if [ -z "$CRON_SECRET" ]; then
+            healthy=false
+            evidence="monitoring secret is not configured"
+          elif ! curl --fail --silent --show-error --retry 2 --retry-all-errors --max-time 10 \
+            "$PRODUCTION_ORIGIN/api/health" | jq -e '(.status == "ready") and ((.checks // {}) | to_entries | all(.value == true))' >/dev/null; then
+            healthy=false
+            evidence="public health endpoint is not ready or a dependency check is false"
+          elif ! curl --fail --silent --show-error --retry 2 --retry-all-errors --max-time 10 \
+            --header "Authorization: Bearer $CRON_SECRET" \
+            "$PRODUCTION_ORIGIN/api/internal/operations/health" | jq -e '.status == "ready"' >/dev/null; then
+            healthy=false
+            evidence="sanitized operational thresholds are in alert state"
+          fi
+
+          issue_numbers="$(gh issue list --repo "$REPOSITORY" --state open --search "KidHabit production alert in:title" --limit 100 --json number,title --jq '.[] | select(.title == "KidHabit production alert") | .number')"
+          issue_number="$(printf '%s\n' "$issue_numbers" | head -n 1)"
+          observed_at="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          if [ "$healthy" != true ]; then
+            if [ -z "$issue_number" ]; then
+              gh issue create --repo "$REPOSITORY" --title "$ALERT_TITLE" \
+                --body "Production monitoring entered alert state at $observed_at. Evidence: $evidence. No secret, request payload, or personal data is included. Follow docs/runbooks/production-observability.md."
+            else
+              gh issue comment "$issue_number" --repo "$REPOSITORY" \
+                --body "Alert still active at $observed_at. Evidence: $evidence."
+            fi
+            exit 1
+          fi
+
+          for recovered_issue in $issue_numbers; do
+            gh issue comment "$recovered_issue" --repo "$REPOSITORY" \
+              --body "Recovered at $observed_at. Public health and sanitized operational checks are ready."
+            gh issue close "$recovered_issue" --repo "$REPOSITORY" --reason completed
+          done

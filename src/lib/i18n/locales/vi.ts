@@ -240,7 +240,7 @@ export const vi = {
   physical: 'Thể chất',
   pickAvatarTitle: 'Chọn Linh Vật Của Bé',
   pickColorTitle: 'Chọn Màu May Mắn',
-  pinPlaceholder: 'Mã PIN 4 số (mặc định: 1234)',
+  pinPlaceholder: 'Nhập mã PIN gồm 4 số',
   planActivated: 'Đã kích hoạt',
   points: 'Điểm',
   pointsCount: 'sao tích lũy',

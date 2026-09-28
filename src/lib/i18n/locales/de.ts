@@ -240,7 +240,7 @@ export const de = {
   physical: 'Körperliche Fitness',
   pickAvatarTitle: 'Wähle dein Lieblingsmaskottchen',
   pickColorTitle: 'Wähle deine Glücksfarbe',
-  pinPlaceholder: '4-stellige PIN (Standard: 1234)',
+  pinPlaceholder: '4-stellige PIN eingeben',
   planActivated: 'Aktiviert',
   points: 'Punkte',
   pointsCount: 'gesammelte Sterne',

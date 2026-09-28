@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { getVisiblePricingOpener } from './open-pricing';
+import { setupOrUnlockParent } from './pin-helper';
 
 test('landing page renders without an application error', async ({ page }) => {
   await page.goto('/');
@@ -11,7 +12,7 @@ test('landing page renders without an application error', async ({ page }) => {
 test('demo entry opens the child dashboard without reloading', async ({ page }) => {
   await page.goto('/');
 
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
 
   await expect(page.getByRole('heading', { name: 'Nguyễn Minh An' })).toBeVisible();
   await expect(page.getByText('Tiến độ hôm nay')).toBeVisible();
@@ -20,7 +21,7 @@ test('demo entry opens the child dashboard without reloading', async ({ page }) 
 
 test('reward goal appears only after the child chooses it', async ({ page }, testInfo) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: 'Đổi quà', exact: true }).click();
   await expect(page.getByText('Mục tiêu quà mơ ước')).toHaveCount(0);
 
@@ -38,7 +39,7 @@ test('habit fire follows verified completion and undo on mobile', async ({ page 
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
   await page.waitForLoadState('networkidle');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await expect(page.getByRole('heading', { name: 'Nguyễn Minh An' })).toBeVisible();
   const fire = page.getByTestId('habit-fire');
   const taskCard = page
@@ -46,7 +47,7 @@ test('habit fire follows verified completion and undo on mobile', async ({ page 
     .locator('xpath=ancestor::*[@data-task-card][1]');
 
   // When: the child completes today's task.
-  await taskCard.getByRole('button', { name: 'Nhiệm vụ' }).click();
+  await taskCard.getByRole('button', { name: /Đánh dấu nhiệm vụ/ }).click();
 
   // Then: the verified day is visible without horizontal overflow.
   await expect(fire).toHaveAttribute('data-state', 'active');
@@ -61,7 +62,7 @@ test('habit fire follows verified completion and undo on mobile', async ({ page 
   }
 
   // When: the child undoes that completion.
-  await taskCard.getByRole('button', { name: 'Đã xong' }).click();
+  await taskCard.getByRole('button', { name: /Bỏ đánh dấu nhiệm vụ/ }).click();
 
   // Then: the fire no longer claims a completed day.
   await expect(fire).toHaveAttribute('data-state', 'cold');
@@ -88,12 +89,12 @@ test('demo child can inspect and independently complete a full task card', async
   });
 
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
 
   const taskCard = page
     .getByRole('heading', { name: 'Nhan thí: Tươi cười chào buổi sáng' })
     .locator('xpath=ancestor::*[@data-task-card][1]');
-  const taskToggle = taskCard.getByRole('button', { name: 'Nhiệm vụ' });
+  const taskToggle = taskCard.getByRole('button', { name: /Đánh dấu nhiệm vụ/ });
 
   await expect(taskCard.getByText('Nở nụ cười rạng rỡ và khoanh tay chào ông bà, bố mẹ khi ngủ dậy'))
     .toBeVisible();
@@ -110,7 +111,7 @@ test('demo child can inspect and independently complete a full task card', async
   await expect(taskCard).toHaveAttribute('data-complete', 'true');
   await expect(page.getByText('1/6 việc hoàn thành (17%)')).toBeVisible();
 
-  await taskCard.getByRole('button', { name: 'Đã xong' }).click();
+  await taskCard.getByRole('button', { name: /Bỏ đánh dấu nhiệm vụ/ }).click();
   await expect(page.getByText('0/6 việc hoàn thành (0%)')).toBeVisible();
   expect(domainMutationRequests).toEqual([]);
   expect(invalidButtonErrors, 'task cards must not nest interactive buttons').toEqual([]);
@@ -120,22 +121,22 @@ test('reduced motion uses static task completion feedback', async ({ page }) => 
   // Given
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   const taskCard = page
     .getByRole('heading', { name: 'Nhan thí: Tươi cười chào buổi sáng' })
     .locator('xpath=ancestor::*[@data-task-card][1]');
 
   // When
-  await taskCard.getByRole('button', { name: 'Nhiệm vụ' }).click();
+  await taskCard.getByRole('button', { name: /Đánh dấu nhiệm vụ/ }).click();
 
   // Then
-  await expect(taskCard.getByRole('status')).toContainText('Hoàn thành');
+  await expect(taskCard.getByRole('status')).toContainText('Đã cập nhật nhiệm vụ');
   await expect(taskCard.getByTestId('point-burst')).toHaveCount(0);
 });
 
 test('demo reward request can be delivered by a parent in one visible action', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: 'Đổi quà', exact: true }).click();
 
   const rewardCard = page
@@ -145,10 +146,7 @@ test('demo reward request can be delivered by a parent in one visible action', a
   await expect(page.getByText('Chờ duyệt').first()).toBeVisible();
 
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) {
-    await pinDialog.getByRole('button', { name: digit, exact: true }).click();
-  }
+  await setupOrUnlockParent(page);
 
   const pendingReward = page.getByText('Xem phim hoạt hình 30 phút').first();
   await expect(pendingReward).toBeVisible();
@@ -259,7 +257,7 @@ test('the cloud-only journey has no local setup or storage-mode controls', async
   await page.goto('/');
   await expect(page.getByRole('button', { name: 'Thiết lập trên thiết bị này' })).toHaveCount(0);
   await expect(page.getByText(/lưu trữ cục bộ|chế độ lưu trữ/i)).toHaveCount(0);
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await expect(page.getByRole('heading', { name: 'Nguyễn Minh An' })).toBeVisible();
   await expect.poll(() => page.evaluate(() => sessionStorage.getItem('kidhabit_demo_session'))).toBe('true');
   await expect.poll(() => page.evaluate(() => localStorage.getItem('kidhabit_storage_mode'))).not.toBe('local');
@@ -270,13 +268,10 @@ test('the cloud-only journey has no local setup or storage-mode controls', async
 
 test('demo parent can unlock and navigate every management section', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
 
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) {
-    await pinDialog.getByRole('button', { name: digit, exact: true }).click();
-  }
+  await setupOrUnlockParent(page);
 
   await expect(page.getByRole('heading', { name: 'Phụ huynh' })).toBeVisible();
 
@@ -313,10 +308,9 @@ test('demo parent can unlock and navigate every management section', async ({ pa
 test('parent navigation has three areas and opens pairing from Family', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await setupOrUnlockParent(page);
 
   const areas = page.getByRole('tablist', { name: 'Khu vực phụ huynh' });
   await expect(areas.getByRole('tab')).toHaveCount(3);
@@ -340,10 +334,7 @@ test('an English journey creates localized habits', async ({ page }) => {
   await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
   await page.getByRole('button', { name: /^Parent/ }).click();
 
-  const pinDialog = page.getByRole('dialog');
-  for (const digit of ['1', '2', '3', '4']) {
-    await pinDialog.getByRole('button', { name: digit, exact: true }).click();
-  }
+  await setupOrUnlockParent(page);
 
   await page.getByRole('tab', { name: 'Design' }).click();
   await page.getByRole('tab', { name: 'Week & Month Journeys' }).click();
@@ -362,7 +353,7 @@ test('an English journey creates localized habits', async ({ page }) => {
 
 test('applying a journey to all children adds only their missing assignments', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).first().click();
+  await page.getByTestId('landing-primary-action').first().click();
   const childIds = await page.evaluate(() => {
     const snapshot = JSON.parse(sessionStorage.getItem('kidhabit_demo_state') || '{}');
     return (snapshot.profiles || []).map((profile: { id: string }) => profile.id) as string[];
@@ -370,8 +361,7 @@ test('applying a journey to all children adds only their missing assignments', a
   expect(childIds).toHaveLength(3);
 
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Thiết kế' }).click();
   await page.getByRole('tab', { name: 'Lộ trình Tuần / Tháng' }).click();
   await page.getByRole('button', { name: /^(Áp dụng lộ trình cho bé|Thêm \d+ việc còn lại)$/ }).first().click();
@@ -396,10 +386,9 @@ test('applying a journey to all children adds only their missing assignments', a
 
 test('parent journey map shows weekly and monthly stages without mobile overflow', async ({ page }, testInfo) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).first().click();
+  await page.getByTestId('landing-primary-action').first().click();
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Thiết kế' }).click();
   await page.getByRole('tab', { name: 'Lộ trình Tuần / Tháng' }).click();
 
@@ -437,10 +426,7 @@ test('English demo keeps child and parent secondary screens in English', async (
   await expect(page.getByRole('heading', { name: 'Watch cartoons for 30 minutes' }).first()).toBeVisible();
 
   await page.getByRole('button', { name: /^Parent/ }).click();
-  const pinDialog = page.getByRole('dialog');
-  for (const digit of ['1', '2', '3', '4']) {
-    await pinDialog.getByRole('button', { name: digit, exact: true }).click();
-  }
+  await setupOrUnlockParent(page);
 
   await page.getByRole('tab', { name: 'Design' }).click();
   await page.getByRole('tab', { name: 'Rewards' }).click();

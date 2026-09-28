@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { setupOrUnlockParent } from './pin-helper';
 import { loadEnvConfig } from '@next/env';
 
 loadEnvConfig(process.cwd());
@@ -19,16 +20,16 @@ test('a signed-in parent opens the parent dashboard on return', async ({ page, b
     token_type: 'bearer', expires_in: 3600, expires_at: Math.floor(Date.now() / 1000) + 3600,
     user,
   };
-  await page.context().addCookies([{
-    name: `sb-${projectRef}-auth-token`,
+  await page.context().addCookies(Array.from(new Set([projectRef, 'e2e-test']), (ref) => ({
+    name: `sb-${ref}-auth-token`,
     value: `base64-${Buffer.from(JSON.stringify(session)).toString('base64url')}`,
     url: new URL(baseURL ?? 'http://127.0.0.1:3000').origin,
-  }]);
+  })));
   await page.route('**/auth/v1/user', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(user) }));
   await page.route('**/rest/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
     const payload = path.endsWith('/family_memberships')
-      ? { family_id: '33333333-3333-4333-8333-333333333333' }
+      ? { family_id: '33333333-3333-4333-8333-333333333333', role: 'owner' }
       : path.endsWith('/user_subscriptions') || path.endsWith('/family_engagement_settings')
         ? null
         : [];
@@ -97,13 +98,11 @@ test('a first-time visitor sees the landing page before choosing a journey', asy
   await page.goto('/');
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'landing');
   await expect(page.getByRole('button', { name: 'Trang chủ' })).toHaveCount(0);
-  await expect(page.getByTestId('landing-primary-action')).toHaveCount(1);
-  await expect(page.getByRole('button', { name: /Khám phá thử ngay/ })).toHaveCount(1);
-  await expect(page.locator('main details')).toHaveCount(6);
+  await expect(page.getByTestId('landing-primary-action')).toHaveText(/Khám phá thử ngay/);
+  await expect(page.locator('main details')).toHaveCount(1);
   await expect(page.locator('main details').first()).not.toHaveAttribute('open', '');
-  await expect(page.locator('main details').nth(1)).not.toHaveAttribute('open', '');
   const desktopHeight = await page.evaluate(() => document.documentElement.scrollHeight);
-  expect(desktopHeight).toBeLessThanOrEqual(5600);
+  expect(desktopHeight).toBeLessThanOrEqual(4700);
   await page.setViewportSize({ width: 768, height: 1024 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.setViewportSize({ width: 375, height: 812 });
@@ -113,9 +112,24 @@ test('a first-time visitor sees the landing page before choosing a journey', asy
   await expect(page.locator('main details').first().getByRole('button', { name: 'Bé vào bằng mã' })).toBeVisible();
 });
 
+test('mobile first visit keeps demo, Google sign-in and pricing within easy reach', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+
+  const primaryDemo = page.getByTestId('landing-primary-action');
+  await expect(primaryDemo).toBeVisible();
+  await expect(primaryDemo).toHaveText(/Khám phá thử ngay/);
+  await expect(page.getByRole('button', { name: /Google/ }).first()).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Dùng thử ngay' })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Bảng giá/ }).first()).toBeVisible();
+  const primaryBox = await primaryDemo.boundingBox();
+  expect(primaryBox?.y).toBeLessThan(812);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
 test('an active family can deliberately visit Home and return to the app', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'kid');
 
   const home = page.getByRole('button', { name: 'Trang chủ' }).first();
@@ -129,10 +143,9 @@ test('an active family can deliberately visit Home and return to the app', async
 test('a parent on a narrow screen can open Home directly and return', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await setupOrUnlockParent(page);
 
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'parent');
   const home = page.getByRole('button', { name: 'Trang chủ' }).first();
@@ -146,10 +159,9 @@ test('a parent on a narrow screen can open Home directly and return', async ({ p
 
 test('returning from the landing page preserves the parent session', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await setupOrUnlockParent(page);
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'parent');
 
   await page.getByRole('button', { name: 'Trang chủ' }).first().click();

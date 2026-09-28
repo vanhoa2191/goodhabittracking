@@ -9,6 +9,7 @@ import {
 } from '@/lib/pairing/crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
+import { recordOperationalSignal } from '@/lib/observability/operational-signal';
 
 export const runtime = 'nodejs';
 
@@ -39,6 +40,7 @@ export async function POST(request: NextRequest) {
   const normalizedCode = submittedCode ? normalizeDisplayCode(submittedCode) : null;
   if (submittedCode && !normalizedCode) {
     logOperationalEvent('warn', { operation: 'pairing_exchange', reasonCode: 'invalid_code', correlationId, route: request.nextUrl.pathname, status: 404 });
+    await recordOperationalSignal({ signalType: 'pairing_failure', reasonCode: 'invalid_code', correlationId, status: 404 });
     return NextResponse.json({ error: statusMessages.invalid.error, correlationId }, { status: 404 });
   }
   const credentialValue = normalizedCode ?? submittedToken;
@@ -64,13 +66,16 @@ export async function POST(request: NextRequest) {
 
   if (error) {
     logOperationalEvent('error', { operation: 'pairing_exchange', reasonCode: 'service_unavailable', correlationId, route: request.nextUrl.pathname, status: 503 });
+    await recordOperationalSignal({ signalType: 'pairing_failure', reasonCode: 'service_unavailable', correlationId, status: 503 });
     return NextResponse.json({ error: 'Dịch vụ ghép nối tạm thời chưa sẵn sàng.', correlationId }, { status: 503 });
   }
 
   const exchange = Array.isArray(data) ? data[0] : data;
   if (!exchange || exchange.exchange_status !== 'ok') {
     const failure = statusMessages[exchange?.exchange_status] || statusMessages.invalid;
-    logOperationalEvent('warn', { operation: 'pairing_exchange', reasonCode: exchange?.exchange_status || 'invalid', correlationId, route: request.nextUrl.pathname, status: failure.status });
+    const reasonCode = exchange?.exchange_status || 'invalid';
+    logOperationalEvent('warn', { operation: 'pairing_exchange', reasonCode, correlationId, route: request.nextUrl.pathname, status: failure.status });
+    await recordOperationalSignal({ signalType: 'pairing_failure', reasonCode, correlationId, status: failure.status });
     return NextResponse.json({ error: failure.error, correlationId }, { status: failure.status });
   }
 

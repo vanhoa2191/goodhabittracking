@@ -29,6 +29,16 @@ test('a failed cloud habit save keeps the form open and does not change the visi
 
 test('a failed cloud completion restores the task and removes success feedback', async ({ page, baseURL }) => {
   // Given
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'vibrate', {
+      configurable: true,
+      value: () => {
+        const target = window as typeof window & { __hapticCount?: number };
+        target.__hapticCount = (target.__hapticCount ?? 0) + 1;
+        return true;
+      },
+    });
+  });
   await installCloudFamilyFixture(page, baseURL, { activities: [defaultCloudActivity] });
   await page.route('**/api/domain/commands', (route) => route.fulfill({
     status: 503,
@@ -43,10 +53,11 @@ test('a failed cloud completion restores the task and removes success feedback',
   const wasComplete = await taskCard.getAttribute('data-complete');
 
   // When
-  await taskCard.getByRole('button', { name: /Nhiệm vụ|Đã xong/ }).click();
+  await taskCard.getByRole('button', { name: /Đánh dấu nhiệm vụ|Bỏ đánh dấu nhiệm vụ/ }).click();
 
   // Then
   await expect(taskCard).toHaveAttribute('data-complete', wasComplete ?? 'false');
   await expect(taskCard.getByRole('alert')).toContainText('thử lại');
   await expect(taskCard.getByTestId('point-burst')).toHaveCount(0);
+  expect(await page.evaluate(() => (window as typeof window & { __hapticCount?: number }).__hapticCount ?? 0)).toBe(0);
 });

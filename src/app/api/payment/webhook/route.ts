@@ -3,6 +3,7 @@ import { verifyPayOSWebhook } from '@/lib/billing/payos-server';
 import { payOSWebhookSchema } from '@/lib/billing/schemas';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
+import { recordOperationalSignal } from '@/lib/observability/operational-signal';
 
 export const runtime = 'nodejs';
 
@@ -43,12 +44,15 @@ export async function POST(request: NextRequest) {
     }
     if (result === 'order_not_found') {
       logOperationalEvent('warn', { operation: 'payment_webhook', reasonCode: 'order_not_found', correlationId, route: request.nextUrl.pathname, status: 404 });
+      await recordOperationalSignal({ signalType: 'payment_webhook_failure', reasonCode: 'order_not_found', correlationId, status: 404 });
       return NextResponse.json({ success: false, message: 'Order not found.', correlationId }, { status: 404 });
     }
     logOperationalEvent('warn', { operation: 'payment_webhook', reasonCode: 'order_mismatch', correlationId, route: request.nextUrl.pathname, status: 409 });
+    await recordOperationalSignal({ signalType: 'payment_webhook_failure', reasonCode: 'order_mismatch', correlationId, status: 409 });
     return NextResponse.json({ success: false, message: 'Payment did not match the order.', correlationId }, { status: 409 });
   } catch {
     logOperationalEvent('error', { operation: 'payment_webhook', reasonCode: 'processing_failed', correlationId, route: request.nextUrl.pathname, status: 503 });
+    await recordOperationalSignal({ signalType: 'payment_webhook_failure', reasonCode: 'processing_failed', correlationId, status: 503 });
     return NextResponse.json({ success: false, message: 'Webhook processing failed.', correlationId }, { status: 503 });
   }
 }

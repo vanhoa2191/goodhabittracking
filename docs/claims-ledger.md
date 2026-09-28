@@ -11,4 +11,6 @@
 | An toàn/bảo mật tuyệt đối | Không thể chứng minh tuyệt đối | Dùng mô tả kiểm soát cụ thể, không dùng claim tuyệt đối |
 | Testimonials/số gia đình sử dụng | Chưa có nguồn consented trong repo | Không hiển thị số liệu/testimonial không có ledger nguồn |
 
+Public product proof is registered in [`src/lib/public-proof.ts`](../src/lib/public-proof.ts). Product entries require at least one repository evidence reference. Testimonials additionally require a source reference, recorded consent and a future review date; expired or incomplete entries are excluded by the publication filter. The current registry contains product proof only and no testimonial.
+
 Mọi claim mới phải có owner, nguồn, ngày kiểm tra và phạm vi. UX copy phải phân biệt mô tả tính năng với kết quả giáo dục giả định.

@@ -29,6 +29,11 @@ const payOSResponseSchema = z.object({
     .optional(),
 });
 
+const payOSCancellationSchema = z.object({
+  code: z.string(),
+  data: z.object({ status: z.string() }).optional(),
+});
+
 export function createPayOSSignature(data: Record<string, unknown>, checksumKey?: string): string {
   const key = checksumKey ?? requireSafePayOSConfig().PAYOS_CHECKSUM_KEY;
   return signPayOSData(data, key);
@@ -121,4 +126,21 @@ export async function createPayOSPayment(input: {
     paymentLinkId: provider.paymentLinkId,
     planId: input.planId,
   };
+}
+
+export async function cancelPayOSPayment(orderCode: number, reason: string): Promise<void> {
+  const { PAYOS_CLIENT_ID: clientId, PAYOS_API_KEY: apiKey } = requireSafePayOSConfig();
+  const response = await fetch(`https://api-merchant.payos.vn/v2/payment-requests/${orderCode}/cancel`, {
+    method: 'POST',
+    headers: {
+      'x-client-id': clientId,
+      'x-api-key': apiKey,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({ cancellationReason: reason.slice(0, 200) }),
+  });
+  const parsed = payOSCancellationSchema.safeParse(await response.json().catch(() => null));
+  if (!response.ok || !parsed.success || parsed.data.code !== '00' || parsed.data.data?.status !== 'CANCELLED') {
+    throw new Error('PayOS rejected the cancellation request.');
+  }
 }

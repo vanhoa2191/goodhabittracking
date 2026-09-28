@@ -70,16 +70,16 @@ test('a parent explicitly opts into actionable reminders and can revoke them', a
     });
     localStorage.setItem('kidhabit_family_id', '77777777-7777-4777-8777-777777777777');
   });
-  await page.context().addCookies([{
-    name: `sb-${projectRef}-auth-token`,
+  await page.context().addCookies(Array.from(new Set([projectRef, 'e2e-test']), (ref) => ({
+    name: `sb-${ref}-auth-token`,
     value: `base64-${Buffer.from(JSON.stringify(session)).toString('base64url')}`,
     url: 'http://127.0.0.1:3000/',
-  }]);
+  })));
   await page.route('**/auth/v1/user', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(user) }));
   await page.route('**/rest/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
     const payload = path.endsWith('/family_memberships')
-      ? { family_id: '66666666-6666-4666-8666-666666666666' }
+      ? { family_id: '66666666-6666-4666-8666-666666666666', role: 'owner' }
       : path.endsWith('/user_subscriptions') || path.endsWith('/family_engagement_settings')
         ? null
         : [];

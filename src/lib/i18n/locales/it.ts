@@ -240,7 +240,7 @@ export const it = {
   physical: 'Attività fisica e Salute',
   pickAvatarTitle: 'Scegli la tua mascotte preferita',
   pickColorTitle: 'Scegli il tuo colore preferito',
-  pinPlaceholder: 'PIN a 4 cifre (predefinito: 1234)',
+  pinPlaceholder: 'Inserisci il PIN a 4 cifre',
   planActivated: 'Attivato',
   points: 'Punti',
   pointsCount: 'stelle accumulate',

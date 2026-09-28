@@ -15,6 +15,7 @@ import type {
 import { sounds } from '@/lib/sound';
 import { getSupabase, signInWithGoogle, signOutUser } from '@/lib/supabase';
 import { loadCloudFamilySnapshot } from './cloud-family-sync';
+import type { FamilyRole } from './cloud-family-sync';
 import { startCloudIdentitySession } from './cloud-identity-session';
 import { LOCAL_STORAGE_PREFIX } from './local-family-persistence';
 import type { ExperienceState } from '@/lib/experience-state';
@@ -25,6 +26,7 @@ type Setters = {
   readonly setCloudSyncActive: Dispatch<SetStateAction<boolean>>;
   readonly setCurrentUser: Dispatch<SetStateAction<User | null>>;
   readonly setFamilyId: Dispatch<SetStateAction<string | null>>;
+  readonly setFamilyRole: Dispatch<SetStateAction<FamilyRole | null>>;
   readonly setGroups: Dispatch<SetStateAction<GroupTeam[]>>;
   readonly setKudos: Dispatch<SetStateAction<Kudo[]>>;
   readonly setLastSyncTime: Dispatch<SetStateAction<string | null>>;
@@ -48,6 +50,34 @@ type Dependencies = {
   readonly setters: Setters;
 };
 
+type IdentityChange = {
+  readonly previousUserId: string | null;
+  readonly user: User | null;
+  readonly resetFamilyScope: () => void;
+  readonly setCurrentUser: Dispatch<SetStateAction<User | null>>;
+  readonly onIdentityStart: () => void;
+  readonly onIdentityUser: () => void;
+  readonly syncCloudFamily: (user: User | null) => Promise<boolean>;
+};
+
+export async function applyCloudIdentityChange(input: IdentityChange): Promise<string | null> {
+  const nextUserId = input.user?.id ?? null;
+  const identityChanged = input.previousUserId !== nextUserId;
+  if (identityChanged) input.resetFamilyScope();
+  input.setCurrentUser(input.user);
+  if (!input.user) return null;
+  if (identityChanged) {
+    input.onIdentityStart();
+    input.onIdentityUser();
+  }
+  await input.syncCloudFamily(input.user);
+  return input.user.id;
+}
+
+export function shouldApplyCloudSnapshot(requestedUserId: string, activeUserId: string | null): boolean {
+  return requestedUserId === activeUserId;
+}
+
 export function useCloudFamilyIdentity(dependencies: Dependencies) {
   const { currentUser, familyId, resetFamilyScope, onIdentityReady, onIdentityStart, onIdentityUser } = dependencies;
   const familyIdRef = useRef(familyId);
@@ -61,6 +91,7 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
     setCloudSyncActive,
     setCurrentUser,
     setFamilyId,
+    setFamilyRole,
     setGroups,
     setKudos,
     setLastSyncTime,
@@ -81,8 +112,10 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
     }
     try {
       const snapshot = await loadCloudFamilySnapshot(user.id);
+      if (!shouldApplyCloudSnapshot(user.id, currentUserRef.current?.id ?? null)) return false;
       if (familyIdRef.current && familyIdRef.current !== snapshot.familyId) resetFamilyScope();
       setFamilyId(snapshot.familyId);
+      setFamilyRole(snapshot.familyRole);
       localStorage.setItem(`${LOCAL_STORAGE_PREFIX}family_id`, snapshot.familyId);
       setProfiles(snapshot.profiles);
       setExperience(snapshot.experience);
@@ -110,6 +143,7 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
     setChildBadges,
     setCloudSyncActive,
     setFamilyId,
+    setFamilyRole,
     setGroups,
     setKudos,
     setLastSyncTime,
@@ -129,17 +163,17 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
 
   useEffect(() => startCloudIdentitySession({
     onUserChanged: async (user) => {
-      const identityChanged = currentUserRef.current?.id !== user?.id;
+      const previousUserId = currentUserRef.current?.id ?? null;
       currentUserRef.current = user;
-      setCurrentUser(user);
-      if (user) {
-        if (identityChanged) {
-          onIdentityStart();
-          onIdentityUser();
-        }
-        await syncCloudFamily(user);
-      }
-      else resetFamilyScope();
+      await applyCloudIdentityChange({
+        previousUserId,
+        user,
+        resetFamilyScope,
+        setCurrentUser,
+        onIdentityStart,
+        onIdentityUser,
+        syncCloudFamily,
+      });
     },
     onReady: onIdentityReady,
     onError: (error) => console.error('Supabase auth failed:', error),

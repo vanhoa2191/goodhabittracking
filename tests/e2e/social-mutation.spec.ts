@@ -60,7 +60,7 @@ test('a failed cloud group join keeps the accessible dialog open', async ({ page
 test('a demo group save closes the modal and persists after reload', async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await openLeaderboard(page);
   await page.getByRole('button', { name: 'Tạo nhóm thi đua' }).first().click();
   const dialog = page.getByRole('dialog', { name: 'Tạo nhóm thi đua' });

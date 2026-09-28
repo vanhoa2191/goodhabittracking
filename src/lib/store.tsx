@@ -45,12 +45,23 @@ import { createJournalActions } from './store/journal-actions';
 import { loadChildJournal, mergeChildJournalEntries } from './store/journal-client';
 import { requestTrialActivation } from './store/trial-activation-client';
 import {
+  changeParentPin,
+  readParentPinStatus,
+  verifyParentPin,
+} from './store/parent-pin-client';
+import type {
+  ParentPinChange,
+  ParentPinStatus,
+  ParentPinVerification,
+} from './store/parent-pin-client';
+import {
   clearDemoFamilyState,
   clearFamilyScopedStorage,
 } from './store/local-family-persistence';
 import { usePairingLifecycle } from './store/use-pairing-lifecycle';
 import { useLocalFamilyLifecycle } from './store/use-local-family-lifecycle';
 import { useCloudFamilyIdentity } from './store/use-cloud-family-identity';
+import type { FamilyRole } from './store/cloud-family-sync';
 import { buildLeaderboard } from './store/leaderboard';
 import { buildSubscriptionDetails, checkIsPro } from './store/subscription';
 import { adjustProfilePoints } from './store/local-domain-actions';
@@ -63,11 +74,12 @@ interface AppStoreContextType {
   isEntryReady: boolean;
   mode: 'kid' | 'parent';
   setMode: (mode: 'kid' | 'parent') => void;
-  parentPin: string;
+  parentPinConfigured: boolean | null;
   isParentUnlocked: boolean;
-  unlockParent: (enteredPin: string) => boolean;
+  refreshParentPinStatus: () => Promise<ParentPinStatus>;
+  unlockParent: (enteredPin: string) => Promise<ParentPinVerification>;
   lockParent: () => void;
-  updateParentPin: (newPin: string) => void;
+  updateParentPin: (input: { readonly currentPin?: string; readonly newPin: string }) => Promise<ParentPinChange>;
 
   currentUser: User | null;
   loginWithGoogle: () => Promise<void>;
@@ -178,6 +190,7 @@ interface AppStoreContextType {
 
   // Family Device Pairing Code (Per-Child)
   familyId: string | null;
+  familyRole: FamilyRole | null;
   childCodes: Record<string, string>; // childId -> code
   isFamilyConnected: boolean;
   isConnectModalOpen: boolean;
@@ -212,7 +225,8 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const [isPairingReady, setIsPairingReady] = useState(false);
   const [mode, setModeState] = useState<'kid' | 'parent'>('kid');
   const [isParentUnlocked, setIsParentUnlocked] = useState(false);
-  const [parentPin, setParentPin] = useState('1234');
+  const [parentPin, setParentPin] = useState<string | null>(null);
+  const [parentPinConfigured, setParentPinConfigured] = useState<boolean | null>(false);
 
   const [storageMode, setStorageModeState] = useState<'local' | 'cloud'>('cloud');
 
@@ -245,6 +259,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       sessionStorage.removeItem('kidhabit_demo_session');
     }
     setIsDemoSession(false);
+    setParentPinConfigured(null);
   }, []);
   const onIdentityUser = useCallback(() => {
     if (identityModeInitializedRef.current) return;
@@ -271,6 +286,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
 
   // Family Device Pairing Code (Per-Child)
   const [familyId, setFamilyId] = useState<string | null>(null);
+  const [familyRole, setFamilyRole] = useState<FamilyRole | null>(null);
   const [childCodes, setChildCodes] = useState<Record<string, string>>({});
   const [isFamilyConnected, setIsFamilyConnected] = useState(false);
   const [pairedFamilyPausedAt, setPairedFamilyPausedAt] = useState<string | null>(null);
@@ -327,7 +343,8 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     localCityBalances.current.clear();
     setModeState('kid');
     setIsParentUnlocked(false);
-    setParentPin('1234');
+    setParentPin(null);
+    setParentPinConfigured(false);
     setProfiles([]);
     setExperience(emptyExperienceState);
     setActiveChildIdState(null);
@@ -343,6 +360,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     setSubscriptionEndsAt(null);
     setParentProfile(null);
     setFamilyId(null);
+    setFamilyRole(null);
     setChildCodes({});
     setIsFamilyConnected(false);
     setPairedFamilyPausedAt(null);
@@ -377,6 +395,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       setCloudSyncActive,
       setCurrentUser,
       setFamilyId,
+      setFamilyRole,
       setGroups,
       setKudos,
       setLastSyncTime,
@@ -403,7 +422,6 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       isLoaded,
       kudos,
       logs,
-      parentPin,
       parentProfile,
       profiles,
       experience,
@@ -440,18 +458,38 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     pendingCityItems.current.clear();
     locallyBuiltCityItems.current.clear();
     localCityBalances.current.clear();
+    setParentPinConfigured(false);
     beginDemoSession();
   };
 
   // PIN security
-  const unlockParent = (enteredPin: string): boolean => {
-    if (enteredPin === parentPin) {
+  const refreshParentPinStatus = useCallback(async (): Promise<ParentPinStatus> => {
+    if (!currentUser) {
+      const status = { configured: parentPin !== null, lockedUntil: null };
+      setParentPinConfigured(status.configured);
+      return status;
+    }
+    const status = await readParentPinStatus();
+    setParentPinConfigured(status.configured);
+    return status;
+  }, [currentUser, parentPin]);
+
+  const unlockParent = async (enteredPin: string): Promise<ParentPinVerification> => {
+    const result = currentUser
+      ? await verifyParentPin(enteredPin)
+      : parentPin === null
+        ? { status: 'setup_required' as const }
+        : enteredPin === parentPin
+          ? { status: 'verified' as const }
+          : { status: 'invalid' as const };
+    if (result.status === 'verified') {
       setIsParentUnlocked(true);
       setModeState('parent');
       sounds.playClick();
-      return true;
+      setParentPinConfigured(true);
     }
-    return false;
+    if (result.status === 'setup_required') setParentPinConfigured(false);
+    return result;
   };
 
   const lockParent = () => {
@@ -462,17 +500,27 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
 
   const setMode = (targetMode: 'kid' | 'parent') => {
     if (isFamilyConnected && !currentUser) return;
-    if (targetMode === 'parent' && !currentUser && !isParentUnlocked) {
-      // Must unlock through PIN modal
-      return;
-    }
+    if (targetMode === 'parent' && !isParentUnlocked) return;
     setModeState(targetMode);
   };
 
-  const updateParentPin = (newPin: string) => {
-    if (/^\d{4}$/.test(newPin)) {
-      setParentPin(newPin);
+  const updateParentPin = async (input: { readonly currentPin?: string; readonly newPin: string }): Promise<ParentPinChange> => {
+    if (!/^\d{4}$/.test(input.newPin)) return { status: 'invalid_format' };
+    if (currentUser) {
+      const result = await changeParentPin(input);
+      if (result.status === 'updated') {
+        setParentPinConfigured(true);
+        setIsParentUnlocked(true);
+        setModeState('parent');
+      }
+      return result;
     }
+    if (parentPin !== null && input.currentPin !== parentPin) return { status: 'invalid_current' };
+    setParentPin(input.newPin);
+    setParentPinConfigured(true);
+    setIsParentUnlocked(true);
+    setModeState('parent');
+    return { status: 'updated' };
   };
 
   const {
@@ -1062,8 +1110,9 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         isEntryReady: isLoaded && isIdentityReady && isPairingReady,
         mode,
         setMode,
-        parentPin,
+        parentPinConfigured,
         isParentUnlocked,
+        refreshParentPinStatus,
         unlockParent,
         lockParent,
         updateParentPin,
@@ -1165,6 +1214,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
 
         // Family Device Pairing Code
         familyId,
+        familyRole,
         childCodes,
         isFamilyConnected,
         isConnectModalOpen,

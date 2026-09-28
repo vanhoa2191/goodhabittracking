@@ -4,11 +4,16 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 const profileSchema = z.object({ displayName: z.string().trim().min(2).max(120), phone: z.string().trim().max(30).optional().default(''), marketingConsent: z.boolean().optional().default(false) }).strict();
 
+function serviceError(message: string, status = 503) {
+  const correlationId = crypto.randomUUID();
+  return NextResponse.json({ error: message, correlationId }, { status });
+}
+
 export async function GET() {
   const supabase = await createServerSupabaseClient(); const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
   const { data, error } = await supabase.from('parent_profiles').select('display_name,email,phone,marketing_consent').eq('user_id', user.id).maybeSingle();
-  if (error) return NextResponse.json({ error: 'Could not load profile.' }, { status: 503 });
+  if (error) return serviceError('Could not load profile.');
   return NextResponse.json({ profile: data ?? { display_name: user.user_metadata?.full_name ?? '', email: user.email ?? '', phone: '', marketing_consent: false } });
 }
 
@@ -35,7 +40,7 @@ export async function PATCH(request: NextRequest) {
     console.error('account_profile_save_failed', {
       code: updateError.code,
     });
-    return NextResponse.json({ error: 'Could not save profile.' }, { status: 503 });
+    return serviceError('Could not save profile.');
   }
   if (updatedProfile) {
     return NextResponse.json({ success: true, profile: updatedProfile });
@@ -49,7 +54,7 @@ export async function PATCH(request: NextRequest) {
     console.error('account_profile_save_failed', {
       code: insertError?.code ?? 'missing_returned_profile',
     });
-    return NextResponse.json({ error: 'Could not save profile.' }, { status: 503 });
+    return serviceError('Could not save profile.');
   }
   return NextResponse.json({ success: true, profile: insertedProfile });
 }

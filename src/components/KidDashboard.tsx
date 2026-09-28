@@ -83,7 +83,7 @@ export function KidDashboard() {
   const [savingTaskId, setSavingTaskId] = useState<string | null>(null);
   const visibleTab = isFamilyPaused && activeTab === 'leaderboard' ? 'tasks' : activeTab;
 
-  const completeTask = async (activity: HabitActivity, date: string) => {
+  const completeTask = async (activity: HabitActivity, date: string, isCompleting: boolean) => {
     if (savingTaskId === activity.id) return;
     setCompletionError(null);
     setSavingTaskId(activity.id);
@@ -95,7 +95,17 @@ export function KidDashboard() {
       return;
     }
     setCompletionStatusId(activity.id);
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPointBurstId(activity.id);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isCompleting) {
+      if (!reduceMotion && 'vibrate' in navigator) {
+        try {
+          navigator.vibrate?.(25);
+        } catch (error: unknown) {
+          void error;
+        }
+      }
+    }
+    if (isCompleting && !reduceMotion) setPointBurstId(activity.id);
     window.setTimeout(() => setPointBurstId((id) => id === activity.id ? null : id), 1200);
   };
 
@@ -501,7 +511,7 @@ export function KidDashboard() {
                           deferLabel={questCopy.defer}
                           canComplete={!isDone && !isPending && !isSaving}
                           canDefer={!isDeferred && !isDone && !isPending && !isSaving}
-                          onComplete={() => { void completeTask(act, dateStr); }}
+                          onComplete={() => { void completeTask(act, dateStr, true); }}
                           onDefer={() => { void changeTaskDeferral(act, dateStr, true); }}
                         >
                         <div
@@ -598,17 +608,10 @@ export function KidDashboard() {
                             {/* Action Checkbox Button with Claymorphic Feel & Haptic Feedback */}
                             <button
                               type="button"
-                              disabled={isSaving}
+                              disabled={isSaving || isPending}
                               onClick={(event) => {
                                 event.stopPropagation();
-                                if (typeof window !== 'undefined' && 'vibrate' in navigator) {
-                                  try {
-                                    navigator.vibrate?.(25);
-                                  } catch {
-                                    // ignore if unsupported
-                                  }
-                                }
-                                void completeTask(act, dateStr);
+                                void completeTask(act, dateStr, !isDone);
                               }}
                               className={`shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-90 hover:scale-105 border-2 shadow-xs hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                                 isDone
@@ -617,22 +620,38 @@ export function KidDashboard() {
                                   ? 'bg-amber-400 border-amber-500 text-white shadow-amber-200 dark:shadow-none'
                                   : 'bg-slate-50 dark:bg-zinc-800/90 border-slate-200 dark:border-zinc-700 text-slate-400 hover:text-indigo-600 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/50'
                               }`}
-                              aria-label={isDone ? (language === 'vi' ? 'Đã xong' : 'Completed') : (language === 'vi' ? 'Nhiệm vụ' : 'Task')}
+                              aria-label={language === 'vi'
+                                ? isSaving
+                                  ? `Đang lưu nhiệm vụ “${act.title}”`
+                                  : isPending
+                                    ? `Nhiệm vụ “${act.title}” đang chờ phụ huynh duyệt`
+                                    : isDone
+                                      ? `Bỏ đánh dấu nhiệm vụ “${act.title}” là hoàn thành`
+                                      : `Đánh dấu nhiệm vụ “${act.title}” là hoàn thành`
+                                : isSaving
+                                  ? `Saving task “${act.title}”`
+                                  : isPending
+                                    ? `Task “${act.title}” is waiting for parent approval`
+                                    : isDone
+                                      ? `Mark task “${act.title}” as incomplete`
+                                      : `Mark task “${act.title}” as complete`}
+                              aria-pressed={isDone}
+                              aria-busy={isSaving}
                               title={isDone ? t.tickDone : t.tasks}
                             >
                               {isDone ? (
-                                <CheckCircle className="w-6 h-6 fill-current" />
+                                <CheckCircle aria-hidden="true" className="w-6 h-6 fill-current" />
                               ) : isPending ? (
-                                <Hourglass className="w-5 h-5 animate-pulse" />
+                                <Hourglass aria-hidden="true" className="w-5 h-5 animate-pulse" />
                               ) : (
-                                <Circle className="w-6 h-6 stroke-[2.5]" />
+                                <Circle aria-hidden="true" className="w-6 h-6 stroke-[2.5]" />
                               )}
                             </button>
                             {pointBurstId === act.id && <span data-testid="point-burst" className="pointer-events-none absolute right-3 top-0 -translate-y-1/2 rounded-full bg-amber-400 px-2 py-1 text-xs font-black text-slate-900 motion-safe:animate-bounce">+{act.points} ⭐</span>}
                           </div>
                           {!isDone && !isPending && (
                             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3 dark:border-zinc-700/70">
-                              <span className="text-sm text-slate-600 dark:text-slate-300">{questCopy.swipeHint}</span>
+                              <span data-testid="swipe-hint" className="touch-swipe-hint text-sm text-slate-600 dark:text-slate-300">{questCopy.swipeHint}</span>
                               <button
                                 type="button"
                                 disabled={isSaving}
@@ -643,7 +662,7 @@ export function KidDashboard() {
                               </button>
                             </div>
                           )}
-                          {completionStatusId === act.id && <span role="status" className="sr-only">{language === 'vi' ? 'Hoàn thành' : 'Completed'}</span>}
+                          {completionStatusId === act.id && <span role="status" className="sr-only">{language === 'vi' ? `Đã cập nhật nhiệm vụ “${act.title}”` : `Updated task “${act.title}”`}</span>}
                           {completionError === act.id && <p role="alert" className="mt-3 text-sm font-bold text-rose-600">{questCopy.saveError}</p>}
                         </div>
                         </QuestSwipeSurface>
