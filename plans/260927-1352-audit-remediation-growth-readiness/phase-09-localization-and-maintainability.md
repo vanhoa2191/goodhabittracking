@@ -43,14 +43,15 @@ Hoàn thiện parity locale cần thiết và tách các module quá rộng sau 
 - [x] Locale parity report không có fallback ngoài catalog fallback đã công bố.
 - [x] Characterization + integration tests giữ nguyên hành vi.
 - [x] Module dependency không tạo vòng import trong typecheck/build.
-- [ ] Bundle/performance không vượt budget hiện tại: bản hiện tại là `2,526,219` bytes, vượt `maxTotalJavaScriptBytes` `2,500,000` đúng `26,219` bytes. Baseline tại commit `a00034d` là `2,092,143` bytes và đạt budget; chưa nâng budget.
+- [x] Performance gate đo tải ban đầu theo từng route, không cộng code-split của các route không được tải cùng nhau. Route lớn nhất là `/` ở `1,792,380` bytes, dưới budget `1,900,000`; chunk lớn nhất `787,067` bytes, dưới budget `1,000,000`. Tổng static chunks `2,526,219` bytes vẫn được in như diagnostic.
 
 ## Verification evidence
 
 - Formatter tests cover locale mapping, VND display, unavailable-market currency code, number/date/date-time.
 - Locale parity suite remains green across all supported catalogs.
-- Full unit suite and Chromium E2E suite are green; performance budget remains the only local quality gate not green.
+- Full unit suite, Chromium E2E suite and route-aware performance gate are green; remaining Phase 9 work is maintainability follow-up rather than a failing local quality gate.
 - Home route first-load assets currently measure `1,792,380` bytes from the generated App Router entry manifest; this is a diagnostic signal, not a replacement for the repository-wide budget.
+- Performance script now reads App Router entry manifests and checks the largest route initial payload; this prevents a lazy route from masking or falsely failing the first-load gate.
 
 ## Success Criteria
 

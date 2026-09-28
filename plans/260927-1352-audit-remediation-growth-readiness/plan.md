@@ -63,7 +63,7 @@ Phases 1 và 2 có thể bắt đầu song song. Phases 4 và 5 chạy song song
 
 ## Phases
 
-Current state: Phase 1, Phase 3, Phase 4, Phase 5, Phase 6, Phase 7 và phần implementation của Phase 8 đã hoàn tất và kiểm chứng local. Phase 9 đã có formatter locale/market, parity test và các domain action module hiện hữu; phần tách nốt store/landing vẫn đang làm. Migration/RPC PostgreSQL thật, camera iOS/Android, caregiver invite hai tài khoản, consented analytics staging, lifecycle email production smoke và cài PWA thiết bị thật được giữ làm release gate tương ứng ở Phase 10. Phase 2 đã có publication gate và các surface nháp, còn chờ chủ sản phẩm chốt thông tin pháp lý/hỗ trợ trước khi bật công khai. Không coi production health hiện tại là bằng chứng deploy cho các thay đổi local chưa được phát hành.
+Current state: Phase 1, Phase 3, Phase 4, Phase 5, Phase 6, Phase 7 và phần implementation của Phase 8 đã hoàn tất và kiểm chứng local. Phase 9 đã có formatter locale/market, parity test, route-aware performance gate và các domain action module hiện hữu; phần tách nốt store/landing vẫn đang làm. Migration/RPC PostgreSQL thật, camera iOS/Android, caregiver invite hai tài khoản, consented analytics staging, lifecycle email production smoke và cài PWA thiết bị thật được giữ làm release gate tương ứng ở Phase 10. Phase 2 đã có publication gate và các surface nháp, còn chờ chủ sản phẩm chốt thông tin pháp lý/hỗ trợ trước khi bật công khai. Không coi production health hiện tại là bằng chứng deploy cho các thay đổi local chưa được phát hành.
 
 | # | Phase | Priority | Depends on | Release gate |
 |---|---|---:|---|---|

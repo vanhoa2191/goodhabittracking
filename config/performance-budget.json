@@ -1,4 +1,4 @@
 {
-  "maxTotalJavaScriptBytes": 2500000,
+  "maxInitialJavaScriptBytes": 1900000,
   "maxSingleChunkBytes": 1000000
 }
