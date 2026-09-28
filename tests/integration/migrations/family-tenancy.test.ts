@@ -379,6 +379,8 @@ describe('family tenancy migration', () => {
   });
 
   it('makes billing idempotent and server-authoritative', () => {
+    expect(billingMigration).toContain('user_subscriptions_family_unique');
+    expect(billingMigration).toContain('on public.user_subscriptions (family_id)');
     expect(billingMigration).toContain('unique (provider, provider_reference)');
     expect(billingMigration).toContain('target_order.amount <> incoming_amount');
     expect(billingMigration).toContain('target_order.description <> incoming_description');
@@ -387,6 +389,10 @@ describe('family tenancy migration', () => {
     expect(billingMigration).toContain('to service_role');
     expect(billingMigration).toContain('free_plan_child_limit_reached');
     expect(billingMigration).toContain('trial_already_consumed_or_plan_active');
+    expect(soloPlanEntitlementsMigration).toContain('target_order.family_id');
+    expect(soloPlanEntitlementsMigration).toContain('target_order.user_id');
+    expect(soloPlanEntitlementsMigration).toContain('on conflict (family_id) do update');
+    expect(soloPlanEntitlementsMigration).not.toMatch(/on conflict \(email\)/i);
   });
 
   it('forces RLS on server-owned billing and consent audit tables', () => {

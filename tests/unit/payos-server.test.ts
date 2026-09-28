@@ -59,6 +59,10 @@ describe('payOS payment creation', () => {
       checkoutUrl: providerPayment.checkoutUrl,
     });
     expect(payment.vietQrUrl).toMatch(/^data:image\/png;base64,/);
+    const request = vi.mocked(fetch).mock.calls[0]?.[1];
+    const body = JSON.parse(String(request?.body)) as Record<string, unknown>;
+    expect(body.returnUrl).toBe('https://kidhabit.example/checkout?payment=success&orderCode=123456');
+    expect(body.cancelUrl).toBe('https://kidhabit.example/checkout?payment=cancel&orderCode=123456');
   });
 
   it('rejects provider transaction values that differ from the server-owned order', async () => {

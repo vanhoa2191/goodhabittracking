@@ -13,17 +13,14 @@ import { CheckoutModal } from '@/components/CheckoutModal';
 import { OnboardingModal } from '@/components/OnboardingModal';
 import { Portrait16Modal } from '@/components/Portrait16Modal';
 import { demoSessionCopy } from '@/lib/i18n/demo-session-copy';
-import { readPaymentStatus } from '@/lib/billing/payment-client';
 import { CustomerProfilePrompt } from '@/components/CustomerProfilePrompt';
 import { CaregiverDashboard } from '@/components/CaregiverDashboard';
+import { PaymentReturnNotice } from '@/components/PaymentReturnNotice';
 
 const IN_APP_SESSION_KEY = 'kidhabit_in_app';
 const DEMO_SESSION_KEY = 'kidhabit_demo_session';
 const IN_APP_SESSION_EVENT = 'kidhabit-in-app-change';
-const PAYMENT_RETURN_QUERY_KEYS = ['payment', 'orderCode', 'code', 'id', 'cancel', 'status'] as const;
 const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
-
-type PaymentReturnState = 'checking' | 'activated' | 'pending' | 'cancelled' | 'error';
 
 function subscribeToInAppSession(onStoreChange: () => void) {
   window.addEventListener('storage', onStoreChange);
@@ -64,7 +61,6 @@ export default function Home() {
     isPortraitModalOpen,
     setIsPortraitModalOpen,
     startDemoSession,
-    syncNow,
   } = useAppStore();
   const { t, language } = useTranslation();
   const demoCopy = demoSessionCopy[language];
@@ -86,81 +82,11 @@ export default function Home() {
     userId: string | null;
     showLanding: boolean;
   } | null>(null);
-  const [paymentReturnState, setPaymentReturnState] = useState<PaymentReturnState | null>(null);
   const handledPublicEntry = useRef(false);
   const showLanding = isFamilyConnected && !currentUser ? false : landingSelection?.userId === currentUserId
     ? landingSelection.showLanding
     : defaultShowLanding;
   const renderLanding = !isEntryReady || showLanding;
-
-  useEffect(() => {
-    const currentUrl = new URL(window.location.href);
-    const returnKind = currentUrl.searchParams.get('payment');
-    if (returnKind !== 'success' && returnKind !== 'cancel') return;
-
-    const clearReturnParameters = () => {
-      for (const key of PAYMENT_RETURN_QUERY_KEYS) currentUrl.searchParams.delete(key);
-      window.history.replaceState(
-        window.history.state,
-        '',
-        `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`,
-      );
-    };
-
-    if (returnKind === 'cancel') {
-      queueMicrotask(() => setPaymentReturnState('cancelled'));
-      clearReturnParameters();
-      return;
-    }
-
-    const orderCode = Number(currentUrl.searchParams.get('orderCode'));
-    if (!Number.isSafeInteger(orderCode) || orderCode <= 0) {
-      queueMicrotask(() => setPaymentReturnState('error'));
-      clearReturnParameters();
-      return;
-    }
-
-    let isActive = true;
-    queueMicrotask(() => setPaymentReturnState('checking'));
-
-    void (async () => {
-      try {
-        const result = await readPaymentStatus(orderCode);
-        if (!isActive) return;
-        if (!result.success) {
-          setPaymentReturnState('error');
-          return;
-        }
-        if (!result.paid) {
-          setPaymentReturnState('pending');
-          return;
-        }
-        await syncNow();
-        if (isActive) setPaymentReturnState('activated');
-      } catch (error: unknown) {
-        if (!isActive) return;
-        if (error instanceof Error) {
-          setPaymentReturnState('error');
-          return;
-        }
-        setPaymentReturnState('error');
-      } finally {
-        clearReturnParameters();
-      }
-    })();
-
-    return () => {
-      isActive = false;
-    };
-  }, [syncNow]);
-
-  const paymentReturnMessages: Record<PaymentReturnState, string> = {
-    checking: t.checkingPayment,
-    activated: t.paymentReturnActivated,
-    pending: t.paymentReturnPending,
-    cancelled: t.paymentReturnCancelled,
-    error: t.paymentReturnError,
-  };
 
   const handleStartDemo = () => {
     startDemoSession();
@@ -216,21 +142,7 @@ export default function Home() {
           isLanding={renderLanding}
           hasAppSession={canOpenApp}
         />
-        {paymentReturnState && (
-          <div
-            role={paymentReturnState === 'error' ? 'alert' : 'status'}
-            data-payment-state={paymentReturnState}
-            className={`mx-auto mt-3 max-w-5xl rounded-2xl border px-4 py-3 text-sm font-semibold ${
-              paymentReturnState === 'activated'
-                ? 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200'
-                : paymentReturnState === 'error'
-                  ? 'border-rose-200 bg-rose-50 text-rose-800 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200'
-                  : 'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100'
-            }`}
-          >
-            {paymentReturnMessages[paymentReturnState]}
-          </div>
-        )}
+        <PaymentReturnNotice />
         <main>
           {renderLanding ? (
             <LandingPage

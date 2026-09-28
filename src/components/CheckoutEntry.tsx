@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Check, CreditCard, LogIn, ShieldCheck } from 'lucide-react';
 import { CheckoutModal } from '@/components/CheckoutModal';
+import { PaymentReturnNotice } from '@/components/PaymentReturnNotice';
 import { getPricingPlan } from '@/lib/payos';
 import { getMarketingOrigin } from '@/lib/site';
 import { parseCheckoutPlan, signInWithGoogle } from '@/lib/supabase';
@@ -11,11 +12,12 @@ import { useAppStore } from '@/lib/store';
 
 interface CheckoutEntryProps {
   readonly planValues: readonly string[];
+  readonly paymentReturnKind?: string | null;
 }
 
 const currency = new Intl.NumberFormat('vi-VN');
 
-export function CheckoutEntry({ planValues }: CheckoutEntryProps) {
+export function CheckoutEntry({ planValues, paymentReturnKind = null }: CheckoutEntryProps) {
   const planId = planValues.length === 1 ? parseCheckoutPlan(planValues[0] ?? null) : null;
   const plan = useMemo(() => planId ? getPricingPlan(planId) : null, [planId]);
   const openedPlan = useRef<string | null>(null);
@@ -45,6 +47,20 @@ export function CheckoutEntry({ planValues }: CheckoutEntryProps) {
     openedPlan.current = plan.id;
     openCheckoutModal(plan.id);
   }, [canPay, openCheckoutModal, plan]);
+
+  if (!plan && (paymentReturnKind === 'success' || paymentReturnKind === 'cancel')) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12 dark:bg-zinc-950">
+        <section className="w-full max-w-2xl rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-xl shadow-slate-200/50 dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none sm:p-10">
+          <h1 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white">Kết quả thanh toán</h1>
+          <PaymentReturnNotice />
+          <Link href="/" className="mt-6 inline-flex min-h-11 items-center justify-center rounded-xl bg-indigo-600 px-5 py-3 font-extrabold text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+            Vào ứng dụng
+          </Link>
+        </section>
+      </main>
+    );
+  }
 
   if (!plan) {
     return (
