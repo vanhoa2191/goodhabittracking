@@ -26,7 +26,7 @@ Chứng nhận toàn bộ hành trình trên staging/production, rollout theo l�
 ## Requirements
 
 - [ ] Migration inventory/preflight/backup/rollback được chốt trước Worker deploy.
-- [ ] CI, Cloudflare build, unit/API/integration/E2E/a11y/performance/secrets xanh ở exact commit. Local evidence: build/unit/E2E/a11y/secrets xanh; performance budget còn vượt 26.219 bytes.
+- [ ] CI, Cloudflare build, unit/API/integration/E2E/a11y/performance/secrets xanh ở exact commit. Local evidence: build/unit/E2E/a11y/secrets xanh; performance budget còn vượt 26.219 bytes. Baseline `a00034d` đạt 2,092,143 bytes; current candidate đạt 2,526,219 bytes.
 - [ ] Manual QA trên desktop, iOS Safari, Android Chrome cho guest/demo/parent/kid/admin.
 - [ ] PayOS create/QR/webhook/return/entitlement và refund/support được chứng nhận không lộ secret/PII.
 - [ ] Rollout bằng feature flags/cohorts; health/alerts quan sát trong cửa sổ đã định nghĩa.

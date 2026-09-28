@@ -43,13 +43,14 @@ Hoàn thiện parity locale cần thiết và tách các module quá rộng sau 
 - [x] Locale parity report không có fallback ngoài catalog fallback đã công bố.
 - [x] Characterization + integration tests giữ nguyên hành vi.
 - [x] Module dependency không tạo vòng import trong typecheck/build.
-- [ ] Bundle/performance không vượt budget hiện tại: build hiện vượt `maxTotalJavaScriptBytes` 26.219 bytes, chưa nâng budget.
+- [ ] Bundle/performance không vượt budget hiện tại: bản hiện tại là `2,526,219` bytes, vượt `maxTotalJavaScriptBytes` `2,500,000` đúng `26,219` bytes. Baseline tại commit `a00034d` là `2,092,143` bytes và đạt budget; chưa nâng budget.
 
 ## Verification evidence
 
 - Formatter tests cover locale mapping, VND display, unavailable-market currency code, number/date/date-time.
 - Locale parity suite remains green across all supported catalogs.
 - Full unit suite and Chromium E2E suite are green; performance budget remains the only local quality gate not green.
+- Home route first-load assets currently measure `1,792,380` bytes from the generated App Router entry manifest; this is a diagnostic signal, not a replacement for the repository-wide budget.
 
 ## Success Criteria
 
