@@ -44,7 +44,7 @@ Chứng nhận toàn bộ hành trình trên staging/production, rollout theo l�
 - [ ] Migration backup/preflight evidence lưu không chứa dữ liệu khách hàng.
 - [ ] Exact-SHA CI/build/test ledger xanh.
 - [ ] Manual QA evidence cho thiết bị thật.
-- [ ] Production health/dependency checks xanh sau deploy.
+- [x] Production health/dependency checks xanh sau deploy.
 - [ ] Rollback drill hoặc dry-run có thời gian/owner rõ.
 
 ## Verification evidence
@@ -54,6 +54,7 @@ Chứng nhận toàn bộ hành trình trên staging/production, rollout theo l�
 - Supabase migration preflight listed exactly four pending migrations (`202609270004` through `202609280003`); `supabase db push --yes` applied them, and a subsequent migration list showed local/remote parity. Production `/api/health` then returned HTTP 200 with `status=ready` and all dependency checks true.
 - Supabase Free has no managed scheduled backup/PITR available in the dashboard; local schema-only dump was not produced because Docker/Podman and `pg_dump` are unavailable. Backup/rollback evidence remains open for the release gate.
 - Cloudflare Worker deploy from commit `d6818e6` completed as version `c66d1b58-b2ed-4068-970a-16e4a0ebc1e1`. Post-deploy checks returned HTTP 200/`ready`, all dependency checks true, public landing/pricing/manifest 200, and both live verifiers passed again against the deployed origin.
+- Final local quality gates passed on the release source: `npm run build`, `npm run build:cloudflare`, route-aware performance budget, lint, typecheck, unit suite (`124/124`), Chromium E2E (`115 passed, 3 intentional skips`), `npm audit --audit-level=high` (0 vulnerabilities), secret scan (723 tracked files) and `git diff --check`. The deployed source SHA is `d6818e6`; later branch commit `831310f` changes release documentation only and is not a runtime change.
 
 ## Success Criteria
 
