@@ -77,7 +77,7 @@ export function ParentRewardsTab() {
             <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">{t.yourRewards} ({localizedRewards.length})</h3>
             <p className="text-xs text-slate-400">{copy.rewardsIntro}</p>
           </div>
-          <button onClick={() => openRewardModal()} className="py-2.5 px-5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-colors transition-transform shadow-md flex items-center gap-2 active:scale-95">
+          <button onClick={() => openRewardModal()} className="flex min-h-11 items-center gap-2 rounded-2xl bg-amber-700 px-5 py-2.5 text-xs font-bold text-white shadow-md transition-colors transition-transform hover:bg-amber-800 active:scale-95">
             <Plus className="w-4 h-4" />
             {t.createRewardTitle}
           </button>
@@ -88,8 +88,6 @@ export function ParentRewardsTab() {
             {mutationError}
           </p>
         )}
-
-        {language === 'vi' && <RewardTemplateLibrary onMutationError={setMutationError} />}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {localizedRewards.map((reward) => (
@@ -103,18 +101,28 @@ export function ParentRewardsTab() {
                 </div>
               </div>
               <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-50 dark:border-zinc-800/80">
-                <button onClick={() => openRewardModal(reward)} aria-label={`${t.edit} ${reward.title}`} className="p-2 text-slate-400 hover:text-indigo-600 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors"><Edit2 className="w-4 h-4" /></button>
-                <button onClick={() => void handleDeleteReward(reward)} aria-label={`${t.delete} ${reward.title}`} className="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 dark:hover:bg-zinc-800 transition-colors"><Trash2 className="w-4 h-4" /></button>
+                <button onClick={() => openRewardModal(reward)} aria-label={`${t.edit} ${reward.title}`} className="flex min-h-11 min-w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-50 hover:text-indigo-600 dark:hover:bg-zinc-800"><Edit2 className="w-4 h-4" /></button>
+                <button onClick={() => void handleDeleteReward(reward)} aria-label={`${t.delete} ${reward.title}`} className="flex min-h-11 min-w-11 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-zinc-800"><Trash2 className="w-4 h-4" /></button>
               </div>
             </div>
           ))}
         </div>
+
+        {language === 'vi' && (
+          <details className="group rounded-3xl border border-amber-200 bg-amber-50/50 p-4 dark:border-amber-900/60 dark:bg-amber-950/20 sm:p-5">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 font-extrabold text-amber-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-amber-200 [&::-webkit-details-marker]:hidden">
+              <span>Khám phá thư viện quà tặng ý nghĩa</span>
+              <span aria-hidden="true" className="text-xl transition-transform group-open:rotate-45">＋</span>
+            </summary>
+            <div className="pt-4"><RewardTemplateLibrary onMutationError={setMutationError} /></div>
+          </details>
+        )}
       </div>
 
       <ModalShell isOpen={isModalOpen} onClose={closeModal} label={editingReward ? t.editRewardTitle : t.createRewardTitle} maxWidth="sm">
             <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
               <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center gap-2"><span>🎁</span><span>{editingReward ? t.editRewardTitle : t.createRewardTitle}</span></h3>
-              <button type="button" onClick={closeModal} disabled={isSaving} className="p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shrink-0 disabled:cursor-wait disabled:opacity-50" aria-label={t.close}><X className="w-5 h-5" /></button>
+              <button type="button" onClick={closeModal} disabled={isSaving} className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 disabled:cursor-wait disabled:opacity-50 dark:hover:bg-zinc-800 dark:hover:text-slate-200" aria-label={t.close}><X className="w-5 h-5" /></button>
             </div>
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
               <div>
@@ -136,8 +144,8 @@ export function ParentRewardsTab() {
             <div className="shrink-0 p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/70 space-y-3 pb-safe">
               {mutationError && <p role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">{mutationError}</p>}
               <div className="flex items-center justify-end gap-2.5">
-              <button type="button" onClick={closeModal} disabled={isSaving} className="py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors disabled:cursor-wait disabled:opacity-50">{t.cancel}</button>
-              <button type="button" onClick={() => void saveReward()} disabled={isSaving} aria-busy={isSaving} className="py-2.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-colors transition-transform shadow-md active:scale-95 disabled:cursor-wait disabled:opacity-60">{isSaving ? mutationCopy.saving : t.save}</button>
+              <button type="button" onClick={closeModal} disabled={isSaving} className="min-h-11 rounded-xl px-4 py-2.5 text-xs font-semibold text-slate-500 transition-colors hover:bg-slate-100 disabled:cursor-wait disabled:opacity-50 dark:hover:bg-zinc-800">{t.cancel}</button>
+              <button type="button" onClick={() => void saveReward()} disabled={isSaving} aria-busy={isSaving} className="min-h-11 rounded-xl bg-amber-700 px-6 py-2.5 text-xs font-bold text-white shadow-md transition-colors transition-transform hover:bg-amber-800 active:scale-95 disabled:cursor-wait disabled:opacity-60">{isSaving ? mutationCopy.saving : t.save}</button>
               </div>
             </div>
       </ModalShell>

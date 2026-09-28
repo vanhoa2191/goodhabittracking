@@ -34,6 +34,12 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
   const [showScanner, setShowScanner] = useState(false);
   const [deepLinkToken, setDeepLinkToken] = useState<string | null>(null);
   const handledDeepLink = useRef<string | null>(null);
+  const manualCodeRef = useRef<HTMLInputElement>(null);
+
+  const useManualCode = () => {
+    setShowScanner(false);
+    window.requestAnimationFrame(() => manualCodeRef.current?.focus());
+  };
 
   const closeModal = useCallback(() => {
     setShowScanner(false);
@@ -134,7 +140,7 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
 
               {showScanner ? (
                 <ChildQrScanner
-                  onCancel={() => setShowScanner(false)}
+                  onCancel={useManualCode}
                   onDetected={(token) => void connectCredential(`pair-token:${token}`)}
                 />
               ) : (
@@ -150,10 +156,12 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
 
               <form onSubmit={handleConnect} className="space-y-3" aria-label={copy.useManualCode}>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider text-center">
+                  <label htmlFor="family-connect-code" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider text-center">
                     {copy.codeLabel}
                   </label>
                   <input
+                    ref={manualCodeRef}
+                    id="family-connect-code"
                     type="text"
                     value={enteredCode}
                     onChange={(e) => {

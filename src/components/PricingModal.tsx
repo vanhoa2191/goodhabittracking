@@ -13,6 +13,7 @@ import { useAppStore } from '@/lib/store';
 import { PRICING_PLANS } from '@/lib/payos';
 import { SubscriptionPlan, Language } from '@/types';
 import { useTranslation } from '@/lib/i18n/context';
+import { formatCurrency } from '@/lib/i18n/formatters';
 import { ModalShell } from '@/components/ui/ModalShell';
 
 interface PricingModalProps {
@@ -346,14 +347,14 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                     <div className="p-3 rounded-2xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-100 dark:border-zinc-700/60">
                       <div className="flex items-baseline gap-1.5">
                         <span className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-                          {plan.price.toLocaleString(language === 'vi' ? 'vi-VN' : 'en-US')}
+                          {formatCurrency(plan.price, language)}
                         </span>
                         <span className="text-xs font-bold text-slate-500">VNĐ</span>
                         <span className="text-xs text-slate-400 font-medium">{loc.period}</span>
                       </div>
                       {plan.originalPrice && (
                         <div className="text-xs text-slate-400 line-through mt-0.5">
-                          {plan.originalPrice.toLocaleString(language === 'vi' ? 'vi-VN' : 'en-US')} VNĐ
+                          {formatCurrency(plan.originalPrice, language)}
                         </div>
                       )}
                     </div>

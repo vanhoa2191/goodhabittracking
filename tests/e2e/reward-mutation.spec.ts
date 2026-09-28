@@ -1,14 +1,16 @@
 import { expect, test } from '@playwright/test';
 import { installCloudFamilyFixture } from './cloud-family-fixture';
+import { setupOrUnlockParent } from './pin-helper';
 
 async function openParentRewards(page: import('@playwright/test').Page) {
+  await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', /^(kid|parent)$/);
   if (await page.getByTestId('app-surface').getAttribute('data-app-mode') === 'kid') {
-    await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-    const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-    for (const digit of ['1', '2', '3', '4']) {
-      await pinDialog.getByRole('button', { name: digit, exact: true }).click();
-    }
+    const parentButton = page.getByRole('button', { name: 'Phụ huynh', exact: true });
+    await expect(parentButton).toBeVisible();
+    await parentButton.click();
+    await setupOrUnlockParent(page);
   }
+  await expect(page.getByRole('tab', { name: 'Thiết kế' })).toBeVisible();
   await page.getByRole('tab', { name: 'Thiết kế' }).click();
   await page.getByRole('tab', { name: /Đổi quà/ }).click();
 }
@@ -40,7 +42,7 @@ test('a failed cloud reward save keeps the modal open and visible data unchanged
 test('a demo reward save closes the modal and persists after reload', async ({ page }, testInfo) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await openParentRewards(page);
   await page.getByRole('button', { name: 'Tạo phần thưởng mới' }).click();
   const rewardDialog = page.getByRole('dialog', { name: 'Tạo phần thưởng mới' });

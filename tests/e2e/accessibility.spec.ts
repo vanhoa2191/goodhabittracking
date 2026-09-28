@@ -1,6 +1,11 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 import { getVisiblePricingOpener } from './open-pricing';
+import { setupOrUnlockParent } from './pin-helper';
+
+function seriousOrCritical(violations: Awaited<ReturnType<AxeBuilder['analyze']>>['violations']) {
+  return violations.filter((violation) => violation.impact === 'critical' || violation.impact === 'serious');
+}
 
 test('@a11y landing page has no serious or critical accessibility violations', async ({ page }) => {
   await page.goto('/');
@@ -11,6 +16,32 @@ test('@a11y landing page has no serious or critical accessibility violations', a
   );
 
   expect(blockingViolations).toEqual([]);
+});
+
+test('@a11y child dashboard and task details have no serious or critical violations', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('landing-primary-action').click();
+  expect(seriousOrCritical((await new AxeBuilder({ page }).analyze()).violations)).toEqual([]);
+
+  await page.locator('[data-task-card]').first().getByRole('button', { name: /Xem chi tiết/ }).click();
+  expect(seriousOrCritical((await new AxeBuilder({ page }).analyze()).violations)).toEqual([]);
+});
+
+test('@a11y parent approvals, rewards and settings have no serious or critical violations', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('landing-primary-action').click();
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  await setupOrUnlockParent(page);
+
+  for (const destination of [
+    { area: 'Hôm nay', section: 'Duyệt việc' },
+    { area: 'Thiết kế', section: 'Đổi quà' },
+    { area: 'Gia đình', section: 'Cài đặt' },
+  ]) {
+    await page.getByRole('tab', { name: destination.area }).click();
+    await page.getByRole('tab', { name: destination.section }).click();
+    expect(seriousOrCritical((await new AxeBuilder({ page }).analyze()).violations)).toEqual([]);
+  }
 });
 
 test('@a11y pricing dialog traps focus, closes with Escape, and restores focus', async ({ page }) => {

@@ -31,3 +31,8 @@
 \ir migrations/202609260003_parent_reminder_consent.sql
 \ir migrations/202609270001_idempotent_profile_mutations.sql
 \ir migrations/202609270002_solo_plan_entitlements.sql
+\ir migrations/202609270003_profile_starter_recurrence_days.sql
+\ir migrations/202609270004_parent_pin_security.sql
+\ir migrations/202609280001_lifecycle_revenue_operations.sql
+\ir migrations/202609280002_caregiver_invites.sql
+\ir migrations/202609280003_admin_security_observability.sql

@@ -32,7 +32,6 @@ type FamilyState = {
   readonly isLoaded: boolean;
   readonly kudos: Kudo[];
   readonly logs: ActivityLog[];
-  readonly parentPin: string;
   readonly parentProfile: ParentProfile | null;
   readonly profiles: ChildProfile[];
   readonly experience: ExperienceState;
@@ -54,7 +53,7 @@ type FamilySetters = {
   readonly setKudos: Dispatch<SetStateAction<Kudo[]>>;
   readonly setLogs: Dispatch<SetStateAction<ActivityLog[]>>;
   readonly setMode: Dispatch<SetStateAction<'kid' | 'parent'>>;
-  readonly setParentPin: Dispatch<SetStateAction<string>>;
+  readonly setParentPin: Dispatch<SetStateAction<string | null>>;
   readonly setParentProfile: Dispatch<SetStateAction<ParentProfile | null>>;
   readonly setProfiles: Dispatch<SetStateAction<ChildProfile[]>>;
   readonly setExperience: Dispatch<SetStateAction<ExperienceState>>;
@@ -80,7 +79,6 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     isLoaded,
     kudos,
     logs,
-    parentPin,
     parentProfile,
     profiles,
     experience,
@@ -122,7 +120,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
         if (hydration.kind === 'demo') {
           const snapshot = hydration.snapshot;
           const demoProfiles = snapshot?.profiles ?? INITIAL_PROFILES;
-          setParentPin(snapshot?.pin ?? '1234');
+          setParentPin(null);
           setParentProfile(snapshot?.parentProfile ?? null);
           setExperience(snapshot
             ? loadLocalExperience(sessionStorage, '00000000-0000-4000-8000-000000000000', true)
@@ -175,7 +173,6 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     if (isDemoSession) {
       if (sessionStorage.getItem('kidhabit_demo_session') !== 'true') return;
       persistDemoFamilyState(sessionStorage, {
-        pin: parentPin,
         parentProfile,
         storageMode: 'local',
         activeChildId,
@@ -200,7 +197,6 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     isLoaded,
     kudos,
     logs,
-    parentPin,
     parentProfile,
     profiles,
     experience,
@@ -220,7 +216,7 @@ export function useLocalFamilyLifecycle(dependencies: Dependencies) {
     setParentProfile(null);
     setMode('kid');
     setIsParentUnlocked(false);
-    setParentPin('1234');
+    setParentPin(null);
     setProfiles(INITIAL_PROFILES);
     setActiveChildId(INITIAL_PROFILES[0]?.id || null);
     setActivities(INITIAL_ACTIVITIES);

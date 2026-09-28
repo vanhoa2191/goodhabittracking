@@ -90,6 +90,15 @@ try {
     familyIds.push(membership.data.family_id);
   }
 
+  const entitlementFixtures = await Promise.all(familyIds.map((familyId, index) => admin.from('user_subscriptions').upsert({
+    family_id: familyId,
+    user_id: userIds[index],
+    plan: 'solo_monthly',
+    status: 'active',
+    subscription_ends_at: new Date(Date.now() + 86_400_000).toISOString(),
+  }, { onConflict: 'family_id' })));
+  assert(entitlementFixtures.every(({ error }) => !error), 'Synthetic entitlement fixture failed.');
+
   const anonymousRead = await anonymous.from('families').select('id').limit(1);
   assert(
     Boolean(anonymousRead.error) || anonymousRead.data?.length === 0,
@@ -124,7 +133,13 @@ try {
   const childId = randomUUID();
   const ownChildInsert = await accounts[0].client
     .from('child_profiles')
-    .insert({ id: childId, family_id: familyIds[0], name: `Boundary child ${runId}` })
+    .insert({
+      id: childId,
+      family_id: familyIds[0],
+      name: `Boundary child ${runId}`,
+      avatar: 'mascot:bunny',
+      theme_color: '#6366f1',
+    })
     .select('id')
     .single();
   assert(
@@ -147,7 +162,7 @@ try {
     child_id: childId,
     mascot_selected_at: new Date().toISOString(),
   });
-  assert(!engagementInsert.error, 'Same-family engagement write failed.');
+  assert(Boolean(engagementInsert.error), 'Client engagement write unexpectedly succeeded.');
 
   const engagementRead = await accounts[0].client
     .from('child_engagement_profiles').select('child_id').eq('child_id', childId);
@@ -175,7 +190,7 @@ try {
     .eq('child_id', childId)
     .select('child_id');
   assert(
-    !crossEngagementUpdate.error && crossEngagementUpdate.data?.length === 0,
+    Boolean(crossEngagementUpdate.error) || crossEngagementUpdate.data?.length === 0,
     'Cross-family engagement update was not denied.',
   );
 
@@ -183,7 +198,12 @@ try {
     family_id: familyIds[0],
     paused_at: new Date().toISOString(),
   });
-  assert(!pauseSetting.error, 'Same-family pause write failed.');
+  assert(Boolean(pauseSetting.error), 'Client family-pause write unexpectedly succeeded.');
+  const pauseFixture = await admin.from('family_engagement_settings').upsert({
+    family_id: familyIds[0],
+    paused_at: new Date().toISOString(),
+  }, { onConflict: 'family_id' });
+  assert(!pauseFixture.error, 'Synthetic family-pause fixture failed.');
   const crossPauseRead = await accounts[1].client
     .from('family_engagement_settings').select('family_id').eq('family_id', familyIds[0]);
   assert(

@@ -46,7 +46,9 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
     mode,
     setMode,
     isParentUnlocked,
+    refreshParentPinStatus,
     unlockParent,
+    updateParentPin,
     lockParent,
     profiles,
     activeChildId,
@@ -87,10 +89,6 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
   };
 
   const handleParentModeClick = () => {
-    if (currentUser) {
-      setMode('parent');
-      return;
-    }
     if (mode === 'kid') {
       if (isParentUnlocked) {
         setMode('parent');
@@ -707,7 +705,9 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
         onSuccess={() => {
           setIsPinModalOpen(false);
         }}
+        refreshStatus={refreshParentPinStatus}
         verifyPin={unlockParent}
+        savePin={updateParentPin}
       />
 
       {/* Font & Size Settings Modal */}

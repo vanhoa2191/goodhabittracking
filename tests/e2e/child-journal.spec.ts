@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
+import { setupOrUnlockParent } from './pin-helper';
 
 test('a child saves one reflection and the parent can review and export it', async ({ page }, testInfo) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
 
   const childJournal = page.getByRole('region', { name: 'Một điều con muốn ghi nhớ' });
   await expect(childJournal).toBeVisible();
@@ -21,8 +22,7 @@ test('a child saves one reflection and the parent can review and export it', asy
   await page.reload();
   await expect(page.getByLabel('Điều con muốn ghi nhớ hôm nay')).toHaveValue(reflection);
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Thống kê' }).click();
 
   const parentJournal = page.getByRole('region', { name: 'Nhật ký một câu của con' });

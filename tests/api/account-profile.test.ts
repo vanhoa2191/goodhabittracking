@@ -98,6 +98,9 @@ describe('PATCH /api/account/profile', () => {
 
     expect(insert).not.toHaveBeenCalled();
     expect(response.status).toBe(503);
-    await expect(response.json()).resolves.toEqual({ error: 'Could not save profile.' });
+    await expect(response.json()).resolves.toEqual({
+      error: 'Could not save profile.',
+      correlationId: expect.any(String),
+    });
   });
 });

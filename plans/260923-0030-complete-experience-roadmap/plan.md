@@ -7,7 +7,7 @@ effort: "12-16 engineering weeks plus experiment observation"
 issue: null
 branch: main
 tags: [feature, frontend, backend, analytics, accessibility, experimental]
-blockedBy: []
+blockedBy: [260927-1352-audit-remediation-growth-readiness]
 blocks: []
 created: 2026-09-23
 ---

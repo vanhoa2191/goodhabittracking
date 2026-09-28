@@ -13,6 +13,9 @@ import { translations } from "@/lib/i18n/translations";
 import { AppearanceProvider } from "@/lib/appearance-context";
 import { AnalyticsConsentProvider } from "@/lib/analytics-consent-context";
 import { ParentReminderProvider } from "@/lib/parent-reminder-context";
+import { PRICING_PLANS } from "@/lib/payos";
+import { getSiteOrigin } from "@/lib/site";
+import { PwaRuntime } from "@/components/PwaRuntime";
 
 const displayFont = Fraunces({
   axes: ['SOFT', 'opsz'],
@@ -33,26 +36,48 @@ const monoFont = JetBrains_Mono({
   variable: '--font-mono',
 });
 
-const appearanceScript = `(function(){try{var value=localStorage.getItem('kidhabit_theme');var dark=value==='dark'||(value==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',dark);document.documentElement.style.colorScheme=dark?'dark':'light'}catch(_){document.documentElement.classList.remove('dark')}})()`;
+const appearanceScript = `(function(){try{var value=localStorage.getItem('kidhabit_theme');var dark=value==='dark'||(value==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',dark);document.documentElement.style.colorScheme=dark?'dark':'light';var known=localStorage.getItem('kidhabit_child_paired')==='true'||sessionStorage.getItem('kidhabit_in_app')==='true';if(known)document.documentElement.dataset.knownAppSession='true'}catch(_){document.documentElement.classList.remove('dark')}})()`;
 
-const getRequestLanguage = cache(async () => {
+const getRequestContext = cache(async () => {
   const [requestHeaders, requestCookies] = await Promise.all([headers(), cookies()]);
-  return detectLanguage({
-    savedLanguage: requestCookies.get(LANGUAGE_PREFERENCE_KEY)?.value ?? null,
-    preferredLocales: parseAcceptLanguage(requestHeaders.get("accept-language")),
-    countryCode: requestHeaders.get("cf-ipcountry"),
-  });
+  return {
+    language: detectLanguage({
+      savedLanguage: requestCookies.get(LANGUAGE_PREFERENCE_KEY)?.value ?? null,
+      preferredLocales: parseAcceptLanguage(requestHeaders.get("accept-language")),
+      countryCode: requestHeaders.get("cf-ipcountry"),
+    }),
+    hasKnownAppSession: requestCookies.getAll().some(({ name, value }) => name.startsWith('sb-') && name.endsWith('-auth-token') && Boolean(value)),
+  };
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const language = await getRequestLanguage();
+  const { language } = await getRequestContext();
   const copy = translations[language];
+  const title = `${copy.appName} - ${copy.appSlogan}`;
   return {
-    title: `${copy.appName} - ${copy.appSlogan}`,
+    metadataBase: getSiteOrigin(),
+    title,
     description: copy.appSlogan,
+    alternates: { canonical: '/' },
+    manifest: '/manifest.webmanifest',
     icons: {
       icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
-      apple: [{ url: '/apple-touch-icon.svg', type: 'image/svg+xml' }],
+      apple: [{ url: '/pwa/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+    },
+    openGraph: {
+      type: 'website',
+      title,
+      description: copy.appSlogan,
+      url: '/',
+      siteName: copy.appName,
+      locale: language === 'vi' ? 'vi_VN' : language,
+      images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: copy.appName }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: copy.appSlogan,
+      images: ['/opengraph-image'],
     },
   };
 }
@@ -62,12 +87,41 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const initialLanguage = await getRequestLanguage();
+  const { language: initialLanguage, hasKnownAppSession } = await getRequestContext();
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        name: 'KidHabit Hero',
+        url: getSiteOrigin().toString(),
+        inLanguage: ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'],
+      },
+      {
+        '@type': 'SoftwareApplication',
+        name: 'KidHabit Hero',
+        applicationCategory: 'EducationalApplication',
+        operatingSystem: 'Web',
+        areaServed: { '@type': 'Country', name: 'Vietnam' },
+        offers: PRICING_PLANS.filter((plan) => plan.price > 0).map((plan) => ({
+          '@type': 'Offer',
+          name: plan.name,
+          price: plan.price,
+          priceCurrency: 'VND',
+          url: new URL('/pricing', getSiteOrigin()).toString(),
+        })),
+      },
+    ],
+  };
 
   return (
-    <html lang={initialLanguage} className={`h-full antialiased ${displayFont.variable} ${uiFont.variable} ${monoFont.variable}`} suppressHydrationWarning>
-      <head><script dangerouslySetInnerHTML={{ __html: appearanceScript }} /></head>
+    <html lang={initialLanguage} data-known-app-session={hasKnownAppSession ? 'true' : undefined} className={`h-full antialiased ${displayFont.variable} ${uiFont.variable} ${monoFont.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: appearanceScript }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replaceAll('<', '\\u003c') }} />
+      </head>
       <body className="min-h-full flex flex-col bg-app-surface dark:bg-zinc-950 text-ink dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
+        <PwaRuntime />
         <AppearanceProvider>
           <I18nProvider initialLanguage={initialLanguage}>
             <AnalyticsConsentProvider><ParentReminderProvider>{children}</ParentReminderProvider></AnalyticsConsentProvider>

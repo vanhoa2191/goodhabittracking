@@ -240,7 +240,7 @@ export const zh = {
   physical: '体魄',
   pickAvatarTitle: '挑选你的专属吉祥物',
   pickColorTitle: '挑选你的幸运色',
-  pinPlaceholder: '4位数字PIN码（默认：1234）',
+  pinPlaceholder: '输入4位数字PIN码',
   planActivated: '已开通',
   points: '积分',
   pointsCount: '累积星星',

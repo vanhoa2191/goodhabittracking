@@ -47,16 +47,16 @@ test('a signed-in parent can manage anonymous measurement across responsive and 
   const pendingSave = deferred();
 
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.context().addCookies([{
-    name: `sb-${projectRef}-auth-token`,
+  await page.context().addCookies(Array.from(new Set([projectRef, 'e2e-test']), (ref) => ({
+    name: `sb-${ref}-auth-token`,
     value: `base64-${Buffer.from(JSON.stringify(session)).toString('base64url')}`,
     url: 'http://127.0.0.1:3000/',
-  }]);
+  })));
   await page.route('**/auth/v1/user', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(user) }));
   await page.route('**/rest/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
     const payload = path.endsWith('/family_memberships')
-      ? { family_id: '33333333-3333-4333-8333-333333333333' }
+      ? { family_id: '33333333-3333-4333-8333-333333333333', role: 'owner' }
       : path.endsWith('/user_subscriptions') || path.endsWith('/family_engagement_settings')
         ? null
         : [];

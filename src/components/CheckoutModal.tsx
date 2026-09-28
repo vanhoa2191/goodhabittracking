@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import Link from 'next/link';
 import {
   X,
   Check,
@@ -34,6 +35,16 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [statusErrorMessage, setStatusErrorMessage] = useState<string | null>(null);
   const [timeLeftSeconds, setTimeLeftSeconds] = useState(15 * 60); // 15 minutes countdown
+  const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
+  const [hasConfirmedTerms, setHasConfirmedTerms] = useState(false);
+  const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
+
+  const handleClose = useCallback(() => {
+    setHasAcceptedTerms(false);
+    setHasConfirmedTerms(false);
+    setPaymentData(null);
+    onClose();
+  }, [onClose]);
 
   // Initialize Payment Request from API
   const initPayment = useCallback(async () => {
@@ -59,7 +70,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   }, [plan]);
 
   useEffect(() => {
-    if (!isOpen || !plan) return;
+    if (!isOpen || !plan || (legalPagesApproved && !hasConfirmedTerms)) return;
 
     const initializationTimer = window.setTimeout(() => {
       void initPayment();
@@ -67,7 +78,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
     }, 0);
 
     return () => window.clearTimeout(initializationTimer);
-  }, [isOpen, plan, initPayment]);
+  }, [hasConfirmedTerms, isOpen, legalPagesApproved, plan, initPayment]);
 
   // Countdown timer
   useEffect(() => {
@@ -97,7 +108,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
           await syncNow();
           setIsSuccess(true);
           setTimeout(() => {
-            onClose();
+            handleClose();
           }, 2500);
         } else if (result.success) {
           // Normal check, still pending
@@ -112,7 +123,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
         setIsCheckingStatus(false);
       }
     },
-    [paymentData, isSuccess, syncNow, onClose]
+    [paymentData, isSuccess, syncNow, handleClose]
   );
 
   // Auto poll status every 6 seconds
@@ -139,7 +150,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   const timeFormatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
   return (
-    <ModalShell isOpen={isOpen} onClose={onClose} label={t.checkoutModalTitle} maxWidth="2xl">
+    <ModalShell isOpen={isOpen} onClose={handleClose} label={t.checkoutModalTitle} maxWidth="2xl">
         {/* Modal Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 sticky top-0 z-10">
           <div className="flex items-center gap-3">
@@ -162,7 +173,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
           </div>
 
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="min-w-[40px] min-h-[40px] flex items-center justify-center p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             title={t.close}
             aria-label={t.close}
@@ -174,7 +185,19 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin">
           {/* Success screen */}
-          {isSuccess ? (
+          {legalPagesApproved && !hasConfirmedTerms ? (
+            <div className="space-y-5 rounded-2xl border border-indigo-200 bg-indigo-50 p-5 dark:border-indigo-800 dark:bg-indigo-950/30">
+              <div>
+                <h3 className="text-lg font-black text-slate-900 dark:text-white">Xác nhận trước khi tạo đơn</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Bạn sẽ thanh toán một lần cho kỳ đã chọn. KidHabit không tự động gia hạn hoặc tự động trừ tiền kỳ tiếp theo.</p>
+              </div>
+              <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-indigo-200 bg-white p-4 text-sm font-semibold text-slate-800 dark:border-indigo-800 dark:bg-zinc-900 dark:text-slate-100">
+                <input type="checkbox" checked={hasAcceptedTerms} onChange={(event) => setHasAcceptedTerms(event.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-indigo-600" />
+                <span>Tôi đã đọc và đồng ý với <Link href="/terms" target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Điều khoản sử dụng</Link> và <Link href="/privacy" target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Quyền riêng tư</Link>.</span>
+              </label>
+              <button type="button" disabled={!hasAcceptedTerms} onClick={() => setHasConfirmedTerms(true)} className="min-h-11 w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-extrabold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">Tiếp tục tạo đơn thanh toán</button>
+            </div>
+          ) : isSuccess ? (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-4 animate-fade-in">
               <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center shadow-lg animate-bounce">
                 <Check className="w-10 h-10 stroke-[3]" />

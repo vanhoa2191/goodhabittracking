@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html[data-known-app-session='true'] [data-entry-loading='true'] {
+  visibility: hidden;
+}
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
@@ -99,6 +103,16 @@ html:not(.dark) .text-pink-600 {
 
 button, a, [role="button"] {
   touch-action: manipulation;
+}
+
+.touch-swipe-hint {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .touch-swipe-hint {
+    display: inline;
+  }
 }
 
 button, input, select, textarea {

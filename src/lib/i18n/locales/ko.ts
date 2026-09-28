@@ -235,7 +235,7 @@ export const ko = {
   physical: '신체 건강',
   pickAvatarTitle: '나만의 수호 마스코트 선택',
   pickColorTitle: '행운의 대표 색상 선택',
-  pinPlaceholder: '숫자 4자리 (기본: 1234)',
+  pinPlaceholder: '4자리 PIN 입력',
   planActivated: '활성화됨',
   points: '포인트',
   pointsCount: '개 모음',

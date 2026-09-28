@@ -6,14 +6,14 @@ describe('operational telemetry redaction', () => {
     expect(sanitizeEvent({
       operation: 'payment_webhook',
       reasonCode: 'signature_invalid',
-      correlationId: 'trace-1',
+      correlationId: '11111111-1111-4111-8111-111111111111',
       token: 'secret',
       email: 'child@example.com',
       payload: { apiKey: 'secret' },
     })).toEqual({
       operation: 'payment_webhook',
       reasonCode: 'signature_invalid',
-      correlationId: 'trace-1',
+      correlationId: '11111111-1111-4111-8111-111111111111',
     });
   });
 

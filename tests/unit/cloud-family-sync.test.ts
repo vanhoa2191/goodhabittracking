@@ -10,6 +10,7 @@ describe('cloud family sync', () => {
   it('builds one typed snapshot and joins group memberships', async () => {
     const reader = vi.fn(async () => ({
       familyId,
+      familyRole: 'caregiver' as const,
       profiles: [],
       activities: [],
       logs: [],
@@ -43,6 +44,7 @@ describe('cloud family sync', () => {
     expect(reader).toHaveBeenCalledWith(userId);
     expect(snapshot).toMatchObject({
       familyId,
+      familyRole: 'caregiver',
       subscriptionPlan: 'monthly',
       trialEndsAt: null,
       subscriptionEndsAt: '2027-09-20T00:00:00.000Z',
@@ -58,6 +60,7 @@ describe('cloud family sync', () => {
   it('defaults a missing subscription to the free plan', async () => {
     const reader = vi.fn(async () => ({
       familyId,
+      familyRole: 'owner' as const,
       profiles: [], activities: [], logs: [], rewards: [], redemptions: [],
       childBadges: [], kudos: [], groups: [], groupMembers: [], subscription: null,
     }));
@@ -72,6 +75,7 @@ describe('cloud family sync', () => {
   it('rejects malformed cloud rows before state hydration', async () => {
     const reader = vi.fn(async () => ({
       familyId,
+      familyRole: 'owner' as const,
       profiles: [], activities: [], logs: [], rewards: [], redemptions: [],
       childBadges: [], kudos: [],
       groups: [{ id: 'not-a-uuid' }],

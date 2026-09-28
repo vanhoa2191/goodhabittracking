@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useSyncExternalStore } from 'react';
+import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { KidDashboard } from '@/components/KidDashboard';
@@ -15,11 +15,13 @@ import { Portrait16Modal } from '@/components/Portrait16Modal';
 import { demoSessionCopy } from '@/lib/i18n/demo-session-copy';
 import { readPaymentStatus } from '@/lib/billing/payment-client';
 import { CustomerProfilePrompt } from '@/components/CustomerProfilePrompt';
+import { CaregiverDashboard } from '@/components/CaregiverDashboard';
 
 const IN_APP_SESSION_KEY = 'kidhabit_in_app';
 const DEMO_SESSION_KEY = 'kidhabit_demo_session';
 const IN_APP_SESSION_EVENT = 'kidhabit-in-app-change';
 const PAYMENT_RETURN_QUERY_KEYS = ['payment', 'orderCode', 'code', 'id', 'cancel', 'status'] as const;
+const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
 
 type PaymentReturnState = 'checking' | 'activated' | 'pending' | 'cancelled' | 'error';
 
@@ -50,6 +52,7 @@ export default function Home() {
     isEntryReady,
     isFamilyConnected,
     currentUser,
+    familyRole,
     loginWithGoogle,
     isPricingModalOpen,
     setIsPricingModalOpen,
@@ -84,9 +87,11 @@ export default function Home() {
     showLanding: boolean;
   } | null>(null);
   const [paymentReturnState, setPaymentReturnState] = useState<PaymentReturnState | null>(null);
+  const handledPublicEntry = useRef(false);
   const showLanding = isFamilyConnected && !currentUser ? false : landingSelection?.userId === currentUserId
     ? landingSelection.showLanding
     : defaultShowLanding;
+  const renderLanding = !isEntryReady || showLanding;
 
   useEffect(() => {
     const currentUrl = new URL(window.location.href);
@@ -173,22 +178,42 @@ export default function Home() {
     });
   };
 
-  if (!isEntryReady) {
-    return <div data-testid="app-surface" data-app-mode="loading" role="status" aria-label={language === 'vi' ? 'Đang mở KidHabit' : 'Opening KidHabit'} className="flex min-h-screen items-center justify-center bg-white text-lg font-semibold text-indigo-700 dark:bg-zinc-950 dark:text-indigo-200">{language === 'vi' ? 'Đang mở KidHabit…' : 'Opening KidHabit…'}</div>;
-  }
+  useEffect(() => {
+    if (!isEntryReady || handledPublicEntry.current) return;
+    const currentUrl = new URL(window.location.href);
+    const wantsPricing = currentUrl.searchParams.get('pricing') === '1';
+    const wantsDemo = currentUrl.searchParams.get('demo') === '1';
+    if (!wantsPricing && !wantsDemo) return;
+
+    handledPublicEntry.current = true;
+    currentUrl.searchParams.delete('pricing');
+    currentUrl.searchParams.delete('demo');
+    window.history.replaceState(window.history.state, '', `${currentUrl.pathname}${currentUrl.search}${currentUrl.hash}`);
+
+    if (wantsPricing) {
+      setIsPricingModalOpen(true);
+      return;
+    }
+
+    startDemoSession();
+    sessionStorage.setItem(IN_APP_SESSION_KEY, 'true');
+    sessionStorage.setItem(DEMO_SESSION_KEY, 'true');
+    window.dispatchEvent(new Event(IN_APP_SESSION_EVENT));
+  }, [currentUserId, isEntryReady, setIsPricingModalOpen, startDemoSession]);
 
   return (
     <div
       data-testid="app-surface"
-      data-app-mode={showLanding ? 'landing' : mode}
+      data-app-mode={!isEntryReady ? 'loading' : renderLanding ? 'landing' : mode}
+      data-entry-loading={!isEntryReady ? 'true' : undefined}
       className={`min-h-screen flex flex-col justify-between transition-colors ${
-        showLanding ? 'app-mode-landing' : mode === 'kid' ? 'app-mode-kid' : 'app-mode-parent'
+        renderLanding ? 'app-mode-landing' : mode === 'kid' ? 'app-mode-kid' : 'app-mode-parent'
       }`}
     >
       <div>
         <Header
           onToggleLanding={canOpenApp && !(isFamilyConnected && !currentUser) ? handleToggleLanding : undefined}
-          isLanding={showLanding}
+          isLanding={renderLanding}
           hasAppSession={canOpenApp}
         />
         {paymentReturnState && (
@@ -207,7 +232,7 @@ export default function Home() {
           </div>
         )}
         <main>
-          {showLanding ? (
+          {renderLanding ? (
             <LandingPage
               onStartDemo={canOpenApp ? handleToggleLanding : handleStartDemo}
               onLoginGoogle={loginWithGoogle}
@@ -218,12 +243,14 @@ export default function Home() {
               {isDemoSession && !currentUser && (
                 <div role="status" className="mx-auto mt-3 flex max-w-5xl flex-col gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
                   <span><strong>{demoCopy.label}</strong> {demoCopy.notice}</span>
-                  <button type="button" onClick={loginWithGoogle} className="min-h-11 rounded-xl bg-amber-600 px-4 font-bold text-white hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">
+                  <button type="button" onClick={loginWithGoogle} className="min-h-11 rounded-xl bg-amber-700 px-4 font-bold text-white hover:bg-amber-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">
                     {demoCopy.setup}
                   </button>
                 </div>
               )}
-              {mode === 'kid' ? <KidDashboard /> : <ParentDashboard />}
+              {currentUser && familyRole === 'caregiver'
+                ? <CaregiverDashboard />
+                : mode === 'kid' ? <KidDashboard /> : <ParentDashboard />}
             </>
           )}
         </main>
@@ -236,7 +263,15 @@ export default function Home() {
             <span className="min-w-0 break-words">{t.appName} &bull; {t.appSlogan}</span>
           </p>
           <span className="hidden sm:inline text-slate-300 dark:text-zinc-700">&bull;</span>
+          {!(isFamilyConnected && !currentUser) && <Link href="/pricing" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Bảng giá' : 'Pricing'}</Link>}
+          {!(isFamilyConnected && !currentUser) && <Link href="/framework" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Khung thói quen' : 'Framework'}</Link>}
+          {!(isFamilyConnected && !currentUser) && <Link href="/roadmaps" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Lộ trình' : 'Roadmaps'}</Link>}
           {!(isFamilyConnected && !currentUser) && <Link href="/docs" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>}
+          {legalPagesApproved && !(isFamilyConnected && !currentUser) && <>
+            <Link href="/privacy" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Quyền riêng tư</Link>
+            <Link href="/terms" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Điều khoản</Link>
+            <Link href="/contact" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Liên hệ</Link>
+          </>}
         </div>
       </footer>
 
@@ -261,7 +296,7 @@ export default function Home() {
         isOpen={isPortraitModalOpen}
         onClose={() => setIsPortraitModalOpen(false)}
       />
-      <CustomerProfilePrompt userId={currentUserId} />
+      <CustomerProfilePrompt key={currentUserId ?? 'signed-out'} userId={currentUserId} />
     </div>
   );
 }

@@ -1,11 +1,11 @@
 import { expect, test } from '@playwright/test';
+import { setupOrUnlockParent } from './pin-helper';
 
 test('a parent pauses a local family and the child sees a pressure-free break', async ({ page }, testInfo) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const pinDialog = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) await pinDialog.getByRole('button', { name: digit, exact: true }).click();
+  await setupOrUnlockParent(page);
 
   await page.getByRole('tab', { name: 'Gia đình' }).click();
   await page.getByRole('tab', { name: 'Cài đặt' }).click();
@@ -36,8 +36,7 @@ test('a parent pauses a local family and the child sees a pressure-free break', 
   await expect(page.getByTestId('habit-fire')).toHaveCount(0);
 
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
-  const unlock = page.getByRole('dialog', { name: 'Nhập mã PIN phụ huynh' });
-  for (const digit of ['1', '2', '3', '4']) await unlock.getByRole('button', { name: digit, exact: true }).click();
+  await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Gia đình' }).click();
   await page.getByRole('tab', { name: 'Cài đặt' }).click();
   const resumedPanel = page.getByRole('region', { name: 'Nhịp nghỉ của gia đình' });

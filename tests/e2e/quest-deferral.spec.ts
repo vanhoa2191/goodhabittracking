@@ -4,7 +4,7 @@ import type { Page } from '@playwright/test';
 test('a child can defer and restore a task without losing it on reload', async ({ page }) => {
   // Given: a child is exploring the local demo and has an unfinished task.
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   const firstTask = page.locator('[data-task-card]').first();
   const activityId = await firstTask.getAttribute('data-activity-id');
   expect(activityId).not.toBeNull();
@@ -35,7 +35,7 @@ test('a child can defer and restore a task without losing it on reload', async (
 test('a phone swipe defers left and completes right without stealing vertical scroll', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'Touch gestures are verified on a mobile browser.');
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   const cards = page.locator('[data-task-card]');
   const firstId = await cards.nth(0).getAttribute('data-activity-id');
   const secondId = await cards.nth(1).getAttribute('data-activity-id');
@@ -72,20 +72,20 @@ test('a phone swipe defers left and completes right without stealing vertical sc
 test('completing a deferred task clears its choice even after undo', async ({ page }) => {
   // Given: a task is deferred in the local demo.
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   const activityId = await page.locator('[data-task-card]').first().getAttribute('data-activity-id');
   const task = page.locator(`[data-task-card][data-activity-id="${activityId}"]`);
   await task.getByRole('button', { name: 'Để sau', exact: true }).click();
   await expect(task).toHaveAttribute('data-deferred', 'true');
 
   // When: the child completes that deferred task.
-  await task.getByRole('button', { name: 'Nhiệm vụ', exact: true }).click();
+  await task.getByRole('button', { name: /Đánh dấu nhiệm vụ/ }).click();
 
   // Then: the completed task is no longer deferred, including after undo.
   const sameTask = page.locator(`[data-task-card][data-activity-id="${activityId}"]`);
   await expect(sameTask).toHaveAttribute('data-complete', 'true');
   await expect(sameTask).toHaveAttribute('data-deferred', 'false');
-  await sameTask.getByRole('button', { name: 'Đã xong', exact: true }).click();
+  await sameTask.getByRole('button', { name: /Bỏ đánh dấu nhiệm vụ/ }).click();
   await expect(sameTask).toHaveAttribute('data-complete', 'false');
   await expect(sameTask).toHaveAttribute('data-deferred', 'false');
 });
@@ -202,7 +202,7 @@ test('an older paired read cannot overwrite a newly saved choice', async ({ page
 
 test('deferred quest labels fit all locales and screen widths', async ({ page }, testInfo) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
   await page.locator('[data-task-card]').first().getByRole('button', { name: 'Để sau', exact: true }).click();
   const locales = ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'] as const;
   for (const locale of locales) {

@@ -7,7 +7,7 @@ test.use({ timezoneId: 'Asia/Ho_Chi_Minh' });
 test('a demo child reads one morning letter and keeps it after reload', async ({ page }, testInfo) => {
   await page.clock.setFixedTime(new Date('2026-09-23T01:00:00.000Z'));
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
 
   const letter = page.getByTestId('morning-mascot-letter');
   await expect(letter).toContainText('Thư buổi sáng từ Leo');

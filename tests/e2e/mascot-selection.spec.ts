@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('a child can choose a 3D companion and keep its paired theme', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
 
   const leo = page.getByRole('img', { name: 'Leo' });
   await expect(leo).toBeVisible();
@@ -28,7 +28,7 @@ test('a child can choose a 3D companion and keep its paired theme', async ({ pag
 
 test('sound control stays visible in the child header across screen sizes', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
 
   for (const width of [375, 768, 1280]) {
     await page.setViewportSize({ width, height: 812 });
@@ -43,7 +43,7 @@ test('sound control stays visible in the child header across screen sizes', asyn
 
 test('a demo family keeps its mascot choice after reload', async ({ page }, testInfo) => {
   await page.goto('/');
-  await page.getByRole('button', { name: /Khám phá thử ngay/ }).click();
+  await page.getByTestId('landing-primary-action').click();
 
   await page.getByTitle('Đổi hình đại diện & Màu sắc').click();
   const picker = page.getByRole('dialog', { name: 'Chọn hình đại diện' });

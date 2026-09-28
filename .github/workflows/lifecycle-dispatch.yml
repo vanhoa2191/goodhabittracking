@@ -1,0 +1,33 @@
+name: Lifecycle dispatch
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CRON_SECRET: ${{ secrets.LIFECYCLE_CRON_SECRET }}
+    steps:
+      - name: Check configuration
+        id: configuration
+        run: |
+          if [ -n "$CRON_SECRET" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Lifecycle dispatch skipped: configure LIFECYCLE_CRON_SECRET."
+          fi
+      - name: Dispatch lifecycle outbox
+        if: steps.configuration.outputs.ready == 'true'
+        run: |
+          curl --fail --silent --show-error --retry 2 \
+            --request POST \
+            --header "Authorization: Bearer $CRON_SECRET" \
+            https://goodhabittracking.vanhoa2191.workers.dev/api/internal/lifecycle/dispatch

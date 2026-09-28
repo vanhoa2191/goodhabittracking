@@ -33,6 +33,8 @@ const PARENT_ROLES = [
   'guardian',
 ] as const;
 
+const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
+
 type ParentRole = (typeof PARENT_ROLES)[number];
 
 export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
@@ -436,6 +438,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   {copy.consent}
                 </span>
               </label>
+              {legalPagesApproved && <p className="text-center text-xs text-slate-600 dark:text-slate-300">Xem <Link href="/privacy" target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">Quyền riêng tư</Link> và <Link href="/terms" target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">Điều khoản sử dụng</Link> trước khi tiếp tục.</p>}
 
               {submitError && (
                 <p role="alert" className="rounded-xl bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-200">

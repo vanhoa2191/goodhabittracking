@@ -29,6 +29,8 @@ export default defineConfig({
           NEXT_PUBLIC_DAILY_MASCOT_LETTER: 'true',
           NEXT_PUBLIC_DAILY_JOURNAL: 'true',
           NEXT_PUBLIC_PARENT_REENGAGEMENT: 'true',
+          KIDHABIT_E2E_ADMIN_BYPASS: 'true',
+          NEXT_PUBLIC_ENABLE_PWA_DEV: 'true',
         },
         url: baseURL,
         reuseExistingServer: !process.env.CI,

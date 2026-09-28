@@ -11,6 +11,7 @@ export const cloudFamilyIds = {
 } as const;
 
 type CloudFamilyFixtureOptions = {
+  readonly familyRole?: 'owner' | 'parent' | 'guardian' | 'caregiver';
   readonly profiles?: readonly Record<string, unknown>[];
   readonly activities?: readonly Record<string, unknown>[];
   readonly rewards?: readonly Record<string, unknown>[];
@@ -92,11 +93,12 @@ export async function installCloudFamilyFixture(
     user,
   };
 
-  await page.context().addCookies([{
-    name: `sb-${projectRef}-auth-token`,
+  const projectRefs = new Set([projectRef, 'e2e-test']);
+  await page.context().addCookies(Array.from(projectRefs, (ref) => ({
+    name: `sb-${ref}-auth-token`,
     value: `base64-${Buffer.from(JSON.stringify(session)).toString('base64url')}`,
     url: new URL(baseURL ?? 'http://127.0.0.1:3000').origin,
-  }]);
+  })));
   await page.route('**/auth/v1/user', (route) => route.fulfill({
     status: 200,
     contentType: 'application/json',
@@ -105,7 +107,10 @@ export async function installCloudFamilyFixture(
   await page.route('**/rest/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
     let payload: unknown = [];
-    if (path.endsWith('/family_memberships')) payload = { family_id: cloudFamilyIds.family };
+    if (path.endsWith('/family_memberships')) payload = {
+      family_id: cloudFamilyIds.family,
+      role: options.familyRole ?? 'owner',
+    };
     else if (path.endsWith('/child_profiles')) payload = options.profiles ?? [defaultCloudProfile];
     else if (path.endsWith('/habit_activities')) payload = options.activities ?? [];
     else if (path.endsWith('/rewards')) payload = options.rewards ?? [];
