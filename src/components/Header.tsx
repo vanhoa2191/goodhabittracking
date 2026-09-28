@@ -36,12 +36,11 @@ import { ThemeSelector } from '@/components/ThemeSelector';
 import { MascotAvatar } from '@/components/MascotAvatar';
 
 interface HeaderProps {
-  onToggleLanding?: () => void;
-  isLanding?: boolean;
   hasAppSession?: boolean;
+  marketingHomeUrl: string;
 }
 
-export function Header({ onToggleLanding, isLanding, hasAppSession = false }: HeaderProps = {}) {
+export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps) {
   const {
     mode,
     setMode,
@@ -101,8 +100,9 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
   };
 
   const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === language) || SUPPORTED_LANGUAGES[0];
-  const shell = isLanding ? 'landing' : mode;
-  const landingSwitchLabel = isLanding ? t.landingBackToApp : language === 'vi' ? 'Trang chủ' : 'Home';
+  const shell = mode;
+  const marketingDocsUrl = new URL('/docs/', marketingHomeUrl).href;
+  const homeLabel = language === 'vi' ? 'Trang chủ' : 'Home';
 
   if (isFamilyConnected && !currentUser) {
     return (
@@ -146,9 +146,9 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
       >
         <div className="mx-auto flex h-16 w-full max-w-[1536px] items-center justify-between gap-1.5 px-3 sm:gap-2 sm:px-6">
           {/* Left: Logo & Slogan */}
-          <div
-            onClick={onToggleLanding ? onToggleLanding : undefined}
-            className={`${hasDashboardAccess && !isLanding ? 'hidden min-[430px]:flex' : 'flex'} items-center gap-2 sm:gap-3 shrink-0 ${onToggleLanding ? 'cursor-pointer hover:opacity-90 transition-opacity' : ''}`}
+          <Link
+            href={marketingHomeUrl}
+            className={`${hasDashboardAccess ? 'hidden min-[430px]:flex' : 'flex'} items-center gap-2 sm:gap-3 shrink-0 hover:opacity-90 transition-opacity`}
             title={t.appName}
           >
             <BrandMark className="w-9 h-9 sm:w-10 sm:h-10 shrink-0" label={t.appName} />
@@ -160,10 +160,10 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
                 {t.appSlogan}
               </span>
             </div>
-          </div>
+          </Link>
 
           {/* Center: Multi-Child Profile Switcher (Only when logged in and in Dashboard mode) */}
-          {hasDashboardAccess && !isLanding && profiles.length > 0 && (
+          {hasDashboardAccess && profiles.length > 0 && (
             <div className="relative shrink-0">
               <button
                 type="button"
@@ -223,7 +223,7 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
 
           {/* Right Action Controls */}
           <div className="flex items-center gap-1 sm:gap-2">
-            <Link href="/docs" className="hidden min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-zinc-800 lg:flex"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Tài liệu' : 'Docs'}</Link>
+            <Link href={marketingDocsUrl} className="hidden min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-zinc-800 lg:flex"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Tài liệu' : 'Docs'}</Link>
             <div className="hidden 2xl:block">
               <ThemeSelector compact />
             </div>
@@ -314,21 +314,16 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
               <span>{copy.portraitGuideShort}</span>
             </button>
 
-            {onToggleLanding && (
-              <button
-                type="button"
-                onClick={onToggleLanding}
-                aria-label={landingSwitchLabel}
-                className={`${hasDashboardAccess && !isLanding && mode === 'kid' ? 'hidden lg:flex' : 'flex'} ${mode === 'parent' && !isLanding ? 'max-lg:min-w-11 max-lg:justify-center max-lg:px-2' : ''} min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
-                  isLanding
-                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none'
-                    : 'bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60'
-                }`}
-                title={landingSwitchLabel}
+            {hasDashboardAccess && mode === 'parent' && (
+              <Link
+                href={marketingHomeUrl}
+                aria-label={homeLabel}
+                className="flex min-h-[38px] items-center gap-1.5 rounded-full border border-indigo-200/60 bg-indigo-50 px-3 py-1.5 text-xs font-bold text-indigo-700 shadow-xs transition-transform hover:-translate-y-0.5 hover:bg-indigo-100 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-indigo-800/60 dark:bg-indigo-950/60 dark:text-indigo-300 max-lg:min-w-11 max-lg:justify-center max-lg:px-2"
+                title={homeLabel}
               >
                 <House className="w-4 h-4" aria-hidden="true" />
-                <span className={mode === 'parent' && !isLanding ? 'hidden lg:inline' : ''}>{landingSwitchLabel}</span>
-              </button>
+                <span className="hidden lg:inline">{homeLabel}</span>
+              </Link>
             )}
 
             {/* Google Account */}
@@ -386,7 +381,7 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
             )}
 
             {/* Pro Subscription Badge / Upgrade Button */}
-            {(isLanding || mode === 'parent') && <button
+            {mode === 'parent' && <button
               type="button"
               onClick={openPricingModal}
               className={`max-[429px]:hidden min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-black transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
@@ -582,7 +577,7 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
 
                     <ThemeSelector />
 
-                    {(isLanding || mode === 'parent') && (
+                    {mode === 'parent' && (
                       <button
                         type="button"
                         onClick={openPricingModal}
@@ -593,7 +588,7 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
                       </button>
                     )}
 
-                    <Link href="/docs" onClick={() => setIsMobileMenuOpen(false)} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-indigo-50 px-3 text-sm font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>
+                    <Link href={marketingDocsUrl} onClick={() => setIsMobileMenuOpen(false)} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-indigo-50 px-3 text-sm font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>
 
                     {/* Quick Tools: Font Settings & Sound */}
                     <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100 dark:border-zinc-800">
@@ -667,18 +662,15 @@ export function Header({ onToggleLanding, isLanding, hasAppSession = false }: He
                       )}
                     </div>
 
-                    {/* Landing Page Guide Switcher if available */}
-                    {onToggleLanding && (
-                      <button
-                        onClick={() => {
-                          onToggleLanding();
-                          setIsMobileMenuOpen(false);
-                        }}
+                    {mode === 'parent' && (
+                      <Link
+                        href={marketingHomeUrl}
+                        onClick={() => setIsMobileMenuOpen(false)}
                         className="w-full py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 text-xs font-bold text-indigo-700 dark:text-indigo-300 flex items-center justify-center gap-1.5"
                       >
-                        <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                        <span>{landingSwitchLabel}</span>
-                      </button>
+                        <House className="w-3.5 h-3.5 text-indigo-600" />
+                        <span>{homeLabel}</span>
+                      </Link>
                     )}
 
                     {/* Storage Mode Notice (Only when logged in) */}

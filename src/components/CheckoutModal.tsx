@@ -16,12 +16,15 @@ import { createPaymentOrder, readPaymentStatus } from '@/lib/billing/payment-cli
 import { useTranslation } from '@/lib/i18n/context';
 import { CheckoutPaymentDetails } from '@/components/CheckoutPaymentDetails';
 import { ModalShell } from '@/components/ui/ModalShell';
+import { getMarketingOrigin } from '@/lib/site';
 
 interface CheckoutModalProps {
   isOpen: boolean;
   onClose: () => void;
   plan: PricingPlan | null;
 }
+
+const marketingOrigin = getMarketingOrigin();
 
 export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   const { syncNow, currentUser, familyId, familyRole } = useAppStore();
@@ -203,7 +206,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
               </div>
               <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-indigo-200 bg-white p-4 text-sm font-semibold text-slate-800 dark:border-indigo-800 dark:bg-zinc-900 dark:text-slate-100">
                 <input type="checkbox" checked={hasAcceptedTerms} onChange={(event) => setHasAcceptedTerms(event.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-indigo-600" />
-                <span>Tôi đã đọc và đồng ý với <Link href="/terms" target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Điều khoản sử dụng</Link> và <Link href="/privacy" target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Quyền riêng tư</Link>.</span>
+                <span>Tôi đã đọc và đồng ý với <Link href={new URL('/terms/', marketingOrigin).href} target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Điều khoản sử dụng</Link> và <Link href={new URL('/privacy/', marketingOrigin).href} target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Quyền riêng tư</Link>.</span>
               </label>
               <button type="button" disabled={!hasAcceptedTerms} onClick={() => setHasConfirmedTerms(true)} className="min-h-11 w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-extrabold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">Tiếp tục tạo đơn thanh toán</button>
             </div>

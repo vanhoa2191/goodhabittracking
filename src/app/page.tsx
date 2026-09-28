@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import Link from 'next/link';
+import React, { useEffect, useRef, useSyncExternalStore } from 'react';
 import { Header } from '@/components/Header';
 import { KidDashboard } from '@/components/KidDashboard';
 import { ParentDashboard } from '@/components/ParentDashboard';
-import { LandingPage } from '@/components/LandingPage';
+import { AppEntryGate } from '@/components/AppEntryGate';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { PricingModal } from '@/components/PricingModal';
@@ -16,11 +15,12 @@ import { demoSessionCopy } from '@/lib/i18n/demo-session-copy';
 import { CustomerProfilePrompt } from '@/components/CustomerProfilePrompt';
 import { CaregiverDashboard } from '@/components/CaregiverDashboard';
 import { PaymentReturnNotice } from '@/components/PaymentReturnNotice';
+import { getMarketingOrigin } from '@/lib/site';
 
 const IN_APP_SESSION_KEY = 'kidhabit_in_app';
 const DEMO_SESSION_KEY = 'kidhabit_demo_session';
 const IN_APP_SESSION_EVENT = 'kidhabit-in-app-change';
-const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
+const marketingOrigin = getMarketingOrigin();
 
 function subscribeToInAppSession(onStoreChange: () => void) {
   window.addEventListener('storage', onStoreChange);
@@ -61,6 +61,7 @@ export default function Home() {
     isPortraitModalOpen,
     setIsPortraitModalOpen,
     startDemoSession,
+    openConnectModal,
   } = useAppStore();
   const { t, language } = useTranslation();
   const demoCopy = demoSessionCopy[language];
@@ -77,31 +78,14 @@ export default function Home() {
   );
   const currentUserId = currentUser?.id ?? null;
   const canOpenApp = Boolean(currentUser || isFamilyConnected || isDemoSession || sessionInApp);
-  const defaultShowLanding = !canOpenApp;
-  const [landingSelection, setLandingSelection] = useState<{
-    userId: string | null;
-    showLanding: boolean;
-  } | null>(null);
   const handledPublicEntry = useRef(false);
-  const showLanding = isFamilyConnected && !currentUser ? false : landingSelection?.userId === currentUserId
-    ? landingSelection.showLanding
-    : defaultShowLanding;
-  const renderLanding = !isEntryReady || showLanding;
+  const renderGateway = !isEntryReady || !canOpenApp;
 
   const handleStartDemo = () => {
     startDemoSession();
     sessionStorage.setItem(IN_APP_SESSION_KEY, 'true');
     sessionStorage.setItem(DEMO_SESSION_KEY, 'true');
     window.dispatchEvent(new Event(IN_APP_SESSION_EVENT));
-    setLandingSelection({ userId: currentUserId, showLanding: false });
-  };
-
-  const handleToggleLanding = () => {
-    if (!canOpenApp || (isFamilyConnected && !currentUser)) return;
-    setLandingSelection({
-      userId: currentUserId,
-      showLanding: !showLanding,
-    });
   };
 
   useEffect(() => {
@@ -130,25 +114,23 @@ export default function Home() {
   return (
     <div
       data-testid="app-surface"
-      data-app-mode={!isEntryReady ? 'loading' : renderLanding ? 'landing' : mode}
+      data-app-mode={!isEntryReady ? 'loading' : renderGateway ? 'gateway' : mode}
       data-entry-loading={!isEntryReady ? 'true' : undefined}
       className={`min-h-screen flex flex-col justify-between transition-colors ${
-        renderLanding ? 'app-mode-landing' : mode === 'kid' ? 'app-mode-kid' : 'app-mode-parent'
+        renderGateway ? 'app-mode-parent' : mode === 'kid' ? 'app-mode-kid' : 'app-mode-parent'
       }`}
     >
       <div>
-        <Header
-          onToggleLanding={canOpenApp && !(isFamilyConnected && !currentUser) ? handleToggleLanding : undefined}
-          isLanding={renderLanding}
-          hasAppSession={canOpenApp}
-        />
+        <Header hasAppSession={canOpenApp} marketingHomeUrl={marketingOrigin.href} />
         <PaymentReturnNotice />
         <main>
-          {renderLanding ? (
-            <LandingPage
-              onStartDemo={canOpenApp ? handleToggleLanding : handleStartDemo}
+          {renderGateway ? (
+            <AppEntryGate
+              isLoading={!isEntryReady}
+              marketingHomeUrl={marketingOrigin.href}
+              onOpenPairing={openConnectModal}
+              onStartDemo={handleStartDemo}
               onLoginGoogle={loginWithGoogle}
-              isLoggedIn={canOpenApp}
             />
           ) : (
             <>
@@ -175,15 +157,11 @@ export default function Home() {
             <span className="min-w-0 break-words">{t.appName} &bull; {t.appSlogan}</span>
           </p>
           <span className="hidden sm:inline text-slate-300 dark:text-zinc-700">&bull;</span>
-          {!(isFamilyConnected && !currentUser) && <Link href="/pricing" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Bảng giá' : 'Pricing'}</Link>}
-          {!(isFamilyConnected && !currentUser) && <Link href="/framework" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Khung thói quen' : 'Framework'}</Link>}
-          {!(isFamilyConnected && !currentUser) && <Link href="/roadmaps" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Lộ trình' : 'Roadmaps'}</Link>}
-          {!(isFamilyConnected && !currentUser) && <Link href="/docs" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>}
-          {legalPagesApproved && !(isFamilyConnected && !currentUser) && <>
-            <Link href="/privacy" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Quyền riêng tư</Link>
-            <Link href="/terms" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Điều khoản</Link>
-            <Link href="/contact" className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Liên hệ</Link>
-          </>}
+          {!(isFamilyConnected && !currentUser) && <a href={new URL('/pricing/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Bảng giá' : 'Pricing'}</a>}
+          {!(isFamilyConnected && !currentUser) && <a href={new URL('/docs/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</a>}
+          {!(isFamilyConnected && !currentUser) && <a href={new URL('/privacy/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Quyền riêng tư</a>}
+          {!(isFamilyConnected && !currentUser) && <a href={new URL('/terms/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Điều khoản</a>}
+          {!(isFamilyConnected && !currentUser) && <a href={new URL('/contact/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Liên hệ</a>}
         </div>
       </footer>
 

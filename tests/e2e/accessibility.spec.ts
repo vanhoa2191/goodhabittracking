@@ -46,6 +46,9 @@ test('@a11y parent approvals, rewards and settings have no serious or critical v
 
 test('@a11y pricing dialog traps focus, closes with Escape, and restores focus', async ({ page }) => {
   await page.goto('/');
+  await page.getByTestId('landing-primary-action').click();
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  await setupOrUnlockParent(page);
 
   const opener = await getVisiblePricingOpener(page);
   await opener.focus();
