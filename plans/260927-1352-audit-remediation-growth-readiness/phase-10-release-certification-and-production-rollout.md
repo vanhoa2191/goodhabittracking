@@ -1,6 +1,6 @@
 ---
 title: "Phase 10: Release Certification and Production Rollout"
-status: todo
+status: in-progress
 phase: 10
 priority: P0
 effort: "4-6 days plus staged observation"
@@ -53,6 +53,7 @@ Chứng nhận toàn bộ hành trình trên staging/production, rollout theo l�
 - `npm run verify:live-lifecycle` passed against the configured production origin: persistent pairing, credential rotation, child completion, parent approval, reward delivery, reconnect, revoke and owner deletion. The verifier used one synthetic family and cleaned it up in `finally`; this does not prove PayOS, device-camera or release-SHA coverage.
 - Supabase migration preflight listed exactly four pending migrations (`202609270004` through `202609280003`); `supabase db push --yes` applied them, and a subsequent migration list showed local/remote parity. Production `/api/health` then returned HTTP 200 with `status=ready` and all dependency checks true.
 - Supabase Free has no managed scheduled backup/PITR available in the dashboard; local schema-only dump was not produced because Docker/Podman and `pg_dump` are unavailable. Backup/rollback evidence remains open for the release gate.
+- Cloudflare Worker deploy from commit `d6818e6` completed as version `c66d1b58-b2ed-4068-970a-16e4a0ebc1e1`. Post-deploy checks returned HTTP 200/`ready`, all dependency checks true, public landing/pricing/manifest 200, and both live verifiers passed again against the deployed origin.
 
 ## Success Criteria
 
