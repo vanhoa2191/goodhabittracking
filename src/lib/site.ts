@@ -2,15 +2,31 @@ import type { Metadata } from 'next';
 
 export const productionOrigin = 'https://goodhabittracking.vanhoa2191.workers.dev';
 
-export function getSiteOrigin(): URL {
-  const configured = process.env.NEXT_PUBLIC_APP_URL?.trim();
-  if (!configured) return new URL(productionOrigin);
-
+function resolveOrigin(configured: string | undefined, fallback: string): URL {
   try {
-    return new URL(configured);
+    const url = new URL(configured?.trim() || fallback);
+    if (url.protocol === 'https:' || url.protocol === 'http:') return new URL(url.origin);
   } catch {
-    return new URL(productionOrigin);
+    return new URL(fallback);
   }
+  return new URL(fallback);
+}
+
+export function getAppOrigin(): URL {
+  return resolveOrigin(process.env.NEXT_PUBLIC_APP_URL, productionOrigin);
+}
+
+export function getMarketingOrigin(): URL {
+  return resolveOrigin(process.env.NEXT_PUBLIC_MARKETING_URL, getAppOrigin().origin);
+}
+
+export function getDeployTarget(): 'combined' | 'marketing' | 'app' {
+  const target = process.env.NEXT_PUBLIC_DEPLOY_TARGET?.trim();
+  return target === 'marketing' || target === 'app' ? target : 'combined';
+}
+
+export function getSiteOrigin(): URL {
+  return getAppOrigin();
 }
 
 export function publicPageMetadata({
