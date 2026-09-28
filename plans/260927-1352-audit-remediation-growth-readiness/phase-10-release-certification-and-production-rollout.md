@@ -47,6 +47,10 @@ Chứng nhận toàn bộ hành trình trên staging/production, rollout theo l�
 - [ ] Production health/dependency checks xanh sau deploy.
 - [ ] Rollback drill hoặc dry-run có thời gian/owner rõ.
 
+## Verification evidence
+
+- `npm run verify:live-boundaries` passed against the configured Supabase project: anonymous access denied, same-family access allowed, cross-family access denied. The verifier used synthetic accounts/fixtures and cleaned them up in `finally`; this does not replace migration backup/preflight or exact-SHA production certification.
+
 ## Success Criteria
 
 Production đáp ứng global acceptance criteria, không có regression P0/P1 mới trong observation window và operator có thể rollback an toàn mà không xóa dữ liệu.
