@@ -36,7 +36,7 @@ function renderHeader(appOrigin) {
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Mở trình đơn">${icon('menu')}</button>
       <nav id="primary-navigation" class="primary-nav" aria-label="Điều hướng chính">
         ${navigation.map((item) => `<a href="${item.href}">${escapeHtml(item.label)}</a>`).join('')}
-        <a href="${appUrl(appOrigin, '/login')}" class="nav-login">Đăng nhập</a>
+        <a href="${appUrl(appOrigin, '/')}" class="nav-login">Đăng nhập</a>
         <a href="${appUrl(appOrigin, '/checkout?plan=monthly')}" class="button button-small">Dùng thử 7 ngày</a>
       </nav>
     </div>
@@ -51,7 +51,7 @@ function renderFooter(appOrigin) {
         <p>Giúp con làm được việc nhỏ hôm nay, để tự tin hơn mỗi ngày.</p>
       </div>
       <div><h2>Sản phẩm</h2><a href="/framework/">Khung thói quen</a><a href="/roadmaps/">Lộ trình</a><a href="/pricing/">Bảng giá</a></div>
-      <div><h2>Hỗ trợ</h2><a href="/docs/">Hướng dẫn</a><a href="/contact/">Liên hệ</a><a href="${appUrl(appOrigin, '/login')}">Đăng nhập ứng dụng</a></div>
+      <div><h2>Hỗ trợ</h2><a href="/docs/">Hướng dẫn</a><a href="/contact/">Liên hệ</a><a href="${appUrl(appOrigin, '/')}">Đăng nhập ứng dụng</a></div>
       <div><h2>Thông tin</h2><a href="/privacy/">Quyền riêng tư</a><a href="/terms/">Điều khoản</a></div>
     </div>
     <div class="shell footer-bottom"><p>© 2026 KidHabit Hero.</p><p>Dành cho ba mẹ và những người lớn đồng hành cùng trẻ.</p></div>

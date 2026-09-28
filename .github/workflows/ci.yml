@@ -53,6 +53,9 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
       OPERATIONS_CRON_SECRET: ${{ secrets.LIFECYCLE_CRON_SECRET }}
+      NEXT_PUBLIC_APP_URL: https://goodhabittracking.vanhoa2191.workers.dev
+      NEXT_PUBLIC_MARKETING_URL: https://kidhabit-home.pages.dev
+      NEXT_PUBLIC_DEPLOY_TARGET: app
     steps:
       - id: configuration
         env:
@@ -75,9 +78,19 @@ jobs:
       - if: steps.configuration.outputs.ready == 'true'
         run: npm ci
       - if: steps.configuration.outputs.ready == 'true'
+        name: Require healthy marketing surface before app deploy
+        run: |
+          npm run build:marketing
+          curl --fail --silent --show-error --retry 8 --retry-all-errors \
+            --retry-delay 5 --max-time 15 "$NEXT_PUBLIC_MARKETING_URL/" >/dev/null
+          npm run verify:marketing-release -- \
+            --dir dist/marketing \
+            --app-origin "$NEXT_PUBLIC_APP_URL" \
+            --marketing-origin "$NEXT_PUBLIC_MARKETING_URL" \
+            --url "$NEXT_PUBLIC_MARKETING_URL"
+      - if: steps.configuration.outputs.ready == 'true'
         run: npm run deploy:cloudflare
         env:
-          NEXT_PUBLIC_APP_URL: https://goodhabittracking.vanhoa2191.workers.dev
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
       - if: steps.configuration.outputs.ready == 'true'

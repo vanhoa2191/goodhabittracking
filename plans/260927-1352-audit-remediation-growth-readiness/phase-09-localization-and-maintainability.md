@@ -19,7 +19,8 @@ Hoàn thiện parity locale cần thiết và tách các module quá rộng sau 
 - `src/data/habit-framework-v1.vi.json`
 - `src/lib/store.tsx`
 - `src/lib/store/`
-- `src/components/LandingPage.tsx`
+- `apps/marketing/site-content.mjs`
+- `apps/marketing/render-site.mjs`
 - `src/lib/constants.ts`
 
 ## Requirements
@@ -28,7 +29,7 @@ Hoàn thiện parity locale cần thiết và tách các module quá rộng sau 
 - [x] Giá, ngày, giờ, tuổi và currency dùng formatter theo locale/market availability.
 - [x] Public copy tách khỏi app copy; translation keys typed và có parity check.
 - [x] Domain actions đã được tách theo các module auth/family/profile/activity/reward/billing/experience hiện hữu; `store.tsx` vẫn là adapter orchestration giữ contract public.
-- [ ] Landing/content constants tách theo section/data, tránh duplicate Tailwind chỉ khi component boundary thật sự lặp.
+- [x] Public sales copy và renderer tách khỏi app bundle; marketing không import auth, API, PayOS hoặc Supabase.
 
 ## Implementation Steps
 

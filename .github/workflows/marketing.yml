@@ -1,0 +1,79 @@
+name: Marketing site
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: marketing-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_PUBLIC_APP_URL: https://goodhabittracking.vanhoa2191.workers.dev
+  NEXT_PUBLIC_MARKETING_URL: https://kidhabit-home.pages.dev
+  NEXT_PUBLIC_DEPLOY_TARGET: marketing
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build:marketing
+      - run: >-
+          npm run verify:marketing-release --
+          --dir dist/marketing
+          --app-origin "$NEXT_PUBLIC_APP_URL"
+          --marketing-origin "$NEXT_PUBLIC_MARKETING_URL"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: marketing-site
+          path: dist/marketing
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - id: configuration
+        run: |
+          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Marketing deployment skipped: configure Cloudflare credentials listed in docs/deployment.md."
+          fi
+      - if: steps.configuration.outputs.ready == 'true'
+        uses: actions/checkout@v5
+      - if: steps.configuration.outputs.ready == 'true'
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - if: steps.configuration.outputs.ready == 'true'
+        run: npm ci
+      - if: steps.configuration.outputs.ready == 'true'
+        run: npm run deploy:marketing
+      - if: steps.configuration.outputs.ready == 'true'
+        name: Verify live marketing release
+        run: |
+          curl --fail --silent --show-error --retry 8 --retry-all-errors \
+            --retry-delay 5 --max-time 15 "$NEXT_PUBLIC_MARKETING_URL/" >/dev/null
+          npm run verify:marketing-release -- \
+            --dir dist/marketing \
+            --app-origin "$NEXT_PUBLIC_APP_URL" \
+            --marketing-origin "$NEXT_PUBLIC_MARKETING_URL" \
+            --url "$NEXT_PUBLIC_MARKETING_URL"

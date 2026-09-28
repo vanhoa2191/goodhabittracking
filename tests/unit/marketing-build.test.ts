@@ -82,6 +82,8 @@ describe('marketing static artifact', () => {
     expect(html).toMatch(/<footer[ >]/);
     expect(html).toContain('class="button');
     expect(html).toContain('href="https://app.example/checkout?plan=monthly"');
+    expect(html).toContain('href="https://app.example/" class="nav-login"');
+    expect(html).not.toContain('https://app.example/login');
   });
 
   it('rejects non-HTTPS or non-origin deployment inputs', async () => {

@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { execFileSync, spawn } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { createServer } from 'node:net';
+import { pathToFileURL } from 'node:url';
 
 const PORT = 3420;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
@@ -52,7 +53,7 @@ async function waitForReady(serverProcess) {
     try {
       const response = await fetch(`${BASE_URL}/api/health`);
       const body = await response.json();
-      if (response.ok && body.status === 'ready') return body;
+      if (response.ok && isReadyHealth(body)) return body;
       if (allowDirty && body.checks?.app === true) return body;
     } catch {
       // The server may still be starting.
@@ -62,6 +63,32 @@ async function waitForReady(serverProcess) {
   throw new Error('Production health endpoint did not become ready within 60 seconds.');
 }
 
+export function isReadyHealth(body) {
+  const checks = body?.checks;
+  return body?.status === 'ready'
+    && checks
+    && Object.keys(checks).length > 0
+    && Object.values(checks).every((value) => value === true);
+}
+
+function requireHttpsOrigin(name) {
+  const value = requireValue(name);
+  try {
+    const url = new URL(value);
+    if (
+      url.protocol !== 'https:'
+      || url.username
+      || url.password
+      || url.pathname !== '/'
+      || url.search
+      || url.hash
+    ) fail(`${name} must be an HTTPS origin.`);
+    return url.origin;
+  } catch {
+    fail(`${name} must be a valid HTTPS origin.`);
+  }
+}
+
 function runPreflight() {
   const status = execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim();
   if (status && !allowDirty) fail('the worktree is dirty. Commit the release candidate first.');
@@ -69,12 +96,9 @@ function runPreflight() {
   const expectedSha = requireValue('RELEASE_SHA');
   if (head !== expectedSha) fail('RELEASE_SHA does not match the current commit.');
 
-  const appUrl = requireValue('NEXT_PUBLIC_APP_URL');
-  try {
-    if (new URL(appUrl).protocol !== 'https:') fail('NEXT_PUBLIC_APP_URL must use HTTPS.');
-  } catch {
-    fail('NEXT_PUBLIC_APP_URL must be a valid URL.');
-  }
+  const appUrl = requireHttpsOrigin('NEXT_PUBLIC_APP_URL');
+  const marketingUrl = requireHttpsOrigin('NEXT_PUBLIC_MARKETING_URL');
+  if (appUrl === marketingUrl) fail('app and marketing origins must be different.');
   for (const name of [
     'NEXT_PUBLIC_SUPABASE_URL',
     'NEXT_PUBLIC_SUPABASE_ANON_KEY',
@@ -92,40 +116,46 @@ function runPreflight() {
   return head;
 }
 
-let serverProcess;
-try {
-  const releaseSha = runPreflight();
-  const candidateLabel = allowDirty
-    ? `Working tree based on ${releaseSha}`
-    : `Release candidate ${releaseSha}`;
-  process.stdout.write(`${candidateLabel} passed preflight.\n`);
-  if (preflightOnly) process.exit(0);
+async function main() {
+  let serverProcess;
+  try {
+    const releaseSha = runPreflight();
+    const candidateLabel = allowDirty
+      ? `Working tree based on ${releaseSha}`
+      : `Release candidate ${releaseSha}`;
+    process.stdout.write(`${candidateLabel} passed preflight.\n`);
+    if (preflightOnly) return;
 
-  await run('npm', ['run', 'ci']);
-  await assertPortAvailable();
-  serverProcess = spawn('npm', ['run', 'start'], {
-    env: { ...process.env, PORT: String(PORT) },
-    detached: true,
-    stdio: ['ignore', 'inherit', 'inherit'],
-  });
-  const health = await waitForReady(serverProcess);
-  if (allowDirty && health.status !== 'ready') {
-    process.stdout.write('Local working-tree verification is using configuration-only health; strict release candidates require live dependency readiness.\n');
+    await run('npm', ['run', 'ci']);
+    await assertPortAvailable();
+    serverProcess = spawn('npm', ['run', 'start'], {
+      env: { ...process.env, PORT: String(PORT) },
+      detached: true,
+      stdio: ['ignore', 'inherit', 'inherit'],
+    });
+    const health = await waitForReady(serverProcess);
+    if (allowDirty && health.status !== 'ready') {
+      process.stdout.write('Local working-tree verification is using configuration-only health; strict release candidates require live dependency readiness.\n');
+    }
+    if (health.version !== 'local' && !releaseSha.startsWith(health.version)) {
+      throw new Error('Runtime version does not match the release candidate commit.');
+    }
+    await run('npx', ['playwright', 'test'], {
+      ...process.env,
+      PLAYWRIGHT_BASE_URL: BASE_URL,
+    });
+    process.stdout.write(`${candidateLabel} passed all local certification gates.\n`);
+  } catch (error) {
+    process.stderr.write(`${error instanceof Error ? error.message : 'Release verification failed.'}\n`);
+    process.exitCode = 1;
+  } finally {
+    if (serverProcess?.pid && serverProcess.exitCode === null) {
+      process.kill(-serverProcess.pid, 'SIGTERM');
+      await new Promise((resolve) => serverProcess.once('exit', resolve));
+    }
   }
-  if (health.version !== 'local' && !releaseSha.startsWith(health.version)) {
-    throw new Error('Runtime version does not match the release candidate commit.');
-  }
-  await run('npx', ['playwright', 'test'], {
-    ...process.env,
-    PLAYWRIGHT_BASE_URL: BASE_URL,
-  });
-  process.stdout.write(`${candidateLabel} passed all local certification gates.\n`);
-} catch (error) {
-  process.stderr.write(`${error instanceof Error ? error.message : 'Release verification failed.'}\n`);
-  process.exitCode = 1;
-} finally {
-  if (serverProcess?.pid && serverProcess.exitCode === null) {
-    process.kill(-serverProcess.pid, 'SIGTERM');
-    await new Promise((resolve) => serverProcess.once('exit', resolve));
-  }
+}
+
+if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
+  await main();
 }
