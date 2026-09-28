@@ -1,4 +1,5 @@
 import { getBrowserSupabase, isSupabaseConfigured } from '@/lib/supabase/browser';
+import type { SubscriptionPlan } from '@/types';
 
 export { isSupabaseConfigured };
 
@@ -9,14 +10,46 @@ export function getSupabase() {
 // ==============================================================================
 // GOOGLE OAUTH AUTHENTICATION HELPERS
 // ==============================================================================
-export async function signInWithGoogle(): Promise<{ error: Error | null }> {
+export type PaidPlan = Extract<SubscriptionPlan, 'solo_monthly' | 'monthly' | 'yearly'>;
+
+const PAID_PLANS = new Set<PaidPlan>(['solo_monthly', 'monthly', 'yearly']);
+
+export function parseCheckoutPlan(value: string | null): PaidPlan | null {
+  return value !== null && PAID_PLANS.has(value as PaidPlan) ? value as PaidPlan : null;
+}
+
+function sanitizeReturnPath(returnPath?: string): string {
+  if (!returnPath || !returnPath.startsWith('/') || returnPath.startsWith('//')) return '/';
+
+  let decoded: string;
+  try {
+    decoded = decodeURIComponent(returnPath);
+  } catch {
+    return '/';
+  }
+
+  if (decoded.startsWith('//') || decoded.includes('\\') || /[\r\n\0]/u.test(decoded)) return '/';
+
+  try {
+    const origin = window.location.origin;
+    const candidate = new URL(returnPath, origin);
+    if (candidate.origin !== origin) return '/';
+    return `${candidate.pathname}${candidate.search}${candidate.hash}`;
+  } catch {
+    return '/';
+  }
+}
+
+export async function signInWithGoogle(returnPath?: string): Promise<{ error: Error | null }> {
   const supabase = getSupabase();
   if (!supabase) {
     return { error: new Error('Supabase client chưa được cấu hình.') };
   }
 
   try {
-    const redirectTo = typeof window !== 'undefined' ? window.location.origin : undefined;
+    const redirectTo = typeof window !== 'undefined'
+      ? `${window.location.origin}${sanitizeReturnPath(returnPath)}`
+      : undefined;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
