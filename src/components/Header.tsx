@@ -257,7 +257,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
               type="button"
               data-testid="sound-toggle"
               onClick={toggleSound}
-              className={`${shell === 'kid' ? 'flex' : 'hidden 2xl:flex'} min-w-11 min-h-11 p-2 rounded-xl text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500`}
+              className={`${shell === 'kid' ? 'hidden min-[360px]:flex' : 'hidden 2xl:flex'} min-w-11 min-h-11 p-2 rounded-xl text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500`}
               title={soundEnabled ? t.soundOn : t.soundOff}
               aria-label={soundEnabled ? t.soundOn : t.soundOff}
               aria-pressed={soundEnabled}
