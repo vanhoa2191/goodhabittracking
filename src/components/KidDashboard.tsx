@@ -222,31 +222,31 @@ export function KidDashboard() {
         data-testid="kid-hero"
         data-mascot={activeMascot?.id || 'legacy'}
         data-theme-color={activeChild.themeColor}
-        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${activeMascot?.heroClass || 'from-amber-200 via-amber-300 to-orange-300'} p-6 sm:p-8 text-sand-900 shadow-xl shadow-amber-100 dark:shadow-none`}
+        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${activeMascot?.heroClass || 'from-amber-200 via-amber-300 to-orange-300'} p-4 sm:p-5 text-sand-900 shadow-xl shadow-amber-100 dark:shadow-none`}
       >
         {/* Background decorative shapes */}
         <div className="absolute -right-6 -bottom-6 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute left-1/3 -top-10 w-36 h-36 bg-amber-400/20 rounded-full blur-xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6">
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-            <div className="relative group">
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-5">
+          <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+            <div className="relative group shrink-0">
               <button
                 type="button"
                 onClick={() => setIsAvatarPickerOpen(true)}
                 title={t.changeAvatar}
                 aria-label={t.changeAvatar}
-                className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-white/45 hover:bg-white/60 backdrop-blur-md flex items-center justify-center shadow-inner border border-white/60 transition-transform active:scale-95 group-hover:scale-105 cursor-pointer relative"
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/45 hover:bg-white/60 backdrop-blur-md flex items-center justify-center shadow-inner border border-white/60 transition-transform active:scale-95 group-hover:scale-105 cursor-pointer relative"
               >
-                <MascotAvatar avatar={activeChild.avatar} alt={activeMascot?.name || ''} priority className="h-24 w-24 sm:h-28 sm:w-28 text-5xl" />
-                <span className="absolute inset-0 rounded-3xl bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-bold transition-opacity">
+                <MascotAvatar avatar={activeChild.avatar} alt={activeMascot?.name || ''} priority className="h-16 w-16 sm:h-20 sm:w-20 text-4xl" />
+                <span className="absolute inset-0 rounded-2xl bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-bold transition-opacity">
                   <Palette className="w-5 h-5 text-white drop-shadow" />
                 </span>
               </button>
             </div>
 
-            <div>
-              <div className="flex items-center justify-center sm:justify-start gap-2 mb-1 flex-wrap">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
                 <span className="text-xs font-bold uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full backdrop-blur-sm">
                   {t.levelPrefix} {activeChild.level}
                 </span>
@@ -256,12 +256,12 @@ export function KidDashboard() {
                   </span>
                 )}
                 {activeChild.age !== undefined && (
-                  <span className="text-xs font-medium bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                  <span className="hidden sm:inline text-xs font-medium bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">
                     {activeChild.age} {copy.ageUnit}
                   </span>
                 )}
               </div>
-              <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight">
+              <h1 className="font-display text-xl min-[360px]:text-2xl sm:text-3xl font-bold leading-tight tracking-tight">
                 {activeChild.name}
               </h1>
               <p className="text-sm text-amber-950/80 font-semibold">
@@ -273,24 +273,25 @@ export function KidDashboard() {
           </div>
 
           {/* Points & Stats Wallet */}
-          <div className="flex items-center gap-3">
-            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-3.5 border border-white/25 text-center min-w-[110px]">
-              <div className="flex items-center justify-center gap-1 text-amber-300 mb-0.5">
-                <Star className="w-5 h-5 fill-current" />
-              </div>
-              <div className="text-2xl font-black">{activeChild.points}</div>
-              <div className="text-xs font-semibold text-amber-950 uppercase tracking-wide">
-                {t.stars}
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:gap-3">
+            <div className="flex items-center gap-1.5 bg-white/15 backdrop-blur-md rounded-2xl px-2.5 py-1.5 border border-white/25 sm:min-w-[110px]">
+              <Star className="w-6 h-6 shrink-0 fill-current text-amber-300" />
+              <div className="min-w-0 leading-tight">
+                <div className="text-xl font-black">{activeChild.points}</div>
+                <div className="truncate text-[11px] sm:text-xs font-semibold text-amber-950 uppercase sm:tracking-wide">
+                  {t.stars}
+                </div>
               </div>
             </div>
 
-            <div className="bg-white/15 backdrop-blur-md rounded-2xl p-3.5 border border-white/25 text-center min-w-[100px]">
-              <div className="flex items-center justify-center gap-1 text-emerald-300 mb-0.5">
-                <Award className="w-5 h-5" />
-              </div>
-              <div className="text-2xl font-black">{unlockedBadgeIds.size}</div>
-              <div className="text-xs font-semibold text-amber-950 uppercase tracking-wide">
-                {t.myBadges}
+            <div className="flex items-center gap-1.5 bg-white/15 backdrop-blur-md rounded-2xl px-2.5 py-1.5 border border-white/25 sm:min-w-[110px]">
+              <Award className="w-6 h-6 shrink-0 text-emerald-300" />
+              <div className="min-w-0 leading-tight">
+                <div className="text-xl font-black">{unlockedBadgeIds.size}</div>
+                <div className="truncate text-[11px] sm:text-xs font-semibold text-amber-950 uppercase sm:tracking-wide">
+                  <span className="sm:hidden">{t.badgesShort}</span>
+                  <span className="hidden sm:inline">{t.myBadges}</span>
+                </div>
               </div>
             </div>
           </div>
@@ -300,32 +301,32 @@ export function KidDashboard() {
           role="status"
           data-testid="habit-fire"
           data-state={fire.kind}
-          className="mt-5 flex w-full flex-wrap items-center gap-2 rounded-2xl border border-white/60 bg-white/90 px-4 py-3 text-sm font-bold text-slate-900"
+          className="mt-3 flex w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-white/60 bg-white/90 px-3 py-2 text-sm font-bold text-slate-900"
         >
           <Flame aria-hidden="true" className={`h-5 w-5 shrink-0 ${fire.kind === 'active' ? 'fill-orange-500 text-orange-600' : 'text-slate-600'}`} />
           <span className="min-w-0 flex-1">{fireLabel}</span>
-          {fire.pendingToday && <span className="basis-full"><span className="rounded-full bg-amber-100 px-2.5 py-1 text-xs text-amber-950">{fireCopy.pending}</span></span>}
+          {fire.pendingToday && <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs text-amber-950">{fireCopy.pending}</span>}
         </div>}
 
         {/* Daily Progress Bar */}
-        {!isFamilyPaused && <div className="mt-6 pt-5 border-t border-white/20">
-          <div className="flex justify-between items-center text-xs font-bold mb-2">
-            <span className="flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-amber-300" />
-              {t.todayProgress}
+        {!isFamilyPaused && <div className="mt-3 pt-3 border-t border-white/20">
+          <div className="flex justify-between items-center gap-2 text-xs font-bold mb-1.5">
+            <span className="flex min-w-0 items-center gap-1.5">
+              <Sparkles className="w-4 h-4 shrink-0 text-amber-300" />
+              <span className="truncate">{t.todayProgress}</span>
             </span>
-            <span>
+            <span className="shrink-0 whitespace-nowrap">
               {completedCount}/{totalDue} {t.completedTasks} ({progressPercent}%)
             </span>
           </div>
-          <div className="h-3 w-full bg-black/20 rounded-full overflow-hidden p-0.5 backdrop-blur-sm">
+          <div className="h-2.5 w-full bg-black/20 rounded-full overflow-hidden p-0.5 backdrop-blur-sm">
             <div
               className="h-full bg-gradient-to-r from-amber-300 to-emerald-400 rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
           {progressPercent === 100 && totalDue > 0 && (
-            <div className="mt-2.5 text-xs text-amber-200 font-bold text-center animate-bounce">
+            <div className="mt-1.5 text-xs text-amber-200 font-bold text-center animate-bounce">
               🎉 {t.congratsAllDone}
             </div>
           )}
