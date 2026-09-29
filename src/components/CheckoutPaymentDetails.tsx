@@ -1,7 +1,9 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
-import { Check, Clock, Copy, ExternalLink } from 'lucide-react';
+import { Check, Clock, Copy, Download, ExternalLink } from 'lucide-react';
+import { qrFileName, saveQrImage } from '@/lib/save-qr-image';
 import type { PaymentResult } from '@/lib/payos';
 import { useTranslation } from '@/lib/i18n/context';
 import { formatCurrency } from '@/lib/i18n/formatters';
@@ -22,6 +24,18 @@ export function CheckoutPaymentDetails({
   onCopy,
 }: CheckoutPaymentDetailsProps) {
   const { language, t } = useTranslation();
+  const [qrSaved, setQrSaved] = useState(false);
+
+  const downloadQr = async () => {
+    try {
+      const saved = await saveQrImage(payment.vietQrUrl, qrFileName(payment.orderCode));
+      setQrSaved(saved);
+      if (saved) window.setTimeout(() => setQrSaved(false), 3000);
+    } catch {
+      // Fall back to the payment page, which shows the same QR and can be saved from there.
+      window.open(payment.checkoutUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
 
   return (
     <div className="space-y-5">
@@ -54,6 +68,17 @@ export function CheckoutPaymentDetails({
             </div>
             <p className="text-xs text-slate-400">VCB, MB, Techcom, BIDV, VPBank, ACB, MoMo...</p>
           </div>
+
+          <button
+            type="button"
+            data-testid="download-qr"
+            onClick={() => void downloadQr()}
+            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white transition-all hover:bg-indigo-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 cursor-pointer"
+          >
+            {qrSaved ? <Check className="h-4 w-4" aria-hidden="true" /> : <Download className="h-4 w-4" aria-hidden="true" />}
+            <span>{qrSaved ? t.downloadQrDone : t.downloadQrAction}</span>
+          </button>
+          <p className="text-xs leading-snug text-slate-500 dark:text-slate-400">{t.downloadQrHint}</p>
         </div>
 
         <div className="space-y-3 text-xs">
