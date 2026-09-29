@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import {
   X,
@@ -20,6 +20,8 @@ import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 import { getProfileMutationCopy, getProfileMutationError } from '@/lib/i18n/profile-mutation-copy';
 import { MASCOTS, getMascotLabel } from '@/lib/mascots';
 import { getMarketingOrigin } from '@/lib/site';
+import { isValidPhone, needsCustomerProfileCompletion } from '@/lib/customer-profile';
+import { loadCustomerProfile, saveCustomerProfile } from '@/lib/customer-profile-client';
 import { MascotAvatar } from './MascotAvatar';
 
 interface OnboardingModalProps {
@@ -59,7 +61,46 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   const [parentRole, setParentRole] = useState<ParentRole>(
     parentProfile?.role || 'mother'
   );
-  const [phoneOrEmail, setPhoneOrEmail] = useState(parentProfile?.phoneOrEmail || '');
+  const [phone, setPhone] = useState(isValidPhone(parentProfile?.phoneOrEmail) ? parentProfile?.phoneOrEmail ?? '' : '');
+  const [marketingConsent, setMarketingConsent] = useState(false);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [isSavingParent, setIsSavingParent] = useState(false);
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const currentUserId = currentUser?.id ?? null;
+
+  // A signed-in parent is asked for their details once. If the account already holds a name and a
+  // valid phone (from the account form or an earlier setup), skip straight to the child.
+  useEffect(() => {
+    if (!isOpen || !currentUserId) return;
+    let active = true;
+    queueMicrotask(() => {
+      if (!active) return;
+      setIsProfileLoading(true);
+      void loadCustomerProfile()
+        .then((profile) => {
+          if (!active) return;
+          setMarketingConsent(profile.marketing_consent);
+          if (needsCustomerProfileCompletion({ displayName: profile.display_name, phone: profile.phone })) {
+            setParentName((current) => current || profile.display_name);
+            setPhone((current) => current || (isValidPhone(profile.phone) ? profile.phone ?? '' : ''));
+            return;
+          }
+          setParentName(profile.display_name);
+          setPhone(profile.phone ?? '');
+          updateParentProfile({ name: profile.display_name, phoneOrEmail: profile.phone ?? '' });
+          setStep(2);
+        })
+        .catch(() => undefined)
+        .finally(() => {
+          if (active) setIsProfileLoading(false);
+        });
+    });
+    return () => {
+      active = false;
+    };
+    // updateParentProfile is recreated every render; the profile is loaded once per opening.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, currentUserId]);
 
   // Child form state
   const [childName, setChildName] = useState('');
@@ -86,17 +127,36 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
     requestAnimationFrame(() => bodyRef.current?.scrollTo({ top: 0 }));
   };
 
-  const handleNextStep = (e: React.FormEvent) => {
+  const handleNextStep = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!parentName.trim()) {
       alert(copy.parentNameRequired);
       return;
     }
-    updateParentProfile({
-      name: parentName.trim(),
-      role: parentRole,
-      phoneOrEmail: phoneOrEmail.trim(),
-    });
+
+    if (currentUser) {
+      if (!phone.trim()) {
+        setPhoneError(copy.phoneRequired);
+        return;
+      }
+      if (!isValidPhone(phone)) {
+        setPhoneError(copy.phoneInvalid);
+        return;
+      }
+      setPhoneError(null);
+      setIsSavingParent(true);
+      try {
+        const saved = await saveCustomerProfile({ displayName: parentName.trim(), phone, marketingConsent });
+        updateParentProfile({ name: saved.display_name, role: parentRole, phoneOrEmail: saved.phone ?? '' });
+      } catch {
+        setPhoneError(copy.phoneSaveFailed);
+        return;
+      } finally {
+        setIsSavingParent(false);
+      }
+    } else {
+      updateParentProfile({ name: parentName.trim(), role: parentRole, phoneOrEmail: phone.trim() });
+    }
     sounds.playClick();
     goToStep(2);
   };
@@ -252,28 +312,46 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                 </div>
               </div>
 
-              {/* Phone or Email for backup / sync */}
+              {/* Phone: required for a signed-in parent, asked only once */}
               <div>
-                <label htmlFor="onboarding-parent-contact" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
-                  {copy.contactLabel}
+                <label htmlFor="onboarding-parent-phone" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+                  {currentUser ? copy.phoneLabel : copy.phoneLabel.replace(/\s*\*$/u, '')}
                 </label>
                 <input
-                  id="onboarding-parent-contact"
-                  type="text"
-                  placeholder={copy.contactPlaceholder}
-                  value={phoneOrEmail}
-                  onChange={(e) => setPhoneOrEmail(e.target.value)}
+                  id="onboarding-parent-phone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  aria-required={currentUser ? true : undefined}
+                  placeholder={copy.phonePlaceholder}
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    if (phoneError) setPhoneError(null);
+                  }}
+                  aria-invalid={phoneError ? true : undefined}
+                  aria-describedby={phoneError ? 'onboarding-parent-phone-error' : 'onboarding-parent-phone-help'}
                   className="w-full py-2.5 px-3.5 rounded-2xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
                 />
-                <span className="text-xs text-slate-400 mt-1 block">
-                  {copy.contactHelp}
-                </span>
+                {phoneError ? (
+                  <span id="onboarding-parent-phone-error" role="alert" className="text-xs font-bold text-rose-600 mt-1 block">{phoneError}</span>
+                ) : (
+                  <span id="onboarding-parent-phone-help" className="text-xs text-slate-500 dark:text-slate-400 mt-1 block">{copy.phoneHelp}</span>
+                )}
               </div>
+
+              {currentUser && (
+                <label className="flex items-start gap-3 text-xs leading-5 text-slate-600 dark:text-slate-300">
+                  <input type="checkbox" checked={marketingConsent} onChange={(e) => setMarketingConsent(e.target.checked)} className="mt-0.5 h-4 w-4" />
+                  <span>{copy.marketingOptIn}</span>
+                </label>
+              )}
 
               <div className="pt-3">
                 <button
                   type="submit"
-                  className="w-full py-3 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={isSavingParent || isProfileLoading}
+                  className="w-full py-3 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <span>{copy.continue}</span>
                   <ArrowRight className="w-4 h-4" />

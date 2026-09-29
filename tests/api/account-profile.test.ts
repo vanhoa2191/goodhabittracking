@@ -79,6 +79,28 @@ describe('PATCH /api/account/profile', () => {
     await expect(response.json()).resolves.toEqual({ success: true, profile: savedProfile });
   });
 
+  it.each([undefined, '', '   ', '12345', 'không có số', 'a@b.co'])('refuses to save a profile whose phone is %s', async (phone) => {
+    const response = await PATCH(new NextRequest('http://localhost/api/account/profile', {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ displayName: savedProfile.display_name, marketingConsent: false, ...(phone === undefined ? {} : { phone }) }),
+    }));
+
+    expect(response.status).toBe(400);
+    expect(update).not.toHaveBeenCalled();
+    expect(insert).not.toHaveBeenCalled();
+  });
+
+  it('stores the phone in a compact form', async () => {
+    await PATCH(new NextRequest('http://localhost/api/account/profile', {
+      method: 'PATCH',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ displayName: savedProfile.display_name, phone: ' +84 912-345 678 ', marketingConsent: false }),
+    }));
+
+    expect(update).toHaveBeenCalledWith(expect.objectContaining({ phone: '+84912345678' }));
+  });
+
   it('inserts a profile only when the signup row is missing', async () => {
     maybeSingle.mockResolvedValue({ data: null, error: null });
 
