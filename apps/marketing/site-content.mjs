@@ -86,6 +86,10 @@ export const faqs = [
     answer: 'Không. Mỗi lần thanh toán chỉ áp dụng cho kỳ đã chọn. Gia đình chủ động quyết định khi muốn tiếp tục.',
   },
   {
+    question: 'Tôi có được hoàn tiền không?',
+    answer: 'Có. Nếu chưa hài lòng, bạn có thể yêu cầu hoàn tiền trong 30 ngày kể từ ngày thanh toán bằng cách gửi mã đơn và thời điểm thanh toán tới email hỗ trợ.',
+  },
+  {
     question: 'Tôi có thể dùng trên nhiều thiết bị không?',
     answer: 'Có. Dữ liệu gia đình được đồng bộ đám mây để ba mẹ và con tiếp tục đúng hành trình trên thiết bị đã ghép.',
   },
@@ -137,6 +141,7 @@ export const publicPages = {
       ['Tài khoản phụ huynh', 'Người tạo tài khoản cần là người lớn có quyền quản lý dữ liệu của bé và chịu trách nhiệm bảo vệ tài khoản, mã PIN cùng thiết bị đã ghép.'],
       ['Phạm vi dịch vụ', 'KidHabit giúp gia đình tổ chức thói quen, nhiệm vụ và phần thưởng. Ứng dụng không thay thế tư vấn y tế, tâm lý hoặc giáo dục chuyên môn.'],
       ['Dùng thử và thanh toán', 'Gia đình đủ điều kiện có thể dùng thử một lần trong 7 ngày. Không cần thẻ, không tự động trừ tiền và mỗi khoản thanh toán chỉ áp dụng cho kỳ đã chọn.'],
+      ['Hoàn tiền trong 30 ngày', 'Nếu chưa hài lòng, bạn có thể yêu cầu hoàn tiền trong vòng 30 ngày kể từ ngày thanh toán. Hãy gửi mã đơn và thời điểm thanh toán qua trang Liên hệ. Yêu cầu được xác minh theo dữ liệu giao dịch. Không gửi ảnh có đầy đủ số tài khoản hoặc dữ liệu của trẻ.'],
       ['Dữ liệu và chấm dứt sử dụng', 'Chủ gia đình có thể xóa dữ liệu gia đình trong ứng dụng. Việc xóa là không thể khôi phục từ tài khoản người dùng.'],
     ],
   },

@@ -86,6 +86,16 @@ describe('marketing static artifact', () => {
     expect(html).not.toContain('https://app.example/login');
   });
 
+  it('states the 30-day refund policy in the terms and the pricing FAQ', async () => {
+    const { outputDir } = await buildFixture();
+    const terms = await readFile(join(outputDir, 'terms', 'index.html'), 'utf8');
+    expect(terms).toContain('Hoàn tiền trong 30 ngày');
+    expect(terms).toContain('30 ngày kể từ ngày thanh toán');
+    const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
+    expect(pricing).toContain('Tôi có được hoàn tiền không?');
+    expect(pricing).toContain('30 ngày');
+  });
+
   it('shows the configured support mailbox on the contact page and keeps the notice without one', async () => {
     const withMailbox = await makeOutput('kidhabit-marketing-support-');
     await buildMarketingSite({
