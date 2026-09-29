@@ -9,6 +9,7 @@ create table public.habit_cue_plans (
   cue_time time,
   place_text text check (place_text is null or char_length(place_text) <= 120),
   weekend_variant_text text check (weekend_variant_text is null or char_length(weekend_variant_text) <= 200),
+  created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   primary key (child_id, activity_id),
   constraint habit_cue_plans_child_family_fk foreign key (child_id, family_id)

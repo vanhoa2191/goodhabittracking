@@ -1270,3 +1270,11 @@ git push -u origin HEAD
 ```
 
 Open a pull request against `main` titled `feat(habits): add stored data and commands for adaptive habit programs`. In the body (Vietnamese, ending with the `Generated with Claude Code` line) list the two tables and four functions, that reads and writes go through checked commands and the paired child cannot save plans, that **the migration is not applied by CI or by this change**, and give the owner the steps: apply `202609300001_habit_programs.sql` in Supabase, then run `202609300001_habit_programs.verify.sql` and confirm it raises no exception. Do not merge without the project owner's approval.
+
+---
+
+## Changes made while executing (the code is the source of truth where it differs from the snippets above)
+
+- `habit_cue_plans` also has `created_at timestamptz not null default now()`, set once and never changed by the upsert. The next plan uses it as the start date (`since`) when it builds opportunities. `updated_at` still changes on every save. The cue plan zod row, `CuePlan` type and the test fixtures carry `created_at` too.
+- `supabase/schema.sql` ends with `\ir migrations/202609300001_habit_programs.sql`, and the migration manifest test in `tests/integration/migrations/family-tenancy.test.ts` lists `202609300001_habit_programs.sql`.
+- The spec names the column `cue_time` (not `time_of_day`).

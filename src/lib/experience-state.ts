@@ -69,6 +69,7 @@ const cuePlanShape = {
   cue_time: z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/).nullable(),
   place_text: z.string().max(120).nullable(),
   weekend_variant_text: z.string().max(200).nullable(),
+  created_at: timestamp,
   updated_at: timestamp,
 };
 const timeMatchesKind = (plan: { cue_kind: string; cue_time: string | null }) => (

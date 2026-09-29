@@ -144,6 +144,7 @@ describe('/api/domain/experience', () => {
       cue_time: '19:00:00',
       place_text: null,
       weekend_variant_text: 'Cuối tuần đọc sau bữa sáng',
+      created_at: '2026-09-29T09:00:00.000Z',
       updated_at: '2026-09-30T09:00:00.000Z',
     };
     const savePlan = {

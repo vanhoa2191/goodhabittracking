@@ -112,6 +112,7 @@ const cuePlan = {
   cue_time: null,
   place_text: 'Giường của con',
   weekend_variant_text: null,
+  created_at: '2026-09-29T09:00:00+07:00',
   updated_at: '2026-09-30T09:00:00+07:00',
 };
 
@@ -134,6 +135,12 @@ describe('habit program rows in the experience state', () => {
     expect(() => parseExperienceState({ ...emptyExperienceState, supportObservations: [{ ...observation, support_level: 'perfect' }] }, familyA)).toThrow();
     expect(() => parseExperienceState({ ...emptyExperienceState, cuePlans: [{ ...cuePlan, cue_kind: 'time', cue_time: null }] }, familyA)).toThrow();
     expect(() => parseExperienceState({ ...emptyExperienceState, cuePlans: [{ ...cuePlan, cue_kind: 'event', cue_time: '19:30:00' }] }, familyA)).toThrow();
+  });
+
+  it('requires the moment a cue plan was first saved', () => {
+    const { created_at: _created, ...withoutCreatedAt } = cuePlan;
+    void _created;
+    expect(() => parseExperienceState({ ...emptyExperienceState, cuePlans: [withoutCreatedAt] }, familyA)).toThrow();
   });
 
   it('accepts local demo ids that are not UUIDs', () => {

@@ -35,6 +35,7 @@ const cuePlan = {
   cue_time: null,
   place_text: null,
   weekend_variant_text: null,
+  created_at: '2026-09-29T09:00:00.000Z',
   updated_at: '2026-09-30T09:00:00.000Z',
 };
 

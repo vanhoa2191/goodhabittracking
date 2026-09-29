@@ -41,6 +41,14 @@ describe('habit program migration contract', () => {
     expect(migration).toContain('public.can_manage_family(target_family_id)');
   });
 
+  it('remembers when a cue plan was first saved and keeps that moment when the plan is edited', () => {
+    const table = migration.slice(migration.indexOf('create table public.habit_cue_plans'), migration.indexOf('create table public.habit_support_observations'));
+    expect(table).toContain('created_at timestamptz not null default now()');
+    const upsert = migration.slice(migration.indexOf('on conflict (child_id, activity_id) do update'), migration.indexOf('returning * into saved;'));
+    expect(upsert).toContain('updated_at = now()');
+    expect(upsert).not.toContain('created_at');
+  });
+
   it('requires a time for time cues and none for event cues', () => {
     expect(migration).toContain("(cue_kind = 'time' and cue_time is not null) or (cue_kind = 'event' and cue_time is null)");
   });
