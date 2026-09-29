@@ -49,6 +49,10 @@ function qualifiesForBadge(
       return totalCompletedCount >= badge.criteriaValue;
     case 'totalPoints':
       return profile.totalEarned >= badge.criteriaValue;
+    case 'portrait':
+    case 'portraitCollection':
+      // Portrait badges need each habit's framework link; useBadgeAwards resolves them.
+      return false;
     default: {
       const unreachable: never = badge.criteriaType;
       return unreachable;

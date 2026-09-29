@@ -48,6 +48,7 @@ test('habit fire follows verified completion and undo on mobile', async ({ page 
 
   // When: the child completes today's task.
   await taskCard.getByRole('button', { name: /Đánh dấu nhiệm vụ/ }).click();
+  await page.getByRole('button', { name: 'Tuyệt vời!' }).click();
 
   // Then: the verified day is visible without horizontal overflow.
   await expect(fire).toHaveAttribute('data-state', 'active');
@@ -107,6 +108,8 @@ test('demo child can inspect and independently complete a full task card', async
   const pointBurst = expect(taskCard.getByTestId('point-burst')).toContainText('+10');
   await taskToggle.click();
   await pointBurst;
+  // The first quest ever completed earns the first badge; congratulate, then carry on.
+  await page.getByRole('button', { name: 'Tuyệt vời!' }).click();
   await expect(page.getByRole('dialog', { name: 'Chi tiết nhiệm vụ' })).toHaveCount(0);
   await expect(taskCard).toHaveAttribute('data-complete', 'true');
   await expect(page.getByText('1/6 việc hoàn thành (17%)')).toBeVisible();

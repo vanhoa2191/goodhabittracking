@@ -36,6 +36,7 @@ test('haptic feedback happens only after a successful completion and respects re
   const taskCard = page.locator('[data-task-card]').first();
   await taskCard.getByRole('button', { name: /Đánh dấu nhiệm vụ/ }).click();
   await expect.poll(() => page.evaluate(() => (window as typeof window & { __hapticCount?: number }).__hapticCount ?? 0)).toBe(1);
+  await page.getByRole('button', { name: 'Tuyệt vời!' }).click();
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   const nextTask = page.locator('[data-task-card][data-complete="false"]').first();

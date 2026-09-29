@@ -1,4 +1,3 @@
-import confetti from 'canvas-confetti';
 import type { Dispatch, SetStateAction } from 'react';
 import type { User } from '@supabase/supabase-js';
 import type {
@@ -170,11 +169,8 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
         sounds.playClick();
         return true;
       }
+      // Badge congratulations are shown by BadgeCelebration, which reads the same progress in every mode.
       sounds.playTaskComplete();
-      if (transition.unlockedBadgeCount > 0) {
-        sounds.playLevelUp();
-        confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 }, disableForReducedMotion: true });
-      }
       return true;
     },
     approveLog: (logId) => {

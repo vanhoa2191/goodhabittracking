@@ -6,8 +6,9 @@ import {
   ActivityCategory,
   JourneyPlan,
 } from '@/types';
+import { EXTRA_BADGES } from '@/lib/badges/badge-catalog';
 
-export const DEFAULT_BADGES: Badge[] = [
+const CORE_BADGES: Badge[] = [
   {
     id: 'badge-first-task',
     code: 'firstTask',
@@ -154,6 +155,8 @@ export const DEFAULT_BADGES: Badge[] = [
     criteriaValue: 100,
   },
 ];
+
+export const DEFAULT_BADGES: Badge[] = [...CORE_BADGES, ...EXTRA_BADGES];
 
 export const INITIAL_PROFILES: ChildProfile[] = [
   {
