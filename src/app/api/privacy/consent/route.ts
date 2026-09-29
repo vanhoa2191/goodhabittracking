@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
+import { publicPolicyVersion } from '@/lib/public-policy';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export const runtime = 'nodejs';
 
 const consentSchema = z.object({
-  policyVersion: z.literal('2026-09-19'),
+  policyVersion: z.literal(publicPolicyVersion),
   childDataConsent: z.literal(true),
 }).strict();
 

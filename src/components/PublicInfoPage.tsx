@@ -32,9 +32,11 @@ export function PublicInfoPage({
           </div>
         </header>
 
-        <article className="mt-6 space-y-6 rounded-3xl border border-slate-200 bg-white p-5 leading-7 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 [&_a]:font-bold [&_a]:text-indigo-700 [&_a]:underline-offset-4 hover:[&_a]:underline dark:[&_a]:text-indigo-300 [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-black [&_h2]:tracking-tight [&_li]:pl-1 [&_p]:text-slate-700 dark:[&_p]:text-slate-300 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6">
-          {children}
-        </article>
+        {approved && (
+          <article className="mt-6 space-y-6 rounded-3xl border border-slate-200 bg-white p-5 leading-7 shadow-sm dark:border-zinc-800 dark:bg-zinc-900 sm:p-8 [&_a]:font-bold [&_a]:text-indigo-700 [&_a]:underline-offset-4 hover:[&_a]:underline dark:[&_a]:text-indigo-300 [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-black [&_h2]:tracking-tight [&_li]:pl-1 [&_p]:text-slate-700 dark:[&_p]:text-slate-300 [&_ul]:list-disc [&_ul]:space-y-2 [&_ul]:pl-6">
+            {children}
+          </article>
+        )}
 
         <nav aria-label="Thông tin pháp lý và hỗ trợ" className="mt-6 flex flex-wrap justify-center gap-2 text-sm">
           <Link href="/privacy" className="min-h-11 rounded-xl px-4 py-3 font-bold text-indigo-700 hover:bg-white dark:text-indigo-300 dark:hover:bg-zinc-900">Quyền riêng tư</Link>

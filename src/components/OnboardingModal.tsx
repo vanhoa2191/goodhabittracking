@@ -19,6 +19,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 import { getProfileMutationCopy, getProfileMutationError } from '@/lib/i18n/profile-mutation-copy';
 import { MASCOTS, getMascotLabel } from '@/lib/mascots';
+import { publicPolicyVersion } from '@/lib/public-policy';
 import { MascotAvatar } from './MascotAvatar';
 
 interface OnboardingModalProps {
@@ -116,7 +117,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
       const response = await fetch('/api/privacy/consent', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ policyVersion: '2026-09-19', childDataConsent: true }),
+        body: JSON.stringify({ policyVersion: publicPolicyVersion, childDataConsent: true }),
       });
       if (!response.ok) {
         setIsSubmitting(false);

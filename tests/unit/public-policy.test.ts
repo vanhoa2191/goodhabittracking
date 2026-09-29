@@ -16,6 +16,12 @@ describe('public policy publication gate', () => {
     vi.stubEnv('SUPPORT_EMAIL', 'support@example.test');
     expect(getPublicPolicyConfig()).toEqual({ approved: true, supportEmail: 'support@example.test' });
     vi.stubEnv('SUPPORT_EMAIL', 'not-an-email');
-    expect(getPublicPolicyConfig().supportEmail).toBeNull();
+    expect(getPublicPolicyConfig()).toEqual({ approved: false, supportEmail: null });
+  });
+
+  it('does not publish approved legal routes without a working support address', () => {
+    vi.stubEnv('NEXT_PUBLIC_LEGAL_PAGES_APPROVED', 'true');
+    vi.stubEnv('SUPPORT_EMAIL', '');
+    expect(getPublicPolicyConfig()).toEqual({ approved: false, supportEmail: null });
   });
 });
