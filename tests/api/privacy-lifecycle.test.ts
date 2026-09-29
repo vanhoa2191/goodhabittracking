@@ -15,6 +15,7 @@ vi.mock('@/lib/supabase/server', () => ({
 
 import { DELETE } from '@/app/api/family/route';
 import { POST } from '@/app/api/privacy/consent/route';
+import { publicPolicyVersion } from '@/lib/public-policy';
 
 function request(path: string, method: 'POST' | 'DELETE', body: unknown) {
   return new NextRequest(`http://localhost${path}`, {
@@ -52,7 +53,7 @@ describe('privacy lifecycle APIs', () => {
 
   it('records both required consent scopes for the authenticated family', async () => {
     const response = await POST(request('/api/privacy/consent', 'POST', {
-      policyVersion: '2026-09-19',
+      policyVersion: publicPolicyVersion,
       childDataConsent: true,
     }));
 
@@ -62,15 +63,18 @@ describe('privacy lifecycle APIs', () => {
       expect.objectContaining({ family_id: 'family-a', user_id: 'user-a', consent_type: 'privacy' }),
       expect.objectContaining({ family_id: 'family-a', user_id: 'user-a', consent_type: 'child_data' }),
     ]);
+    expect(upsert).toHaveBeenCalledWith(expect.arrayContaining([
+      expect.objectContaining({ policy_version: publicPolicyVersion }),
+    ]));
   });
 
   it('rejects missing or extended consent payloads', async () => {
     const missing = await POST(request('/api/privacy/consent', 'POST', {
-      policyVersion: '2026-09-19',
+      policyVersion: publicPolicyVersion,
       childDataConsent: false,
     }));
     const extended = await POST(request('/api/privacy/consent', 'POST', {
-      policyVersion: '2026-09-19',
+      policyVersion: publicPolicyVersion,
       childDataConsent: true,
       marketingConsent: true,
     }));

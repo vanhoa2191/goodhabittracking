@@ -20,6 +20,8 @@ test('draft policy routes stay noindex and hidden from the product footer', asyn
   test.skip(process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true', 'Publication gate is enabled in this run.');
   await page.goto('/privacy');
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+  await expect(page.getByText('Dữ liệu được lưu')).toHaveCount(0);
+  await expect(page.getByText(/chờ chủ sản phẩm duyệt/)).toBeVisible();
   await page.goto('/');
   await expect(page.locator('footer').getByRole('link', { name: 'Quyền riêng tư' })).toHaveCount(0);
   await expect(page.locator('footer').getByRole('link', { name: 'Điều khoản' })).toHaveCount(0);
