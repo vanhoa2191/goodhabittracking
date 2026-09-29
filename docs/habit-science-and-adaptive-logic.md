@@ -142,13 +142,13 @@ Trẻ dưới 6 tuổi nhân 1,5. Ngưỡng dựa trên suy luận từ người
 ### 5.5 Các gợi ý điều chỉnh (luật minh bạch; mỗi gợi ý có lý do đọc được)
 | Mã | Điều kiện | Gợi ý |
 |---|---|---|
-| S1 kẹt ở pha 2 | Số tuần ở pha 2 vượt ngưỡng của lớp | Làm nhỏ hơn; đổi tín hiệu hoặc giờ; thêm phương án cuối tuần, ngày bận |
-| S2 phụ thuộc nhắc | Ở pha 3, ≥ 6 trong 10 lần là `prompted` | Chuyển sang tín hiệu trực quan hoặc để bé tự đặt nhắc |
-| S3 quá tải | Số thói quen ở pha 1–2 vượt giới hạn tuổi | Tạm hoãn bớt một thói quen |
-| S4 sắp thành nếp | Đạt ngưỡng sang pha 4 | Chuyển sang ghi nhận bằng lời; giảm thưởng dần |
-| S5 lùi bậc | 3 lần bỏ lỡ trong 5 lần gần nhất ở pha 3 | Lùi một bậc hỗ trợ |
-| S6 ba lần bỏ lỡ liên tiếp | 3 `missed` liên tiếp ở pha 2 | Kiểm tra cách làm (tín hiệu, độ lớn, cuối tuần) |
-| N1 thiếu dữ liệu | > 50% số lần hoàn thành gần nhất là `unknown` và thói quen sắp đạt ngưỡng đổi pha | Nhắc nhẹ trong app: "Con làm thế nào?"; tối đa 2 lần mỗi tuần; tắt thì im 14 ngày |
+| S1 (`stuck-building`) kẹt ở pha 2 | Số tuần ở pha 2 vượt ngưỡng của lớp | Làm nhỏ hơn; đổi tín hiệu hoặc giờ; thêm phương án cuối tuần, ngày bận |
+| S2 (`prompt-reliance`) phụ thuộc nhắc | Ở pha 3, ≥ 6 trong 10 lần là `prompted` | Chuyển sang tín hiệu trực quan hoặc để bé tự đặt nhắc |
+| S3 (`too-many-new`) quá tải | Số thói quen ở pha 1–2 vượt giới hạn tuổi | Tạm hoãn bớt một thói quen |
+| S4 (`routine-formed`) sắp thành nếp | Đạt ngưỡng sang pha 4 | Chuyển sang ghi nhận bằng lời; giảm thưởng dần |
+| S5 (`step-back`) lùi bậc | 3 lần bỏ lỡ trong 5 lần gần nhất ở pha 3 | Lùi một bậc hỗ trợ |
+| S6 (`check-in`) ba lần bỏ lỡ liên tiếp | 3 `missed` liên tiếp ở pha 2 | Kiểm tra cách làm (tín hiệu, độ lớn, cuối tuần) |
+| N1 (`record-support`) thiếu dữ liệu | > 50% số lần hoàn thành gần nhất là `unknown` và thói quen sắp đạt ngưỡng đổi pha | Nhắc nhẹ trong app: "Con làm thế nào?"; tối đa 2 lần mỗi tuần; tắt thì im 14 ngày |
 
 Tối đa 3 gợi ý hiển thị mỗi bé mỗi lần; gợi ý bị bỏ qua thì ẩn 14 ngày.
 
