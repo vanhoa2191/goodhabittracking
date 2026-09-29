@@ -47,6 +47,7 @@ import { QuestSwipeSurface } from './QuestSwipeSurface';
 import { DailyJournalCard } from './DailyJournalCard';
 import { DreamCityCard } from './DreamCityCard';
 import { BadgeCelebration } from './BadgeCelebration';
+import { isActivityDueOn } from '@/lib/habit-programs/opportunities';
 import { getBadgeCopy } from '@/lib/badges/badge-copy';
 import type { BadgeGroupKey } from '@/lib/badges/badge-copy';
 import { badgeProgress, computeBadgeMetrics, countHeldPortraitBadges } from '@/lib/badges/badge-progress';
@@ -154,20 +155,11 @@ export function KidDashboard() {
     setSelectedDate(next);
   };
 
-  const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ...
-
   // Filter activities for active child & day
   const dueActivities = activities.filter((act) => {
     if (!act.isActive) return false;
     if (act.childId !== null && act.childId !== activeChild.id) return false;
-
-    if (act.recurrenceType === 'daily') return true;
-    if (act.recurrenceType === 'weekdays') return dayOfWeek >= 1 && dayOfWeek <= 5;
-    if (act.recurrenceType === 'weekends') return dayOfWeek === 0 || dayOfWeek === 6;
-    if (act.recurrenceType === 'custom') {
-      return act.recurrenceDays && act.recurrenceDays.includes(dayOfWeek);
-    }
-    return true;
+    return isActivityDueOn(act, dateStr);
   }).map((activity) => localizeAgeAdaptedHabit(localizeDemoActivity(activity, language), language));
 
   // Calculate completion
