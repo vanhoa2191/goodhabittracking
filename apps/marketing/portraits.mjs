@@ -12,7 +12,7 @@ export const portraitNames = {
   'CD-03': 'Nhân Cách Kiện Toàn',
   'CD-04': 'Phẩm Chất Ưu Tú',
   'CD-05': 'Năng Lực Xuất Chúng',
-  'CD-06': 'Thân Hình Người Mẫu',
+  'CD-06': 'Thể Hình Cân Đối',
   'CD-07': 'Sức Khỏe Người Sắt',
   'CD-08': 'Quảng Bá Siêu Phàm',
   'CD-09': 'Giao Tiếp Thông Thái',

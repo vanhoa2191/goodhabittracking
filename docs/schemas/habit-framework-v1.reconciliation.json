@@ -1,5 +1,5 @@
 {
-  "contentVersion": "1.0.0",
+  "contentVersion": "1.1.0",
   "source": {
     "file": "KHUNG_THOI_QUEN_0-18_TDTT_TDNT_v1.md",
     "sha256": "85460efcafe42bc585582954dbb559969126b3e09da79c0929762563773f31d0"
@@ -76,7 +76,12 @@
     {
       "sourceId": "GD2-SK-02",
       "canonicalId": "GD2-SK-02",
-      "payloadSha256": "4fe65d27761b7725e8bb9293ddb928abd3088c7a6a6e29caa762f135ec346f0c"
+      "payloadSha256": "cec081c6f025c227852742350bda9affeaaa96fc21096b47d7eb450016c87cef",
+      "sourcePayloadSha256": "4fe65d27761b7725e8bb9293ddb928abd3088c7a6a6e29caa762f135ec346f0c",
+      "revision": {
+        "version": "1.1.0",
+        "reason": "Portrait CD-06 is shown as \"Thể Hình Cân Đối\" instead of \"Thân Hình Người Mẫu\"."
+      }
     },
     {
       "sourceId": "GD2-MQH-01",
@@ -216,7 +221,12 @@
     {
       "sourceId": "GD5-NT-03",
       "canonicalId": "GD5-NT-03",
-      "payloadSha256": "37959d05d4620bbe8665327f39c4335348ca6f2d1102ba8493c5623ec11dcfb8"
+      "payloadSha256": "691edac7fba932e0a10a6bba5316ef32754e02df6db43b0cfe0069628a1e8c81",
+      "sourcePayloadSha256": "37959d05d4620bbe8665327f39c4335348ca6f2d1102ba8493c5623ec11dcfb8",
+      "revision": {
+        "version": "1.1.0",
+        "reason": "Plain wording replaces \"công đức\" and \"phước đức\"."
+      }
     },
     {
       "sourceId": "GD5-SK-01",
@@ -226,7 +236,12 @@
     {
       "sourceId": "GD5-SK-02",
       "canonicalId": "GD5-SK-02",
-      "payloadSha256": "343f65f38eb078f7018ccb158827e667bc57371bee2c0f79f6ed57bbe1051dd6"
+      "payloadSha256": "6d88e77fc327746a2c46d87e79200fedaf0e70a71c490193ccc10f5198e4b9de",
+      "sourcePayloadSha256": "343f65f38eb078f7018ccb158827e667bc57371bee2c0f79f6ed57bbe1051dd6",
+      "revision": {
+        "version": "1.1.0",
+        "reason": "Portrait CD-06 is shown as \"Thể Hình Cân Đối\" instead of \"Thân Hình Người Mẫu\"."
+      }
     },
     {
       "sourceId": "GD5-MQH-01",
@@ -252,6 +267,14 @@
       "sourceId": "GD5-HT-03",
       "canonicalId": "GD5-HT-03",
       "payloadSha256": "58508a1326212e406e500b2bd7bd0d15245ee506463705fb94590f66baa5e48c"
+    }
+  ],
+  "wordingRevisions": [
+    {
+      "version": "1.1.0",
+      "recordedAt": "2026-09-30",
+      "approvalBasis": "user-directed",
+      "scope": "Plain-language wording only; ids, structure, domains, stages and concept tags are unchanged. Source ids keep matching the approved source through sourcePayloadSha256."
     }
   ]
 }

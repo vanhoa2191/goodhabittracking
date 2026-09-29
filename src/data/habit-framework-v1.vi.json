@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "contentVersion": "1.0.0",
+  "contentVersion": "1.1.0",
   "language": "vi",
   "source": {
     "file": "KHUNG_THOI_QUEN_0-18_TDTT_TDNT_v1.md",
@@ -363,7 +363,7 @@
         "Nhật ký vận động hình vẽ: mỗi ngày trẻ vẽ 1 hình vận động chính; cuối tuần đếm.",
         "Đi bộ đường dài gia đình 1 lần/tuần (2–4 km, có ba lô nhỏ cho trẻ tự mang) — vận động + gánh vác + kiên trì.",
         "Trò nặng nhẹ: bò – nhảy – leo – ném; mỗi dạng 10 phút, dùng như \"bữa ăn vận động\".",
-        "Vệ sinh thân thể trọn bộ: tự đánh răng (2 phút, có đồng hồ cát), tự rửa tay 6 bước, tự mặc đồ — gắn vào CD-06 Thân Hình Người Mẫu.",
+        "Vệ sinh thân thể trọn bộ: tự đánh răng (2 phút, có đồng hồ cát), tự rửa tay 6 bước, tự mặc đồ — gắn vào CD-06 Thể Hình Cân Đối.",
         "Buổi \"thể lực gia đình\" 30 phút/tuần: đếm số lần nhảy dây, số lần plank của từng người, ghi lên bảng chung — biến thể lực thành trò chơi có số liệu."
       ],
       "parentGuidance": "người lớn tập cùng; không dùng màn hình làm phần thưởng sau vận động.",
@@ -1207,14 +1207,14 @@
       "stageId": "GD5",
       "ageRange": "15-18",
       "primaryDomain": "NT",
-      "name": "Thấu hiểu nhân sinh: bố thí có chủ đích & công đức – phước đức",
+      "name": "Thấu hiểu nhân sinh: bố thí có chủ đích & điều tốt lành mình trao đi",
       "childMeaning": "“Con cho đi một cách có chủ đích — và con hiểu cho đi tạo ra điều gì.”",
-      "successSignal": "thực hành đủ 7 bố thí trong 1 năm học (có ghi chép); biết phân biệt Cho đi (thông tin) – Bố thí (năng lượng) – Tạo lập giá trị (vật chất); giải thích được công đức và phước đức bằng lời của mình.",
+      "successSignal": "thực hành đủ 7 bố thí trong 1 năm học (có ghi chép); biết phân biệt Cho đi (thông tin) – Bố thí (năng lượng) – Tạo lập giá trị (vật chất); giải thích được bằng lời của mình vì sao việc thiện mang lại niềm vui và sự mở mang cho cả người nhận lẫn người cho.",
       "activities": [
         "Thực hành 7 bố thí trong 7 tuần: mỗi tuần tập trung 1 bố thí và ghi kết quả thực tế (xem bảng 7 bố thí ở Phần 3).",
         "Tọa thí mức thật [BT-7]: dạy lại một kỹ năng cho 1 người kém hơn tới khi người đó tự làm được, rồi tổng kết thành 5–15 bước để người khác dùng tiếp.",
         "Dự án giúp người 3 tháng: chọn 1 người/1 nhóm cụ thể, giúp có mục tiêu và có kết quả đo được.",
-        "Sổ tam khối đức: theo dõi hằng tuần 3 cột — giúp người vui vẻ (phước đức), giúp người nâng nhận thức (công đức), điều con nhận lại được (không phải để tính toán, để thấy nhân quả).",
+        "Sổ tam khối đức: theo dõi hằng tuần 3 cột — giúp người vui vẻ (niềm vui cho người khác), giúp người mở mang hiểu biết (điều tốt cho người khác), điều con nhận lại được (không phải để tính toán, để thấy nhân quả).",
         "\"Nghịch cảnh là cao nhân\": với 3 việc bất như ý lớn nhất trong năm, viết 3 bước đón nhận – bao dung – trân trọng bài học và điều nó dạy.",
         "Giữ nhân duyên: tự nhận diện 9 dạng người trong đời thật và ghi cách đối đãi đang dùng (nền NG-1…NG-9).",
         "Nói chuyện tác động nhận thức [BT-3 đỉnh cao]: mỗi tháng 1 cuộc trò chuyện sâu giúp người khác rõ hình – rõ khái niệm – nội tâm cân bằng hướng dương; ghi lại 3 câu hỏi mình đã dùng."
@@ -1266,7 +1266,7 @@
       "stageId": "GD5",
       "ageRange": "15-18",
       "primaryDomain": "SK",
-      "name": "Quản trị thân & ngoại hình (Thân Hình Người Mẫu)",
+      "name": "Quản trị thân & ngoại hình (Thể Hình Cân Đối)",
       "childMeaning": "“Con chăm thân mình như chăm một người bạn quan trọng — vì thân này con dùng cả đời.”",
       "successSignal": "có bộ nghi thức chăm sóc cố định (vệ sinh, tư thế, giấc, trang phục theo bối cảnh); biết chọn trang phục phù hợp 3 tình huống (đi học – gặp người lớn – lễ nghi); giữ tư thế đúng khi học/đứng nói.",
       "activities": [
