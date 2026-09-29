@@ -23,3 +23,31 @@ if (toggle && navigation) {
     }
   });
 }
+
+const stickyCta = document.querySelector('[data-sticky-cta]');
+const heroActions = document.querySelector('.hero-actions');
+
+if (stickyCta && heroActions && 'IntersectionObserver' in window) {
+  let heroVisible = true;
+  const overlapping = new Set();
+  const update = () => {
+    stickyCta.hidden = heroVisible || overlapping.size > 0;
+  };
+
+  new IntersectionObserver(([entry]) => {
+    heroVisible = entry.isIntersecting || entry.boundingClientRect.top > 0;
+    update();
+  }).observe(heroActions);
+
+  const salesObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) overlapping.add(entry.target);
+      else overlapping.delete(entry.target);
+    }
+    update();
+  }, { threshold: 0.15 });
+  for (const selector of ['#bang-gia', '.final-cta']) {
+    const target = document.querySelector(selector);
+    if (target) salesObserver.observe(target);
+  }
+}

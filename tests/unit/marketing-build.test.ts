@@ -2,6 +2,7 @@ import { mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
+import { selectPublishableTestimonials } from '../../apps/marketing/render-site.mjs';
 import { buildMarketingSite } from '../../scripts/build-marketing.mjs';
 
 const outputs: string[] = [];
@@ -86,6 +87,76 @@ describe('marketing static artifact', () => {
     expect(html).not.toContain('https://app.example/login');
   });
 
+  it('orders the sales story from promise to proof to price to action', async () => {
+    const { html } = await buildFixture();
+    const order = ['class="hero"', 'class="trust-bar"', 'class="section shift"', 'id="cach-hoat-dong"', 'class="section features"', 'class="section companions"', 'class="section safety"', 'class="section early"', 'id="bang-gia"', 'class="section faq-section"', 'class="final-cta"'];
+    const positions = order.map((marker) => html.indexOf(marker));
+    expect(positions.every((position) => position > -1)).toBe(true);
+    expect([...positions].sort((a, b) => a - b)).toEqual(positions);
+  });
+
+  it('shows real product screens with sample-data disclosure, sized and lazily loaded below the fold', async () => {
+    const { outputDir, html } = await buildFixture();
+    expect(html).toMatch(/<img class="phone-screen" src="\/screens\/kid-home\.webp"[^>]*width="600" height="1298"[^>]*fetchpriority="high"/);
+    for (const screen of ['kid-tasks', 'kid-home', 'parent-approvals']) {
+      expect((await stat(join(outputDir, 'screens', `${screen}.webp`))).size).toBeGreaterThan(5000);
+      expect(html).toContain(`src="/screens/${screen}.webp"`);
+    }
+    const stepImages = html.match(/<img src="\/screens\/[^"]+"[^>]*>/g) ?? [];
+    expect(stepImages).toHaveLength(3);
+    for (const image of stepImages) {
+      expect(image).toMatch(/alt="[^"]{20,}"/);
+      expect(image).toContain('loading="lazy"');
+    }
+    expect(html.match(/Ảnh chụp từ bản demo, dữ liệu mẫu\./g)).toHaveLength(3);
+  });
+
+  it('offers a direct demo and a checkout in the hero, a sticky mobile bar and a closing call to action', async () => {
+    const { html } = await buildFixture();
+    const hero = html.slice(html.indexOf('class="hero-actions"'), html.indexOf('class="trust-points"'));
+    expect(hero).toContain('href="https://app.example/checkout?plan=monthly"');
+    expect(hero).toContain('href="https://app.example/?demo=1"');
+    expect(html).toMatch(/<div class="sticky-cta" data-sticky-cta hidden>[\s\S]*checkout\?plan=monthly/);
+    const finalCta = html.slice(html.indexOf('class="final-cta"'));
+    expect(finalCta).toContain('https://app.example/?demo=1');
+  });
+
+  it('invites early families instead of inventing testimonials, and publishes only consented quotes', async () => {
+    const outputDir = await makeOutput('kidhabit-marketing-early-');
+    await buildMarketingSite({ appOrigin: 'https://app.example', marketingOrigin: 'https://www.example', outputDir, supportEmail: 'support@example.com' });
+    const html = await readFile(join(outputDir, 'index.html'), 'utf8');
+    expect(html).toContain('Cùng xây KidHabit với những gia đình đầu tiên');
+    expect(html).toContain('href="mailto:support@example.com?subject=');
+    expect(html).not.toContain('<blockquote>');
+
+    const now = new Date('2026-10-01T00:00:00Z');
+    const complete = { quote: 'Con tự dọn cặp mỗi tối.', name: 'Chị Lan', role: 'Mẹ của bé 7 tuổi', consent: true, source: 'Phỏng vấn 2026-09-30', reviewBy: '2027-01-01' };
+    expect(selectPublishableTestimonials([complete], now)).toHaveLength(1);
+    for (const broken of [
+      { ...complete, consent: false },
+      { ...complete, source: '' },
+      { ...complete, reviewBy: '2026-09-01' },
+      { ...complete, name: ' ' },
+      { ...complete, quote: '' },
+    ]) {
+      expect(selectPublishableTestimonials([broken], now)).toHaveLength(0);
+    }
+  });
+
+  it('keeps motion meaningful: nothing decorative loops forever', async () => {
+    const css = await readFile(join(process.cwd(), 'apps', 'marketing', 'styles.css'), 'utf8');
+    expect(css).not.toMatch(/animation[^;{}]*infinite/);
+    expect(css).toContain('prefers-reduced-motion');
+  });
+
+  it('explains the shift from reminders to self-direction and the safeguards for parents', async () => {
+    const { html } = await buildFixture();
+    expect(html).toContain('Nhắc mãi không phải cách duy nhất');
+    expect(html).toContain('Ba mẹ nắm quyền, con được bảo vệ');
+    expect(html.match(/<li>\s*<svg class="icon[^>]*>[\s\S]*?<\/svg><div><strong>/g)).toHaveLength(4);
+    expect(html).not.toMatch(/\b(số 1|top 1|#1)\b/i);
+  });
+
   it('puts the brand mascots in the hero and a companions section with sized, described images', async () => {
     const { outputDir, html } = await buildFixture();
     expect(html).toMatch(/<img class="hero-mascot" src="\/mascots\/leo\.webp"[^>]*width="400" height="400"[^>]*fetchpriority="high"/);
@@ -134,7 +205,7 @@ describe('marketing static artifact', () => {
     const { html } = await buildFixture();
     const pricingSection = html.slice(html.indexOf('id="bang-gia"'), html.indexOf('faq-section'));
     expect(pricingSection).toContain('Hoàn tiền trong 30 ngày nếu chưa hài lòng');
-    const hero = html.slice(html.indexOf('class="hero"'), html.indexOf('class="section outcomes"'));
+    const hero = html.slice(html.indexOf('class="hero"'), html.indexOf('class="trust-bar"'));
     expect(hero).toContain('Hoàn tiền 30 ngày');
     expect(hero).toContain('7 ngày dùng thử');
   });

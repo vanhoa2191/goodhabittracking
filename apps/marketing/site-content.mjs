@@ -23,21 +23,6 @@ export const outcomes = [
   },
 ];
 
-export const habitLoop = [
-  {
-    verb: 'Chọn cùng con',
-    description: 'Ba mẹ chọn một thói quen vừa sức và nói rõ vì sao điều đó có ích.',
-  },
-  {
-    verb: 'Con tự thực hiện',
-    description: 'Con mở giao diện riêng, xem nhiệm vụ và đánh dấu khi đã hoàn thành.',
-  },
-  {
-    verb: 'Cùng ghi nhận',
-    description: 'Ba mẹ theo dõi tiến bộ, khen đúng lúc và đổi phần thưởng đã thống nhất.',
-  },
-];
-
 export const plans = [
   {
     id: 'solo_monthly',
@@ -88,6 +73,69 @@ export const mascots = [
 
 export const trustPoints = ['7 ngày dùng thử', 'Không cần thẻ', 'Hoàn tiền 30 ngày'];
 
+export const trustBar = [
+  { icon: 'shield', title: 'Ba mẹ nắm quyền', text: 'Khu vực phụ huynh có mã PIN riêng.' },
+  { icon: 'lock', title: 'Dữ liệu của bé được bảo vệ', text: 'Không quảng cáo, không bán dữ liệu của bé.' },
+  { icon: 'clock', title: 'Không ràng buộc', text: 'Không tự động gia hạn, hoàn tiền trong 30 ngày.' },
+  { icon: 'smartphone', title: 'Dùng ngay trên điện thoại', text: 'Không cần tài khoản riêng cho con.' },
+];
+
+export const comparison = {
+  beforeTitle: 'Khi chỉ dựa vào nhắc nhở',
+  before: [
+    'Sáng giục dậy, tối nhắc đánh răng, dọn đồ, học bài: ngày nào cũng lặp lại.',
+    'Con làm vì bị nhắc chứ chưa hiểu vì sao nên làm.',
+    'Ba mẹ dễ mệt và căng thẳng, còn con dễ chán và né tránh.',
+  ],
+  afterTitle: 'Với KidHabit',
+  after: [
+    'Mỗi việc nhỏ được viết rõ, con tự mở ra và tự bắt đầu.',
+    'Con nhận sao và huy hiệu khi hoàn thành, ba mẹ duyệt và khen đúng lúc.',
+    'Cuối ngày, cả nhà nhìn lại những điều con đã làm tốt.',
+  ],
+};
+
+export const steps = [
+  {
+    image: 'kid-tasks',
+    alt: 'Danh sách nhiệm vụ buổi sáng của bé trong KidHabit, có việc đã hoàn thành và số sao thưởng',
+    caption: 'Mỗi việc có hướng dẫn rõ ràng và số sao thưởng.',
+    bullets: ['Gợi ý theo 16 phẩm chất và 7 cách trao tặng', 'Ba mẹ chọn, sửa hoặc tự tạo nhiệm vụ', 'Có đồng hồ đếm giờ cho việc cần thời gian'],
+  },
+  {
+    image: 'kid-home',
+    alt: 'Màn hình chính của bé với nhân vật Leo, 120 sao, 3 huy hiệu và tiến độ 3/6 việc trong ngày',
+    caption: 'Bé thấy ngay hôm nay cần làm gì và mình đã đi được bao xa.',
+    bullets: ['Giao diện riêng, chỉ có nhiệm vụ, tiến độ và phần thưởng', 'Bé vào bằng mã QR hoặc mã nhập tay, không cần tài khoản', 'Vuốt hoặc chạm để hoàn thành, hoặc để sau'],
+  },
+  {
+    image: 'parent-approvals',
+    alt: 'Màn hình phụ huynh có nhiệm vụ chờ bố mẹ duyệt với nút Duyệt và Từ chối',
+    caption: 'Việc quan trọng chờ ba mẹ duyệt trước khi bé nhận sao.',
+    bullets: ['Duyệt hoặc từ chối chỉ với một chạm', 'Xem chuỗi ngày và số sao của từng bé', 'Đổi quà theo danh sách ba mẹ đã thống nhất'],
+  },
+];
+
+export const features = [
+  { icon: 'book', title: 'Khung thói quen theo độ tuổi', text: 'Gợi ý xoay quanh 16 phẩm chất và 7 cách trao tặng, chia theo giai đoạn của con.' },
+  { icon: 'list-checks', title: 'Nhiệm vụ có hướng dẫn', text: 'Mỗi việc nói rõ cần làm gì, thưởng bao nhiêu sao, có đồng hồ khi cần.' },
+  { icon: 'gift', title: 'Sao, huy hiệu và quà', text: 'Con gom sao, nhận huy hiệu và đổi phần thưởng do chính ba mẹ đặt ra.' },
+  { icon: 'shield', title: 'Ba mẹ duyệt và khen', text: 'Việc quan trọng chờ ba mẹ xác nhận, để lời khen đến đúng lúc đúng việc.' },
+  { icon: 'qr', title: 'Ghép thiết bị bằng mã QR', text: 'Con quét mã hoặc nhập mã để vào đúng hồ sơ của mình. Ba mẹ thu hồi được bất cứ lúc nào.' },
+  { icon: 'users', title: 'Nhiều bé, nhiều người đồng hành', text: 'Gói Cao cấp cho nhiều hồ sơ bé và mời người thân cùng theo dõi.' },
+];
+
+export const safetyPoints = [
+  { icon: 'lock', title: 'Khu vực phụ huynh có mã PIN', text: 'Thanh toán và cài đặt gia đình nằm ngoài tầm với của bé.' },
+  { icon: 'shield', title: 'Mỗi gia đình một không gian riêng', text: 'Dữ liệu được tách biệt, gia đình này không xem được gia đình khác.' },
+  { icon: 'eye-off', title: 'Bảng xếp hạng mặc định tắt', text: 'Tên thật của bé chỉ hiện khi ba mẹ chủ động bật.' },
+  { icon: 'trash', title: 'Ba mẹ quyết định giữ hay xóa', text: 'Chủ gia đình có thể xóa toàn bộ dữ liệu gia đình trong ứng dụng.' },
+];
+
+// Only real, consented quotes belong here. An entry is shown when it has a
+// quote, a name, recorded consent, a source and a review date still in the future.
+export const testimonials = [];
+
 export const faqs = [
   {
     question: 'Tôi có cần nhập thẻ để dùng thử không?',
@@ -104,6 +152,14 @@ export const faqs = [
   {
     question: 'Tôi có được hoàn tiền không?',
     answer: 'Có. Nếu chưa hài lòng, bạn có thể yêu cầu hoàn tiền trong 30 ngày kể từ ngày thanh toán bằng cách gửi mã đơn và thời điểm thanh toán tới email hỗ trợ.',
+  },
+  {
+    question: 'Con có cần tài khoản riêng không?',
+    answer: 'Không. Con vào bằng mã QR hoặc mã nhập tay do ba mẹ cấp và chỉ thấy hồ sơ của chính mình.',
+  },
+  {
+    question: 'Có cần cài ứng dụng không?',
+    answer: 'KidHabit chạy ngay trên trình duyệt điện thoại hoặc máy tính. Bạn có thể thêm vào màn hình chính để mở nhanh như một ứng dụng.',
   },
   {
     question: 'Tôi có thể dùng trên nhiều thiết bị không?',

@@ -46,7 +46,7 @@ export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir
 
   await rm(target, { recursive: true, force: true });
   await mkdir(target, { recursive: true });
-  await writeRoute(target, '', renderHome({ appOrigin: app, marketingOrigin: marketing }));
+  await writeRoute(target, '', renderHome({ appOrigin: app, marketingOrigin: marketing, supportEmail: support }));
   await writeRoute(target, 'pricing', renderPricingPage({ appOrigin: app, marketingOrigin: marketing }));
   await Promise.all(routes.map((slug) => writeRoute(target, slug, renderInfoPage({ slug, appOrigin: app, marketingOrigin: marketing, supportEmail: support }))));
 
