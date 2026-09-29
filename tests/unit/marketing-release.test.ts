@@ -22,7 +22,7 @@ async function buildFixture() {
 async function replace(directory: string, relativePath: string, from: string, to: string) {
   const path = join(directory, relativePath);
   const html = await readFile(path, 'utf8');
-  await writeFile(path, html.replace(from, to));
+  await writeFile(path, html.replaceAll(from, to));
 }
 
 afterEach(async () => {
@@ -53,6 +53,16 @@ describe('marketing release verifier', () => {
     await expect(verifyMarketingRelease({
       directory, appOrigin: 'https://app.example', marketingOrigin: 'https://www.example',
     })).rejects.toThrow(/checkout outside/i);
+  });
+
+  it('rejects structured data that sends checkout outside the app origin', async () => {
+    const directory = await buildFixture();
+    const path = join(directory, 'index.html');
+    const html = await readFile(path, 'utf8');
+    await writeFile(path, html.replace(/("url":")https:\/\/app\.example(\/checkout\?plan=monthly")/, '$1https://wrong.example$2'));
+    await expect(verifyMarketingRelease({
+      directory, appOrigin: 'https://app.example', marketingOrigin: 'https://www.example',
+    })).rejects.toThrow(/structured data sends checkout outside/i);
   });
 
   it('rejects exposed API routes', async () => {

@@ -33,6 +33,21 @@ function assertHtmlContract(html, route, appOrigin, marketingOrigin) {
     if (normalized.includes(marker)) throw new Error(`${route} exposes forbidden marker: ${marker}`);
   }
 
+  for (const block of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    let data;
+    try {
+      data = JSON.parse(block[1]);
+    } catch {
+      throw new Error(`${route} has malformed structured data.`);
+    }
+    for (const offer of data.offers ?? []) {
+      const url = new URL(offer.url);
+      if (url.pathname === '/checkout' && url.origin !== appOrigin) {
+        throw new Error(`${route} structured data sends checkout outside the configured app origin.`);
+      }
+    }
+  }
+
   const absoluteLinks = [...html.matchAll(/href="(https?:\/\/[^"#]+)"/g)].map((match) => match[1]);
   for (const link of absoluteLinks) {
     const url = new URL(link);
