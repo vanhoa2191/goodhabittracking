@@ -32,6 +32,8 @@ If the provider is unavailable, leave messages in retry/dead-letter state. Do no
 
 PayOS has no automated refund endpoint in the contract used by this application. Never mark a refund complete merely because it was approved.
 
+Published policy: a customer who is not satisfied may request a refund within 30 days of the payment date. Treat a request received inside that window as eligible; only check that the order exists, was paid and has not already been refunded.
+
 1. Create a refund case linked to the order when available.
 2. Move it to `reviewing`; verify customer, order, amount and policy eligibility outside child data surfaces.
 3. If approved, set `manual_refund_required`.

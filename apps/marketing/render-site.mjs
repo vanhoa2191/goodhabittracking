@@ -1,3 +1,4 @@
+import { buildLegalPages, legalUpdatedLabel } from './legal-content.mjs';
 import { faqs, habitLoop, navigation, outcomes, plans, publicPages } from './site-content.mjs';
 
 const icons = {
@@ -151,7 +152,30 @@ function renderContactNote(supportEmail) {
   return `<p class="shell contact-note">Email hỗ trợ: <a href="mailto:${address}">${address}</a></p>`;
 }
 
+const legalSlugs = new Set(['privacy', 'terms']);
+
+function renderInlineText(text, supportEmail) {
+  const escaped = escapeHtml(text);
+  if (!supportEmail) return escaped;
+  const address = escapeHtml(supportEmail);
+  return escaped.replaceAll(address, `<a href="mailto:${address}">${address}</a>`);
+}
+
+function renderLegalBlocks(blocks, supportEmail) {
+  return blocks.map((block) => (Array.isArray(block)
+    ? `<ul>${block.map((item) => `<li>${renderInlineText(item, supportEmail)}</li>`).join('')}</ul>`
+    : `<p>${renderInlineText(block, supportEmail)}</p>`)).join('');
+}
+
+function renderLegalPage({ slug, marketingOrigin, appOrigin, supportEmail }) {
+  const page = buildLegalPages({ supportEmail })[slug];
+  const sections = page.sections.map((section) => `<article><h2>${escapeHtml(section.title)}</h2>${renderLegalBlocks(section.blocks, supportEmail)}</article>`).join('');
+  const body = `<main id="noi-dung"><section class="page-hero"><div class="shell"><h1>${escapeHtml(page.title)}</h1><p>${escapeHtml(page.description)}</p></div></section><section class="section info-page"><div class="shell"><p class="legal-meta">Cập nhật lần cuối: ${legalUpdatedLabel}</p><div class="legal-doc">${sections}</div></div></section></main>`;
+  return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: `/${slug}/`, marketingOrigin, appOrigin, body });
+}
+
 export function renderInfoPage({ slug, marketingOrigin, appOrigin, supportEmail }) {
+  if (legalSlugs.has(slug)) return renderLegalPage({ slug, marketingOrigin, appOrigin, supportEmail });
   const page = publicPages[slug];
   const body = `<main id="noi-dung"><section class="page-hero"><div class="shell"><h1>${page.title}</h1><p>${page.description}</p></div></section><section class="section info-page"><div class="shell info-grid">${page.sections.map(([title, text]) => `<article><h2>${title}</h2><p>${text}</p></article>`).join('')}</div>${slug === 'contact' ? renderContactNote(supportEmail) : ''}</section></main>`;
   return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: `/${slug}/`, marketingOrigin, appOrigin, body });

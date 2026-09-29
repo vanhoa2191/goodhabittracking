@@ -211,6 +211,14 @@ p { color: var(--color-ink-soft); text-wrap: pretty; }
 .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 var(--space-16); }
 .info-grid article { padding-block: var(--space-8); border-top: 1px solid var(--color-line); }
 .contact-note { padding: var(--space-4); background: var(--color-surface); border-radius: var(--radius-small); }
+.legal-meta { margin: 0 0 var(--space-6); color: var(--color-ink-soft); font-weight: 700; }
+.legal-doc { max-width: 46rem; }
+.legal-doc article { padding-block: var(--space-6); border-top: 1px solid var(--color-line); }
+.legal-doc h2 { margin-bottom: var(--space-3); }
+.legal-doc p { margin-block: 0 var(--space-3); }
+.legal-doc ul { margin: 0 0 var(--space-3); padding-left: 1.25rem; }
+.legal-doc li + li { margin-top: var(--space-2); }
+.legal-doc a { text-decoration: underline; text-underline-offset: 0.2em; }
 
 .site-footer { padding-top: var(--space-16); background: var(--color-surface); border-top: 1px solid var(--color-line); }
 .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: var(--space-8); padding-bottom: var(--space-12); }

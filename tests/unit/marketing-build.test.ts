@@ -86,6 +86,37 @@ describe('marketing static artifact', () => {
     expect(html).not.toContain('https://app.example/login');
   });
 
+  it('states the 30-day refund policy in the terms and the pricing FAQ', async () => {
+    const { outputDir } = await buildFixture();
+    const terms = await readFile(join(outputDir, 'terms', 'index.html'), 'utf8');
+    expect(terms).toContain('Hoàn tiền trong 30 ngày');
+    expect(terms).toContain('30 ngày kể từ ngày thanh toán');
+    const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
+    expect(pricing).toContain('Tôi có được hoàn tiền không?');
+    expect(pricing).toContain('30 ngày');
+  });
+
+  it('renders the shared privacy and terms documents as readable single-column pages', async () => {
+    const outputDir = await makeOutput('kidhabit-marketing-legal-');
+    await buildMarketingSite({
+      appOrigin: 'https://app.example',
+      marketingOrigin: 'https://www.example',
+      outputDir,
+      supportEmail: 'support@example.com',
+    });
+    const privacy = await readFile(join(outputDir, 'privacy', 'index.html'), 'utf8');
+    expect(privacy).toContain('class="legal-doc"');
+    expect(privacy).toContain('<h1>Chính sách quyền riêng tư</h1>');
+    expect(privacy).toContain('Cập nhật lần cuối: 29/09/2026');
+    expect(privacy).toContain('<h2>5. Nơi lưu trữ dữ liệu</h2>');
+    expect(privacy).toMatch(/<ul>\s*<li>Tài khoản phụ huynh:/);
+    expect(privacy).toContain('<a href="mailto:support@example.com">support@example.com</a>');
+    const terms = await readFile(join(outputDir, 'terms', 'index.html'), 'utf8');
+    expect(terms).toContain('<h1>Điều khoản sử dụng</h1>');
+    expect(terms).toContain('29.000 VNĐ');
+    expect(terms).toContain('399.000 VNĐ');
+  });
+
   it('shows the configured support mailbox on the contact page and keeps the notice without one', async () => {
     const withMailbox = await makeOutput('kidhabit-marketing-support-');
     await buildMarketingSite({
