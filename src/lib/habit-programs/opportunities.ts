@@ -87,6 +87,7 @@ function dueDayOpportunities(input: OpportunityInput, own: readonly ActivityLog[
     .map((row) => row.local_date));
   const result: Opportunity[] = [];
   for (let date = input.since; date <= input.today; date = addDays(date, 1)) {
+    // Logs on days the current schedule does not make due are deliberately not opportunities.
     if (!isActivityDueOn(input.recurrence, date)) continue;
     const onDay = own.filter((log) => log.date === date);
     const verified = mostRecent(onDay.filter(isVerified));
@@ -117,8 +118,12 @@ function weeklyOpportunities(input: OpportunityInput, own: readonly ActivityLog[
       continue;
     }
     if (start === currentWeek || inWeek.some((log) => log.status === 'pending_approval')) continue;
+    // Deliberate: one deferred day is enough to leave the whole week neutral, because the child chose to do it later.
     if (days.some((day) => deferred.has(day))) continue;
-    if (days.every((day) => isFamilyPausedOn(day, input.pausePeriods))) continue;
+    const dueDays = days.filter((day) => isActivityDueOn(input.recurrence, day));
+    const pausedDueDays = dueDays.filter((day) => isFamilyPausedOn(day, input.pausePeriods));
+    // A week the family mostly paused is not held against the child.
+    if (dueDays.length === 0 || pausedDueDays.length * 2 > dueDays.length) continue;
     result.push({ date: start, outcome: 'missed' });
   }
   return result;

@@ -160,6 +160,25 @@ describe('weekly opportunities', () => {
     ]);
   });
 
+  it('skips a week when most of its due days were paused, but not when most were free', () => {
+    const base = { cadence: 'weekly' as const, since: '2026-09-14', today: '2026-10-07' };
+    const pause = { startedAt: '2026-09-16T00:00:00+07:00', endedAt: '2026-09-23T00:00:00+07:00' };
+    const inWeek = buildOpportunities(input({ ...base, pausePeriods: [pause] })).map((entry) => entry.date);
+    expect(inWeek).not.toContain('2026-09-14');
+    expect(inWeek).toContain('2026-09-21');
+  });
+
+  it('skips a week whose only due day was paused', () => {
+    const result = buildOpportunities(input({
+      cadence: 'weekly',
+      since: '2026-09-14',
+      today: '2026-10-07',
+      recurrence: { recurrenceType: 'custom', recurrenceDays: [6] },
+      pausePeriods: [{ startedAt: '2026-09-19T00:00:00+07:00', endedAt: '2026-09-19T23:00:00+07:00' }],
+    }));
+    expect(result.map((entry) => entry.date)).toEqual(['2026-09-21', '2026-09-28']);
+  });
+
   it('skips a week that was fully paused', () => {
     const result = buildOpportunities(input({
       cadence: 'weekly',
