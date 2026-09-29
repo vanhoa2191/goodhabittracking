@@ -75,9 +75,11 @@ Phần này tách rõ **khái niệm nguồn** và **cách dùng trong app**. Ap
 
 ### 3.1. Mười sáu chân dung chuẩn
 
-`CD-01` Trí Tuệ Học Giả; `CD-02` Tâm Thái An Vui; `CD-03` Nhân Cách Kiện Toàn; `CD-04` Phẩm Chất Ưu Tú; `CD-05` Năng Lực Xuất Chúng; `CD-06` Thân Hình Người Mẫu; `CD-07` Sức Khỏe Người Sắt; `CD-08` Quảng Bá Siêu Phàm; `CD-09` Giao Tiếp Thông Thái; `CD-10` Luật Sắt Bản Thân; `CD-11` Tầm Nhìn Thấu Suốt; `CD-12` Thấu Hiểu Nhân Sinh; `CD-13` Bác Ái Lĩnh Chúng; `CD-14` Đức Hành Thiên Hạ; `CD-15` Lục Lộc Đại Thuận; `CD-16` Làm Người Thành Công.
+`CD-01` Trí Tuệ Học Giả; `CD-02` Tâm Thái An Vui; `CD-03` Nhân Cách Kiện Toàn; `CD-04` Phẩm Chất Ưu Tú; `CD-05` Năng Lực Xuất Chúng; `CD-06` Thể Hình Cân Đối; `CD-07` Sức Khỏe Người Sắt; `CD-08` Quảng Bá Siêu Phàm; `CD-09` Giao Tiếp Thông Thái; `CD-10` Luật Sắt Bản Thân; `CD-11` Tầm Nhìn Thấu Suốt; `CD-12` Thấu Hiểu Nhân Sinh; `CD-13` Bác Ái Lĩnh Chúng; `CD-14` Đức Hành Thiên Hạ; `CD-15` Lục Lộc Đại Thuận; `CD-16` Làm Người Thành Công.
 
 `CD-16` là đích tổng hợp, không được hiển thị như một điểm số ngang hàng với 15 chân dung còn lại.
+
+**Bản 1.1.0 (30/09/2026, theo chỉ đạo của chủ dự án):** chỉ đổi từ ngữ cho dễ hiểu; ID, cấu trúc, lĩnh vực, giai đoạn và thẻ khái niệm không đổi. `CD-06` hiển thị là "Thể Hình Cân Đối" (nguồn gốc: "Thân Hình Người Mẫu"); "công đức", "phước đức" trong `GD5-NT-03` được thay bằng cách nói đời thường. Ba bản ghi bị ảnh hưởng (`GD2-SK-02`, `GD5-SK-02`, `GD5-NT-03`) giữ mã băm bản gốc trong `sourcePayloadSha256` của [`bản đối chiếu`](schemas/habit-framework-v1.reconciliation.json) để lệnh `verify:habit-framework` vẫn đối chiếu được với file nguồn đã duyệt. Các thẻ khái niệm dạng `#ChânDung:CD-06-…` giữ nguyên vì khóa là ID, không phải tên hiển thị.
 
 ## 4. Mô hình dữ liệu được chọn
 

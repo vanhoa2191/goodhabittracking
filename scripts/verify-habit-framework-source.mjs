@@ -104,7 +104,9 @@ if (sourcePath) {
   if (sourceHabits.length !== 47) throw new Error('The supplied source does not contain 47 habits.');
   for (const habit of sourceHabits) {
     const record = manifestById.get(habit.id);
-    if (!record || record.payloadSha256 !== digest(recordPayload(habit))) {
+    // Records with approved wording revisions keep the original transcription hash for this check.
+    const expected = record?.sourcePayloadSha256 ?? record?.payloadSha256;
+    if (!record || expected !== digest(recordPayload(habit))) {
       throw new Error(`Source mismatch for habit: ${habit.id}.`);
     }
   }

@@ -75,7 +75,7 @@ const viUi: PortraitGuideUi = {
   givingIntro: 'Bố thí không chỉ là tiền bạc, mà còn là 7 điều giản dị ai cũng có thể trao mỗi ngày: nụ cười, ánh mắt, lời nói, lòng biết ơn, sự bao dung, hành động nhân ái và sự nhường nhịn.',
   givingMeaning: 'Ý nghĩa:',
   givingPractice: 'Thực hành:',
-  givingSubtitle: 'Khởi tạo phước đức & bồi dưỡng nhân cách cho con',
+  givingSubtitle: 'Gieo điều tốt lành & bồi dưỡng nhân cách cho con',
   givingTitle: '7 bố thí đời người • Giáo dục tận gốc',
   goldWordsTitle: 'Công thức 6 chữ vàng của cha mẹ thông thái:',
   headerSubtitle: '9 nhân cách • 4 phẩm chất • 2 năng lực • 1 tầm nhìn • 7 cách cho đi',
