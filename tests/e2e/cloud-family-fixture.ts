@@ -15,6 +15,7 @@ type CloudFamilyFixtureOptions = {
   readonly profiles?: readonly Record<string, unknown>[];
   readonly activities?: readonly Record<string, unknown>[];
   readonly rewards?: readonly Record<string, unknown>[];
+  readonly subscription?: Record<string, unknown>;
 };
 
 const createdAt = '2026-09-20T00:00:00.000Z';
@@ -115,7 +116,7 @@ export async function installCloudFamilyFixture(
     else if (path.endsWith('/habit_activities')) payload = options.activities ?? [];
     else if (path.endsWith('/rewards')) payload = options.rewards ?? [];
     else if (path.endsWith('/user_subscriptions')) {
-      payload = { plan: 'trial', status: 'active', trial_ends_at: '2026-10-04T00:00:00.000Z', subscription_ends_at: null };
+      payload = options.subscription ?? { plan: 'trial', status: 'active', trial_ends_at: '2099-01-01T00:00:00.000Z', subscription_ends_at: null };
     } else if (path.endsWith('/family_engagement_settings')) payload = null;
     return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(payload) });
   });

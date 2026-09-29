@@ -22,6 +22,13 @@ test('@a11y landing page has no serious or critical accessibility violations', a
   expect(blockingViolations).toEqual([]);
 });
 
+test('@a11y trial start entry has no serious or critical accessibility violations', async ({ page }) => {
+  await page.route('**/api/child/session', (route) => route.fulfill({ status: 401, json: {} }));
+  await page.goto('/start');
+  await expect(page.getByRole('button', { name: 'Đăng nhập bằng Google để bắt đầu' })).toBeVisible();
+  expect(seriousOrCritical((await new AxeBuilder({ page }).analyze()).violations)).toEqual([]);
+});
+
 test('@a11y child dashboard and task details have no serious or critical violations', async ({ page }) => {
   await page.goto('/');
   await page.getByTestId('landing-primary-action').click();
