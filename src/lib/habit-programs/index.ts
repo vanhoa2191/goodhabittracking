@@ -3,6 +3,6 @@ export { addDays, buildOpportunities, isActivityDueOn, weekStart } from './oppor
 export type { DeferralRow, OpportunityInput } from './opportunities';
 export { evaluateHabitPhase } from './phase';
 export type { PhaseEvaluation, PhaseInput } from './phase';
-export { overloadSuggestion, stuckThresholdWeeks, suggestAdjustments } from './suggestions';
-export type { Suggestion, SuggestionCode, SuggestionInput } from './suggestions';
+export { overloadSuggestion, rankChildSuggestions, stuckThresholdWeeks, suggestAdjustments } from './suggestions';
+export type { HabitSuggestion, Suggestion, SuggestionCode, SuggestionInput } from './suggestions';
 export type { Cadence, ComplexityClass, HabitPhase, Opportunity, OpportunityOutcome, SupportLevel } from './types';

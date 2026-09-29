@@ -71,6 +71,25 @@ describe('due-day opportunities', () => {
     expect(buildOpportunities(input({ since: '2026-09-25', today: '2026-09-25' }))).toEqual([]);
   });
 
+  it('picks the same support level for a day with two verified logs whatever the array order', () => {
+    const early = { ...log('2026-09-24', 'completed', 'early'), completedAt: '2026-09-24T08:00:00.000Z' };
+    const late = { ...log('2026-09-24', 'completed', 'late'), completedAt: '2026-09-24T09:00:00.000Z' };
+    const tiedA = { ...log('2026-09-24', 'completed', 'a'), completedAt: '2026-09-24T10:00:00.000Z' };
+    const tiedB = { ...log('2026-09-24', 'completed', 'b'), completedAt: '2026-09-24T10:00:00.000Z' };
+    const supportByLogId = new Map<string, SupportLevel>([['early', 'alone'], ['late', 'prompted'], ['a', 'together'], ['b', 'alone']]);
+    const base = { since: '2026-09-24', today: '2026-09-24', supportByLogId };
+    expect(buildOpportunities(input({ ...base, logs: [early, late] }))).toEqual([{ date: '2026-09-24', outcome: 'prompted' }]);
+    expect(buildOpportunities(input({ ...base, logs: [late, early] }))).toEqual([{ date: '2026-09-24', outcome: 'prompted' }]);
+    const tieForward = buildOpportunities(input({ ...base, logs: [tiedA, tiedB] }));
+    const tieReversed = buildOpportunities(input({ ...base, logs: [tiedB, tiedA] }));
+    expect(tieForward).toEqual(tieReversed);
+  });
+
+  it('treats a custom recurrence with no saved days as never due instead of failing', () => {
+    expect(isActivityDueOn({ recurrenceType: 'custom', recurrenceDays: undefined as unknown as number[] }, '2026-09-23')).toBe(false);
+    expect(isActivityDueOn({ recurrenceType: 'custom', recurrenceDays: null as unknown as number[] }, '2026-09-23')).toBe(false);
+  });
+
   it('counts today once it has been done', () => {
     const result = buildOpportunities(input({ logs: [log('2026-09-25')], since: '2026-09-25' }));
     expect(result).toEqual([{ date: '2026-09-25', outcome: 'unknown' }]);
@@ -118,6 +137,25 @@ describe('weekly opportunities', () => {
     }));
     expect(result).toEqual([
       { date: '2026-09-07', outcome: 'alone' },
+      { date: '2026-09-14', outcome: 'missed' },
+    ]);
+  });
+
+  it('picks the same support level for a week with two verified logs whatever the array order', () => {
+    const first = { ...log('2026-09-08', 'completed', 'first'), completedAt: '2026-09-08T08:00:00.000Z' };
+    const second = { ...log('2026-09-10', 'completed', 'second'), completedAt: '2026-09-10T08:00:00.000Z' };
+    const supportByLogId = new Map<string, SupportLevel>([['first', 'together'], ['second', 'alone']]);
+    const base = { cadence: 'weekly' as const, since: '2026-09-07', today: '2026-09-15', supportByLogId };
+    expect(buildOpportunities(input({ ...base, logs: [first, second] }))).toEqual([{ date: '2026-09-07', outcome: 'alone' }]);
+    expect(buildOpportunities(input({ ...base, logs: [second, first] }))).toEqual([{ date: '2026-09-07', outcome: 'alone' }]);
+  });
+
+  it('does not count a deferred week as missed, but a done week still counts', () => {
+    const deferrals = [{ child_id: childId, activity_id: activityId, local_date: '2026-09-09' }];
+    const base = { cadence: 'weekly' as const, since: '2026-09-07', today: '2026-09-24', deferrals };
+    expect(buildOpportunities(input({ ...base }))).toEqual([{ date: '2026-09-14', outcome: 'missed' }]);
+    expect(buildOpportunities(input({ ...base, logs: [log('2026-09-10')] }))).toEqual([
+      { date: '2026-09-07', outcome: 'unknown' },
       { date: '2026-09-14', outcome: 'missed' },
     ]);
   });

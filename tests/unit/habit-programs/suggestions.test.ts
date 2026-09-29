@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { evaluateHabitPhase } from '@/lib/habit-programs/phase';
-import { overloadSuggestion, stuckThresholdWeeks, suggestAdjustments } from '@/lib/habit-programs/suggestions';
+import { overloadSuggestion, rankChildSuggestions, stuckThresholdWeeks, suggestAdjustments } from '@/lib/habit-programs/suggestions';
 import type { Opportunity, OpportunityOutcome } from '@/lib/habit-programs/types';
 
 function run(pattern: string, dayZero = '2026-01-01'): Opportunity[] {
@@ -68,10 +68,27 @@ describe('per-habit suggestions', () => {
     expect(suggest('ttt' + 'tt')).not.toContain('record-support');
   });
 
-  it('shows at most three suggestions, most urgent first', () => {
+  it('puts the most urgent suggestion of a habit first', () => {
     const codes = suggest('ttt' + 'tttttttttt' + 'ppuuxxx', { today: '2026-06-01' });
-    expect(codes.length).toBeLessThanOrEqual(3);
     expect(codes[0]).toBe('step-back');
+  });
+});
+
+describe('suggestions for one child', () => {
+  it('keeps the three most urgent across all habits and keeps input order for ties', () => {
+    const entry = (habitId: string, code: Parameters<typeof rankChildSuggestions>[0][number]['suggestion']['code']) => ({ habitId, suggestion: { code, facts: {} } });
+    const ranked = rankChildSuggestions([
+      entry('a', 'record-support'),
+      entry('b', 'routine-formed'),
+      entry('c', 'check-in'),
+      entry('d', 'step-back'),
+      entry('e', 'check-in'),
+    ]);
+    expect(ranked.map((item) => `${item.habitId}:${item.suggestion.code}`)).toEqual(['c:check-in', 'e:check-in', 'd:step-back']);
+  });
+
+  it('returns fewer than three when there is little to say', () => {
+    expect(rankChildSuggestions([])).toEqual([]);
   });
 });
 

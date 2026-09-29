@@ -89,3 +89,17 @@ export function overloadSuggestion(phases: readonly HabitPhase[], ageYears: numb
   const limit = newHabitLimit(ageYears);
   return active > limit ? { code: 'too-many-new', facts: { active, limit } } : null;
 }
+
+export type HabitSuggestion = {
+  readonly habitId: string;
+  readonly suggestion: Suggestion;
+};
+
+/** The suggestions to show for one child across all their habits: most urgent first, at most the display limit. */
+export function rankChildSuggestions(entries: readonly HabitSuggestion[]): HabitSuggestion[] {
+  return entries
+    .map((entry, index) => ({ entry, index }))
+    .sort((a, b) => PRIORITY.indexOf(a.entry.suggestion.code) - PRIORITY.indexOf(b.entry.suggestion.code) || a.index - b.index)
+    .map(({ entry }) => entry)
+    .slice(0, HABIT_PROGRAM_CONFIG.suggestionLimit);
+}

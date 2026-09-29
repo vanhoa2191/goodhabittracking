@@ -5,7 +5,8 @@ import type { Cadence, Opportunity, SupportLevel } from './types';
 
 type Recurrence = {
   readonly recurrenceType: HabitActivity['recurrenceType'];
-  readonly recurrenceDays: readonly number[];
+  /** Older saved habits may have no days stored; that means "never due" for custom schedules. */
+  readonly recurrenceDays?: readonly number[] | null;
 };
 
 export type DeferralRow = {
@@ -34,7 +35,7 @@ export function isActivityDueOn(recurrence: Recurrence, date: string): boolean {
   switch (recurrence.recurrenceType) {
     case 'weekdays': return weekday >= 1 && weekday <= 5;
     case 'weekends': return weekday === 0 || weekday === 6;
-    case 'custom': return recurrence.recurrenceDays.includes(weekday);
+    case 'custom': return (recurrence.recurrenceDays ?? []).includes(weekday);
     default: return true;
   }
 }
@@ -55,7 +56,19 @@ function isVerified(log: ActivityLog): boolean {
   return log.status === 'completed' || log.status === 'approved';
 }
 
+/** Oldest first, with the log id as a tie-break, so the choice never depends on the order logs arrive in. */
+function byRecency(a: ActivityLog, b: ActivityLog): number {
+  return a.date.localeCompare(b.date) || a.completedAt.localeCompare(b.completedAt) || a.id.localeCompare(b.id);
+}
+
+function mostRecent(logs: readonly ActivityLog[]): ActivityLog | undefined {
+  return [...logs].sort(byRecency).pop();
+}
+
 /**
+ * Paused days follow the device's local midnight, exactly like the streak in habit-fire, so a device in another
+ * time zone can classify a day next to a pause boundary differently.
+ *
  * The chronological list of chances a child had to do a habit, oldest first.
  * Days that are paused, deferred, still awaiting approval or not over yet are left out
  * so they never count as a miss.
@@ -76,7 +89,7 @@ function dueDayOpportunities(input: OpportunityInput, own: readonly ActivityLog[
   for (let date = input.since; date <= input.today; date = addDays(date, 1)) {
     if (!isActivityDueOn(input.recurrence, date)) continue;
     const onDay = own.filter((log) => log.date === date);
-    const verified = onDay.find(isVerified);
+    const verified = mostRecent(onDay.filter(isVerified));
     if (verified) {
       result.push({ date, outcome: outcomeOf(verified) });
       continue;
@@ -89,19 +102,22 @@ function dueDayOpportunities(input: OpportunityInput, own: readonly ActivityLog[
 }
 
 function weeklyOpportunities(input: OpportunityInput, own: readonly ActivityLog[], outcomeOf: Outcomes): Opportunity[] {
+  const deferred = new Set(input.deferrals
+    .filter((row) => row.child_id === input.childId && row.activity_id === input.activityId)
+    .map((row) => row.local_date));
   const result: Opportunity[] = [];
   const currentWeek = weekStart(input.today);
   for (let start = weekStart(input.since); start <= currentWeek; start = addDays(start, 7)) {
     const days = Array.from({ length: 7 }, (_, index) => addDays(start, index))
       .filter((day) => day >= input.since && day <= input.today);
     const inWeek = own.filter((log) => days.includes(log.date));
-    const verified = inWeek.filter(isVerified).sort((a, b) => a.date.localeCompare(b.date));
-    const latest = verified[verified.length - 1];
+    const latest = mostRecent(inWeek.filter(isVerified));
     if (latest) {
       result.push({ date: start, outcome: outcomeOf(latest) });
       continue;
     }
     if (start === currentWeek || inWeek.some((log) => log.status === 'pending_approval')) continue;
+    if (days.some((day) => deferred.has(day))) continue;
     if (days.every((day) => isFamilyPausedOn(day, input.pausePeriods))) continue;
     result.push({ date: start, outcome: 'missed' });
   }
