@@ -20,6 +20,15 @@ function previousDay(date: string): string {
   return day.toISOString().slice(0, 10);
 }
 
+/** True when any family pause overlaps the given local day (YYYY-MM-DD). */
+export function isFamilyPausedOn(day: string, pausePeriods: readonly FamilyPausePeriod[]): boolean {
+  const dayStart = new Date(`${day}T00:00:00`);
+  const nextDay = new Date(dayStart);
+  nextDay.setDate(nextDay.getDate() + 1);
+  return pausePeriods.some(({ startedAt, endedAt }) =>
+    new Date(startedAt) < nextDay && (endedAt === null || new Date(endedAt) > dayStart));
+}
+
 export function habitFireForChild(
   logs: readonly ActivityLog[],
   childId: string,
@@ -33,13 +42,7 @@ export function habitFireForChild(
   const pendingToday = childLogs.some((log) => log.date === today && log.status === 'pending_approval');
   const earliestVerifiedDay = [...verifiedDays].sort()[0];
   if (!earliestVerifiedDay) return { kind: 'cold', days: 0, pendingToday };
-  const isPausedDay = (day: string) => {
-    const dayStart = new Date(`${day}T00:00:00`);
-    const nextDay = new Date(dayStart);
-    nextDay.setDate(nextDay.getDate() + 1);
-    return pausePeriods.some(({ startedAt, endedAt }) =>
-      new Date(startedAt) < nextDay && (endedAt === null || new Date(endedAt) > dayStart));
-  };
+  const isPausedDay = (day: string) => isFamilyPausedOn(day, pausePeriods);
 
   let date = today;
   let canRest = true;

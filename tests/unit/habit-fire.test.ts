@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { habitFireForChild } from '@/lib/habit-fire';
+import { habitFireForChild, isFamilyPausedOn } from '@/lib/habit-fire';
 import type { ActivityLog } from '@/types';
 
 const childId = '11111111-1111-4111-8111-111111111111';
@@ -58,5 +58,20 @@ describe('habit fire', () => {
     ], childId, '2026-09-24', [
       { startedAt: '2026-09-21T00:00:00.000Z', endedAt: '2026-09-23T23:59:59.000Z' },
     ])).toEqual({ kind: 'resting', days: 2, pendingToday: false });
+  });
+});
+
+describe('isFamilyPausedOn', () => {
+  const pauses = [{ startedAt: '2026-09-21T00:00:00.000Z', endedAt: '2026-09-24T00:00:00.000Z' }];
+
+  it('is true for days inside a pause and false for days clearly outside it', () => {
+    expect(isFamilyPausedOn('2026-09-22', pauses)).toBe(true);
+    expect(isFamilyPausedOn('2026-09-23', pauses)).toBe(true);
+    expect(isFamilyPausedOn('2026-09-18', pauses)).toBe(false);
+    expect(isFamilyPausedOn('2026-09-27', pauses)).toBe(false);
+  });
+
+  it('treats a pause without an end as still running', () => {
+    expect(isFamilyPausedOn('2026-12-01', [{ startedAt: '2026-09-21T00:00:00.000Z', endedAt: null }])).toBe(true);
   });
 });
