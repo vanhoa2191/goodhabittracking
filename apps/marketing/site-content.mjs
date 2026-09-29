@@ -100,7 +100,7 @@ export const steps = [
     image: 'kid-tasks',
     alt: 'Danh sách nhiệm vụ buổi sáng của bé trong KidHabit, có việc đã hoàn thành và số sao thưởng',
     caption: 'Mỗi việc có hướng dẫn rõ ràng và số sao thưởng.',
-    bullets: ['Gợi ý theo 16 phẩm chất và 7 cách trao tặng', 'Ba mẹ chọn, sửa hoặc tự tạo nhiệm vụ', 'Có đồng hồ đếm giờ cho việc cần thời gian'],
+    bullets: ['Khung 47 thói quen, chia 5 giai đoạn từ 0 đến 18 tuổi', 'Mỗi thói quen gắn với chân dung con đang hướng tới', 'Ba mẹ chọn, sửa hoặc tự tạo nhiệm vụ'],
   },
   {
     image: 'kid-home',
@@ -117,8 +117,8 @@ export const steps = [
 ];
 
 export const features = [
-  { icon: 'book', title: 'Khung thói quen theo độ tuổi', text: 'Gợi ý xoay quanh 16 phẩm chất và 7 cách trao tặng, chia theo giai đoạn của con.' },
-  { icon: 'list-checks', title: 'Nhiệm vụ có hướng dẫn', text: 'Mỗi việc nói rõ cần làm gì, thưởng bao nhiêu sao, có đồng hồ khi cần.' },
+  { icon: 'book', title: 'Khung thói quen theo độ tuổi', text: 'Mỗi thói quen có lời giải thích “vì sao” dành cho con và hướng dẫn dành cho ba mẹ, chia theo 5 giai đoạn từ 0 đến 18 tuổi.' },
+  { icon: 'list-checks', title: 'Nhiệm vụ có hướng dẫn', text: 'Mỗi việc nói rõ cần làm gì và thưởng bao nhiêu sao, có đồng hồ đếm giờ khi việc cần thời gian.' },
   { icon: 'gift', title: 'Sao, huy hiệu và quà', text: 'Con gom sao, nhận huy hiệu và đổi phần thưởng do chính ba mẹ đặt ra.' },
   { icon: 'shield', title: 'Ba mẹ duyệt và khen', text: 'Việc quan trọng chờ ba mẹ xác nhận, để lời khen đến đúng lúc đúng việc.' },
   { icon: 'qr', title: 'Ghép thiết bị bằng mã QR', text: 'Con quét mã hoặc nhập mã để vào đúng hồ sơ của mình. Ba mẹ thu hồi được bất cứ lúc nào.' },

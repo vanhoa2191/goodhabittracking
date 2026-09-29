@@ -89,7 +89,7 @@ describe('marketing static artifact', () => {
 
   it('orders the sales story from promise to proof to price to action', async () => {
     const { html } = await buildFixture();
-    const order = ['class="hero"', 'class="trust-bar"', 'class="section shift"', 'id="cach-hoat-dong"', 'class="section features"', 'class="section companions"', 'class="section safety"', 'class="section early"', 'id="bang-gia"', 'class="section faq-section"', 'class="final-cta"'];
+    const order = ['class="hero"', 'class="trust-bar"', 'id="chan-dung"', 'class="section shift"', 'id="cach-hoat-dong"', 'class="section features"', 'class="section companions"', 'class="section safety"', 'class="section early"', 'id="bang-gia"', 'class="section faq-section"', 'class="final-cta"'];
     const positions = order.map((marker) => html.indexOf(marker));
     expect(positions.every((position) => position > -1)).toBe(true);
     expect([...positions].sort((a, b) => a - b)).toEqual(positions);
@@ -111,14 +111,19 @@ describe('marketing static artifact', () => {
     expect(html.match(/Ảnh chụp từ bản demo, dữ liệu mẫu\./g)).toHaveLength(3);
   });
 
-  it('offers a direct demo and a checkout in the hero, a sticky mobile bar and a closing call to action', async () => {
+  it('sends the trial button to login-and-activate, and only plan buttons to checkout', async () => {
     const { html } = await buildFixture();
     const hero = html.slice(html.indexOf('class="hero-actions"'), html.indexOf('class="trust-points"'));
-    expect(hero).toContain('href="https://app.example/checkout?plan=monthly"');
+    expect(hero).toContain('href="https://app.example/start"');
     expect(hero).toContain('href="https://app.example/?demo=1"');
-    expect(html).toMatch(/<div class="sticky-cta" data-sticky-cta hidden>[\s\S]*checkout\?plan=monthly/);
+    expect(hero).not.toContain('checkout');
+    expect(html).toMatch(/<a href="https:\/\/app\.example\/start" class="button button-small">Dùng thử 7 ngày<\/a>/);
+    expect(html).toMatch(/<div class="sticky-cta" data-sticky-cta hidden>[\s\S]*href="https:\/\/app\.example\/start"/);
     const finalCta = html.slice(html.indexOf('class="final-cta"'));
+    expect(finalCta).toContain('https://app.example/start');
     expect(finalCta).toContain('https://app.example/?demo=1');
+    const trialLinks = html.match(/href="https:\/\/app\.example\/checkout\?plan=[a-z_]+"/g) ?? [];
+    expect(new Set(trialLinks).size).toBe(3);
   });
 
   it('invites early families instead of inventing testimonials, and publishes only consented quotes', async () => {
@@ -127,7 +132,8 @@ describe('marketing static artifact', () => {
     const html = await readFile(join(outputDir, 'index.html'), 'utf8');
     expect(html).toContain('Cùng xây KidHabit với những gia đình đầu tiên');
     expect(html).toContain('href="mailto:support@example.com?subject=');
-    expect(html).not.toContain('<blockquote>');
+    expect(html).not.toContain('class="quote-card"');
+    expect(html).not.toContain('Gia đình nói gì');
 
     const now = new Date('2026-10-01T00:00:00Z');
     const complete = { quote: 'Con tự dọn cặp mỗi tối.', name: 'Chị Lan', role: 'Mẹ của bé 7 tuổi', consent: true, source: 'Phỏng vấn 2026-09-30', reviewBy: '2027-01-01' };
@@ -141,6 +147,50 @@ describe('marketing static artifact', () => {
     ]) {
       expect(selectPublishableTestimonials([broken], now)).toHaveLength(0);
     }
+  });
+
+  it('positions KidHabit as education through habits, aimed at sixteen growth portraits', async () => {
+    const { html } = await buildFixture();
+    expect(html).toContain('<title>KidHabit Hero | Giáo dục con qua thói quen mỗi ngày</title>');
+    expect(html).toMatch(/<h1>Từng thói quen nhỏ vẽ nên chân dung tốt đẹp của con<\/h1>/);
+    expect(html).toContain('Ứng dụng đồng hành giáo dục con qua thói quen');
+    expect(html).toContain('Mỗi thói quen là một nét vẽ nên chân dung của con');
+    expect(html).not.toMatch(/\b(số 1|top 1|#1)\b/i);
+  });
+
+  it('shows all sixteen portraits with the summit first and a real habit for each', async () => {
+    const { html } = await buildFixture();
+    const section = html.slice(html.indexOf('id="chan-dung"'), html.indexOf('class="section shift"'));
+    for (const name of ['Trí Tuệ Học Giả', 'Tâm Thái An Vui', 'Sức Khỏe Người Sắt', 'Luật Sắt Bản Thân', 'Lục Lộc Đại Thuận', 'Làm Người Thành Công']) {
+      expect(section).toContain(name);
+    }
+    expect(section).toContain('47 thói quen');
+    expect(section).toContain('5 giai đoạn từ 0 đến 18 tuổi');
+    expect(section.match(/data-portrait-detail="CD-\d{2}"/g)).toHaveLength(16);
+    expect(section.match(/class="portrait-chip"/g)).toHaveLength(15);
+    expect(section).toMatch(/class="portrait-summit"[^>]*data-portrait="CD-16"|data-portrait="CD-16"[^>]*aria-pressed="true"/);
+    expect(section.match(/<article class="portrait-detail"[^>]*data-portrait-detail="CD-16"><|<article class="portrait-detail" data-portrait-detail="CD-16">/)).not.toBeNull();
+    expect(section.match(/ hidden>/g)).toHaveLength(15);
+    expect(section).toContain('không phải nhãn tính cách hay điểm số');
+    expect(section).toContain('không cam kết một kết quả phát triển cụ thể');
+    for (const button of section.match(/<button[^>]*data-portrait=[^>]*>/g) ?? []) {
+      expect(button).toContain('type="button"');
+      expect(button).toMatch(/aria-pressed="(true|false)"/);
+    }
+  });
+
+  it('wires the pointer effects to elements and only runs them for fine pointers with motion allowed', async () => {
+    const { html } = await buildFixture();
+    expect(html).toContain('<section class="hero" data-hero>');
+    expect(html.match(/class="phone[^"]*" data-tilt/g)?.length).toBeGreaterThanOrEqual(4);
+    expect(html.match(/data-spotlight/g)?.length).toBeGreaterThan(15);
+    expect(html.match(/data-magnetic/g)).toHaveLength(2);
+    const script = await readFile(join(process.cwd(), 'apps', 'marketing', 'client.js'), 'utf8');
+    expect(script).toContain("(hover: hover) and (pointer: fine)");
+    expect(script).toContain('prefers-reduced-motion: reduce');
+    expect(script).toMatch(/if \(finePointer && motionAllowed\)/);
+    expect(script).toContain("addEventListener('pointermove'");
+    expect(script).toContain('requestAnimationFrame');
   });
 
   it('keeps motion meaningful: nothing decorative loops forever', async () => {
