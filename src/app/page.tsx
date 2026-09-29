@@ -187,7 +187,7 @@ export default function Home() {
         isOpen={isPortraitModalOpen}
         onClose={() => setIsPortraitModalOpen(false)}
       />
-      <CustomerProfilePrompt key={currentUserId ?? 'signed-out'} userId={currentUserId} />
+      <CustomerProfilePrompt key={currentUserId ?? 'signed-out'} userId={currentUserId} suppressed={isOnboardingOpen} />
     </div>
   );
 }

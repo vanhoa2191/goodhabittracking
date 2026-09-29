@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { isValidPhone, normalizePhone } from '@/lib/customer-profile';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
-const profileSchema = z.object({ displayName: z.string().trim().min(2).max(120), phone: z.string().trim().max(30).optional().default(''), marketingConsent: z.boolean().optional().default(false) }).strict();
+const profileSchema = z.object({ displayName: z.string().trim().min(2).max(120), phone: z.string().trim().max(30).refine(isValidPhone), marketingConsent: z.boolean().optional().default(false) }).strict();
 
 function serviceError(message: string, status = 503) {
   const correlationId = crypto.randomUUID();
@@ -25,7 +26,7 @@ export async function PATCH(request: NextRequest) {
   const profileValues = {
     display_name: parsed.data.displayName,
     email: user.email ?? null,
-    phone: parsed.data.phone || null,
+    phone: normalizePhone(parsed.data.phone),
     marketing_consent: parsed.data.marketingConsent,
     updated_at: new Date().toISOString(),
   };
