@@ -29,12 +29,13 @@ Chứng nhận toàn bộ hành trình trên staging/production, rollout theo l�
 - [ ] CI, Cloudflare build, unit/API/integration/E2E/a11y/performance/secrets xanh ở exact commit. Local evidence: build/unit/E2E/a11y/secrets xanh; route-aware performance gate xanh (`/` 1,792,380 bytes, largest chunk 787,067 bytes). Tổng static chunks 2,526,219 bytes vẫn là diagnostic.
 - [ ] Manual QA trên desktop, iOS Safari, Android Chrome cho guest/demo/parent/kid/admin.
 - [ ] PayOS create/QR/webhook/return/entitlement và refund/support được chứng nhận không lộ secret/PII.
+- [ ] Pages marketing và Worker app được deploy, smoke test và có rollback độc lập; Pages phải xanh trước app cutover.
 - [ ] Rollout bằng feature flags/cohorts; health/alerts quan sát trong cửa sổ đã định nghĩa.
 
 ## Implementation Steps
 
 1. Reconcile migrations chưa áp từ plan cũ; tạo backup phù hợp Supabase Free và chạy preflight transaction-safe.
-2. Chạy `npm run ci`, `npm run build:cloudflare`, focused E2E/a11y/performance và release verifier trên exact SHA.
+2. Chạy `npm run ci`, build/verifier marketing, build Worker, focused E2E/a11y/performance và release verifier trên exact SHA.
 3. QA ma trận: new visitor, returning parent, paired child, payment return, profile retry, QR/manual, legal/support, PWA update, admin step-up.
 4. Deploy canary/flags trước; quan sát health, errors, payment, outbox, profile/pairing và rollback signals.
 5. Sau ổn định, mở theo phase, cập nhật deployment/runbook và đóng các checkbox trùng ở plan `260923`.
@@ -46,6 +47,7 @@ Chứng nhận toàn bộ hành trình trên staging/production, rollout theo l�
 - [ ] Manual QA evidence cho thiết bị thật.
 - [x] Production health/dependency checks xanh sau deploy.
 - [ ] Rollback drill hoặc dry-run có thời gian/owner rõ.
+- [ ] Marketing live verifier xác nhận tám route/canonical và ba checkout CTA trước Worker deploy.
 
 ## Verification evidence
 

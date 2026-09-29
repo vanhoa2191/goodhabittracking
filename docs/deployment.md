@@ -2,16 +2,21 @@
 
 ## Platform
 
-Ứng dụng full-stack dùng Cloudflare Workers. Cloudflare Pages static export không chạy được route handlers cho pairing, PayOS và domain commands. Cấu hình hiện tại dùng `@opennextjs/cloudflare`; xem [Cloudflare OpenNext guide](https://developers.cloudflare.com/workers/framework-guides/web-apps/opennext/).
+Repository tạo hai bản phát hành độc lập:
+
+- Website giới thiệu: HTML/CSS/JS tĩnh tại `dist/marketing`, triển khai bằng Cloudflare Workers Static Assets với service `kidhabit-home`; origin tạm là `https://kidhabit-home.vanhoa2191.workers.dev`.
+- Ứng dụng: Next.js full-stack tại `https://goodhabittracking.vanhoa2191.workers.dev`, triển khai bằng OpenNext lên Cloudflare Workers. Origin này giữ auth, QR, PWA, API, PayOS và dữ liệu gia đình.
+
+Không chuyển route động sang Pages, không chia sẻ cookie giữa hai origin và không đặt Supabase/PayOS secret trong marketing build. Xem [Cloudflare OpenNext guide](https://developers.cloudflare.com/workers/framework-guides/web-apps/opennext/).
 
 ## First setup
 
-1. Tạo Workers project `goodhabittracking` nối GitHub repo.
-2. Build command: `npm run build:cloudflare`.
-3. Deploy command: `npx wrangler deploy` hoặc `npm run deploy:cloudflare` ở CI có token.
+1. Tạo hai Workers service độc lập trong cùng Cloudflare account: `goodhabittracking` cho app và `kidhabit-home` cho static marketing.
+2. App build/deploy: `npm run build:cloudflare` và `npm run deploy:cloudflare`.
+3. Marketing build/deploy: `npm run build:marketing`, `npm run verify:marketing-release -- --dir dist/marketing --app-origin https://goodhabittracking.vanhoa2191.workers.dev --marketing-origin https://kidhabit-home.vanhoa2191.workers.dev`, rồi `npm run deploy:marketing`. Wrangler 4.135 chuyển Pages project mới sang Workers Static Assets; không dùng lại root `wrangler.jsonc` của app cho service marketing.
 
 Các lệnh Cloudflare luôn loại server secret khỏi môi trường build để chúng chỉ tồn tại dưới dạng Worker secrets lúc chạy. Không đặt `PAYOS_*`, `SUPABASE_SERVICE_ROLE_KEY` hoặc `PAIRING_RATE_LIMIT_SECRET` trong `.env.local`; wrapper sẽ chặn build nếu phát hiện giá trị.
-4. Khai báo public variables `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_APP_URL` trong **môi trường build** (Cloudflare Builds hoặc CI), không chỉ dưới dạng Worker runtime secrets. Next.js đóng các giá trị `NEXT_PUBLIC_*` vào browser bundle khi build; `npm run deploy:cloudflare` sẽ dừng trước khi build nếu thiếu một trong ba giá trị để tránh phát hành bản không thể đăng nhập.
+4. Khai báo public variables `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_MARKETING_URL` và `NEXT_PUBLIC_DEPLOY_TARGET=app` trong **môi trường build app**. Marketing build chỉ nhận `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_MARKETING_URL` và `NEXT_PUBLIC_DEPLOY_TARGET=marketing`.
 5. Khai báo encrypted secrets: `SUPABASE_SERVICE_ROLE_KEY`, `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`, `PAIRING_RATE_LIMIT_SECRET`, và khi bật lifecycle email: `RESEND_API_KEY`, `LIFECYCLE_EMAIL_FROM`, `CRON_SECRET`.
 
 Trang `/admin` và mọi API quản trị lấy quyền từ `admin_memberships`, áp dụng vai trò, ngày hết hạn, thu hồi tức thời và AAL2. Thao tác ghi bắt buộc có lý do và tạo audit bất biến đã tối thiểu dữ liệu. `ADMIN_EMAILS` không cấp quyền vận hành thông thường: chỉ dùng khôi phục khẩn cấp cùng `ADMIN_BOOTSTRAP_EXPIRES_AT`, tối đa 24 giờ, cho email đã xác minh và chỉ để tài khoản đó tự tạo DB membership có hạn qua `/admin/security`. Sau đó phải xóa hai biến bootstrap. Không dùng parent PIN thay MFA.
@@ -19,8 +24,9 @@ Trang `/admin` và mọi API quản trị lấy quyền từ `admin_memberships`
 Lifecycle email dùng migration `202609280001_lifecycle_revenue_operations.sql` và mặc định tắt. Trước khi đặt `LIFECYCLE_EMAILS_ENABLED=true`, cần xác minh domain gửi tại Resend, duyệt processor/privacy và retention, đặt `RESEND_API_KEY`, `LIFECYCLE_EMAIL_FROM`, `CRON_SECRET`, `RESEND_WEBHOOK_SECRET`, đồng thời tạo GitHub secret `LIFECYCLE_CRON_SECRET` có cùng giá trị với Worker secret. Workflow `lifecycle-dispatch.yml` gọi outbox mỗi giờ; workflow `production-observability.yml` dùng cùng secret để đọc các tổng hợp sự cố đã làm sạch dữ liệu mỗi 15 phút. Endpoint từ chối request thiếu secret. Đăng ký Resend webhook tới `/api/internal/lifecycle/provider-webhook` cho `email.bounced`, `email.complained` và `email.suppressed`; endpoint chỉ ghi suppression sau khi chữ ký Svix hợp lệ. Chạy một email giao dịch thật tới inbox kiểm thử, xác minh chỉ có một thư khi replay cùng dedupe key và kiểm tra dead-letter trước khi bật rộng.
 
 Trang quản trị có workflow hỗ trợ, hủy và hoàn tiền. Chỉ link PayOS trạng thái `PENDING` mới được hủy qua API. Giao dịch đã thanh toán không có API hoàn tiền trong contract tích hợp hiện tại; operator phải đối soát và hoàn tiền ngoài hệ thống, sau đó chọn `manual_refund_confirmed` mới được đánh dấu hoàn tất.
-6. Đặt `NEXT_PUBLIC_APP_URL` đúng custom HTTPS origin.
-7. Đăng ký webhook PayOS tới `https://<origin>/api/payment/webhook`.
+6. Đặt hai origin HTTPS khác nhau, không có path: `NEXT_PUBLIC_APP_URL` cho Worker và `NEXT_PUBLIC_MARKETING_URL` cho Pages.
+7. Supabase Auth redirect allowlist chỉ cần app callback/origin. Không thêm Pages origin vào luồng OAuth vì marketing không đăng nhập.
+8. Đăng ký PayOS webhook, return và cancel trên app origin; webhook là `https://<app-origin>/api/payment/webhook`. Pages không nhận callback thanh toán.
 
 Các trang `/privacy`, `/terms`, `/contact` luôn build được ở trạng thái bản nháp nhưng mặc định `noindex` và không xuất hiện trong footer/checkout. Chỉ đặt `NEXT_PUBLIC_LEGAL_PAGES_APPROVED=true` sau khi chủ sản phẩm hoặc tư vấn pháp lý duyệt đúng phiên bản nội dung đang commit; đồng thời cấu hình `SUPPORT_EMAIL` bằng hộp thư hỗ trợ chính thức. Khi cờ bật, checkout yêu cầu phụ huynh mở và đồng ý điều khoản/quyền riêng tư trước khi tạo đơn PayOS.
 
@@ -29,12 +35,25 @@ Không đưa secret vào `wrangler.jsonc`, GitHub Actions log hoặc `NEXT_PUBLI
 
 ## Tự động phát hành từ `main`
 
-Workflow CI chỉ phát hành Worker sau khi cả kiểm tra chất lượng lẫn kiểm tra trình duyệt đều đạt. Thiết lập một lần trong phần cấu hình của repository GitHub:
+Luồng phát hành duy nhất: viết code trên máy → push lên GitHub → GitHub Actions kiểm thử → deploy lên Cloudflare Workers. Không deploy thủ công từ máy cá nhân trừ khi rollback khẩn cấp.
 
-1. Secrets: `CLOUDFLARE_API_TOKEN` (quyền Workers deploy) và `CLOUDFLARE_ACCOUNT_ID`.
+`ci.yml` kiểm tra và phát hành Worker `goodhabittracking` (app) sau khi quality/browser đạt. `marketing.yml` build, kiểm tra artifact rồi phát hành Worker `kidhabit-home` (website giới thiệu) độc lập. Thiết lập một lần trong phần cấu hình GitHub:
+
+1. Secrets: `CLOUDFLARE_API_TOKEN` có quyền Workers deploy, cùng `CLOUDFLARE_ACCOUNT_ID`.
 2. Variables: `NEXT_PUBLIC_SUPABASE_URL` và `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 
-`NEXT_PUBLIC_APP_URL` đã được cố định là origin production trong workflow. Khi thiếu một cấu hình bắt buộc, bước phát hành được bỏ qua; các job kiểm thử vẫn chạy bình thường. Không ghi các giá trị này vào workflow hoặc log CI.
+Hai origin tạm đã được cố định trong workflow, cùng `SUPPORT_EMAIL` công khai của trang liên hệ marketing. Khi thiếu Cloudflare credential hoặc public app configuration, bước phát hành tương ứng được bỏ qua; các job kiểm thử vẫn chạy. Không ghi secret vào workflow hoặc log CI.
+
+Không dùng Cloudflare Pages cho dự án này. Project Pages cũ `goodhabittracking` (`goodhabittracking.pages.dev`) không phải production; phải ngắt kết nối Git hoặc xóa để không tạo check `Cloudflare Pages` lỗi trên mỗi pull request.
+
+## Thứ tự rollout và rollback hai bề mặt
+
+1. Build và deploy static marketing service trước; chạy verifier trên URL live, kiểm tra ba CTA mở đúng app checkout.
+2. Chỉ khi marketing Worker xanh mới deploy Worker app có app gateway/noindex mới.
+3. Kiểm tra `/api/health` trả HTTP 200, `status=ready` và mọi dependency check là `true`; sau đó kiểm tra guest, parent, child, PWA và payment return.
+4. Rollback app bằng redeploy Worker commit trước. Rollback marketing bằng version Worker `kidhabit-home` trước hoặc build/deploy commit marketing trước. Không rollback schema bằng cách xóa dữ liệu.
+
+Nếu website giới thiệu lỗi sau app cutover, app vẫn truy cập trực tiếp được ở Worker origin; khôi phục version `kidhabit-home` trước, không chuyển auth hoặc checkout sang website giới thiệu.
 
 Thư mascot hằng ngày được giữ sau cờ build `NEXT_PUBLIC_DAILY_MASCOT_LETTER=true`. Mặc định cờ tắt để chưa phát hành giao diện khi đường ghi của phiên thiết bị con chưa được kiểm chứng trên production. Chỉ bật ở môi trường build sau khi kiểm tra phiên hợp lệ và quyền family; cần build/deploy lại để thay đổi cờ.
 

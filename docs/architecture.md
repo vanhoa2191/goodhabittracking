@@ -1,6 +1,6 @@
 # Architecture
 
-KidHabit Hero là modular monolith Next.js 16 triển khai trên Cloudflare Workers. Browser chỉ giữ UI state và public Supabase client. Mọi quyết định nhạy cảm nằm ở server route hoặc PostgreSQL function.
+KidHabit Hero phát hành hai artifact độc lập từ cùng repository: website giới thiệu bằng Cloudflare Workers Static Assets và ứng dụng modular monolith Next.js 16 bằng OpenNext Worker. Browser chỉ giữ UI state và public Supabase client. Mọi quyết định nhạy cảm nằm ở app Worker route hoặc PostgreSQL function.
 
 ## Ranh giới
 
@@ -10,6 +10,10 @@ KidHabit Hero là modular monolith Next.js 16 triển khai trên Cloudflare Work
 - `src/lib/domain`: command contracts, state transitions và date-only rules.
 - `src/lib/billing`: PayOS signing/provider client chỉ dùng server.
 - `supabase/migrations`: tenancy, RLS, pairing, billing, transactions và privacy lifecycle.
+- `apps/marketing`: nội dung bán hàng và tài liệu công khai, không import auth, API, PayOS hoặc Supabase.
+- `dist/marketing`: artifact HTML/CSS/JS tĩnh do `npm run build:marketing` tạo, không commit vào Git.
+
+Website marketing sở hữu canonical, sitemap, robots và nội dung công khai. App origin luôn `noindex`, sở hữu PWA, đăng nhập, QR, checkout, callback và API. Link mua hàng đi từ marketing origin tới `/checkout?plan=...` trên app origin; entitlement vẫn gắn với `family_id`, không gắn với email.
 
 ## Dòng dữ liệu cloud
 
@@ -21,9 +25,9 @@ KidHabit Hero là modular monolith Next.js 16 triển khai trên Cloudflare Work
 
 Child device dùng HttpOnly session token. Database chỉ lưu SHA-256 digest và capabilities; API trả đúng một child scope.
 
-## Local/demo
+## Demo
 
-Local mode lưu trong localStorage, không gọi mutation cloud. Demo dùng dữ liệu mẫu và lưu thay đổi trong sessionStorage của tab để giữ trạng thái khi tải lại; khi thiết lập gia đình hoặc đăng nhập, dữ liệu demo bị xóa và không trộn với dữ liệu thật. UI luôn hiển thị cảnh báo dữ liệu chỉ nằm trên thiết bị và cung cấp export/import JSON cho gia đình local.
+Sản phẩm thật mặc định đồng bộ đám mây, không cho người dùng chọn chế độ lưu cục bộ. Demo dùng dữ liệu mẫu và lưu thay đổi trong sessionStorage của tab để giữ trạng thái khi tải lại; khi thiết lập gia đình hoặc đăng nhập, dữ liệu demo bị xóa và không trộn với dữ liệu thật.
 
 ## Ngôn ngữ thích ứng
 

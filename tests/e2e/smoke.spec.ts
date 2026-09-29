@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { installCloudFamilyFixture } from './cloud-family-fixture';
 import { getVisiblePricingOpener } from './open-pricing';
 import { setupOrUnlockParent } from './pin-helper';
 
@@ -38,7 +39,6 @@ test('habit fire follows verified completion and undo on mobile', async ({ page 
   // Given: a child in the local demo with no verified completion today.
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/');
-  await page.waitForLoadState('networkidle');
   await page.getByTestId('landing-primary-action').click();
   await expect(page.getByRole('heading', { name: 'Nguyễn Minh An' })).toBeVisible();
   const fire = page.getByTestId('habit-fire');
@@ -157,7 +157,8 @@ test('demo reward request can be delivered by a parent in one visible action', a
   await expect(pendingReward).toBeHidden();
 });
 
-test('payment status failures are shown instead of reported as pending', async ({ page }) => {
+test('payment status failures are shown instead of reported as pending', async ({ page, baseURL }) => {
+  await installCloudFamilyFixture(page, baseURL);
   await page.route('**/api/payment/create', async (route) => {
     await route.fulfill({
       status: 200,
@@ -201,7 +202,8 @@ test('payment status failures are shown instead of reported as pending', async (
   await expect(checkoutDialog.getByText('Đang kiểm tra...')).toHaveCount(0);
 });
 
-test('payment checkout shows the exact provider response and secure fallback', async ({ page }) => {
+test('payment checkout shows the exact provider response and secure fallback', async ({ page, baseURL }) => {
+  await installCloudFamilyFixture(page, baseURL);
   // Given
   await page.route('**/api/payment/create', async (route) => {
     await route.fulfill({
@@ -331,7 +333,7 @@ test('an English journey creates localized habits', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
   await page.reload();
-  await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
+  await page.getByTestId('landing-primary-action').click();
   await page.getByRole('button', { name: /^Parent/ }).click();
 
   await setupOrUnlockParent(page);
@@ -418,7 +420,7 @@ test('English demo keeps child and parent secondary screens in English', async (
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
   await page.reload();
-  await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
+  await page.getByTestId('landing-primary-action').click();
 
   await expect(page.getByRole('heading', { name: 'Gift a smile: Say good morning cheerfully' })).toBeVisible();
   await expect(page.getByText('Nhan thí: Tươi cười chào buổi sáng')).toHaveCount(0);
@@ -480,8 +482,8 @@ test('English landing exposes only cloud sign-in and the localized demo journey'
   await page.reload();
   await expect(page.getByRole('button', { name: 'Set up on this device' })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Sign in with Google' }).first()).toBeVisible();
-  await expect(page.getByRole('button', { name: /Try Demo Now/ }).first()).toBeVisible();
-  await page.getByRole('button', { name: /Try Demo Now/ }).first().click();
+  await expect(page.getByTestId('landing-primary-action')).toBeVisible();
+  await page.getByTestId('landing-primary-action').click();
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'kid');
   await expect(page.getByText(/Thiết lập|Lưu trữ cục bộ|Khám phá thử ngay/)).toHaveCount(0);
 });

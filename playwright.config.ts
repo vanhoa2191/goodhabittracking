@@ -22,7 +22,7 @@ export default defineConfig({
   webServer: externalBaseUrl
     ? undefined
     : {
-        command: 'npm run dev -- --hostname 127.0.0.1',
+        command: 'npm run dev -- --webpack --hostname 127.0.0.1',
         env: {
           NEXT_PUBLIC_SUPABASE_URL: e2eSupabaseUrl,
           NEXT_PUBLIC_SUPABASE_ANON_KEY: e2eSupabaseAnonKey,
@@ -31,6 +31,9 @@ export default defineConfig({
           NEXT_PUBLIC_PARENT_REENGAGEMENT: 'true',
           KIDHABIT_E2E_ADMIN_BYPASS: 'true',
           NEXT_PUBLIC_ENABLE_PWA_DEV: 'true',
+          NEXT_PUBLIC_APP_URL: baseURL,
+          NEXT_PUBLIC_MARKETING_URL: 'https://www.example.test',
+          NEXT_PUBLIC_DEPLOY_TARGET: 'app',
         },
         url: baseURL,
         reuseExistingServer: !process.env.CI,

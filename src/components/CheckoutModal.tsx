@@ -16,6 +16,7 @@ import { createPaymentOrder, readPaymentStatus } from '@/lib/billing/payment-cli
 import { useTranslation } from '@/lib/i18n/context';
 import { CheckoutPaymentDetails } from '@/components/CheckoutPaymentDetails';
 import { ModalShell } from '@/components/ui/ModalShell';
+import { getMarketingOrigin } from '@/lib/site';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -23,8 +24,10 @@ interface CheckoutModalProps {
   plan: PricingPlan | null;
 }
 
+const marketingOrigin = getMarketingOrigin();
+
 export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
-  const { syncNow } = useAppStore();
+  const { syncNow, currentUser, familyId, familyRole } = useAppStore();
   const { t } = useTranslation();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -38,6 +41,12 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
   const [hasConfirmedTerms, setHasConfirmedTerms] = useState(false);
   const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
+  const canCreatePayment = Boolean(
+    currentUser
+    && familyId
+    && familyRole
+    && familyRole !== 'caregiver',
+  );
 
   const handleClose = useCallback(() => {
     setHasAcceptedTerms(false);
@@ -48,7 +57,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
 
   // Initialize Payment Request from API
   const initPayment = useCallback(async () => {
-    if (!plan) return;
+    if (!plan || !canCreatePayment) return;
     setIsLoading(true);
     setErrorMessage(null);
     setStatusErrorMessage(null);
@@ -67,10 +76,10 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
     } finally {
       setIsLoading(false);
     }
-  }, [plan]);
+  }, [canCreatePayment, plan]);
 
   useEffect(() => {
-    if (!isOpen || !plan || (legalPagesApproved && !hasConfirmedTerms)) return;
+    if (!isOpen || !plan || !canCreatePayment || (legalPagesApproved && !hasConfirmedTerms)) return;
 
     const initializationTimer = window.setTimeout(() => {
       void initPayment();
@@ -78,7 +87,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
     }, 0);
 
     return () => window.clearTimeout(initializationTimer);
-  }, [hasConfirmedTerms, isOpen, legalPagesApproved, plan, initPayment]);
+  }, [canCreatePayment, hasConfirmedTerms, isOpen, legalPagesApproved, plan, initPayment]);
 
   // Countdown timer
   useEffect(() => {
@@ -185,7 +194,11 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin">
           {/* Success screen */}
-          {legalPagesApproved && !hasConfirmedTerms ? (
+          {!canCreatePayment ? (
+            <div role="alert" className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm font-semibold leading-6 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
+              Vui lòng đăng nhập bằng tài khoản phụ huynh và chờ dữ liệu gia đình tải xong trước khi thanh toán.
+            </div>
+          ) : legalPagesApproved && !hasConfirmedTerms ? (
             <div className="space-y-5 rounded-2xl border border-indigo-200 bg-indigo-50 p-5 dark:border-indigo-800 dark:bg-indigo-950/30">
               <div>
                 <h3 className="text-lg font-black text-slate-900 dark:text-white">Xác nhận trước khi tạo đơn</h3>
@@ -193,7 +206,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
               </div>
               <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-indigo-200 bg-white p-4 text-sm font-semibold text-slate-800 dark:border-indigo-800 dark:bg-zinc-900 dark:text-slate-100">
                 <input type="checkbox" checked={hasAcceptedTerms} onChange={(event) => setHasAcceptedTerms(event.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-indigo-600" />
-                <span>Tôi đã đọc và đồng ý với <Link href="/terms" target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Điều khoản sử dụng</Link> và <Link href="/privacy" target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Quyền riêng tư</Link>.</span>
+                <span>Tôi đã đọc và đồng ý với <Link href={new URL('/terms/', marketingOrigin).href} target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Điều khoản sử dụng</Link> và <Link href={new URL('/privacy/', marketingOrigin).href} target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Quyền riêng tư</Link>.</span>
               </label>
               <button type="button" disabled={!hasAcceptedTerms} onClick={() => setHasConfirmedTerms(true)} className="min-h-11 w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-extrabold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">Tiếp tục tạo đơn thanh toán</button>
             </div>

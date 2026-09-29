@@ -19,6 +19,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 import { getProfileMutationCopy, getProfileMutationError } from '@/lib/i18n/profile-mutation-copy';
 import { MASCOTS, getMascotLabel } from '@/lib/mascots';
+import { getMarketingOrigin } from '@/lib/site';
 import { MascotAvatar } from './MascotAvatar';
 
 interface OnboardingModalProps {
@@ -34,6 +35,7 @@ const PARENT_ROLES = [
 ] as const;
 
 const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
+const marketingOrigin = getMarketingOrigin();
 
 type ParentRole = (typeof PARENT_ROLES)[number];
 
@@ -438,7 +440,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   {copy.consent}
                 </span>
               </label>
-              {legalPagesApproved && <p className="text-center text-xs text-slate-600 dark:text-slate-300">Xem <Link href="/privacy" target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">Quyền riêng tư</Link> và <Link href="/terms" target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">Điều khoản sử dụng</Link> trước khi tiếp tục.</p>}
+              {legalPagesApproved && <p className="text-center text-xs text-slate-600 dark:text-slate-300">Xem <Link href={`${marketingOrigin}/privacy`} target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">Quyền riêng tư</Link> và <Link href={`${marketingOrigin}/terms`} target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">Điều khoản sử dụng</Link> trước khi tiếp tục.</p>}
 
               {submitError && (
                 <p role="alert" className="rounded-xl bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-200">
@@ -447,7 +449,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               )}
 
               {/* Action Buttons */}
-              <Link href="/docs" className="flex min-h-11 items-center justify-center gap-2 rounded-xl text-sm font-bold text-indigo-700 hover:bg-indigo-50 dark:text-indigo-300 dark:hover:bg-indigo-950/30"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Xem hướng dẫn sử dụng' : 'View user guide'}</Link>
+              <Link href={`${marketingOrigin}/docs`} className="flex min-h-11 items-center justify-center gap-2 rounded-xl text-sm font-bold text-indigo-700 hover:bg-indigo-50 dark:text-indigo-300 dark:hover:bg-indigo-950/30"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Xem hướng dẫn sử dụng' : 'View user guide'}</Link>
               <div className="flex items-center gap-3 pt-2">
                 <button
                   type="button"

@@ -6,7 +6,22 @@ import { createClient } from '@supabase/supabase-js';
 
 const projectRef = process.env.SUPABASE_PROJECT_REF ?? 'osvsvegqietxcfoabdhx';
 const projectUrl = `https://${projectRef}.supabase.co`;
-const appOrigin = process.env.NEXT_PUBLIC_APP_URL ?? 'https://goodhabittracking.vanhoa2191.workers.dev';
+function readAppOrigin() {
+  const value = process.env.NEXT_PUBLIC_APP_URL ?? 'https://goodhabittracking.vanhoa2191.workers.dev';
+  const url = new URL(value);
+  assert(
+    url.protocol === 'https:'
+      && !url.username
+      && !url.password
+      && url.pathname === '/'
+      && !url.search
+      && !url.hash,
+    'NEXT_PUBLIC_APP_URL must be an HTTPS origin.',
+  );
+  return url.origin;
+}
+
+const appOrigin = readAppOrigin();
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);

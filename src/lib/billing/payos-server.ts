@@ -10,6 +10,7 @@ import { getPricingPlan, type PaymentResult } from '@/lib/payos';
 import type { PaidPlan } from '@/lib/billing/schemas';
 import { requireSafePayOSConfig } from '@/lib/billing/payos-config';
 import { resolveVietQrBankName } from '@/lib/billing/vietqr-bank-directory';
+import { getAppOrigin } from '@/lib/site';
 
 const payOSResponseSchema = z.object({
   code: z.string(),
@@ -48,15 +49,6 @@ export function verifyPayOSWebhook(
   return verifyPayOSData(data, signature, key);
 }
 
-function getApplicationOrigin(): string {
-  const configured = process.env.NEXT_PUBLIC_APP_URL?.trim() || 'http://localhost:3000';
-  const origin = new URL(configured).origin;
-  if (process.env.NODE_ENV === 'production' && !origin.startsWith('https://')) {
-    throw new Error('NEXT_PUBLIC_APP_URL must use HTTPS in production.');
-  }
-  return origin;
-}
-
 export async function createPayOSPayment(input: {
   planId: PaidPlan;
   orderCode: number;
@@ -68,9 +60,14 @@ export async function createPayOSPayment(input: {
   } = requireSafePayOSConfig();
   const plan = getPricingPlan(input.planId);
   const description = `KIDHABIT ${input.orderCode}`.slice(0, 25);
-  const origin = getApplicationOrigin();
-  const returnUrl = `${origin}/?payment=success&orderCode=${input.orderCode}`;
-  const cancelUrl = `${origin}/?payment=cancel&orderCode=${input.orderCode}`;
+  const returnUrlValue = new URL('/checkout', getAppOrigin());
+  returnUrlValue.searchParams.set('payment', 'success');
+  returnUrlValue.searchParams.set('orderCode', String(input.orderCode));
+  const cancelUrlValue = new URL('/checkout', getAppOrigin());
+  cancelUrlValue.searchParams.set('payment', 'cancel');
+  cancelUrlValue.searchParams.set('orderCode', String(input.orderCode));
+  const returnUrl = returnUrlValue.toString();
+  const cancelUrl = cancelUrlValue.toString();
   const signatureFields = {
     amount: plan.price,
     cancelUrl,

@@ -13,7 +13,6 @@ import { translations } from "@/lib/i18n/translations";
 import { AppearanceProvider } from "@/lib/appearance-context";
 import { AnalyticsConsentProvider } from "@/lib/analytics-consent-context";
 import { ParentReminderProvider } from "@/lib/parent-reminder-context";
-import { PRICING_PLANS } from "@/lib/payos";
 import { getSiteOrigin } from "@/lib/site";
 import { PwaRuntime } from "@/components/PwaRuntime";
 
@@ -59,6 +58,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description: copy.appSlogan,
     alternates: { canonical: '/' },
+    robots: { index: false, follow: false, noarchive: true },
     manifest: '/manifest.webmanifest',
     icons: {
       icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
@@ -88,37 +88,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const { language: initialLanguage, hasKnownAppSession } = await getRequestContext();
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'WebSite',
-        name: 'KidHabit Hero',
-        url: getSiteOrigin().toString(),
-        inLanguage: ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'],
-      },
-      {
-        '@type': 'SoftwareApplication',
-        name: 'KidHabit Hero',
-        applicationCategory: 'EducationalApplication',
-        operatingSystem: 'Web',
-        areaServed: { '@type': 'Country', name: 'Vietnam' },
-        offers: PRICING_PLANS.filter((plan) => plan.price > 0).map((plan) => ({
-          '@type': 'Offer',
-          name: plan.name,
-          price: plan.price,
-          priceCurrency: 'VND',
-          url: new URL('/pricing', getSiteOrigin()).toString(),
-        })),
-      },
-    ],
-  };
-
   return (
     <html lang={initialLanguage} data-known-app-session={hasKnownAppSession ? 'true' : undefined} className={`h-full antialiased ${displayFont.variable} ${uiFont.variable} ${monoFont.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: appearanceScript }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replaceAll('<', '\\u003c') }} />
       </head>
       <body className="min-h-full flex flex-col bg-app-surface dark:bg-zinc-950 text-ink dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
         <PwaRuntime />

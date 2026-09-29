@@ -17,7 +17,7 @@ test('an anonymous visitor does not request persisted analytics consent', async 
   });
 
   await page.goto('/');
-  await page.waitForLoadState('networkidle');
+  await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'gateway');
 
   expect(requestCount).toBe(0);
 });

@@ -16,8 +16,10 @@ import { ParentReminderConsentCard } from '@/components/ParentReminderConsentCar
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { CaregiverInvitesPanel } from '@/components/CaregiverInvitesPanel';
 import { PwaInstallPanel } from '@/components/PwaInstallPanel';
+import { getMarketingOrigin } from '@/lib/site';
 
 const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
+const marketingOrigin = getMarketingOrigin();
 
 export function ParentSettingsTab() {
   const {
@@ -164,11 +166,11 @@ export function ParentSettingsTab() {
       {currentUser && <AnalyticsConsentCard />}
       {currentUser && defaultExperienceFlags.parentReengagement && <ParentReminderConsentCard />}
 
-      <Link href="/docs" className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{language === 'vi' ? 'Mở tài liệu hướng dẫn' : 'Open user guide'}</Link>
+      <Link href={new URL('/docs/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{language === 'vi' ? 'Mở tài liệu hướng dẫn' : 'Open user guide'}</Link>
       {legalPagesApproved && <nav aria-label="Quyền riêng tư và hỗ trợ" className="grid gap-2 sm:grid-cols-3">
-        <Link href="/privacy" className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">Quyền riêng tư</Link>
-        <Link href="/terms" className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">Điều khoản</Link>
-        <Link href="/contact" className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">Liên hệ hỗ trợ</Link>
+        <Link href={new URL('/privacy/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">Quyền riêng tư</Link>
+        <Link href={new URL('/terms/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">Điều khoản</Link>
+        <Link href={new URL('/contact/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">Liên hệ hỗ trợ</Link>
       </nav>}
 
       <h4 id="settings-appearance" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Giao diện</h4>

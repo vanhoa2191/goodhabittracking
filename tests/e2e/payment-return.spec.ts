@@ -1,6 +1,25 @@
 import { expect, test } from '@playwright/test';
 
-test('a verified paid return shows activation and removes provider query parameters', async ({ page }) => {
+test('a new checkout return verifies payment before showing activation', async ({ page }) => {
+  let requestedOrderCode: number | null = null;
+  await page.route('**/api/payment/status', async (route) => {
+    requestedOrderCode = (await route.request().postDataJSON()).orderCode;
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, paid: true, status: 'PAID' }),
+    });
+  });
+
+  await page.goto('/checkout?payment=success&orderCode=765432&code=00&id=provider-link&status=PAID');
+
+  await expect(page.locator('[data-payment-state="activated"]')).toBeVisible();
+  expect(requestedOrderCode).toBe(765432);
+  await expect.poll(() => new URL(page.url()).search).toBe('');
+  await expect(page.getByRole('heading', { name: 'Gói thanh toán không hợp lệ' })).toHaveCount(0);
+});
+
+test('a legacy root paid return remains compatible and verifies payment', async ({ page }) => {
   // Given
   let requestedOrderCode: number | null = null;
   await page.route('**/api/payment/status', async (route) => {
