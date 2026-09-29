@@ -14,6 +14,7 @@
 - Chưa thay đổi hệ thống sao, thưởng và huy hiệu.
 - Chưa có mô hình thống kê hay học máy cá nhân hóa.
 - Chưa đẩy nhắc nhở ngoài app (email, thông báo đẩy).
+- Ebook hướng dẫn và quà tặng từ tài liệu khoa học là **một task riêng, làm sau**; spec này chỉ bảo đảm tài liệu nguồn dùng lại được.
 
 **Tiêu chí thành công (đo nội bộ khi phụ huynh đồng ý phân tích, không dùng để hứa kết quả):** tỷ lệ thói quen có kế hoạch tín hiệu; tỷ lệ lần hoàn thành có ghi mức hỗ trợ; số gợi ý được áp dụng. Mức mục tiêu do chủ dự án đặt sau khi có dữ liệu ban đầu.
 
@@ -196,4 +197,4 @@ Ghi chú: các thói quen 12–18 tuổi phần lớn "phức tạp" theo tiêu 
 | P5-D | Trí tuệ và nghề | GD5-HT-01, GD5-HT-03, GD5-NT-02 |
 | P5-E | Tài chính cá nhân | GD5-TC-01, GD5-HT-03, GD5-NT-01 |
 
-Ghi chú về nội dung nhạy cảm: **GD5-SK-02** ("Quản trị thân và ngoại hình") và tên chân dung CD-06 ("Thân Hình Người Mẫu") có thể gây hiểu lầm về hình thể ở tuổi teen; đề xuất gộp mô tả theo hướng sức khỏe và tự chăm sóc, chờ chủ dự án quyết định (đã ghi nhận từ trước). **GD5-NT-03** dùng từ "công đức, phước đức", không đưa vào mô tả bộ như kết luận khoa học.
+Ghi chú về từ ngữ: chân dung CD-06 hiển thị là "Thể Hình Cân Đối" và thói quen GD5-NT-03 dùng cách nói đời thường (nội dung khung v1.1.0, chủ dự án đã chỉ đạo đổi từ ngữ). Tên thói quen GD5-SK-02 vẫn còn chữ "ngoại hình"; cân nhắc đổi theo hướng sức khỏe và tự chăm sóc khi soạn mô tả bộ P5-B, chờ chủ dự án quyết định.

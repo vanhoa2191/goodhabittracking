@@ -6,7 +6,7 @@ Tài liệu này là **nguồn gốc duy nhất** cho hai việc: (1) viết n�
 
 ## 0. Cách dùng lại tài liệu này
 
-- **Ebook hoặc quà tặng:** lấy phần 1, 2, 3 và câu mẫu ở phần 7. Giữ nguyên các câu "Bằng chứng nói gì" và "Giới hạn". Đó là phần giữ cho nội dung trung thực và phù hợp `docs/claims-ledger.md`.
+- **Ebook hoặc quà tặng (task riêng, làm sau):** lấy phần 1, 2, 3 và câu mẫu ở phần 7. Giữ nguyên các câu "Bằng chứng nói gì" và "Giới hạn". Đó là phần giữ cho nội dung trung thực và phù hợp `docs/claims-ledger.md`.
 - **App:** phần 5 là đặc tả logic. Mọi ngưỡng là tham số chỉnh được, không phải sự thật khoa học.
 - **Trước khi xuất bản ra ngoài:** kiểm tra lại các mục ở phần 8 (nguồn chưa mở bài gốc) và ghi ngày kiểm tra.
 - **Không được** dùng tài liệu này để hứa kết quả cho một đứa trẻ cụ thể (xem phần 6).
@@ -177,7 +177,7 @@ Số thói quen ở pha 1–2 cùng lúc: 0–3 tuổi: 1; 3–6: 2; 6–15: 3; 
 - Không nói huy hiệu, chuỗi ngày hay sao "đã được chứng minh" làm tăng động lực.
 - Không xây tính năng dựa trên ý "ý chí là nguồn cạn dần trong ngày" (không được ủng hộ bởi các nghiên cứu tái lập).
 - Không dùng nhãn cho trẻ ("chậm", "yếu", "lười") và không so sánh giữa các bé.
-- Không diễn giải nội dung triết lý của khung (công đức, phước đức, v.v.) như kết luận khoa học.
+- Không diễn giải nội dung triết lý hoặc tâm linh của khung như kết luận khoa học; dùng cách nói đời thường (ví dụ "điều tốt lành mình trao đi" thay cho các thuật ngữ tôn giáo).
 
 ## 7. Câu mẫu an toàn
 
