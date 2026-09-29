@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   createDisplayCode,
   createSessionToken,
@@ -25,5 +25,14 @@ describe('pairing cryptography', () => {
     expect(Buffer.from(token, 'base64url')).toHaveLength(32);
     expect(digest).toMatch(/^[a-f0-9]{64}$/);
     expect(digest).not.toContain(token);
+  });
+});
+
+describe('requestFingerprint production secret', () => {
+  it('rejects a short rate-limit secret in production', async () => {
+    const { requestFingerprint } = await import('@/lib/pairing/crypto');
+    vi.stubEnv('NODE_ENV', 'production');
+    vi.stubEnv('PAIRING_RATE_LIMIT_SECRET', 'too-short');
+    await expect(requestFingerprint(new Request('https://example.test'))).rejects.toThrow(/32 characters/);
   });
 });
