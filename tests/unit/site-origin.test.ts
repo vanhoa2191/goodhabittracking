@@ -19,9 +19,9 @@ describe('site origins', () => {
     expect(getSiteOrigin().origin).toBe('https://app.example');
   });
 
-  it('preserves the existing workers.dev origin without configuration', () => {
-    expect(getAppOrigin().href).toBe('https://goodhabittracking.vanhoa2191.workers.dev/');
-    expect(getMarketingOrigin().href).toBe('https://goodhabittracking.vanhoa2191.workers.dev/');
+  it('defaults to the production custom domain without configuration', () => {
+    expect(getAppOrigin().href).toBe('https://app.kidhabithero.com/');
+    expect(getMarketingOrigin().href).toBe('https://app.kidhabithero.com/');
     expect(getDeployTarget()).toBe('combined');
   });
 
@@ -37,8 +37,8 @@ describe('site origins', () => {
     vi.stubEnv('NEXT_PUBLIC_APP_URL', 'not-a-url');
     vi.stubEnv('NEXT_PUBLIC_MARKETING_URL', 'not-a-url');
     vi.stubEnv('NEXT_PUBLIC_DEPLOY_TARGET', 'unsupported');
-    expect(getAppOrigin().origin).toBe('https://goodhabittracking.vanhoa2191.workers.dev');
-    expect(getMarketingOrigin().origin).toBe('https://goodhabittracking.vanhoa2191.workers.dev');
+    expect(getAppOrigin().origin).toBe('https://app.kidhabithero.com');
+    expect(getMarketingOrigin().origin).toBe('https://app.kidhabithero.com');
     expect(getDeployTarget()).toBe('combined');
   });
 

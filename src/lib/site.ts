@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-export const productionOrigin = 'https://goodhabittracking.vanhoa2191.workers.dev';
+export const productionOrigin = 'https://app.kidhabithero.com';
 
 function resolveOrigin(configured: string | undefined, fallback: string): URL {
   try {
