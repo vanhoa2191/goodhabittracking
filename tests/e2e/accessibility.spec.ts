@@ -3,6 +3,10 @@ import { expect, test } from '@playwright/test';
 import { getVisiblePricingOpener } from './open-pricing';
 import { setupOrUnlockParent } from './pin-helper';
 
+// The app honours prefers-reduced-motion by ending every colour transition at once. Without it,
+// a slow runner can be measured by axe halfway between two colours and report a false contrast failure.
+test.use({ reducedMotion: 'reduce' });
+
 function seriousOrCritical(violations: Awaited<ReturnType<AxeBuilder['analyze']>>['violations']) {
   return violations.filter((violation) => violation.impact === 'critical' || violation.impact === 'serious');
 }
