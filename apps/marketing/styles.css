@@ -455,3 +455,7 @@ p { color: var(--color-ink-soft); text-wrap: pretty; }
   .portrait-summit { padding: var(--space-4); }
   .portrait-summit .portrait-name { font-size: var(--step-1); }
 }
+
+/* Signed-in parents (identity-free hint cookie from the app) see "open the app" instead of "start a trial" */
+.is-member [data-guest] { display: none !important; }
+html:not(.is-member) [data-member] { display: none !important; }

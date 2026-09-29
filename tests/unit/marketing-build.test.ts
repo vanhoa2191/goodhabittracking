@@ -3,6 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { selectPublishableTestimonials } from '../../apps/marketing/render-site.mjs';
+import { sessionHintCookie } from '../../apps/marketing/session-hint.mjs';
 import { buildMarketingSite } from '../../scripts/build-marketing.mjs';
 
 const outputs: string[] = [];
@@ -117,8 +118,8 @@ describe('marketing static artifact', () => {
     expect(hero).toContain('href="https://app.example/start"');
     expect(hero).toContain('href="https://app.example/?demo=1"');
     expect(hero).not.toContain('checkout');
-    expect(html).toMatch(/<a href="https:\/\/app\.example\/start" class="button button-small">Dùng thử 7 ngày<\/a>/);
-    expect(html).toMatch(/<div class="sticky-cta" data-sticky-cta hidden>[\s\S]*href="https:\/\/app\.example\/start"/);
+    expect(html).toMatch(/<a href="https:\/\/app\.example\/start" class="button button-small" data-guest>Dùng thử 7 ngày<\/a>/);
+    expect(html).toMatch(/<div class="sticky-cta" data-sticky-cta data-guest hidden>[\s\S]*href="https:\/\/app\.example\/start"/);
     const finalCta = html.slice(html.indexOf('class="final-cta"'));
     expect(finalCta).toContain('https://app.example/start');
     expect(finalCta).toContain('https://app.example/?demo=1');
@@ -184,13 +185,39 @@ describe('marketing static artifact', () => {
     expect(html).toContain('<section class="hero" data-hero>');
     expect(html.match(/class="phone[^"]*" data-tilt/g)?.length).toBeGreaterThanOrEqual(4);
     expect(html.match(/data-spotlight/g)?.length).toBeGreaterThan(15);
-    expect(html.match(/data-magnetic/g)).toHaveLength(2);
+    expect(html.match(/data-magnetic/g)).toHaveLength(4);
     const script = await readFile(join(process.cwd(), 'apps', 'marketing', 'client.js'), 'utf8');
     expect(script).toContain("(hover: hover) and (pointer: fine)");
     expect(script).toContain('prefers-reduced-motion: reduce');
     expect(script).toMatch(/if \(finePointer && motionAllowed\)/);
     expect(script).toContain("addEventListener('pointermove'");
     expect(script).toContain('requestAnimationFrame');
+  });
+
+  it('recognises a signed-in parent from the identity-free hint cookie and offers the app instead of a trial', async () => {
+    const { html } = await buildFixture();
+    expect(html).toContain(`document.cookie.split('; ').indexOf('${sessionHintCookie}=1')>-1`);
+    expect(html.indexOf(`'${sessionHintCookie}=1'`)).toBeLessThan(html.indexOf('rel="stylesheet" href="/styles.css"'));
+    expect(sessionHintCookie).toBe('kh_member');
+
+    const memberLinks = html.match(/<a[^>]*data-member[^>]*>/g) ?? [];
+    expect(memberLinks).toHaveLength(3);
+    for (const link of memberLinks) expect(link).toContain('href="https://app.example/"');
+
+    const guestBlocks = ['Dùng thử 7 ngày', 'Xem bản demo', 'class="sticky-cta" data-sticky-cta data-guest', 'nav-login" data-guest'];
+    for (const marker of guestBlocks) expect(html).toContain(marker);
+    expect(html.match(/data-guest/g)?.length).toBeGreaterThanOrEqual(7);
+
+    const css = await readFile(join(process.cwd(), 'apps', 'marketing', 'styles.css'), 'utf8');
+    expect(css).toContain('.is-member [data-guest] { display: none !important; }');
+    expect(css).toContain('html:not(.is-member) [data-member] { display: none !important; }');
+  });
+
+  it('never puts identity in the hint: the site only reads a fixed flag value', async () => {
+    const { html } = await buildFixture();
+    const script = html.match(/<script>if\(document\.cookie[^<]*<\/script>/)?.[0] ?? '';
+    expect(script).not.toMatch(/localStorage|sessionStorage|fetch|XMLHttpRequest|token/i);
+    expect(script).toContain("classList.add('is-member')");
   });
 
   it('keeps motion meaningful: nothing decorative loops forever', async () => {
