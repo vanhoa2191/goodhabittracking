@@ -126,7 +126,7 @@ test('a custom habit with a template title does not occupy the legacy library ca
   for (const locale of ['zh', 'ja', 'ko']) {
     const menuButton = page.getByTestId('more-menu');
     await menuButton.click();
-    await menuButton.locator('xpath=..').getByRole('button', { name: new RegExp(`${locale.toUpperCase()}$`) }).click();
+    await page.getByTestId('more-menu-panel').getByRole('button', { name: new RegExp(`${locale.toUpperCase()}$`) }).click();
     await menuButton.click();
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
     await expect(card.getByRole('button')).toBeEnabled();

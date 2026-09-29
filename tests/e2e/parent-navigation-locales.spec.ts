@@ -13,7 +13,7 @@ test('the parent areas stay usable by keyboard at 375px in every supported langu
   for (const locale of locales) {
     const menuButton = page.getByTestId('more-menu');
     await menuButton.click();
-    await menuButton.locator('xpath=..').getByRole('button', { name: new RegExp(`${locale.toUpperCase()}$`) }).click();
+    await page.getByTestId('more-menu-panel').getByRole('button', { name: new RegExp(`${locale.toUpperCase()}$`) }).click();
     await menuButton.click();
     await expect(page.locator('html')).toHaveAttribute('lang', locale);
 

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import {
   Sparkles,
@@ -136,7 +137,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
     <>
       <header
         data-app-shell={shell}
-        className={`sticky top-0 z-40 w-full border-b backdrop-blur-md transition-colors before:absolute before:inset-x-0 before:top-0 before:h-[3px] ${
+        className={`sticky top-0 ${isMobileMenuOpen ? 'z-[45]' : 'z-40'} w-full border-b backdrop-blur-md transition-colors before:absolute before:inset-x-0 before:top-0 before:h-[3px] ${
           shell === 'kid'
             ? 'bg-kid-surface/95 border-amber-200 before:bg-amber-400 dark:bg-zinc-950/90 dark:border-amber-900'
             : shell === 'parent'
@@ -466,13 +467,19 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
               </button>
 
               {/* Mobile More Menu Floating Sheet */}
-              {isMobileMenuOpen && (
+              {/* Portaled to <body>: the header's backdrop-blur makes it the containing block of fixed children, which clipped the backdrop to the header strip. */}
+              {isMobileMenuOpen && createPortal(
                 <>
                   <div
                     className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs"
                     onClick={() => setIsMobileMenuOpen(false)}
                   />
-                  <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-zinc-800 p-3 z-50 animate-fade-in space-y-3">
+                  {/* Anchored to the screen, not the button, so it can never slide off an edge; it scrolls inside when tall. */}
+                  <div
+                    data-testid="more-menu-panel"
+                    aria-label={t.moreMenu}
+                    className="fixed right-3 top-[4.5rem] w-[min(18rem,calc(100vw-1.5rem))] max-h-[calc(100dvh-5.5rem)] overflow-y-auto overscroll-contain bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-zinc-800 p-3 z-40 animate-fade-in space-y-3"
+                  >
                     {/* Header in Mobile Menu */}
                     <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-zinc-800">
                       <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
@@ -683,7 +690,8 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                       </div>
                     )}
                   </div>
-                </>
+                </>,
+                document.body
               )}
             </div>
           </div>
