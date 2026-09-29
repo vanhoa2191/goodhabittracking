@@ -30,4 +30,4 @@ jobs:
           curl --fail --silent --show-error --retry 2 \
             --request POST \
             --header "Authorization: Bearer $CRON_SECRET" \
-            https://goodhabittracking.vanhoa2191.workers.dev/api/internal/lifecycle/dispatch
+            https://app.kidhabithero.com/api/internal/lifecycle/dispatch

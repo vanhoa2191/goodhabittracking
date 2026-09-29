@@ -70,8 +70,8 @@ export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir
 const invokedDirectly = process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href;
 if (invokedDirectly) {
   const result = await buildMarketingSite({
-    appOrigin: process.env.NEXT_PUBLIC_APP_URL ?? 'https://goodhabittracking.vanhoa2191.workers.dev',
-    marketingOrigin: process.env.NEXT_PUBLIC_MARKETING_URL ?? 'https://kidhabit-home.vanhoa2191.workers.dev',
+    appOrigin: process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.kidhabithero.com',
+    marketingOrigin: process.env.NEXT_PUBLIC_MARKETING_URL ?? 'https://kidhabithero.com',
     outputDir: process.env.MARKETING_OUTPUT_DIR ?? join(projectRoot, 'dist', 'marketing'),
     supportEmail: process.env.SUPPORT_EMAIL,
   });

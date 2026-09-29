@@ -4,16 +4,33 @@
 
 Repository tạo hai bản phát hành độc lập:
 
-- Website giới thiệu: HTML/CSS/JS tĩnh tại `dist/marketing`, triển khai bằng Cloudflare Workers Static Assets với service `kidhabit-home`; origin tạm là `https://kidhabit-home.vanhoa2191.workers.dev`.
-- Ứng dụng: Next.js full-stack tại `https://goodhabittracking.vanhoa2191.workers.dev`, triển khai bằng OpenNext lên Cloudflare Workers. Origin này giữ auth, QR, PWA, API, PayOS và dữ liệu gia đình.
+- Website giới thiệu: HTML/CSS/JS tĩnh tại `dist/marketing`, triển khai bằng Cloudflare Workers Static Assets với service `kidhabit-home`; tên miền chính thức là `https://kidhabithero.com`.
+- Ứng dụng: Next.js full-stack tại `https://app.kidhabithero.com`, triển khai bằng OpenNext lên Cloudflare Workers. Origin này giữ auth, QR, PWA, API, PayOS và dữ liệu gia đình.
 
 Không chuyển route động sang Pages, không chia sẻ cookie giữa hai origin và không đặt Supabase/PayOS secret trong marketing build. Xem [Cloudflare OpenNext guide](https://developers.cloudflare.com/workers/framework-guides/web-apps/opennext/).
+
+## Tên miền riêng
+
+| Bề mặt | Tên miền | Worker |
+|---|---|---|
+| Website giới thiệu | `https://kidhabithero.com` | `kidhabit-home` |
+| Ứng dụng | `https://app.kidhabithero.com` | `goodhabittracking` |
+
+Tên miền gắn vào Worker trong Cloudflare (Workers & Pages → service → Settings → Domains & Routes). Hai địa chỉ `*.workers.dev` cũ vẫn chạy trong giai đoạn chuyển tiếp: trang được xây bằng địa chỉ chuẩn mới nên `canonical`, sitemap, Open Graph và liên kết chéo đều trỏ về tên miền riêng, còn app vẫn `noindex`. Tắt `workers.dev` sau khi mọi thiết bị của bé đã ghép lại ở địa chỉ mới.
+
+Danh sách bàn giao khi đổi địa chỉ (làm ở ngoài repo):
+
+1. **Supabase Auth → URL Configuration:** đặt Site URL là `https://app.kidhabithero.com` và thêm `https://app.kidhabithero.com/**` vào Redirect URLs. Giữ địa chỉ `workers.dev` cũ trong giai đoạn chuyển tiếp. Thiếu bước này, đăng nhập Google sẽ quay về địa chỉ sai.
+2. **PayOS:** đổi webhook thành `https://app.kidhabithero.com/api/payment/webhook`. URL trả về và hủy được tạo theo từng đơn từ `NEXT_PUBLIC_APP_URL`, không cần cấu hình riêng.
+3. **Cloudflare (vùng `kidhabithero.com`):** bật *Always Use HTTPS*; tạo bản ghi `www` (CNAME có proxy) kèm Redirect Rule `www.kidhabithero.com` → `https://kidhabithero.com`.
+4. **Thiết bị của bé và PWA:** phiên ghép thiết bị và bản cài PWA gắn với từng địa chỉ. Bé ghép ở `workers.dev` vẫn dùng được ở địa chỉ cũ; để chuyển sang địa chỉ mới, phụ huynh làm mới mã ghép và bé quét lại.
+5. **GitHub Actions:** `NEXT_PUBLIC_APP_URL` và `NEXT_PUBLIC_MARKETING_URL` đã đặt trong `ci.yml` và `marketing.yml`; các workflow theo dõi (`production-observability`, `lifecycle-dispatch`) gọi `https://app.kidhabithero.com`.
 
 ## First setup
 
 1. Tạo hai Workers service độc lập trong cùng Cloudflare account: `goodhabittracking` cho app và `kidhabit-home` cho static marketing.
 2. App build/deploy: `npm run build:cloudflare` và `npm run deploy:cloudflare`.
-3. Marketing build/deploy: `npm run build:marketing`, `npm run verify:marketing-release -- --dir dist/marketing --app-origin https://goodhabittracking.vanhoa2191.workers.dev --marketing-origin https://kidhabit-home.vanhoa2191.workers.dev`, rồi `npm run deploy:marketing`. Wrangler 4.135 chuyển Pages project mới sang Workers Static Assets; không dùng lại root `wrangler.jsonc` của app cho service marketing.
+3. Marketing build/deploy: `npm run build:marketing`, `npm run verify:marketing-release -- --dir dist/marketing --app-origin https://app.kidhabithero.com --marketing-origin https://kidhabithero.com`, rồi `npm run deploy:marketing`. Wrangler 4.135 chuyển Pages project mới sang Workers Static Assets; không dùng lại root `wrangler.jsonc` của app cho service marketing.
 
 Các lệnh Cloudflare luôn loại server secret khỏi môi trường build để chúng chỉ tồn tại dưới dạng Worker secrets lúc chạy. Không đặt `PAYOS_*`, `SUPABASE_SERVICE_ROLE_KEY` hoặc `PAIRING_RATE_LIMIT_SECRET` trong `.env.local`; wrapper sẽ chặn build nếu phát hiện giá trị.
 4. Khai báo public variables `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_MARKETING_URL` và `NEXT_PUBLIC_DEPLOY_TARGET=app` trong **môi trường build app**. Marketing build chỉ nhận `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_MARKETING_URL` và `NEXT_PUBLIC_DEPLOY_TARGET=marketing`.

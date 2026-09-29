@@ -7,7 +7,7 @@ import { createClient } from '@supabase/supabase-js';
 const projectRef = process.env.SUPABASE_PROJECT_REF ?? 'osvsvegqietxcfoabdhx';
 const projectUrl = `https://${projectRef}.supabase.co`;
 function readAppOrigin() {
-  const value = process.env.NEXT_PUBLIC_APP_URL ?? 'https://goodhabittracking.vanhoa2191.workers.dev';
+  const value = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.kidhabithero.com';
   const url = new URL(value);
   assert(
     url.protocol === 'https:'

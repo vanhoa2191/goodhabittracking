@@ -21,7 +21,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       CRON_SECRET: ${{ secrets.LIFECYCLE_CRON_SECRET }}
       REPOSITORY: ${{ github.repository }}
-      PRODUCTION_ORIGIN: https://goodhabittracking.vanhoa2191.workers.dev
+      PRODUCTION_ORIGIN: https://app.kidhabithero.com
       ALERT_TITLE: "KidHabit production alert"
     steps:
       - name: Check production and notify on state change
