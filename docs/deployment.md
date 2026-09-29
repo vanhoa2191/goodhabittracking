@@ -35,21 +35,25 @@ Không đưa secret vào `wrangler.jsonc`, GitHub Actions log hoặc `NEXT_PUBLI
 
 ## Tự động phát hành từ `main`
 
-`ci.yml` kiểm tra và phát hành Worker sau khi quality/browser đạt. `marketing.yml` build, kiểm tra artifact rồi phát hành Pages độc lập. Thiết lập một lần trong phần cấu hình GitHub:
+Luồng phát hành duy nhất: viết code trên máy → push lên GitHub → GitHub Actions kiểm thử → deploy lên Cloudflare Workers. Không deploy thủ công từ máy cá nhân trừ khi rollback khẩn cấp.
 
-1. Secrets: `CLOUDFLARE_API_TOKEN` có quyền Workers deploy và Pages edit, cùng `CLOUDFLARE_ACCOUNT_ID`.
+`ci.yml` kiểm tra và phát hành Worker `goodhabittracking` (app) sau khi quality/browser đạt. `marketing.yml` build, kiểm tra artifact rồi phát hành Worker `kidhabit-home` (website giới thiệu) độc lập. Thiết lập một lần trong phần cấu hình GitHub:
+
+1. Secrets: `CLOUDFLARE_API_TOKEN` có quyền Workers deploy, cùng `CLOUDFLARE_ACCOUNT_ID`.
 2. Variables: `NEXT_PUBLIC_SUPABASE_URL` và `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 
-Hai origin tạm đã được cố định trong workflow. Khi thiếu Cloudflare credential hoặc public app configuration, bước phát hành tương ứng được bỏ qua; các job kiểm thử vẫn chạy. Không ghi secret vào workflow hoặc log CI.
+Hai origin tạm đã được cố định trong workflow, cùng `SUPPORT_EMAIL` công khai của trang liên hệ marketing. Khi thiếu Cloudflare credential hoặc public app configuration, bước phát hành tương ứng được bỏ qua; các job kiểm thử vẫn chạy. Không ghi secret vào workflow hoặc log CI.
+
+Không dùng Cloudflare Pages cho dự án này. Project Pages cũ `goodhabittracking` (`goodhabittracking.pages.dev`) không phải production; phải ngắt kết nối Git hoặc xóa để không tạo check `Cloudflare Pages` lỗi trên mỗi pull request.
 
 ## Thứ tự rollout và rollback hai bề mặt
 
 1. Build và deploy static marketing service trước; chạy verifier trên URL live, kiểm tra ba CTA mở đúng app checkout.
-2. Chỉ khi Pages xanh mới deploy Worker có app gateway/noindex mới.
+2. Chỉ khi marketing Worker xanh mới deploy Worker app có app gateway/noindex mới.
 3. Kiểm tra `/api/health` trả HTTP 200, `status=ready` và mọi dependency check là `true`; sau đó kiểm tra guest, parent, child, PWA và payment return.
-4. Rollback app bằng redeploy Worker commit trước. Rollback marketing bằng deployment Pages trước hoặc build/deploy commit marketing trước. Không rollback schema bằng cách xóa dữ liệu.
+4. Rollback app bằng redeploy Worker commit trước. Rollback marketing bằng version Worker `kidhabit-home` trước hoặc build/deploy commit marketing trước. Không rollback schema bằng cách xóa dữ liệu.
 
-Nếu Pages lỗi sau app cutover, app vẫn truy cập trực tiếp được ở Worker origin; khôi phục deployment Pages trước, không chuyển auth hoặc checkout sang Pages.
+Nếu website giới thiệu lỗi sau app cutover, app vẫn truy cập trực tiếp được ở Worker origin; khôi phục version `kidhabit-home` trước, không chuyển auth hoặc checkout sang website giới thiệu.
 
 Thư mascot hằng ngày được giữ sau cờ build `NEXT_PUBLIC_DAILY_MASCOT_LETTER=true`. Mặc định cờ tắt để chưa phát hành giao diện khi đường ghi của phiên thiết bị con chưa được kiểm chứng trên production. Chỉ bật ở môi trường build sau khi kiểm tra phiên hợp lệ và quyền family; cần build/deploy lại để thay đổi cờ.
 
