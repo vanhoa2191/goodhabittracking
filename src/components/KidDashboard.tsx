@@ -46,6 +46,11 @@ import { getKidQuestCopy } from '@/lib/i18n/kid-quest-copy';
 import { QuestSwipeSurface } from './QuestSwipeSurface';
 import { DailyJournalCard } from './DailyJournalCard';
 import { DreamCityCard } from './DreamCityCard';
+import { BadgeCelebration } from './BadgeCelebration';
+import { getBadgeCopy } from '@/lib/badges/badge-copy';
+import type { BadgeGroupKey } from '@/lib/badges/badge-copy';
+import { badgeProgress, computeBadgeMetrics, countHeldPortraitBadges } from '@/lib/badges/badge-progress';
+import { useBadgeAwards } from '@/lib/badges/use-badge-awards';
 
 export function KidDashboard() {
   const {
@@ -82,6 +87,7 @@ export function KidDashboard() {
   const [completionStatusId, setCompletionStatusId] = useState<string | null>(null);
   const [savingTaskId, setSavingTaskId] = useState<string | null>(null);
   const visibleTab = isFamilyPaused && activeTab === 'leaderboard' ? 'tasks' : activeTab;
+  const badgeAwards = useBadgeAwards({ child: activeChild ?? null, badges, logs, activities, childBadges });
 
   const completeTask = async (activity: HabitActivity, date: string, isCompleting: boolean) => {
     if (savingTaskId === activity.id) return;
@@ -211,9 +217,27 @@ export function KidDashboard() {
     : 0;
 
   // Unlocked badges
-  const unlockedBadgeIds = new Set(
-    childBadges.filter((cb) => cb.childId === activeChild.id).map((cb) => cb.badgeId)
-  );
+  const unlockedBadgeIds = badgeAwards.unlockedIds;
+  const badgeCopy = getBadgeCopy(language);
+  const badgeMetrics = computeBadgeMetrics(activeChild, logs, activities);
+  const heldPortraitBadges = countHeldPortraitBadges(badges, unlockedBadgeIds);
+  const badgeGroupOf = (badge: (typeof badges)[number]): BadgeGroupKey => {
+    switch (badge.criteriaType) {
+      case 'firstTask': return 'start';
+      case 'streak': return 'streak';
+      case 'totalTasks': return 'quests';
+      case 'totalPoints': return 'stars';
+      default: return 'portraits';
+    }
+  };
+  const badgeGroups = (['start', 'streak', 'quests', 'stars', 'portraits'] as const)
+    .map((key) => ({
+      key,
+      items: badges
+        .filter((badge) => badgeGroupOf(badge) === key)
+        .sort((a, b) => a.criteriaValue - b.criteriaValue || (a.portraitId ?? '').localeCompare(b.portraitId ?? '')),
+    }))
+    .filter((group) => group.items.length > 0);
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8 space-y-6 animate-fade-in">
@@ -840,16 +864,29 @@ export function KidDashboard() {
 
       {/* TAB 3: BADGES */}
       {visibleTab === 'badges' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {badges.map((b) => {
+        <div className="space-y-6" data-testid="badge-collection">
+          <p className="text-sm font-bold text-slate-600 dark:text-slate-300">
+            🏅 {badgeCopy.collected(badges.filter((badge) => unlockedBadgeIds.has(badge.id)).length, badges.length)}
+          </p>
+          {badgeGroups.map((group) => (
+          <section key={group.key} aria-labelledby={`badge-group-${group.key}`} className="space-y-3">
+          <h3 id={`badge-group-${group.key}`} className="flex items-center justify-between text-xs font-black uppercase tracking-wide text-slate-500 dark:text-slate-400">
+            <span>{badgeCopy.groups[group.key]}</span>
+            <span>{group.items.filter((badge) => unlockedBadgeIds.has(badge.id)).length}/{group.items.length}</span>
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {group.items.map((b) => {
             const isUnlocked = unlockedBadgeIds.has(b.id);
             const badgeName = b.name[language] || b.name.en || b.name.vi;
             const badgeDesc = b.description[language] || b.description.en || b.description.vi;
+            const progress = badgeProgress(b, badgeMetrics, heldPortraitBadges);
 
             return (
               <div
                 key={b.id}
-                className={`p-5 rounded-3xl border transition-all flex items-center gap-4 ${
+                data-badge-id={b.id}
+                data-unlocked={isUnlocked}
+                className={`p-4 rounded-3xl border transition-all flex items-center gap-4 ${
                   isUnlocked
                     ? 'bg-gradient-to-r from-amber-50/70 to-yellow-50/70 dark:from-amber-950/20 dark:to-yellow-950/20 border-amber-200/80 dark:border-amber-900/40 shadow-xs'
                     : 'bg-white dark:bg-zinc-900 border-slate-100 dark:border-zinc-800 opacity-60'
@@ -877,12 +914,36 @@ export function KidDashboard() {
                     )}
                   </div>
                   <p className="text-xs text-slate-500 mt-1">{badgeDesc}</p>
+                  {!isUnlocked && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-zinc-700">
+                        <div className="h-full rounded-full bg-amber-400" style={{ width: `${Math.round((progress.current / progress.target) * 100)}%` }} />
+                      </div>
+                      <span className="text-xs font-bold tabular-nums text-slate-500">{progress.current}/{progress.target}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             );
           })}
+          </div>
+          </section>
+          ))}
         </div>
       )}
+
+      <BadgeCelebration
+        badge={badgeAwards.pending[0] ?? null}
+        remaining={Math.max(0, badgeAwards.pending.length - 1)}
+        childName={activeChild.nickname || activeChild.name}
+        language={language}
+        onDismiss={badgeAwards.dismiss}
+        onViewBadges={() => {
+          badgeAwards.dismiss();
+          setActiveTab('badges');
+        }}
+      />
+
 
       {/* TAB: LEADERBOARD & LEAGUE COMPETITION */}
       {visibleTab === 'leaderboard' && <LeaderboardSection />}

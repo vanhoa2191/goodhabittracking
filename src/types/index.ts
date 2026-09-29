@@ -130,8 +130,9 @@ export interface Badge {
   name: { [key in Language]?: string };
   description: { [key in Language]?: string };
   icon: string;
-  criteriaType: 'streak' | 'totalTasks' | 'totalPoints' | 'firstTask';
+  criteriaType: 'streak' | 'totalTasks' | 'totalPoints' | 'firstTask' | 'portrait' | 'portraitCollection';
   criteriaValue: number;
+  portraitId?: string;
 }
 
 export interface ChildBadge {

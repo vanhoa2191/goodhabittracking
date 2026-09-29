@@ -80,6 +80,7 @@ test('completing a deferred task clears its choice even after undo', async ({ pa
 
   // When: the child completes that deferred task.
   await task.getByRole('button', { name: /Đánh dấu nhiệm vụ/ }).click();
+  await page.getByRole('button', { name: 'Tuyệt vời!' }).click();
 
   // Then: the completed task is no longer deferred, including after undo.
   const sameTask = page.locator(`[data-task-card][data-activity-id="${activityId}"]`);
