@@ -55,6 +55,7 @@ jobs:
       OPERATIONS_CRON_SECRET: ${{ secrets.LIFECYCLE_CRON_SECRET }}
       NEXT_PUBLIC_APP_URL: https://app.kidhabithero.com
       NEXT_PUBLIC_MARKETING_URL: https://kidhabithero.com
+      NEXT_PUBLIC_SESSION_HINT_DOMAIN: kidhabithero.com
       NEXT_PUBLIC_DEPLOY_TARGET: app
     steps:
       - id: configuration

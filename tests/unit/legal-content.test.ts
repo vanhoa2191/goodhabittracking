@@ -25,6 +25,12 @@ describe('shared legal content', () => {
     }
   });
 
+  it('discloses the identity-free sign-in cookie shared by the site and the app', () => {
+    expect(privacyText).toContain('cookie báo hiệu “đã đăng nhập”');
+    expect(privacyText).toContain('không chứa thông tin cá nhân hay phiên đăng nhập');
+    expect(privacyText).toContain('hết hạn sau 7 ngày');
+  });
+
   it('does not promise anything the product does not do', () => {
     expect(privacyText).not.toMatch(/tuân thủ (GDPR|COPPA|Nghị định)/i);
     expect(privacyText).not.toMatch(/(đảm bảo|cam kết)[^.]*tuyệt đối/);

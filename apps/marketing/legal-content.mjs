@@ -127,6 +127,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         title: '10. Cookie và lưu trữ trên thiết bị',
         blocks: [
           'KidHabit dùng cookie và bộ nhớ cục bộ cần thiết để giữ phiên đăng nhập, phiên thiết bị của bé, ngôn ngữ và giao diện. KidHabit không dùng cookie quảng cáo.',
+          'Khi phụ huynh đăng nhập, KidHabit đặt thêm một cookie báo hiệu “đã đăng nhập” dùng chung giữa trang giới thiệu và ứng dụng để hiển thị nút phù hợp. Cookie này không chứa thông tin cá nhân hay phiên đăng nhập, hết hạn sau 7 ngày và bị xóa khi bạn đăng xuất.',
           'Trang giới thiệu tải phông chữ từ dịch vụ Google Fonts, nên địa chỉ mạng của bạn có thể được gửi tới Google khi xem trang.',
         ],
       },

@@ -15,6 +15,7 @@ import { AnalyticsConsentProvider } from "@/lib/analytics-consent-context";
 import { ParentReminderProvider } from "@/lib/parent-reminder-context";
 import { getSiteOrigin } from "@/lib/site";
 import { PwaRuntime } from "@/components/PwaRuntime";
+import { SessionHintSync } from "@/components/SessionHintSync";
 
 const displayFont = Fraunces({
   axes: ['SOFT', 'opsz'],
@@ -97,7 +98,7 @@ export default async function RootLayout({
         <PwaRuntime />
         <AppearanceProvider>
           <I18nProvider initialLanguage={initialLanguage}>
-            <AnalyticsConsentProvider><ParentReminderProvider>{children}</ParentReminderProvider></AnalyticsConsentProvider>
+            <AnalyticsConsentProvider><ParentReminderProvider>{children}<SessionHintSync /></ParentReminderProvider></AnalyticsConsentProvider>
           </I18nProvider>
         </AppearanceProvider>
       </body>
