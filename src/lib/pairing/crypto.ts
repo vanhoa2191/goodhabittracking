@@ -78,9 +78,9 @@ export function getPairingSecret(): string | null {
 }
 
 export async function requestFingerprint(request: Request): Promise<string> {
-  const configuredSecret = process.env.PAIRING_RATE_LIMIT_SECRET?.trim();
+  const configuredSecret = getPairingSecret();
   if (!configuredSecret && process.env.NODE_ENV === 'production') {
-    throw new Error('PAIRING_RATE_LIMIT_SECRET is required in production.');
+    throw new Error('PAIRING_RATE_LIMIT_SECRET must be at least 32 characters in production.');
   }
 
   const secret = configuredSecret || 'local-development-pairing-rate-limit';
