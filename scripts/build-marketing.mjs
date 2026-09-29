@@ -19,15 +19,25 @@ function validateOrigin(value, name) {
   return url.origin;
 }
 
+const emailPattern = /^[^\s@"'<>]+@[^\s@"'<>]+\.[^\s@"'<>]+$/;
+
+function validateSupportEmail(value) {
+  const candidate = typeof value === 'string' ? value.trim() : '';
+  if (!candidate) return null;
+  if (!emailPattern.test(candidate)) throw new Error('supportEmail must be a valid email address.');
+  return candidate;
+}
+
 async function writeRoute(outputDir, route, content) {
   const directory = route ? join(outputDir, route) : outputDir;
   await mkdir(directory, { recursive: true });
   await writeFile(join(directory, 'index.html'), content, 'utf8');
 }
 
-export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir }) {
+export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir, supportEmail = '' }) {
   const app = validateOrigin(appOrigin, 'appOrigin');
   const marketing = validateOrigin(marketingOrigin, 'marketingOrigin');
+  const support = validateSupportEmail(supportEmail);
   const target = resolve(outputDir);
 
   if (target === projectRoot || target === dirname(projectRoot)) {
@@ -38,7 +48,7 @@ export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir
   await mkdir(target, { recursive: true });
   await writeRoute(target, '', renderHome({ appOrigin: app, marketingOrigin: marketing }));
   await writeRoute(target, 'pricing', renderPricingPage({ appOrigin: app, marketingOrigin: marketing }));
-  await Promise.all(routes.map((slug) => writeRoute(target, slug, renderInfoPage({ slug, appOrigin: app, marketingOrigin: marketing }))));
+  await Promise.all(routes.map((slug) => writeRoute(target, slug, renderInfoPage({ slug, appOrigin: app, marketingOrigin: marketing, supportEmail: support }))));
 
   await Promise.all([
     cp(join(projectRoot, 'public', 'logo.svg'), join(target, 'logo.svg')),
@@ -63,6 +73,7 @@ if (invokedDirectly) {
     appOrigin: process.env.NEXT_PUBLIC_APP_URL ?? 'https://goodhabittracking.vanhoa2191.workers.dev',
     marketingOrigin: process.env.NEXT_PUBLIC_MARKETING_URL ?? 'https://kidhabit-home.vanhoa2191.workers.dev',
     outputDir: process.env.MARKETING_OUTPUT_DIR ?? join(projectRoot, 'dist', 'marketing'),
+    supportEmail: process.env.SUPPORT_EMAIL,
   });
   process.stdout.write(`Built ${result.pages} marketing pages in ${result.outputDir}\n`);
 }

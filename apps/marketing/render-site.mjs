@@ -143,8 +143,16 @@ export function renderPricingPage({ marketingOrigin, appOrigin }) {
   return renderDocument({ title: 'Bảng giá KidHabit Hero', description: 'So sánh các gói KidHabit cho một bé hoặc cả gia đình.', path: '/pricing/', marketingOrigin, appOrigin, body });
 }
 
-export function renderInfoPage({ slug, marketingOrigin, appOrigin }) {
+function renderContactNote(supportEmail) {
+  if (!supportEmail) {
+    return '<p class="shell contact-note">Kênh email hỗ trợ chính thức sẽ được hiển thị trong ứng dụng sau khi cấu hình được phê duyệt.</p>';
+  }
+  const address = escapeHtml(supportEmail);
+  return `<p class="shell contact-note">Email hỗ trợ: <a href="mailto:${address}">${address}</a></p>`;
+}
+
+export function renderInfoPage({ slug, marketingOrigin, appOrigin, supportEmail }) {
   const page = publicPages[slug];
-  const body = `<main id="noi-dung"><section class="page-hero"><div class="shell"><h1>${page.title}</h1><p>${page.description}</p></div></section><section class="section info-page"><div class="shell info-grid">${page.sections.map(([title, text]) => `<article><h2>${title}</h2><p>${text}</p></article>`).join('')}</div>${slug === 'contact' ? '<p class="shell contact-note">Kênh email hỗ trợ chính thức sẽ được hiển thị trong ứng dụng sau khi cấu hình được phê duyệt.</p>' : ''}</section></main>`;
+  const body = `<main id="noi-dung"><section class="page-hero"><div class="shell"><h1>${page.title}</h1><p>${page.description}</p></div></section><section class="section info-page"><div class="shell info-grid">${page.sections.map(([title, text]) => `<article><h2>${title}</h2><p>${text}</p></article>`).join('')}</div>${slug === 'contact' ? renderContactNote(supportEmail) : ''}</section></main>`;
   return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: `/${slug}/`, marketingOrigin, appOrigin, body });
 }

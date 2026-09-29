@@ -86,6 +86,33 @@ describe('marketing static artifact', () => {
     expect(html).not.toContain('https://app.example/login');
   });
 
+  it('shows the configured support mailbox on the contact page and keeps the notice without one', async () => {
+    const withMailbox = await makeOutput('kidhabit-marketing-support-');
+    await buildMarketingSite({
+      appOrigin: 'https://app.example',
+      marketingOrigin: 'https://www.example',
+      outputDir: withMailbox,
+      supportEmail: 'support@example.com',
+    });
+    const contact = await readFile(join(withMailbox, 'contact', 'index.html'), 'utf8');
+    expect(contact).toContain('href="mailto:support@example.com"');
+    expect(contact).not.toContain('sẽ được hiển thị trong ứng dụng');
+
+    const { outputDir } = await buildFixture();
+    const withoutMailbox = await readFile(join(outputDir, 'contact', 'index.html'), 'utf8');
+    expect(withoutMailbox).not.toContain('mailto:');
+    expect(withoutMailbox).toContain('Kênh email hỗ trợ chính thức');
+  });
+
+  it('rejects a malformed support mailbox instead of rendering it', async () => {
+    await expect(buildMarketingSite({
+      appOrigin: 'https://app.example',
+      marketingOrigin: 'https://www.example',
+      outputDir: await makeOutput('kidhabit-marketing-invalid-'),
+      supportEmail: 'not-an-email"><script>',
+    })).rejects.toThrow('supportEmail');
+  });
+
   it('rejects non-HTTPS or non-origin deployment inputs', async () => {
     await expect(buildMarketingSite({
       appOrigin: 'http://app.example',
