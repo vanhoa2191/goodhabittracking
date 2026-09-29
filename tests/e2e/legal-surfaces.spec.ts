@@ -3,7 +3,7 @@ import { installCloudFamilyFixture } from './cloud-family-fixture';
 import { getVisiblePricingOpener } from './open-pricing';
 
 for (const entry of [
-  { path: '/privacy', heading: 'Quyền riêng tư của gia đình' },
+  { path: '/privacy', heading: 'Chính sách quyền riêng tư' },
   { path: '/terms', heading: 'Điều khoản sử dụng' },
   { path: '/contact', heading: 'Liên hệ hỗ trợ' },
 ] as const) {

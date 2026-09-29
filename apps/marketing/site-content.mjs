@@ -124,27 +124,6 @@ export const publicPages = {
       ['Theo dõi và khích lệ', 'Xem tiến độ, xác nhận khi cần và dùng lời khen cụ thể để giúp con hiểu điều mình đã làm tốt.'],
     ],
   },
-  privacy: {
-    title: 'Quyền riêng tư của gia đình',
-    description: 'Thông tin dễ hiểu về dữ liệu KidHabit cần để vận hành ứng dụng.',
-    sections: [
-      ['Dữ liệu được lưu', 'KidHabit lưu thông tin tài khoản phụ huynh, hồ sơ gia đình, thói quen, tiến độ, phần thưởng, thiết bị đã ghép và trạng thái gói sử dụng.'],
-      ['Mục đích sử dụng', 'Dữ liệu được dùng để đồng bộ trải nghiệm gia đình, hiển thị đúng nhiệm vụ, bảo vệ khu vực phụ huynh và xác minh thanh toán.'],
-      ['Lựa chọn của phụ huynh', 'Phụ huynh có thể chỉnh sửa hồ sơ, thu hồi thiết bị đã ghép, thay đổi lựa chọn nhận thông tin hoặc xóa dữ liệu gia đình trong ứng dụng.'],
-      ['Dịch vụ hỗ trợ vận hành', 'KidHabit dùng dịch vụ đăng nhập, đồng bộ đám mây và cổng thanh toán. KidHabit không bán dữ liệu trẻ để quảng cáo nhắm mục tiêu.'],
-    ],
-  },
-  terms: {
-    title: 'Điều khoản sử dụng',
-    description: 'Các nguyên tắc cơ bản khi phụ huynh dùng KidHabit cho gia đình.',
-    sections: [
-      ['Tài khoản phụ huynh', 'Người tạo tài khoản cần là người lớn có quyền quản lý dữ liệu của bé và chịu trách nhiệm bảo vệ tài khoản, mã PIN cùng thiết bị đã ghép.'],
-      ['Phạm vi dịch vụ', 'KidHabit giúp gia đình tổ chức thói quen, nhiệm vụ và phần thưởng. Ứng dụng không thay thế tư vấn y tế, tâm lý hoặc giáo dục chuyên môn.'],
-      ['Dùng thử và thanh toán', 'Gia đình đủ điều kiện có thể dùng thử một lần trong 7 ngày. Không cần thẻ, không tự động trừ tiền và mỗi khoản thanh toán chỉ áp dụng cho kỳ đã chọn.'],
-      ['Hoàn tiền trong 30 ngày', 'Nếu chưa hài lòng, bạn có thể yêu cầu hoàn tiền trong vòng 30 ngày kể từ ngày thanh toán. Hãy gửi mã đơn và thời điểm thanh toán qua trang Liên hệ. Yêu cầu được xác minh theo dữ liệu giao dịch. Không gửi ảnh có đầy đủ số tài khoản hoặc dữ liệu của trẻ.'],
-      ['Dữ liệu và chấm dứt sử dụng', 'Chủ gia đình có thể xóa dữ liệu gia đình trong ứng dụng. Việc xóa là không thể khôi phục từ tài khoản người dùng.'],
-    ],
-  },
   contact: {
     title: 'Liên hệ hỗ trợ',
     description: 'Chuẩn bị đúng thông tin để đội ngũ hỗ trợ xử lý nhanh mà không thu thập dư thừa dữ liệu của trẻ.',

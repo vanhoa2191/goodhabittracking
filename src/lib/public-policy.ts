@@ -1,6 +1,6 @@
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const publicPolicyVersion = '2026-09-28';
+export { legalVersion as publicPolicyVersion } from '../../apps/marketing/legal-content.mjs';
 
 export function getPublicPolicyConfig() {
   const candidate = process.env.SUPPORT_EMAIL?.trim() ?? '';
