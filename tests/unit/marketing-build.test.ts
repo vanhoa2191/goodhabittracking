@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -84,6 +84,59 @@ describe('marketing static artifact', () => {
     expect(html).toContain('href="https://app.example/checkout?plan=monthly"');
     expect(html).toContain('href="https://app.example/" class="nav-login"');
     expect(html).not.toContain('https://app.example/login');
+  });
+
+  it('puts the brand mascots in the hero and a companions section with sized, described images', async () => {
+    const { outputDir, html } = await buildFixture();
+    expect(html).toMatch(/<img class="hero-mascot" src="\/mascots\/leo\.webp"[^>]*width="400" height="400"[^>]*fetchpriority="high"/);
+    expect(html).toContain('Mỗi bé chọn một người bạn đồng hành');
+    for (const mascot of ['leo', 'bunny', 'panda', 'fox', 'turtle', 'bee']) {
+      expect(html).toContain(`src="/mascots/${mascot}.webp"`);
+      expect((await stat(join(outputDir, 'mascots', `${mascot}.webp`))).size).toBeGreaterThan(1000);
+    }
+    const companionImages = html.match(/<img class="companion-image"[^>]*>/g) ?? [];
+    expect(companionImages).toHaveLength(6);
+    for (const image of companionImages) {
+      expect(image).toMatch(/alt="[^"]{3,}"/);
+      expect(image).toContain('loading="lazy"');
+      expect(image).toMatch(/width="\d+" height="\d+"/);
+    }
+  });
+
+  it('publishes share metadata with an absolute image, a twitter card and honest structured data', async () => {
+    const { outputDir, html } = await buildFixture();
+    expect(html).toContain('<meta property="og:image" content="https://www.example/og-image.jpg">');
+    expect(html).toContain('<meta property="og:image:width" content="1200">');
+    expect(html).toContain('<meta name="twitter:card" content="summary_large_image">');
+    expect(html).toContain('<meta property="og:site_name" content="KidHabit Hero">');
+    expect((await stat(join(outputDir, 'og-image.jpg'))).size).toBeGreaterThan(5000);
+
+    const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    expect(match).not.toBeNull();
+    const data = JSON.parse(match![1]);
+    expect(data['@type']).toBe('SoftwareApplication');
+    expect(data.offers.map((offer: { price: string }) => offer.price)).toEqual(['29000', '49000', '399000']);
+    for (const offer of data.offers) expect(offer.priceCurrency).toBe('VND');
+    expect(JSON.stringify(data)).not.toMatch(/aggregateRating|review/i);
+  });
+
+  it('makes the two premium cards distinguishable and shows what the yearly plan saves', async () => {
+    const { outputDir } = await buildFixture();
+    const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
+    expect(pricing).toContain('Gói Cao cấp · Tháng');
+    expect(pricing).toContain('Gói Cao cấp · Năm');
+    expect(pricing).not.toMatch(/<h3>Gói Cao cấp<\/h3>/);
+    expect(pricing).toContain('33.250 VNĐ/tháng');
+    expect(pricing).toContain('Tiết kiệm 189.000 VNĐ so với trả theo tháng');
+  });
+
+  it('surfaces the refund guarantee next to the purchase decision', async () => {
+    const { html } = await buildFixture();
+    const pricingSection = html.slice(html.indexOf('id="bang-gia"'), html.indexOf('faq-section'));
+    expect(pricingSection).toContain('Hoàn tiền trong 30 ngày nếu chưa hài lòng');
+    const hero = html.slice(html.indexOf('class="hero"'), html.indexOf('class="section outcomes"'));
+    expect(hero).toContain('Hoàn tiền 30 ngày');
+    expect(hero).toContain('7 ngày dùng thử');
   });
 
   it('states the 30-day refund policy in the terms and the pricing FAQ', async () => {

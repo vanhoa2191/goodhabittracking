@@ -1,5 +1,5 @@
 import { buildLegalPages, legalUpdatedLabel } from './legal-content.mjs';
-import { faqs, habitLoop, navigation, outcomes, plans, publicPages } from './site-content.mjs';
+import { faqs, habitLoop, mascots, navigation, outcomes, plans, publicPages, trustPoints } from './site-content.mjs';
 
 const icons = {
   compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>',
@@ -25,6 +25,44 @@ function icon(name, className = '') {
 
 function appUrl(appOrigin, path) {
   return new URL(path, `${appOrigin}/`).href;
+}
+
+function formatVnd(amount) {
+  return String(amount).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function planTitle(plan) {
+  return plan.period ? `${plan.name} · ${plan.period}` : plan.name;
+}
+
+function yearlySaving() {
+  const monthly = plans.find((plan) => plan.id === 'monthly');
+  const yearly = plans.find((plan) => plan.id === 'yearly');
+  if (!monthly || !yearly) return null;
+  return { perMonth: Math.round(yearly.amount / 12), saved: monthly.amount * 12 - yearly.amount };
+}
+
+function renderStructuredData({ marketingOrigin, appOrigin }) {
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'KidHabit Hero',
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Web',
+    inLanguage: 'vi',
+    url: new URL('/', `${marketingOrigin}/`).href,
+    image: new URL('/og-image.jpg', `${marketingOrigin}/`).href,
+    description: 'KidHabit giúp ba mẹ chọn thói quen phù hợp, giao việc rõ ràng và cùng con nhìn thấy tiến bộ mỗi ngày.',
+    offers: plans.map((plan) => ({
+      '@type': 'Offer',
+      name: planTitle(plan),
+      price: String(plan.amount),
+      priceCurrency: 'VND',
+      url: appUrl(appOrigin, `/checkout?plan=${plan.id}`),
+      availability: 'https://schema.org/InStock',
+    })),
+  };
+  return `<script type="application/ld+json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script>`;
 }
 
 function renderHeader(appOrigin) {
@@ -59,8 +97,9 @@ function renderFooter(appOrigin) {
   </footer>`;
 }
 
-function renderDocument({ title, description, path, marketingOrigin, appOrigin, body }) {
+function renderDocument({ title, description, path, marketingOrigin, appOrigin, body, structuredData = '' }) {
   const canonical = new URL(path, `${marketingOrigin}/`).href;
+  const shareImage = new URL('/og-image.jpg', `${marketingOrigin}/`).href;
   return `<!doctype html>
 <html lang="vi">
 <head>
@@ -74,6 +113,15 @@ function renderDocument({ title, description, path, marketingOrigin, appOrigin, 
   <meta property="og:title" content="${escapeHtml(title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${canonical}">
+  <meta property="og:site_name" content="KidHabit Hero">
+  <meta property="og:image" content="${shareImage}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Leo, chú sư tử nhỏ đồng hành cùng bé trong KidHabit Hero">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escapeHtml(title)}">
+  <meta name="twitter:description" content="${escapeHtml(description)}">
+  <meta name="twitter:image" content="${shareImage}">
   <meta name="theme-color" content="#4f46e5">
   <link rel="icon" href="/logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,6 +129,7 @@ function renderDocument({ title, description, path, marketingOrigin, appOrigin, 
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap&subset=vietnamese" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
   <script src="/client.js" defer></script>
+  ${structuredData}
 </head>
 <body>
   <a class="skip-link" href="#noi-dung">Bỏ qua điều hướng</a>
@@ -108,15 +157,24 @@ function renderLoop() {
 }
 
 function renderPricing(appOrigin, heading = 'Chọn gói phù hợp với gia đình') {
+  const saving = yearlySaving();
   return `<section class="section pricing-section" id="bang-gia" aria-labelledby="pricing-title"><div class="shell">
-    <div class="pricing-heading"><div><p class="eyebrow">7 ngày trải nghiệm đầy đủ</p><h2 id="pricing-title">${heading}</h2><p>Không cần thẻ tín dụng. Không tự động trừ tiền. Thanh toán một lần cho kỳ bạn chọn.</p></div><a class="text-link" href="/terms/">Xem điều khoản ${icon('arrow')}</a></div>
+    <div class="pricing-heading"><div><p class="eyebrow">7 ngày trải nghiệm đầy đủ</p><h2 id="pricing-title">${heading}</h2><p>Không cần thẻ tín dụng. Không tự động trừ tiền. Hoàn tiền trong 30 ngày nếu chưa hài lòng.</p></div><a class="text-link" href="/terms/">Xem điều khoản ${icon('arrow')}</a></div>
     <div class="pricing-grid">${plans.map((plan) => `<article class="price-card${plan.featured ? ' price-card-featured' : ''}" data-plan="${plan.id}">
-      <div class="plan-top"><p class="plan-label">${plan.label}</p><h3>${plan.name}</h3><p>${plan.summary}</p></div>
-      <p class="price"><strong>${plan.price}</strong><span>VNĐ ${plan.cadence}</span></p>
+      <div class="plan-top"><p class="plan-label">${plan.label}</p><h3>${planTitle(plan)}</h3><p>${plan.summary}</p></div>
+      <p class="price"><strong>${plan.price}</strong><span>VNĐ ${plan.cadence}</span></p>${plan.id === 'yearly' && saving ? `
+      <p class="price-saving">Tương đương ${formatVnd(saving.perMonth)} VNĐ/tháng. Tiết kiệm ${formatVnd(saving.saved)} VNĐ so với trả theo tháng.</p>` : ''}
       <ul>${plan.features.map((feature) => `<li>${icon('check')}<span>${feature}</span></li>`).join('')}</ul>
       <a class="button ${plan.featured ? 'button-primary' : 'button-secondary'}" href="${appUrl(appOrigin, `/checkout?plan=${plan.id}`)}">${plan.cta} ${icon('arrow')}</a>
     </article>`).join('')}</div>
     <p class="pricing-note">Gói đăng ký gắn với gia đình trong tài khoản phụ huynh. Sau khi đăng nhập, bạn có thể tiếp tục thanh toán mà không phải chọn lại gói.</p>
+  </div></section>`;
+}
+
+function renderCompanions() {
+  return `<section class="section companions" aria-labelledby="companions-title"><div class="shell">
+    <div class="section-heading"><p class="eyebrow">Người bạn đồng hành</p><h2 id="companions-title">Mỗi bé chọn một người bạn đồng hành</h2><p>Bé chọn nhân vật mình thích để cùng làm nhiệm vụ, nhận lời khen và đổi phần thưởng mà ba mẹ đã thống nhất.</p></div>
+    <ul class="companion-grid">${mascots.map((mascot) => `<li class="companion-card"><img class="companion-image" src="/mascots/${mascot.id}.webp" alt="${mascot.name}, chú ${mascot.species} đồng hành cùng bé" width="400" height="400" loading="lazy" decoding="async"><strong>${mascot.name}</strong><span>${mascot.trait}</span></li>`).join('')}</ul>
   </div></section>`;
 }
 
@@ -127,21 +185,22 @@ function renderFaq() {
 export function renderHome({ marketingOrigin, appOrigin }) {
   const body = `<main id="noi-dung">
     <section class="hero"><div class="shell hero-grid">
-      <div class="hero-copy"><p class="hero-kicker">Thói quen tốt bắt đầu từ việc nhỏ</p><h1>Giúp con tự giác mỗi ngày</h1><p>KidHabit giúp ba mẹ chọn đúng thói quen, giao việc rõ ràng và cùng con nhìn thấy tiến bộ mà không cần nhắc mãi.</p><div class="hero-actions"><a class="button button-primary" href="${appUrl(appOrigin, '/checkout?plan=monthly')}">Dùng thử 7 ngày ${icon('arrow')}</a><a class="button button-quiet" href="#cach-hoat-dong">Xem cách hoạt động</a></div></div>
-      <div class="progress-board" aria-label="Minh họa hành trình thói quen của bé"><div class="board-heading"><span>Tuần này của Minh</span><strong>4 ngày liên tiếp</strong></div><div class="path"><div class="path-line"></div>${['Tự gấp chăn', 'Đọc 10 phút', 'Chuẩn bị cặp'].map((label, index) => `<div class="path-stop"><span>${icon(index === 2 ? 'trend-up' : 'check')}</span><div><strong>${label}</strong><small>${index === 2 ? 'Sẵn sàng cho ngày mai' : 'Đã hoàn thành hôm nay'}</small></div></div>`).join('')}</div><div class="board-celebration"><span>+5</span><p><strong>Con đã tự bắt đầu</strong><br>Ba mẹ ghi nhận đúng điều con làm tốt.</p></div></div>
+      <div class="hero-copy"><p class="hero-kicker">Thói quen tốt bắt đầu từ việc nhỏ</p><h1>Giúp con tự giác mỗi ngày</h1><p>KidHabit giúp ba mẹ chọn đúng thói quen, giao việc rõ ràng và cùng con nhìn thấy tiến bộ mà không cần nhắc mãi.</p><div class="hero-actions"><a class="button button-primary" href="${appUrl(appOrigin, '/checkout?plan=monthly')}">Dùng thử 7 ngày ${icon('arrow')}</a><a class="button button-quiet" href="#cach-hoat-dong">Xem cách hoạt động</a></div><ul class="trust-points" aria-label="Cam kết khi bắt đầu">${trustPoints.map((point) => `<li>${icon('check')}<span>${point}</span></li>`).join('')}</ul></div>
+      <div class="hero-visual"><div class="progress-board" aria-label="Minh họa hành trình thói quen của bé"><div class="board-heading"><span>Tuần này của Minh</span><strong>4 ngày liên tiếp</strong></div><div class="path"><div class="path-line"></div>${['Tự gấp chăn', 'Đọc 10 phút', 'Chuẩn bị cặp'].map((label, index) => `<div class="path-stop"><span>${icon(index === 2 ? 'trend-up' : 'check')}</span><div><strong>${label}</strong><small>${index === 2 ? 'Sẵn sàng cho ngày mai' : 'Đã hoàn thành hôm nay'}</small></div></div>`).join('')}</div><div class="board-celebration"><span>+5</span><p><strong>Con đã tự bắt đầu</strong><br>Ba mẹ ghi nhận đúng điều con làm tốt.</p></div></div><img class="hero-mascot" src="/mascots/leo.webp" alt="Leo, chú sư tử nhỏ vẫy tay chào bé" width="400" height="400" fetchpriority="high"></div>
     </div></section>
     ${renderOutcomes()}
+    ${renderCompanions()}
     <div id="cach-hoat-dong">${renderLoop()}</div>
     ${renderPricing(appOrigin)}
     ${renderFaq()}
     <section class="final-cta"><div class="shell final-cta-inner"><div><h2>Bắt đầu với một việc nhỏ hôm nay</h2><p>Thiết lập hồ sơ đầu tiên, chọn thói quen phù hợp và để con tự hoàn thành bước tiếp theo.</p></div><a class="button button-light" href="${appUrl(appOrigin, '/checkout?plan=monthly')}">Bắt đầu cùng con ${icon('arrow')}</a></div></section>
   </main>`;
-  return renderDocument({ title: 'KidHabit Hero | Giúp con tự giác mỗi ngày', description: 'KidHabit giúp ba mẹ chọn thói quen phù hợp, giao việc rõ ràng và cùng con nhìn thấy tiến bộ mỗi ngày.', path: '/', marketingOrigin, appOrigin, body });
+  return renderDocument({ title: 'KidHabit Hero | Giúp con tự giác mỗi ngày', description: 'KidHabit giúp ba mẹ chọn thói quen phù hợp, giao việc rõ ràng và cùng con nhìn thấy tiến bộ mỗi ngày.', path: '/', marketingOrigin, appOrigin, body, structuredData: renderStructuredData({ marketingOrigin, appOrigin }) });
 }
 
 export function renderPricingPage({ marketingOrigin, appOrigin }) {
   const body = `<main id="noi-dung"><section class="page-hero"><div class="shell"><p class="eyebrow">Bảng giá rõ ràng</p><h1>Chọn nhịp đồng hành phù hợp</h1><p>Ba gói trả phí, không có phí ẩn và không tự động gia hạn.</p></div></section>${renderPricing(appOrigin, 'Ba lựa chọn, một hành trình rõ ràng')}${renderFaq()}</main>`;
-  return renderDocument({ title: 'Bảng giá KidHabit Hero', description: 'So sánh các gói KidHabit cho một bé hoặc cả gia đình.', path: '/pricing/', marketingOrigin, appOrigin, body });
+  return renderDocument({ title: 'Bảng giá KidHabit Hero', description: 'So sánh các gói KidHabit cho một bé hoặc cả gia đình.', path: '/pricing/', marketingOrigin, appOrigin, body, structuredData: renderStructuredData({ marketingOrigin, appOrigin }) });
 }
 
 function renderContactNote(supportEmail) {

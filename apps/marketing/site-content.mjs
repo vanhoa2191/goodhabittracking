@@ -41,6 +41,7 @@ export const habitLoop = [
 export const plans = [
   {
     id: 'solo_monthly',
+    amount: 29000,
     name: 'Gói Cơ bản',
     label: 'Khởi đầu gọn nhẹ',
     price: '29.000',
@@ -51,6 +52,8 @@ export const plans = [
   },
   {
     id: 'monthly',
+    amount: 49000,
+    period: 'Tháng',
     name: 'Gói Cao cấp',
     label: 'Linh hoạt theo tháng',
     price: '49.000',
@@ -62,6 +65,8 @@ export const plans = [
   },
   {
     id: 'yearly',
+    amount: 399000,
+    period: 'Năm',
     name: 'Gói Cao cấp',
     label: 'Tiết kiệm nhất',
     price: '399.000',
@@ -71,6 +76,17 @@ export const plans = [
     cta: 'Chọn gói theo năm',
   },
 ];
+
+export const mascots = [
+  { id: 'leo', name: 'Leo', species: 'sư tử', trait: 'Tập dũng cảm từ việc nhỏ' },
+  { id: 'bunny', name: 'Bunny', species: 'thỏ', trait: 'Biết quan tâm mọi người' },
+  { id: 'panda', name: 'Panda', species: 'gấu trúc', trait: 'Bình tĩnh để nhìn rõ hơn' },
+  { id: 'fox', name: 'Fox', species: 'cáo', trait: 'Tò mò trước điều mới' },
+  { id: 'turtle', name: 'Turtle', species: 'rùa', trait: 'Kiên nhẫn đi cùng bé' },
+  { id: 'bee', name: 'Bee', species: 'ong', trait: 'Vui khi cả nhà giúp nhau' },
+];
+
+export const trustPoints = ['7 ngày dùng thử', 'Không cần thẻ', 'Hoàn tiền 30 ngày'];
 
 export const faqs = [
   {

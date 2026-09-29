@@ -54,6 +54,7 @@ export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir
     cp(join(projectRoot, 'public', 'logo.svg'), join(target, 'logo.svg')),
     cp(join(projectRoot, 'apps', 'marketing', 'styles.css'), join(target, 'styles.css')),
     cp(join(projectRoot, 'apps', 'marketing', 'client.js'), join(target, 'client.js')),
+    cp(join(projectRoot, 'apps', 'marketing', 'assets'), target, { recursive: true }),
   ]);
 
   const sitemapRoutes = ['', 'pricing', ...routes];

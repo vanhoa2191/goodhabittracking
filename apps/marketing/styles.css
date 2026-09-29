@@ -271,3 +271,31 @@ p { color: var(--color-ink-soft); text-wrap: pretty; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Brand warmth: mascots, trust points and clearer pricing */
+.hero-visual { position: relative; padding-bottom: var(--space-8); }
+.hero-mascot { position: absolute; left: -2.5rem; bottom: -1.5rem; width: clamp(8rem, 18vw, 12rem); height: auto; filter: drop-shadow(0 10px 0 hsl(var(--shadow-color) / 0.12)); animation: mascot-bob 4.5s ease-in-out infinite; }
+@keyframes mascot-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-0.5rem); } }
+.trust-points { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); margin: var(--space-6) 0 0; padding: 0; list-style: none; }
+.trust-points li { display: inline-flex; align-items: center; gap: var(--space-2); color: var(--color-ink-soft); font-weight: 700; }
+.trust-points .icon { width: 1.25rem; height: 1.25rem; color: var(--color-positive-dark); }
+
+.companions { background: var(--color-surface); }
+.companion-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+.companion-card { display: grid; justify-items: center; gap: var(--space-1); padding: var(--space-4) var(--space-3) var(--space-6); text-align: center; background: var(--color-white); border: 2px solid var(--color-line); border-radius: var(--radius-medium); box-shadow: var(--shadow-raised); }
+.companion-card strong { font: 700 var(--step-1)/1.2 var(--font-display); }
+.companion-card span { color: var(--color-ink-soft); font-size: var(--step--1); line-height: 1.4; }
+.companion-image { width: 100%; max-width: 8.5rem; height: auto; aspect-ratio: 1; object-fit: contain; }
+
+.price-saving { margin: calc(var(--space-2) * -1) 0 var(--space-6); color: var(--color-positive-dark); font-weight: 800; line-height: 1.4; }
+
+@media (max-width: 56rem) {
+  .hero-visual { max-width: 30rem; margin-inline: auto; }
+  .hero-mascot { left: -1rem; bottom: -1rem; width: 7.5rem; }
+  .companion-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 40rem) {
+  .companion-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+  .trust-points { gap: var(--space-2) var(--space-4); }
+}
