@@ -26,6 +26,23 @@ Danh sách bàn giao khi đổi địa chỉ (làm ở ngoài repo):
 4. **Thiết bị của bé và PWA:** phiên ghép thiết bị và bản cài PWA gắn với từng địa chỉ. Bé ghép ở `workers.dev` vẫn dùng được ở địa chỉ cũ; để chuyển sang địa chỉ mới, phụ huynh làm mới mã ghép và bé quét lại.
 5. **GitHub Actions:** `NEXT_PUBLIC_APP_URL` và `NEXT_PUBLIC_MARKETING_URL` đã đặt trong `ci.yml` và `marketing.yml`; các workflow theo dõi (`production-observability`, `lifecycle-dispatch`) gọi `https://app.kidhabithero.com`.
 
+## Tên miền riêng
+
+| Bề mặt | Tên miền | Worker |
+|---|---|---|
+| Website giới thiệu | `https://kidhabithero.com` | `kidhabit-home` |
+| Ứng dụng | `https://app.kidhabithero.com` | `goodhabittracking` |
+
+Tên miền gắn vào Worker trong Cloudflare (Workers & Pages → service → Settings → Domains & Routes). Hai địa chỉ `*.workers.dev` cũ vẫn chạy trong giai đoạn chuyển tiếp: trang được xây bằng địa chỉ chuẩn mới nên `canonical`, sitemap, Open Graph và liên kết chéo đều trỏ về tên miền riêng, còn app vẫn `noindex`. Tắt `workers.dev` sau khi mọi thiết bị của bé đã ghép lại ở địa chỉ mới.
+
+Danh sách bàn giao khi đổi địa chỉ (làm ở ngoài repo):
+
+1. **Supabase Auth → URL Configuration:** đặt Site URL là `https://app.kidhabithero.com` và thêm `https://app.kidhabithero.com/**` vào Redirect URLs. Giữ địa chỉ `workers.dev` cũ trong giai đoạn chuyển tiếp. Thiếu bước này, đăng nhập Google sẽ quay về địa chỉ sai.
+2. **PayOS:** đổi webhook thành `https://app.kidhabithero.com/api/payment/webhook`. URL trả về và hủy được tạo theo từng đơn từ `NEXT_PUBLIC_APP_URL`, không cần cấu hình riêng.
+3. **Cloudflare (vùng `kidhabithero.com`):** bật *Always Use HTTPS*; tạo bản ghi `www` (CNAME có proxy) kèm Redirect Rule `www.kidhabithero.com` → `https://kidhabithero.com`.
+4. **Thiết bị của bé và PWA:** phiên ghép thiết bị và bản cài PWA gắn với từng địa chỉ. Bé ghép ở `workers.dev` vẫn dùng được ở địa chỉ cũ; để chuyển sang địa chỉ mới, phụ huynh làm mới mã ghép và bé quét lại.
+5. **GitHub Actions:** `NEXT_PUBLIC_APP_URL` và `NEXT_PUBLIC_MARKETING_URL` đã đặt trong `ci.yml` và `marketing.yml`; các workflow theo dõi (`production-observability`, `lifecycle-dispatch`) gọi `https://app.kidhabithero.com`.
+
 ## First setup
 
 1. Tạo hai Workers service độc lập trong cùng Cloudflare account: `goodhabittracking` cho app và `kidhabit-home` cho static marketing.
