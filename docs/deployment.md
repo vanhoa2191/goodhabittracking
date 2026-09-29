@@ -7,7 +7,7 @@ Repository tạo hai bản phát hành độc lập:
 - Website giới thiệu: HTML/CSS/JS tĩnh tại `dist/marketing`, triển khai bằng Cloudflare Workers Static Assets với service `kidhabit-home`; tên miền chính thức là `https://kidhabithero.com`.
 - Ứng dụng: Next.js full-stack tại `https://app.kidhabithero.com`, triển khai bằng OpenNext lên Cloudflare Workers. Origin này giữ auth, QR, PWA, API, PayOS và dữ liệu gia đình.
 
-Không chuyển route động sang Pages, không chia sẻ cookie giữa hai origin và không đặt Supabase/PayOS secret trong marketing build. Xem [Cloudflare OpenNext guide](https://developers.cloudflare.com/workers/framework-guides/web-apps/opennext/).
+Không chuyển route động sang Pages, không chia sẻ phiên đăng nhập giữa hai origin (chỉ một cookie gợi ý `kh_member`, không chứa thông tin, để trang giới thiệu biết phụ huynh đã đăng nhập) và không đặt Supabase/PayOS secret trong marketing build. Xem [Cloudflare OpenNext guide](https://developers.cloudflare.com/workers/framework-guides/web-apps/opennext/).
 
 ## Tên miền riêng
 
