@@ -14,13 +14,26 @@ function percent(share: number | null): string {
   return share === null ? '–' : `${Math.round(share * 100)}%`;
 }
 
+// The numbers are a convenience; if the service client is not configured or the query fails, the rest
+// of the admin page must still work.
+async function loadFunnel(windowDays: number) {
+  try {
+    const admin = createAdminSupabaseClient();
+    const [funnel, retention] = await Promise.all([
+      admin.rpc('admin_activation_funnel', { window_days: windowDays }),
+      admin.rpc('admin_retention_snapshot'),
+    ]);
+    return { funnel, retention };
+  } catch {
+    return null;
+  }
+}
+
 export async function AdminFunnelPanel({ windowDays = 30 }: { readonly windowDays?: number }) {
-  const admin = createAdminSupabaseClient();
-  const [funnel, retention] = await Promise.all([
-    admin.rpc('admin_activation_funnel', { window_days: windowDays }),
-    admin.rpc('admin_retention_snapshot'),
-  ]);
-  if (funnel.error || retention.error) {
+  const loaded = await loadFunnel(windowDays);
+  const funnel = loaded?.funnel;
+  const retention = loaded?.retention;
+  if (!funnel || !retention || funnel.error || retention.error) {
     return (
       <section aria-labelledby="funnel-title" className="rounded-3xl border border-slate-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
         <h2 id="funnel-title" className="text-lg font-black">Phễu kích hoạt</h2>
