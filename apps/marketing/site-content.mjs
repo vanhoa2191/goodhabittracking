@@ -120,7 +120,7 @@ export const steps = [
 ];
 
 export const features = [
-  { icon: 'book', title: 'Khung thói quen theo độ tuổi', text: 'Mỗi thói quen có lời giải thích “vì sao” dành cho con và hướng dẫn dành cho ba mẹ, chia theo 5 giai đoạn từ 0 đến 18 tuổi.' },
+  { icon: 'book', title: 'Khung thói quen và chương trình từng bước', text: 'Mỗi thói quen có lời giải thích “vì sao” dành cho con và hướng dẫn dành cho ba mẹ, chia theo 5 giai đoạn từ 0 đến 18 tuổi. Ba mẹ đặt tín hiệu cùng con, ghi nhận nhanh con đã làm thế nào và nhận gợi ý điều chỉnh để chọn nhịp phù hợp với từng bé.' },
   { icon: 'list-checks', title: 'Nhiệm vụ có hướng dẫn', text: 'Mỗi việc nói rõ cần làm gì và thưởng bao nhiêu sao, có đồng hồ đếm giờ khi việc cần thời gian.' },
   { icon: 'gift', title: 'Sao, huy hiệu và quà', text: 'Con gom sao, nhận huy hiệu và đổi phần thưởng do chính ba mẹ đặt ra.' },
   { icon: 'shield', title: 'Ba mẹ duyệt và khen', text: 'Việc quan trọng chờ ba mẹ xác nhận, để lời khen đến đúng lúc đúng việc.' },
