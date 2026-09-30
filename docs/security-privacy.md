@@ -18,6 +18,8 @@
 
 Cloud onboarding yêu cầu người lớn xác nhận quyền quản lý dữ liệu của bé; consent lưu theo policy version. Export tạo bản sao JSON. Owner có thể xóa toàn bộ family sau confirmation phrase; cascade xóa domain data và session đã ghép nối.
 
+Bộ thói quen thích ứng lưu hai loại dữ liệu theo gia đình: kế hoạch tín hiệu của từng thói quen (câu tín hiệu, giờ, nơi) và ghi nhận cách bé hoàn thành từng lần ("tự làm", "được nhắc", "làm cùng"). Cả hai bảng bật và ép RLS, chỉ thành viên gia đình đọc được, chỉ ghi qua hàm có kiểm tra quyền (phụ huynh, hoặc thiết bị bé đã ghép đôi cho chính bản ghi của bé) và bị xóa cùng bé hoặc gia đình. Dữ liệu này chỉ để hiển thị và gợi ý điều chỉnh cho phụ huynh, không dùng cho xếp hạng hay so sánh giữa các bé. Bản xuất JSON của gia đình hiện chưa gồm các dòng này (cũng như nhật ký và các dữ liệu trải nghiệm khác).
+
 Khôi phục tài khoản Supabase Auth không đồng nghĩa khôi phục dữ liệu đã xóa. Backup operator và quy trình phục hồi nằm trong [`data-recovery.md`](data-recovery.md).
 
 ## Phạm vi pháp lý
