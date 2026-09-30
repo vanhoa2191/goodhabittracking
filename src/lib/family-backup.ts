@@ -10,6 +10,8 @@ import type {
   Reward,
   SubscriptionPlan,
 } from '@/types';
+import { parseExperienceState } from '@/lib/experience-state';
+import type { ExperienceState } from '@/lib/experience-state';
 
 export type FamilyBackup = {
   version: 1 | 2;
@@ -29,6 +31,8 @@ export type FamilyBackup = {
   childBadges: ChildBadge[];
   groups: GroupTeam[];
   kudos: Kudo[];
+  /** Child journal, wishlists, deferrals and habit-program rows. Absent in older backups. */
+  experience?: ExperienceState;
 };
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -38,6 +42,27 @@ const isRecordArray = (value: unknown, requiredStringKeys: string[]): value is R
   Array.isArray(value) && value.every((item) => (
     isRecord(item) && requiredStringKeys.every((key) => typeof item[key] === 'string')
   ));
+
+/** The family id the backed-up rows were written under, so the rows can be checked as one family. */
+const backedUpFamilyId = (experience: Record<string, unknown>): string => {
+  for (const value of Object.values(experience)) {
+    const rows = Array.isArray(value) ? value : [value];
+    for (const row of rows) {
+      if (isRecord(row) && typeof row.family_id === 'string') return row.family_id;
+    }
+  }
+  return '';
+};
+
+/** An unusable experience section is left out rather than blocking the rest of the restore. */
+const parseBackedUpExperience = (value: unknown): ExperienceState | undefined => {
+  if (!isRecord(value)) return undefined;
+  try {
+    return parseExperienceState(value, backedUpFamilyId(value));
+  } catch {
+    return undefined;
+  }
+};
 
 export const parseFamilyBackup = (jsonData: string): FamilyBackup | null => {
   try {
@@ -62,7 +87,9 @@ export const parseFamilyBackup = (jsonData: string): FamilyBackup | null => {
     if (parsed.storageMode !== undefined && parsed.storageMode !== 'local' && parsed.storageMode !== 'cloud') return null;
     if (parsed.parentProfile !== undefined && parsed.parentProfile !== null && !isRecord(parsed.parentProfile)) return null;
 
-    return parsed as FamilyBackup;
+    const { experience, ...family } = parsed;
+    const backedUpExperience = parseBackedUpExperience(experience);
+    return (backedUpExperience ? { ...family, experience: backedUpExperience } : family) as FamilyBackup;
   } catch {
     return null;
   }

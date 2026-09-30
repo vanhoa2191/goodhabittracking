@@ -16,7 +16,7 @@
 
 ## Đồng thuận và vòng đời
 
-Cloud onboarding yêu cầu người lớn xác nhận quyền quản lý dữ liệu của bé; consent lưu theo policy version. Export tạo bản sao JSON. Owner có thể xóa toàn bộ family sau confirmation phrase; cascade xóa domain data và session đã ghép nối.
+Cloud onboarding yêu cầu người lớn xác nhận quyền quản lý dữ liệu của bé; consent lưu theo policy version. Export tạo bản sao JSON gồm cả dữ liệu trải nghiệm của bé (nhật ký, danh sách ước, việc hoãn, kế hoạch tín hiệu, mức hỗ trợ đã ghi); file này chứa văn bản của bé nên cần được giữ riêng tư. Bản sao cũ không có phần này vẫn nhập được, và phần trải nghiệm không dùng được sẽ bị bỏ qua thay vì chặn việc khôi phục. Hiện Cài đặt chưa có nút export/import; định dạng nằm ở `src/lib/family-backup.ts`. Owner có thể xóa toàn bộ family sau confirmation phrase; cascade xóa domain data và session đã ghép nối.
 
 Khôi phục tài khoản Supabase Auth không đồng nghĩa khôi phục dữ liệu đã xóa. Backup operator và quy trình phục hồi nằm trong [`data-recovery.md`](data-recovery.md).
 
