@@ -26,7 +26,7 @@ import {
 } from './constants';
 import { getPricingPlan } from './payos';
 import { sounds } from './sound';
-import { emptyExperienceState, parseChildWishlist, parseDeferredTask, setDeferredTask as updateDeferredTask } from './experience-state';
+import { emptyExperienceState, mergeHabitPrograms, parseChildWishlist, parseDeferredTask, setDeferredTask as updateDeferredTask } from './experience-state';
 import { createProductAnalyticsGate, createSessionTracker, recordLocalWishlistSelection, sessionMode } from './product-analytics';
 import type { ProductEventSink } from './product-analytics';
 import type { ExperienceState, FamilyPausePeriod } from './experience-state';
@@ -41,6 +41,10 @@ import { createSocialActions } from './store/social-actions';
 import { createFamilyPauseAction } from './store/family-pause-actions';
 import { markLocalLetterRead, openLocalLetter } from './store/local-letter-actions';
 import { loadChildTaskDeferrals } from './store/task-deferral-client';
+import { createHabitProgramActions } from './store/habit-program-actions';
+import { loadChildHabitPrograms } from './store/habit-programs-client';
+import type { CuePlanInput } from './habit-programs/cue-plan-input';
+import type { SupportLevel } from './habit-programs/types';
 import { createJournalActions } from './store/journal-actions';
 import { loadChildJournal, mergeChildJournalEntries } from './store/journal-client';
 import { requestTrialActivation } from './store/trial-activation-client';
@@ -131,6 +135,8 @@ interface AppStoreContextType {
   setFamilyPaused: (paused: boolean) => Promise<boolean>;
   chooseWishlist: (rewardId: string) => Promise<boolean>;
   setTaskDeferred: (activityId: string, date: string, deferred: boolean) => Promise<boolean>;
+  recordHabitSupport: (logId: string, level: SupportLevel) => Promise<boolean>;
+  saveHabitCuePlan: (activityId: string, input: CuePlanInput) => Promise<boolean>;
   saveJournalEntry: (date: string, text: string) => Promise<boolean>;
   buildCityItem: (itemId: CityItemId) => Promise<'built' | 'already_built' | 'insufficient_points' | 'error'>;
   ensureLocalDailyLetter: (childId: string, date: string, templateKey: string) => void;
@@ -651,6 +657,18 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     return () => { cancelled = true; };
   }, [activeChildId, childSessionRevision, currentUser, isDemoSession, isFamilyConnected]);
 
+  useEffect(() => {
+    if (isDemoSession || currentUser || !isFamilyConnected || !activeChildId) return;
+    let cancelled = false;
+    void loadChildHabitPrograms()
+      .then((loaded) => {
+        if (cancelled || !loaded) return;
+        setExperience((previous) => mergeHabitPrograms(previous, loaded));
+      })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, [activeChildId, childSessionRevision, currentUser, isDemoSession, isFamilyConnected]);
+
   const chooseWishlist = async (rewardId: string): Promise<boolean> => {
     if (!activeChildId || !rewards.some((reward) => reward.id === rewardId && reward.isActive)) return false;
     const selectedChildId = activeChildId;
@@ -750,6 +768,17 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       return false;
     }
   };
+
+  const { recordSupport: recordHabitSupport, saveCuePlan: saveHabitCuePlan } = createHabitProgramActions({
+    activeChildId,
+    familyId,
+    isDemoSession,
+    isSignedInParent: Boolean(currentUser),
+    isPairedChild: !currentUser && isFamilyConnected,
+    logs,
+    activities,
+    setExperience,
+  });
 
   const setFamilyPaused = createFamilyPauseAction({
     currentUser,
@@ -1161,6 +1190,8 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         setFamilyPaused,
         chooseWishlist,
         setTaskDeferred,
+        recordHabitSupport,
+        saveHabitCuePlan,
         saveJournalEntry,
         buildCityItem,
         ensureLocalDailyLetter,
