@@ -781,6 +781,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     activities,
     setExperience,
     getScope: () => habitProgramScope.current,
+    track: (event) => analyticsGate.record(event),
   });
   const recordHabitSupport = (logId: string, level: SupportLevel): Promise<boolean> => (
     habitProgramActions().recordSupport(logId, level)

@@ -13,6 +13,8 @@ The application defines a strict, content-free event boundary in [`src/lib/produ
 | `mascot_letter_read` | A mascot letter was opened | mode |
 | `secret_quest_completed` | A secret quest was completed | mode |
 | `wishlist_selected` | A wishlist item was selected | mode |
+| `habit_cue_saved` | A parent saved a cue plan for a habit and the server confirmed it | cloud mode only; never the cue text, place, time, child or habit |
+| `habit_support_recorded` | How a completed habit was done was saved and confirmed | level (`alone`, `prompted`, `together`), who recorded it (`parent`, `child`), cloud mode only |
 
 `session_started`, `task_ticked`, `habit_reviewed`, `mascot_selected`, `mascot_letter_read`, and `wishlist_selected` are connected to their corresponding app flows. Mascot events require an actual mascot change; a color-only update does not count. Letter and wishlist events follow successful state changes. The destination remains unconfigured, so these events do not leave the device even after a parent opts in. `secret_quest_completed` is reserved for its future product flow. Failed saves and duplicate cloud commands must not emit an event; the latter depends on the atomic transition results introduced by migrations `202609240006` and `202609240007`.
 
