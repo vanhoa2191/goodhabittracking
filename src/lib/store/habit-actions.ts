@@ -16,6 +16,7 @@ import type { ExperienceState } from '@/lib/experience-state';
 import { requestChildDomainCommand, requestDomainCommand } from './domain-command-client';
 import { approvePendingLog, rejectPendingLog } from './local-domain-actions';
 import { toggleLocalHabit } from './local-habit-actions';
+import { localDayKey } from '@/lib/local-day';
 
 type HabitState = {
   readonly activeChildId: string | null;
@@ -149,7 +150,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
         activity,
         childId,
         date,
-        today: completedAt.slice(0, 10),
+        today: localDayKey(new Date(completedAt)),
         logId: crypto.randomUUID(),
         completedAt,
       });

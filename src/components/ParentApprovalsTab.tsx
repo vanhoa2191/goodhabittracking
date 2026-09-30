@@ -10,6 +10,7 @@ import { ParentReminderBanner } from './ParentReminderBanner';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { HabitProgressSummary } from './HabitProgressSummary';
 import { HabitSupportPrompt } from './HabitSupportPrompt';
+import { localDayKey } from '@/lib/local-day';
 
 export function ParentApprovalsTab() {
   const {
@@ -30,7 +31,7 @@ export function ParentApprovalsTab() {
   const pendingRedemptions = redemptions.filter((redemption) => redemption.status === 'pending');
   const pendingCount = pendingLogs.length + pendingRedemptions.length;
   const familyPaused = Boolean(experience.settings?.paused_at);
-  const today = new Date().toISOString().split('T')[0];
+  const today = localDayKey();
 
   return (
     <div className="space-y-6">

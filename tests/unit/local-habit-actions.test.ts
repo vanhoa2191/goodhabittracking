@@ -71,11 +71,20 @@ describe('local habit actions', () => {
   it('completes an automatic habit atomically and unlocks each newly qualified badge once', () => {
     // Given
     const childBeforeCompletion = { ...child, lastActiveDate: '2026-09-19' };
+    const earlierDays: ActivityLog[] = ['2026-09-17', '2026-09-18', '2026-09-19'].map((date) => ({
+      id: `earlier-${date}`,
+      activityId: 'activity-other',
+      childId: 'child-1',
+      date,
+      status: 'completed',
+      pointsAwarded: 10,
+      completedAt: `${date}T02:00:00.000Z`,
+    }));
 
     // When
     const completed = toggleLocalHabit({
       profiles: [childBeforeCompletion],
-      logs: [],
+      logs: earlierDays,
       childBadges: existingChildBadges,
       badges,
       activity: automaticActivity,
@@ -170,5 +179,34 @@ describe('local habit actions', () => {
     expect(undone.logs).toEqual([]);
     expect(undone.profiles[0]).toMatchObject({ points: 0, totalEarned: 0 });
     expect(undone.childBadges).toEqual(existingChildBadges);
+  });
+
+  it('starts the streak over after a missed day instead of adding to a stored counter', () => {
+    const gapLog: ActivityLog = {
+      id: 'old', activityId: 'activity-other', childId: 'child-1', date: '2026-09-15',
+      status: 'completed', pointsAwarded: 10, completedAt: '2026-09-15T02:00:00.000Z',
+    };
+    const result = toggleLocalHabit({
+      profiles: [{ ...child, streak: 9, lastActiveDate: '2026-09-15' }],
+      logs: [gapLog], childBadges: [], badges: [],
+      activity: automaticActivity, childId: 'child-1', date: '2026-09-20', today: '2026-09-20',
+      logId: 'fresh', completedAt: '2026-09-20T02:00:00.000Z',
+    });
+    expect(result.profiles[0]?.streak).toBe(1);
+  });
+
+  it('takes the level, streak and last active day back down when a completion is undone', () => {
+    const logs: ActivityLog[] = [
+      { id: 'a', activityId: 'activity-other', childId: 'child-1', date: '2026-09-19', status: 'completed', pointsAwarded: 10, completedAt: '2026-09-19T02:00:00.000Z' },
+      { id: 'b', activityId: 'activity-1', childId: 'child-1', date: '2026-09-20', status: 'completed', pointsAwarded: 20, completedAt: '2026-09-20T02:00:00.000Z' },
+    ];
+    const result = toggleLocalHabit({
+      profiles: [{ ...child, points: 30, totalEarned: 110, level: 2, streak: 2, lastActiveDate: '2026-09-20' }],
+      logs, childBadges: [], badges: [],
+      activity: automaticActivity, childId: 'child-1', date: '2026-09-20', today: '2026-09-20',
+      logId: 'unused', completedAt: '2026-09-20T03:00:00.000Z',
+    });
+    expect(result.kind).toBe('undone');
+    expect(result.profiles[0]).toMatchObject({ points: 10, totalEarned: 90, level: 1, streak: 1, lastActiveDate: '2026-09-19' });
   });
 });

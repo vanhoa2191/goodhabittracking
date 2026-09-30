@@ -1,3 +1,4 @@
+import { localDayKey } from '@/lib/local-day';
 import type { Language } from '@/types';
 import { getMascot } from '@/lib/mascots';
 import type { MascotId } from '@/lib/mascots';
@@ -48,10 +49,7 @@ export type DailyLetter = {
 };
 
 export function localDateKey(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+  return localDayKey(date);
 }
 
 function templateVariant(date: Date): 0 | 1 | 2 {
