@@ -1,9 +1,9 @@
-import type { ExperienceState } from '@/lib/experience-state';
+import type { ExperienceState, FamilyPausePeriod } from '@/lib/experience-state';
 import { supportLevelsByLogId } from '@/lib/experience-state';
 import { localDayKey } from '@/lib/habit-fire';
 import type { ActivityLog, ChildProfile, HabitActivity } from '@/types';
 import { habitTraits } from './habit-traits';
-import { buildOpportunities } from './opportunities';
+import { buildOpportunities, weekStart } from './opportunities';
 import { evaluateHabitPhase } from './phase';
 import type { PhaseEvaluation } from './phase';
 import { overloadSuggestion, rankChildSuggestions, suggestAdjustments } from './suggestions';
@@ -33,6 +33,8 @@ export type SummaryInput = {
   readonly activities: readonly HabitActivity[];
   readonly logs: readonly ActivityLog[];
   readonly experience: ExperienceState;
+  /** Family pauses: the cloud settings on a parent device, the paired copy on a child device. */
+  readonly pausePeriods: readonly FamilyPausePeriod[];
   /** Today's local day, YYYY-MM-DD. */
   readonly today: string;
 };
@@ -59,10 +61,9 @@ export function childAgeYears(
  * Only habits with a cue plan take part: making the plan is what starts the habit's journey.
  */
 export function summarizeChildHabits(input: SummaryInput): ChildHabitSummary {
-  const { child, experience, today } = input;
+  const { child, experience, pausePeriods, today } = input;
   const ageYears = childAgeYears(child, today);
   const supportByLogId = supportLevelsByLogId(experience, child.id);
-  const pausePeriods = experience.settings?.pause_periods ?? [];
 
   const plans = experience.cuePlans
     .filter((plan) => plan.child_id === child.id)
@@ -86,7 +87,11 @@ export function summarizeChildHabits(input: SummaryInput): ChildHabitSummary {
       supportByLogId,
       deferrals: experience.deferredTasks,
       pausePeriods,
-    }).filter((entry, index) => !(index === 0 && entry.date === since && entry.outcome === 'missed'));
+    }).filter((entry, index) => {
+      // The day (or week, for weekly habits) a plan was made is never held against the child.
+      const graceDate = traits.cadence === 'weekly' ? weekStart(since) : since;
+      return !(index === 0 && entry.date === graceDate && entry.outcome === 'missed');
+    });
 
     const evaluation = evaluateHabitPhase({ opportunities, hasCuePlan: true, cadence: traits.cadence });
     habits.push({

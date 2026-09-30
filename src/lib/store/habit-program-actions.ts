@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { cuePlanInputSchema } from '@/lib/habit-programs/cue-plan-input';
 import type { CuePlanInput } from '@/lib/habit-programs/cue-plan-input';
 import type { SupportLevel } from '@/lib/habit-programs/types';
-import { parseCuePlan, parseSupportObservation, setCuePlan, setSupportObservation } from '@/lib/experience-state';
+import { mergeHabitPrograms, parseCuePlan, parseSupportObservation, setCuePlan, setSupportObservation } from '@/lib/experience-state';
 import type { ExperienceState } from '@/lib/experience-state';
 import type { ActivityLog, HabitActivity } from '@/types';
 
@@ -36,7 +36,6 @@ export type HabitProgramActions = {
 export function createHabitProgramActions(dependencies: HabitProgramActionDependencies): HabitProgramActions {
   const request: Requester = dependencies.request ?? fetch;
   const now = dependencies.now ?? (() => new Date());
-  const demoFamilyId = dependencies.familyId ?? DEMO_FAMILY_ID;
 
   const recordSupport = async (logId: string, level: SupportLevel): Promise<boolean> => {
     const childId = dependencies.activeChildId;
@@ -47,7 +46,7 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
     if (dependencies.isDemoSession) {
       dependencies.setExperience((previous) => setSupportObservation(previous, {
         log_id: log.id,
-        family_id: demoFamilyId,
+        family_id: DEMO_FAMILY_ID,
         child_id: childId,
         activity_id: log.activityId,
         support_level: level,
@@ -71,7 +70,8 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
       const saved = z.object({ observation: z.unknown() }).parse(await response.json());
       const observation = parseSupportObservation(saved.observation);
       if (observation.log_id !== logId || observation.support_level !== level || observation.child_id !== childId) return false;
-      dependencies.setExperience((previous) => setSupportObservation(previous, observation));
+      // A slower, older answer must not replace a newer one that already arrived.
+      dependencies.setExperience((previous) => mergeHabitPrograms(previous, { supportObservations: [observation], cuePlans: [] }));
       return true;
     } catch {
       return false;
@@ -92,7 +92,7 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
       dependencies.setExperience((previous) => {
         const existing = previous.cuePlans.find((row) => row.child_id === childId && row.activity_id === activityId);
         return setCuePlan(previous, {
-          family_id: demoFamilyId,
+          family_id: DEMO_FAMILY_ID,
           child_id: childId,
           activity_id: activityId,
           cue_kind: plan.cueKind,
@@ -118,7 +118,7 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
       const saved = z.object({ cuePlan: z.unknown() }).parse(await response.json());
       const cuePlan = parseCuePlan(saved.cuePlan);
       if (cuePlan.child_id !== childId || cuePlan.activity_id !== activityId) return false;
-      dependencies.setExperience((previous) => setCuePlan(previous, cuePlan));
+      dependencies.setExperience((previous) => mergeHabitPrograms(previous, { supportObservations: [], cuePlans: [cuePlan] }));
       return true;
     } catch {
       return false;

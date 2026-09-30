@@ -77,6 +77,32 @@ describe('recording how a habit was done', () => {
     })]);
   });
 
+  it('keeps demo records under the demo family even when a real family id is known', async () => {
+    const { actions, experience } = harness({ isDemoSession: true, isSignedInParent: false, familyId: '99999999-9999-4999-8999-999999999999' });
+    await actions.recordSupport(logId, 'alone');
+    await actions.saveCuePlan(activityId, cueInput);
+    expect(experience().supportObservations[0].family_id).toBe('00000000-0000-4000-8000-000000000000');
+    expect(experience().cuePlans[0].family_id).toBe('00000000-0000-4000-8000-000000000000');
+  });
+
+  it('keeps the newer answer when two answers arrive out of order', async () => {
+    const resolvers: ((response: Response) => void)[] = [];
+    const request = vi.fn(() => new Promise<Response>((resolve) => { resolvers.push(resolve); }));
+    const { actions, experience } = harness({ request });
+    const first = actions.recordSupport(logId, 'alone');
+    const second = actions.recordSupport(logId, 'prompted');
+    const answer = (level: 'alone' | 'prompted', at: string) => Response.json({
+      success: true, changed: true, observation: { ...observationRow(level), recorded_at: at },
+    });
+    // The server handled "alone" first and "prompted" second, but the answers reach the browser reversed.
+    resolvers[1](answer('prompted', '2026-09-30T05:00:02.000Z'));
+    await second;
+    resolvers[0](answer('alone', '2026-09-30T05:00:01.000Z'));
+    await first;
+    expect(experience().supportObservations).toHaveLength(1);
+    expect(experience().supportObservations[0].support_level).toBe('prompted');
+  });
+
   it('lets a signed-in parent record it and stores the row the server returns', async () => {
     const { actions, request, experience } = harness({}, () => Response.json({ success: true, changed: true, observation: observationRow('alone') }));
     await expect(actions.recordSupport(logId, 'alone')).resolves.toBe(true);

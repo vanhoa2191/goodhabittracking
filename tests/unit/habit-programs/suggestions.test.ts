@@ -87,6 +87,14 @@ describe('suggestions for one child', () => {
     expect(ranked.map((item) => `${item.habitId}:${item.suggestion.code}`)).toEqual(['c:check-in', 'e:check-in', 'd:step-back']);
   });
 
+  it('puts the child-level overload warning before every per-habit suggestion', () => {
+    const entry = (habitId: string | null, code: Parameters<typeof rankChildSuggestions>[0][number]['suggestion']['code']) => ({ habitId, suggestion: { code, facts: {} } });
+    const ranked = rankChildSuggestions([
+      entry('a', 'check-in'), entry('b', 'step-back'), entry('c', 'check-in'), entry(null, 'too-many-new'),
+    ]);
+    expect(ranked.map((item) => item.suggestion.code)).toEqual(['too-many-new', 'check-in', 'check-in']);
+  });
+
   it('returns fewer than three when there is little to say', () => {
     expect(rankChildSuggestions([])).toEqual([]);
   });

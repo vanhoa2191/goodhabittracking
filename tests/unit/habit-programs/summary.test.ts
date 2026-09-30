@@ -50,7 +50,7 @@ describe('child age', () => {
 
 describe('summarizeChildHabits', () => {
   it('has nothing to say about a child with no cue plans', () => {
-    const result = summarizeChildHabits({ child, activities: [activity(readingId)], logs: [], experience: emptyExperienceState, today: '2026-02-01' });
+    const result = summarizeChildHabits({ child, activities: [activity(readingId)], logs: [], experience: emptyExperienceState, pausePeriods: [], today: '2026-02-01' });
     expect(result.habits).toEqual([]);
     expect(result.suggestions).toEqual([]);
   });
@@ -61,6 +61,7 @@ describe('summarizeChildHabits', () => {
       activities: [activity(readingId, { frameworkHabitId: 'GD3-HT-02' })],
       logs: days('2026-01-02', 4).map((date) => log(readingId, date)),
       experience: state({ cuePlans: [plan(readingId)] }),
+      pausePeriods: [],
       today: '2026-01-10',
     });
     expect(result.habits).toHaveLength(1);
@@ -74,6 +75,7 @@ describe('summarizeChildHabits', () => {
       activities: [activity(readingId)],
       logs: [],
       experience: state({ cuePlans: [plan(readingId, { created_at: '2026-01-05T12:00:00.000Z' })] }),
+      pausePeriods: [],
       today: '2026-01-06',
     });
     expect(result.habits[0].evaluation.consecutiveMissed).toBe(0);
@@ -91,26 +93,63 @@ describe('summarizeChildHabits', () => {
       activities: [activity(readingId)],
       logs,
       experience: state({ cuePlans: [plan(readingId)], supportObservations }),
+      pausePeriods: [],
       today: '2026-01-16',
     });
     expect(result.habits[0].evaluation.aloneInWindow).toBe(10);
     expect(result.habits[0].evaluation.phase).toBe('fade');
   });
 
-  it('does not count days the family paused as missed', () => {
-    const settings = {
-      family_id: familyId, paused_at: null, pause_reason: null,
-      pause_periods: [{ startedAt: '2026-01-03T00:00:00+07:00', endedAt: '2026-01-07T00:00:00+07:00' }],
-    };
+  it('does not count days the family paused as missed, on a parent or a child device', () => {
+    const pausePeriods = [{ startedAt: '2026-01-03T00:00:00+07:00', endedAt: '2026-01-07T00:00:00+07:00' }];
     const result = summarizeChildHabits({
       child,
       activities: [activity(readingId)],
       logs: [log(readingId, '2026-01-02')],
-      experience: state({ cuePlans: [plan(readingId)], settings }),
+      experience: state({ cuePlans: [plan(readingId)] }),
+      pausePeriods,
       today: '2026-01-08',
     });
     expect(result.habits[0].evaluation.consecutiveMissed).toBe(1);
     expect(result.habits[0].evaluation.missedInLastFive).toBe(1);
+    const withoutPause = summarizeChildHabits({
+      child,
+      activities: [activity(readingId)],
+      logs: [log(readingId, '2026-01-02')],
+      experience: state({ cuePlans: [plan(readingId)] }),
+      pausePeriods: [],
+      today: '2026-01-08',
+    });
+    expect(withoutPause.habits[0].evaluation.consecutiveMissed).toBe(5);
+  });
+
+  it('gives the week a weekly habit was planned in the same grace as a daily habit\'s first day', () => {
+    const weekly = activity(readingId, { frameworkHabitId: 'GD3-TC-01' });
+    const missedWeeks = (created_at: string) => summarizeChildHabits({
+      child,
+      activities: [weekly],
+      logs: [],
+      experience: state({ cuePlans: [plan(readingId, { created_at })] }),
+      pausePeriods: [],
+      today: '2026-01-14',
+    }).habits[0].evaluation.consecutiveMissed;
+    expect(missedWeeks('2026-01-05T12:00:00.000Z')).toBe(0);
+    expect(missedWeeks('2026-01-06T12:00:00.000Z')).toBe(0);
+  });
+
+  it('tells the parent about too many new habits before the individual worries it causes', () => {
+    const habitIds = [readingId, brushingId, '66666666-6666-4666-8666-666666666666', '77777777-7777-4777-8777-777777777777'];
+    const result = summarizeChildHabits({
+      child: { id: childId, age: 4 } as typeof child,
+      activities: habitIds.map((id) => activity(id)),
+      logs: habitIds.flatMap((id) => ['2026-01-02', '2026-01-03', '2026-01-04'].map((date) => log(id, date))),
+      experience: state({ cuePlans: habitIds.map((id) => plan(id)) }),
+      pausePeriods: [],
+      today: '2026-01-10',
+    });
+    expect(result.habits.every((habit) => habit.suggestions.some((entry) => entry.code === 'check-in'))).toBe(true);
+    expect(result.suggestions).toHaveLength(3);
+    expect(result.suggestions[0].suggestion.code).toBe('too-many-new');
   });
 
   it('ignores plans for other children, inactive habits and habits assigned to someone else', () => {
@@ -127,6 +166,7 @@ describe('summarizeChildHabits', () => {
         plan(readingId, { child_id: otherChildId }),
         plan('66666666-6666-4666-8666-666666666666'),
       ] }),
+      pausePeriods: [],
       today: '2026-01-10',
     });
     expect(result.habits).toEqual([]);
@@ -139,6 +179,7 @@ describe('summarizeChildHabits', () => {
       activities: [activity(readingId), activity(brushingId)],
       logs: [],
       experience: state({ cuePlans: [plan(readingId), plan(brushingId)] }),
+      pausePeriods: [],
       today: '2026-01-10',
     });
     expect(result.suggestions.map((entry) => entry.suggestion.code)).toContain('too-many-new');
