@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { parseCuePlan, parseDeferredTask, parseExperienceState, parseSupportObservation } from '@/lib/experience-state';
+import { isMissingTable } from '@/lib/supabase/missing-table';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export const runtime = 'nodejs';
@@ -34,11 +35,6 @@ const commandSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('pauseFamily') }),
   z.object({ type: z.literal('resumeFamily') }),
 ]);
-
-/** PostgREST reports an unknown table as PGRST205 and PostgreSQL as 42P01. */
-function isMissingTable(error: { code?: string }): boolean {
-  return error.code === 'PGRST205' || error.code === '42P01';
-}
 
 export async function GET() {
   const parent = await getParentContext();
