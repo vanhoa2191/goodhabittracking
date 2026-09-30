@@ -38,6 +38,7 @@ test('a parent sets a cue for a habit, then records how the child did it and see
   const prompt = page.getByTestId('habit-support-prompt');
   await expect(prompt).toBeVisible();
   await expect(prompt.getByRole('listitem').first()).toContainText('Today:');
+  await expect(prompt.getByTestId('self-report-hint')).toContainText('From age 15');
   await expect(prompt.getByRole('group').first()).toBeVisible();
   await prompt.getByRole('button', { name: 'On their own' }).first().click();
   await expect(prompt.getByRole('status').first()).toHaveText('Saved');

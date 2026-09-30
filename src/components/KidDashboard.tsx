@@ -45,6 +45,8 @@ import { getWishlistSaveError } from '@/lib/i18n/wishlist-copy';
 import { getKidQuestCopy } from '@/lib/i18n/kid-quest-copy';
 import { QuestSwipeSurface } from './QuestSwipeSurface';
 import { DailyJournalCard } from './DailyJournalCard';
+import { ChildHabitNote } from './ChildHabitNote';
+import { ChildSelfReportPrompt } from './ChildSelfReportPrompt';
 import { DreamCityCard } from './DreamCityCard';
 import { BadgeCelebration } from './BadgeCelebration';
 import { isActivityDueOn } from '@/lib/habit-programs/opportunities';
@@ -360,6 +362,8 @@ export function KidDashboard() {
 
       {defaultExperienceFlags.dailyJournal && activeChild.ageStage !== '0-3' && <DailyJournalCard />}
 
+      {defaultExperienceFlags.habitPrograms && visibleTab === 'tasks' && <ChildSelfReportPrompt />}
+
       {/* Main Tab Navigation */}
       <div className={`grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>
         <button
@@ -620,6 +624,7 @@ export function KidDashboard() {
                                     </span>
                                   )}
                               </div>
+                              {defaultExperienceFlags.habitPrograms && <ChildHabitNote activityId={act.id} isDone={isDone} />}
                             </div>
 
                             {/* Action Checkbox Button with Claymorphic Feel & Haptic Feedback */}
