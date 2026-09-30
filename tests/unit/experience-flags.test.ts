@@ -14,11 +14,16 @@ describe('experience flags', () => {
       dailyJournal: false,
       parentReengagement: false,
       habitPrograms: false,
+      emailCodeLogin: false,
     });
   });
 
   it('lets the habit programs flag be switched on by override', () => {
     expect(resolveExperienceFlags({ habitPrograms: true }).habitPrograms).toBe(true);
+  });
+
+  it('lets the email code login flag be switched on by override', () => {
+    expect(resolveExperienceFlags({ emailCodeLogin: true }).emailCodeLogin).toBe(true);
   });
 
   it('accepts only known boolean overrides', () => {
