@@ -395,8 +395,7 @@ revoke insert, update, delete on
   public.pairing_challenges,
   public.parent_settings,
   public.families,
-  public.family_memberships,
-  public.parent_profiles
+  public.family_memberships
 from authenticated;
 
 revoke select on public.pairing_credentials, public.pairing_challenges from authenticated;
