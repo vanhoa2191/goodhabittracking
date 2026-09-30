@@ -131,9 +131,10 @@ function parseCloudFamilyRows(rows: CloudFamilyRows): CloudFamilySnapshot {
         createdAt: group.created_at,
       };
     }),
-    subscriptionPlan: subscription?.plan ?? 'free',
-    trialEndsAt: subscription?.trial_ends_at ?? null,
-    subscriptionEndsAt: subscription?.subscription_ends_at ?? null,
+    // A cancelled or inactive subscription grants nothing, whatever plan it still names.
+    subscriptionPlan: subscription?.status === 'active' ? subscription.plan : 'free',
+    trialEndsAt: subscription?.status === 'active' ? subscription.trial_ends_at ?? null : null,
+    subscriptionEndsAt: subscription?.status === 'active' ? subscription.subscription_ends_at ?? null : null,
     experience: rows.experience === undefined
       ? emptyExperienceState
       : parseExperienceState(rows.experience, familyId),

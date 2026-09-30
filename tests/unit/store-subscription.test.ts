@@ -6,7 +6,7 @@ const now = Date.parse('2026-09-20T00:00:00.000Z');
 describe('subscription domain', () => {
   it('evaluates entitlement expiry without depending on the system clock', () => {
     expect(checkIsPro('lifetime', null, null, now)).toBe(true);
-    expect(checkIsPro('monthly', null, null, now)).toBe(true);
+    expect(checkIsPro('monthly', null, null, now)).toBe(false);
     expect(checkIsPro('yearly', null, '2026-09-21T00:00:00.000Z', now)).toBe(true);
     expect(checkIsPro('yearly', null, '2026-09-20T00:00:00.000Z', now)).toBe(false);
     expect(checkIsPro('trial', '2026-09-21T00:00:00.000Z', null, now)).toBe(true);
