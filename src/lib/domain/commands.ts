@@ -23,6 +23,13 @@ export const domainCommandSchema = z.discriminatedUnion('type', [
     redemptionId: uuid,
     decision: z.enum(['approve', 'deliver', 'reject']),
   }).strict(),
+  z.object({
+    type: z.literal('adjustPoints'),
+    childId: uuid,
+    amount: z.number().int().min(-1000).max(1000).refine((value) => value !== 0),
+    reason: z.string().trim().max(120),
+    commandId: uuid,
+  }).strict(),
 ]);
 
 export type DomainCommand = z.infer<typeof domainCommandSchema>;

@@ -23,6 +23,7 @@ const domainCommandResultSchema = z.object({
     'out_of_stock',
     'delivered',
     'invalid_transition',
+    'adjusted',
   ]),
   logId: z.string().uuid().optional(),
   redemptionId: z.string().uuid().optional(),

@@ -360,6 +360,19 @@ try {
   });
   assert(Boolean(directCue.error), 'Direct cue plan table write unexpectedly succeeded.');
 
+  const adjustmentId = randomUUID();
+  const adjustmentArguments = { target_child_id: childId, amount: 10, reason: 'Boundary check', command_id: adjustmentId };
+  const anonymousAdjustment = await anonymous.rpc('adjust_child_points_command', adjustmentArguments);
+  assert(Boolean(anonymousAdjustment.error), 'Anonymous point adjustment unexpectedly succeeded.');
+  const crossAdjustment = await accounts[1].client.rpc('adjust_child_points_command', adjustmentArguments);
+  assert(Boolean(crossAdjustment.error), 'Cross-family point adjustment was not denied.');
+  const ownAdjustment = await accounts[0].client.rpc('adjust_child_points_command', adjustmentArguments);
+  assert(!ownAdjustment.error && ownAdjustment.data?.status === 'adjusted', 'Same-family point adjustment failed.');
+  const repeatedAdjustment = await accounts[0].client.rpc('adjust_child_points_command', adjustmentArguments);
+  assert(repeatedAdjustment.data?.status === 'duplicate', 'A repeated adjustment command was applied twice.');
+  const tooMuch = await accounts[0].client.rpc('adjust_child_points_command', { ...adjustmentArguments, amount: 5000, command_id: randomUUID() });
+  assert(Boolean(tooMuch.error), 'An out-of-range point adjustment was accepted.');
+
   const supportArguments = { target_family_id: familyIds[0], target_log_id: programLogId, target_level: 'alone' };
   const anonymousSupport = await anonymous.rpc('set_parent_habit_support', supportArguments);
   assert(Boolean(anonymousSupport.error), 'Anonymous support record unexpectedly succeeded.');
