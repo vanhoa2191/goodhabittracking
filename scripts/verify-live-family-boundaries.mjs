@@ -415,7 +415,7 @@ try {
   });
   assert(Boolean(crossChildInsert.error), 'Cross-family private-row write succeeded.');
 
-  const crossUpdate = await accounts[1].client
+  await accounts[1].client
     .from('families')
     .update({ name: 'Cross-family overwrite' })
     .eq('id', familyIds[0]);
