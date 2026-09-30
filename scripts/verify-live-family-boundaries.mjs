@@ -250,6 +250,75 @@ try {
   });
   assert(Boolean(crossWishlistInsert.error), 'Cross-family reward reference was accepted.');
 
+  const programActivityId = randomUUID();
+  const programLogId = randomUUID();
+  const programFixtures = await Promise.all([
+    admin.from('habit_activities').insert({
+      id: programActivityId, family_id: familyIds[0], user_id: userIds[0], child_id: childId,
+      title: `Boundary habit ${runId}`, category: 'study', points: 10, is_active: true,
+    }),
+  ]);
+  assert(programFixtures.every(({ error }) => !error), 'Habit program activity fixture failed.');
+  const programLog = await admin.from('activity_logs').insert({
+    id: programLogId, family_id: familyIds[0], user_id: userIds[0], child_id: childId,
+    activity_id: programActivityId, log_date: new Date().toISOString().slice(0, 10),
+    status: 'completed', points_awarded: 10,
+  });
+  assert(!programLog.error, 'Habit program log fixture failed.');
+
+  const cueArguments = {
+    target_family_id: familyIds[0], target_child_id: childId, target_activity_id: programActivityId,
+    target_cue_kind: 'event', target_cue_text: 'After dinner', target_cue_time: null,
+    target_place_text: null, target_weekend_variant_text: null,
+  };
+  const anonymousCue = await anonymous.rpc('save_parent_habit_cue_plan', cueArguments);
+  assert(Boolean(anonymousCue.error), 'Anonymous cue plan write unexpectedly succeeded.');
+  const crossCue = await accounts[1].client.rpc('save_parent_habit_cue_plan', cueArguments);
+  assert(
+    Boolean(crossCue.error) || crossCue.data?.status === 'session_invalid',
+    'Cross-family cue plan write was not denied.',
+  );
+  const ownCue = await accounts[0].client.rpc('save_parent_habit_cue_plan', cueArguments);
+  assert(!ownCue.error && ownCue.data?.status === 'saved', 'Same-family cue plan write failed.');
+  const directCue = await accounts[0].client.from('habit_cue_plans').insert({
+    family_id: familyIds[0], child_id: childId, activity_id: programActivityId,
+    cue_kind: 'event', cue_text: 'Direct write',
+  });
+  assert(Boolean(directCue.error), 'Direct cue plan table write unexpectedly succeeded.');
+
+  const supportArguments = { target_family_id: familyIds[0], target_log_id: programLogId, target_level: 'alone' };
+  const anonymousSupport = await anonymous.rpc('set_parent_habit_support', supportArguments);
+  assert(Boolean(anonymousSupport.error), 'Anonymous support record unexpectedly succeeded.');
+  const crossSupport = await accounts[1].client.rpc('set_parent_habit_support', supportArguments);
+  assert(
+    Boolean(crossSupport.error) || crossSupport.data?.status === 'session_invalid',
+    'Cross-family support record was not denied.',
+  );
+  const ownSupport = await accounts[0].client.rpc('set_parent_habit_support', supportArguments);
+  assert(!ownSupport.error && ownSupport.data?.status === 'saved', 'Same-family support record failed.');
+  const directSupport = await accounts[0].client.from('habit_support_observations').insert({
+    log_id: randomUUID(), family_id: familyIds[0], child_id: childId, activity_id: programActivityId,
+    support_level: 'alone', recorded_by: 'parent',
+  });
+  assert(Boolean(directSupport.error), 'Direct support table write unexpectedly succeeded.');
+  const internalSupport = await accounts[0].client.rpc('record_habit_support_internal', {
+    target_family_id: familyIds[0], target_child_id: null, target_log_id: programLogId,
+    target_level: 'together', recorder: 'parent',
+  });
+  assert(Boolean(internalSupport.error), 'Internal support function was callable by a client.');
+
+  for (const table of ['habit_cue_plans', 'habit_support_observations']) {
+    const ownRead = await accounts[0].client.from(table).select('family_id').eq('family_id', familyIds[0]);
+    assert(!ownRead.error && ownRead.data?.length === 1, `Same-family ${table} read failed.`);
+    const crossReadRows = await accounts[1].client.from(table).select('family_id').eq('family_id', familyIds[0]);
+    assert(!crossReadRows.error && crossReadRows.data?.length === 0, `Cross-family ${table} read was not denied.`);
+    const anonymousReadRows = await anonymous.from(table).select('family_id').limit(1);
+    assert(
+      Boolean(anonymousReadRows.error) || anonymousReadRows.data?.length === 0,
+      `Anonymous ${table} read returned private data.`,
+    );
+  }
+
   const crossRead = await accounts[1].client
     .from('families')
     .select('id')
@@ -291,7 +360,7 @@ try {
   assert(Boolean(membershipEscalation.error), 'Cross-family membership escalation succeeded.');
 
   process.stdout.write(
-    'Live family boundary verification passed: anonymous access denied, same-family access allowed, cross-family access denied.\n',
+    'Live family boundary verification passed: anonymous access denied, same-family access allowed, cross-family access denied, including habit programs.\n',
   );
 } finally {
   await cleanup();
