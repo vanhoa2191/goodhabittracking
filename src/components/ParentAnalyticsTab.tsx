@@ -8,6 +8,7 @@ import { getParentSecondaryCopy } from '@/lib/i18n/parent-secondary-copy';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { ParentJournalPanel } from '@/components/ParentJournalPanel';
 import { AchievementShareDialog } from '@/components/AchievementShareDialog';
+import { localDayKey } from '@/lib/local-day';
 
 export function ParentAnalyticsTab() {
   const { logs, currentUser, logout } = useAppStore();
@@ -55,7 +56,7 @@ export function ParentAnalyticsTab() {
           {Array.from({ length: 7 }).map((_, index) => {
             const date = new Date();
             date.setDate(date.getDate() - (6 - index));
-            const dateKey = date.toISOString().split('T')[0];
+            const dateKey = localDayKey(date);
             const count = logs.filter(
               (log) => log.date === dateKey && (log.status === 'completed' || log.status === 'approved')
             ).length;
