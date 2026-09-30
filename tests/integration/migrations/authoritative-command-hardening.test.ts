@@ -50,7 +50,9 @@ describe('authoritative command hardening migration contract', () => {
   it('keeps anonymous execution to child device functions, the pairing exchange and the public board', () => {
     expect(migration).toContain("not like '%session_token_hash%'");
     expect(migration).toContain("'exchange_pairing_credential', 'get_public_leaderboard'");
-    expect(migration).toContain('alter default privileges in schema public revoke execute on functions from anon;');
+    expect(migration).toContain('alter default privileges in schema public revoke execute on functions from public, anon;');
+    expect(migration).toContain('revoke execute on function %s from public, anon');
+    expect(migration).toContain('grant execute on function %s to authenticated');
   });
 
   it('removes anonymous table access and cuts secret columns from signed-in parents', () => {

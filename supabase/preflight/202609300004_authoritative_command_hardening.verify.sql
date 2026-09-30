@@ -4,6 +4,7 @@ declare
 begin
   if pg_catalog.has_function_privilege('anon', 'public.delete_owned_family(text)', 'EXECUTE')
     or pg_catalog.has_function_privilege('anon', 'public.complete_habit_command(uuid,uuid,date,uuid)', 'EXECUTE')
+    or pg_catalog.has_function_privilege('anon', 'public.redeem_family_coupon(text)', 'EXECUTE')
     or not pg_catalog.has_function_privilege('anon', 'public.get_child_session(text)', 'EXECUTE')
     or not pg_catalog.has_function_privilege('anon', 'public.get_public_leaderboard(text,date,uuid,integer)', 'EXECUTE')
     or not pg_catalog.has_function_privilege('authenticated', 'public.complete_habit_command(uuid,uuid,date,uuid)', 'EXECUTE') then

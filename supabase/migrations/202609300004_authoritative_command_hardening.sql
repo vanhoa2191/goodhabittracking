@@ -363,7 +363,8 @@ declare
   target record;
 begin
   for target in
-    select function_row.oid::regprocedure as signature
+    select function_row.oid::regprocedure as signature,
+           pg_catalog.has_function_privilege('authenticated', function_row.oid, 'EXECUTE') as signed_in_can_run
     from pg_catalog.pg_proc function_row
     join pg_catalog.pg_namespace namespace_row on namespace_row.oid = function_row.pronamespace
     where namespace_row.nspname = 'public'
@@ -371,11 +372,14 @@ begin
       and pg_catalog.pg_get_function_arguments(function_row.oid) not like '%session_token_hash%'
       and function_row.proname not in ('exchange_pairing_credential', 'get_public_leaderboard')
   loop
-    execute format('revoke execute on function %s from anon', target.signature);
+    execute format('revoke execute on function %s from public, anon', target.signature);
+    if target.signed_in_can_run then
+      execute format('grant execute on function %s to authenticated', target.signature);
+    end if;
   end loop;
 end $$;
 
-alter default privileges in schema public revoke execute on functions from anon;
+alter default privileges in schema public revoke execute on functions from public, anon;
 
 -- 3. Table privileges. Data is reached through commands (definer functions) and
 --    family-scoped reads; a browser session never needs direct writes to progress,
