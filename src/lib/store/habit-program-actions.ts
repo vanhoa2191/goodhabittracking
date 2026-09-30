@@ -31,8 +31,8 @@ export type HabitProgramActionDependencies = {
 export type HabitProgramActions = {
   /** How a completed habit was done. Resolves false when nothing was saved. */
   readonly recordSupport: (logId: string, level: SupportLevel) => Promise<boolean>;
-  /** The "if this, then that" plan for a habit of the active child. Only signed-in parents and demos can save one. */
-  readonly saveCuePlan: (activityId: string, input: CuePlanInput) => Promise<boolean>;
+  /** The "if this, then that" plan for a habit of the named child (default: the active child). Only signed-in parents and demos can save one. */
+  readonly saveCuePlan: (activityId: string, input: CuePlanInput, childId?: string) => Promise<boolean>;
 };
 
 export function createHabitProgramActions(dependencies: HabitProgramActionDependencies): HabitProgramActions {
@@ -40,10 +40,9 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
   const now = dependencies.now ?? (() => new Date());
 
   const recordSupport = async (logId: string, level: SupportLevel): Promise<boolean> => {
-    const childId = dependencies.activeChildId;
-    if (!childId) return false;
     const log = dependencies.logs.find((candidate) => candidate.id === logId);
-    if (!log || log.childId !== childId || (log.status !== 'completed' && log.status !== 'approved')) return false;
+    if (!log || (log.status !== 'completed' && log.status !== 'approved')) return false;
+    const childId = log.childId;
 
     if (dependencies.isDemoSession) {
       dependencies.setExperience((previous) => setSupportObservation(previous, {
@@ -82,8 +81,8 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
     }
   };
 
-  const saveCuePlan = async (activityId: string, input: CuePlanInput): Promise<boolean> => {
-    const childId = dependencies.activeChildId;
+  const saveCuePlan = async (activityId: string, input: CuePlanInput, forChildId?: string): Promise<boolean> => {
+    const childId = forChildId ?? dependencies.activeChildId;
     if (!childId) return false;
     const parsed = cuePlanInputSchema.safeParse(input);
     if (!parsed.success) return false;

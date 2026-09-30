@@ -55,17 +55,24 @@ const cueRow = (overrides: Record<string, unknown> = {}) => ({
 describe('recording how a habit was done', () => {
   it('refuses without a request when there is nothing valid to record', async () => {
     for (const overrides of [
-      { activeChildId: null },
       { logs: [] },
       { logs: [{ ...doneLog, status: 'pending_approval' as const }] },
       { logs: [{ ...doneLog, status: 'rejected' as const }] },
-      { logs: [{ ...doneLog, childId: otherChildId }] },
       { isSignedInParent: false, isPairedChild: false },
     ]) {
       const { actions, request } = harness(overrides);
       await expect(actions.recordSupport(logId, 'alone')).resolves.toBe(false);
       expect(request).not.toHaveBeenCalled();
     }
+  });
+
+  it('lets a parent record for any child\'s log, not only the active child\'s', async () => {
+    const { actions, request } = harness(
+      { activeChildId: null, logs: [{ ...doneLog, childId: otherChildId }] },
+      () => Response.json({ success: true, changed: true, observation: { ...observationRow('alone'), child_id: otherChildId } }),
+    );
+    await expect(actions.recordSupport(logId, 'alone')).resolves.toBe(true);
+    expect(request).toHaveBeenCalledOnce();
   });
 
   it('keeps a demo record on the device, attributed to the parent', async () => {
@@ -204,6 +211,18 @@ describe('saving a cue plan', () => {
     resolve(Response.json({ success: true, cuePlan: cueRow() }));
     await expect(pending).resolves.toBe(false);
     expect(experience().cuePlans).toEqual([]);
+  });
+
+  it('saves a plan for a named child other than the active one, but not for a habit assigned to someone else', async () => {
+    const row = cueRow({ child_id: otherChildId });
+    const { actions, request } = harness({}, () => Response.json({ success: true, cuePlan: row }));
+    await expect(actions.saveCuePlan(activityId, cueInput, otherChildId)).resolves.toBe(true);
+    expect(request).toHaveBeenCalledWith('/api/domain/experience', expect.objectContaining({
+      body: expect.stringContaining(`"childId":"${otherChildId}"`),
+    }));
+    const assigned = harness({ activities: [{ ...activity, childId: childId }] });
+    await expect(assigned.actions.saveCuePlan(activityId, cueInput, otherChildId)).resolves.toBe(false);
+    expect(assigned.request).not.toHaveBeenCalled();
   });
 
   it('never lets a paired child device save a plan', async () => {

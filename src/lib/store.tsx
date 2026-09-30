@@ -136,7 +136,7 @@ interface AppStoreContextType {
   chooseWishlist: (rewardId: string) => Promise<boolean>;
   setTaskDeferred: (activityId: string, date: string, deferred: boolean) => Promise<boolean>;
   recordHabitSupport: (logId: string, level: SupportLevel) => Promise<boolean>;
-  saveHabitCuePlan: (activityId: string, input: CuePlanInput) => Promise<boolean>;
+  saveHabitCuePlan: (activityId: string, input: CuePlanInput, childId?: string) => Promise<boolean>;
   saveJournalEntry: (date: string, text: string) => Promise<boolean>;
   buildCityItem: (itemId: CityItemId) => Promise<'built' | 'already_built' | 'insufficient_points' | 'error'>;
   ensureLocalDailyLetter: (childId: string, date: string, templateKey: string) => void;
@@ -785,8 +785,8 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const recordHabitSupport = (logId: string, level: SupportLevel): Promise<boolean> => (
     habitProgramActions().recordSupport(logId, level)
   );
-  const saveHabitCuePlan = (activityId: string, input: CuePlanInput): Promise<boolean> => (
-    habitProgramActions().saveCuePlan(activityId, input)
+  const saveHabitCuePlan = (activityId: string, input: CuePlanInput, childId?: string): Promise<boolean> => (
+    habitProgramActions().saveCuePlan(activityId, input, childId)
   );
 
   const setFamilyPaused = createFamilyPauseAction({
