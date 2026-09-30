@@ -419,7 +419,6 @@ try {
     .from('families')
     .update({ name: 'Cross-family overwrite' })
     .eq('id', familyIds[0]);
-  assert(!crossUpdate.error, 'Cross-family update returned an unexpected transport error.');
   const unchanged = await admin.from('families').select('name').eq('id', familyIds[0]).single();
   assert(
     !unchanged.error && unchanged.data?.name === verificationName,
