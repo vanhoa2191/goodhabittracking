@@ -25,12 +25,13 @@
     "verify:live-experience": "node scripts/verify-live-experience.mjs",
     "verify:marketing-release": "node scripts/verify-marketing-release.mjs",
     "verify:habit-framework": "node scripts/verify-habit-framework-source.mjs",
+    "verify:habit-framework-translation": "node scripts/verify-habit-framework-translation.mjs",
     "report:experiment": "node --experimental-strip-types --no-warnings scripts/report-safe-evolve-experiment.mjs",
     "build:cloudflare": "node scripts/run-cloudflare.mjs build",
     "preview:cloudflare": "node scripts/run-cloudflare.mjs preview",
     "deploy:cloudflare": "node scripts/run-cloudflare.mjs deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "ci": "npm run lint && npm run typecheck && npm run test && npm run verify:habit-framework && npm run check:secrets && npm audit --audit-level=high && npm run build:cloudflare && npm run check:performance"
+    "ci": "npm run lint && npm run typecheck && npm run test && npm run verify:habit-framework && npm run verify:habit-framework-translation && npm run check:secrets && npm audit --audit-level=high && npm run build:cloudflare && npm run check:performance"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.19.11",

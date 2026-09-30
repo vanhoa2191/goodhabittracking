@@ -192,3 +192,11 @@ Một thói quen có thể có nhiều cách thực hành. Mỗi biến thể ph
 - Không có câu chữ dán nhãn, hứa hẹn kết quả siêu hình/y tế, so sánh trẻ với trẻ khác hoặc dùng điểm như thước đo nhân cách.
 - Có alias cho mọi mã đã từng được dùng nhưng được chuẩn hóa lại.
 - Bản phát hành v1 giữ đúng cấu trúc 5 giai đoạn và 47 thói quen của file ưu tiên.
+
+## Bản dịch (tạm duyệt)
+
+Tiếng Việt (`habit-framework-v1.vi.json`) là văn bản gốc và duy nhất có giá trị tham chiếu. Chủ dự án đã **tạm duyệt** các bản dịch để người dùng ngôn ngữ khác đọc được khung; bản dịch chưa qua biên tập viên và có thể được sửa khi nhận góp ý. Hiện có `habit-framework-v1.en.json` và `habit-framework-v1.ko.json`; các ngôn ngữ chưa có tệp (Pháp, Đức, Ý, Tây Ban Nha, Trung, Nhật) đọc bản tiếng Anh.
+
+- Mỗi bản dịch có đủ 47 thói quen và 5 giai đoạn, giữ nguyên `id`, `sourceAliases`, `stageId`, `ageRange`, `primaryDomain`, `conceptTags`, mọi con số, đơn vị và ngưỡng; chỉ dịch tên, nghĩa với trẻ, dấu hiệu thành công, hoạt động, lời khuyên cho người lớn và cách đo. Phần `translation` ghi `status: "provisional"`, `basis: "owner-approved"`, `authoritativeLanguage: "vi"`.
+- `npm run verify:habit-framework-translation` (chạy trong `npm run ci`) kiểm tra cấu trúc khớp bản Việt, cùng số hoạt động, cùng chữ số, không sót chữ chỉ có trong tiếng Việt, đúng hệ chữ với tiếng Trung/Nhật/Hàn. Thêm ngôn ngữ mới: tạo tệp, thêm vào `LANGUAGES` của script và vào `TRANSLATIONS` trong `src/lib/habit-framework/localized.ts`.
+- Thói quen được thêm vào gia đình mang tên và hướng dẫn theo ngôn ngữ ba mẹ đang đọc lúc thêm (nhãn "Adult guidance" cũng dịch); `frameworkHabitId` giữ nguyên nên chương trình, huy hiệu và thống kê không đổi.

@@ -1,0 +1,1465 @@
+{
+  "schemaVersion": "1.0.0",
+  "contentVersion": "1.1.0",
+  "language": "en",
+  "source": {
+    "file": "KHUNG_THOI_QUEN_0-18_TDTT_TDNT_v1.md",
+    "sha256": "85460efcafe42bc585582954dbb559969126b3e09da79c0929762563773f31d0"
+  },
+  "review": {
+    "structureStatus": "approved",
+    "approvalBasis": "user-directed",
+    "evidenceStatus": "source-only",
+    "recordedAt": "2026-09-22"
+  },
+  "translation": {
+    "status": "provisional",
+    "basis": "owner-approved",
+    "recordedAt": "2026-10-01",
+    "authoritativeLanguage": "vi",
+    "translatedFromContentVersion": "1.1.0"
+  },
+  "stages": [
+    {
+      "id": "GD1",
+      "ageRange": "0-3",
+      "title": "Foundations of Safety & the Senses",
+      "adultRole": "Model and describe"
+    },
+    {
+      "id": "GD2",
+      "ageRange": "3-6",
+      "title": "Exploration & Willpower",
+      "adultRole": "Do things together and offer reminders"
+    },
+    {
+      "id": "GD3",
+      "ageRange": "6-12",
+      "title": "Diligence & Skills",
+      "adultRole": "Supervise and work together"
+    },
+    {
+      "id": "GD4",
+      "ageRange": "12-15",
+      "title": "Identity & Emotions",
+      "adultRole": "Walk alongside your child and follow the rules together"
+    },
+    {
+      "id": "GD5",
+      "ageRange": "15-18",
+      "title": "Direction & Responsibility",
+      "adultRole": "Advise and support"
+    }
+  ],
+  "habits": [
+    {
+      "id": "GD1-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "NT",
+      "name": "Signal-and-response loop (being seen, being answered)",
+      "childMeaning": "“When I call, someone answers.”",
+      "successSignal": "The child signals (with eye contact, sounds, or pointing) and expects a response; the adult responds within 3–5 seconds.",
+      "activities": [
+        "Look – wait – respond: when the child makes a sound or babbles, look into their eyes, repeat the sound, and wait for them to respond. 5–10 turns/session, 4–6 sessions/day.",
+        "Peek-a-boo: teach \"here – gone – here again\" = the foundation for understanding that objects continue to exist.",
+        "Name the feeling when the child cries: “You're feeling impatient because you can't reach it.” — 1 sentence, with no explanation.",
+        "Hold the child at eye level 3 times/day, for 60 seconds each time, without speaking; just look and smile (dad/the second caregiver if possible).",
+        "Keep the phone away during 15 minutes of play with your child — a \"leave the phone at the door\" ritual.",
+        "An “I call – mom answers” chart: count how many times during the day the child signals and receives a response (only for your own tracking; do not tell the child)."
+      ],
+      "parentGuidance": "The main caregiver models the behavior; the second caregiver repeats it in exactly the same way so the child develops trust in more than one person.",
+      "measurement": "Percentage of signals answered ≥ 80%/day; number of sustained eye-contact exchanges ≥ 5 exchanges/day.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-03-NhanCachKienToan",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD1-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "NT",
+      "name": "A calm daily routine & self-soothing",
+      "childMeaning": "“Following this order helps me feel safe.”",
+      "successSignal": "The child goes to their sleeping place on their own when it is time; crying during activity changes becomes shorter; the child has a self-chosen \"comfort object\".",
+      "activities": [
+        "A fixed bedtime sequence (3 steps, always in the same order): bathe → read 1 book → sing 1 song → lie down.",
+        "A transition ritual with a clear signal: use the same 1 sentence (“Playtime is over; let's have a bath”) + the same 1 hand gesture, 30 seconds before changing activities.",
+        "A comfort corner: a fixed corner with 1 pillow, 1 book, and 1 lamp; the child can go there on their own when tired.",
+        "Breathe together: put your hand on your own chest, take 3 long breaths, and show the child how to copy you (3 rounds when the child is upset).",
+        "Sounds of the day: use 1 song specifically for sleep time and 1 specifically for playtime — do not use the same song for both.",
+        "A daily routine chart (pictures): put up 6 picture cards for 6 points in the day; the child points to the next card on their own."
+      ],
+      "parentGuidance": "Adults must keep the routine first — a break in the routine caused by an adult does not count as the child's failure.",
+      "measurement": "Time to fall asleep (minutes) gradually decreases over 4 weeks; number of disruptions to the daily routine < 2 weeks.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#9DạngNgười:NG-4-ThanTai(trẻ"
+      ]
+    },
+    {
+      "id": "GD1-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "SK",
+      "name": "Sleeping well – getting enough sleep",
+      "childMeaning": "“When it's dark, it's time for me to sleep so I can grow more tomorrow.”",
+      "successSignal": "Total sleep hours/24h meet the age threshold; bedtime and wake-up time vary by ≤ 30 minutes between days.",
+      "activities": [
+        "Measure total sleep hours for 3 consecutive days, then compare them with the age threshold (12–16h at 4–12 months; 11–14h at 1–2 years; 10–13h at 3 years).",
+        "Darken the bedroom: dark – cool – quiet; no screens in the bedroom; only 1 night-light.",
+        "Gradually reduce the level of support in the bedtime ritual: from \"mom lies down until you fall asleep\" → \"mom sits beside you for 5 minutes\" → \"mom stays at the door\" → \"mom stays outside\". Keep each step for at least 5 days.",
+        "Morning light for 15 minutes/day: take the child outside within the first 1 hour after waking to anchor their body clock.",
+        "A sleep sticker chart: each evening, the child adds 1 moon sticker; with 7 moons/week, the whole family does 1 fun activity (no material gifts).",
+        "Reassure the child when they startle awake: enter the room, say 1 sentence, give 3 gentle pats, and leave — do not lift them out of bed."
+      ],
+      "parentGuidance": "The whole family turns off the lights together — the child learns the rhythm from the environment, rather than from reminders.",
+      "measurement": "Average sleep hours/day; number of night wakings; variation in bedtime.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan"
+      ]
+    },
+    {
+      "id": "GD1-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "SK",
+      "name": "Gross motor movement & playful body exploration",
+      "childMeaning": "“My body is for running, climbing, crawling, and rolling.”",
+      "successSignal": "The child has mastered at least 3 age-appropriate gross motor movements (rolling, crawling, climbing onto a low chair, running, throwing, kicking); asks to play outside on their own.",
+      "activities": [
+        "A space for free movement at home: use pillows, cardboard boxes, and tape to make a \"climbing path\" that changes each week.",
+        "A ritual of 20 minutes outdoors every morning (before learning/before screens) — as fixed as brushing teeth.",
+        "A \"follow the line\" game: tape a path on the floor — walk, jump, or crawl along it.",
+        "Jump to the beat: play 1 piece of music, let the child stand and jump, and count aloud 1–2–3–4 (movement + language + rhythm).",
+        "Ball play and balance: throw a ball into a basket (1m), stand on 1 foot for 3 seconds, and walk along a line.",
+        "A \"5-box movement\" chart: each day, the child colors in 1 box after completing 3 small movements (crawl – throw – jump)."
+      ],
+      "parentGuidance": "Play with the child, rather than standing and watching; safety comes first, results come second.",
+      "measurement": "Number of days/week with ≥ 180 minutes of total movement (counting free-play activities); number of new skills gained.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD1-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "MQH",
+      "name": "Three basic courtesy rituals: Eyes – Mouth – Hands",
+      "childMeaning": "“When I meet someone, I look at them, say hello, and say thank you.”",
+      "successSignal": "The child initiates 3 rituals with no more than 1 reminder: (1) make eye contact, (2) say hello/wave, (3) express thanks through an action or sound.",
+      "activities": [
+        "A \"Four steps when meeting someone\" ritual: Stop → Look → Say hello → Smile. Role-play a visitor coming to the house; practice for 2 minutes/day.",
+        "A Thank You – Sorry song: sing it 1 time each day, changing the words to refer to people in the household.",
+        "Practice \"Bo thi (giving freely) through a smile\" [BT-1]: the child smiles at people in the household, then at the vegetable seller/security guard. Tell the child, \"Your smile made them happy\".",
+        "3-second eye contact [BT-2]: when handing something to someone, maintain eye contact for 3 seconds. Count aloud for the child.",
+        "Speak for the child when they cannot yet speak: “Thank you, Grandma” (the adult speaks, the child nods) — speak for the child during the first 6 months, then let them speak on their own.",
+        "A \"Kind words\" bookshelf: 1 book each week about greetings – thanks – sharing; read before bedtime."
+      ],
+      "parentGuidance": "Adults must do these things in front of the child — children aged 0–3 learn courtesy by copying, rather than by being taught.",
+      "measurement": "Number of times/day the child says hello/thank you on their own without reminders; number of people the child greets naturally during the week.",
+      "conceptTags": [
+        "#7Giàu:G4-PhamChat(Lễ)",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-04-PhamChatUuTu",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#9DạngNgười:NG-7-ThayCo",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#7BốThí:BT-3-NgonThi",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD1-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "MQH",
+      "name": "Sharing & taking turns",
+      "childMeaning": "“My turn – my friend's turn.”",
+      "successSignal": "The child can wait at least 10–20 seconds for their turn; hands things back to a friend after playing; asks permission before taking something.",
+      "activities": [
+        "A \"Taking turns\" game for 3 minutes/day: roll a ball back and forth, saying \"Your turn\" / \"Mom's turn\" at each turn.",
+        "Divide toys between two trays: each tray belongs to one person; ask before taking something from the other tray.",
+        "A \"Let a friend borrow it\" ritual: each day, the child hands 1 item to someone else, and the adult describes how the recipient feels.",
+        "Household help for a 2-year-old: put clothes in a basket, wipe the table with a damp cloth, and put slippers away — 3 tasks, at the same time each day.",
+        "Play with 1 friend/week: invite 1 friend of the same age, with 1 rule chosen by the child (“When we're done playing, let's swap toys”).",
+        "Tell the story of \"who you gave something to today\": at dinner, ask just 1 question; if the child cannot remember, tell them about something an adult gave."
+      ],
+      "parentGuidance": "Do not force sharing; model giving first and let the child choose to follow.",
+      "measurement": "Number of times the child offers things/waits for a turn on their own during the day; number of times the child helps with household tasks without reminders.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach(Bao",
+        "#7Giàu:G4-PhamChat(Nhân)",
+        "#ChânDung:CD-03-NhanCachKienToan",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#7BốThí:BT-6-ThanThi",
+        "#9DạngNgười:NG-2-QuyNhan"
+      ]
+    },
+    {
+      "id": "GD1-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "HT",
+      "name": "Everyday language & daily books",
+      "childMeaning": "“Every day brings a book and a new story.”",
+      "successSignal": "The child has an age-appropriate vocabulary (about 20 words at 18 months → 200–300 words at 24 months → 900–1000 words at 3 years); brings a book over and asks for it to be read on their own.",
+      "activities": [
+        "Read for 10–15 minutes at the same time each day (before sleep), pointing to the words as you read.",
+        "\"Start speaking – wait – finish speaking\": when the child says half a word, do not speak for them — wait 5 seconds for them to finish.",
+        "Name objects in 100 moments/day: grocery shopping, walking, bathing — one sentence per object.",
+        "A new-word box: 3 new words each week, drawn on cards; the child uses those words during the week.",
+        "Retell a story with pictures: after reading, the child points to 3 pictures in order and retells the story (a foundation for reading comprehension).",
+        "Sing – recite rhyming poems: 2 songs/poems per week; rhyme is the strongest predictor of written-language skills at this age.",
+        "\"Read\" any words: signs, milk cartons, street names — turn the surroundings into a book."
+      ],
+      "parentGuidance": "Read in front of the child so they see that reading is something adults do.",
+      "measurement": "Number of new words/week; number of days/week with a full 10 minutes of reading; length of time the child stays focused on a book.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-01-SucHocTap"
+      ]
+    },
+    {
+      "id": "GD1-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "TC",
+      "name": "Tidiness & brief waits — the seeds of self-restraint",
+      "childMeaning": "“Things go back where they belong – and I know how to wait a little.”",
+      "successSignal": "The child can put away ≥ 3 groups of toys on their own; can wait 1–2 minutes when an adult says \"wait a moment for mom\"; accepts \"no\" without crying for more than 1 minute.",
+      "activities": [
+        "A \"put things away before taking out something new\" ritual: just 1 rule, applied 100% of the time.",
+        "A waiting game: hide an object, count 1–5, then let the child take it; gradually increase to 1–10 and 30 seconds.",
+        "\"Things go back where they belong\" boxes labeled with pictures of each type of item — the child sorts them (basic math + tidiness at the same time).",
+        "Make \"wait\" specific, rather than saying \"no\": “Wait 2 minutes; after this song, I'll get it for you.” — always keep your word.",
+        "A \"This isn't yours today\" card: use it when the child asks for something in the supermarket; the child can record a picture of the item in a \"wish book\" (a foundation for \"having a clear picture of what you want\").",
+        "Give a smile when turned down [BT-1]: model \"I can still smile even if I can't buy it\"."
+      ],
+      "parentGuidance": "Never say \"wait\" without keeping your word — children aged 0–3 learn the value of trustworthiness through adults' own consistency.",
+      "measurement": "Number of times the child puts things away on their own; longest wait the child can tolerate; number of times adults keep/break their word (target: 100% of promises kept).",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#8TốChất:NTAI-02-KienTri",
+        "#9DạngNgười:NG-4-ThanTai"
+      ]
+    },
+    {
+      "id": "GD2-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "NT",
+      "name": "Name feelings & take 3 breaths",
+      "childMeaning": "“I know what I am feeling, and I have a way to cool down.”",
+      "successSignal": "The child says \"I am angry/I am sad\" on their own before throwing things/screaming ≥ 1 time/week; uses 3 breaths on their own after 1 reminder.",
+      "activities": [
+        "A chart showing 5 basic feelings with pictures (happy – sad – angry – scared – peaceful). Each evening, the child places 1 card on the \"today's feelings chart\".",
+        "Teach the 3 \"calm down\" steps like a song: 1) Place your hands on your belly. 2) Take 3 breaths. 3) Say “I need 1 minute.” Practice when the child is happy (do not practice while they are angry).",
+        "A calm corner: cushions, headphones, drawing paper. The child can go there on their own — it is not a place for punishment.",
+        "Adults name their own feelings: “Mom is feeling impatient. I am taking 3 breaths now.” — model this 5 times/week.",
+        "Retell \"when I was angry\": after cooling down, draw 1 picture of what happened and tell it in 3 sentences (what happened → feeling → how it was handled).",
+        "Practice Bo thi (generous giving) through Tam thi (giving from the heart) with family members [BT-4]: each week, the child says \"Thank you for...\" to 1 person — start with something small, not a gift."
+      ],
+      "parentGuidance": "Do not teach during an outburst — calm down together first, then teach after the child has cooled down.",
+      "measurement": "Number of times/week the child names feelings on their own; number of times they use the 3 steps instead of hitting/throwing things.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#7BốThí:BT-4-TamThi",
+        "#8TốChất:NTAI-03-DungCamNhanLoi"
+      ]
+    },
+    {
+      "id": "GD2-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "NT",
+      "name": "Tell the truth & bravely admit mistakes",
+      "childMeaning": "“I tell the truth and dare to say \"I did something wrong\" — telling the truth does not bring a harsher punishment than hiding it.”",
+      "successSignal": "The child admits a mistake without being questioned ≥ 2 times/month; does not lie to avoid consequences.",
+      "activities": [
+        "The family rule: \"Whoever admits a mistake first gets praised first.\" Each time the child admits a mistake, an adult says 1 sentence praising that brave action, then discusses how to put things right.",
+        "Change the wording: \"Thank you\" instead of \"Sorry\" (as stated in the source material): “Thank you for telling Mom the truth.” “Thank you for waiting.” — use positive language.",
+        "Adults admit their own mistakes in front of the child 1 time/week: “Mom lost her temper yesterday. I am sorry. I will speak more slowly.”",
+        "A \"right – wrong – not sure yet\" game: present 3 situations for the child to sort; teach level 1 of understanding (right–wrong, true–false, should–should not).",
+        "A \"What my mistake taught me\" notebook: for each big mistake, the child draws what happened and says \"If I could do it again, I would...\". Do not record punishments.",
+        "The golden rule: do not interrogate. Replace \"Did you do this?\" with \"Let's look at what happened together.\"",
+        "A weekly \"brave enough to change\" activity: each week, the child tries something they have never done before (ordering food, asking for directions, greeting a neighbor) [+NTAI-04]."
+      ],
+      "parentGuidance": "Adults must keep the consequences of telling the truth as low as possible — this is the only factor that determines the child's honesty over the long term.",
+      "measurement": "Number of times the child admits mistakes on their own; number of recorded instances of lying (goal: gradually decrease to 0 over 6 months).",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-03-NhanCachKienToan",
+        "#ChânDung:CD-04-PhamChatUuTu",
+        "#8TốChất:NTAI-03-DungCamNhanLoi",
+        "#8TốChất:NTAI-08-KhiemTon",
+        "#9DạngNgười:NG-1-CaoNhan"
+      ]
+    },
+    {
+      "id": "GD2-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "SK",
+      "name": "Get enough sleep & follow a screens-off routine",
+      "childMeaning": "“When it is time, the screens go to sleep before I do.”",
+      "successSignal": "Sleeps 10–13 hours/24h; no screen use in the 60 minutes before sleep; follows the 3-step routine without needing more than 1 reminder.",
+      "activities": [
+        "A \"screen charging station\" in the living room; all devices sleep there from 19:30. The child places their device in the station on their own (a routine).",
+        "A 45-minute hourglass before bedtime: the child turns it over on their own; when the sand runs out, the bedtime routine begins.",
+        "A fixed 3-step routine: brush teeth → read a book → share 1 thing from the day to be grateful for.",
+        "Gradually reduce screen time: set a limit of 60 minutes/day (below the 2-hour threshold for older children), and reduce by 10 minutes/week if currently over the limit.",
+        "Nights without blue light: a yellow/red night-light; curtains to block summer daylight and help anchor melatonin timing.",
+        "A moon chart with 7 spaces: the child adds stickers and counts them on their own — do not use material rewards."
+      ],
+      "parentGuidance": "Adults put their phones away at the same time too — a shared rule for everyone, not a separate rule for children.",
+      "measurement": "Average hours of sleep; number of days the screen-time limit is exceeded; number of nights the child starts the routine on their own.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD2-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "SK",
+      "name": "Be active for 180 minutes & focus on one physical skill",
+      "childMeaning": "“I play outside every day and get better at one skill.”",
+      "successSignal": "≥ 180 minutes of physical activity/day; ≥ 60 minutes at moderate–vigorous intensity; 1 skill shows measurable improvement after 8 weeks (for example: swimming 5m → 15m, riding a 2-wheel bike, standing on 1 leg for 10 seconds).",
+      "activities": [
+        "A 60-minute \"outdoor golden hour\" before dinner — scheduled as consistently as a meal.",
+        "Choose 1 skill to focus on every 8 weeks: swimming / cycling / jumping rope / ball games. Record the starting and ending measurements on paper posted on the wall.",
+        "A picture activity diary: each day, the child draws 1 picture of their main physical activity; count the pictures at the end of the week.",
+        "A family hike 1 time/week (2–4 km, with a small backpack for the child to carry) — physical activity + taking responsibility + persistence.",
+        "Games with lighter and heavier effort: crawling – jumping – climbing – throwing; 10 minutes of each, used as an \"activity meal\".",
+        "A complete personal hygiene routine: brush teeth independently (2 minutes, with an hourglass), wash hands independently using 6 steps, get dressed independently — connect this to CD-06 Balanced Physique.",
+        "A \"family fitness\" session for 30 minutes/week: count each person's rope jumps and planks, and record them on a shared chart — turn fitness into a game with numbers."
+      ],
+      "parentGuidance": "Adults exercise alongside the child; do not use screens as a reward after physical activity.",
+      "measurement": "Minutes of physical activity/day; measurements for the chosen skill; number of outdoor sessions/week.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD2-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "MQH",
+      "name": "Seven forms of Bo thi for little ones: Smile – Eyes – Words – Thanks",
+      "childMeaning": "“I have 4 gifts for others that do not need money: a smile, a look, words, and thanks.”",
+      "successSignal": "Each day, the child offers at least 2 of the 4 gifts on their own initiative; notices good qualities in others and says them aloud.",
+      "activities": [
+        "\"Four gifts that cost nothing\": teach them as a nursery rhyme; each evening, the child shares which gift they gave to whom.",
+        "Ngon thi (giving through words), with 8 kinds of speech [BT-3]: adults write 8 word cards (Joy – Hope – Trust – Wisdom – Encouragement – Constructive words – Praise – Affirmation); each week, the child chooses 2 cards to use with others.",
+        "Nhan thi (giving through the eyes), with 3 levels [BT-2]: a \"see the good\" exercise: the child must name 1 good quality in someone they dislike (levels 1–2).",
+        "Praise based on the 8 qualities: replace \"You're so good!\" with \"You kept going through all 20 questions\" / \"You bravely admitted your mistake\". Make a \"My 8 qualities\" chart and post it on the wall.",
+        "Give a smile in public [BT-1]: each time you go out, the child smiles + greets 1 stranger (a security guard, a shopkeeper). The adult recounts the positive response.",
+        "A family gratitude mailbox: each person writes/draws 1 thing they are grateful for/week; open the box at the end of the week.",
+        "Than thi (giving through helpful actions) at home [BT-6]: the child chooses 1 person at home and helps with 1 task without being asked, 3 times/week."
+      ],
+      "parentGuidance": "Praise the child as soon as they give (a 5-step formula: Acknowledge with gratitude → Build up the positive image → Share it with others → Show understanding → Teach and nurture).",
+      "measurement": "Number of times/day the child offers ≥ 2 gifts that cost nothing; number of instances of praise based on the 8 qualities/week.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-1-NhanThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-4-TamThi",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD2-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "MQH",
+      "name": "Ask permission – Choose friends – Use words to make peace",
+      "childMeaning": "“I ask before taking something — and I choose my own friends.”",
+      "successSignal": "The child asks permission first in 80% of situations; invites a friend to play on their own; uses words to make peace independently (without an adult mediating) ≥ 1 time/week.",
+      "activities": [
+        "A 3-sentence phrase to use during conflict: “I don't like that.” → “I want…” → “Let's play together again.”",
+        "Take turns being the \"peacemaker\" at home: 1 session each week, with the child suggesting a solution.",
+        "A list of 5 friends: the child draws 5 faces and invites 1 friend each week to play/share things (making connections = a little one's personal network).",
+        "A regular phone/video call with grandparents 1 time/week: the child presses the call button and shares 3 sentences on their own ⇒ NG-2 Benefactor (keeping a connection with people who have helped you).",
+        "\"Thank you\" in person, right away: each time someone helps, the child thanks them directly, not through their parents.",
+        "A \"May I?\" card: use it consistently at home and in class; adults sign the card when the child asks permission appropriately.",
+        "Practice Phong thi (giving through tolerance) [BT-5]: when a friend upsets the child, practice 3 steps: Recognize & accept → Show understanding toward the person → Appreciate the lesson — retell it through pictures."
+      ],
+      "parentGuidance": "Do not resolve conflicts for the child; step back 3 steps and only remind them of the phrase.",
+      "measurement": "Rate of asking permission appropriately; number of times the child makes peace independently; number of friends the child actively connects with/week.",
+      "conceptTags": [
+        "#7Giàu:G4-PhamChat(Lễ)",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#7BốThí:BT-5-PhongThi",
+        "#9DạngNgười:NG-2-QuyNhan",
+        "#9DạngNgười:NG-3-NhanMach"
+      ]
+    },
+    {
+      "id": "GD2-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "HT",
+      "name": "Read – Retell – Ask \"why\"",
+      "childMeaning": "“I read, I can retell the story, and I ask why.”",
+      "successSignal": "Can retell a story with a beginning–middle–end; asks ≥ 5 \"why/how come\" questions each day; recognizes letters and writes their own name.",
+      "activities": [
+        "Read for 15 minutes/day + \"retell in 3 sentences\": characters → what happened → outcome.",
+        "A question box: write each of the child's questions on paper and put it in the box; at the end of the week, look up answers to 3 questions together (teach questioning that leads toward the desired outcome).",
+        "Turn \"why\" back to the child: adults ask \"Why do you think that is?\" before answering — practice coming up with their own explanations.",
+        "A kitchen experiment 1 time/week: ice melting, salt dissolving, plants needing water — record 1 line of conclusions using pictures.",
+        "A hands-on alphabet: form letters with fingers, string, and flour — use multiple senses.",
+        "\"A book I made\": each month, the child \"publishes\" 1 book with 4 pages they draw and narrate, then reads it to the family (a foundation for CD-08 Exceptional Communication and Promotion).",
+        "Count in real life: count stairs, spoonfuls of rice, and vehicles — connect math with the body and surroundings."
+      ],
+      "parentGuidance": "Never answer for the child; always ask a question back before giving the answer.",
+      "measurement": "Number of questions/day; number of books reread/week; number of times the child retells a story fluently.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#9DạngNgười:NG-8-ChuyenGia"
+      ]
+    },
+    {
+      "id": "GD2-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "TC",
+      "name": "The first three money jars (Give – Spend – Save)",
+      "childMeaning": "“Every bit of money I receive goes into three parts: giving – spending – saving.”",
+      "successSignal": "The child independently divides lucky money/gift money into 3 parts using the agreed ratio; can say \"I am not buying this because I am saving\"; chooses 1 person/cause to \"give to\" on their own.",
+      "activities": [
+        "Three clear jars with picture labels: 🎁 Give – 🛒 Spend – 🌱 Save. Start with a ratio of 20–30–50 (%) and rules that the child also signs.",
+        "A lucky-money dividing routine: each time the child receives money, they put it into the 3 jars on their own in front of an adult (do not do it for them).",
+        "\"Shopping on my own\" with a budget: at the supermarket, the child holds 50,000 VND, chooses items, pays, and receives change on their own (with supervision).",
+        "A chart of the value of work: the child only receives \"payment for value created\" for chores beyond their responsibilities (washing the vehicle, arranging the whole family's shoes); do not pay for regular responsibilities — teach the difference between responsibilities and value created.",
+        "A wish notebook: draw the item the child wants + the amount of money + the number of days needed to save; post it on the wall and mark each day there is enough money.",
+        "A monthly \"giving\" session: the child decides what to buy/who to give to using the Give jar (a small charitable donation, a gift for grandparents, supplies for a friend in need).",
+        "A bartering – money game: the child plays the seller and buyer; learns prices – exchanges – change."
+      ],
+      "parentGuidance": "Do not buy things to make up for the child spending all their money — let them experience the consequences of their decision (the principle of cause and effect at a safe level).",
+      "measurement": "Number of times the child divides money among the 3 jars independently; number of items the child chooses \"not to buy\" on their own; number of \"giving\" contributions during the year.",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G4-PhamChat(Nhân,",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-6-ThanThi",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD2-HT-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "HT",
+      "name": "My chores are mine to do (small responsibilities)",
+      "childMeaning": "“I contribute to this home.”",
+      "successSignal": "The child has 3 regular, age-appropriate chores (clearing the table, arranging shoes, watering plants) and does them independently without reminders ≥ 5 days/week.",
+      "activities": [
+        "A picture chore chart with 3 fixed spaces tied to times of day (before meals – after meals – before bed).",
+        "\"This week's person in charge\": each week, the child takes on 1 role (water pourer, door checker) — give the responsibility a name and a sense of honor.",
+        "Put things right independently: spill water → wipe it up; drop something → pick it up. Adults do not do it for the child; they just stand nearby.",
+        "15 minutes of getting ready independently each morning: the child gets dressed, packs their backpack, and gets their shoes ready on their own.",
+        "Cook 1 dish together/week: the child takes responsibility for 1 regular step (cracking eggs, washing vegetables) — life skills + health + pride.",
+        "A visible \"family responsibility chart\": everyone records their tasks; the child sees that adults take responsibility too, not just children.",
+        "Praise based on qualities: \"You take responsibility well\" / \"You kept going until you had arranged all 12 pairs of shoes\" — connect a named ability to a specific action."
+      ],
+      "parentGuidance": "Chores are not a punishment — never use chores to punish.",
+      "measurement": "Proportion of days the child does chores independently; number of tasks the child takes on without reminders; how well the child can name their own tasks.",
+      "conceptTags": [
+        "#7Giàu:G4-PhamChat(Nghĩa)",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-04-PhamChatUuTut→CD-04-PhamChatUuTu",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-06-GanhVac",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD3-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "NT",
+      "name": "Gratitude journal & nightly compliments",
+      "childMeaning": "“Every day, there is at least one thing to be thankful for and one thing I did well.”",
+      "successSignal": "Writes 3 lines/night (1 thing to be thankful for – 1 good thing they did – 1 good thing someone else did) ≥ 5 days/week; gives specific compliments instead of general praise.",
+      "activities": [
+        "A 3-line nightly journal: \"Today I am thankful for… / I did well at… / I noticed something good in …: …\".",
+        "\"Gratitude for adversity\" 1 time/week: write about 1 upsetting experience and the lesson it brought (a foundation for CD-12 Understanding Human Life).",
+        "Advanced Bo thi ngon thi (giving through words) [BT-3]: each day, the child must compliment 1 person with 1 specific sentence that includes a detail: \"I noticed you kept working on the fan until 9 o'clock, Dad.\"",
+        "An \"I see the good\" board [BT-2]: put up photos of 9 people in the child's life; each week, write 1 good quality for 3 different people.",
+        "A 10-minute evening ritual: turn off screens → 3 lines → 3 breaths → sleep. (This inner-life habit links to GD3-SK-01.)",
+        "\"Appreciation – gratitude\" cards as gifts: the child writes a thank-you card to 1 person who has helped them each month (a teacher, parking attendant, or friend).",
+        "A \"What level of awareness am I at today?\" scale: ask just 1 question — “Today, did you see that situation as starting with you or with someone else?” (practice moving from level 1 to level 2)."
+      ],
+      "parentGuidance": "Write alongside your child — children only keep this up when they see their parents writing too.",
+      "measurement": "Days/week with 3 lines; specific compliments/week; thank-you cards/month.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#7BốThí:BT-4-TamThi",
+        "#8TốChất:NTAI-07-TranTrongBietOn",
+        "#9DạngNgười:NG-1-CaoNhan(nhận"
+      ]
+    },
+    {
+      "id": "GD3-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "NT",
+      "name": "Set personal goals & keep a habit for 66 days",
+      "childMeaning": "“I choose one thing, do it for the full 66 days, and then I become a different person.”",
+      "successSignal": "Completes at least 1 cycle of 66 days and 1 cycle of 100 days during this stage; can break a big goal into 3 steps; can review their own progress at the end of the week.",
+      "activities": [
+        "A 66-day cycle: choose 1 habit (reading for 20 minutes, planking, or journaling), draw a 66-day grid on the wall, and color in a box each day.",
+        "A 100-day celebration: hold a small family ceremony when the child has kept a habit for the full 100 days — from the source material: \"If you keep standing in line, you will receive a gift.\"",
+        "A 3-step goal formula: Picture the goal clearly → Break it into small steps lasting ≤ 1 week → Mark completion yourself.",
+        "A \"weekly self-review board\": 5 questions to score yourself on (1–5): sleep – movement – chores – learning – one good deed. The child scores first, the parents score afterward, then compare — teaching self-awareness.",
+        "A monthly \"courage to change\" challenge: 1 difficult thing they have never done before; record before – after.",
+        "A perseverance tree: draw 1 tree trunk on the wall; add 1 leaf each week the child fully keeps the habit; when there are 10 leaves, add 1 fruit labeled with the achievement.",
+        "Fixing a mental image: each evening, the child closes their eyes for 30 seconds and pictures themselves having reached their goal — the source material's \"fixing a mental image\" technique for developing perseverance."
+      ],
+      "parentGuidance": "Choose a habit of your own and follow a 66-day cycle alongside your child.",
+      "measurement": "Completed 66/100-day cycles; proportion of days the habit is kept; goals the child breaks into steps independently.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD3-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "SK",
+      "name": "9–12h of sleep & a screen-free ritual",
+      "childMeaning": "“Sleep is a martial art for the mind.”",
+      "successSignal": "Sleeps 9–12 hours; bedtime varies by ≤ 30 minutes; no entertainment screens during the last 60 minutes of the day; starts the ritual independently.",
+      "activities": [
+        "A \"screen curfew\": at 20:00, all devices go to a charging station in the living room — a rule for the whole family; children get no exceptions if adults get none either.",
+        "A 7-day sleep journal: record bedtime – wake-up time – how the morning feels (1–5). Look at the chart together at the end of the week.",
+        "A fixed 3-step ritual: pack the school bag → 3 lines of gratitude → 3 breaths.",
+        "Keep evening lighting simple: warm yellow light, no blue light; no bedroom TV.",
+        "A capped weekend catch-up sleep plan: sleep ≤ 1 hour longer than on weekdays (too much catch-up sleep disrupts the rhythm).",
+        "A \"What did I trade screen time for?\" card: for each hour of screen time cut, the child records what they did instead (reading – movement – playing with a younger sibling) — turning the reduction into a picture of the goal."
+      ],
+      "parentGuidance": "Check the environment first, willpower second — if devices are still in the bedroom, a child's failure comes from the setup, not the child.",
+      "measurement": "Average hours of sleep/week; curfew violations; self-rated morning energy.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD3-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "SK",
+      "name": "60 minutes of movement & one sport with measurable progress",
+      "childMeaning": "“60 minutes every day — and every month I see my numbers improve.”",
+      "successSignal": "Gets ≥ 60 minutes/day of moderate–vigorous activity; keeps a log for 1 main sport with measures that improve month by month; knows how to warm up and stretch.",
+      "activities": [
+        "Choose a main sport for 6–12 months: swimming / martial arts / table tennis / running / basketball — commit to a 66-day cycle before changing.",
+        "A progress log: record 3 numbers each week (laps, meters, minutes of planking). Draw a chart by hand.",
+        "\"Family exercise\" 3 sessions/week: cycling, running, badminton — keep competition scores among family members, with a personal goal for everyone.",
+        "Walk for 30 minutes after dinner: time for digestion and a 1-1 conversation with Dad/Mom (also a relationship habit).",
+        "Hygiene & model posture: a desk at the right height, enough light, and sitting upright with 20-20-20 (20 minutes – look 20 feet away – 20 seconds).",
+        "A \"5-measure fitness\" session each quarter: plank, jump rope for 1 minute, run 400m, seated forward bend, stand on 1 leg — record a quarterly comparison table.",
+        "Basic nutrition with 5 groups: the child puts together 1 breakfast containing all 5 groups 1 time/week; learns to read sugar labels."
+      ],
+      "parentGuidance": "Exercise together; watching sports does not replace exercise; do not use sweets/screens as rewards after exercise.",
+      "measurement": "Minutes of movement/day; results of the 5 fitness tests each quarter; exercise sessions/week.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-01-SucHocTap"
+      ]
+    },
+    {
+      "id": "GD3-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "MQH",
+      "name": "Thoughtful communication: Listen fully – Ask to confirm – Speak in 3 layers",
+      "childMeaning": "“I listen to the end, ask to make sure I understand, then speak in 3 layers: facts – feelings – wishes.”",
+      "successSignal": "Does not interrupt; asks to confirm understanding (\"Do you mean…?\"); can use 3 layers during a disagreement; says thank you and sorry without reminders.",
+      "activities": [
+        "Practice \"Listen to the whole sentence\": a family rule — the listener cannot reply until the speaker finishes the sentence; keep score for 1 week.",
+        "A 3-layer speaking exercise: “I notice… (facts) / I feel… (feelings) / I want… (wishes)” — use during conflicts with friends/parents.",
+        "Play \"reporter\": the child interviews 1 adult at home with 5 questions/week about childhood — also practicing meaningful connections + gratitude + understanding human life.",
+        "Giving through words with 8 types of speech: practice 1 type each week (joy, hope, trust, wisdom, encouragement, constructive feedback, praise, affirmation), and record who they used it with.",
+        "Speak to a small audience: the child gives a 3-minute presentation to the family each month (a foundation for CD-08 Extraordinary Promotion).",
+        "An in-person thank-you ritual: thank a teacher, security guard, or cleaner — 1 person/week, spoken directly.",
+        "\"Read the conversation\": after each important conversation, the child records: what does that person need? what can I offer? — a foundation for Nhan thi (giving through one's gaze) at level 3 (seeing transformation)."
+      ],
+      "parentGuidance": "Listen to your child's whole sentence first — children learn communication by being communicated with.",
+      "measurement": "Interruptions (aim to reduce); uses of the 3-layer structure; people the child thanks on their own/week.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#8TốChất:NTAI-07-TranTrongBietOn",
+        "#9DạngNgười:NG-3-NhanMach"
+      ]
+    },
+    {
+      "id": "GD3-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "MQH",
+      "name": "Recognize 9 types of people in your life & nurture meaningful connections",
+      "childMeaning": "“People around me help me in different ways — I need to recognize them and treat them appropriately.”",
+      "successSignal": "Can name ≥ 5 of the 9 types of people in their own life (including real people's names); can take 1 appropriate action toward each type they have recognized.",
+      "activities": [
+        "A \"My 9 people\" board: the child draws 9 boxes and fills in a real person's name for each type (a person of exceptional insight – a benefactor – a network contact – a bringer of prosperity – a talented person – a wise mentor – a teacher – an expert – a wise spiritual friend). Update each quarter.",
+        "Appropriate ways to treat others:",
+        "A \"Who helped me this week?\" journal: record 3 people each week; at the end of the month, choose 1 person to thank through action.",
+        "Join 1 group/club and hold a small, named role (group secretary, equipment keeper) — a foundation for CD-13 Leading Others with Benevolence.",
+        "Invite friends home 1 time/month; the child makes their own \"play plan\" and tidies up before – after.",
+        "Interview 1 person with an unfamiliar occupation each quarter: ask 5 fixed questions (what you do – what is difficult – what you enjoy – what you need to learn – advice for me) — a foundation for NG-8 Expert + CD-11 Clear-Sighted Vision.",
+        "\"Rules for protecting connections\": 3 kinds of talk forbidden behind someone's back (badmouthing – judging – sharing a friend's private matters)."
+      ],
+      "parentGuidance": "Speak about others with a higher level of awareness (see their good qualities, avoid judging) — children copy how parents talk about people who are absent.",
+      "measurement": "Types of people the child recognizes (target ≥ 5 of 9); appropriate actions toward others/quarter; times the child introduces two friends to each other on their own.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G4-PhamChat",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#9DạngNgười:NG-1…NG-9",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-6-ThanThi",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-06-GanhVac"
+      ]
+    },
+    {
+      "id": "GD3-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "HT",
+      "name": "Learning methods: Active reading – Note-taking – Self-testing",
+      "childMeaning": "“Learning is not rereading — learning is asking myself questions and then answering them.”",
+      "successSignal": "Independently uses 3 tools (asking questions before reading / taking notes with diagrams / self-testing without looking at the book); can find their own mistakes; independently pursues further learning in 1 main area of expertise.",
+      "activities": [
+        "Active reading in 3 steps: (1) Look at the title → write 3 questions; (2) Read → answer the questions; (3) Summarize in 5 bullet points.",
+        "Self-testing (retrieval practice): every evening, make up and answer 10 questions without looking at the book — the most effective form of memorization.",
+        "Spaced repetition: a schedule of 1 day – 3 days – 7 days – 21 days; mark it on the calendar.",
+        "A mind map for 1 lesson/week: draw and color it by hand — the child teaches it to a younger sibling/friend (the \"teaching it again = learning it a second time\" technique).",
+        "An \"error bank\": a notebook of mistakes for each subject + reasons + corrections. Each month, \"pay off\" 1 old mistake.",
+        "A chosen main area of expertise: 1 topic the child enjoys (dinosaurs, programming, chess, drawing) — 1 small piece of work each week, 1 large piece at the end of the quarter (CD-05).",
+        "Read \"to learn\": from age 8, read 1 nonfiction piece + 1 fiction piece each week; record \"3 new things I learned\".",
+        "The child scores first, the parents score afterward: practice self-assessment — a higher-order executive skill."
+      ],
+      "parentGuidance": "Ask \"What have you tried?\" instead of pointing out the answer; respect your child's pace.",
+      "measurement": "Self-testing sessions/week; self-assessed scores compared with actual scores (a shrinking gap = growing self-awareness); pieces of work in the main area of expertise/quarter.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#8TốChất:NTAI-02-KienTri",
+        "#9DạngNgười:NG-8-ChuyenGia"
+      ]
+    },
+    {
+      "id": "GD3-HT-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "HT",
+      "name": "25 minutes of deep learning & a time bank",
+      "childMeaning": "“25 uninterrupted minutes = 2 hours broken up by interruptions.”",
+      "successSignal": "Completes ≥ 2 deep-focus sessions of 25 minutes/day; can create a distraction-free environment independently; can manage their own \"time bank\".",
+      "activities": [
+        "A children's Pomodoro 25–5: 25 minutes of focus, 5 minutes of movement; 2–4 sessions/day; use an hourglass/stopwatch.",
+        "A 60-second starting ritual: clear the desk → set 3 goals for the session → turn on the \"focus light\" (a dedicated lamp).",
+        "A \"hardest task first\" card (eat the frog): each day, choose 1 difficult task to do first after sleeping.",
+        "A time bank: receive 3 hours of free time each week; the child allocates and records it independently; overspending is deducted the following week — teaching finance through time before money.",
+        "A 2-column \"I am in control / The activity controls me\" board: the child sorts activities; gradually clears column 2.",
+        "A fixed \"golden hour\" for the hardest subject each day (the same time slot) — make use of biological rhythms.",
+        "1 screen-free evening each week: each week, have 1 completely screen-free evening with the whole family participating — building tolerance for boredom."
+      ],
+      "parentGuidance": "Do not assign extra tasks during a focus session; respect the \"focusing\" light.",
+      "measurement": "Deep-focus sessions/week; time-bank minutes used as planned; times the child creates a distraction-free environment independently.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD3-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "TC",
+      "name": "Personal budgeting: 4 envelopes",
+      "childMeaning": "“Money goes in 4 directions: giving – spending – saving – investing.”",
+      "successSignal": "Records income–expenses for 1 continuous month; divides money among 4 envelopes according to proportions they have signed off on; can distinguish responsibilities from value created; has savings for a specific goal.",
+      "activities": [
+        "Move from 3 jars (GD2) to 4 envelopes: 🎁 Giving – 🛒 Spending – 🌱 Saving – 🏦 Investing (the child proposes the proportions, the parents finalize them, and the child signs).",
+        "A 3-column income–expense ledger (date – income – expenses – balance), handwritten daily; draw a chart by hand at the end of the month.",
+        "Three types of money at home: (a) responsibility money — chores, unpaid; (b) value money — work beyond responsibilities, paid at market rates; (c) wisdom money — things the child makes (illustrated books, videos, crafts) and sells to relatives at prices they set. ⇒ teach G7_Material wealth is the fruit of value.",
+        "A first product: each quarter, the child creates 1 product to trade/sell (learn promotion, a foundation for CD-08).",
+        "A savings goal with a picture: put up a photo of the item + its price; track progress each week.",
+        "The 24-hour rule: for an item > 100,000 VND, wait 24 hours before buying — to curb impulse purchases.",
+        "A \"spend-nothing day\": 1 day each week; record feelings and what they did instead — practicing restraint + contentment without buying.",
+        "Purposeful donations: use the Giving jar 2 times/year; the child chooses the person/cause and gives the donation themselves."
+      ],
+      "parentGuidance": "Do not make up for purchases or lend too readily; record every loan with a repayment deadline.",
+      "measurement": "Days with ledger entries/week; savings rate achieved; products the child creates; successful instances of \"waiting 24 hours\".",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#7BốThí:BT-6-ThanThi",
+        "#7BốThí:BT-7-ToaThi",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD3-TC-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "TC",
+      "name": "Bigger responsibilities & earning money through real value",
+      "childMeaning": "“I do not ask for money — I create value and exchange it for money.”",
+      "successSignal": "Completes 1 small project with a real customer/recipient; knows how to set a price, introduce a product, and receive feedback; knows how to pay kindness forward.",
+      "activities": [
+        "A small sales project 1 time/year: sell lemonade/candy/crafts at a school fair or outside the home. Include a price list, profit/loss figures, and a review.",
+        "A \"promote someone else\" project [before promoting yourself]: the child makes 1 video/poster introducing a relative's shop or a classmate.",
+        "A named responsibility: take on 1 role in a class/group (academic class deputy, equipment manager) — write down the role's specific responsibilities.",
+        "A feedback journal: after each task, record 1 thing others praised and 1 thing to improve (a foundation for NTAI-03 Courage to Admit Mistakes).",
+        "\"Sell to your parents in 1 sentence\": practice introducing 1 product in 30 seconds — a foundation for CD-08 Extraordinary Promotion.",
+        "Give from profits: the child sets aside 1 portion of profit to give to/help others — completing the cycle of creating value → giving.",
+        "Visit 1 place where things are made (a workshop, farm, or acquaintance's small company) 1 time/quarter — see how value is created."
+      ],
+      "parentGuidance": "Provide support without doing the work for your child; let them set prices and experience the profit/loss results.",
+      "measurement": "Projects completed/year; money the child earns independently; times they receive feedback and make improvements.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G7-VatChat",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-08-QuangBaSieuPham",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#8TốChất:NTAI-06-GanhVac",
+        "#8TốChất:NTAI-04-DungCamThayDoi",
+        "#9DạngNgười:NG-3-NhanMach"
+      ]
+    },
+    {
+      "id": "GD4-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "NT",
+      "name": "Awareness journal: from \"it's their fault\" to \"it starts with me\"",
+      "childMeaning": "\"What in your life have you brought about, and what have you not brought about?\"",
+      "successSignal": "Can distinguish level 1 (right–wrong, good–bad) from level 2 (the source lies within me); can use the 3 steps Know & accept → Show compassion for people → Value the lesson when facing adversity; blames others less.",
+      "activities": [
+        "A 5-line journal each evening: What happened → Feelings → The seed I planted in this → What others need → What I will do differently.",
+        "Exercise on the 5 levels of awareness: each week, choose 1 upsetting event and rewrite it from 2 perspectives: level 1 (who is right and who is wrong) and level 2 (the source starts with me). Compare how the two perspectives feel.",
+        "A 3-step ritual for \"moving beyond difficulties\" [BT-4, BT-5]: when an outcome is not what you hoped for → (1) accept it, (2) show compassion for people, (3) value the lesson. Write 1 sentence for each step.",
+        "\"My book of patterns\": each month, record 1 pattern your child discovers through experience (for example: \"when I sleep < 7h, I get irritable with my younger sibling\").",
+        "Ask why 3 times: when facing a problem, ask yourself \"Why?\" 3 times in a row to reach the root cause (based on NG-8 Expert).",
+        "Practice Tam thi (giving through a generous heart) intentionally: each week, write 1 thing you are grateful for about someone who upset you — what has this person given you as a Cao nhan (a person who offers deeper insight) or a Quy nhan (a person who offers timely help)?",
+        "A 24-hour challenge to hold back judgmental words: spend one day without saying anything judgmental about anyone; record how many times you wanted to say something but held back."
+      ],
+      "parentGuidance": "Ask \"Where do you see your part in this?\" instead of \"Why did you...\"; avoid arguing about right and wrong while your child is overwhelmed by emotions.",
+      "measurement": "Number of times your child independently uses the 3 steps during adversity; number of times your child accepts their share of responsibility; number of \"patterns\" they discover each month.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#7BốThí:BT-4-TamThi",
+        "#7BốThí:BT-5-PhongThi",
+        "#8TốChất:NTAI-03-DungCamNhanLoi",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD4-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "NT",
+      "name": "Personal iron rules (level 1) — set your own rules and keep them",
+      "childMeaning": "\"You have 3 rules of your own — and you keep them even when no one is watching.\"",
+      "successSignal": "Has a handwritten set of rules they wrote themselves, with ≤ 5 rules and consequences they chose; independently follows the rules ≥ 80% of the time each week for 3 months.",
+      "activities": [
+        "A signing ceremony for \"My iron rules\": your child writes 3–5 rules (for example: no phone after 22h30; no lying; physical training 3 sessions/week). Parents do not edit the content, but simply ask \"How will you measure that?\".",
+        "A self-rating chart with 7 boxes/week, posted in a private place (not publicly, so it does not become a performance).",
+        "Consequences chosen by your child, not imposed by parents: for example, breaking a rule → no social media for 1 day the following week. Parents only remind their child of the rules they signed, without inventing new punishments.",
+        "Shared household rules, signed by both sides: rules that affect everyone (quiet hours, borrowing belongings) are negotiated and signed together by parents and child — your child must have the right to revise them.",
+        "\"Adults have rules too\": parents share 3 rules of their own (no phones during meals; running 3 sessions/week) — rules must apply fairly to both sides.",
+        "One screen-free session/week (the whole family) and one session/week of physically demanding housework (together).",
+        "A 10-minute review at the end of the week: 3 questions — which rules did you keep? Which did you not keep? How should you adjust the rules? (Allow revisions so your child does not abandon the rules.)"
+      ],
+      "parentGuidance": "Avoid using rules as a weapon when angry; bring up the rules only after both sides have calmed down.",
+      "measurement": "Rate of independently keeping the rules; number of rule revisions with a reason; number of violations and self-reports.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD4-NT-03",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "NT",
+      "name": "Managing emotions under pressure (during puberty)",
+      "childMeaning": "\"You have 4 steps to cool down, and you know when you need to pause.\"",
+      "successSignal": "Recognizes 3 bodily warning signs of losing control (a hot face, a racing heart, a loud voice); knows how to leave the situation for 5 minutes and then return to continue talking; avoids insulting words.",
+      "activities": [
+        "A map of bodily warning signs: your child draws their own 3 signs on a sticky note and puts it up in their room.",
+        "The 4-step \"STOP – BREATHE – SAY – CHOOSE\" process: Stop talking → Breathe in 4 counts (4-4-4-4) → Say what you notice → Choose 1 of 2 ways to respond.",
+        "A \"5 minutes away\" agreement: during a conflict, your child has the right to say \"I need 5 minutes\" and leave without being considered disrespectful; after 5 minutes, both sides talk again. This is a signed family rule.",
+        "A journal of heated moments: after each time they lose their temper, write 4 lines: what happened – how I felt – what I did – what I will do next time (based on the courage to admit mistakes, without self-reproach).",
+        "A physical stress-release ritual: 20 push-ups, 5 minutes of walking, a cool shower — your child chooses their list of \"3 ways to release stress\" in advance.",
+        "Relearn positive language: replace \"I'm sorry I get irritable so often\" with \"Thank you, Mom, for being patient with me\" (the source text states that words of thanks already contain an apology).",
+        "Give a smile during adversity [BT-1]: 1 time each day, smile while feeling annoyed — record the result."
+      ],
+      "parentGuidance": "Keep your voice steady when your child raises theirs; if you lose your temper, apologize first — teach by holding yourself to the same standard.",
+      "measurement": "Number of times the 4-step process is used; number of successful uses of \"5 minutes away\"; number of times insulting words are used (target: 0).",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#7BốThí:BT-1-NhanThi",
+        "#7BốThí:BT-5-PhongThi",
+        "#8TốChất:NTAI-03-DungCamNhanLoi"
+      ]
+    },
+    {
+      "id": "GD4-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "SK",
+      "name": "Sleep 8–10 hours & keep bedtime before 23h",
+      "childMeaning": "\"Sleep determines whether you get irritable — so it is not a minor matter.\"",
+      "successSignal": "Sleeps 8–10 hours; bedtime varies by ≤ 45 minutes; takes the initiative to go to bed earlier before a day with something important to do.",
+      "activities": [
+        "Track sleep times in a journal for 7 days; look together at the connection between sleep times ↔ mood the next day (discovering it themselves rather than being told).",
+        "\"Cutoff time\": agree on a time to turn off devices and a lights-out time, chosen by your child and then written into their iron rules.",
+        "Charge devices outside the bedroom: this is the most important environmental measure, because at this age the reward system pulls at willpower.",
+        "A strategy when the sleep rhythm shifts: for 3 consecutive days, move wake-up time 20 minutes earlier each day + 15 minutes of morning light.",
+        "A short nap of ≤ 25 minutes (if needed), and not after 15h.",
+        "A 30-minute wind-down ritual: no new study material, no social media, a warm shower or reading on paper.",
+        "Review the data once every 2 weeks: your child presents their sleep chart — make sleep something your child takes ownership of, rather than something parents manage."
+      ],
+      "parentGuidance": "Follow the same rules — parents charge devices outside the bedroom and turn off the lights at the same time.",
+      "measurement": "Average sleep duration; variation in bedtime; number of days with < 8 hours of sleep.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD4-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "SK",
+      "name": "Iron-person health: strength training & basic nutrition",
+      "childMeaning": "\"You train so your body is healthy and looks good to you — not to look good in someone else's eyes.\"",
+      "successSignal": "Gets ≥ 60 minutes/day of physical activity; logs 2–3 sessions/week of strength/fitness training; can read nutrition labels and choose 1 nutritionally balanced meal.",
+      "activities": [
+        "A training schedule with 3 blocks: strength (2 sessions) – endurance (2 sessions) – flexibility/balance (10 minutes daily). Clearly record the exercises and measurements.",
+        "A weekly journal of 4 measures: maximum push-ups, plank, a 1km run, number of training sessions. Chart progress by month.",
+        "Technique before training load: learn correct basic movements (squats, push-ups, crunches, lunges) through videos/an instructor — injury prevention is a rule.",
+        "\"A sport with an opponent\" for 1 session/week: basketball, badminton, martial arts, swimming — learn about winning/losing and the rules of play.",
+        "Nutrition with 3 balanced meals: your child plans 3 menus/2 weeks; the rule is \"enough protein – enough vegetables – water before soft drinks\".",
+        "An absolute ban on 3 things: tobacco, alcohol, stimulants — with a handwritten family agreement and a script for saying \"no\" when friends invite them to try these (role-play 5 situations).",
+        "Manage screen time with rules: a daily limit in hours proposed by your child + a tracking feature; one screen-free day/week.",
+        "Posture & appearance: check posture when sitting to study, a backpack with 2 straps weighing ≤ 10% of body weight, and a complete morning personal hygiene routine."
+      ],
+      "parentGuidance": "Exercise together for at least 1 session/week; avoid negative comments about appearance, and comment only on measurements and effort.",
+      "measurement": "Number of training sessions/week; 4 fitness measures tracked by month; number of days with ≥ 60 minutes of physical activity.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-01-SucHocTap"
+      ]
+    },
+    {
+      "id": "GD4-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "MQH",
+      "name": "Bac ai linh chung (leading with compassion), on a small scale: lead a group",
+      "childMeaning": "\"You lead by setting an example and helping others improve.\"",
+      "successSignal": "Holds a role with real responsibility in 1 group (class, club, team) for at least 3 months; can teach a skill to at least 2 people; knows how to admit mistakes in front of the group.",
+      "activities": [
+        "Take on a role with responsibility in a club/class, with clearly written duties; adults do not do the work for your child.",
+        "\"Teach a skill to someone else\" (Toa thi, sharing knowledge, on a small scale) [BT-7]: your child teaches a skill they are good at to 1 friend who is less skilled — summarize it in 5 steps for others to follow.",
+        "Organize 1 group event: divide tasks, set deadlines, hold 2 meetings independently — with 1 page of meeting notes.",
+        "Rules for treating people in the group: admit mistakes in front of the group when wrong (based on NTAI-03); publicly say something good about members at each meeting (based on BT-3 Ngon thi, giving through kind words).",
+        "A journal of \"who I helped improve\": each month, record 3 people and 1 specific action.",
+        "Protect vulnerable people: have a specific script for witnessing bullying (do not stay silent, do not film it, tell an adult, walk with the person being bullied) — role-play 3 situations.",
+        "Practice Than thi (giving through your time and physical effort) intentionally [BT-6]: spend 2 hours/month helping a specific person/with a specific task (helping a younger sibling study, helping grandparents, cleaning up the neighborhood)."
+      ],
+      "parentGuidance": "Be an adviser rather than a manager; let the group make and correct its own mistakes; ask only 3 open-ended questions.",
+      "measurement": "Time spent in the role; number of people your child teaches; number of events organized; number of times your child admits mistakes in front of the group.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#9DạngNgười:NG-3-NhanMach",
+        "#9DạngNgười:NG-7-ThayCo",
+        "#7BốThí:BT-6-ThanThi",
+        "#7BốThí:BT-7-ToaThi",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-06-GanhVac"
+      ]
+    },
+    {
+      "id": "GD4-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "MQH",
+      "name": "Advanced communication: Apologizing – Thanking – 3-layer feedback",
+      "childMeaning": "\"You can say difficult things without hurting the other person.\"",
+      "successSignal": "Can apologize without adding \"but\"; receives feedback without becoming defensive; can give feedback to friends/parents using the 3-layer structure; knows how to say \"no\" politely.",
+      "activities": [
+        "The 3-layer feedback structure: \"I notice… (facts) → I feel… → I suggest…\". Practice 2 times/week using real situations.",
+        "A 4-part apology: acknowledge what you did → describe the effect on the other person → say how you will make it right → ask \"What else do I need to do?\". Do not use \"but\" in an apology.",
+        "Thanking instead of apologizing: practice the wording from the source text — \"Thank you for waiting for me\" instead of \"Sorry I'm late\".",
+        "Say \"no\" in 3 steps: thank the person → give a brief reason → suggest another option. Role-play 5 situations involving invitations (skipping school to go out, trying drugs, speaking badly about a friend).",
+        "Praise based on 8 qualities: each week, give 3 compliments that point to a quality (perseverance, taking responsibility, humility, courage to admit mistakes, appreciation and gratitude, contributing, capacity for learning, courage to change) to 3 different people.",
+        "Communicating with demanding adults: a set of 5 model sentences (greet – confirm what you understood – ask – suggest – thank); practice with teachers/neighbors.",
+        "Check messages before sending (60 seconds): ask yourself 3 questions — is it true? Is it necessary? Is it kind? (Based on applying \"personal iron rules\" to social media.)"
+      ],
+      "parentGuidance": "Adults must receive feedback from their child without punishment — if your child is scolded for telling the truth, this habit dies immediately.",
+      "measurement": "Number of apologies using the correct structure; number of times your child independently uses 3-layer feedback; number of times they successfully say \"no\"; number of times they check messages before sending.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G4-PhamChat(Lễ)",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#8TốChất:NTAI-07-TranTrongBietOn",
+        "#8TốChất:NTAI-08-KhiemTon"
+      ]
+    },
+    {
+      "id": "GD4-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "HT",
+      "name": "Independent learning: planning – self-assessment – taking responsibility for results",
+      "childMeaning": "\"You are ultimately responsible for your own learning.\"",
+      "successSignal": "Makes weekly–monthly plans without reminders; assesses their own work before receiving grades; knows how to ask the right person for help at the right time; has 1 learning product they initiated themselves.",
+      "activities": [
+        "A 1-page weekly plan: 3 goals + a schedule of time blocks; only your child writes it, and parents simply ask \"Where do you need support?\".",
+        "Advanced spaced review: a schedule of 1–3–7–21–60 days; use homemade flashcards.",
+        "An \"error bank\" by subject + an error diagnosis chart: errors from misunderstanding / carelessness / lack of time — a different correction for each type.",
+        "Project-based learning 1 time/semester: a real product (a small research paper, model, video, application) — based on CD-08 Sharing and Promotion + CD-05 Capability.",
+        "A \"3 hours without attention\" self-test: 1 time each week, sit independently for 90 minutes to complete a practice paper under exam-like conditions.",
+        "Ask an expert: [NG-8] each semester, interview/interview by email 1 person skilled in a field your child cares about, asking 5 prepared questions.",
+        "Read 1 challenging book/month: a substantial nonfiction book; write 1 page of summary + 1 critique.",
+        "A journal of \"what I changed about how I learn\": each month, record 1 new thing learned about learning."
+      ],
+      "parentGuidance": "Move from supervising to advising: regularly, 1 time/week, ask 3 questions (\"What are you trying to achieve?\" \"What is the biggest difficulty?\" \"What do you need from us?\").",
+      "measurement": "Number of weeks your child plans in advance on their own; difference between self-assessment and actual grades; number of products per semester; number of long independent study sessions.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD4-HT-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "HT",
+      "name": "Seeing clearly: deep reading – arguing both sides – seeing systems",
+      "childMeaning": "\"You can see the causes behind events, and you can see the whole system.\"",
+      "successSignal": "Reads 1 nonfiction book/month; can write arguments for both sides of a controversial issue; can draw a cause-and-effect diagram for 1 real problem in their life.",
+      "activities": [
+        "Argue both sides: every 2 weeks, your child writes 1 page arguing for the side they disagree with — requiring them to understand the opposing side.",
+        "A cause–conditions–outcome diagram: take 1 real event (a poor grade, an argument with a friend) and draw the chain Thuc (consciousness) – Duyen (supporting conditions) – Qua (outcome), then find a point to intervene.",
+        "\"Read 5 sources\": on one topic, read 5 sources with different perspectives and make a comparison table (source – argument – data – bias).",
+        "A set of questions at 5 levels [levels 1→5]: practice changing perspectives on the same event: Right/wrong → The source lies within me → Tanh khong (emptiness: there is inherently no problem) → Naturally knowing (the appropriate thing to do) → All-encompassing awareness.",
+        "A journal of \"levels of awareness\": after each major event, record \"which level I am at and which level I can move up to\".",
+        "Summarize 15 source concepts: for 1 skill your child is good at, write down its patterns – principles – formulas – methods – environment – tools (based on Expert and Toa thi).",
+        "View 1 document/documentary + write 5 observations each month, with supporting evidence."
+      ],
+      "parentGuidance": "Concede in a debate when your child makes a strong argument — your child needs to see that reasoning matters more than status.",
+      "measurement": "Number of books/month; number of pieces arguing both sides; number of cause-and-effect diagrams drawn; number of times your child moves up to a higher level of awareness.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#9DạngNgười:NG-1-CaoNhan",
+        "#9DạngNgười:NG-8-ChuyenGia",
+        "#7BốThí:BT-3-NgonThi"
+      ]
+    },
+    {
+      "id": "GD4-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "TC",
+      "name": "Teen finances: accounts – recordkeeping – first earnings",
+      "childMeaning": "\"You manage real money, keep records, and take responsibility for it yourself.\"",
+      "successSignal": "Has their own account and complete income–expense records for 3 months; has earned money themselves for the first time; has a small emergency fund; has a basic understanding of interest rates, inflation, and financial scams.",
+      "activities": [
+        "Open a savings account + a spending account, with a tracking app; your child manages them, and parents look only with their permission (respecting independence).",
+        "A monthly budget using 4 upgraded envelopes: Giving 10% – Spending 60% – Saving 20% – Investing/Learning 10% (these proportions are a starting point; your child may propose revisions and sign the agreement).",
+        "A first job: tutoring, helping at a shop, creating content, making crafts — at least 1 time during this stage; record what they learned about money and people.",
+        "A lesson on avoiding scams: 5 simulated situations (high-interest investments, easy work with high pay, online loans, unfamiliar discount codes, money-making apps) — your child identifies warning signs and says \"no\".",
+        "A \"value of money\" notebook: convert the cost of 5 items into hours of work — teach the value of time.",
+        "One controlled investment in learning/small investment: for example, a course your child pays for to improve 1 skill; or a very small supervised investment to understand compound interest and risk.",
+        "Giving with a separate budget: your child chooses 1 person/1 cause to give to each quarter and delivers the gift in person.",
+        "A family finance meeting 1 time/month: your child listens to/takes part in part of the meeting (plans for major spending) — learning through real life rather than lectures."
+      ],
+      "parentGuidance": "Do not rescue the budget when your child spends it all; if you lend money, use an agreement with interest and a deadline.",
+      "measurement": "Number of months with complete records; amount earned independently; whether an emergency fund exists; results of 5 scam-awareness tests.",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#7BốThí:BT-6-ThanThi",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD5-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "NT",
+      "name": "Personal iron rules (level 2): a personal manifesto & a weekly rhythm",
+      "childMeaning": "“I write down who I want to become and return to it every week until it becomes real.”",
+      "successSignal": "Has a personal manifesto of ≤ 20 sentences written by the child; maintains a weekly rhythm (3–5 fixed rituals) for ≥ 12 consecutive weeks; reflects on the week without reminders.",
+      "activities": [
+        "Write a manifesto in 3 parts: (1) Who I am when I am alone; (2) Which 5 values I live by; (3) Who I want to become, for whom, by age 25.",
+        "A weekly rhythm with 5 rituals: 1 physical training session – 1 deep study session lasting 3 hours – 1 session helping others – 1 quiet/reflection session – 1 meeting with someone more experienced.",
+        "A 15-minute weekly review (5 questions): Which rules did I keep? Who helped me? Who did I help? What did I change? What is 1 adjustment for next week?",
+        "A \"self-discipline challenge\" 1 time/month: 1 day without social media; 1 day eating only basic food; 1 session of continuous walking/swimming for 60 minutes. Purpose: practice endurance (patience + perseverance + a little stubbornness — the source's wording).",
+        "A notebook of \"things I have managed to endure\": record times you felt uncomfortable without reacting — evidence of your iron rules.",
+        "Reinforce a mental image for 2 minutes/day: close your eyes and clearly picture yourself at age 25 using 5 senses (what you see, hear, and feel).",
+        "Self-assessment against 16 personal profiles: each quarter, score yourself 1–10 on ≥ 5 profiles of your choice; choose 1 with the lowest score to focus on for 1 quarter."
+      ],
+      "parentGuidance": "Act as an adviser — ask questions rather than set rules for your child; if you want to add rules, negotiate as two adults would.",
+      "measurement": "Number of weeks the rhythm is maintained; number of self-reviews completed on time; quarterly self-scores for the 16 personal profiles.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD5-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "NT",
+      "name": "Understanding your mission: a dream big enough (4 survival drives)",
+      "childMeaning": "“I know where I want to go, for whom, and why — beyond just earning money.”",
+      "successSignal": "Can write a dream map with 4 layers (self – family – organization/community – society); distinguishes personal dreams from dreams others impose; knows the 3 conditions for a dream to be big enough: mission + passion + 4 survival drives.",
+      "activities": [
+        "A 4-layer dream map: draw 4 nested circles and write goals for each circle by age 25.",
+        "A \"dream big enough\" meets all 5 criteria: identify whom you create value for and the aspect of service (wealth, beauty, fame, food, sleep — according to the material on 4 survival drives).",
+        "Interview 5 more experienced people in 2 fields your child is interested in: ask about turning points, their biggest mistake, and 3 things to learn when young — summarize in 1 page/person.",
+        "The \"whose dream is it?\" exercise: write down expectations your child feels from parents/society, then mark which are truly their own — a foundation for CD-12 Understanding Human Life.",
+        "Try 3 settings: each year, experience ≥ 3 places (trial classes, volunteering, projects, part-time work, clubs) and write \"keep/change\".",
+        "A 1-sentence mission statement: say it aloud to the family, put it on the wall, and update it every 6 months.",
+        "\"Contribution brings fulfillment\": choose 1 long-term contribution (teaching younger children, an environmental project, helping 1 person) — linked to NTAI-05."
+      ],
+      "parentGuidance": "Do not impose your own dream; your only task is to ask \"why\" so your child can clarify their own.",
+      "measurement": "Whether a 4-layer dream map exists; number of experience sessions/year; whether the child can identify their own dreams.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#ChânDung:CD-16-LamNguoiThanhCong",
+        "#9DạngNgười:NG-5-NhanTai",
+        "#9DạngNgười:NG-6-MinhSu",
+        "#8TốChất:NTAI-04-DungCamThayDoi",
+        "#8TốChất:NTAI-06-GanhVac"
+      ]
+    },
+    {
+      "id": "GD5-NT-03",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "NT",
+      "name": "Understanding human life: purposeful Bo thi (generous giving) & the good you offer",
+      "childMeaning": "“I give with purpose — and I understand what giving creates.”",
+      "successSignal": "Practices all 7 forms of generous giving within 1 school year (with records); distinguishes giving (information) – generous giving (energy) – creating value (material resources); explains in their own words why good deeds bring joy and broaden understanding for both the recipient and the giver.",
+      "activities": [
+        "Practice 7 forms of generous giving over 7 weeks: focus on 1 form each week and record actual results (see the table of 7 forms of generous giving in Part 3).",
+        "Toa thi (giving through teaching) in real practice [BT-7]: teach a skill to 1 less skilled person until they can do it independently, then summarize it in 5–15 steps for others to use.",
+        "A 3-month helping project: choose 1 specific person/1 group and help with a goal and measurable results.",
+        "A notebook of the three dimensions of virtue: track 3 columns weekly — helping others feel happy (joy for others), helping others broaden their understanding (good for others), and what I receive in return (to see cause and effect, rather than keep score).",
+        "\"Adversity is a wise teacher\": for the 3 biggest disappointments of the year, write the 3 steps of acceptance – compassion – appreciation for the lesson and what it teaches.",
+        "Nurture meaningful connections: independently identify 9 types of people in real life and record how you currently treat them (foundation NG-1…NG-9).",
+        "Conversations that influence understanding [BT-3 at its highest level]: have 1 deep conversation each month that helps someone form a clear mental picture – understand concepts clearly – feel inwardly balanced and positive; record 3 questions you used."
+      ],
+      "parentGuidance": "At this age, avoid excessive verbal praise — arrange for your child to meet people who need help instead of lecturing about helping.",
+      "measurement": "Number of forms of generous giving fully practiced/7 during the year; number of people the child has actually helped become more capable; number of conversations that influence understanding.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-1…BT-7",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD5-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "SK",
+      "name": "Iron-person health (athlete level): training schedule – nutrition – recovery",
+      "childMeaning": "“I have a system to keep my body healthy all year, beyond just a few weeks.”",
+      "successSignal": "Maintains a training schedule of 4–5 sessions/week for 3 consecutive months; has progress data; sleeps 8–10 hours; independently manages eating before–after training; knows how to recover after a minor injury.",
+      "activities": [
+        "A 12-week training cycle with numerical goals: strength + endurance + flexibility; record data each session.",
+        "An \"iron chart\" with 5 measures/quarter: plank, push-ups, 1km run, standing long jump, sit-ups in 1 minute — compare 4 quarters over 2 years.",
+        "Fuel – expend – recover: a 7-day journal of eating – sleeping – training; look for connections (for example: sleep < 7h → performance drops).",
+        "Injury prevention techniques: dynamic warm-ups, stretching after training, and a rule of increasing training load by ≤ 10%/week.",
+        "One real tournament/running event during the year: register, train toward a goal, and finish — experience giving your full effort.",
+        "The \"no, thank you\" rule: a list of harmful substances + a rehearsed script for saying \"no\" (foundation NTAI-04 Courage to Change + CD-10 Iron Rules).",
+        "Mental health: get enough sleep, spend 1 session/week completely offline, have 1 person to speak honestly with when overwhelmed, and know the signs that call for seeing a professional."
+      ],
+      "parentGuidance": "Support the plan (transport to training, meal preparation) rather than act as a coach — the child owns the plan.",
+      "measurement": "Number of training sessions/week; measures from the 5 tests each quarter; average sleep hours; sporting events completed.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD5-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "SK",
+      "name": "Managing your body & appearance (a balanced physique)",
+      "childMeaning": "“I care for my body as I would an important friend — because I will use this body all my life.”",
+      "successSignal": "Has a set of regular care rituals (hygiene, posture, sleep, clothing for the setting); can choose suitable clothing for 3 situations (school – meeting adults – ceremonies); maintains proper posture while studying/standing to speak.",
+      "activities": [
+        "A body-care rhythm in 3 parts: morning (15 minutes) – after school (10 minutes) – evening (20 minutes); write it as a checklist.",
+        "A \"my wardrobe\" session: the child tidies their wardrobe, sorts clothing by setting, and removes unworn items; developing a style = respect for the people you meet.",
+        "Practice posture – eye contact – smiling: 5 minutes/day in front of a mirror in 3 situations (greeting – asking permission – a 30-second presentation).",
+        "\"Before – after 12 weeks\" photos: take a photo standing upright each month and compare improvements in posture.",
+        "Informed skin – hair – dental care: learn 3 basics without following social media trends; the rule is \"do not compare appearances online\".",
+        "Help care for your living space: spend 15 minutes/day on your own room (foundation of Iron Rules), which directly affects your state of mind.",
+        "Giving through smiles & eye contact [BT-1, BT-2]: start each day by offering the first person you meet a sincere smile and eye contact."
+      ],
+      "parentGuidance": "Never make negative comments about your child's or anyone else's appearance in front of your child; speak only about habits and posture.",
+      "measurement": "Percentage of days care rituals are maintained; self-rated posture; number of presentation practice sessions/week.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#7BốThí:BT-1-NhanThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD5-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "MQH",
+      "name": "Becoming a positive connection: 9 types of people in 1",
+      "childMeaning": "“I help others grow — in all 9 ways.”",
+      "successSignal": "For each type of person, the child can take 1 action to \"become\" that person: offer someone 1 perspective (NG-1), help 1 person through a difficult period (NG-2), connect 2 people who can benefit each other (NG-3), help someone \"multiply\" their aspirations (NG-4), shoulder responsibilities for someone (NG-5), guide 1 person toward their dream (NG-6), teach 1 person (NG-7), offer someone a way of thinking that simplifies problems (NG-8), carry forward 1 person's mission (NG-9).",
+      "activities": [
+        "A 9-box chart of \"I have become…\": record 1 real action taken within 12 months in each box.",
+        "Mentor 1 person (mentoring in both directions): take on 1 less skilled person with a 3-month commitment and a goal.",
+        "Build a network purposefully: organize 1 small group around a topic; invite 1 new person each month; take the role of \"connector\" yourself.",
+        "A \"how I treat others\" journal: each week, record 1 person who helped you and what you did for them in return (recognize kindness – value kindness – repay kindness).",
+        "Express heartfelt thanks 1 time/month: call or speak directly with 1 person you owe gratitude to and name the lesson they gave you — also a way to \"keep\" wise people in your life.",
+        "Practice \"not judging\": spend 7 days without speaking badly of anyone; if you break the rule, record it yourself and start again.",
+        "Resolve conflict through the 7 forms of generous giving: for 1 real conflict, apply giving through a smile → giving through eye contact → giving through words → giving from the heart → giving space, in that order; record the result."
+      ],
+      "parentGuidance": "Be a network of connections for your child — actively introduce them to good people without asking for anything in return.",
+      "measurement": "Number of completed boxes in the chart of 9 types of people; number of people the child is mentoring; number of conflicts resolved through the 7 forms of generous giving.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#9DạngNgười:NG-1…NG-9",
+        "#7BốThí:BT-3",
+        "#7BốThí:BT-6",
+        "#7BốThí:BT-7"
+      ]
+    },
+    {
+      "id": "GD5-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "MQH",
+      "name": "Promotion & personal communication (making a positive impression)",
+      "childMeaning": "“I tell the story of what I do — truthfully and in a way that helps others.”",
+      "successSignal": "Has a public channel/profile introducing their work (portfolio, content channel, articles); has ≥ 1 product used/recognized by people outside the family; knows how to promote others before promoting themselves.",
+      "activities": [
+        "A 1-page portfolio: skills – products – contributions; update every 6 months.",
+        "A small content channel on 1 topic: publish 1 post/week for 12 weeks (lessons, tips, your journey) — practice BT-3 Giving Through Words with the public.",
+        "Promote others first: make 1 post/video introducing 1 project, 1 friend, 1 small shop — \"become a promoter before becoming a businessperson\".",
+        "Speak before a real audience: give presentations ≥ 2 times/year to people outside the family (class, club, community).",
+        "The 3-gate rule for posting content: truthful – does not harm others – useful to the reader.",
+        "A public product 1 time/year: launch 1 small product/project with real users and gather feedback.",
+        "Ask an expert for feedback [NG-8]: each quarter, send your product to 1 more skilled person and ask for 3 suggestions."
+      ],
+      "parentGuidance": "Provide technical support without creating content for your child; do not use your child's channel to promote yourself.",
+      "measurement": "Number of content posts published; number of public products; number of presentations to people outside the family; number of pieces of expert feedback received.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-08-QuangBaSieuPham",
+        "#ChânDung:CD-07-SucKhoeNguoiSat→CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#9DạngNgười:NG-7-ThayCo",
+        "#7BốThí:BT-3-NgonThi",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD5-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "HT",
+      "name": "A scholar's wisdom: in-depth self-study & knowledge products",
+      "childMeaning": "“I learn to create something — rather than to earn grades.”",
+      "successSignal": "Has 1 area of in-depth study with a concrete product; knows how to learn independently from original sources (original books, specialist materials, people in the field); achieves 1 of the following: an in-depth article – a real project – a meaningful exam/award.",
+      "activities": [
+        "Choose 1 focus area for in-depth study over 12 months; write a measurable output goal.",
+        "A self-study plan in 4 blocks: foundational knowledge – practical skills – product – expert feedback.",
+        "Read original materials: each month, read 1 original specialist source (textbook, paper, original book) + write a 1-page summary.",
+        "A knowledge product each quarter: an article, model, application, mini-course — it must have real users.",
+        "\"Summarize 15 source concepts\" [foundation of giving through teaching]: for your focus area, write down laws – underlying principles – keys – formulas – methods – guiding principles – tools – environments – perspectives – mindsets – capabilities – culture – frames of reference – source concepts – codes.",
+        "Teach it back (Feynman): teach the topic to 3 different people; where you get stuck is where you do not yet understand.",
+        "A subject-specific error journal: record mistakes in your focus area + causes + ways to correct them.",
+        "Learn how to learn: try 1 new method each quarter (memorization, speed reading, essay writing, presenting) and assess its effectiveness."
+      ],
+      "parentGuidance": "Ask about the product rather than checking grades; prioritize \"what have you created?\" over \"what grade did you get?\".",
+      "measurement": "Number of products/quarter; number of original sources read; number of people the child teaches; quality of expert feedback.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#9DạngNgười:NG-8-ChuyenGia",
+        "#9DạngNgười:NG-9-ThienTriThuc",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#7BốThí:BT-7-ToaThi"
+      ]
+    },
+    {
+      "id": "GD5-TC-01",
+      "sourceAliases": [
+        "GD5-HT-02"
+      ],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "TC",
+      "name": "Managing personal finances: budget – emergency fund – investment concepts",
+      "childMeaning": "“I know where my money is, where it goes, and when I can start investing.”",
+      "successSignal": "Writes and tracks a budget for ≥ 6 consecutive months; has an emergency fund equal to 1–3 months of personal expenses; explains compound interest, risk, and diversification with numerical examples; has steady income from 1 source for ≥ 3 months.",
+      "activities": [
+        "A 6-month budget using real data: income – expenses – savings – giving; analyze the latest 3 months to find 2 spending leaks.",
+        "An emergency fund target: set an amount = 1–3 months of expenses; track progress.",
+        "Understand 4 concepts before investing: compound interest – inflation – risk – diversification; complete 3 specific numerical problems using a spreadsheet.",
+        "A supervised, very small investment simulation: understand the feeling of gains/losses; the rule is to use only money that does not affect schooling.",
+        "Scam prevention level 2: analyze 5 real scams (pyramid schemes, loan sharking, fake investments) and write 3 common warning signs.",
+        "A financial plan after graduation: estimate income–expenses for the first 6 months (university/vocational study/work) — a foundation for CD-15 Luc Loc Dai Thuan (six forms of prosperity in harmony).",
+        "The principle of \"creating value before money\": each income payment must be linked to 1 value already created for someone else; record it clearly.",
+        "A family financial meeting 1 time/month: the child presents their budget to parents for 10 minutes."
+      ],
+      "parentGuidance": "Act as a financial adviser and use real figures; share family financial difficulties at an age-appropriate level.",
+      "measurement": "Number of months with a budget; amount in the emergency fund; scores on the 3 concept tests; number of income sources.",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-03-DungCamNhanLoi"
+      ]
+    },
+    {
+      "id": "GD5-HT-03",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "HT",
+      "name": "A path to your dream career: try – narrow down – commit",
+      "childMeaning": "“I do not need to be certain — I need to try enough, narrow down wisely, and commit with a fallback.”",
+      "successSignal": "Completes 3 rounds: try ≥ 5 settings (15–16) → narrow down to 2 (16–17) → commit to 1 with a backup plan (17–18); has 1 career mentor (someone more experienced) alongside them for ≥ 6 months.",
+      "activities": [
+        "The trial round – 5 settings in 12 months: part-time work, volunteering, trial courses, projects, clubs. For each, record \"what I like – what I do not like – where it suits me\".",
+        "A career chart with 3 columns: Career – What the daily work involves – What to learn to enter it. Complete it for 5 careers of interest (a foundation for an expert's way of simplifying problems).",
+        "Interview 3 people working in that career: ask 5 fixed questions; request 1 specific piece of advice for age 18.",
+        "Find a mentor [NG-6 Minh su (wise mentor) on a small scale]: 1 person who is 5–10 years further along, meeting 1 time/month with a clear learning goal.",
+        "Try the job/do real work for ≥ 100 hours in 1 field — an irreplaceable condition for \"knowing what suits me\".",
+        "A 2-path plan: plan A (commitment) + plan B (backup), with clear conditions for switching.",
+        "A project/presentation on \"what I choose and why\": present to the family + 1 person outside the family who works in that career.",
+        "Review every 6 months: does it still fit the dream map (GD5-NT-02)? Adjust if needed — but do not change the goal just because things are difficult (the principle of perseverance: change the approach, not the goal)."
+      ],
+      "parentGuidance": "Do not choose your child's career for them; provide only 3 things — information, experiences, and mentors.",
+      "measurement": "Number of settings tried; number of mentor meetings; number of hours of real work; whether plan B exists.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-16-LamNguoiThanhCong",
+        "#9DạngNgười:NG-6-MinhSu",
+        "#9DạngNgười:NG-8-ChuyenGia",
+        "#8TốChất:NTAI-06-GanhVac",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    }
+  ]
+}

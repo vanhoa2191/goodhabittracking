@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getHabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
-import { HABIT_FRAMEWORK_CATALOG } from '@/lib/habit-framework/catalog';
+import { useLocalizedFramework } from '@/lib/habit-framework/localized';
 import { localDayKey } from '@/lib/habit-fire';
 import { programsForAge } from '@/lib/habit-programs/programs';
 import type { HabitProgram } from '@/lib/habit-programs/programs';
@@ -13,7 +13,6 @@ import { fillTemplate } from '@/lib/habit-programs/suggestion-display';
 import type { ChildProfile } from '@/types';
 import { HabitProgramStartModal } from './HabitProgramStartModal';
 
-const habitNames = new Map(HABIT_FRAMEWORK_CATALOG.map((habit) => [habit.id, habit.name]));
 
 type Target = { readonly program: HabitProgram; readonly child: ChildProfile; readonly ageYears: number };
 
@@ -21,6 +20,8 @@ type Target = { readonly program: HabitProgram; readonly child: ChildProfile; re
 export function HabitProgramsPanel({ onStarted, onNotConfirmed }: { readonly onStarted: () => void; readonly onNotConfirmed: () => void }) {
   const { profiles } = useAppStore();
   const { language } = useTranslation();
+  const framework = useLocalizedFramework(language);
+  const habitNames = useMemo(() => new Map(framework.habits.map((habit) => [habit.id, habit.name])), [framework]);
   const copy = getHabitProgramsCopy(language);
   const [target, setTarget] = useState<Target | null>(null);
   const today = localDayKey(new Date());
