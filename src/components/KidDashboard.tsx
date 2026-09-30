@@ -59,6 +59,7 @@ import { getBadgeCopy } from '@/lib/badges/badge-copy';
 import type { BadgeGroupKey } from '@/lib/badges/badge-copy';
 import { badgeProgress, computeBadgeMetrics, countHeldPortraitBadges } from '@/lib/badges/badge-progress';
 import { useBadgeAwards } from '@/lib/badges/use-badge-awards';
+import { ReadAloudButton } from './ReadAloudButton';
 
 export function KidDashboard() {
   const {
@@ -586,6 +587,7 @@ export function KidDashboard() {
                               </button>
 
                               <div className="ml-12 flex items-center gap-2 mt-2 flex-wrap">
+                                  <ReadAloudButton text={act.description ? `${act.title}. ${act.description}` : act.title} language={language} />
                                   {/* Parent Role (Thân Giáo) Tag */}
                                   {act.isParentRole && (
                                     <span className="inline-flex items-center gap-1 text-xs font-extrabold px-2 py-0.5 rounded-md bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
