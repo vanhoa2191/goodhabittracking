@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { GET } from '@/app/api/health/route';
+import { resetHealthCacheForTests } from '@/lib/health-cache';
 
 const readyEnvironment = {
   NEXT_PUBLIC_SUPABASE_URL: 'https://project.supabase.co',
@@ -13,6 +14,7 @@ const readyEnvironment = {
 
 describe('GET /api/health', () => {
   beforeEach(() => {
+    resetHealthCacheForTests();
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}', { status: 200 })));
   });
 
@@ -65,5 +67,33 @@ describe('GET /api/health', () => {
         databaseConnection: false,
       },
     });
+  });
+
+  it('reuses a recent database answer instead of calling the database on every request', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+
+    await GET();
+    await GET();
+    await GET();
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('asks the database again once the answer is stale', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(new Date('2026-10-01T00:00:00Z'));
+      await GET();
+      vi.setSystemTime(new Date('2026-10-01T00:00:11Z'));
+      await GET();
+    } finally {
+      vi.useRealTimers();
+    }
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 });
