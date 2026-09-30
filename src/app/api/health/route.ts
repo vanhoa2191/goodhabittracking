@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { inspectPayOSConfig } from '@/lib/billing/payos-config';
+import { remember } from '@/lib/health-cache';
 
 export const runtime = 'nodejs';
 
-async function canReachDatabase(url: string, serviceRoleKey: string) {
+async function probeDatabase(url: string, serviceRoleKey: string) {
   try {
     const response = await fetch(`${url.replace(/\/$/, '')}/rest/v1/`, {
       headers: {
@@ -28,7 +29,7 @@ export async function GET() {
     serviceRoleKey
   );
   const databaseConnectionReady = databaseConfigReady
-    ? await canReachDatabase(databaseUrl, serviceRoleKey)
+    ? await remember(databaseUrl, () => probeDatabase(databaseUrl, serviceRoleKey))
     : false;
   const billingReady = inspectPayOSConfig().ready;
   const pairingSecret = process.env.PAIRING_RATE_LIMIT_SECRET?.trim() ?? '';
