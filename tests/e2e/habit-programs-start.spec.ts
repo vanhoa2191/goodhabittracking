@@ -48,6 +48,18 @@ test('a parent starts a program for a child in three steps and the habits arrive
   await expect(page.getByTestId('open-cue-editor').filter({ hasText: '✓' })).toHaveCount(tickedCount);
 });
 
+test('the older journeys tab points to the new programs', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.setItem('kidhabit_language', 'vi'));
+  await page.reload();
+  await page.getByTestId('landing-primary-action').click();
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  await setupOrUnlockParent(page);
+  await page.getByRole('tab', { name: 'Thiết kế' }).click();
+  await page.getByRole('tab', { name: 'Lộ trình Tuần / Tháng' }).click();
+  await expect(page.getByTestId('journeys-programs-note')).toContainText('Chương trình');
+});
+
 test('the programs view is hidden outside Vietnamese, where the habit library is not offered either', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
