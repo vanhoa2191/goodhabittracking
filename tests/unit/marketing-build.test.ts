@@ -32,11 +32,13 @@ async function makeOutput(prefix: string) {
 }
 
 describe('marketing static artifact', () => {
-  it('renders outcome-led selling points without the removed internal-navigation phrase', async () => {
+  it('renders descriptive selling points without outcome promises or the removed internal-navigation phrase', async () => {
     const { html } = await buildFixture();
     expect(html).toContain('Biết nên rèn gì cho con');
     expect(html).toContain('Giao việc rõ, con dễ làm');
-    expect(html).toContain('Thấy tiến bộ mỗi ngày');
+    expect(html).toContain('Xem lại những việc con đã làm');
+    expect(html).not.toContain('Thấy tiến bộ mỗi ngày');
+    expect(html).not.toContain('bớt cần ba mẹ nhắc');
     expect(html).not.toContain('Xem đúng phần bạn cần, không phải đọc một trang thật dài');
   });
 
