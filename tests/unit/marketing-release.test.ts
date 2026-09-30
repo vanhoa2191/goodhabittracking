@@ -108,7 +108,7 @@ describe('marketing release verifier', () => {
       liveOrigin: 'https://preview.example',
       fetchImpl,
     })).resolves.toEqual({ routes: 9, plans: 3 });
-    expect(fetchImpl).toHaveBeenCalledTimes(8);
+    expect(fetchImpl).toHaveBeenCalledTimes(9);
   });
 });
 
