@@ -27,7 +27,17 @@ jobs:
       - name: Dispatch lifecycle outbox
         if: steps.configuration.outputs.ready == 'true'
         run: |
-          curl --fail --silent --show-error --retry 2 \
+          status=$(curl --silent --show-error --retry 2 \
+            --output response.json --write-out '%{http_code}' \
             --request POST \
             --header "Authorization: Bearer $CRON_SECRET" \
-            https://app.kidhabithero.com/api/internal/lifecycle/dispatch
+            https://app.kidhabithero.com/api/internal/lifecycle/dispatch)
+          if [ "$status" = "409" ]; then
+            echo "::warning::The app has no email provider configured, so nothing was sent. Set RESEND_API_KEY and the sender variables to enable lifecycle email."
+            exit 0
+          fi
+          if [ "$status" -ge 400 ]; then
+            echo "Dispatch failed with HTTP $status"
+            cat response.json
+            exit 1
+          fi
