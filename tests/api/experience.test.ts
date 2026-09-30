@@ -166,6 +166,38 @@ describe('/api/domain/experience', () => {
       expect(body.cuePlans).toEqual([cuePlan]);
     });
 
+    it('still loads the family when the habit program tables are not in the database yet', async () => {
+      for (const code of ['PGRST205', '42P01']) {
+        from.mockImplementation((table: string) => ({
+          select: () => ({
+            eq: () => table === 'family_engagement_settings'
+              ? { maybeSingle: async () => ({ data: null, error: null }) }
+              : Promise.resolve(table.startsWith('habit_')
+                ? { data: null, error: { code } }
+                : { data: [], error: null }),
+          }),
+        }));
+        const response = await GET();
+        expect(response.status).toBe(200);
+        const body = await response.json();
+        expect(body.supportObservations).toEqual([]);
+        expect(body.cuePlans).toEqual([]);
+      }
+    });
+
+    it('still fails the read for other errors on those tables and for a missing older table', async () => {
+      from.mockImplementation((table: string) => ({
+        select: () => ({
+          eq: () => table === 'family_engagement_settings'
+            ? { maybeSingle: async () => ({ data: null, error: null }) }
+            : Promise.resolve(table === 'child_task_deferrals'
+              ? { data: null, error: { code: 'PGRST205' } }
+              : { data: [], error: null }),
+        }),
+      }));
+      expect((await GET()).status).toBe(503);
+    });
+
     it('fails the read when either table cannot be loaded', async () => {
       from.mockImplementation((table: string) => ({
         select: () => ({

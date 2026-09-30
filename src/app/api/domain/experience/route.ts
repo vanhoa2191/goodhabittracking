@@ -35,6 +35,11 @@ const commandSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('resumeFamily') }),
 ]);
 
+/** PostgREST reports an unknown table as PGRST205 and PostgreSQL as 42P01. */
+function isMissingTable(error: { code?: string }): boolean {
+  return error.code === 'PGRST205' || error.code === '42P01';
+}
+
 export async function GET() {
   const parent = await getParentContext();
   if (!parent) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
@@ -58,10 +63,10 @@ export async function GET() {
       ? supabase.from('child_city_purchases').select('*').eq('family_id', parent.familyId)
       : Promise.resolve({ data: [], error: null }),
   ]);
-  const results = [
-    children, settings, letters, quests, wishlists, deferredTasks, supportObservations, cuePlans, journalEntries, cityPurchases,
-  ];
-  if (results.some((result) => result.error)) {
+  // Until the habit program migration is applied, its tables do not exist; that must not break the rest of the family.
+  const results = [children, settings, letters, quests, wishlists, deferredTasks, journalEntries, cityPurchases];
+  const habitProgramResults = [supportObservations, cuePlans];
+  if (results.some((result) => result.error) || habitProgramResults.some((result) => result.error && !isMissingTable(result.error))) {
     return NextResponse.json({ error: 'Experience state could not be loaded.' }, { status: 503 });
   }
 
@@ -72,8 +77,8 @@ export async function GET() {
     quests: quests.data ?? [],
     wishlists: wishlists.data ?? [],
     deferredTasks: deferredTasks.data ?? [],
-    supportObservations: supportObservations.data ?? [],
-    cuePlans: cuePlans.data ?? [],
+    supportObservations: supportObservations.error ? [] : supportObservations.data ?? [],
+    cuePlans: cuePlans.error ? [] : cuePlans.data ?? [],
     journalEntries: journalEntries.data ?? [],
     cityPurchases: cityPurchases.data ?? [],
   }, parent.familyId);
