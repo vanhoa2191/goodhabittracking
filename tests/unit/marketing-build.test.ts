@@ -66,7 +66,7 @@ describe('marketing static artifact', () => {
 
   it('builds every public information route as a self-contained static page', async () => {
     const { outputDir } = await buildFixture();
-    for (const route of ['pricing', 'framework', 'roadmaps', 'docs', 'privacy', 'terms', 'contact']) {
+    for (const route of ['pricing', 'framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'contact']) {
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
       expect(html).toContain(`<link rel="canonical" href="https://www.example/${route}/">`);
       expect(html).toContain('<main');

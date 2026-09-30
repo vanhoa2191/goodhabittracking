@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const publicRoutes = ['/', '/pricing/', '/framework/', '/roadmaps/', '/docs/', '/privacy/', '/terms/', '/contact/'];
+const publicRoutes = ['/', '/pricing/', '/framework/', '/science/', '/roadmaps/', '/docs/', '/privacy/', '/terms/', '/contact/'];
 const paidPlans = ['solo_monthly', 'monthly', 'yearly'];
 const forbiddenMarkers = ['/api/', 'supabase_service_role_key', 'payos_api_key', 'serviceworker.register', 'manifest.webmanifest'];
 

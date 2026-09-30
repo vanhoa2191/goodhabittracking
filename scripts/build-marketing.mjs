@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { renderHome, renderInfoPage, renderPricingPage } from '../apps/marketing/render-site.mjs';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const routes = ['framework', 'roadmaps', 'docs', 'privacy', 'terms', 'contact'];
+const routes = ['framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'contact'];
 
 function validateOrigin(value, name) {
   let url;

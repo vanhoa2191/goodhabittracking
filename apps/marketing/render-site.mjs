@@ -104,7 +104,7 @@ function renderFooter(appOrigin) {
         <a class="brand" href="/"><img src="/logo.svg" alt="" width="40" height="40"><span>KidHabit <strong>Hero</strong></span></a>
         <p>Giúp con làm được việc nhỏ hôm nay, để tự tin hơn mỗi ngày.</p>
       </div>
-      <div><h2>Sản phẩm</h2><a href="/framework/">Khung thói quen</a><a href="/roadmaps/">Lộ trình</a><a href="/pricing/">Bảng giá</a></div>
+      <div><h2>Sản phẩm</h2><a href="/framework/">Khung thói quen</a><a href="/science/">Cơ sở khoa học</a><a href="/roadmaps/">Lộ trình</a><a href="/pricing/">Bảng giá</a></div>
       <div><h2>Hỗ trợ</h2><a href="/docs/">Hướng dẫn</a><a href="/contact/">Liên hệ</a><a href="${appUrl(appOrigin, '/')}">Đăng nhập ứng dụng</a></div>
       <div><h2>Thông tin</h2><a href="/privacy/">Quyền riêng tư</a><a href="/terms/">Điều khoản</a></div>
     </div>
