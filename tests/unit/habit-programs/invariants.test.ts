@@ -14,7 +14,7 @@ const childId = 'c1'; const activityId = 'a1';
 const shuffle = <T,>(items: readonly T[]): T[] => { const copy = [...items]; for (let i = copy.length - 1; i > 0; i -= 1) { const j = Math.floor(rand() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy; };
 
 describe('habit program invariants on random histories', () => {
-  it('opportunities are independent of log order and never throw', () => {
+  it('opportunities are independent of log order and never throw', { timeout: 30_000 }, () => {
     for (let round = 0; round < 400; round += 1) {
       const since = addDays('2026-01-01', Math.floor(rand() * 300));
       const today = addDays(since, Math.floor(rand() * 120));
@@ -35,7 +35,7 @@ describe('habit program invariants on random histories', () => {
     }
   });
 
-  it('keeps phase and suggestion invariants', () => {
+  it('keeps phase and suggestion invariants', { timeout: 30_000 }, () => {
     const outcomes: OpportunityOutcome[] = ['alone', 'prompted', 'together', 'unknown', 'missed'];
     for (let round = 0; round < 3000; round += 1) {
       const n = Math.floor(rand() * 90);

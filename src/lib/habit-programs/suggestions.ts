@@ -38,7 +38,8 @@ function weeksBetween(from: string, to: string): number {
   return weeks;
 }
 
-const PRIORITY: readonly SuggestionCode[] = ['check-in', 'step-back', 'stuck-building', 'prompt-reliance', 'too-many-new', 'routine-formed', 'record-support'];
+// Too many new habits comes first: it is the cause behind the individual worries the other suggestions raise.
+const PRIORITY: readonly SuggestionCode[] = ['too-many-new', 'check-in', 'step-back', 'stuck-building', 'prompt-reliance', 'routine-formed', 'record-support'];
 
 /** Per-habit suggestions, most useful first, capped at the display limit. */
 export function suggestAdjustments(input: SuggestionInput): Suggestion[] {
@@ -91,7 +92,8 @@ export function overloadSuggestion(phases: readonly HabitPhase[], ageYears: numb
 }
 
 export type HabitSuggestion = {
-  readonly habitId: string;
+  /** The habit the suggestion is about, or null when it concerns the child as a whole. */
+  readonly habitId: string | null;
   readonly suggestion: Suggestion;
 };
 

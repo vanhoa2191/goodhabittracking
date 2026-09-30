@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
+import { cuePlanFields, timeMatchesKind } from '@/lib/habit-programs/cue-plan-input';
 import { parseCuePlan, parseDeferredTask, parseExperienceState, parseSupportObservation } from '@/lib/experience-state';
+import { isMissingTable } from '@/lib/supabase/missing-table';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export const runtime = 'nodejs';
@@ -25,20 +27,11 @@ const commandSchema = z.discriminatedUnion('type', [
     type: z.literal('saveCuePlan'),
     childId: z.string().uuid(),
     activityId: z.string().uuid(),
-    cueKind: z.enum(['event', 'time']),
-    cueText: z.string().trim().min(1).max(200),
-    cueTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).nullable(),
-    placeText: z.string().trim().max(120).nullable(),
-    weekendVariantText: z.string().trim().max(200).nullable(),
-  }).strict().refine((command) => (command.cueKind === 'time') === (command.cueTime !== null)),
+    ...cuePlanFields,
+  }).strict().refine(timeMatchesKind),
   z.object({ type: z.literal('pauseFamily') }),
   z.object({ type: z.literal('resumeFamily') }),
 ]);
-
-/** PostgREST reports an unknown table as PGRST205 and PostgreSQL as 42P01. */
-function isMissingTable(error: { code?: string }): boolean {
-  return error.code === 'PGRST205' || error.code === '42P01';
-}
 
 export async function GET() {
   const parent = await getParentContext();

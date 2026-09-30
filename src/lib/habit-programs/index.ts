@@ -1,8 +1,14 @@
 export { HABIT_PROGRAM_CONFIG, newHabitLimit, requiredCount } from './config';
+export { cuePlanFields, cuePlanInputSchema, timeMatchesKind } from './cue-plan-input';
+export type { CuePlanInput } from './cue-plan-input';
+export { DEFAULT_HABIT_TRAITS, FRAMEWORK_HABIT_TRAITS, habitTraits } from './habit-traits';
+export type { HabitTraits } from './habit-traits';
 export { addDays, buildOpportunities, isActivityDueOn, weekStart } from './opportunities';
 export type { DeferralRow, OpportunityInput } from './opportunities';
 export { evaluateHabitPhase } from './phase';
 export type { PhaseEvaluation, PhaseInput } from './phase';
+export { childAgeYears, summarizeChildHabits } from './summary';
+export type { ChildHabitSummary, HabitSummary, SummaryInput } from './summary';
 export { overloadSuggestion, rankChildSuggestions, stuckThresholdWeeks, suggestAdjustments } from './suggestions';
 export type { HabitSuggestion, Suggestion, SuggestionCode, SuggestionInput } from './suggestions';
 export type { Cadence, ComplexityClass, HabitPhase, Opportunity, OpportunityOutcome, SupportLevel } from './types';

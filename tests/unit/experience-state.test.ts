@@ -5,6 +5,7 @@ import {
   setCuePlan,
   setDeferredTask,
   setJournalEntry,
+  mergeHabitPrograms,
   setSupportObservation,
   supportLevelsByLogId,
 } from '@/lib/experience-state';
@@ -174,6 +175,33 @@ describe('habit program rows in the experience state', () => {
       supportObservations: [observation, { ...observation, log_id: '88888888-8888-4888-8888-888888888888', child_id: 'someone-else' }],
     };
     expect([...supportLevelsByLogId(state, childId)]).toEqual([[logId, 'prompted']]);
+  });
+});
+
+describe('merging habit programs loaded from a paired child device', () => {
+  it('adds new rows, keeps the newer version of a row and never drops what is already here', () => {
+    const newerLocal = { ...observation, support_level: 'alone' as const, recorded_at: '2026-09-30T12:00:00+07:00' };
+    const olderLoaded = { ...observation, support_level: 'together' as const, recorded_at: '2026-09-30T09:00:00+07:00' };
+    const extraLoaded = { ...observation, log_id: '66666666-6666-4666-8666-666666666666' };
+    const localOnly = { ...observation, log_id: '77777777-7777-4777-8777-777777777777' };
+    const start = { ...emptyExperienceState, supportObservations: [newerLocal, localOnly] };
+    const merged = mergeHabitPrograms(start, { supportObservations: [olderLoaded, extraLoaded], cuePlans: [] });
+    expect(merged.supportObservations).toHaveLength(3);
+    expect(merged.supportObservations.find((row) => row.log_id === logId)?.support_level).toBe('alone');
+    expect(merged.supportObservations.map((row) => row.log_id)).toContain(extraLoaded.log_id);
+    expect(merged.supportObservations.map((row) => row.log_id)).toContain(localOnly.log_id);
+  });
+
+  it('prefers a loaded row that is newer and merges cue plans by child and habit', () => {
+    const olderLocal = { ...cuePlan, cue_text: 'Old', updated_at: '2026-09-29T09:00:00+07:00' };
+    const newerLoaded = { ...cuePlan, cue_text: 'New', updated_at: '2026-09-30T09:00:00+07:00' };
+    const merged = mergeHabitPrograms({ ...emptyExperienceState, cuePlans: [olderLocal] }, { supportObservations: [], cuePlans: [newerLoaded] });
+    expect(merged.cuePlans).toEqual([newerLoaded]);
+  });
+
+  it('returns the same state when nothing changes', () => {
+    const start = { ...emptyExperienceState, supportObservations: [observation], cuePlans: [cuePlan] };
+    expect(mergeHabitPrograms(start, { supportObservations: [observation], cuePlans: [cuePlan] })).toBe(start);
   });
 });
 

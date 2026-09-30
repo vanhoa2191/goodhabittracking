@@ -11,6 +11,7 @@ import type {
   SubscriptionPlan,
 } from '@/types';
 import { getSupabase } from '@/lib/supabase';
+import { emptyWhenTableMissing } from '@/lib/supabase/missing-table';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { emptyExperienceState, parseExperienceState } from '@/lib/experience-state';
 import type { ExperienceState } from '@/lib/experience-state';
@@ -139,8 +140,10 @@ function parseCloudFamilyRows(rows: CloudFamilyRows): CloudFamilySnapshot {
   };
 }
 
-async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
-  const supabase = getSupabase();
+export async function readCloudFamilyRows(
+  userId: string,
+  supabase: ReturnType<typeof getSupabase> = getSupabase(),
+): Promise<CloudFamilyRows> {
   if (!supabase) {
     throw new Error('Supabase client is not configured.');
   }
@@ -176,6 +179,8 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     questsResult,
     wishlistsResult,
     deferredTasksResult,
+    supportObservationsResult,
+    cuePlansResult,
     journalEntriesResult,
     cityPurchasesResult,
   ] = await Promise.all([
@@ -199,6 +204,8 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     experienceEnabled ? supabase.from('secret_quests').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
     supabase.from('child_wishlists').select('*').eq('family_id', familyId),
     supabase.from('child_task_deferrals').select('*').eq('family_id', familyId),
+    supabase.from('habit_support_observations').select('*').eq('family_id', familyId).then(emptyWhenTableMissing),
+    supabase.from('habit_cue_plans').select('*').eq('family_id', familyId).then(emptyWhenTableMissing),
     defaultExperienceFlags.dailyJournal
       ? supabase.from('child_journal_entries').select('*').eq('family_id', familyId)
       : Promise.resolve({ data: [], error: null }),
@@ -224,6 +231,8 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
     questsResult,
     wishlistsResult,
     deferredTasksResult,
+    supportObservationsResult,
+    cuePlansResult,
     journalEntriesResult,
     cityPurchasesResult,
   ].find((result) => result.error);
@@ -249,6 +258,8 @@ async function readCloudFamilyRows(userId: string): Promise<CloudFamilyRows> {
       quests: questsResult.data ?? [],
       wishlists: wishlistsResult.data ?? [],
       deferredTasks: deferredTasksResult.data ?? [],
+      supportObservations: supportObservationsResult.data ?? [],
+      cuePlans: cuePlansResult.data ?? [],
       journalEntries: journalEntriesResult.data ?? [],
       cityPurchases: cityPurchasesResult.data ?? [],
     },
