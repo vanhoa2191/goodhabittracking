@@ -91,16 +91,15 @@ jobs:
       - if: steps.configuration.outputs.ready == 'true'
         run: npm ci
       - if: steps.configuration.outputs.ready == 'true'
-        name: Require healthy marketing surface before app deploy
+        name: Wait for the matching marketing release before app deploy
         run: |
           npm run build:marketing
-          curl --fail --silent --show-error --retry 8 --retry-all-errors \
-            --retry-delay 5 --max-time 15 "$NEXT_PUBLIC_MARKETING_URL/" >/dev/null
           npm run verify:marketing-release -- \
             --dir dist/marketing \
             --app-origin "$NEXT_PUBLIC_APP_URL" \
             --marketing-origin "$NEXT_PUBLIC_MARKETING_URL" \
-            --url "$NEXT_PUBLIC_MARKETING_URL"
+            --url "$NEXT_PUBLIC_MARKETING_URL" \
+            --wait-release "$GITHUB_SHA"
       - if: steps.configuration.outputs.ready == 'true'
         run: npm run deploy:cloudflare
         env:

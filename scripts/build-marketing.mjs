@@ -36,7 +36,7 @@ async function writeRoute(outputDir, route, content) {
   await writeFile(join(directory, 'index.html'), content, 'utf8');
 }
 
-export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir, supportEmail = '', blogDirectory = join(projectRoot, 'apps', 'marketing', 'blog') }) {
+export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir, supportEmail = '', release = process.env.MARKETING_RELEASE ?? process.env.GITHUB_SHA ?? 'development', blogDirectory = join(projectRoot, 'apps', 'marketing', 'blog') }) {
   const app = validateOrigin(appOrigin, 'appOrigin');
   const marketing = validateOrigin(marketingOrigin, 'marketingOrigin');
   const support = validateSupportEmail(supportEmail);
@@ -74,6 +74,9 @@ export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir
   const sitemapUrl = ({ route, lastmod }) => `  <url><loc>${new URL(route ? `/${route}/` : '/', `${marketing}/`).href}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
   await writeFile(join(target, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapEntries.map(sitemapUrl).join('\n')}\n</urlset>\n`, 'utf8');
   await writeFile(join(target, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${marketing}/sitemap.xml\n`, 'utf8');
+
+  // The app deploy waits for this value to appear on the live site before it ships.
+  await writeFile(join(target, 'release.json'), `${JSON.stringify({ release })}\n`, 'utf8');
 
   const pageFiles = (await readdir(target, { recursive: true })).filter((file) => file.endsWith('.html'));
   const documents = await Promise.all(pageFiles.map((file) => readFile(join(target, file), 'utf8')));

@@ -114,6 +114,40 @@ export async function verifyMarketingRelease({
   return { routes: publicRoutes.length, plans: paidPlans.length };
 }
 
+/**
+ * Waits until the live marketing site reports the given release, so the app never ships
+ * ahead of the pages it links to.
+ * @param {{ origin: string; release: string; fetchImpl?: typeof fetch; attempts?: number; delayMs?: number; sleep?: (ms: number) => Promise<void> }} options
+ */
+export async function waitForMarketingRelease({
+  origin,
+  release,
+  fetchImpl = fetch,
+  attempts = 40,
+  delayMs = 10_000,
+  sleep = (ms) => new Promise((resolveSleep) => setTimeout(resolveSleep, ms)),
+}) {
+  const url = new URL('/release.json', `${parseOrigin(origin, 'liveOrigin')}/`);
+  let lastSeen = 'nothing';
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      url.searchParams.set('check', String(attempt));
+      const response = await fetchImpl(url, { headers: { 'cache-control': 'no-cache' } });
+      if (response.ok) {
+        const body = await response.json();
+        lastSeen = typeof body?.release === 'string' ? body.release : 'an unreadable release';
+        if (lastSeen === release) return { attempts: attempt };
+      } else {
+        lastSeen = `HTTP ${response.status}`;
+      }
+    } catch {
+      lastSeen = 'no answer';
+    }
+    if (attempt < attempts) await sleep(delayMs);
+  }
+  throw new Error(`The live marketing site still serves ${lastSeen} instead of release ${release}.`);
+}
+
 function readArgument(name) {
   const index = process.argv.indexOf(name);
   return index === -1 ? undefined : process.argv[index + 1];
@@ -126,6 +160,10 @@ async function main() {
   const liveOrigin = readArgument('--url');
   if (!appOrigin || !marketingOrigin) {
     throw new Error('Both --app-origin and --marketing-origin are required.');
+  }
+  const expectedRelease = readArgument('--wait-release');
+  if (expectedRelease && liveOrigin) {
+    await waitForMarketingRelease({ origin: liveOrigin, release: expectedRelease });
   }
   const result = await verifyMarketingRelease({ directory, appOrigin, marketingOrigin, liveOrigin });
   process.stdout.write(`Marketing release verified: ${result.routes} routes and ${result.plans} checkout plans.\n`);

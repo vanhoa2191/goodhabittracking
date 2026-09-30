@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { buildMarketingSite } from '../../scripts/build-marketing.mjs';
-import { verifyMarketingRelease } from '../../scripts/verify-marketing-release.mjs';
+import { verifyMarketingRelease, waitForMarketingRelease } from '../../scripts/verify-marketing-release.mjs';
 import { isReadyHealth } from '../../scripts/verify-release-candidate.mjs';
 
 const temporaryDirectories: string[] = [];
@@ -118,5 +118,51 @@ describe('app release health contract', () => {
     expect(isReadyHealth({ status: 'ready', checks: { app: true, databaseConnection: false } })).toBe(false);
     expect(isReadyHealth({ status: 'degraded', checks: { app: true, databaseConnection: true } })).toBe(false);
     expect(isReadyHealth({ status: 'ready', checks: {} })).toBe(false);
+  });
+});
+
+describe('waiting for the matching marketing release', () => {
+  const answer = (release: string) => ({ ok: true, json: async () => ({ release }) }) as unknown as Response;
+
+  it('records the release in the built site', async () => {
+    const directory = await mkdtemp(join(tmpdir(), 'kidhabit-marketing-release-'));
+    temporaryDirectories.push(directory);
+    await buildMarketingSite({
+      appOrigin: 'https://app.example',
+      marketingOrigin: 'https://www.example',
+      outputDir: directory,
+      release: 'abc123',
+    });
+    expect(JSON.parse(await readFile(join(directory, 'release.json'), 'utf8'))).toEqual({ release: 'abc123' });
+  });
+
+  it('returns once the live site serves the expected release', async () => {
+    const fetchImpl = vi.fn()
+      .mockResolvedValueOnce(answer('older'))
+      .mockResolvedValueOnce(answer('abc123'));
+    const sleep = vi.fn(async () => undefined);
+    await expect(waitForMarketingRelease({
+      origin: 'https://www.example', release: 'abc123', fetchImpl: fetchImpl as unknown as typeof fetch, delayMs: 1, sleep,
+    })).resolves.toEqual({ attempts: 2 });
+    expect(sleep).toHaveBeenCalledTimes(1);
+  });
+
+  it('fails with what the site still serves when it never catches up', async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(answer('older'));
+    await expect(waitForMarketingRelease({
+      origin: 'https://www.example', release: 'abc123', fetchImpl: fetchImpl as unknown as typeof fetch,
+      attempts: 3, delayMs: 1, sleep: async () => undefined,
+    })).rejects.toThrow('still serves older instead of release abc123');
+  });
+
+  it('keeps waiting through errors and missing files', async () => {
+    const fetchImpl = vi.fn()
+      .mockRejectedValueOnce(new Error('offline'))
+      .mockResolvedValueOnce({ ok: false, status: 404 } as unknown as Response)
+      .mockResolvedValueOnce(answer('abc123'));
+    await expect(waitForMarketingRelease({
+      origin: 'https://www.example', release: 'abc123', fetchImpl: fetchImpl as unknown as typeof fetch,
+      attempts: 5, delayMs: 1, sleep: async () => undefined,
+    })).resolves.toEqual({ attempts: 3 });
   });
 });
