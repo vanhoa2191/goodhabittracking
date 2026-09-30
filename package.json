@@ -22,6 +22,7 @@
     "release:verify": "node scripts/verify-release-candidate.mjs",
     "verify:live-boundaries": "node scripts/verify-live-family-boundaries.mjs",
     "verify:live-lifecycle": "node scripts/verify-live-family-lifecycle.mjs",
+    "verify:live-experience": "node scripts/verify-live-experience.mjs",
     "verify:marketing-release": "node scripts/verify-marketing-release.mjs",
     "verify:habit-framework": "node scripts/verify-habit-framework-source.mjs",
     "report:experiment": "node --experimental-strip-types --no-warnings scripts/report-safe-evolve-experiment.mjs",
