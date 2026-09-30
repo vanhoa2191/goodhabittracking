@@ -240,3 +240,39 @@ describe('saving a cue plan', () => {
     expect(wrong.experience().cuePlans).toEqual([]);
   });
 });
+
+describe('measuring the feature without measuring the family', () => {
+  it('reports only the way a habit was done and who recorded it, once the server confirmed it', async () => {
+    const track = vi.fn();
+    const parent = harness({ track }, () => Response.json({ success: true, changed: true, observation: observationRow('alone') }));
+    await parent.actions.recordSupport(logId, 'alone');
+    const child = harness({ track, isSignedInParent: false, isPairedChild: true }, () => Response.json({ changed: true, observation: observationRow('together', 'child') }));
+    await child.actions.recordSupport(logId, 'together');
+    expect(track.mock.calls).toEqual([
+      [{ event: 'habit_support_recorded', level: 'alone', recordedBy: 'parent', mode: 'cloud' }],
+      [{ event: 'habit_support_recorded', level: 'together', recordedBy: 'child', mode: 'cloud' }],
+    ]);
+  });
+
+  it('reports a saved cue without its words, and nothing when saving failed or in a demo', async () => {
+    const track = vi.fn();
+    const saved = harness({ track }, () => Response.json({ success: true, cuePlan: cueRow() }));
+    await saved.actions.saveCuePlan(activityId, cueInput);
+    expect(track.mock.calls).toEqual([[{ event: 'habit_cue_saved', mode: 'cloud' }]]);
+
+    const failed = harness({ track }, () => new Response('{}', { status: 503 }));
+    await failed.actions.saveCuePlan(activityId, cueInput);
+    await failed.actions.recordSupport(logId, 'alone');
+    const demo = harness({ track, isDemoSession: true, isSignedInParent: false });
+    await demo.actions.saveCuePlan(activityId, cueInput);
+    await demo.actions.recordSupport(logId, 'alone');
+    expect(track).toHaveBeenCalledTimes(1);
+  });
+
+  it('never lets a broken analytics sink undo a save', async () => {
+    const track = vi.fn(() => { throw new Error('sink down'); });
+    const { actions, experience } = harness({ track }, () => Response.json({ success: true, changed: true, observation: observationRow('alone') }));
+    await expect(actions.recordSupport(logId, 'alone')).resolves.toBe(true);
+    expect(experience().supportObservations).toHaveLength(1);
+  });
+});

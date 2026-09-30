@@ -5,6 +5,7 @@ import type { CuePlanInput } from '@/lib/habit-programs/cue-plan-input';
 import type { SupportLevel } from '@/lib/habit-programs/types';
 import { mergeHabitPrograms, parseCuePlan, parseSupportObservation, setCuePlan, setSupportObservation } from '@/lib/experience-state';
 import type { ExperienceState } from '@/lib/experience-state';
+import type { ProductEvent } from '@/lib/product-analytics';
 import type { ActivityLog, HabitActivity } from '@/types';
 
 type Requester = (url: string, init?: RequestInit) => Promise<Response>;
@@ -26,6 +27,8 @@ export type HabitProgramActionDependencies = {
   readonly getScope?: () => number;
   readonly request?: Requester;
   readonly now?: () => Date;
+  /** Content-free product measurement; only reached once the server confirmed a save. */
+  readonly track?: (event: ProductEvent) => void;
 };
 
 export type HabitProgramActions = {
@@ -38,6 +41,13 @@ export type HabitProgramActions = {
 export function createHabitProgramActions(dependencies: HabitProgramActionDependencies): HabitProgramActions {
   const request: Requester = dependencies.request ?? fetch;
   const now = dependencies.now ?? (() => new Date());
+  const track = (event: ProductEvent): void => {
+    try {
+      dependencies.track?.(event);
+    } catch {
+      // Measurement must never undo a save.
+    }
+  };
 
   const recordSupport = async (logId: string, level: SupportLevel): Promise<boolean> => {
     const log = dependencies.logs.find((candidate) => candidate.id === logId);
@@ -75,6 +85,7 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
       if (dependencies.getScope && dependencies.getScope() !== scopeAtStart) return false;
       // A slower, older answer must not replace a newer one that already arrived.
       dependencies.setExperience((previous) => mergeHabitPrograms(previous, { supportObservations: [observation], cuePlans: [] }));
+      track({ event: 'habit_support_recorded', level: observation.support_level, recordedBy: dependencies.isSignedInParent ? 'parent' : 'child', mode: 'cloud' });
       return true;
     } catch {
       return false;
@@ -124,6 +135,7 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
       if (cuePlan.child_id !== childId || cuePlan.activity_id !== activityId) return false;
       if (dependencies.getScope && dependencies.getScope() !== scopeAtStart) return false;
       dependencies.setExperience((previous) => mergeHabitPrograms(previous, { supportObservations: [], cuePlans: [cuePlan] }));
+      track({ event: 'habit_cue_saved', mode: 'cloud' });
       return true;
     } catch {
       return false;

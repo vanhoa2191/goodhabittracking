@@ -57,6 +57,9 @@ describe('product analytics boundary', () => {
     { event: 'mascot_letter_read', mode: 'cloud' },
     { event: 'wishlist_selected', mode: 'local' },
     { event: 'wishlist_selected', mode: 'cloud' },
+    { event: 'habit_cue_saved', mode: 'cloud' },
+    { event: 'habit_support_recorded', level: 'alone', recordedBy: 'parent', mode: 'cloud' },
+    { event: 'habit_support_recorded', level: 'together', recordedBy: 'child', mode: 'cloud' },
   ] as const)('forwards only the allowlisted $event payload in $mode mode', (event) => {
     const sink = vi.fn();
 
@@ -137,5 +140,13 @@ describe('product analytics boundary', () => {
     expect(sessionMode({ ...state, hasCloudSnapshot: true, storageMode: 'cloud' })).toBe('cloud');
     expect(sessionMode({ ...state, mode: 'parent' })).toBeNull();
     expect(sessionMode({ ...state, isLoaded: false })).toBeNull();
+  });
+
+  it('rejects habit program payloads that carry words, names or unknown values', () => {
+    expect(parseProductEvent({ event: 'habit_cue_saved', mode: 'cloud', cueText: 'After dinner' })).toBeNull();
+    expect(parseProductEvent({ event: 'habit_cue_saved', mode: 'demo' })).toBeNull();
+    expect(parseProductEvent({ event: 'habit_support_recorded', level: 'alone', recordedBy: 'parent', mode: 'cloud', childId: 'c1' })).toBeNull();
+    expect(parseProductEvent({ event: 'habit_support_recorded', level: 'sometimes', recordedBy: 'parent', mode: 'cloud' })).toBeNull();
+    expect(parseProductEvent({ event: 'habit_support_recorded', level: 'alone', recordedBy: 'teacher', mode: 'cloud' })).toBeNull();
   });
 });
