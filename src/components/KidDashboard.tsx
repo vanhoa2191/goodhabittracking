@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Sparkles,
   Flame,
@@ -29,7 +30,8 @@ import { useTranslation } from '@/lib/i18n/context';
 import { HabitActivity, TimeOfDay } from '@/types';
 import { HabitTimerModal } from './HabitTimerModal';
 import { MascotPickerController } from './MascotPickerController';
-import { LeaderboardSection } from './LeaderboardSection';
+// Only opened from its own tab, so it loads on demand instead of weighing on the first screen.
+const LeaderboardSection = dynamic(() => import('./LeaderboardSection').then((module) => module.LeaderboardSection));
 import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
 import { localizeDemoActivity, localizeDemoReward } from '@/lib/i18n/demo-content-copy';
 import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
