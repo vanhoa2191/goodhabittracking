@@ -31,6 +31,24 @@ Mở `http://localhost:3000`. Không commit `.env.local`.
 
 Các cờ legacy/simulation trong `.env.example` bị khóa ở production và không thể bật lại endpoint pairing cũ.
 
+## Cấu trúc thư mục
+
+| Thư mục | Nội dung |
+|---|---|
+| `src/app` | Route của Next.js App Router. `api/` là route handler (mọi thao tác ghi đều qua `rejectCrossSiteRequest`), còn lại là trang của ứng dụng. |
+| `src/components` | Giao diện React. Màn hình bé (`KidDashboard`), màn hình phụ huynh (`ParentDashboard` và các tab), hộp thoại dùng `ui/ModalShell`. |
+| `src/lib/store.tsx`, `src/lib/store/` | Trạng thái ứng dụng. `store.tsx` ghép các nhóm hành động trong `store/` (thói quen, phần thưởng, hồ sơ, ghép thiết bị, đồng bộ đám mây…). |
+| `src/lib/i18n` | Bản dịch theo từng màn hình, 9 ngôn ngữ, mỗi tệp `*-copy.ts` xuất hàm `get…Copy(language)`. |
+| `src/lib/security`, `src/lib/auth`, `src/lib/supabase` | Kiểm tra nguồn gốc yêu cầu, mở khóa PIN phụ huynh, quyền quản trị, các client Supabase. |
+| `src/lib/habit-framework`, `src/lib/habit-programs`, `src/data` | Khung 47 thói quen và các chương trình nhỏ (dữ liệu JSON kèm kiểm tra nguồn). |
+| `apps/marketing` | Site marketing tĩnh (trang chủ, bảng giá, blog…) dựng bằng `scripts/build-marketing.mjs`, không chứa mã ứng dụng. |
+| `supabase/migrations`, `supabase/preflight` | Thay đổi schema theo thứ tự và SQL kiểm tra sau mỗi migration. |
+| `scripts` | Dựng marketing, kiểm tra phát hành, kiểm tra live trên production (`verify-live-*`), quét bí mật, ngân sách hiệu năng. |
+| `tests` | `unit`, `api`, `integration` (hợp đồng migration), `e2e` (Playwright). |
+| `docs` | Tài liệu kiến trúc, bảo mật, triển khai, sổ kiểm chứng nội dung và hướng dẫn đăng blog. |
+
+Bắt đầu đọc từ [`docs/architecture.md`](docs/architecture.md). Muốn đóng góp, xem [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
 ## Kiểm tra chất lượng
 
 ```bash
@@ -84,4 +102,5 @@ Thiết lập `NEXT_PUBLIC_*` trong môi trường chạy lệnh build/deploy; c
 - Chế độ cloud cần tài khoản, dùng family tenancy và RLS.
 - Mã ghép nối cố định cho từng bé tới khi phụ huynh làm mới, có giới hạn thử và chỉ cấp phiên cho đúng bé đó.
 - Client không tự cấp Pro; webhook PayOS đã xác minh chữ ký mới kích hoạt entitlement qua transaction idempotent.
-- Leaderboard công khai mặc định tắt; tên thật chỉ hiển thị khi phụ huynh chủ động bật.
+- Bảng xếp hạng công khai mặc định tắt: chỉ hiện bé khi phụ huynh bật cho gia đình và bé tham gia, bằng biệt danh; không bao giờ hiện tên thật, tuổi hay mã hồ sơ.
+- Thao tác nhạy cảm (xóa gia đình, thu hồi thiết bị, mã ghép, thanh toán, duyệt việc và quà) cần mã PIN phụ huynh đã được máy chủ xác minh (xem [`docs/security-privacy.md`](docs/security-privacy.md)).
