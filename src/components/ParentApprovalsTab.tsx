@@ -8,6 +8,8 @@ import { parentApprovalsCopy } from '@/lib/i18n/parent-approvals-copy';
 import { MascotAvatar } from './MascotAvatar';
 import { ParentReminderBanner } from './ParentReminderBanner';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
+import { HabitProgressSummary } from './HabitProgressSummary';
+import { HabitSupportPrompt } from './HabitSupportPrompt';
 
 export function ParentApprovalsTab() {
   const {
@@ -59,6 +61,13 @@ export function ParentApprovalsTab() {
           );
         })}
       </div>
+
+      {defaultExperienceFlags.habitPrograms && (
+        <>
+          <HabitSupportPrompt />
+          <HabitProgressSummary />
+        </>
+      )}
 
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
         <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">

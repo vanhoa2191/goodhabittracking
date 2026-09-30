@@ -13,6 +13,9 @@ import { getParentNavigationCopy } from '@/lib/i18n/parent-navigation-copy';
 import { useSevenDayCutoff } from '@/lib/use-seven-day-cutoff';
 import { HabitFrameworkLibrary } from './HabitFrameworkLibrary';
 import { LegacyHabitTemplateLibrary } from './LegacyHabitTemplateLibrary';
+import { HabitCueEditor } from './HabitCueEditor';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
+import { getHabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
 
 interface ParentHabitsTabProps {
   onOpenHabit: (habit?: HabitActivity) => void;
@@ -20,13 +23,15 @@ interface ParentHabitsTabProps {
 }
 
 export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTabProps) {
-  const { activities, profiles, logs, deleteActivity } = useAppStore();
+  const { activities, profiles, logs, deleteActivity, experience, activeChildId } = useAppStore();
   const { t, language } = useTranslation();
   const copy = getParentPrimaryCopy(language);
   const navigationCopy = getParentNavigationCopy(language);
   const [mutationError, setMutationError] = useState('');
   const [collection, setCollection] = useState<'inUse' | 'library'>('inUse');
   const [selectedChildId, setSelectedChildId] = useState('all');
+  const [cueTarget, setCueTarget] = useState<{ activity: HabitActivity; title: string; childId: string } | null>(null);
+  const cueCopy = getHabitProgramsCopy(language);
   const visibleActivities = activities.filter((activity) => selectedChildId === 'all' || activity.childId === null || activity.childId === selectedChildId);
   const weekStart = useSevenDayCutoff();
 
@@ -109,6 +114,8 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
             && (selectedChildId === 'all' || log.childId === selectedChildId)
             && (log.status === 'completed' || log.status === 'approved')
             && weekStart !== null && new Date(log.completedAt).getTime() >= weekStart).length;
+          const cueChildId = activity.childId ?? (selectedChildId !== 'all' ? selectedChildId : activeChildId);
+          const hasCue = experience.cuePlans.some((plan) => plan.child_id === cueChildId && plan.activity_id === activity.id);
           return (
             <div key={activity.id} className="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-slate-100 dark:border-zinc-800 shadow-xs flex flex-col justify-between gap-4">
               <div className="flex items-start gap-3">
@@ -130,6 +137,16 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
                 </div>
               </div>
               <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-50 dark:border-zinc-800/80">
+                {defaultExperienceFlags.habitPrograms && cueChildId && (
+                  <button
+                    type="button"
+                    data-testid="open-cue-editor"
+                    onClick={() => setCueTarget({ activity, title: localized.title, childId: cueChildId })}
+                    className="mr-auto min-h-11 rounded-xl border border-indigo-200 px-3 text-xs font-bold text-indigo-700 hover:bg-indigo-50 dark:border-indigo-800 dark:text-indigo-300 dark:hover:bg-indigo-950/40"
+                  >
+                    {hasCue ? `✓ ${cueCopy.cueSet}` : cueCopy.cueButton}
+                  </button>
+                )}
                 <button onClick={() => onOpenHabit(localized)} className="p-2 text-slate-400 hover:text-indigo-600 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors" title={t.edit}><Edit2 className="w-4 h-4" /></button>
                 <button onClick={() => void removeActivity(activity.id)} className="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 dark:hover:bg-zinc-800 transition-colors" title={t.delete}><Trash2 className="w-4 h-4" /></button>
               </div>
@@ -138,6 +155,15 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
         })}
       </div>
       </section>
+      )}
+      {cueTarget && (
+        <HabitCueEditor
+          activity={cueTarget.activity}
+          title={cueTarget.title}
+          childId={cueTarget.childId}
+          existing={experience.cuePlans.find((plan) => plan.child_id === cueTarget.childId && plan.activity_id === cueTarget.activity.id)}
+          onClose={() => setCueTarget(null)}
+        />
       )}
     </div>
   );
