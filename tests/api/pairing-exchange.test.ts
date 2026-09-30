@@ -3,8 +3,14 @@ import { NextRequest } from 'next/server';
 
 const rpc = vi.fn();
 
-vi.mock('@/lib/supabase/server', () => ({
-  createServerSupabaseClient: vi.fn(async () => ({ rpc })),
+const recordOperationalSignal = vi.fn();
+
+vi.mock('@/lib/observability/operational-signal', () => ({
+  recordOperationalSignal: (...args: unknown[]) => recordOperationalSignal(...args),
+}));
+
+vi.mock('@/lib/supabase/admin', () => ({
+  createAdminSupabaseClient: vi.fn(() => ({ rpc })),
 }));
 
 import { POST } from '@/app/api/pairing/exchange/route';
@@ -20,6 +26,7 @@ function request(credential: { readonly code: string } | { readonly token: strin
 describe('pairing exchange API', () => {
   beforeEach(() => {
     rpc.mockReset();
+    recordOperationalSignal.mockReset();
   });
 
   it.each([
@@ -70,5 +77,17 @@ describe('pairing exchange API', () => {
       manual_code_id: null,
       manual_verifier_hash: null,
     }));
+  });
+
+  it.each(['invalid', 'rate_limited'])('does not write a database row for a %s attempt', async (exchangeStatus) => {
+    rpc.mockResolvedValue({ data: [{ exchange_status: exchangeStatus }], error: null });
+    await POST(request());
+    expect(recordOperationalSignal).not.toHaveBeenCalled();
+  });
+
+  it('still records a failure that is not a guess, such as an expired code', async () => {
+    rpc.mockResolvedValue({ data: [{ exchange_status: 'expired' }], error: null });
+    await POST(request());
+    expect(recordOperationalSignal).toHaveBeenCalledWith(expect.objectContaining({ reasonCode: 'expired' }));
   });
 });

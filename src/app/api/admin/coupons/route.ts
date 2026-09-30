@@ -26,7 +26,7 @@ export async function GET() {
 }
 
 const schema = z.object({
-  code: z.string().trim().toUpperCase().regex(/^[A-Z0-9_-]{3,32}$/),
+  code: z.string().trim().toUpperCase().regex(/^[A-Z0-9_-]{8,32}$/),
   description: z.string().trim().max(200),
   discountPercent: z.number().int().min(1).max(100).nullable(),
   bonusDays: z.number().int().min(1).max(3650).nullable(),

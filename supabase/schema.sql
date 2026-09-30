@@ -40,3 +40,5 @@
 \ir migrations/202609300002_public_leaderboard.sql
 \ir migrations/202609300003_close_service_function_exposure.sql
 \ir migrations/202609300004_authoritative_command_hardening.sql
+\ir migrations/202609300005_billing_integrity.sql
+\ir migrations/202609300006_pairing_exchange_limits.sql

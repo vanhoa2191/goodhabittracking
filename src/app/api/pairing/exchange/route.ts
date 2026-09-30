@@ -7,7 +7,7 @@ import {
   requestFingerprint,
   sha256Hex,
 } from '@/lib/pairing/crypto';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { recordOperationalSignal } from '@/lib/observability/operational-signal';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
@@ -43,7 +43,6 @@ export async function POST(request: NextRequest) {
   const normalizedCode = submittedCode ? normalizeDisplayCode(submittedCode) : null;
   if (submittedCode && !normalizedCode) {
     logOperationalEvent('warn', { operation: 'pairing_exchange', reasonCode: 'invalid_code', correlationId, route: request.nextUrl.pathname, status: 404 });
-    await recordOperationalSignal({ signalType: 'pairing_failure', reasonCode: 'invalid_code', correlationId, status: 404 });
     return NextResponse.json({ error: statusMessages.invalid.error, correlationId }, { status: 404 });
   }
   const credentialValue = normalizedCode ?? submittedToken;
@@ -57,7 +56,7 @@ export async function POST(request: NextRequest) {
     sha256Hex(sessionToken),
     requestFingerprint(request),
   ]);
-  const supabase = await createServerSupabaseClient();
+  const supabase = createAdminSupabaseClient();
   const { data, error } = await supabase.rpc('exchange_pairing_credential', {
     manual_code_id: normalizedCode?.slice(0, 4) ?? null,
     manual_verifier_hash: normalizedCode ? credentialHash : null,
@@ -78,7 +77,10 @@ export async function POST(request: NextRequest) {
     const failure = statusMessages[exchange?.exchange_status] || statusMessages.invalid;
     const reasonCode = exchange?.exchange_status || 'invalid';
     logOperationalEvent('warn', { operation: 'pairing_exchange', reasonCode, correlationId, route: request.nextUrl.pathname, status: failure.status });
-    await recordOperationalSignal({ signalType: 'pairing_failure', reasonCode, correlationId, status: failure.status });
+    // Guesses and floods are logged only: writing a row for each would let anyone grow the table.
+    if (reasonCode !== 'invalid' && reasonCode !== 'rate_limited') {
+      await recordOperationalSignal({ signalType: 'pairing_failure', reasonCode, correlationId, status: failure.status });
+    }
     return NextResponse.json({ error: failure.error, correlationId }, { status: failure.status });
   }
 
