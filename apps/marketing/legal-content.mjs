@@ -120,7 +120,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         title: '9. Dữ liệu của trẻ em',
         blocks: [
           'Trẻ không tự nhập email, số điện thoại hay thông tin thanh toán. Mọi thiết lập về hồ sơ, thiết bị và thanh toán do phụ huynh quản lý.',
-          'Bảng xếp hạng công khai mặc định tắt; tên thật của bé chỉ hiển thị khi phụ huynh chủ động bật. Nếu bạn nghĩ một trẻ đã nhập thông tin không phù hợp, hãy liên hệ để KidHabit hỗ trợ xóa.',
+          'Chia sẻ lên bảng xếp hạng công khai mặc định tắt. Chỉ khi phụ huynh bật cho gia đình và hồ sơ của bé được đánh dấu tham gia thì bé mới xuất hiện, bằng biệt danh và hình đại diện; tên thật, tuổi và mã hồ sơ không bao giờ được hiển thị. Nếu bạn nghĩ một trẻ đã nhập thông tin không phù hợp, hãy liên hệ để KidHabit hỗ trợ xóa.',
         ],
       },
       {

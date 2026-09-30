@@ -64,6 +64,35 @@ function yearlySaving() {
   return { perMonth: Math.round(yearly.amount / 12), saved: monthly.amount * 12 - yearly.amount };
 }
 
+
+function jsonLd(data) {
+  return `<script type="application/ld+json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script>`;
+}
+
+/** WebPage plus breadcrumb (and the visible FAQ when the page shows one) for a public page. */
+function renderPageStructuredData({ name, description, path, marketingOrigin, crumbs = [], faqItems = [] }) {
+  const url = new URL(path, `${marketingOrigin}/`).href;
+  const graph = [
+    { '@type': 'WebPage', '@id': `${url}#page`, url, name, description, inLanguage: 'vi', isPartOf: { '@type': 'WebSite', name: 'KidHabit Hero', url: new URL('/', `${marketingOrigin}/`).href } },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [{ name: 'Trang chủ', path: '/' }, ...crumbs, { name, path }].map((crumb, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: crumb.name,
+        item: new URL(crumb.path, `${marketingOrigin}/`).href,
+      })),
+    },
+  ];
+  if (faqItems.length > 0) {
+    graph.push({
+      '@type': 'FAQPage',
+      mainEntity: faqItems.map((item) => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } })),
+    });
+  }
+  return jsonLd({ '@context': 'https://schema.org', '@graph': graph });
+}
+
 function renderStructuredData({ marketingOrigin, appOrigin }) {
   const data = {
     '@context': 'https://schema.org',
@@ -74,7 +103,7 @@ function renderStructuredData({ marketingOrigin, appOrigin }) {
     inLanguage: 'vi',
     url: new URL('/', `${marketingOrigin}/`).href,
     image: new URL('/og-image.jpg', `${marketingOrigin}/`).href,
-    description: 'Ứng dụng đồng hành giáo dục con qua thói quen: mỗi việc nhỏ gắn với một trong 16 chân dung trưởng thành.',
+    description: 'Ứng dụng đồng hành giáo dục con qua thói quen: ba mẹ chọn việc nhỏ phù hợp độ tuổi, con làm mỗi ngày và cả nhà cùng ghi nhận.',
     offers: plans.map((plan) => ({
       '@type': 'Offer',
       name: planTitle(plan),
@@ -285,7 +314,7 @@ function renderStickyCta(appOrigin) {
 export function renderHome({ marketingOrigin, appOrigin, supportEmail = '', now = new Date() }) {
   const body = `<main id="noi-dung">
     <section class="hero" data-hero><div class="shell hero-grid">
-      <div class="hero-copy"><p class="hero-kicker">Ứng dụng đồng hành giáo dục con qua thói quen</p><h1>Từng thói quen nhỏ vẽ nên chân dung tốt đẹp của con</h1><p class="hero-lead">Mỗi việc nhỏ con làm hôm nay gắn với một chân dung trong bản đồ 16 chân dung, để con trưởng thành tự tin, tử tế và làm chủ cuộc sống. Ba mẹ dẫn đường, con thực hành cùng một người bạn đồng hành.</p><div class="hero-actions"><a class="button button-primary" data-guest data-magnetic href="${appUrl(appOrigin, '/start')}">Dùng thử 7 ngày ${icon('arrow')}</a><a class="button button-quiet" data-guest href="${appUrl(appOrigin, '/?demo=1')}">Xem bản demo</a><a class="button button-primary" data-member data-magnetic href="${appUrl(appOrigin, '/')}">Vào ứng dụng của gia đình ${icon('arrow')}</a></div><ul class="trust-points" aria-label="Cam kết khi bắt đầu">${trustPoints.map((point) => `<li>${icon('check')}<span>${point}</span></li>`).join('')}</ul></div>
+      <div class="hero-copy"><p class="hero-kicker">Ứng dụng đồng hành giáo dục con qua thói quen</p><h1>Từng thói quen nhỏ vẽ nên chân dung tốt đẹp của con</h1><p class="hero-lead">Mỗi việc nhỏ con làm hôm nay góp thêm một nét cho chân dung con muốn trở thành, để con trưởng thành tự tin, tử tế và làm chủ cuộc sống. Ba mẹ dẫn đường, con thực hành cùng một người bạn đồng hành.</p><div class="hero-actions"><a class="button button-primary" data-guest data-magnetic href="${appUrl(appOrigin, '/start')}">Dùng thử 7 ngày ${icon('arrow')}</a><a class="button button-quiet" data-guest href="${appUrl(appOrigin, '/?demo=1')}">Xem bản demo</a><a class="button button-primary" data-member data-magnetic href="${appUrl(appOrigin, '/')}">Vào ứng dụng của gia đình ${icon('arrow')}</a></div><ul class="trust-points" aria-label="Cam kết khi bắt đầu">${trustPoints.map((point) => `<li>${icon('check')}<span>${point}</span></li>`).join('')}</ul></div>
       <div class="hero-visual">
         <div class="phone phone-hero" data-tilt><img class="phone-screen" src="/screens/kid-home.webp" alt="Màn hình của bé trong KidHabit: nhân vật Leo, 120 sao, 3 huy hiệu và tiến độ 3 trên 6 việc hôm nay" width="600" height="1298" fetchpriority="high"></div>
         <img class="hero-mascot" src="/mascots/leo.webp" alt="Leo, chú sư tử nhỏ vẫy tay chào bé" width="400" height="400" fetchpriority="high">
@@ -306,12 +335,12 @@ export function renderHome({ marketingOrigin, appOrigin, supportEmail = '', now 
     <section class="final-cta"><div class="shell final-cta-inner"><div><h2>Bắt đầu với một việc nhỏ hôm nay</h2><p>Thiết lập hồ sơ đầu tiên, chọn thói quen phù hợp và để con tự hoàn thành bước tiếp theo.</p><p class="final-cta-note">7 ngày dùng thử, không cần thẻ, hoàn tiền trong 30 ngày.</p></div><div class="final-cta-actions"><a class="button button-light" data-guest data-magnetic href="${appUrl(appOrigin, '/start')}">Bắt đầu cùng con ${icon('arrow')}</a><a class="text-link text-link-light" data-guest href="${appUrl(appOrigin, '/?demo=1')}">Xem bản demo trước</a><a class="button button-light" data-member data-magnetic href="${appUrl(appOrigin, '/')}">Vào ứng dụng của gia đình ${icon('arrow')}</a></div><img class="final-mascot" src="/mascots/leo.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></div></section>
     ${renderStickyCta(appOrigin)}
   </main>`;
-  return renderDocument({ title: 'KidHabit Hero | Giáo dục con qua thói quen mỗi ngày', description: 'KidHabit là ứng dụng đồng hành giáo dục con qua thói quen: mỗi việc nhỏ gắn với một trong 16 chân dung trưởng thành, để ba mẹ biết nên rèn gì và con tự giác làm mỗi ngày.', path: '/', marketingOrigin, appOrigin, body, structuredData: renderStructuredData({ marketingOrigin, appOrigin }) });
+  return renderDocument({ title: 'KidHabit Hero | Giáo dục con qua thói quen mỗi ngày', description: 'KidHabit giúp ba mẹ chọn thói quen hợp độ tuổi, giao việc rõ ràng và cùng con ghi nhận từng bước nhỏ mỗi ngày. Dùng thử 7 ngày, không cần thẻ.', path: '/', marketingOrigin, appOrigin, body, structuredData: renderStructuredData({ marketingOrigin, appOrigin }) });
 }
 
 export function renderPricingPage({ marketingOrigin, appOrigin }) {
   const body = `<main id="noi-dung">${renderInfoHero({ slug: 'pricing', eyebrow: 'Bảng giá rõ ràng', title: 'Chọn nhịp đồng hành phù hợp', lede: 'Ba gói trả phí, không có phí ẩn và không tự động gia hạn.', mascot: 'bee' })}${renderPricing(appOrigin, 'Ba lựa chọn, một hành trình rõ ràng')}${renderFaq()}</main>`;
-  return renderDocument({ title: 'Bảng giá KidHabit Hero', description: 'So sánh các gói KidHabit cho một bé hoặc cả gia đình.', path: '/pricing/', marketingOrigin, appOrigin, body, structuredData: renderStructuredData({ marketingOrigin, appOrigin }) });
+  return renderDocument({ title: 'Bảng giá KidHabit Hero | Dùng thử 7 ngày', description: 'So sánh ba gói KidHabit cho một bé hoặc cả gia đình: giá rõ ràng, không phí ẩn, không tự động gia hạn và có 7 ngày dùng thử trước khi quyết định.', path: '/pricing/', marketingOrigin, appOrigin, body, structuredData: `${renderStructuredData({ marketingOrigin, appOrigin })}${renderPageStructuredData({ name: 'Bảng giá', description: 'So sánh ba gói KidHabit cho một bé hoặc cả gia đình.', path: '/pricing/', marketingOrigin, faqItems: faqs })}` });
 }
 
 function renderContactNote(supportEmail) {
@@ -361,7 +390,7 @@ function renderLegalPage({ slug, marketingOrigin, appOrigin, supportEmail }) {
   const sections = page.sections.map((section, index) => `<article id="${anchors[index]}"><h2>${escapeHtml(section.title)}</h2>${renderLegalBlocks(section.blocks, supportEmail)}</article>`).join('');
   const toc = `<nav class="legal-toc" aria-label="Mục lục"><p class="legal-toc-title">${icon('list-checks')}Trong trang này</p><ul>${page.sections.map((section, index) => `<li><a href="#${anchors[index]}">${escapeHtml(section.title)}</a></li>`).join('')}</ul></nav>`;
   const body = `<main id="noi-dung">${renderInfoHero({ slug, eyebrow: 'Minh bạch với ba mẹ', title: page.title, lede: page.description, mascot: 'leo' })}<section class="section info-body"><div class="shell legal-layout">${toc}<div class="legal-doc"><p class="legal-meta">${icon('clock')}Cập nhật lần cuối: ${legalUpdatedLabel}</p>${sections}</div></div></section></main>`;
-  return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: `/${slug}/`, marketingOrigin, appOrigin, body });
+  return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: `/${slug}/`, marketingOrigin, appOrigin, body, structuredData: renderPageStructuredData({ name: page.title, description: page.description, path: `/${slug}/`, marketingOrigin }) });
 }
 
 function shortCitation(source) {
@@ -394,7 +423,7 @@ function renderSciencePage({ marketingOrigin, appOrigin }) {
     ${unknowns}
     ${sources}
   </div></section></main>`;
-  return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: '/science/', marketingOrigin, appOrigin, body });
+  return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: '/science/', marketingOrigin, appOrigin, body, structuredData: renderPageStructuredData({ name: page.title, description: page.description, path: '/science/', marketingOrigin }) });
 }
 
 export function renderInfoPage({ slug, marketingOrigin, appOrigin, supportEmail }) {
@@ -409,5 +438,5 @@ export function renderInfoPage({ slug, marketingOrigin, appOrigin, supportEmail 
   const list = isSteps ? `<ol class="info-cards step-list">${items}</ol>` : `<ul class="info-cards">${items}</ul>`;
   const extra = slug === 'contact' ? renderContactNote(supportEmail) : '';
   const body = `<main id="noi-dung">${renderInfoHero({ slug, eyebrow: page.eyebrow, title: page.title, lede: page.description, mascot: page.mascot })}<section class="section info-body"><div class="shell">${list}${extra}</div></section></main>`;
-  return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: `/${slug}/`, marketingOrigin, appOrigin, body });
+  return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: `/${slug}/`, marketingOrigin, appOrigin, body, structuredData: renderPageStructuredData({ name: page.title, description: page.description, path: `/${slug}/`, marketingOrigin }) });
 }

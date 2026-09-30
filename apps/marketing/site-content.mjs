@@ -130,7 +130,7 @@ export const features = [
 export const safetyPoints = [
   { icon: 'lock', title: 'Khu vực phụ huynh có mã PIN', text: 'Thanh toán và cài đặt gia đình nằm ngoài tầm với của bé.' },
   { icon: 'shield', title: 'Mỗi gia đình một không gian riêng', text: 'Dữ liệu được tách biệt, gia đình này không xem được gia đình khác.' },
-  { icon: 'eye-off', title: 'Bảng xếp hạng mặc định tắt', text: 'Tên thật của bé chỉ hiện khi ba mẹ chủ động bật.' },
+  { icon: 'eye-off', title: 'Chia sẻ công khai mặc định tắt', text: 'Bảng xếp hạng công khai chỉ hiện bé khi ba mẹ bật và bé tham gia, bằng biệt danh. Tên thật và tuổi không bao giờ hiện.' },
   { icon: 'trash', title: 'Ba mẹ quyết định giữ hay xóa', text: 'Chủ gia đình có thể xóa toàn bộ dữ liệu gia đình trong ứng dụng.' },
 ];
 
@@ -175,7 +175,7 @@ export const publicPages = {
     mascot: 'panda',
     icons: ['list-checks', 'book', 'users'],
     title: 'Khung thói quen theo từng giai đoạn',
-    description: 'Bắt đầu từ điều phù hợp với độ tuổi, hoàn cảnh và nhịp sống của chính gia đình bạn.',
+    description: 'Khung thói quen KidHabit gợi ý những việc nhỏ theo từng giai đoạn tuổi, để ba mẹ bắt đầu từ điều vừa sức thay vì một danh sách dài.',
     sections: [
       ['Không bắt đầu từ một danh sách dài', 'KidHabit giúp ba mẹ chọn một mục tiêu vừa sức, diễn giải rõ việc cần làm và tăng dần độ khó khi con đã sẵn sàng.'],
       ['Thói quen gắn với đời sống', 'Các gợi ý xoay quanh tự chăm sóc, học tập, vận động, kết nối gia đình và trách nhiệm phù hợp với từng giai đoạn.'],
@@ -194,7 +194,7 @@ export const publicPages = {
     mascot: 'fox',
     icons: ['check', 'clock', 'trend-up'],
     title: 'Lộ trình đủ nhỏ để bắt đầu',
-    description: 'Một hành trình tốt không cần hoàn hảo. Nó cần rõ ràng, đều đặn và có sự ghi nhận.',
+    description: 'Lộ trình ba bước để xây thói quen cho con: bắt đầu với một việc, giữ nhịp đều rồi mở rộng khi con đã vững, cùng cách ghi nhận phù hợp.',
     sections: [
       ['Bắt đầu với một việc', 'Chọn một thói quen có thể hoàn thành trong vài phút và thống nhất cách ghi nhận với con.'],
       ['Duy trì nhịp đều', 'Theo dõi theo ngày, nhìn lại theo tuần và điều chỉnh khi nhiệm vụ quá dễ hoặc quá khó.'],
@@ -206,7 +206,7 @@ export const publicPages = {
     mascot: 'bee',
     layout: 'steps',
     title: 'Hướng dẫn sử dụng KidHabit',
-    description: 'Những bước cơ bản để gia đình bắt đầu, ghép thiết bị và duy trì thói quen.',
+    description: 'Hướng dẫn từng bước dùng KidHabit: tạo không gian gia đình, thiết lập thói quen, ghép thiết bị của bé và theo dõi tiến độ mỗi ngày.',
     sections: [
       ['Tạo không gian gia đình', 'Đăng nhập bằng tài khoản phụ huynh, hoàn thiện thông tin và tạo hồ sơ cho từng bé.'],
       ['Thiết lập cho con', 'Chọn thói quen, tạo nhiệm vụ, đặt điểm và thống nhất phần thưởng trước khi bắt đầu.'],
@@ -219,7 +219,7 @@ export const publicPages = {
     mascot: 'bunny',
     icons: ['alert', 'gift', 'shield'],
     title: 'Liên hệ hỗ trợ',
-    description: 'Chuẩn bị đúng thông tin để đội ngũ hỗ trợ xử lý nhanh mà không thu thập dư thừa dữ liệu của trẻ.',
+    description: 'Cách liên hệ hỗ trợ KidHabit nhanh và an toàn: cần gửi thông tin gì khi gặp lỗi hoặc cần hỗ trợ thanh toán, và điều gì không nên gửi.',
     sections: [
       ['Khi gặp lỗi', 'Gửi mã hỗ trợ, thời điểm và thao tác vừa thực hiện. Không gửi mật khẩu, mã PIN phụ huynh hoặc mã ghép thiết bị còn hiệu lực.'],
       ['Khi cần hỗ trợ thanh toán', 'Chỉ gửi mã đơn, gói đã chọn, số tiền và thời điểm. Hãy che số tài khoản không cần thiết trên ảnh xác nhận.'],

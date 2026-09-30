@@ -67,6 +67,32 @@ describe('marketing static artifact', () => {
     expect(html).not.toContain('manifest.webmanifest');
   });
 
+  it.each(['', 'pricing', 'framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'contact'])(
+    'gives /%s a descriptive snippet, a breadcrumb trail and no numeric portrait claim',
+    async (route) => {
+      const { outputDir } = await buildFixture();
+      const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
+      const description = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';
+      expect(description.length).toBeGreaterThanOrEqual(110);
+      expect(description.length).toBeLessThanOrEqual(175);
+      expect(html).not.toContain('16 chân dung');
+      const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((match) => JSON.parse(match[1]!));
+      const types = blocks.flatMap((block) => (block['@graph'] ?? [block]).map((node: { '@type': string }) => node['@type']));
+      if (route === '') expect(types).toContain('SoftwareApplication');
+      else expect(types).toEqual(expect.arrayContaining(['WebPage', 'BreadcrumbList']));
+      if (route === 'pricing') expect(types).toContain('FAQPage');
+    },
+  );
+
+  it('describes the public board as opt-in with nicknames only', async () => {
+    const { outputDir } = await buildFixture();
+    const privacy = await readFile(join(outputDir, 'privacy', 'index.html'), 'utf8');
+    const home = await readFile(join(outputDir, 'index.html'), 'utf8');
+    expect(privacy).toContain('không bao giờ được hiển thị');
+    expect(home).toContain('Chia sẻ công khai mặc định tắt');
+    expect(home).not.toContain('Bảng xếp hạng mặc định tắt');
+  });
+
   it('ships security headers that allow only the page\'s own inline script by hash', async () => {
     const { outputDir, html } = await buildFixture();
     const headers = await readFile(join(outputDir, '_headers'), 'utf8');
