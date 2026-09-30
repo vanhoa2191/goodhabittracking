@@ -3,6 +3,7 @@ export const navigation = [
   { href: '/science/', label: 'Cơ sở khoa học' },
   { href: '/roadmaps/', label: 'Lộ trình' },
   { href: '/pricing/', label: 'Bảng giá' },
+  { href: '/blog/', label: 'Blog' },
   { href: '/docs/', label: 'Hướng dẫn' },
 ];
 

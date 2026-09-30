@@ -41,11 +41,11 @@ export function escapeHtml(value) {
     .replaceAll("'", '&#039;');
 }
 
-function icon(name, className = '') {
+export function icon(name, className = '') {
   return `<svg class="icon ${className}" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icons[name]}</svg>`;
 }
 
-function appUrl(appOrigin, path) {
+export function appUrl(appOrigin, path) {
   return new URL(path, `${appOrigin}/`).href;
 }
 
@@ -111,7 +111,7 @@ function renderFooter(appOrigin) {
         <a class="brand" href="/"><img src="/logo.svg" alt="" width="40" height="40"><span>KidHabit <strong>Hero</strong></span></a>
         <p>Giúp con làm được việc nhỏ hôm nay, để tự tin hơn mỗi ngày.</p>
       </div>
-      <div><h2>Sản phẩm</h2><a href="/framework/">Khung thói quen</a><a href="/science/">Cơ sở khoa học</a><a href="/roadmaps/">Lộ trình</a><a href="/pricing/">Bảng giá</a></div>
+      <div><h2>Sản phẩm</h2><a href="/framework/">Khung thói quen</a><a href="/science/">Cơ sở khoa học</a><a href="/roadmaps/">Lộ trình</a><a href="/pricing/">Bảng giá</a><a href="/blog/">Blog</a></div>
       <div><h2>Hỗ trợ</h2><a href="/docs/">Hướng dẫn</a><a href="/contact/">Liên hệ</a><a href="${appUrl(appOrigin, '/')}">Đăng nhập ứng dụng</a></div>
       <div><h2>Thông tin</h2><a href="/privacy/">Quyền riêng tư</a><a href="/terms/">Điều khoản</a></div>
     </div>
@@ -119,7 +119,7 @@ function renderFooter(appOrigin) {
   </footer>`;
 }
 
-function renderDocument({ title, description, path, marketingOrigin, appOrigin, body, structuredData = '' }) {
+export function renderDocument({ title, description, path, marketingOrigin, appOrigin, body, structuredData = '', ogType = 'website', extraHead = '' }) {
   const canonical = new URL(path, `${marketingOrigin}/`).href;
   const shareImage = new URL('/og-image.jpg', `${marketingOrigin}/`).href;
   return `<!doctype html>
@@ -130,7 +130,7 @@ function renderDocument({ title, description, path, marketingOrigin, appOrigin, 
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}">
   <link rel="canonical" href="${canonical}">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="${ogType}">
   <meta property="og:locale" content="vi_VN">
   <meta property="og:title" content="${escapeHtml(title)}">
   <meta property="og:description" content="${escapeHtml(description)}">
@@ -152,6 +152,7 @@ function renderDocument({ title, description, path, marketingOrigin, appOrigin, 
   <script>if(document.cookie.split('; ').indexOf('${sessionHintCookie}=1')>-1)document.documentElement.classList.add('is-member')</script>
   <link rel="stylesheet" href="/styles.css">
   <script src="/client.js" defer></script>
+  ${extraHead}
   ${structuredData}
 </head>
 <body>
@@ -337,7 +338,7 @@ function renderLegalBlocks(blocks, supportEmail) {
 }
 
 const infoTabsBySlug = {
-  framework: [['pricing', 'Bảng giá'], ['framework', 'Khung thói quen'], ['science', 'Cơ sở khoa học'], ['roadmaps', 'Lộ trình'], ['docs', 'Hướng dẫn'], ['contact', 'Liên hệ']],
+  framework: [['pricing', 'Bảng giá'], ['framework', 'Khung thói quen'], ['science', 'Cơ sở khoa học'], ['roadmaps', 'Lộ trình'], ['docs', 'Hướng dẫn'], ['blog', 'Blog'], ['contact', 'Liên hệ']],
   legal: [['privacy', 'Quyền riêng tư'], ['terms', 'Điều khoản'], ['contact', 'Liên hệ']],
 };
 
@@ -346,11 +347,11 @@ function renderInfoTabs(slug) {
   return `<nav class="info-tabs" aria-label="Các trang thông tin">${group.map(([target, label]) => `<a href="/${target}/"${target === slug ? ' aria-current="page"' : ''}>${escapeHtml(label)}</a>`).join('')}</nav>`;
 }
 
-function renderInfoHero({ slug, eyebrow, title, lede, mascot }) {
+export function renderInfoHero({ slug, eyebrow, title, lede, mascot }) {
   return `<section class="info-hero"><div class="shell info-hero-grid"><div class="info-hero-copy"><p class="eyebrow">${escapeHtml(eyebrow)}</p><h1>${escapeHtml(title)}</h1><p class="info-lede">${escapeHtml(lede)}</p>${renderInfoTabs(slug)}</div><div class="info-hero-art" aria-hidden="true"><img src="/mascots/${mascot}.webp" alt="" width="320" height="320" decoding="async"></div></div></section>`;
 }
 
-function slugify(text) {
+export function slugify(text) {
   return text.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
