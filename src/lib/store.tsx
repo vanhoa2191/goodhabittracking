@@ -72,6 +72,7 @@ import { localDayKey } from '@/lib/habit-fire';
 import { exportFamilyData, importFamilyData } from './store/family-backup-actions';
 import { buildSubscriptionDetails, checkIsPro } from './store/subscription';
 import { adjustProfilePoints } from './store/local-domain-actions';
+import { requestDomainCommand } from './store/domain-command-client';
 import { getMascot } from './mascots';
 import { defaultExperienceFlags } from './experience-flags';
 import { buildLocalCityItem, cityItems, parseCityPurchase, parseCityPurchases } from './dream-city';
@@ -154,7 +155,7 @@ interface AppStoreContextType {
   ) => Promise<ProfileCreateResult>;
   updateProfile: (id: string, updates: Partial<ChildProfile>) => Promise<boolean>;
   deleteProfile: (id: string) => Promise<boolean>;
-  adjustPoints: (childId: string, amount: number, reason?: string) => void;
+  adjustPoints: (childId: string, amount: number, reason?: string) => Promise<boolean>;
   updateActiveAvatar: (avatar: string, themeColor: string) => Promise<boolean>;
 
   activities: HabitActivity[];
@@ -956,8 +957,17 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const updateProfile = profileActions.updateProfile;
   const deleteProfile = profileActions.deleteProfile;
 
-  const adjustPoints = (childId: string, amount: number) => {
-    setProfiles((prev) => adjustProfilePoints(prev, childId, amount));
+  const adjustPoints = async (childId: string, amount: number, reason = ''): Promise<boolean> => {
+    if (!currentUser) {
+      setProfiles((prev) => adjustProfilePoints(prev, childId, amount));
+      return true;
+    }
+    try {
+      await requestDomainCommand({ type: 'adjustPoints', childId, amount, reason: reason.trim().slice(0, 120), commandId: crypto.randomUUID() });
+      return await syncFromSupabase(currentUser);
+    } catch {
+      return false;
+    }
   };
 
   // Activity Management

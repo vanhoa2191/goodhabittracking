@@ -41,6 +41,16 @@ function rpcFor(command: DomainCommand): { name: string; args: Record<string, un
         name: 'transition_redemption_command',
         args: { target_redemption_id: command.redemptionId, decision: command.decision },
       };
+    case 'adjustPoints':
+      return {
+        name: 'adjust_child_points_command',
+        args: {
+          target_child_id: command.childId,
+          amount: command.amount,
+          reason: command.reason,
+          command_id: command.commandId,
+        },
+      };
   }
 }
 
@@ -61,7 +71,7 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = await createServerSupabaseClient();
-  if (parsed.data.type === 'reviewHabit' || parsed.data.type === 'transitionRedemption') {
+  if (parsed.data.type === 'reviewHabit' || parsed.data.type === 'transitionRedemption' || parsed.data.type === 'adjustPoints') {
     const locked = await requireParentUnlock(request, parent, supabase);
     if (locked) return locked;
   }

@@ -35,6 +35,7 @@ import { useModalFocus } from '@/lib/use-modal-focus';
 import { MASCOTS, getMascotLabel } from '@/lib/mascots';
 import { MascotAvatar } from './MascotAvatar';
 import { ModalShell } from './ui/ModalShell';
+import { getPointsAdjustCopy } from '@/lib/i18n/points-adjust-copy';
 
 export function ParentDashboard() {
   const {
@@ -91,6 +92,7 @@ export function ParentDashboard() {
   const [adjustingChildId, setAdjustingChildId] = useState<string>('');
   const [adjustAmount, setAdjustAmount] = useState<number>(10);
   const [adjustReason, setAdjustReason] = useState<string>('');
+  const [adjustError, setAdjustError] = useState(false);
 
 
   // Form states for Habit
@@ -889,6 +891,9 @@ export function ParentDashboard() {
             </div>
 
             {/* Fixed Footer */}
+            {adjustError && (
+              <p role="alert" className="px-4 pb-2 text-xs font-semibold text-rose-600 dark:text-rose-300">{getPointsAdjustCopy(language).saveError}</p>
+            )}
             <div className="shrink-0 p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/70 flex items-center justify-end gap-2.5 pb-safe">
               <button
                 type="button"
@@ -899,9 +904,13 @@ export function ParentDashboard() {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  adjustPoints(adjustingChildId, adjustAmount, adjustReason);
-                  setIsAdjustPointsModalOpen(false);
+                onClick={async () => {
+                  setAdjustError(false);
+                  if (await adjustPoints(adjustingChildId, adjustAmount, adjustReason)) {
+                    setIsAdjustPointsModalOpen(false);
+                  } else {
+                    setAdjustError(true);
+                  }
                 }}
                 className="py-2.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all shadow-md active:scale-95"
               >

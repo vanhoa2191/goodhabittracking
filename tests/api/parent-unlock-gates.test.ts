@@ -45,6 +45,7 @@ describe('sensitive parent actions need the PIN entered in this browser', () => 
     ['rotating a child pairing code', () => rotateCredential(call('POST', '/api/pairing/credentials/rotate', { childId: uuid }))],
     ['starting a payment', () => createPayment(call('POST', '/api/payment/create', { planId: 'monthly' }))],
     ['approving a task', () => runCommand(call('POST', '/api/domain/commands', { type: 'reviewHabit', logId: uuid, decision: 'approve' }))],
+    ['adjusting points by hand', () => runCommand(call('POST', '/api/domain/commands', { type: 'adjustPoints', childId: uuid, amount: 10, reason: 'Extra help', commandId: uuid }))],
     ['approving a reward', () => runCommand(call('POST', '/api/domain/commands', { type: 'transitionRedemption', redemptionId: uuid, decision: 'approve' }))],
   ];
 
