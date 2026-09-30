@@ -1,20 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { Square, Volume2 } from 'lucide-react';
 import { getReadAloudCopy } from '@/lib/i18n/read-aloud-copy';
 import { canSpeak, speak, stopSpeaking } from '@/lib/speech';
 import type { Language } from '@/types';
 
 export function ReadAloudButton({ text, language }: { readonly text: string; readonly language: Language }) {
-  const [available, setAvailable] = useState(false);
+  const available = useSyncExternalStore(() => () => undefined, () => canSpeak(), () => false);
   const [reading, setReading] = useState(false);
   const copy = getReadAloudCopy(language);
 
-  useEffect(() => {
-    setAvailable(canSpeak());
-    return () => stopSpeaking();
-  }, []);
+  useEffect(() => () => stopSpeaking(), []);
 
   if (!available) return null;
 
