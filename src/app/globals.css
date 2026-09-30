@@ -186,3 +186,25 @@ button, input, select, textarea {
     scroll-behavior: auto !important;
   }
 }
+
+/* Printable weekly chart and report: only the sheet is printed, on white paper. */
+.print-week-root { display: none; }
+@media print {
+  @page { margin: 14mm; }
+  body.printing-week > *:not(.print-week-root) { display: none !important; }
+  body.printing-week { background: #fff !important; color: #111 !important; }
+  body.printing-week .print-week-root {
+    display: block;
+    font-family: system-ui, sans-serif;
+    color: #111;
+  }
+  .print-week-root h1 { font-size: 22pt; margin: 0 0 4pt; }
+  .print-week-root .print-week-meta { font-size: 12pt; margin: 0 0 12pt; color: #333; }
+  .print-week-root table { width: 100%; border-collapse: collapse; font-size: 12pt; }
+  .print-week-root th, .print-week-root td { border: 1px solid #555; padding: 8pt 6pt; text-align: center; }
+  .print-week-root tbody th { text-align: left; font-weight: 600; }
+  .print-week-root td { font-size: 16pt; }
+  .print-week-root .print-week-off { color: #999; }
+  .print-week-root .print-week-summary { margin-top: 12pt; font-size: 12pt; font-weight: 600; }
+  .print-week-root .print-week-footer { margin-top: 18pt; font-size: 9pt; color: #666; }
+}
