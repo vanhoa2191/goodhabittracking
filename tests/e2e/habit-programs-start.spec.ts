@@ -44,6 +44,7 @@ test('a parent starts a program for a child in three steps and the habits arrive
 
   await dialog.getByTestId('program-confirm').click();
   await expect(page.getByTestId('program-started')).toBeVisible();
+  await expect(page.getByTestId('program-started')).toBeFocused();
   await expect(page.getByTestId('open-cue-editor').filter({ hasText: '✓' })).toHaveCount(tickedCount);
 });
 

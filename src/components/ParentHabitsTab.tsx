@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BookOpen, Edit2, Plus, Trash2 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
@@ -35,6 +35,10 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
   const [cueTarget, setCueTarget] = useState<{ activity: HabitActivity; title: string; childOptions: { id: string; name: string }[]; defaultChildId: string } | null>(null);
   const cueCopy = getHabitProgramsCopy(language);
   const [startedNotice, setStartedNotice] = useState(false);
+  const noticeRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    if (startedNotice && collection === 'inUse') noticeRef.current?.focus();
+  }, [startedNotice, collection]);
   const showPrograms = defaultExperienceFlags.habitPrograms && language === 'vi';
   const visibleActivities = activities.filter((activity) => selectedChildId === 'all' || activity.childId === null || activity.childId === selectedChildId);
   const weekStart = useSevenDayCutoff();
@@ -89,11 +93,14 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
       </div>
 
       {startedNotice && collection === 'inUse' && (
-        <p role="status" data-testid="program-started" className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">{cueCopy.programDone}</p>
+        <p ref={noticeRef} tabIndex={-1} role="status" data-testid="program-started" className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">{cueCopy.programDone}</p>
       )}
 
       {collection === 'programs' && showPrograms ? (
-        <HabitProgramsPanel onStarted={() => { setStartedNotice(true); setCollection('inUse'); }} />
+        <HabitProgramsPanel
+          onStarted={() => { setStartedNotice(true); setCollection('inUse'); }}
+          onNotConfirmed={() => { setMutationError(cueCopy.programUnconfirmed); setCollection('inUse'); }}
+        />
       ) : collection === 'library' ? (
         <section aria-label={navigationCopy.library}>
           {language === 'vi'

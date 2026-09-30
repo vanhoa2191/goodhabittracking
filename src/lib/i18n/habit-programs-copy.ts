@@ -85,6 +85,7 @@ export type HabitProgramsCopy = {
   programWorking: string;
   programFailed: string;
   programDone: string;
+  programUnconfirmed: string;
 };
 
 // Placeholders such as {child} are filled by fillTemplate in src/lib/habit-programs/suggestion-display.ts.
@@ -172,8 +173,9 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     programBack: "Quay lại",
     programConfirm: "Bắt đầu",
     programWorking: "Đang thêm...",
-    programFailed: "Chưa thêm được đầy đủ. Bạn thử lại nhé.",
+    programFailed: "Chưa lưu được đầy đủ các tín hiệu. Bạn thử lại nhé.",
     programDone: "Đã bắt đầu. Bạn xem trong mục Đang dùng.",
+    programUnconfirmed: "Chưa xác nhận được các thói quen đã thêm. Bạn xem mục Đang dùng, rồi thử lại nếu còn thiếu.",
   },
   en: {
     supportTitle: "How did they do it today?",
@@ -258,8 +260,9 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     programBack: "Back",
     programConfirm: "Start",
     programWorking: "Adding...",
-    programFailed: "Not everything could be added. Please try again.",
+    programFailed: "Not all cues could be saved. Please try again.",
     programDone: "Started. You can see them under In use.",
+    programUnconfirmed: "We could not confirm which habits were added. Check In use, then try again if any are missing.",
   },
   fr: {
     supportTitle: "Comment votre enfant s'y est-il pris aujourd'hui ?",
@@ -344,8 +347,9 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     programBack: "Retour",
     programConfirm: "Commencer",
     programWorking: "Ajout en cours...",
-    programFailed: "Tout n’a pas pu être ajouté. Veuillez réessayer.",
+    programFailed: "Tous les signaux n’ont pas pu être enregistrés. Veuillez réessayer.",
     programDone: "C’est parti. Vous pouvez retrouver les habitudes dans la rubrique En cours.",
+    programUnconfirmed: "Nous n’avons pas pu confirmer quelles habitudes ont été ajoutées. Consultez la section « Actifs », puis réessayez s’il en manque.",
   },
   de: {
     supportTitle: "Wie hat Ihr Kind es heute gemacht?",
@@ -430,8 +434,9 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     programBack: "Zurück",
     programConfirm: "Starten",
     programWorking: "Wird hinzugefügt...",
-    programFailed: "Es konnte nicht alles hinzugefügt werden. Bitte versuche es noch einmal.",
+    programFailed: "Nicht alle Hinweise konnten gespeichert werden. Bitte versuche es erneut.",
     programDone: "Gestartet. Du findest die Gewohnheiten unter In Nutzung.",
+    programUnconfirmed: "Wir konnten nicht bestätigen, welche Gewohnheiten hinzugefügt wurden. Schau im Bereich „In Verwendung“ nach und versuche es erneut, falls welche fehlen.",
   },
   it: {
     supportTitle: "Come ha fatto oggi?",
@@ -516,8 +521,9 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     programBack: "Indietro",
     programConfirm: "Inizia",
     programWorking: "Aggiunta in corso...",
-    programFailed: "Non è stato possibile aggiungere tutto. Riprova.",
+    programFailed: "Non è stato possibile salvare tutti i segnali. Riprova.",
     programDone: "Il programma è iniziato. Trovi le abitudini nella sezione In uso.",
+    programUnconfirmed: "Non è stato possibile confermare quali abitudini sono state aggiunte. Controlla la sezione «In uso» e riprova se ne manca qualcuna.",
   },
   es: {
     supportTitle: "¿Cómo lo hizo hoy?",
@@ -602,8 +608,9 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     programBack: "Atrás",
     programConfirm: "Empezar",
     programWorking: "Añadiendo...",
-    programFailed: "No se ha podido añadir todo. Inténtalo de nuevo.",
+    programFailed: "No se pudieron guardar todas las señales. Inténtalo de nuevo.",
     programDone: "El programa ha comenzado. Puedes ver los hábitos en la sección En uso.",
+    programUnconfirmed: "No pudimos confirmar qué hábitos se añadieron. Revisa la sección «En uso» y vuelve a intentarlo si falta alguno.",
   },
   zh: {
     supportTitle: "孩子今天是怎么完成的？",
@@ -688,8 +695,9 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     programBack: "返回",
     programConfirm: "开始",
     programWorking: "正在添加...",
-    programFailed: "未能全部添加，请再试一次。",
+    programFailed: "未能保存所有提示信号，请再试一次。",
     programDone: "已开始。您可以在“使用中”查看这些习惯。",
+    programUnconfirmed: "未能确认添加了哪些习惯。请查看“使用中”，如果有遗漏，请再试一次。",
   },
   ja: {
     supportTitle: "今日はどのようにできましたか？",
@@ -774,8 +782,9 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     programBack: "戻る",
     programConfirm: "始める",
     programWorking: "追加しています...",
-    programFailed: "すべての習慣を追加できませんでした。もう一度お試しください。",
+    programFailed: "すべてのきっかけを保存できませんでした。もう一度お試しください。",
     programDone: "始まりました。「使用中」で習慣を確認できます。",
+    programUnconfirmed: "どの習慣が追加されたか確認できませんでした。「使用中」を確認し、足りない習慣があればもう一度お試しください。",
   },
   ko: {
     supportTitle: "오늘은 어떻게 해냈나요?",
@@ -860,8 +869,9 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     programBack: "뒤로",
     programConfirm: "시작",
     programWorking: "추가하는 중...",
-    programFailed: "모두 추가하지 못했어요. 다시 시도해 주세요.",
+    programFailed: "모든 신호를 저장하지 못했어요. 다시 시도해 주세요.",
     programDone: "시작했어요. ‘사용 중’에서 습관을 확인할 수 있어요.",
+    programUnconfirmed: "어떤 습관이 추가되었는지 확인하지 못했어요. ‘사용 중’을 확인하고, 빠진 습관이 있으면 다시 시도해 주세요.",
   },
 };
 

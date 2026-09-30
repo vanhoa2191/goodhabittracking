@@ -10,6 +10,7 @@ import { newHabitLimit } from '@/lib/habit-programs/config';
 import { cuePlanInputSchema } from '@/lib/habit-programs/cue-plan-input';
 import { defaultStartHabitIds, startCueDefaults } from '@/lib/habit-programs/programs';
 import type { HabitProgram } from '@/lib/habit-programs/programs';
+import { settleWithin } from '@/lib/habit-programs/settle-within';
 import { fillTemplate } from '@/lib/habit-programs/suggestion-display';
 import type { ChildProfile, HabitActivity } from '@/types';
 
@@ -17,6 +18,7 @@ type Phase = 'edit' | 'adding' | 'saving' | 'failed';
 
 const STEPS = 3;
 const SAVE_WAIT_MS = 10_000;
+const REQUEST_LIMIT_MS = 20_000;
 const TEMPLATE_KEYS = ['cueTemplate1', 'cueTemplate2', 'cueTemplate3', 'cueTemplate4', 'cueTemplate5'] as const;
 const habitById = new Map(HABIT_FRAMEWORK_CATALOG.map((habit) => [habit.id, habit]));
 
@@ -26,10 +28,12 @@ type HabitProgramStartModalProps = {
   readonly ageYears: number;
   readonly onClose: () => void;
   readonly onStarted: () => void;
+  /** Adding the habits did not answer as saved. They may still have been added, so nothing is retried here. */
+  readonly onNotConfirmed: () => void;
 };
 
 /** Three steps: pick where to start, agree on a cue for each habit, confirm. Nothing is saved before the last step. */
-export function HabitProgramStartModal({ program, child, ageYears, onClose, onStarted }: HabitProgramStartModalProps) {
+export function HabitProgramStartModal({ program, child, ageYears, onClose, onStarted, onNotConfirmed }: HabitProgramStartModalProps) {
   const { activities, createActivities, saveHabitCuePlan } = useAppStore();
   const { language } = useTranslation();
   const copy = getHabitProgramsCopy(language);
@@ -56,12 +60,12 @@ export function HabitProgramStartModal({ program, child, ageYears, onClose, onSt
     setPhase('adding');
     const missing = chosen.filter((habitId) => !activityFor(habitId));
     if (missing.length > 0) {
-      const created = await createActivities(missing.flatMap((habitId) => {
+      const created = await settleWithin(createActivities(missing.flatMap((habitId) => {
         const habit = habitById.get(habitId);
         return habit ? [createActivityFromFrameworkHabit(habit, child.id)] : [];
-      }));
+      })), REQUEST_LIMIT_MS);
       if (!created) {
-        setPhase('failed');
+        onNotConfirmed();
         return;
       }
     }
@@ -81,7 +85,7 @@ export function HabitProgramStartModal({ program, child, ageYears, onClose, onSt
       let allSaved = true;
       for (const habitId of chosen) {
         const activity = activityFor(habitId);
-        const saved = activity ? await saveHabitCuePlan(activity.id, startCueDefaults(cueTexts[habitId] ?? ''), child.id) : false;
+        const saved = activity ? await settleWithin(saveHabitCuePlan(activity.id, startCueDefaults(cueTexts[habitId] ?? ''), child.id), REQUEST_LIMIT_MS) : false;
         if (!saved) allSaved = false;
       }
       savingRef.current = false;

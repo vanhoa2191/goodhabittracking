@@ -18,7 +18,7 @@ const habitNames = new Map(HABIT_FRAMEWORK_CATALOG.map((habit) => [habit.id, hab
 type Target = { readonly program: HabitProgram; readonly child: ChildProfile; readonly ageYears: number };
 
 /** Sets of habits to build step by step, offered per child by age. Starting one never happens without the parent's three steps. */
-export function HabitProgramsPanel({ onStarted }: { readonly onStarted: () => void }) {
+export function HabitProgramsPanel({ onStarted, onNotConfirmed }: { readonly onStarted: () => void; readonly onNotConfirmed: () => void }) {
   const { profiles } = useAppStore();
   const { language } = useTranslation();
   const copy = getHabitProgramsCopy(language);
@@ -68,6 +68,7 @@ export function HabitProgramsPanel({ onStarted }: { readonly onStarted: () => vo
           ageYears={target.ageYears}
           onClose={() => setTarget(null)}
           onStarted={() => { setTarget(null); onStarted(); }}
+          onNotConfirmed={() => { setTarget(null); onNotConfirmed(); }}
         />
       )}
     </section>
