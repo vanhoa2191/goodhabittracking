@@ -244,6 +244,57 @@ try {
     'Parent approval failed.',
   );
 
+  const cueSave = await jsonRequest('/api/domain/experience', {
+    method: 'POST',
+    headers: parentHeaders,
+    body: JSON.stringify({
+      type: 'saveCuePlan', childId, activityId, cueKind: 'event', cueText: 'After dinner, I do it',
+      cueTime: null, placeText: null, weekendVariantText: null,
+    }),
+  });
+  assert(
+    cueSave.response.status === 200 && cueSave.body?.cuePlan?.activity_id === activityId,
+    'Parent cue plan save failed.',
+  );
+  const parentSupport = await jsonRequest('/api/domain/experience', {
+    method: 'POST',
+    headers: parentHeaders,
+    body: JSON.stringify({ type: 'recordSupport', logId: completionId, level: 'prompted' }),
+  });
+  assert(
+    parentSupport.response.status === 200 && parentSupport.body?.observation?.support_level === 'prompted',
+    'Parent support record failed.',
+  );
+  const childPrograms = await jsonRequest('/api/child/habit-programs', { headers: childHeaders });
+  assert(
+    childPrograms.response.status === 200
+      && childPrograms.body?.cuePlans?.length === 1
+      && childPrograms.body?.supportObservations?.length === 1,
+    'Child could not read its own habit program rows.',
+  );
+  const childSupport = await jsonRequest('/api/child/habit-programs', {
+    method: 'POST',
+    headers: childHeaders,
+    body: JSON.stringify({ logId: completionId, level: 'alone' }),
+  });
+  assert(
+    childSupport.response.status === 200
+      && childSupport.body?.observation?.support_level === 'alone'
+      && childSupport.body?.observation?.recorded_by === 'child',
+    'Child support record failed.',
+  );
+  const parentExperience = await jsonRequest('/api/domain/experience', { headers: parentHeaders });
+  assert(
+    parentExperience.response.status === 200
+      && parentExperience.body?.cuePlans?.some((plan) => plan.activity_id === activityId)
+      && parentExperience.body?.supportObservations?.some(
+        (row) => row.log_id === completionId && row.support_level === 'alone',
+      ),
+    'Parent could not read the habit program rows back.',
+  );
+  const unauthenticatedPrograms = await jsonRequest('/api/child/habit-programs');
+  assert(unauthenticatedPrograms.response.status === 401, 'Habit programs answered without a child session.');
+
   const redemption = await jsonRequest('/api/child/commands', {
     method: 'POST',
     headers: childHeaders,
@@ -297,10 +348,18 @@ try {
   assert(familyDelete.response.status === 200, 'Owner family deletion failed.');
   const deletedFamily = await admin.from('families').select('id').eq('id', familyId).maybeSingle();
   assert(!deletedFamily.error && deletedFamily.data === null, 'Deleted family remained accessible.');
+  const leftovers = await Promise.all([
+    admin.from('habit_cue_plans').select('child_id', { count: 'exact', head: true }).eq('child_id', childId),
+    admin.from('habit_support_observations').select('log_id', { count: 'exact', head: true }).eq('log_id', completionId),
+  ]);
+  assert(
+    leftovers.every(({ error, count }) => !error && count === 0),
+    'Habit program rows survived family deletion.',
+  );
   familyId = undefined;
 
   process.stdout.write(
-    'Live family lifecycle passed: persistent pairing, rotation, child completion, parent approval, reward delivery, reconnect, revoke, and owner deletion.\n',
+    'Live family lifecycle passed: persistent pairing, rotation, child completion, parent approval, reward delivery, habit programs, reconnect, revoke, and owner deletion.\n',
   );
 } finally {
   await cleanup();
