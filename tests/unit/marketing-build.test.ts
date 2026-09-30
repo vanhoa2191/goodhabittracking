@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -64,6 +65,20 @@ describe('marketing static artifact', () => {
     expect(html).not.toMatch(/supabase/i);
     expect(html).not.toContain('serviceWorker');
     expect(html).not.toContain('manifest.webmanifest');
+  });
+
+  it('ships security headers that allow only the page\'s own inline script by hash', async () => {
+    const { outputDir, html } = await buildFixture();
+    const headers = await readFile(join(outputDir, '_headers'), 'utf8');
+    for (const name of ['Strict-Transport-Security', 'X-Content-Type-Options: nosniff', 'X-Frame-Options: DENY', 'Referrer-Policy', 'Permissions-Policy']) {
+      expect(headers).toContain(name);
+    }
+    expect(headers).toContain("frame-ancestors 'none'");
+    expect(headers).not.toMatch(/script-src[^;]*unsafe-inline/);
+    const inline = html.match(/<script>([\s\S]*?)<\/script>/);
+    expect(inline).not.toBeNull();
+    const hash = createHash('sha256').update(inline![1]).digest('base64');
+    expect(headers).toContain(`'sha256-${hash}'`);
   });
 
   it('builds every public information route as a self-contained static page', async () => {
