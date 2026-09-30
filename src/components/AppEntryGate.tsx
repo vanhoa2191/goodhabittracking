@@ -5,6 +5,7 @@ import { ArrowRight, Camera, House, LogIn, PlayCircle, ShieldCheck } from 'lucid
 import { BrandMark } from '@/components/BrandMark';
 import { appEntryCopy } from '@/lib/i18n/app-entry-copy';
 import type { Language } from '@/types';
+import { EmailCodeSignIn } from '@/components/EmailCodeSignIn';
 
 interface AppEntryGateProps {
   readonly isLoading: boolean;
@@ -56,6 +57,8 @@ export function AppEntryGate({
               <span className="flex items-center gap-3"><LogIn aria-hidden="true" className="h-5 w-5" />{isLoading ? copy.loading : copy.parentLogin}</span>
               <ArrowRight aria-hidden="true" className="h-5 w-5" />
             </button>
+
+            <EmailCodeSignIn language={language} />
 
             <button
               type="button"

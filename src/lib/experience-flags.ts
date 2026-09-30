@@ -11,6 +11,7 @@ export const defaultExperienceFlags = {
   dailyJournal: process.env.NEXT_PUBLIC_DAILY_JOURNAL === 'true',
   parentReengagement: process.env.NEXT_PUBLIC_PARENT_REENGAGEMENT === 'true',
   habitPrograms: process.env.NEXT_PUBLIC_HABIT_PROGRAMS === 'true',
+  emailCodeLogin: process.env.NEXT_PUBLIC_EMAIL_CODE_LOGIN === 'true',
 } as const;
 
 export type ExperienceFlag = keyof typeof defaultExperienceFlags;
@@ -27,6 +28,7 @@ const experienceFlagOverridesSchema = z.object({
   dailyJournal: z.boolean().optional(),
   parentReengagement: z.boolean().optional(),
   habitPrograms: z.boolean().optional(),
+  emailCodeLogin: z.boolean().optional(),
 });
 
 export function resolveExperienceFlags(input: unknown): ExperienceFlags {
