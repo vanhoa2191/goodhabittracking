@@ -91,7 +91,8 @@ export function overloadSuggestion(phases: readonly HabitPhase[], ageYears: numb
 }
 
 export type HabitSuggestion = {
-  readonly habitId: string;
+  /** The habit the suggestion is about, or null when it concerns the child as a whole. */
+  readonly habitId: string | null;
   readonly suggestion: Suggestion;
 };
 
