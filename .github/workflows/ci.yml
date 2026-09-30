@@ -45,6 +45,11 @@ jobs:
       github.event_name == 'push' &&
       github.ref == 'refs/heads/main'
     needs: [quality, browser]
+    # Deploys of consecutive commits must not overlap: when two runs finish close together the older commit could
+    # otherwise upload last and replace the newer build. Waiting runs are superseded by the newest, never cancelled mid-upload.
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
@@ -62,7 +67,14 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          GH_TOKEN: ${{ github.token }}
         run: |
+          latest_main="$(gh api "repos/$GITHUB_REPOSITORY/commits/main" --jq .sha)"
+          if [ "$latest_main" != "$GITHUB_SHA" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Deployment skipped: a newer commit is already on main ($latest_main); it deploys instead."
+            exit 0
+          fi
           if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ] && [ -n "$NEXT_PUBLIC_SUPABASE_URL" ] && [ -n "$NEXT_PUBLIC_SUPABASE_ANON_KEY" ]; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
           else
