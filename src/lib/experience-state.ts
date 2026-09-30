@@ -51,6 +51,32 @@ const deferredTaskRow = z.object({
   local_date: z.iso.date(),
   deferred_at: timestamp,
 });
+const supportObservationRow = z.object({
+  log_id: uuid,
+  family_id: uuid,
+  child_id: uuid,
+  activity_id: uuid,
+  support_level: z.enum(['alone', 'prompted', 'together']),
+  recorded_by: z.enum(['parent', 'child']),
+  recorded_at: timestamp,
+});
+const cuePlanShape = {
+  family_id: uuid,
+  child_id: uuid,
+  activity_id: uuid,
+  cue_kind: z.enum(['event', 'time']),
+  cue_text: z.string().trim().min(1).max(200),
+  cue_time: z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/).nullable(),
+  place_text: z.string().max(120).nullable(),
+  weekend_variant_text: z.string().max(200).nullable(),
+  created_at: timestamp,
+  updated_at: timestamp,
+};
+const timeMatchesKind = (plan: { cue_kind: string; cue_time: string | null }) => (
+  (plan.cue_kind === 'time') === (plan.cue_time !== null)
+);
+const timeMatchesKindMessage = { message: 'A time cue needs a time of day and an event cue must not have one.' };
+const cuePlanRow = z.object(cuePlanShape).refine(timeMatchesKind, timeMatchesKindMessage);
 
 export type ChildEngagement = z.infer<typeof childEngagementRow>;
 export type FamilyEngagementSettings = z.infer<typeof familySettingsRow>;
@@ -59,6 +85,8 @@ export type DailyMascotLetter = z.infer<typeof dailyLetterRow>;
 export type SecretQuest = z.infer<typeof secretQuestRow>;
 export type ChildWishlist = z.infer<typeof wishlistRow>;
 export type DeferredTask = z.infer<typeof deferredTaskRow>;
+export type SupportObservation = z.infer<typeof supportObservationRow>;
+export type CuePlan = z.infer<typeof cuePlanRow>;
 
 export function parseChildWishlist(input: unknown): ChildWishlist {
   return wishlistRow.parse(input);
@@ -72,6 +100,22 @@ export function parseDeferredTasks(input: unknown): DeferredTask[] {
   return z.array(deferredTaskRow).parse(input);
 }
 
+export function parseSupportObservation(input: unknown): SupportObservation {
+  return supportObservationRow.parse(input);
+}
+
+export function parseSupportObservations(input: unknown): SupportObservation[] {
+  return z.array(supportObservationRow).parse(input);
+}
+
+export function parseCuePlan(input: unknown): CuePlan {
+  return cuePlanRow.parse(input);
+}
+
+export function parseCuePlans(input: unknown): CuePlan[] {
+  return z.array(cuePlanRow).parse(input);
+}
+
 export type ExperienceState = {
   readonly children: readonly ChildEngagement[];
   readonly settings: FamilyEngagementSettings | null;
@@ -79,6 +123,8 @@ export type ExperienceState = {
   readonly quests: readonly SecretQuest[];
   readonly wishlists: readonly ChildWishlist[];
   readonly deferredTasks: readonly DeferredTask[];
+  readonly supportObservations: readonly SupportObservation[];
+  readonly cuePlans: readonly CuePlan[];
   readonly journalEntries: readonly JournalEntry[];
   readonly cityPurchases: readonly CityPurchase[];
 };
@@ -90,6 +136,8 @@ export const emptyExperienceState: ExperienceState = {
   quests: [],
   wishlists: [],
   deferredTasks: [],
+  supportObservations: [],
+  cuePlans: [],
   journalEntries: [],
   cityPurchases: [],
 };
@@ -101,6 +149,8 @@ const experienceRows = z.object({
   quests: z.array(secretQuestRow),
   wishlists: z.array(wishlistRow),
   deferredTasks: z.array(deferredTaskRow).default([]),
+  supportObservations: z.array(supportObservationRow).default([]),
+  cuePlans: z.array(cuePlanRow).default([]),
   journalEntries: z.array(journalEntrySchema).default([]),
   cityPurchases: z.array(cityPurchaseSchema).default([]),
 });
@@ -112,6 +162,11 @@ const demoExperienceRows = experienceRows.extend({
   quests: z.array(secretQuestRow.extend({ child_id: demoChildId })),
   wishlists: z.array(wishlistRow.extend({ child_id: demoChildId, reward_id: z.string().min(1) })),
   deferredTasks: z.array(deferredTaskRow.extend({ child_id: demoChildId, activity_id: z.string().min(1) })).default([]),
+  supportObservations: z.array(supportObservationRow.extend({
+    log_id: z.string().min(1), child_id: demoChildId, activity_id: z.string().min(1),
+  })).default([]),
+  cuePlans: z.array(z.object({ ...cuePlanShape, child_id: demoChildId, activity_id: z.string().min(1) })
+    .refine(timeMatchesKind, timeMatchesKindMessage)).default([]),
   journalEntries: z.array(journalEntrySchema.extend({ child_id: demoChildId })).default([]),
   cityPurchases: z.array(cityPurchaseSchema.extend({ child_id: demoChildId })).default([]),
 });
@@ -124,6 +179,8 @@ export function parseExperienceState(input: unknown, familyId: string, isDemo = 
     ...state.quests,
     ...state.wishlists,
     ...state.deferredTasks,
+    ...state.supportObservations,
+    ...state.cuePlans,
     ...state.journalEntries,
     ...state.cityPurchases,
     ...(state.settings ? [state.settings] : []),
@@ -168,3 +225,36 @@ export function setDeferredTask(
         ),
   };
 }
+
+export function setSupportObservation(state: ExperienceState, observation: SupportObservation): ExperienceState {
+  const existing = state.supportObservations.find((row) => row.log_id === observation.log_id);
+  if (existing && JSON.stringify(existing) === JSON.stringify(observation)) return state;
+  return {
+    ...state,
+    supportObservations: [
+      ...state.supportObservations.filter((row) => row.log_id !== observation.log_id),
+      observation,
+    ],
+  };
+}
+
+export function setCuePlan(state: ExperienceState, plan: CuePlan): ExperienceState {
+  return {
+    ...state,
+    cuePlans: [
+      ...state.cuePlans.filter((row) => row.child_id !== plan.child_id || row.activity_id !== plan.activity_id),
+      plan,
+    ],
+  };
+}
+
+/** The recorded support level of each of one child's logs, ready for buildOpportunities. */
+export function supportLevelsByLogId(
+  state: ExperienceState,
+  childId: string,
+): Map<string, SupportObservation['support_level']> {
+  return new Map(state.supportObservations
+    .filter((row) => row.child_id === childId)
+    .map((row) => [row.log_id, row.support_level] as const));
+}
+

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
-import { parseDeferredTask, parseExperienceState } from '@/lib/experience-state';
+import { parseCuePlan, parseDeferredTask, parseExperienceState, parseSupportObservation } from '@/lib/experience-state';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export const runtime = 'nodejs';
@@ -16,22 +16,46 @@ const commandSchema = z.discriminatedUnion('type', [
     date: z.iso.date(),
     deferred: z.boolean(),
   }).strict(),
+  z.object({
+    type: z.literal('recordSupport'),
+    logId: z.string().uuid(),
+    level: z.enum(['alone', 'prompted', 'together']),
+  }).strict(),
+  z.object({
+    type: z.literal('saveCuePlan'),
+    childId: z.string().uuid(),
+    activityId: z.string().uuid(),
+    cueKind: z.enum(['event', 'time']),
+    cueText: z.string().trim().min(1).max(200),
+    cueTime: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).nullable(),
+    placeText: z.string().trim().max(120).nullable(),
+    weekendVariantText: z.string().trim().max(200).nullable(),
+  }).strict().refine((command) => (command.cueKind === 'time') === (command.cueTime !== null)),
   z.object({ type: z.literal('pauseFamily') }),
   z.object({ type: z.literal('resumeFamily') }),
 ]);
+
+/** PostgREST reports an unknown table as PGRST205 and PostgreSQL as 42P01. */
+function isMissingTable(error: { code?: string }): boolean {
+  return error.code === 'PGRST205' || error.code === '42P01';
+}
 
 export async function GET() {
   const parent = await getParentContext();
   if (!parent) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
 
   const supabase = await createServerSupabaseClient();
-  const [children, settings, letters, quests, wishlists, deferredTasks, journalEntries, cityPurchases] = await Promise.all([
+  const [
+    children, settings, letters, quests, wishlists, deferredTasks, supportObservations, cuePlans, journalEntries, cityPurchases,
+  ] = await Promise.all([
     supabase.from('child_engagement_profiles').select('*').eq('family_id', parent.familyId),
     supabase.from('family_engagement_settings').select('*').eq('family_id', parent.familyId).maybeSingle(),
     supabase.from('daily_mascot_letters').select('*').eq('family_id', parent.familyId),
     supabase.from('secret_quests').select('*').eq('family_id', parent.familyId),
     supabase.from('child_wishlists').select('*').eq('family_id', parent.familyId),
     supabase.from('child_task_deferrals').select('*').eq('family_id', parent.familyId),
+    supabase.from('habit_support_observations').select('*').eq('family_id', parent.familyId),
+    supabase.from('habit_cue_plans').select('*').eq('family_id', parent.familyId),
     defaultExperienceFlags.dailyJournal
       ? supabase.from('child_journal_entries').select('*').eq('family_id', parent.familyId)
       : Promise.resolve({ data: [], error: null }),
@@ -39,7 +63,10 @@ export async function GET() {
       ? supabase.from('child_city_purchases').select('*').eq('family_id', parent.familyId)
       : Promise.resolve({ data: [], error: null }),
   ]);
-  if ([children, settings, letters, quests, wishlists, deferredTasks, journalEntries, cityPurchases].some((result) => result.error)) {
+  // Until the habit program migration is applied, its tables do not exist; that must not break the rest of the family.
+  const results = [children, settings, letters, quests, wishlists, deferredTasks, journalEntries, cityPurchases];
+  const habitProgramResults = [supportObservations, cuePlans];
+  if (results.some((result) => result.error) || habitProgramResults.some((result) => result.error && !isMissingTable(result.error))) {
     return NextResponse.json({ error: 'Experience state could not be loaded.' }, { status: 503 });
   }
 
@@ -50,6 +77,8 @@ export async function GET() {
     quests: quests.data ?? [],
     wishlists: wishlists.data ?? [],
     deferredTasks: deferredTasks.data ?? [],
+    supportObservations: supportObservations.error ? [] : supportObservations.data ?? [],
+    cuePlans: cuePlans.error ? [] : cuePlans.data ?? [],
     journalEntries: journalEntries.data ?? [],
     cityPurchases: cityPurchases.data ?? [],
   }, parent.familyId);
@@ -115,6 +144,57 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true, changed: saved.data.changed, deferredTask });
       } catch {
         return NextResponse.json({ error: 'Task could not be saved.' }, { status: 503 });
+      }
+    }
+    case 'recordSupport': {
+      const { data, error } = await supabase.rpc('set_parent_habit_support', {
+        target_family_id: parent.familyId,
+        target_log_id: command.logId,
+        target_level: command.level,
+      });
+      if (error) return NextResponse.json({ error: 'Support level could not be saved.' }, { status: 503 });
+      if (data?.status === 'session_invalid') return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
+      if (data?.status === 'log_unavailable') return NextResponse.json({ error: 'Habit record is unavailable.' }, { status: 409 });
+      const saved = z.object({ status: z.literal('saved'), changed: z.boolean(), observation: z.unknown() }).safeParse(data);
+      if (!saved.success) return NextResponse.json({ error: 'Support level could not be saved.' }, { status: 503 });
+      try {
+        const observation = parseSupportObservation(saved.data.observation);
+        if (observation.family_id !== parent.familyId
+          || observation.log_id !== command.logId
+          || observation.support_level !== command.level) {
+          return NextResponse.json({ error: 'Support level could not be saved.' }, { status: 503 });
+        }
+        return NextResponse.json({ success: true, changed: saved.data.changed, observation });
+      } catch {
+        return NextResponse.json({ error: 'Support level could not be saved.' }, { status: 503 });
+      }
+    }
+    case 'saveCuePlan': {
+      const { data, error } = await supabase.rpc('save_parent_habit_cue_plan', {
+        target_family_id: parent.familyId,
+        target_child_id: command.childId,
+        target_activity_id: command.activityId,
+        target_cue_kind: command.cueKind,
+        target_cue_text: command.cueText,
+        target_cue_time: command.cueTime,
+        target_place_text: command.placeText,
+        target_weekend_variant_text: command.weekendVariantText,
+      });
+      if (error) return NextResponse.json({ error: 'Cue plan could not be saved.' }, { status: 503 });
+      if (data?.status === 'session_invalid') return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
+      if (data?.status === 'plan_unavailable') return NextResponse.json({ error: 'Child or habit is unavailable.' }, { status: 409 });
+      const saved = z.object({ status: z.literal('saved'), cuePlan: z.unknown() }).safeParse(data);
+      if (!saved.success) return NextResponse.json({ error: 'Cue plan could not be saved.' }, { status: 503 });
+      try {
+        const cuePlan = parseCuePlan(saved.data.cuePlan);
+        if (cuePlan.family_id !== parent.familyId
+          || cuePlan.child_id !== command.childId
+          || cuePlan.activity_id !== command.activityId) {
+          return NextResponse.json({ error: 'Cue plan could not be saved.' }, { status: 503 });
+        }
+        return NextResponse.json({ success: true, cuePlan });
+      } catch {
+        return NextResponse.json({ error: 'Cue plan could not be saved.' }, { status: 503 });
       }
     }
     case 'pauseFamily':
