@@ -3,6 +3,7 @@
 import React, { useCallback, useState } from 'react';
 import { Check, Compass, X } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { useTranslation } from '@/lib/i18n/context';
 import { MONTHLY_JOURNEY_PLANS, WEEKLY_JOURNEY_PLANS } from '@/lib/constants';
 import type { HabitActivity, JourneyPlan } from '@/types';
@@ -82,6 +83,11 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
           <div>
             <h3 className="flex items-center gap-2 text-lg font-black text-sand-900 dark:text-slate-100"><Compass className="size-5 text-indigo-600" />{t.journeys}</h3>
             <p className="mt-1 text-sm text-sand-700 dark:text-slate-300">{copy.description}</p>
+            {defaultExperienceFlags.habitPrograms && language === 'vi' && (
+              <p data-testid="journeys-programs-note" className="mt-2 rounded-2xl bg-indigo-50 p-3 text-sm font-semibold text-indigo-900 dark:bg-indigo-950/30 dark:text-indigo-200">
+                Đây là lộ trình cố định theo tuần và tháng. Chương trình mới, đi theo nhịp riêng của từng bé, nằm ở Thiết kế › Quản lý việc › Chương trình.
+              </p>
+            )}
           </div>
           <div className="flex flex-wrap gap-1 rounded-2xl bg-sand-100 p-1 dark:bg-zinc-900" role="group" aria-label={t.journeys}>
             <button type="button" onClick={() => setJourneyType('weekly')} aria-pressed={journeyType === 'weekly'} className={`min-h-11 rounded-xl px-4 text-sm font-bold ${journeyType === 'weekly' ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300' : 'text-sand-700 hover:text-sand-900 dark:text-slate-300'}`}>{t.weeklyRoadmap}</button>
