@@ -1,5 +1,7 @@
 'use client';
 
+import { getRewardStockCopy } from '@/lib/i18n/reward-mutation-copy';
+
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
@@ -752,6 +754,7 @@ export function KidDashboard() {
               .filter((r) => r.isActive)
               .map((rew) => {
                 const canAfford = activeChild.points >= rew.costPoints;
+                const outOfStock = rew.stock === 0;
                 const isSelectedGoal = wishlistRewardId === rew.id;
 
                 return (
@@ -804,15 +807,15 @@ export function KidDashboard() {
 
                       <button
                         onClick={() => claimReward(rew.id)}
-                        disabled={!canAfford}
+                        disabled={!canAfford || outOfStock}
                         className={`flex-1 min-h-[44px] py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
-                          canAfford
+                          canAfford && !outOfStock
                             ? 'bg-gradient-to-r from-pink-500 to-indigo-600 hover:from-pink-600 hover:to-indigo-700 text-white shadow-xs cursor-pointer active:scale-95'
                             : 'bg-slate-100 dark:bg-zinc-800 text-slate-400 cursor-not-allowed opacity-70'
                         }`}
                       >
                         <Gift className="w-3.5 h-3.5" />
-                        {canAfford ? t.claimReward : t.notEnoughPoints}
+                        {outOfStock ? getRewardStockCopy(language) : canAfford ? t.claimReward : t.notEnoughPoints}
                       </button>
                     </div>
                   </div>

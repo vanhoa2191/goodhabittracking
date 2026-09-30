@@ -4,24 +4,8 @@ import { useEffect, useRef, type RefObject } from 'react';
 
 const FOCUSABLE = 'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function useModalFocus(
-  isOpen: boolean,
-  onClose: () => void,
-  dialogRef?: RefObject<HTMLElement | null>
-) {
-  const onCloseRef = useRef(onClose);
-
-  useEffect(() => {
-    onCloseRef.current = onClose;
-  }, [onClose]);
-
-  useEffect(() => {
-    if (!isOpen) return;
+export function activateModalFocus(dialog: HTMLElement, onClose: () => void) {
     const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const dialog = dialogRef?.current
-      ?? Array.from(document.querySelectorAll<HTMLElement>('[role="dialog"][aria-modal="true"]')).at(-1);
-    if (!dialog) return;
-
     const focusable = () => Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE));
     const focusInitialControl = () => (focusable()[0] ?? dialog).focus();
     focusInitialControl();
@@ -35,7 +19,7 @@ export function useModalFocus(
 
       if (event.key === 'Escape') {
         event.preventDefault();
-        onCloseRef.current();
+        onClose();
         return;
       }
       if (event.key !== 'Tab') return;
@@ -63,5 +47,25 @@ export function useModalFocus(
       document.removeEventListener('keydown', handleKeyDown);
       if (previous?.isConnected) previous.focus();
     };
+}
+
+export function useModalFocus(
+  isOpen: boolean,
+  onClose: () => void,
+  dialogRef?: RefObject<HTMLElement | null>
+) {
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const dialog = dialogRef?.current
+      ?? Array.from(document.querySelectorAll<HTMLElement>('[role="dialog"][aria-modal="true"]')).at(-1);
+    if (!dialog) return;
+
+    return activateModalFocus(dialog, () => onCloseRef.current());
   }, [dialogRef, isOpen]);
 }

@@ -217,6 +217,12 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
       if (!claimed) return false;
       dependencies.setProfiles(claimed.profiles);
       dependencies.setRedemptions(claimed.redemptions);
+      if (reward.stock > 0) {
+        dependencies.setRewards((previous) => previous.map((candidate) =>
+          candidate.id === rewardId && candidate.stock > 0
+            ? { ...candidate, stock: candidate.stock - 1 }
+            : candidate));
+      }
       sounds.playRewardRedeem();
       confetti({
         particleCount: 60,

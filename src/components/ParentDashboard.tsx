@@ -34,6 +34,7 @@ import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
 import { useModalFocus } from '@/lib/use-modal-focus';
 import { MASCOTS, getMascotLabel } from '@/lib/mascots';
 import { MascotAvatar } from './MascotAvatar';
+import { ModalShell } from './ui/ModalShell';
 
 export function ParentDashboard() {
   const {
@@ -346,8 +347,14 @@ export function ParentDashboard() {
 
       {/* CREATE / EDIT HABIT MODAL */}
       {isHabitModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-          <div role="dialog" aria-modal="true" aria-label={editingHabit ? t.editHabitTitle : t.createHabitTitle} className="relative w-full max-w-md max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
+        <ModalShell
+          isOpen={isHabitModalOpen}
+          label={editingHabit ? t.editHabitTitle : t.createHabitTitle}
+          onClose={() => setIsHabitModalOpen(false)}
+          mobileSheet={false}
+          overlayClassName="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto"
+          className="max-w-md! max-h-[90dvh]! sm:max-h-[85vh]! rounded-2xl! sm:rounded-3xl! pb-0! my-auto"
+        >
             {/* Header */}
             <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
               <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center gap-2">
@@ -367,17 +374,20 @@ export function ParentDashboard() {
             {/* Scrollable Body */}
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
               <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                <label htmlFor="habit-title" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                   {t.titleLabel} *
                 </label>
+                <label htmlFor="habit-icon" className="sr-only">{t.avatar}</label>
                 <div className="flex gap-2">
                   <input
+                    id="habit-icon"
                     type="text"
                     value={habitForm.icon}
                     onChange={(e) => setHabitForm({ ...habitForm, icon: e.target.value })}
                     className="w-12 text-center text-xl py-2 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800"
                   />
                   <input
+                    id="habit-title"
                     type="text"
                     placeholder={copy.habitTitlePlaceholder}
                     value={habitForm.title}
@@ -388,10 +398,11 @@ export function ParentDashboard() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                <label htmlFor="habit-description" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                   {copy.habitDescription}
                 </label>
                 <input
+                  id="habit-description"
                   type="text"
                   placeholder={copy.habitDescriptionPlaceholder}
                   value={habitForm.description}
@@ -401,10 +412,11 @@ export function ParentDashboard() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                <label htmlFor="habit-instructions" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                   {language === 'vi' ? 'Cách làm / hướng dẫn cho con' : 'How to do it'}
                 </label>
                 <textarea
+                  id="habit-instructions"
                   value={habitForm.instructions}
                   onChange={(e) => setHabitForm({ ...habitForm, instructions: e.target.value })}
                   rows={3}
@@ -415,10 +427,11 @@ export function ParentDashboard() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <label htmlFor="habit-category" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                     {t.categoryLabel}
                   </label>
                   <select
+                    id="habit-category"
                     value={habitForm.category}
                     onChange={(e) =>
                       setHabitForm({ ...habitForm, category: e.target.value as ActivityCategory })
@@ -441,10 +454,11 @@ export function ParentDashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <label htmlFor="habit-points" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                     {t.pointsLabel}
                   </label>
                   <input
+                    id="habit-points"
                     type="number"
                     min={1}
                     value={habitForm.points}
@@ -456,10 +470,11 @@ export function ParentDashboard() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <label htmlFor="habit-time-of-day" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                     {t.timeOfDayLabel}
                   </label>
                   <select
+                    id="habit-time-of-day"
                     value={habitForm.timeOfDay}
                     onChange={(e) =>
                       setHabitForm({ ...habitForm, timeOfDay: e.target.value as TimeOfDay })
@@ -474,10 +489,11 @@ export function ParentDashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <label htmlFor="habit-recurrence" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                     {t.recurrenceLabel}
                   </label>
                   <select
+                    id="habit-recurrence"
                     value={habitForm.recurrenceType}
                     onChange={(e) =>
                       setHabitForm({ ...habitForm, recurrenceType: e.target.value as RecurrenceType })
@@ -494,10 +510,11 @@ export function ParentDashboard() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <label htmlFor="habit-duration" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                     {copy.durationMinutes}
                   </label>
                   <input
+                    id="habit-duration"
                     type="number"
                     min={0}
                     value={habitForm.durationMinutes}
@@ -509,10 +526,11 @@ export function ParentDashboard() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <label htmlFor="habit-child" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                     {t.assignLabel}
                   </label>
                   <select
+                    id="habit-child"
                     value={habitForm.childId || ''}
                     onChange={(e) =>
                       setHabitForm({ ...habitForm, childId: e.target.value || null })
@@ -568,8 +586,7 @@ export function ParentDashboard() {
                 {t.save}
               </button>
             </div>
-          </div>
-        </div>
+        </ModalShell>
       )}
 
       {/* CREATE / EDIT CHILD MODAL */}
@@ -816,8 +833,15 @@ export function ParentDashboard() {
 
       {/* ADJUST POINTS MODAL */}
       {isAdjustPointsModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-          <div className="relative w-full max-w-sm max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
+        <ModalShell
+          isOpen={isAdjustPointsModalOpen}
+          label={t.adjustPoints}
+          onClose={() => setIsAdjustPointsModalOpen(false)}
+          maxWidth="sm"
+          mobileSheet={false}
+          overlayClassName="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto"
+          className="max-w-sm! max-h-[90dvh]! sm:max-h-[85vh]! rounded-2xl! sm:rounded-3xl! pb-0! my-auto"
+        >
             {/* Header */}
             <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
               <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center gap-2">
@@ -837,10 +861,11 @@ export function ParentDashboard() {
             {/* Scrollable Body */}
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
               <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                <label htmlFor="adjust-points-amount" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                   {copy.adjustAmount}
                 </label>
                 <input
+                  id="adjust-points-amount"
                   type="number"
                   value={adjustAmount}
                   onChange={(e) => setAdjustAmount(Number(e.target.value))}
@@ -849,10 +874,11 @@ export function ParentDashboard() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                <label htmlFor="adjust-points-reason" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
                   {t.adjustPointsReason}
                 </label>
                 <input
+                  id="adjust-points-reason"
                   type="text"
                   placeholder={copy.adjustReasonPlaceholder}
                   value={adjustReason}
@@ -882,8 +908,7 @@ export function ParentDashboard() {
                 {t.confirm}
               </button>
             </div>
-          </div>
-        </div>
+        </ModalShell>
       )}
     </div>
   );

@@ -25,6 +25,7 @@ interface ModalShellProps {
   readonly maxWidth?: ModalWidth;
   readonly mobileSheet?: boolean;
   readonly onClose: () => void;
+  readonly overlayClassName?: string;
 }
 
 let bodyLockCount = 0;
@@ -51,6 +52,7 @@ export function ModalShell({
   maxWidth = 'md',
   mobileSheet = true,
   onClose,
+  overlayClassName,
 }: ModalShellProps) {
   const isMounted = useSyncExternalStore(() => () => undefined, () => true, () => false);
   const dialogRef = useRef<HTMLElement>(null);
@@ -71,7 +73,7 @@ export function ModalShell({
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-50 grid min-h-dvh overflow-hidden bg-slate-950/55 backdrop-blur-sm ${mobilePosition}`}
+      className={overlayClassName ?? `fixed inset-0 z-50 grid min-h-dvh overflow-hidden bg-slate-950/55 backdrop-blur-sm ${mobilePosition}`}
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}

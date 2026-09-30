@@ -135,7 +135,7 @@ export function claimLocalReward(
   requestedAt: string,
 ): RedemptionState | null {
   const child = profiles.find((profile) => profile.id === childId);
-  if (!child || child.points < reward.costPoints) return null;
+  if (!child || child.points < reward.costPoints || reward.stock === 0) return null;
 
   const redemption: Redemption = {
     id: redemptionId,

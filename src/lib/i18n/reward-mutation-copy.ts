@@ -7,6 +7,15 @@ type RewardMutationCopy = {
   readonly saving: string;
 };
 
+const OUT_OF_STOCK: Record<Language, string> = {
+  vi: 'Hết quà', en: 'Out of stock', fr: 'Épuisé', de: 'Ausverkauft',
+  it: 'Esaurito', es: 'Agotado', zh: '已售罄', ja: '在庫切れ', ko: '품절',
+};
+
+export function getRewardStockCopy(language: Language): string {
+  return OUT_OF_STOCK[language];
+}
+
 const COPY: Record<Language, RewardMutationCopy> = {
   vi: { deleteConfirm: (title) => `Xóa phần thưởng “${title}”?`, deleteError: 'Không thể xóa phần thưởng. Vui lòng thử lại.', saveError: 'Không thể lưu phần thưởng. Dữ liệu chưa thay đổi; vui lòng thử lại.', saving: 'Đang lưu…' },
   en: { deleteConfirm: (title) => `Delete the reward “${title}”?`, deleteError: 'The reward could not be deleted. Please try again.', saveError: 'The reward could not be saved. Nothing changed; please try again.', saving: 'Saving…' },

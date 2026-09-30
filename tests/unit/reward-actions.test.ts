@@ -61,6 +61,37 @@ function stateSetter<T>(read: () => T[], write: (value: T[]) => void): Dispatch<
 describe('reward actions', () => {
   beforeEach(() => vi.clearAllMocks());
 
+  it.each([
+    { stock: 0, points: 50, success: false, remaining: 0 },
+    { stock: 1, points: 50, success: true, remaining: 0 },
+    { stock: 3, points: 50, success: true, remaining: 2 },
+    { stock: -1, points: 50, success: true, remaining: -1 },
+    { stock: -2, points: 50, success: true, remaining: -2 },
+    { stock: 3, points: 10, success: false, remaining: 3 },
+  ])('enforces demo stock $stock with $points points', async ({ stock, points, success, remaining }) => {
+    let profiles = [{ ...child, points }];
+    let redemptions: Redemption[] = [];
+    let rewards = [{ ...reward, stock }];
+    const actions = createRewardActions({
+      activeChildId: child.id, currentUser: null, familyId: null,
+      isFamilyConnected: false, isDemoSession: true,
+      profiles, redemptions, rewards,
+      setCloudSyncActive: vi.fn(),
+      setProfiles: stateSetter(() => profiles, (value) => { profiles = value; }),
+      setRedemptions: stateSetter(() => redemptions, (value) => { redemptions = value; }),
+      setRewards: stateSetter(() => rewards, (value) => { rewards = value; }),
+      refreshChildSession: vi.fn(async () => true),
+      syncCloudFamily: vi.fn(async () => true),
+    });
+
+    await expect(actions.claimReward(reward.id)).resolves.toBe(success);
+    expect(rewards[0].stock).toBe(remaining);
+    expect(profiles[0].points).toBe(success ? points - reward.costPoints : points);
+    expect(redemptions).toHaveLength(success ? 1 : 0);
+    expect(requestDomainCommand).not.toHaveBeenCalled();
+    expect(requestChildDomainCommand).not.toHaveBeenCalled();
+  });
+
   it('claims a local reward with one points and redemption transition', async () => {
     let profiles = [child];
     let redemptions: Redemption[] = [];
