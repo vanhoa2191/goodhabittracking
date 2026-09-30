@@ -7,23 +7,25 @@ import { useTranslation } from '@/lib/i18n/context';
 import { getHabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
 import { cuePlanInputSchema } from '@/lib/habit-programs/cue-plan-input';
 import { fillTemplate } from '@/lib/habit-programs/suggestion-display';
-import type { CuePlan } from '@/lib/experience-state';
 import type { HabitActivity } from '@/types';
 
 type HabitCueEditorProps = {
   readonly activity: HabitActivity;
   readonly title: string;
-  readonly childId: string;
-  readonly existing: CuePlan | undefined;
+  readonly childOptions: readonly { readonly id: string; readonly name: string }[];
+  readonly defaultChildId: string;
   readonly onClose: () => void;
 };
 
 /** Where a parent and child agree on the "if this, then that" cue that starts a habit. */
-export function HabitCueEditor({ activity, title, childId, existing, onClose }: HabitCueEditorProps) {
-  const { saveHabitCuePlan } = useAppStore();
+export function HabitCueEditor({ activity, title, childOptions, defaultChildId, onClose }: HabitCueEditorProps) {
+  const { saveHabitCuePlan, experience } = useAppStore();
   const { language } = useTranslation();
   const copy = getHabitProgramsCopy(language);
   const ids = useId();
+  const planFor = (forChildId: string) => experience.cuePlans.find((plan) => plan.child_id === forChildId && plan.activity_id === activity.id);
+  const existing = planFor(defaultChildId);
+  const [childId, setChildId] = useState(defaultChildId);
   const [kind, setKind] = useState<'event' | 'time'>(existing?.cue_kind ?? 'event');
   const [text, setText] = useState(existing?.cue_text ?? '');
   const [time, setTime] = useState(existing?.cue_time?.slice(0, 5) ?? '19:00');
@@ -31,6 +33,17 @@ export function HabitCueEditor({ activity, title, childId, existing, onClose }: 
   const [weekend, setWeekend] = useState(existing?.weekend_variant_text ?? '');
   const [isSaving, setIsSaving] = useState(false);
   const [failed, setFailed] = useState(false);
+
+  const chooseChild = (nextChildId: string) => {
+    const plan = planFor(nextChildId);
+    setChildId(nextChildId);
+    setKind(plan?.cue_kind ?? 'event');
+    setText(plan?.cue_text ?? '');
+    setTime(plan?.cue_time?.slice(0, 5) ?? '19:00');
+    setPlace(plan?.place_text ?? '');
+    setWeekend(plan?.weekend_variant_text ?? '');
+    setFailed(false);
+  };
 
   const save = async () => {
     const parsed = cuePlanInputSchema.safeParse({
@@ -61,6 +74,16 @@ export function HabitCueEditor({ activity, title, childId, existing, onClose }: 
           <h2 className="text-lg font-black text-slate-900 dark:text-white">{fillTemplate(copy.cueTitle, { habit: title })}</h2>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{copy.cueIntro}</p>
         </div>
+        {childOptions.length > 1 ? (
+          <label className="block text-sm font-bold text-slate-700 dark:text-slate-200">
+            {copy.cueChildLabel}
+            <select data-testid="cue-child" value={childId} onChange={(event) => chooseChild(event.target.value)} className={fieldClass}>
+              {childOptions.map((option) => <option key={option.id} value={option.id}>{option.name}</option>)}
+            </select>
+          </label>
+        ) : (
+          <p data-testid="cue-child" className="text-sm font-bold text-slate-700 dark:text-slate-200">{copy.cueChildLabel}: {childOptions[0]?.name}</p>
+        )}
         <fieldset className="space-y-2">
           <legend className="text-sm font-bold text-slate-700 dark:text-slate-200">{copy.cueKindLabel}</legend>
           {(['event', 'time'] as const).map((option) => (

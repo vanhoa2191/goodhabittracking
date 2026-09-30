@@ -27,6 +27,7 @@ test('a parent sets a cue for a habit, then records how the child did it and see
   const habitCard = page.locator('h4', { hasText: title }).first().locator('xpath=ancestor::div[.//button[@data-testid="open-cue-editor"]][1]');
   await habitCard.getByTestId('open-cue-editor').click();
   const editor = page.getByRole('dialog', { name: /^Cue for/ });
+  await expect(editor.getByTestId('cue-child')).toBeVisible();
   await editor.getByLabel('The plan, in your child\'s words').fill('After brushing teeth, I do it');
   await editor.getByRole('button', { name: 'Save cue' }).click();
   await expect(editor).toHaveCount(0);
@@ -36,6 +37,8 @@ test('a parent sets a cue for a habit, then records how the child did it and see
   await page.getByRole('tab', { name: 'Today' }).click();
   const prompt = page.getByTestId('habit-support-prompt');
   await expect(prompt).toBeVisible();
+  await expect(prompt.getByRole('listitem').first()).toContainText('Today:');
+  await expect(prompt.getByRole('group').first()).toBeVisible();
   await prompt.getByRole('button', { name: 'On their own' }).first().click();
   await expect(prompt.getByRole('status').first()).toHaveText('Saved');
 

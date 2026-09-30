@@ -9,6 +9,7 @@ import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
 import { localizeDemoActivity } from '@/lib/i18n/demo-content-copy';
 import { localDayKey } from '@/lib/habit-fire';
 import { addDays } from '@/lib/habit-programs/opportunities';
+import { selectSupportPromptItems } from '@/lib/habit-programs/parent-ui-state';
 import { fillTemplate } from '@/lib/habit-programs/suggestion-display';
 import type { SupportLevel } from '@/lib/habit-programs/types';
 
@@ -17,7 +18,6 @@ const LEVELS: readonly { level: SupportLevel; key: 'levelAlone' | 'levelPrompted
   { level: 'prompted', key: 'levelPrompted' },
   { level: 'together', key: 'levelTogether' },
 ];
-const MAX_ITEMS = 6;
 
 /** Asks, with one tap and never as an obligation, how a planned habit was done today or yesterday. */
 export function HabitSupportPrompt() {
@@ -32,12 +32,7 @@ export function HabitSupportPrompt() {
   const recorded = new Set(experience.supportObservations.map((row) => row.log_id));
   const planned = new Set(experience.cuePlans.map((plan) => `${plan.child_id}:${plan.activity_id}`));
 
-  const items = logs
-    .filter((log) => (log.status === 'completed' || log.status === 'approved')
-      && (log.date === today || log.date === yesterday)
-      && planned.has(`${log.childId}:${log.activityId}`)
-      && (!recorded.has(log.id) || saved.has(log.id)))
-    .slice(0, MAX_ITEMS);
+  const items = selectSupportPromptItems(logs, { planned, recorded, saved, today, yesterday });
   if (items.length === 0) return null;
 
   const choose = async (logId: string, level: SupportLevel) => {
@@ -62,15 +57,15 @@ export function HabitSupportPrompt() {
           const isSaved = saved.has(log.id);
           return (
             <li key={log.id} data-log-id={log.id} className="space-y-2 rounded-2xl bg-slate-50 p-3 dark:bg-zinc-800/60">
-              <p className="text-sm font-semibold text-slate-700 dark:text-slate-100">
-                {fillTemplate(copy.supportQuestion, { child: child.nickname || child.name, habit: title })}
+              <p id={`support-question-${log.id}`} className="text-sm font-semibold text-slate-700 dark:text-slate-100">
+                {fillTemplate(copy.supportQuestion, { day: log.date === today ? copy.supportDayToday : copy.supportDayYesterday, child: child.nickname || child.name, habit: title })}
               </p>
               {isSaved ? (
                 <p role="status" className="flex items-center gap-1.5 text-sm font-bold text-emerald-700 dark:text-emerald-300">
                   <Check className="h-4 w-4" aria-hidden="true" />{copy.supportSaved}
                 </p>
               ) : (
-                <div className="flex flex-wrap gap-2">
+                <div role="group" aria-labelledby={`support-question-${log.id}`} className="flex flex-wrap gap-2">
                   {LEVELS.map(({ level, key }) => (
                     <button
                       key={level}
