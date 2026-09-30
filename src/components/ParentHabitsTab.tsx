@@ -14,6 +14,7 @@ import { useSevenDayCutoff } from '@/lib/use-seven-day-cutoff';
 import { HabitFrameworkLibrary } from './HabitFrameworkLibrary';
 import { LegacyHabitTemplateLibrary } from './LegacyHabitTemplateLibrary';
 import { HabitCueEditor } from './HabitCueEditor';
+import { HabitProgramsPanel } from './HabitProgramsPanel';
 import { cueChildOptions, keepIfOtherEditor } from '@/lib/habit-programs/parent-ui-state';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { getHabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
@@ -29,10 +30,12 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
   const copy = getParentPrimaryCopy(language);
   const navigationCopy = getParentNavigationCopy(language);
   const [mutationError, setMutationError] = useState('');
-  const [collection, setCollection] = useState<'inUse' | 'library'>('inUse');
+  const [collection, setCollection] = useState<'inUse' | 'library' | 'programs'>('inUse');
   const [selectedChildId, setSelectedChildId] = useState('all');
   const [cueTarget, setCueTarget] = useState<{ activity: HabitActivity; title: string; childOptions: { id: string; name: string }[]; defaultChildId: string } | null>(null);
   const cueCopy = getHabitProgramsCopy(language);
+  const [startedNotice, setStartedNotice] = useState(false);
+  const showPrograms = defaultExperienceFlags.habitPrograms && language === 'vi';
   const visibleActivities = activities.filter((activity) => selectedChildId === 'all' || activity.childId === null || activity.childId === selectedChildId);
   const weekStart = useSevenDayCutoff();
 
@@ -78,14 +81,20 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
       )}
 
       <div className="flex flex-wrap gap-2 rounded-2xl bg-slate-100 p-1.5 dark:bg-zinc-900" aria-label={t.manageHabits}>
-        {(['inUse', 'library'] as const).map((view) => (
-          <button key={view} type="button" aria-pressed={collection === view} onClick={() => setCollection(view)} className={`min-h-11 rounded-xl px-4 py-2 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${collection === view ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300' : 'text-slate-700 hover:bg-white/60 dark:text-slate-300 dark:hover:bg-zinc-800/60'}`}>
-            {navigationCopy[view]}
+        {(showPrograms ? (['inUse', 'library', 'programs'] as const) : (['inUse', 'library'] as const)).map((view) => (
+          <button key={view} type="button" aria-pressed={collection === view} onClick={() => { setStartedNotice(false); setCollection(view); }} className={`min-h-11 rounded-xl px-4 py-2 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${collection === view ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300' : 'text-slate-700 hover:bg-white/60 dark:text-slate-300 dark:hover:bg-zinc-800/60'}`}>
+            {view === 'programs' ? cueCopy.programsTab : navigationCopy[view]}
           </button>
         ))}
       </div>
 
-      {collection === 'library' ? (
+      {startedNotice && collection === 'inUse' && (
+        <p role="status" data-testid="program-started" className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-xs font-semibold text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">{cueCopy.programDone}</p>
+      )}
+
+      {collection === 'programs' && showPrograms ? (
+        <HabitProgramsPanel onStarted={() => { setStartedNotice(true); setCollection('inUse'); }} />
+      ) : collection === 'library' ? (
         <section aria-label={navigationCopy.library}>
           {language === 'vi'
             ? <HabitFrameworkLibrary onMutationError={setMutationError} />
