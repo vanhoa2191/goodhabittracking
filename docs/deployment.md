@@ -101,6 +101,8 @@ Bộ thói quen thích ứng dùng cờ build `NEXT_PUBLIC_HABIT_PROGRAMS=true`,
 
 Bản deploy production đọc bốn cờ trải nghiệm từ biến repository cùng tên: `NEXT_PUBLIC_DAILY_MASCOT_LETTER`, `NEXT_PUBLIC_DAILY_JOURNAL`, `NEXT_PUBLIC_DREAM_CITY`, `NEXT_PUBLIC_PARENT_REENGAGEMENT` (đặt `true` để bật, xóa hoặc đặt `false` rồi chạy lại workflow CI trên `main` để tắt). Trước khi bật cần đạt `npm run verify:live-experience` (thư mascot, nhật ký, đồng ý nhắc phụ huynh và thành phố ước mơ với hai gia đình tổng hợp, tự dọn sạch) và `npm run verify:live-boundaries`. Nếu `~/.npm` có tệp thuộc root, đặt `npm_config_cache` sang một thư mục ghi được trước khi chạy các lệnh này.
 
+Đăng nhập production chỉ dùng Google (nhà cung cấp Email đã tắt trong Supabase). Vì vậy các lệnh kiểm tra live không đăng nhập bằng mật khẩu: chúng tạo người dùng thử bằng API quản trị rồi lấy phiên từ một liên kết dùng một lần do quản trị viên cấp (`generateLink` và `verifyOtp`), và dọn sạch người dùng lẫn gia đình sau khi chạy. Nếu sau này có người dùng chỉ có danh tính email, họ cần liên kết Google trước khi tắt Email.
+
 Sau migration production, chạy `npm run verify:live-boundaries`. Lệnh dùng quyền operator của Supabase CLI để tạo hai tài khoản tổng hợp, kiểm tra anonymous/same-family/cross-family RLS trên dữ liệu live và luôn dọn dữ liệu thử. Không chạy lệnh này trong CI công khai hoặc trên máy không được phép quản trị project.
 
 Sau khi Worker và migration mới cùng được phát hành, chạy `npm run verify:live-lifecycle` để chứng nhận mã ghép nối cố định, làm mới mã không ngắt thiết bị cũ, child completion, parent approval, reward delivery, reconnect và revoke bằng dữ liệu tổng hợp tự dọn. Lệnh này cũng chỉ dành cho operator được phép quản trị project.

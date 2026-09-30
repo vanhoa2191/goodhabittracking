@@ -37,3 +37,4 @@
 \ir migrations/202609280002_caregiver_invites.sql
 \ir migrations/202609280003_admin_security_observability.sql
 \ir migrations/202609300001_habit_programs.sql
+\ir migrations/202609300002_public_leaderboard.sql

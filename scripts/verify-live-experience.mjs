@@ -78,9 +78,17 @@ const anonymous = createClient(projectUrl, anonKey, {
   auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
 });
 const runId = `${Date.now()}-${randomBytes(5).toString('hex')}`;
-const password = `${randomBytes(24).toString('base64url')}aA1!`;
 const families = [0, 1].map(() => ({ parent: createParent(anonKey), userId: null, familyId: null, childId: randomUUID() }));
 const today = new Date().toISOString().slice(0, 10);
+
+// The email provider is off in production (Google is the only sign-in), so a synthetic parent gets a session from
+// an administrator-issued one-time link instead of a password.
+async function signInSyntheticUser(client, email) {
+  const link = await admin.auth.admin.generateLink({ type: 'magiclink', email });
+  const tokenHash = link.data?.properties?.hashed_token;
+  assert(!link.error && tokenHash, 'Synthetic sign-in link could not be issued.');
+  return client.auth.verifyOtp({ token_hash: tokenHash, type: 'magiclink' });
+}
 
 async function removeSyntheticData(userIdList, familyIdList) {
   const failures = [];
@@ -110,11 +118,11 @@ try {
   for (const [index, family] of families.entries()) {
     const email = `experience-${index}-${runId}@example.invalid`;
     const created = await admin.auth.admin.createUser({
-      email, password, email_confirm: true, user_metadata: { full_name: 'Automated experience verification' },
+      email, email_confirm: true, user_metadata: { full_name: 'Automated experience verification' },
     });
     assert(!created.error && created.data.user, 'Synthetic parent creation failed.');
     family.userId = created.data.user.id;
-    const signedIn = await family.parent.client.auth.signInWithPassword({ email, password });
+    const signedIn = await signInSyntheticUser(family.parent.client, email);
     assert(!signedIn.error, 'Synthetic parent sign-in failed.');
     const membership = await admin.from('family_memberships').select('family_id').eq('user_id', family.userId).single();
     assert(!membership.error && membership.data?.family_id, 'Synthetic family bootstrap failed.');

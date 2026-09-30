@@ -48,13 +48,21 @@ const admin = createClient(projectUrl, serviceRole, {
 });
 const anonymous = createBrowserClient(legacyAnon);
 const runId = `${Date.now()}-${randomBytes(5).toString('hex')}`;
-const password = `${randomBytes(24).toString('base64url')}aA1!`;
 const accounts = [
   { email: `rls-a-${runId}@example.invalid`, client: createBrowserClient(legacyAnon) },
   { email: `rls-b-${runId}@example.invalid`, client: createBrowserClient(legacyAnon) },
 ];
 const userIds = [];
 const familyIds = [];
+
+// The email provider is off in production (Google is the only sign-in), so a synthetic parent gets a session from
+// an administrator-issued one-time link instead of a password.
+async function signInSyntheticUser(client, email) {
+  const link = await admin.auth.admin.generateLink({ type: 'magiclink', email });
+  const tokenHash = link.data?.properties?.hashed_token;
+  assert(!link.error && tokenHash, 'Synthetic sign-in link could not be issued.');
+  return client.auth.verifyOtp({ token_hash: tokenHash, type: 'magiclink' });
+}
 
 async function removeSyntheticData(userIdList, familyIdList) {
   const failures = [];
@@ -84,14 +92,13 @@ try {
   for (const account of accounts) {
     const { data, error } = await admin.auth.admin.createUser({
       email: account.email,
-      password,
       email_confirm: true,
       user_metadata: { full_name: 'Automated RLS verification' },
     });
     assert(!error && data.user, 'Synthetic account creation failed.');
     userIds.push(data.user.id);
 
-    const signIn = await account.client.auth.signInWithPassword({ email: account.email, password });
+    const signIn = await signInSyntheticUser(account.client, account.email);
     assert(!signIn.error && signIn.data.user, 'Synthetic account sign-in failed.');
 
     const membership = await account.client
