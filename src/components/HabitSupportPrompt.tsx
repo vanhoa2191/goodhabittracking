@@ -47,6 +47,7 @@ export function HabitSupportPrompt() {
       <div>
         <h3 id="habit-support-title" className="text-base font-extrabold text-slate-800 dark:text-slate-100">{copy.supportTitle}</h3>
         <p className="text-xs text-slate-500 dark:text-slate-300">{copy.supportIntro}</p>
+        <p data-testid="self-report-hint" className="mt-1 text-xs text-slate-500 dark:text-slate-300">{copy.parentSelfReportHint}</p>
       </div>
       <ul className="space-y-3">
         {items.map((log) => {

@@ -45,6 +45,18 @@ export type HabitProgramsCopy = {
   supportDayToday: string;
   supportDayYesterday: string;
   cueChildLabel: string;
+  childAckMaintain1: string;
+  childAckMaintain2: string;
+  childAckMaintain3: string;
+  childAckMaintain4: string;
+  childAckMaintain5: string;
+  childSelfReportTitle: string;
+  childLevelAlone: string;
+  childLevelPrompted: string;
+  childLevelTogether: string;
+  childSelfReportSkip: string;
+  childSelfReportSaved: string;
+  parentSelfReportHint: string;
 };
 
 // Placeholders such as {child} are filled by fillTemplate in src/lib/habit-programs/suggestion-display.ts.
@@ -94,6 +106,18 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     supportDayToday: "Hôm nay",
     supportDayYesterday: "Hôm qua",
     cueChildLabel: "Cho bé",
+    childAckMaintain1: "Con đã làm việc này rất đều. Cứ giữ nhịp nhé.",
+    childAckMaintain2: "Việc này giờ đã là một phần trong ngày của con rồi.",
+    childAckMaintain3: "Mỗi lần con làm là một lần con vững vàng hơn.",
+    childAckMaintain4: "Con đang giữ một thói quen tốt thật bền bỉ.",
+    childAckMaintain5: "Nhìn con làm việc này thật đáng tự hào.",
+    childSelfReportTitle: "Lần này con làm thế nào?",
+    childLevelAlone: "Con tự làm",
+    childLevelPrompted: "Có người nhắc",
+    childLevelTogether: "Làm cùng người khác",
+    childSelfReportSkip: "Bỏ qua",
+    childSelfReportSaved: "Đã ghi. Cảm ơn con!",
+    parentSelfReportHint: "Từ 15 tuổi, bé có thể tự chọn cách mình đã làm. Bạn vẫn có thể ghi hoặc sửa lại bất cứ lúc nào.",
   },
   en: {
     supportTitle: "How did they do it today?",
@@ -140,6 +164,18 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     supportDayToday: "Today",
     supportDayYesterday: "Yesterday",
     cueChildLabel: "For child",
+    childAckMaintain1: "You have done this so steadily. Keep that rhythm going.",
+    childAckMaintain2: "This is now a part of your day.",
+    childAckMaintain3: "Each time you do it, you grow steadier.",
+    childAckMaintain4: "You are keeping a good habit going, and it is lasting.",
+    childAckMaintain5: "It is something to be proud of, seeing you do this.",
+    childSelfReportTitle: "How did you do it this time?",
+    childLevelAlone: "I did it myself",
+    childLevelPrompted: "Someone reminded me",
+    childLevelTogether: "We did it together",
+    childSelfReportSkip: "Skip",
+    childSelfReportSaved: "Saved. Thank you!",
+    parentSelfReportHint: "From age 15, a child can choose how they did a habit themselves. You can still record or change it at any time.",
   },
   fr: {
     supportTitle: "Comment votre enfant s'y est-il pris aujourd'hui ?",
@@ -186,6 +222,18 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     supportDayToday: "Aujourd'hui",
     supportDayYesterday: "Hier",
     cueChildLabel: "Pour l’enfant",
+    childAckMaintain1: "Tu le fais avec beaucoup de régularité. Continue sur ce rythme.",
+    childAckMaintain2: "Ça fait maintenant partie de ta journée.",
+    childAckMaintain3: "Chaque fois que tu le fais, tu gagnes en assurance.",
+    childAckMaintain4: "Tu continues à faire vivre une bonne habitude, jour après jour.",
+    childAckMaintain5: "C’est une fierté de te voir faire ça.",
+    childSelfReportTitle: "Comment as-tu fait cette fois-ci ?",
+    childLevelAlone: "J’ai fait sans aide",
+    childLevelPrompted: "Quelqu’un me l’a rappelé",
+    childLevelTogether: "On l’a fait ensemble",
+    childSelfReportSkip: "Passer",
+    childSelfReportSaved: "C’est enregistré. Merci !",
+    parentSelfReportHint: "À partir de 15 ans, votre enfant peut indiquer lui-même comment il a réalisé une habitude. Vous pouvez toujours l’enregistrer ou modifier sa réponse à tout moment.",
   },
   de: {
     supportTitle: "Wie hat Ihr Kind es heute gemacht?",
@@ -232,6 +280,18 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     supportDayToday: "Heute",
     supportDayYesterday: "Gestern",
     cueChildLabel: "Für Kind",
+    childAckMaintain1: "Du hast das sehr regelmäßig gemacht. Bleib bei diesem Rhythmus.",
+    childAckMaintain2: "Das gehört jetzt zu deinem Tag dazu.",
+    childAckMaintain3: "Jedes Mal, wenn du es machst, wirst du sicherer.",
+    childAckMaintain4: "Du bleibst bei einer guten Gewohnheit und hältst sie beständig aufrecht.",
+    childAckMaintain5: "Es macht stolz, dich dabei zu sehen.",
+    childSelfReportTitle: "Wie hast du es diesmal gemacht?",
+    childLevelAlone: "Ich habe es selbst gemacht",
+    childLevelPrompted: "Jemand hat mich daran erinnert",
+    childLevelTogether: "Wir haben es zusammen gemacht",
+    childSelfReportSkip: "Überspringen",
+    childSelfReportSaved: "Gespeichert. Danke!",
+    parentSelfReportHint: "Ab 15 Jahren kann Ihr Kind selbst auswählen, wie es eine Gewohnheit ausgeführt hat. Sie können dies weiterhin jederzeit eintragen oder ändern.",
   },
   it: {
     supportTitle: "Come ha fatto oggi?",
@@ -278,6 +338,18 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     supportDayToday: "Oggi",
     supportDayYesterday: "Ieri",
     cueChildLabel: "Per il bambino",
+    childAckMaintain1: "Lo hai fatto con tanta costanza. Continua con questo ritmo.",
+    childAckMaintain2: "Ora fa parte della tua giornata.",
+    childAckMaintain3: "Ogni volta che lo fai, diventi più sicuro di te.",
+    childAckMaintain4: "Stai mantenendo una buona abitudine con tanta costanza.",
+    childAckMaintain5: "Vederti fare questo è motivo di orgoglio.",
+    childSelfReportTitle: "Come hai fatto questa volta?",
+    childLevelAlone: "Ho fatto senza aiuto",
+    childLevelPrompted: "Qualcuno me l’ha ricordato",
+    childLevelTogether: "Lo abbiamo fatto insieme",
+    childSelfReportSkip: "Salta",
+    childSelfReportSaved: "Salvato. Grazie!",
+    parentSelfReportHint: "A partire dai 15 anni, suo figlio può scegliere autonomamente come ha svolto un’abitudine. Lei può comunque registrarlo o modificare la risposta in qualsiasi momento.",
   },
   es: {
     supportTitle: "¿Cómo lo hizo hoy?",
@@ -324,6 +396,18 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     supportDayToday: "Hoy",
     supportDayYesterday: "Ayer",
     cueChildLabel: "Para el niño",
+    childAckMaintain1: "Lo has hecho con mucha constancia. Sigue con ese ritmo.",
+    childAckMaintain2: "Esto ya forma parte de tu día.",
+    childAckMaintain3: "Cada vez que lo haces, ganas más seguridad.",
+    childAckMaintain4: "Estás manteniendo un buen hábito con mucha constancia.",
+    childAckMaintain5: "Verte hacer esto es motivo de orgullo.",
+    childSelfReportTitle: "¿Cómo lo hiciste esta vez?",
+    childLevelAlone: "Lo hice sin ayuda",
+    childLevelPrompted: "Alguien me lo recordó",
+    childLevelTogether: "Lo hicimos juntos",
+    childSelfReportSkip: "Omitir",
+    childSelfReportSaved: "Guardado. ¡Gracias!",
+    parentSelfReportHint: "A partir de los 15 años, su hijo puede elegir por sí mismo cómo ha realizado un hábito. Usted puede seguir registrándolo o cambiar la respuesta en cualquier momento.",
   },
   zh: {
     supportTitle: "孩子今天是怎么完成的？",
@@ -370,6 +454,18 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     supportDayToday: "今天",
     supportDayYesterday: "昨天",
     cueChildLabel: "为哪个孩子",
+    childAckMaintain1: "你一直很有规律地做这件事。继续保持这个节奏吧。",
+    childAckMaintain2: "这件事现在已经是你一天中的一部分了。",
+    childAckMaintain3: "每做一次，你就更踏实一点。",
+    childAckMaintain4: "你一直坚持着一个好习惯，做得很有恒心。",
+    childAckMaintain5: "看到你做这件事，真让人感到自豪。",
+    childSelfReportTitle: "这次你是怎么做的？",
+    childLevelAlone: "我自己做的",
+    childLevelPrompted: "有人提醒了我",
+    childLevelTogether: "我们一起做的",
+    childSelfReportSkip: "跳过",
+    childSelfReportSaved: "已记录。谢谢你！",
+    parentSelfReportHint: "从15岁起，孩子可以自行选择完成习惯的方式。您仍然可以随时记录或修改。",
   },
   ja: {
     supportTitle: "今日はどのようにできましたか？",
@@ -416,6 +512,18 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     supportDayToday: "今日",
     supportDayYesterday: "昨日",
     cueChildLabel: "対象の子ども",
+    childAckMaintain1: "こつこつ続けてきたね。この調子で続けていこう。",
+    childAckMaintain2: "もう毎日の一部になっているね。",
+    childAckMaintain3: "やるたびに、少しずつ自信がついていくね。",
+    childAckMaintain4: "いい習慣を、根気よく続けているね。",
+    childAckMaintain5: "こうして取り組む姿を見ると、誇らしいよ。",
+    childSelfReportTitle: "今回はどうやってできた？",
+    childLevelAlone: "自分でできた",
+    childLevelPrompted: "誰かが声をかけてくれた",
+    childLevelTogether: "誰かと一緒にできた",
+    childSelfReportSkip: "スキップ",
+    childSelfReportSaved: "記録したよ。ありがとう！",
+    parentSelfReportHint: "15歳からは、お子さま自身で、その習慣にどう取り組んだかを選べます。保護者の方も、引き続きいつでも記録や変更ができます。",
   },
   ko: {
     supportTitle: "오늘은 어떻게 해냈나요?",
@@ -462,6 +570,18 @@ const COPY: Record<Language, HabitProgramsCopy> = {
     supportDayToday: "오늘",
     supportDayYesterday: "어제",
     cueChildLabel: "대상 자녀",
+    childAckMaintain1: "정말 꾸준히 해 왔구나. 이 리듬을 계속 이어 가자.",
+    childAckMaintain2: "이제 네 하루의 한 부분이 되었구나.",
+    childAckMaintain3: "한 번씩 할 때마다 너는 더 단단해지고 있어.",
+    childAckMaintain4: "좋은 습관을 끈기 있게 이어 가고 있구나.",
+    childAckMaintain5: "네가 이렇게 하는 모습을 보니 참 자랑스러워.",
+    childSelfReportTitle: "이번에는 어떻게 했어?",
+    childLevelAlone: "스스로 했어요",
+    childLevelPrompted: "누군가 알려 줬어요",
+    childLevelTogether: "다른 사람과 함께 했어요",
+    childSelfReportSkip: "건너뛰기",
+    childSelfReportSaved: "기록했어. 고마워!",
+    parentSelfReportHint: "15세부터는 아이가 습관을 어떻게 실천했는지 직접 선택할 수 있습니다. 보호자께서도 언제든지 기록하거나 수정하실 수 있습니다.",
   },
 };
 

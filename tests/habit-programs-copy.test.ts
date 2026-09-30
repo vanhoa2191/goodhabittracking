@@ -49,4 +49,13 @@ describe('habit program copy', () => {
       expect(copy.supportDayToday, language).not.toBe(copy.supportDayYesterday);
     }
   });
+
+  it('has five different acknowledgement lines in every language, none of them naming a phase or a count', () => {
+    for (const language of languages) {
+      const copy = getHabitProgramsCopy(language);
+      const lines = [copy.childAckMaintain1, copy.childAckMaintain2, copy.childAckMaintain3, copy.childAckMaintain4, copy.childAckMaintain5];
+      expect(new Set(lines).size, language).toBe(5);
+      for (const line of lines) expect(line, language).not.toMatch(/\d/);
+    }
+  });
 });
