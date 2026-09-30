@@ -255,6 +255,7 @@ describe('family tenancy migration', () => {
       '202609300004_authoritative_command_hardening.sql',
       '202609300005_billing_integrity.sql',
       '202609300006_pairing_exchange_limits.sql',
+      '202609300007_account_lifecycle_integrity.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
