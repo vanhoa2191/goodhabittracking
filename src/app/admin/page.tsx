@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { AdminCustomerManager } from '@/components/AdminCustomerManager';
+import { AdminFunnelPanel } from '@/components/AdminFunnelPanel';
 import { authorizeAdmin } from '@/lib/auth/admin-access';
 
 export default async function AdminPage() {
@@ -30,6 +31,7 @@ export default async function AdminPage() {
             <Link href="/" className="min-h-11 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold dark:border-zinc-700 dark:bg-zinc-900">Về ứng dụng</Link>
           </div>
         </header>
+        <AdminFunnelPanel />
         <AdminCustomerManager />
       </div>
     </main>
