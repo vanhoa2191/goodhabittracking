@@ -95,6 +95,10 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_HABIT_PROGRAMS: ${{ vars.NEXT_PUBLIC_HABIT_PROGRAMS }}
+          NEXT_PUBLIC_DAILY_MASCOT_LETTER: ${{ vars.NEXT_PUBLIC_DAILY_MASCOT_LETTER }}
+          NEXT_PUBLIC_DAILY_JOURNAL: ${{ vars.NEXT_PUBLIC_DAILY_JOURNAL }}
+          NEXT_PUBLIC_DREAM_CITY: ${{ vars.NEXT_PUBLIC_DREAM_CITY }}
+          NEXT_PUBLIC_PARENT_REENGAGEMENT: ${{ vars.NEXT_PUBLIC_PARENT_REENGAGEMENT }}
       - if: steps.configuration.outputs.ready == 'true'
         name: Verify production health after deploy
         run: |
