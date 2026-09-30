@@ -12,15 +12,15 @@
 - A child never sees a phase name, a comparison with another child, or a missed-habit count. Stars and rewards do not change.
 - The support question is optional and never blocks completing a habit. Skipping it records nothing and changes no phase.
 - The child question is shown only from 15 years old (`birthYear`/`age` on the profile; `ageStage` `12-18` alone is not enough). A child under 15 never sees it.
-- The database function `set_child_habit_support` does not check age; the age rule is an interface rule only (see Open Decision 1).
+- The age rule is an interface default, not a server rule: `set_child_habit_support` stays unchanged. Parents are told about the age default with a short hint instead (Task 6), and a parent can always record or change the answer.
 - Copy goes through `src/lib/i18n/habit-programs-copy.ts` in all nine languages. No promise of outcomes for children.
 - Time-dependent tests pass under `TZ=UTC`, `TZ=Asia/Ho_Chi_Minh`, `TZ=America/Los_Angeles`.
 - Conventional commits ending with `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`; no plan or finding labels in code, tests or commits; stage files explicitly; never commit `plans/`.
 
-## Open Decisions (owner)
+## Decisions (owner, settled)
 
-1. **Enforce the age-15 rule on the server?** Recommended: yes, add a check to `set_child_habit_support` against the child's birth year in a new migration, so a younger child's device cannot overwrite a parent's record. Cost: one more migration to apply. Without it the rule is only a screen rule.
-2. **Wording of the acknowledgement** for the maintain phase (default: "Con đã làm việc này rất đều. Cứ giữ nhịp nhé.").
+1. The age-15 rule is not enforced on the server. Parents get a hint instead.
+2. The acknowledgement stays "Con đã làm việc này rất đều. Cứ giữ nhịp nhé." and joins four or more similar meaningful lines that rotate.
 
 ## Tasks
 
@@ -36,11 +36,15 @@
 - [ ] Test first (e2e): a 15-year-old completes a habit, sees "alone / prompted / together" once, taps one and it is stored (`data-level`); skipping still completes the habit; a 10-year-old never sees the question.
 - [ ] Reuse `recordHabitSupport` and the `LEVELS` labels; show the question in the celebration step, never before the completion is saved.
 
-### Task 4 – Plain-words acknowledgement
-- [ ] Test first: `summarizeChildHabits` phase `maintain` yields one acknowledgement line for the child, other phases yield none, and the line never contains the phase name.
-- [ ] Add copy in nine languages (`childAckMaintain`, `childSelfReportTitle`, `childCueLine`), extend the copy tests (placeholders, no Vietnamese in other languages).
+### Task 4 – Plain-words acknowledgement that rotates
+- [ ] Test first: `pickAcknowledgement(childId, habitId, day, lines)` is stable for the same child, habit and day, changes across days, never picks the same line two days in a row for the same habit, and returns `null` unless the phase is `maintain`; no line contains a phase name, a number of days, or a comparison.
+- [ ] Add at least five lines per language as `childAckMaintain1..5` (line 1 is the wording above), plus `childSelfReportTitle`, `childCueLine`; extend the copy tests (placeholders, no Vietnamese in other languages, lines distinct within a language).
 
-### Task 5 – Verify and review
+### Task 5 – Parent hint about the age default
+- [ ] Test first (e2e): the parent screen shows a one-line hint that children from 15 can record how they did a habit themselves and that the parent can still record or change it; it appears only when a cue plan exists.
+- [ ] Add `parentSelfReportHint` in nine languages and render it under the support prompt intro and the empty progress state.
+
+### Task 6 – Verify and review
 - [ ] `tsc`, `eslint`, full `vitest` (three time zones for the new rules), full Playwright with axe on the new elements.
 - [ ] Independent review by Codex (`gpt-6.1-sol`, read-only) of the branch; fix Important findings RED→GREEN in one pass.
 
