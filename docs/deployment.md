@@ -43,6 +43,12 @@ Danh sách bàn giao khi đổi địa chỉ (làm ở ngoài repo):
 4. **Thiết bị của bé và PWA:** phiên ghép thiết bị và bản cài PWA gắn với từng địa chỉ. Bé ghép ở `workers.dev` vẫn dùng được ở địa chỉ cũ; để chuyển sang địa chỉ mới, phụ huynh làm mới mã ghép và bé quét lại.
 5. **GitHub Actions:** `NEXT_PUBLIC_APP_URL` và `NEXT_PUBLIC_MARKETING_URL` đã đặt trong `ci.yml` và `marketing.yml`; các workflow theo dõi (`production-observability`, `lifecycle-dispatch`) gọi `https://app.kidhabithero.com`.
 
+### Thứ tự phát hành app và marketing
+
+Mỗi lần merge vào `main`, `ci.yml` (app) và `marketing.yml` (site marketing) chạy song song. Bản dựng marketing ghi `release.json` chứa mã commit; job deploy app chờ tối đa khoảng 6 phút cho tới khi `https://kidhabithero.com/release.json` khớp `GITHUB_SHA` rồi mới triển khai, nên app không bao giờ lên trước các trang mà nó liên kết tới. Nếu site marketing không cập nhật, job dừng với thông báo nó vẫn đang phục vụ bản nào.
+
+Site marketing gửi tiêu đề bảo mật qua tệp `_headers` do bản dựng tạo (CSP chỉ cho phép script nội tuyến của trang theo mã băm).
+
 ## First setup
 
 1. Tạo hai Workers service độc lập trong cùng Cloudflare account: `goodhabittracking` cho app và `kidhabit-home` cho static marketing.
