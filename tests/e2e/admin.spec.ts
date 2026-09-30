@@ -95,6 +95,7 @@ test('admin can update customer care data, subscription and a gift coupon', asyn
   await page.getByLabel('Ngày hết hạn', { exact: true }).fill('2027-12-31');
   await page.getByRole('button', { name: 'Lưu gói đăng ký' }).click();
   await expect.poll(() => requests.some((request) => request.path === 'subscription')).toBe(true);
+  await expect(page.getByText(/Đã cập nhật gói của/)).toBeVisible();
   expect(requests.find((request) => request.path === 'subscription')?.body).toEqual({
     familyId: '22222222-2222-4222-8222-222222222222',
     plan: 'yearly',
@@ -108,12 +109,14 @@ test('admin can update customer care data, subscription and a gift coupon', asyn
   await page.getByLabel(/Nhãn chăm sóc/).fill('ưu tiên, giới thiệu');
   await page.getByRole('button', { name: 'Lưu hồ sơ khách hàng' }).click();
   await expect.poll(() => requests.some((request) => request.path === 'customer')).toBe(true);
+  await expect(page.getByText(/Đã lưu hồ sơ/)).toBeVisible();
 
   await page.getByLabel('Lý do thao tác quản trị').fill('Tặng ưu đãi theo yêu cầu chăm sóc khách hàng');
   await page.getByPlaceholder('VD: TANG30NGAY').fill('TANG45');
   await page.getByLabel('Số ngày tặng').fill('45');
   await page.getByRole('button', { name: 'Tạo coupon' }).click();
   await expect.poll(() => requests.some((request) => request.path === 'coupon')).toBe(true);
+  await expect(page.getByText('Đã tạo coupon mới.')).toBeVisible();
 
   await page.getByLabel('Lý do thao tác quản trị').fill('Ghi nhận yêu cầu hỗ trợ thanh toán');
   await page.getByLabel('Khách hàng cần hỗ trợ', { exact: true }).selectOption('11111111-1111-4111-8111-111111111111');
@@ -122,6 +125,7 @@ test('admin can update customer care data, subscription and a gift coupon', asyn
   await page.getByLabel('Mã đơn hàng').fill('123456');
   await page.getByRole('button', { name: 'Tạo hồ sơ hỗ trợ' }).click();
   await expect.poll(() => requests.some((request) => request.path === 'billing-post')).toBe(true);
+  await expect(page.getByText('Đã tạo hồ sơ hỗ trợ và ghi nhận lịch sử xử lý.')).toBeVisible();
 
   await page.getByLabel('Lý do thao tác quản trị').fill('Hoàn tất xử lý yêu cầu của khách hàng');
   await page.getByLabel('Trạng thái').last().selectOption('completed');
