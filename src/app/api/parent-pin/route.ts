@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -26,6 +27,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const parsed = verifySchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ status: 'invalid' }, { status: 400 });
   const context = await parentClient();
@@ -40,6 +43,8 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const parsed = changeSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ status: 'invalid_format' }, { status: 400 });
   const context = await parentClient();

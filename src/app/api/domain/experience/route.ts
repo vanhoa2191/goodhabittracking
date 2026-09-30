@@ -6,6 +6,7 @@ import { cuePlanFields, timeMatchesKind } from '@/lib/habit-programs/cue-plan-in
 import { parseCuePlan, parseDeferredTask, parseExperienceState, parseSupportObservation } from '@/lib/experience-state';
 import { isMissingTable } from '@/lib/supabase/missing-table';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -79,6 +80,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const parent = await getParentContext();
   if (!parent) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
 

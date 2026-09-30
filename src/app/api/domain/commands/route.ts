@@ -3,6 +3,7 @@ import { getParentContext } from '@/lib/auth/parent-context';
 import { domainCommandSchema, type DomainCommand } from '@/lib/domain/commands';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -43,6 +44,8 @@ function rpcFor(command: DomainCommand): { name: string; args: Record<string, un
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const parent = await getParentContext();
   if (!parent) {

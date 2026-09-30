@@ -4,10 +4,13 @@ import { getParentContext } from '@/lib/auth/parent-context';
 import { cityItemIdSchema, parseCityPurchase } from '@/lib/dream-city';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   if (!defaultExperienceFlags.dreamCity) return NextResponse.json({ error: 'City is unavailable.' }, { status: 404 });
   const parent = await getParentContext();
   if (!parent) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });

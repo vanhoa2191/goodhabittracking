@@ -9,6 +9,7 @@ import { recordAdminAudit, type AdminAuditInput } from '@/lib/auth/admin-audit-s
 import { cancelPayOSPayment } from '@/lib/billing/payos-server';
 import { createCorrelationId } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 const readRoles = ['support', 'finance', 'super_admin'] as const;
 const createRoles = ['support', 'finance', 'super_admin'] as const;
@@ -53,6 +54,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const access = await authorizeAdmin({ roles: createRoles, requireAal2: true });
   if (!access.authorized) return adminAuthorizationResponse(access, correlationId);
@@ -108,6 +111,8 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const access = await authorizeAdmin({ roles: resolveRoles, requireAal2: true });
   if (!access.authorized) return adminAuthorizationResponse(access, correlationId);

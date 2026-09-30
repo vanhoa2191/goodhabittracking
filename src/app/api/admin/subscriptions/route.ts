@@ -8,6 +8,7 @@ import {
 import { recordAdminAudit } from '@/lib/auth/admin-audit-server';
 import { createCorrelationId } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 const roles = ['finance', 'super_admin'] as const;
 const schema = z.object({
@@ -19,6 +20,8 @@ const schema = z.object({
 }).strict();
 
 export async function PATCH(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const access = await authorizeAdmin({ roles, requireAal2: true });
   if (!access.authorized) return adminAuthorizationResponse(access, correlationId);

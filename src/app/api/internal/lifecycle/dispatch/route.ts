@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getLifecycleEmailConfig, parseLifecycleMessage, sendLifecycleEmail } from '@/lib/lifecycle/email';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -28,6 +29,8 @@ function providerErrorCode(error: unknown): string {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   if (!authorized(request)) return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
   if (!getLifecycleEmailConfig().enabled) {

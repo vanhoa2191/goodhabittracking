@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { normalizeJournalText, parseJournalEntries, parseJournalEntry } from '@/lib/child-journal';
 import { CHILD_SESSION_COOKIE, sha256Hex } from '@/lib/pairing/crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -40,6 +41,8 @@ export async function GET() {
 }
 
 export async function PUT(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   let payload: unknown;
   try {
     payload = await request.json();

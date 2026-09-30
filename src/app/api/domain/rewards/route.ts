@@ -6,6 +6,7 @@ import {
 } from '@/lib/domain/reward-mutations';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -55,6 +56,8 @@ async function readBody(request: NextRequest): Promise<unknown> {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const parent = await getParentContext();
   if (!parent) {

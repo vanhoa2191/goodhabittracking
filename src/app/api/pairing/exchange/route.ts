@@ -10,6 +10,7 @@ import {
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { recordOperationalSignal } from '@/lib/observability/operational-signal';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -28,6 +29,8 @@ const statusMessages: Record<string, { status: number; error: string }> = {
 };
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const parsed = requestSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {

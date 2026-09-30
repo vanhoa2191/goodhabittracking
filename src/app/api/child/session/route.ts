@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { CHILD_SESSION_COOKIE, sha256Hex } from '@/lib/pairing/crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -42,7 +43,9 @@ export async function GET() {
   return NextResponse.json({ ...data, familyPausedAt: pause.data.pausedAt, familyPausePeriods: pause.data.pausePeriods });
 }
 
-export async function DELETE() {
+export async function DELETE(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const cookieStore = await cookies();
   const token = cookieStore.get(CHILD_SESSION_COOKIE)?.value;
   if (token) {

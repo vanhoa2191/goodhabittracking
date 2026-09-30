@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { isValidPhone, normalizePhone } from '@/lib/customer-profile';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 const profileSchema = z.object({ displayName: z.string().trim().min(2).max(120), phone: z.string().trim().max(30).refine(isValidPhone), marketingConsent: z.boolean().optional().default(false) }).strict();
 
@@ -19,6 +20,8 @@ export async function GET() {
 }
 
 export async function PATCH(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const parsed = profileSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: 'Invalid profile.' }, { status: 400 });
   const supabase = await createServerSupabaseClient(); const { data: { user } } = await supabase.auth.getUser();

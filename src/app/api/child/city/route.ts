@@ -5,6 +5,7 @@ import { cityItemIdSchema, parseCityPurchase, parseCityPurchases } from '@/lib/d
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { CHILD_SESSION_COOKIE, sha256Hex } from '@/lib/pairing/crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -36,6 +37,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   if (!defaultExperienceFlags.dreamCity) return NextResponse.json({ error: 'City is unavailable.' }, { status: 404 });
   let payload: unknown;
   try {

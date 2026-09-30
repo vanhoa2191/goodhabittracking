@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
 const deleteSchema = z.object({ confirmation: z.literal('DELETE FAMILY') }).strict();
 
 export async function DELETE(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const parent = await getParentContext();
   if (!parent || parent.role !== 'owner') {
     return NextResponse.json({ success: false, error: 'Family owner authentication required.' }, { status: 403 });
