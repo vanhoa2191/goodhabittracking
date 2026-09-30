@@ -17,12 +17,12 @@ export const outcomes = [
   {
     icon: 'list-checks',
     title: 'Giao việc rõ, con dễ làm',
-    description: 'Mỗi nhiệm vụ có cách làm cụ thể để con hiểu, tự bắt đầu và bớt cần ba mẹ nhắc đi nhắc lại.',
+    description: 'Mỗi nhiệm vụ có cách làm cụ thể, để con dễ hiểu việc cần làm và ba mẹ đỡ phải giải thích lại.',
   },
   {
     icon: 'trend-up',
-    title: 'Thấy tiến bộ mỗi ngày',
-    description: 'Cả nhà nhìn thấy chuỗi ngày, điểm thưởng và những bước nhỏ đang dần trở thành nếp tốt.',
+    title: 'Xem lại những việc con đã làm',
+    description: 'Cả nhà xem được chuỗi ngày, điểm thưởng và những việc nhỏ con đã hoàn thành.',
   },
 ];
 
@@ -92,7 +92,7 @@ export const comparison = {
   ],
   afterTitle: 'Với KidHabit',
   after: [
-    'Mỗi việc nhỏ được viết rõ, con tự mở ra và tự bắt đầu.',
+    'Mỗi việc nhỏ được viết rõ để con tự mở ra xem.',
     'Con nhận sao và huy hiệu khi hoàn thành, ba mẹ duyệt và khen đúng lúc.',
     'Cuối ngày, cả nhà nhìn lại những điều con đã làm tốt.',
   ],
