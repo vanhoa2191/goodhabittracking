@@ -103,6 +103,18 @@ describe('recording how a habit was done', () => {
     expect(experience().supportObservations[0].support_level).toBe('prompted');
   });
 
+  it('drops an answer that arrives after the family was switched or signed out', async () => {
+    const scope = { current: 1 };
+    let resolve: (response: Response) => void = () => undefined;
+    const request = vi.fn(() => new Promise<Response>((done) => { resolve = done; }));
+    const { actions, experience } = harness({ request, getScope: () => scope.current });
+    const pending = actions.recordSupport(logId, 'alone');
+    scope.current += 1;
+    resolve(Response.json({ success: true, changed: true, observation: observationRow('alone') }));
+    await expect(pending).resolves.toBe(false);
+    expect(experience().supportObservations).toEqual([]);
+  });
+
   it('lets a signed-in parent record it and stores the row the server returns', async () => {
     const { actions, request, experience } = harness({}, () => Response.json({ success: true, changed: true, observation: observationRow('alone') }));
     await expect(actions.recordSupport(logId, 'alone')).resolves.toBe(true);
@@ -180,6 +192,18 @@ describe('saving a cue plan', () => {
       }),
     }));
     expect(experience().cuePlans).toEqual([row]);
+  });
+
+  it('drops a saved plan that arrives after the family was switched or signed out', async () => {
+    const scope = { current: 1 };
+    let resolve: (response: Response) => void = () => undefined;
+    const request = vi.fn(() => new Promise<Response>((done) => { resolve = done; }));
+    const { actions, experience } = harness({ request, getScope: () => scope.current });
+    const pending = actions.saveCuePlan(activityId, cueInput);
+    scope.current += 1;
+    resolve(Response.json({ success: true, cuePlan: cueRow() }));
+    await expect(pending).resolves.toBe(false);
+    expect(experience().cuePlans).toEqual([]);
   });
 
   it('never lets a paired child device save a plan', async () => {

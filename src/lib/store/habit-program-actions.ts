@@ -22,6 +22,8 @@ export type HabitProgramActionDependencies = {
   readonly logs: readonly ActivityLog[];
   readonly activities: readonly HabitActivity[];
   readonly setExperience: Dispatch<SetStateAction<ExperienceState>>;
+  /** Changes whenever the family scope is reset (sign-out, re-pairing), so late answers can be dropped. */
+  readonly getScope?: () => number;
   readonly request?: Requester;
   readonly now?: () => Date;
 };
@@ -57,6 +59,7 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
     }
     if (!dependencies.isSignedInParent && !dependencies.isPairedChild) return false;
 
+    const scopeAtStart = dependencies.getScope?.();
     try {
       const response = await request(
         dependencies.isSignedInParent ? '/api/domain/experience' : '/api/child/habit-programs',
@@ -70,6 +73,7 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
       const saved = z.object({ observation: z.unknown() }).parse(await response.json());
       const observation = parseSupportObservation(saved.observation);
       if (observation.log_id !== logId || observation.support_level !== level || observation.child_id !== childId) return false;
+      if (dependencies.getScope && dependencies.getScope() !== scopeAtStart) return false;
       // A slower, older answer must not replace a newer one that already arrived.
       dependencies.setExperience((previous) => mergeHabitPrograms(previous, { supportObservations: [observation], cuePlans: [] }));
       return true;
@@ -108,6 +112,7 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
     }
     if (!dependencies.isSignedInParent) return false;
 
+    const scopeAtStart = dependencies.getScope?.();
     try {
       const response = await request('/api/domain/experience', {
         method: 'POST',
@@ -118,6 +123,7 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
       const saved = z.object({ cuePlan: z.unknown() }).parse(await response.json());
       const cuePlan = parseCuePlan(saved.cuePlan);
       if (cuePlan.child_id !== childId || cuePlan.activity_id !== activityId) return false;
+      if (dependencies.getScope && dependencies.getScope() !== scopeAtStart) return false;
       dependencies.setExperience((previous) => mergeHabitPrograms(previous, { supportObservations: [], cuePlans: [cuePlan] }));
       return true;
     } catch {

@@ -305,6 +305,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const deferralRequestVersion = useRef(0);
   const journalScopeVersion = useRef(0);
   const cityScopeVersion = useRef(0);
+  const habitProgramScope = useRef(0);
   const pendingCityItems = useRef(new Set<string>());
   const locallyBuiltCityItems = useRef(new Set<string>());
   const localCityBalances = useRef(new Map<string, number>());
@@ -344,6 +345,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     identityModeInitializedRef.current = false;
     journalScopeVersion.current += 1;
     cityScopeVersion.current += 1;
+    habitProgramScope.current += 1;
     pendingCityItems.current.clear();
     locallyBuiltCityItems.current.clear();
     localCityBalances.current.clear();
@@ -769,7 +771,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     }
   };
 
-  const { recordSupport: recordHabitSupport, saveCuePlan: saveHabitCuePlan } = createHabitProgramActions({
+  const habitProgramActions = () => createHabitProgramActions({
     activeChildId,
     familyId,
     isDemoSession,
@@ -778,7 +780,14 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     logs,
     activities,
     setExperience,
+    getScope: () => habitProgramScope.current,
   });
+  const recordHabitSupport = (logId: string, level: SupportLevel): Promise<boolean> => (
+    habitProgramActions().recordSupport(logId, level)
+  );
+  const saveHabitCuePlan = (activityId: string, input: CuePlanInput): Promise<boolean> => (
+    habitProgramActions().saveCuePlan(activityId, input)
+  );
 
   const setFamilyPaused = createFamilyPauseAction({
     currentUser,
