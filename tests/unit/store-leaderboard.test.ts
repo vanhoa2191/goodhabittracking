@@ -112,6 +112,8 @@ describe('names on the family and group boards', () => {
       ],
     });
     expect(entries.map((entry) => entry.nickname).sort()).toEqual(['Lê Minh Bình', 'Sư Tử Nhỏ']);
+    const chosen = board({ profiles: [{ ...baseProfile, nickname: 'Sư Tử Nhỏ', showRealNameOnLeaderboard: true }] });
+    expect(chosen[0].nickname).toBe('Nguyễn An');
   });
 });
 

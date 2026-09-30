@@ -71,7 +71,7 @@ export function buildLeaderboard({
     .filter((profile) => scope === 'family' || groupmates.has(profile.id))
     .map((profile) => ({
       childId: profile.id as string | null,
-      nickname: profile.nickname?.trim() || profile.name,
+      nickname: profile.showRealNameOnLeaderboard ? profile.name : profile.nickname?.trim() || profile.name,
       avatar: profile.avatar,
       themeColor: profile.themeColor,
       points: earnedBy.get(profile.id) ?? 0,

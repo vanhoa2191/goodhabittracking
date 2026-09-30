@@ -327,6 +327,76 @@ try {
     cityRouteNote = 'city routes were checked too';
   }
 
+  // The public leaderboard: shared only when the family and the child both agreed, by what was really earned.
+  const alias = `Thử ${runId.slice(-6)}`;
+  const publicRows = async (mine = null, period = 'daily') => {
+    const { data, error } = await anonymous.rpc('get_public_leaderboard', {
+      period_key: period, viewer_today: today, mine_child_id: mine, result_limit: 100,
+    });
+    assert(!error && Array.isArray(data), 'The public leaderboard could not be read.');
+    return data;
+  };
+  const sharingOff = await jsonRequest('/api/privacy/leaderboard-sharing', { headers: first.parent.headers() });
+  assert(sharingOff.response.status === 200 && sharingOff.body?.enabled === false, 'Sharing was not off by default.');
+  const sharingAnonymous = await jsonRequest('/api/privacy/leaderboard-sharing');
+  assert(sharingAnonymous.response.status === 401, 'The sharing setting answered without a session.');
+  const childDefault = await admin.from('child_profiles').select('is_public_on_leaderboard').eq('id', first.childId).single();
+  assert(!childDefault.error && childDefault.data.is_public_on_leaderboard === false, 'A new child was not private by default.');
+
+  const publicFixtures = await Promise.all([
+    admin.from('child_profiles').update({ is_public_on_leaderboard: true, nickname: alias, points: 999 }).eq('id', first.childId),
+    admin.from('child_profiles').update({ is_public_on_leaderboard: true, nickname: `${alias} B` }).eq('id', second.childId),
+  ]);
+  assert(publicFixtures.every(({ error }) => !error), 'Synthetic public fixture failed.');
+  const publicActivityId = randomUUID();
+  const publicActivity = await admin.from('habit_activities').insert({
+    id: publicActivityId, family_id: first.familyId, user_id: first.userId, child_id: first.childId,
+    title: `Public board habit ${runId}`, category: 'study', points: 25, requires_approval: false, is_active: true,
+  });
+  assert(!publicActivity.error, 'Synthetic public activity failed.');
+  const publicLog = await admin.from('activity_logs').insert({
+    activity_id: publicActivityId, family_id: first.familyId, user_id: first.userId, child_id: first.childId,
+    log_date: today, status: 'completed', points_awarded: 25,
+  });
+  assert(!publicLog.error, 'Synthetic public log failed.');
+
+  assert(!(await publicRows()).some((row) => row.nickname.startsWith(alias)), 'A child appeared before its family chose to share.');
+
+  const sharingOn = await jsonRequest('/api/privacy/leaderboard-sharing', {
+    method: 'PUT', headers: first.parent.headers(), body: JSON.stringify({ enabled: true }),
+  });
+  assert(sharingOn.response.status === 200 && sharingOn.body?.enabled === true, 'The family could not choose to share.');
+  const shared = await publicRows(first.childId);
+  const own = shared.find((row) => row.nickname === alias);
+  assert(own, 'A shared child did not appear on the public board.');
+  assert(!shared.some((row) => row.nickname === `${alias} B`), 'A child of a family that did not choose to share appeared.');
+  assert(own.points === 25 && own.is_mine === true, 'The public board did not show what was really earned, or did not mark the viewer\'s child.');
+  assert(
+    JSON.stringify(Object.keys(own).sort()) === JSON.stringify(['avatar', 'is_mine', 'nickname', 'points', 'rank_number', 'streak', 'theme_color', 'tier']),
+    'The public board returned fields it must not return.',
+  );
+  assert(!JSON.stringify(shared).includes('Experience child') && !JSON.stringify(shared).includes(first.childId), 'The public board exposed a real name or an id.');
+  assert((await publicRows(second.childId)).find((row) => row.nickname === alias)?.is_mine === false, 'Another family\'s child was marked as the viewer\'s.');
+  assert((await publicRows(null, 'weekly')).find((row) => row.nickname === alias)?.points === 25, 'The weekly public board differs from what was earned.');
+
+  const foreignSetter = await second.parent.client.rpc('set_family_public_leaderboard', { target_family_id: first.familyId, enabled: false });
+  assert(Boolean(foreignSetter.error) || foreignSetter.data?.status === 'session_invalid', 'A parent of another family changed this family\'s sharing.');
+  const anonymousSetter = await anonymous.rpc('set_family_public_leaderboard', { target_family_id: first.familyId, enabled: false });
+  assert(Boolean(anonymousSetter.error), 'Anonymous sharing change unexpectedly succeeded.');
+  const consent = await admin.from('family_consents').select('revoked_at').eq('family_id', first.familyId).eq('consent_type', 'leaderboard').single();
+  assert(!consent.error && consent.data.revoked_at === null, 'The family\'s choice was not recorded as a consent.');
+
+  await admin.from('child_profiles').update({ is_public_on_leaderboard: false }).eq('id', first.childId);
+  assert(!(await publicRows()).some((row) => row.nickname === alias), 'A child stayed on the board after being taken off.');
+  await admin.from('child_profiles').update({ is_public_on_leaderboard: true }).eq('id', first.childId);
+  const sharingRevoked = await jsonRequest('/api/privacy/leaderboard-sharing', {
+    method: 'PUT', headers: first.parent.headers(), body: JSON.stringify({ enabled: false }),
+  });
+  assert(sharingRevoked.response.status === 200 && sharingRevoked.body?.enabled === false, 'The family could not stop sharing.');
+  assert(!(await publicRows()).some((row) => row.nickname === alias), 'A child stayed on the board after the family stopped sharing.');
+  const consentRevoked = await admin.from('family_consents').select('revoked_at').eq('family_id', first.familyId).eq('consent_type', 'leaderboard').single();
+  assert(!consentRevoked.error && consentRevoked.data.revoked_at !== null, 'Stopping to share was not recorded.');
+
   // Deleting the family removes every row these features created.
   const familyDelete = await jsonRequest('/api/family', {
     method: 'DELETE', headers: first.parent.headers(), body: JSON.stringify({ confirmation: 'DELETE FAMILY' }),
@@ -341,7 +411,7 @@ try {
   assert(leftovers.every(({ error, count }) => !error && count === 0), 'Experience rows survived family deletion.');
   first.familyId = null;
 
-  successMessage = `Live experience verification passed: mascot letter, journal, reminder consent and dream city (${cityRouteNote}).\n`;
+  successMessage = `Live experience verification passed: mascot letter, journal, reminder consent, dream city (${cityRouteNote}) and the public leaderboard.\n`;
 } finally {
   await cleanup();
 }
