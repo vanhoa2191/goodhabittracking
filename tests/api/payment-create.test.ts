@@ -14,6 +14,11 @@ const { getParentContext, createPayOSPayment, createAdminSupabaseClient } = vi.h
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/billing/payos-server', () => ({ createPayOSPayment }));
 vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient }));
+vi.mock('@/lib/supabase/server', () => ({ createServerSupabaseClient: vi.fn(async () => ({ rpc: vi.fn() })) }));
+
+vi.mock('@/lib/security/parent-unlock', () => ({
+  requireParentUnlock: vi.fn(async () => null),
+}));
 
 import { POST } from '@/app/api/payment/create/route';
 

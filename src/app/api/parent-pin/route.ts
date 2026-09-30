@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
+import { clearParentUnlock, issueParentUnlock } from '@/lib/security/parent-unlock';
 
 export const runtime = 'nodejs';
 
@@ -39,7 +40,17 @@ export async function POST(request: NextRequest) {
   });
   if (error || !data) return NextResponse.json({ error: 'Could not verify PIN.' }, { status: 503 });
   const status = typeof data === 'object' && data && 'status' in data ? data.status : null;
-  return NextResponse.json(data, { status: status === 'locked' ? 429 : status === 'verified' ? 200 : 409 });
+  const response = NextResponse.json(data, { status: status === 'locked' ? 429 : status === 'verified' ? 200 : 409 });
+  if (status === 'verified') await issueParentUnlock(response, context.parent);
+  return response;
+}
+
+export async function DELETE(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
+  const response = NextResponse.json({ status: 'locked_again' });
+  clearParentUnlock(response);
+  return response;
 }
 
 export async function PUT(request: NextRequest) {
@@ -56,5 +67,7 @@ export async function PUT(request: NextRequest) {
   });
   if (error || !data) return NextResponse.json({ error: 'Could not update PIN.' }, { status: 503 });
   const status = typeof data === 'object' && data && 'status' in data ? data.status : null;
-  return NextResponse.json(data, { status: status === 'updated' ? 200 : status === 'invalid_format' ? 400 : status === 'locked' ? 429 : 409 });
+  const response = NextResponse.json(data, { status: status === 'updated' ? 200 : status === 'invalid_format' ? 400 : status === 'locked' ? 429 : 409 });
+  if (status === 'updated') await issueParentUnlock(response, context.parent);
+  return response;
 }

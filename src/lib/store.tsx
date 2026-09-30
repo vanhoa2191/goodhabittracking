@@ -58,6 +58,7 @@ import type {
   ParentPinStatus,
   ParentPinVerification,
 } from './store/parent-pin-client';
+import { installParentPinSignal, PARENT_PIN_REQUIRED_EVENT } from './security/parent-pin-signal';
 import {
   clearDemoFamilyState,
   clearFamilyScopedStorage,
@@ -511,7 +512,18 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     setIsParentUnlocked(false);
     setModeState('kid');
     sounds.playClick();
+    if (currentUser) void fetch('/api/parent-pin', { method: 'DELETE' }).catch(() => undefined);
   };
+
+  useEffect(() => {
+    installParentPinSignal();
+    const relock = () => {
+      setIsParentUnlocked(false);
+      setModeState('kid');
+    };
+    window.addEventListener(PARENT_PIN_REQUIRED_EVENT, relock);
+    return () => window.removeEventListener(PARENT_PIN_REQUIRED_EVENT, relock);
+  }, []);
 
   const setMode = (targetMode: 'kid' | 'parent') => {
     if (isFamilyConnected && !currentUser) return;

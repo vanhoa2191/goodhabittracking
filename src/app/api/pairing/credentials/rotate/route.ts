@@ -5,6 +5,7 @@ import { getParentContext } from '@/lib/auth/parent-context';
 import { derivePairingCredential, getPairingSecret, sha256Hex } from '@/lib/pairing/crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
+import { requireParentUnlock } from '@/lib/security/parent-unlock';
 
 export const runtime = 'nodejs';
 
@@ -37,6 +38,8 @@ export async function POST(request: NextRequest) {
     sha256Hex(credential.token),
   ]);
   const supabase = await createServerSupabaseClient();
+  const locked = await requireParentUnlock(request, parent, supabase);
+  if (locked) return locked;
   const { data, error } = await supabase.rpc('rotate_pairing_credential', {
     target_child_id: parsed.data.childId,
     next_rotation_nonce: rotationNonce,

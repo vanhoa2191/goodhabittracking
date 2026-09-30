@@ -4,6 +4,7 @@ import { domainCommandSchema, type DomainCommand } from '@/lib/domain/commands';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
+import { requireParentUnlock } from '@/lib/security/parent-unlock';
 
 export const runtime = 'nodejs';
 
@@ -60,6 +61,10 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = await createServerSupabaseClient();
+  if (parsed.data.type === 'reviewHabit' || parsed.data.type === 'transitionRedemption') {
+    const locked = await requireParentUnlock(request, parent, supabase);
+    if (locked) return locked;
+  }
   const rpc = rpcFor(parsed.data);
   const { data, error } = await supabase.rpc(rpc.name, rpc.args);
   if (error) {

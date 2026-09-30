@@ -5,6 +5,7 @@ import { getParentContext } from '@/lib/auth/parent-context';
 import { derivePairingCredential, getPairingSecret, sha256Hex } from '@/lib/pairing/crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
+import { requireParentUnlock } from '@/lib/security/parent-unlock';
 
 export const runtime = 'nodejs';
 
@@ -31,6 +32,8 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = await createServerSupabaseClient();
+  const locked = await requireParentUnlock(request, parent, supabase);
+  if (locked) return locked;
   const { data: child, error: childError } = await supabase
     .from('child_profiles')
     .select('id')
