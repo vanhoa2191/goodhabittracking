@@ -47,6 +47,7 @@ import { QuestSwipeSurface } from './QuestSwipeSurface';
 import { DailyJournalCard } from './DailyJournalCard';
 import { ChildHabitNote } from './ChildHabitNote';
 import { ChildSelfReportPrompt } from './ChildSelfReportPrompt';
+import { useChildHabitPhases } from '@/lib/habit-programs/use-child-habit-phases';
 import { DreamCityCard } from './DreamCityCard';
 import { BadgeCelebration } from './BadgeCelebration';
 import { isActivityDueOn } from '@/lib/habit-programs/opportunities';
@@ -90,6 +91,14 @@ export function KidDashboard() {
   const [completionStatusId, setCompletionStatusId] = useState<string | null>(null);
   const [savingTaskId, setSavingTaskId] = useState<string | null>(null);
   const visibleTab = isFamilyPaused && activeTab === 'leaderboard' ? 'tasks' : activeTab;
+  const habitPhases = useChildHabitPhases({
+    enabled: defaultExperienceFlags.habitPrograms,
+    child: activeChild,
+    activities,
+    logs,
+    experience,
+    pausePeriods: familyPausePeriods,
+  });
   const badgeAwards = useBadgeAwards({ child: activeChild ?? null, badges, logs, activities, childBadges });
 
   const completeTask = async (activity: HabitActivity, date: string, isCompleting: boolean) => {
@@ -624,7 +633,7 @@ export function KidDashboard() {
                                     </span>
                                   )}
                               </div>
-                              {defaultExperienceFlags.habitPrograms && <ChildHabitNote activityId={act.id} isDone={isDone} />}
+                              {defaultExperienceFlags.habitPrograms && <ChildHabitNote activityId={act.id} isDone={isDone} day={dateStr} phase={habitPhases.get(act.id)} />}
                             </div>
 
                             {/* Action Checkbox Button with Claymorphic Feel & Haptic Feedback */}

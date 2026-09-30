@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { cueLineFor, childMaySelfReport, pickAcknowledgement } from '@/lib/habit-programs/child-view';
+import { cueLineFor, childMaySelfReport, isWeekendDay, pickAcknowledgement, pickChildPromptLog } from '@/lib/habit-programs/child-view';
 
 describe('who may say how a habit was done', () => {
   it('allows a child from 15 years old, by age when known and by birth year otherwise', () => {
@@ -69,5 +69,43 @@ describe('the acknowledgement for a habit that has become steady', () => {
   it('works with a single line', () => {
     expect(pickAcknowledgement('c1', 'h1', '2026-09-30', 'maintain', ['only'])).toBe('only');
     expect(pickAcknowledgement('c1', 'h1', '2026-10-01', 'maintain', ['only'])).toBe('only');
+  });
+});
+
+describe('weekends', () => {
+  it('tells weekend days from weekdays by the date itself, not by today', () => {
+    expect(isWeekendDay('2026-09-26')).toBe(true); // Saturday
+    expect(isWeekendDay('2026-09-27')).toBe(true); // Sunday
+    expect(isWeekendDay('2026-09-28')).toBe(false); // Monday
+    expect(isWeekendDay('2026-09-25')).toBe(false); // Friday
+  });
+});
+
+describe('which finished habit the child is asked about', () => {
+  const log = (id: string, date: string, completedAt: string, extra: Record<string, unknown> = {}) => ({
+    id, activityId: 'a1', childId: 'c1', date, status: 'completed' as const, completedAt, ...extra,
+  });
+  const context = { planned: new Set(['c1:a1']), recorded: new Set<string>(), saved: new Set<string>(), today: '2026-09-30', yesterday: '2026-09-29' };
+
+  it('asks about the habit finished last, not the oldest one left unanswered', () => {
+    const logs = [log('breakfast', '2026-09-30', '2026-09-30T06:00:00.000Z'), log('homework', '2026-09-30', '2026-09-30T15:00:00.000Z')];
+    expect(pickChildPromptLog(logs, context, new Set())?.id).toBe('homework');
+  });
+
+  it('still asks about yesterday when the day changed while the app stayed open', () => {
+    expect(pickChildPromptLog([log('late', '2026-09-29', '2026-09-29T20:00:00.000Z')], context, new Set())?.id).toBe('late');
+  });
+
+  it('keeps asking after more than six questions were skipped', () => {
+    const logs = Array.from({ length: 7 }, (_, index) => log(`l${index + 1}`, '2026-09-30', `2026-09-30T0${index + 1}:00:00.000Z`));
+    const skipped = new Set(['l7', 'l6', 'l5', 'l4', 'l3', 'l2']);
+    expect(pickChildPromptLog(logs, context, skipped)?.id).toBe('l1');
+  });
+
+  it('shows the confirmation of an answer just given, and nothing when everything was skipped or answered', () => {
+    const logs = [log('a', '2026-09-30', '2026-09-30T06:00:00.000Z')];
+    expect(pickChildPromptLog(logs, { ...context, recorded: new Set(['a']), saved: new Set(['a']) }, new Set())?.id).toBe('a');
+    expect(pickChildPromptLog(logs, context, new Set(['a']))).toBeNull();
+    expect(pickChildPromptLog(logs, { ...context, recorded: new Set(['a']) }, new Set())).toBeNull();
   });
 });

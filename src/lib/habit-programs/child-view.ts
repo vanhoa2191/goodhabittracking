@@ -1,6 +1,7 @@
 import type { CuePlan } from '@/lib/experience-state';
 import type { ChildProfile } from '@/types';
 import type { HabitPhase } from './types';
+import { selectSupportPromptItems } from './parent-ui-state';
 
 const SELF_REPORT_AGE = 15;
 
@@ -52,4 +53,29 @@ export function pickAcknowledgement(
   if (lines.length === 1) return lines[0];
   const offset = hash(`${childId}:${habitId}`) % lines.length;
   return lines[(offset + dayNumber(day)) % lines.length];
+}
+
+/** Whether a local day (YYYY-MM-DD) is a Saturday or Sunday, independent of today's date. */
+export function isWeekendDay(day: string): boolean {
+  const [year, month, date] = day.split('-').map(Number);
+  const weekday = new Date(Date.UTC(year, month - 1, date)).getUTCDay();
+  return weekday === 0 || weekday === 6;
+}
+
+type ChildPromptLog = Parameters<typeof selectSupportPromptItems>[0][number] & { readonly completedAt: string };
+
+/**
+ * The one finished habit a child is asked about: the answer just given while it is confirmed, otherwise the
+ * habit finished last. Skipped ones are set aside before the list is capped, so they never hide the rest.
+ */
+export function pickChildPromptLog<T extends ChildPromptLog>(
+  logs: readonly T[],
+  context: Parameters<typeof selectSupportPromptItems>[1],
+  skipped: ReadonlySet<string>,
+): T | null {
+  const open = logs.filter((log) => context.saved.has(log.id) || !skipped.has(log.id));
+  const items = selectSupportPromptItems(open, context);
+  const confirmed = items.find((log) => context.saved.has(log.id));
+  if (confirmed) return confirmed;
+  return [...items].sort((left, right) => right.completedAt.localeCompare(left.completedAt))[0] ?? null;
 }

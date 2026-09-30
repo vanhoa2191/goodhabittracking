@@ -72,8 +72,10 @@ test('a child of 15 can say how the habit went, or skip it without losing the co
   const prompt = page.getByTestId('child-self-report');
   await expect(prompt).toBeVisible();
   await expect(prompt.getByRole('group')).toBeVisible();
+  await expect(prompt.getByTestId('child-self-report-habit')).toHaveText(title);
   await prompt.getByRole('button', { name: 'I did it myself' }).click();
   await expect(prompt.getByRole('status')).toHaveText('Saved. Thank you!');
+  await expect(prompt.getByRole('status')).toBeFocused();
 
   const results = await new AxeBuilder({ page }).include('[data-testid="child-self-report"]').analyze();
   expect(results.violations.filter((violation) => violation.impact === 'serious' || violation.impact === 'critical')).toEqual([]);
