@@ -33,6 +33,7 @@ declare
   target_order public.payment_orders%rowtype;
   current_subscription public.user_subscriptions%rowtype;
   has_paid_time boolean;
+  has_trial_time boolean;
   current_rank integer;
   order_rank integer;
   next_plan text;
@@ -63,6 +64,10 @@ begin
 
   if not found then return 'duplicate'; end if;
 
+  -- Two purchases for a family that has no subscription row yet would both compute from
+  -- nothing, so they queue on the family row before reading the subscription.
+  perform 1 from public.families family where family.id = target_order.family_id for update;
+
   select * into current_subscription
   from public.user_subscriptions subscription
   where subscription.family_id = target_order.family_id
@@ -72,6 +77,10 @@ begin
     and current_subscription.status = 'active'
     and current_subscription.plan in ('solo_monthly', 'monthly', 'yearly')
     and current_subscription.subscription_ends_at > now();
+  has_trial_time := found
+    and current_subscription.status = 'active'
+    and current_subscription.plan = 'trial'
+    and current_subscription.trial_ends_at > now();
 
   if target_order.plan_id = 'lifetime'
     or (found and current_subscription.status = 'active' and current_subscription.plan = 'lifetime') then
@@ -81,8 +90,11 @@ begin
     order_rank := case target_order.plan_id when 'solo_monthly' then 1 else 2 end;
     current_rank := case when has_paid_time then case current_subscription.plan when 'solo_monthly' then 1 else 2 end else 0 end;
     next_plan := case when current_rank > order_rank then current_subscription.plan else target_order.plan_id end;
-    entitlement_end := case when has_paid_time then current_subscription.subscription_ends_at else now() end
-      + case target_order.plan_id when 'yearly' then interval '1 year' else interval '1 month' end;
+    entitlement_end := case
+        when has_paid_time then current_subscription.subscription_ends_at
+        when has_trial_time then current_subscription.trial_ends_at
+        else now()
+      end + case target_order.plan_id when 'yearly' then interval '1 year' else interval '1 month' end;
   end if;
 
   update public.payment_orders
@@ -129,10 +141,13 @@ declare
   current_subscription public.user_subscriptions%rowtype;
   owner_id uuid;
   has_paid_time boolean;
+  has_trial_time boolean;
   next_plan text;
   next_end timestamptz;
 begin
   if actor is null or actor_family is null then raise exception 'not_authorized'; end if;
+  -- Concurrent guesses from one account queue here so the budget below cannot be raced past.
+  perform pg_advisory_xact_lock(hashtextextended(actor::text, 0));
   if (
     select count(*) from public.coupon_attempts attempt
     where attempt.user_id = actor and attempt.attempted_at > now() - interval '15 minutes'
@@ -165,6 +180,8 @@ begin
     return;
   end if;
 
+  perform 1 from public.families family where family.id = actor_family for update;
+
   select * into current_subscription
   from public.user_subscriptions subscription
   where subscription.family_id = actor_family
@@ -179,6 +196,10 @@ begin
     and current_subscription.status = 'active'
     and current_subscription.plan in ('solo_monthly', 'monthly', 'yearly')
     and current_subscription.subscription_ends_at > now();
+  has_trial_time := found
+    and current_subscription.status = 'active'
+    and current_subscription.plan = 'trial'
+    and current_subscription.trial_ends_at > now();
 
   select membership.user_id into owner_id
   from public.family_memberships membership
@@ -186,8 +207,11 @@ begin
   limit 1;
 
   next_plan := case when has_paid_time then current_subscription.plan else 'monthly' end;
-  next_end := case when has_paid_time then current_subscription.subscription_ends_at else now() end
-    + make_interval(days => target.bonus_days);
+  next_end := case
+      when has_paid_time then current_subscription.subscription_ends_at
+      when has_trial_time then current_subscription.trial_ends_at
+      else now()
+    end + make_interval(days => target.bonus_days);
 
   insert into public.user_subscriptions (family_id, user_id, plan, status, subscription_ends_at, updated_at)
   values (actor_family, owner_id, next_plan, 'active', next_end, now())

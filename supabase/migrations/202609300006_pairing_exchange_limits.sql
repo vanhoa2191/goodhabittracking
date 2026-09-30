@@ -73,15 +73,22 @@ begin
     return;
   end if;
 
+  -- A shared row lock keeps a rotation from committing between reading the credential and
+  -- creating the session, so a replaced credential cannot finish pairing.
   if pairing_token_hash is not null then
     select * into credential
     from public.pairing_credentials stored
-    where stored.token_hash = decode(pairing_token_hash, 'hex');
+    where stored.token_hash = decode(pairing_token_hash, 'hex')
+    for share;
   elsif manual_code_id is not null and manual_verifier_hash is not null then
     select * into credential
     from public.pairing_credentials stored
     where stored.display_code_id = upper(manual_code_id)
-      and stored.verifier_hash = decode(manual_verifier_hash, 'hex');
+      and stored.verifier_hash = decode(manual_verifier_hash, 'hex')
+    for share;
+  else
+    return query select 'invalid', null::uuid, null::uuid, null::uuid, null::timestamptz;
+    return;
   end if;
 
   if not found then
