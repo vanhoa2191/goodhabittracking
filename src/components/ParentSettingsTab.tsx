@@ -12,6 +12,7 @@ import { ChildDevicesPanel } from '@/components/ChildDevicesPanel';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { AccountProfileCard } from '@/components/AccountProfileCard';
 import { AnalyticsConsentCard } from '@/components/AnalyticsConsentCard';
+import { LeaderboardSharingCard } from './LeaderboardSharingCard';
 import { ParentReminderConsentCard } from '@/components/ParentReminderConsentCard';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { CaregiverInvitesPanel } from '@/components/CaregiverInvitesPanel';
@@ -164,6 +165,7 @@ export function ParentSettingsTab() {
       {currentUser && <AccountProfileCard />}
       <h4 id="settings-privacy" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Riêng tư & thông báo</h4>
       {currentUser && <AnalyticsConsentCard />}
+      {currentUser && <LeaderboardSharingCard />}
       {currentUser && defaultExperienceFlags.parentReengagement && <ParentReminderConsentCard />}
 
       <Link href={new URL('/docs/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{language === 'vi' ? 'Mở tài liệu hướng dẫn' : 'Open user guide'}</Link>

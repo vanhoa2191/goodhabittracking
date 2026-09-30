@@ -67,6 +67,7 @@ import { useLocalFamilyLifecycle } from './store/use-local-family-lifecycle';
 import { useCloudFamilyIdentity } from './store/use-cloud-family-identity';
 import type { FamilyRole } from './store/cloud-family-sync';
 import { buildLeaderboard } from './store/leaderboard';
+import { localDayKey } from '@/lib/habit-fire';
 import { buildSubscriptionDetails, checkIsPro } from './store/subscription';
 import { adjustProfilePoints } from './store/local-domain-actions';
 import { getMascot } from './mascots';
@@ -1100,9 +1101,11 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   ): LeaderboardEntry[] => buildLeaderboard({
     profiles,
     logs,
+    groups,
     activeChildId,
     scope,
     period,
+    today: localDayKey(new Date()),
   });
 
   // Subscription Operations

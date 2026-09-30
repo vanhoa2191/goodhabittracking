@@ -80,7 +80,6 @@ const admin = createClient(projectUrl, serviceRole, {
 const parent = createParentClient(anonKey);
 const runId = `${Date.now()}-${randomBytes(5).toString('hex')}`;
 const email = `lifecycle-${runId}@example.invalid`;
-const password = `${randomBytes(24).toString('base64url')}aA1!`;
 const childId = randomUUID();
 const activityId = randomUUID();
 const rewardId = randomUUID();
@@ -88,6 +87,15 @@ const completionId = randomUUID();
 const redemptionId = randomUUID();
 let userId;
 let familyId;
+
+// The email provider is off in production (Google is the only sign-in), so a synthetic parent gets a session from
+// an administrator-issued one-time link instead of a password.
+async function signInSyntheticUser(client, email) {
+  const link = await admin.auth.admin.generateLink({ type: 'magiclink', email });
+  const tokenHash = link.data?.properties?.hashed_token;
+  assert(!link.error && tokenHash, 'Synthetic sign-in link could not be issued.');
+  return client.auth.verifyOtp({ token_hash: tokenHash, type: 'magiclink' });
+}
 
 async function removeSyntheticData(userIdList, familyIdList) {
   const failures = [];
@@ -116,14 +124,13 @@ let successMessage = '';
 try {
   const created = await admin.auth.admin.createUser({
     email,
-    password,
     email_confirm: true,
     user_metadata: { full_name: 'Automated lifecycle verification' },
   });
   assert(!created.error && created.data.user, 'Synthetic parent creation failed.');
   userId = created.data.user.id;
 
-  const signedIn = await parent.client.auth.signInWithPassword({ email, password });
+  const signedIn = await signInSyntheticUser(parent.client, email);
   assert(!signedIn.error, 'Synthetic parent sign-in failed.');
   const membership = await admin
     .from('family_memberships')

@@ -187,7 +187,8 @@ export interface GroupTeam {
 }
 
 export interface LeaderboardEntry {
-  childId: string;
+  /** Null for the children of other families on the public board: they are never identified. */
+  childId: string | null;
   nickname: string;
   avatar: string;
   themeColor: string;

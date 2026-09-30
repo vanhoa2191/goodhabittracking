@@ -20,6 +20,8 @@ Cloud onboarding yêu cầu người lớn xác nhận quyền quản lý dữ l
 
 Bộ thói quen thích ứng lưu hai loại dữ liệu theo gia đình: kế hoạch tín hiệu của từng thói quen (câu tín hiệu, giờ, nơi) và ghi nhận cách bé hoàn thành từng lần ("tự làm", "được nhắc", "làm cùng"). Cả hai bảng bật và ép RLS, chỉ thành viên gia đình đọc được, chỉ ghi qua hàm có kiểm tra quyền (phụ huynh, hoặc thiết bị bé đã ghép đôi cho chính bản ghi của bé) và bị xóa cùng bé hoặc gia đình. Dữ liệu này chỉ để hiển thị và gợi ý điều chỉnh cho phụ huynh, không dùng cho xếp hạng hay so sánh giữa các bé. Định dạng bản sao JSON của gia đình có gồm các dòng này, nhưng giao diện chưa gọi nó (xem đoạn trên).
 
+Bảng xếp hạng công khai chỉ hiện một bé khi cả hai điều kiện cùng đúng: gia đình đã bật chia sẻ (mặc định tắt, chỉ phụ huynh đổi được, ghi thành consent `leaderboard` có thể thu hồi) và hồ sơ của bé được đánh dấu tham gia (bé mới mặc định riêng tư). Hàm công khai chỉ trả biệt danh hoặc "Bé Siêu Nhân", hình đại diện, điểm kiếm được trong kỳ, chuỗi ngày và hạng; không trả mã bé, mã gia đình, tên thật hay tuổi. Điểm là điểm kiếm được từ nhật ký đã xác nhận trong kỳ lịch của người xem, không phải số dư nên tiêu điểm không đổi thứ hạng. Bảng Gia đình và Nhóm chỉ dùng dữ liệu trong gia đình.
+
 Khôi phục tài khoản Supabase Auth không đồng nghĩa khôi phục dữ liệu đã xóa. Backup operator và quy trình phục hồi nằm trong [`data-recovery.md`](data-recovery.md).
 
 ## Phạm vi pháp lý

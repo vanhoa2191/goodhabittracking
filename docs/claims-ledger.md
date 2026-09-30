@@ -5,7 +5,7 @@
 | Đồng bộ cloud đa thiết bị | Supabase family queries, domain RPC và E2E isolation | Qualified: chỉ khi đăng nhập và migration production đã áp dụng |
 | PayOS VietQR tự động | Signed create request, verified webhook, idempotent entitlement RPC | Qualified: chỉ khi Worker secrets và webhook đã cấu hình |
 | Dùng thử 7 ngày, không tự trừ tiền | One-time trial RPC; không có recurring charge API | Verified by code/tests |
-| Leaderboard bảo vệ tên thật | Opt-in settings và public projection tối thiểu | Verified by migration; production deployment pending |
+| Leaderboard bảo vệ tên thật | Bảng công khai chỉ hiện những bé mà cả gia đình lẫn bé đồng ý (mặc định tắt); chỉ trả biệt danh hoặc "Bé Siêu Nhân", hình đại diện, điểm kiếm được trong kỳ và chuỗi ngày, không trả mã hay tên thật (`supabase/migrations/202609300002_public_leaderboard.sql`, `scripts/verify-live-experience.mjs`) | Verified by migration tests và kiểm tra live; sự lựa chọn của gia đình được ghi thành consent `leaderboard`. Không mô tả như xếp hạng công bằng hay khuyến khích thi đua giữa trẻ |
 | 50+ thói quen | Static catalog count cần kiểm tra khi nội dung thay đổi | Product-owned; không dùng như outcome guarantee |
 | Cải thiện phẩm chất/kết quả giáo dục | Không có nghiên cứu sản phẩm kiểm chứng | Không được trình bày như cam kết kết quả |
 | An toàn/bảo mật tuyệt đối | Không thể chứng minh tuyệt đối | Dùng mô tả kiểm soát cụ thể, không dùng claim tuyệt đối |
