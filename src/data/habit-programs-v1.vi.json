@@ -1,0 +1,25 @@
+{
+  "contentVersion": "1.0.0",
+  "programs": [
+    { "id": "P1-A", "stageId": "GD1", "name": "Nếp ngày êm và ngủ lành", "habitIds": ["GD1-SK-02", "GD1-NT-02", "GD1-SK-01"] },
+    { "id": "P1-B", "stageId": "GD1", "name": "Được đáp lại mỗi ngày", "habitIds": ["GD1-MQH-01", "GD1-NT-01", "GD1-MQH-02"] },
+    { "id": "P2-A", "stageId": "GD2", "name": "Cảm xúc bình yên và giấc ngủ", "habitIds": ["GD2-NT-01", "GD2-SK-01", "GD2-SK-02"] },
+    { "id": "P2-B", "stageId": "GD2", "name": "Lễ phép và hòa giải", "habitIds": ["GD2-MQH-01", "GD2-MQH-02", "GD2-NT-02"] },
+    { "id": "P2-C", "stageId": "GD2", "name": "Bổn phận nhỏ và ba lọ tiền", "habitIds": ["GD2-HT-02", "GD2-HT-01", "GD2-TC-01"] },
+    { "id": "P3-A", "stageId": "GD3", "name": "Tối biết ơn và ngủ đủ", "habitIds": ["GD3-NT-01", "GD3-SK-01", "GD3-NT-02"] },
+    { "id": "P3-B", "stageId": "GD3", "name": "Học có phương pháp", "habitIds": ["GD3-HT-02", "GD3-NT-02", "GD3-HT-01"] },
+    { "id": "P3-C", "stageId": "GD3", "name": "Giao tiếp và nhân duyên", "habitIds": ["GD3-NT-01", "GD3-MQH-01", "GD3-MQH-02"] },
+    { "id": "P3-D", "stageId": "GD3", "name": "Tiền và giá trị", "habitIds": ["GD3-HT-02", "GD3-TC-01", "GD3-TC-02"] },
+    { "id": "P3-E", "stageId": "GD3", "name": "Vận động có chỉ số", "habitIds": ["GD3-SK-01", "GD3-SK-02", "GD3-NT-02"] },
+    { "id": "P4-A", "stageId": "GD4", "name": "Ngủ và sức mạnh", "habitIds": ["GD4-SK-01", "GD4-SK-02", "GD4-NT-02"] },
+    { "id": "P4-B", "stageId": "GD4", "name": "Nhận thức và cảm xúc", "habitIds": ["GD4-NT-01", "GD4-NT-03", "GD4-NT-02"] },
+    { "id": "P4-C", "stageId": "GD4", "name": "Học tự chủ", "habitIds": ["GD4-HT-01", "GD4-HT-02", "GD4-NT-02"] },
+    { "id": "P4-D", "stageId": "GD4", "name": "Giao tiếp và dẫn dắt", "habitIds": ["GD4-MQH-02", "GD4-MQH-01", "GD4-NT-03"] },
+    { "id": "P4-E", "stageId": "GD4", "name": "Tài chính tuổi teen", "habitIds": ["GD4-TC-01", "GD4-HT-01", "GD4-NT-02"] },
+    { "id": "P5-A", "stageId": "GD5", "name": "Luật sắt và sứ mệnh", "habitIds": ["GD5-NT-01", "GD5-NT-02", "GD5-NT-03"] },
+    { "id": "P5-B", "stageId": "GD5", "name": "Thân khỏe và hình thể", "habitIds": ["GD5-SK-01", "GD5-SK-02", "GD5-NT-01"] },
+    { "id": "P5-C", "stageId": "GD5", "name": "Duyên lành và truyền thông", "habitIds": ["GD5-MQH-01", "GD5-MQH-02", "GD5-NT-03"] },
+    { "id": "P5-D", "stageId": "GD5", "name": "Trí tuệ và nghề", "habitIds": ["GD5-HT-01", "GD5-HT-03", "GD5-NT-02"] },
+    { "id": "P5-E", "stageId": "GD5", "name": "Tài chính cá nhân", "habitIds": ["GD5-TC-01", "GD5-HT-03", "GD5-NT-01"] }
+  ]
+}
