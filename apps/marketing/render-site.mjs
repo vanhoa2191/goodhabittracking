@@ -340,7 +340,6 @@ const infoTabsBySlug = {
   framework: [['pricing', 'Bảng giá'], ['framework', 'Khung thói quen'], ['science', 'Cơ sở khoa học'], ['roadmaps', 'Lộ trình'], ['docs', 'Hướng dẫn'], ['contact', 'Liên hệ']],
   legal: [['privacy', 'Quyền riêng tư'], ['terms', 'Điều khoản'], ['contact', 'Liên hệ']],
 };
-const infoTabLabels = new Map(Object.values(infoTabsBySlug).flat());
 
 function renderInfoTabs(slug) {
   const group = legalSlugs.has(slug) ? infoTabsBySlug.legal : infoTabsBySlug.framework;
