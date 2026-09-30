@@ -1,8 +1,9 @@
-import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { blogRoutes, loadPosts, renderBlogIndex, renderBlogPost, renderFeed } from '../apps/marketing/blog.mjs';
 import { renderHome, renderInfoPage, renderPricingPage } from '../apps/marketing/render-site.mjs';
+import { renderHeadersFile } from '../apps/marketing/security-headers.mjs';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const routes = ['framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'contact'];
@@ -73,6 +74,10 @@ export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir
   const sitemapUrl = ({ route, lastmod }) => `  <url><loc>${new URL(route ? `/${route}/` : '/', `${marketing}/`).href}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</url>`;
   await writeFile(join(target, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapEntries.map(sitemapUrl).join('\n')}\n</urlset>\n`, 'utf8');
   await writeFile(join(target, 'robots.txt'), `User-agent: *\nAllow: /\nSitemap: ${marketing}/sitemap.xml\n`, 'utf8');
+
+  const pageFiles = (await readdir(target, { recursive: true })).filter((file) => file.endsWith('.html'));
+  const documents = await Promise.all(pageFiles.map((file) => readFile(join(target, file), 'utf8')));
+  await writeFile(join(target, '_headers'), renderHeadersFile(documents), 'utf8');
 
   const homepage = await readFile(join(target, 'index.html'), 'utf8');
   if (homepage.includes('/api/') || /supabase/i.test(homepage) || homepage.includes('serviceWorker')) {
