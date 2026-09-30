@@ -258,3 +258,34 @@ export function supportLevelsByLogId(
     .map((row) => [row.log_id, row.support_level] as const));
 }
 
+
+function newest<Row>(current: Row | undefined, incoming: Row, stamp: (row: Row) => string): Row {
+  if (!current) return incoming;
+  return Date.parse(stamp(incoming)) > Date.parse(stamp(current)) ? incoming : current;
+}
+
+/**
+ * Adds what a paired child device loaded without dropping anything already here, so a save
+ * that finished while the request was in flight is not lost. The newer version of a row wins.
+ */
+export function mergeHabitPrograms(
+  state: ExperienceState,
+  loaded: { readonly supportObservations: readonly SupportObservation[]; readonly cuePlans: readonly CuePlan[] },
+): ExperienceState {
+  const observations = new Map(state.supportObservations.map((row) => [row.log_id, row]));
+  for (const row of loaded.supportObservations) {
+    observations.set(row.log_id, newest(observations.get(row.log_id), row, (item) => item.recorded_at));
+  }
+  const plans = new Map(state.cuePlans.map((row) => [`${row.child_id}:${row.activity_id}`, row]));
+  for (const row of loaded.cuePlans) {
+    const key = `${row.child_id}:${row.activity_id}`;
+    plans.set(key, newest(plans.get(key), row, (item) => item.updated_at));
+  }
+  const supportObservations = [...observations.values()];
+  const cuePlans = [...plans.values()];
+  const unchanged = supportObservations.length === state.supportObservations.length
+    && cuePlans.length === state.cuePlans.length
+    && supportObservations.every((row) => state.supportObservations.includes(row))
+    && cuePlans.every((row) => state.cuePlans.includes(row));
+  return unchanged ? state : { ...state, supportObservations, cuePlans };
+}
