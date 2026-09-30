@@ -14,6 +14,7 @@ const domainCommandResultSchema = z.object({
     'undone',
     'not_found',
     'not_reversible',
+    'points_already_spent',
     'approved',
     'rejected',
     'already_reviewed',

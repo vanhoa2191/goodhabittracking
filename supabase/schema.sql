@@ -39,3 +39,4 @@
 \ir migrations/202609300001_habit_programs.sql
 \ir migrations/202609300002_public_leaderboard.sql
 \ir migrations/202609300003_close_service_function_exposure.sql
+\ir migrations/202609300004_authoritative_command_hardening.sql

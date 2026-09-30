@@ -252,6 +252,7 @@ describe('family tenancy migration', () => {
       '202609300001_habit_programs.sql',
       '202609300002_public_leaderboard.sql',
       '202609300003_close_service_function_exposure.sql',
+      '202609300004_authoritative_command_hardening.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(

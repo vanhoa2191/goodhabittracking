@@ -139,19 +139,20 @@ try {
   assert(!ownFamily.error && ownFamily.data?.id === familyIds[0], 'Same-family read failed.');
 
   const verificationName = `RLS verification ${runId}`;
+  const nameFixture = await admin.from('families').update({ name: verificationName }).eq('id', familyIds[0]);
+  assert(!nameFixture.error, 'Synthetic family name fixture failed.');
   const ownUpdate = await accounts[0].client
     .from('families')
-    .update({ name: verificationName })
+    .update({ name: 'Direct rename' })
     .eq('id', familyIds[0])
-    .select('name')
-    .single();
+    .select('name');
   assert(
-    !ownUpdate.error && ownUpdate.data?.name === verificationName,
-    'Same-family write failed.',
+    Boolean(ownUpdate.error) || ownUpdate.data?.length === 0,
+    'Direct family rename by a signed-in client unexpectedly succeeded.',
   );
 
   const childId = randomUUID();
-  const ownChildInsert = await accounts[0].client
+  const ownChildInsert = await admin
     .from('child_profiles')
     .insert({
       id: childId,
@@ -164,8 +165,59 @@ try {
     .single();
   assert(
     !ownChildInsert.error && ownChildInsert.data?.id === childId,
-    'Same-family private-row write failed.',
+    'Synthetic child fixture failed.',
   );
+  const directChildInsert = await accounts[0].client.from('child_profiles').insert({
+    id: randomUUID(), family_id: familyIds[0], name: `Direct child ${runId}`,
+  });
+  assert(Boolean(directChildInsert.error), 'Direct child profile insert unexpectedly succeeded.');
+  const directPoints = await accounts[0].client.from('child_profiles')
+    .update({ points: 999999 }).eq('id', childId).select('points');
+  assert(
+    Boolean(directPoints.error) || directPoints.data?.length === 0,
+    'Direct points update by a signed-in client unexpectedly succeeded.',
+  );
+
+  const pinRead = await accounts[0].client.from('parent_settings').select('parent_pin_hash').eq('family_id', familyIds[0]);
+  assert(Boolean(pinRead.error), 'The parent PIN hash was readable by a signed-in client.');
+  const sessionTokenRead = await accounts[0].client.from('device_sessions').select('token_hash').limit(1);
+  assert(Boolean(sessionTokenRead.error), 'Device session token hashes were readable by a signed-in client.');
+  const credentialRead = await accounts[0].client.from('pairing_credentials').select('verifier_hash').limit(1);
+  assert(Boolean(credentialRead.error), 'Pairing credential hashes were readable by a signed-in client.');
+  const pinWrite = await accounts[0].client.from('parent_settings')
+    .update({ parent_pin_hash: null }).eq('family_id', familyIds[0]).select('family_id');
+  assert(Boolean(pinWrite.error) || pinWrite.data?.length === 0, 'The parent PIN was writable by a signed-in client.');
+
+  for (const [name, args] of [
+    ['process_payos_webhook', { incoming_order_code: 1, incoming_amount: 1, incoming_description: 'x', incoming_reference: 'x', incoming_payment_link_id: 'x', incoming_payload: {} }],
+    ['claim_lifecycle_messages', { batch_size: 1 }],
+    ['enqueue_lifecycle_message', { target_user_id: userIds[0], target_family_id: familyIds[0], target_template_key: 'x', target_category: 'x', target_locale: 'vi', target_payload: {}, target_dedupe_key: `boundary-${runId}` }],
+    ['exchange_pairing_challenge', { code_id: 'x', verifier_hash_hex: '', session_token_hash: 'x', request_fingerprint_hex: 'x', requested_device_label: 'x' }],
+  ]) {
+    const asAnonymous = await anonymous.rpc(name, args);
+    assert(Boolean(asAnonymous.error), `${name} was callable by an anonymous client.`);
+    const asParent = await accounts[0].client.rpc(name, args);
+    assert(Boolean(asParent.error), `${name} was callable by a signed-in client.`);
+  }
+
+  const futureDay = new Date(Date.now() + 5 * 86_400_000).toISOString().slice(0, 10);
+  const farActivityId = randomUUID();
+  const farActivity = await admin.from('habit_activities').insert({
+    id: farActivityId, family_id: familyIds[0], user_id: userIds[0], child_id: childId,
+    title: `Date window ${runId}`, category: 'study', points: 5, is_active: true,
+  });
+  assert(!farActivity.error, 'Date window activity fixture failed.');
+  for (const day of [futureDay, '2020-01-01']) {
+    const outOfRange = await accounts[0].client.rpc('complete_habit_command', {
+      target_activity_id: farActivityId, target_child_id: childId, target_log_date: day, command_id: randomUUID(),
+    });
+    assert(Boolean(outOfRange.error), `A completion for ${day} was accepted.`);
+  }
+  const today = await accounts[0].client.rpc('complete_habit_command', {
+    target_activity_id: farActivityId, target_child_id: childId,
+    target_log_date: new Date().toISOString().slice(0, 10), command_id: randomUUID(),
+  });
+  assert(!today.error && today.data?.status === 'completed', 'A completion for today was refused.');
 
   const ownChildRead = await accounts[0].client
     .from('child_profiles')
@@ -250,10 +302,12 @@ try {
     title: `Boundary reward ${runId}`, cost_points: 10, stock: 1, is_active: true,
   });
   assert(!rewardInsert.error, 'Same-family reward fixture failed.');
-  const wishlistInsert = await accounts[0].client.from('child_wishlists').insert({
+  const wishlistInsert = await admin.from('child_wishlists').insert({
     family_id: familyIds[0], child_id: childId, reward_id: rewardId,
   });
-  assert(!wishlistInsert.error, 'Same-family wishlist write failed.');
+  assert(!wishlistInsert.error, 'Same-family wishlist fixture failed.');
+  const directWishlist = await accounts[0].client.from('child_wishlists').update({ reward_id: rewardId }).eq('child_id', childId).select('child_id');
+  assert(Boolean(directWishlist.error) || directWishlist.data?.length === 0, 'Direct wishlist write unexpectedly succeeded.');
   const crossWishlistRead = await accounts[1].client
     .from('child_wishlists').select('child_id').eq('child_id', childId);
   assert(
@@ -261,7 +315,7 @@ try {
     'Cross-family wishlist read was not denied.',
   );
   const secondChildId = randomUUID();
-  const secondChildInsert = await accounts[1].client.from('child_profiles').insert({
+  const secondChildInsert = await admin.from('child_profiles').insert({
     id: secondChildId, family_id: familyIds[1], name: `Boundary child ${runId}`,
   });
   assert(!secondChildInsert.error, 'Second-family child fixture failed.');
@@ -361,11 +415,10 @@ try {
   });
   assert(Boolean(crossChildInsert.error), 'Cross-family private-row write succeeded.');
 
-  const crossUpdate = await accounts[1].client
+  await accounts[1].client
     .from('families')
     .update({ name: 'Cross-family overwrite' })
     .eq('id', familyIds[0]);
-  assert(!crossUpdate.error, 'Cross-family update returned an unexpected transport error.');
   const unchanged = await admin.from('families').select('name').eq('id', familyIds[0]).single();
   assert(
     !unchanged.error && unchanged.data?.name === verificationName,

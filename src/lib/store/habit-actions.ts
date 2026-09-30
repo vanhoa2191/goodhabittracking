@@ -123,6 +123,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
             })).status;
           }
           if (user && !await dependencies.cloud.syncCloudFamily(user)) return false;
+          if (commandStatus === 'points_already_spent') return false;
           if (commandStatus === 'undone' || commandStatus === 'pending_approval' || commandStatus === 'completed') {
             trackProductEvent({ event: 'task_ticked', action: commandStatus, mode: 'cloud' }, dependencies.analyticsSink);
           }

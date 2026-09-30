@@ -68,10 +68,11 @@ function createState(
   sessionType: 'demo' | 'cloud',
   currentUser = null as typeof user | null,
   isFamilyConnected = false,
+  initialLogs: ActivityLog[] = [],
 ) {
   const analyticsSink = vi.fn();
   let profiles = [child];
-  let logs: ActivityLog[] = [];
+  let logs: ActivityLog[] = initialLogs;
   let childBadges: ChildBadge[] = [];
   let experience: ExperienceState = emptyExperienceState;
   const setCloudSyncActive = vi.fn();
@@ -185,6 +186,19 @@ describe('habit actions', () => {
     expect(fixture.syncCloudFamily).toHaveBeenCalledWith(user);
     expect(fixture.read()).toEqual({ profiles: [child], logs: [], childBadges: [] });
     expect(fixture.analyticsSink).toHaveBeenCalledWith({ event: 'task_ticked', action: 'completed', mode: 'cloud' });
+  });
+
+  it('reports an undo that would take back spent points as not saved', async () => {
+    // Given
+    requestDomainCommand.mockResolvedValue({ status: 'points_already_spent' });
+    const fixture = createState('cloud', user, false, [{ id: 'log-1', activityId: activity.id, childId: child.id, date: '2026-09-20', status: 'completed', pointsAwarded: 20, completedAt: '2026-09-20T10:00:00.000Z' }]);
+
+    // When
+    const saved = await fixture.actions.toggleActivity(activity.id, '2026-09-20');
+
+    // Then
+    expect(saved).toBe(false);
+    expect(fixture.analyticsSink).not.toHaveBeenCalled();
   });
 
   it('uses the scoped child command and refreshes the paired session', async () => {
