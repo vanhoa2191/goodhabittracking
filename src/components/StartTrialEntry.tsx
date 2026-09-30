@@ -8,6 +8,7 @@ import { OnboardingModal } from '@/components/OnboardingModal';
 import { getMarketingOrigin } from '@/lib/site';
 import { signInWithGoogle } from '@/lib/supabase';
 import { useAppStore } from '@/lib/store';
+import { EmailCodeSignIn } from '@/components/EmailCodeSignIn';
 
 const benefits = [
   'Đăng nhập bằng Google, chỉ mất vài giây',
@@ -99,9 +100,12 @@ export function StartTrialEntry() {
 
             <div className="sm:w-64">
               {!currentUser ? (
-                <button type="button" onClick={() => void handleLogin()} className={primaryButton}>
-                  <LogIn className="h-5 w-5" /> Đăng nhập bằng Google để bắt đầu
-                </button>
+                <>
+                  <button type="button" onClick={() => void handleLogin()} className={primaryButton}>
+                    <LogIn className="h-5 w-5" /> Đăng nhập bằng Google để bắt đầu
+                  </button>
+                  <EmailCodeSignIn language="vi" />
+                </>
               ) : caregiver ? (
                 <p role="alert" className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-6 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">Chỉ phụ huynh trong gia đình mới có thể bắt đầu dùng thử.</p>
               ) : waitingForFamily ? (

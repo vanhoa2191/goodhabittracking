@@ -9,6 +9,7 @@ import { getPricingPlan } from '@/lib/payos';
 import { getMarketingOrigin } from '@/lib/site';
 import { parseCheckoutPlan, signInWithGoogle } from '@/lib/supabase';
 import { useAppStore } from '@/lib/store';
+import { EmailCodeSignIn } from '@/components/EmailCodeSignIn';
 
 interface CheckoutEntryProps {
   readonly planValues: readonly string[];
@@ -114,9 +115,12 @@ export function CheckoutEntry({ planValues, paymentReturnKind = null }: Checkout
 
             <div className="sm:w-64">
               {!currentUser ? (
-                <button type="button" onClick={() => void handleLogin()} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-5 py-3 text-base font-extrabold text-white shadow-lg shadow-indigo-200 hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:shadow-none">
-                  <LogIn className="h-5 w-5" /> Đăng nhập để thanh toán
-                </button>
+                <>
+                  <button type="button" onClick={() => void handleLogin()} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-5 py-3 text-base font-extrabold text-white shadow-lg shadow-indigo-200 hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:shadow-none">
+                    <LogIn className="h-5 w-5" /> Đăng nhập để thanh toán
+                  </button>
+                  <EmailCodeSignIn language="vi" />
+                </>
               ) : caregiver ? (
                 <p role="alert" className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-6 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">Chỉ phụ huynh trong gia đình mới có thể thanh toán.</p>
               ) : waitingForFamily ? (

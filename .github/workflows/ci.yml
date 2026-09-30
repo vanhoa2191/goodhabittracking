@@ -110,6 +110,7 @@ jobs:
           NEXT_PUBLIC_DAILY_JOURNAL: ${{ vars.NEXT_PUBLIC_DAILY_JOURNAL }}
           NEXT_PUBLIC_DREAM_CITY: ${{ vars.NEXT_PUBLIC_DREAM_CITY }}
           NEXT_PUBLIC_PARENT_REENGAGEMENT: ${{ vars.NEXT_PUBLIC_PARENT_REENGAGEMENT }}
+          NEXT_PUBLIC_EMAIL_CODE_LOGIN: ${{ vars.NEXT_PUBLIC_EMAIL_CODE_LOGIN }}
       - if: steps.configuration.outputs.ready == 'true'
         name: Verify production health after deploy
         run: |
