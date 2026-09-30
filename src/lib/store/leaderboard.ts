@@ -1,6 +1,8 @@
+import { weekStart } from '@/lib/habit-programs/opportunities';
 import type {
   ActivityLog,
   ChildProfile,
+  GroupTeam,
   LeaderboardEntry,
   LeaderboardPeriod,
   LeaderboardScope,
@@ -14,80 +16,70 @@ export function getLeagueTier(points: number): LeagueTier {
   return 'bronze';
 }
 
-interface BuildLeaderboardInput {
-  profiles: ChildProfile[];
-  logs: ActivityLog[];
-  activeChildId: string | null;
-  scope: LeaderboardScope;
-  period: LeaderboardPeriod;
-  now?: Date;
+/** First day of a calendar period, for a viewer whose local day is `today` (YYYY-MM-DD). */
+export function periodStart(period: LeaderboardPeriod, today: string): string {
+  if (period === 'daily') return today;
+  if (period === 'weekly') return weekStart(today);
+  return `${today.slice(0, 7)}-01`;
 }
 
+interface BuildLeaderboardInput {
+  profiles: readonly ChildProfile[];
+  logs: readonly ActivityLog[];
+  groups: readonly GroupTeam[];
+  activeChildId: string | null;
+  /** 'global' is not built from local data: it comes from the public leaderboard of the server. */
+  scope: LeaderboardScope;
+  period: LeaderboardPeriod;
+  /** The viewer's local day, YYYY-MM-DD. */
+  today: string;
+}
+
+const collator = new Intl.Collator('vi');
+
+/**
+ * The family and group boards. Points are exactly what each child earned in the period from verified logs, by the
+ * child's own local day; nothing is added to make a quiet day or week look busier, and spending points changes nothing.
+ */
 export function buildLeaderboard({
   profiles,
   logs,
+  groups,
   activeChildId,
   scope,
   period,
-  now = new Date(),
+  today,
 }: BuildLeaderboardInput): LeaderboardEntry[] {
-  const todayStr = now.toISOString().split('T')[0];
-  const sevenDaysAgo = new Date(now);
-  sevenDaysAgo.setDate(now.getDate() - 7);
-  const sevenDaysStr = sevenDaysAgo.toISOString().split('T')[0];
+  if (scope === 'global') return [];
 
-  const entries = profiles
-    .filter((profile) => (
-      scope !== 'global'
-      || profile.isPublicOnLeaderboard !== false
-      || profile.id === activeChildId
-    ))
-    .map((profile) => {
-      const childLogs = logs.filter((log) => (
-        log.childId === profile.id
-        && (log.status === 'completed' || log.status === 'approved')
-      ));
+  const groupmates = new Set<string>();
+  if (scope === 'group' && activeChildId) {
+    groupmates.add(activeChildId);
+    for (const group of groups) {
+      if (!group.memberChildIds.includes(activeChildId)) continue;
+      for (const childId of group.memberChildIds) groupmates.add(childId);
+    }
+  }
+  const start = periodStart(period, today);
+  const earnedBy = new Map<string, number>();
+  for (const log of logs) {
+    if ((log.status !== 'completed' && log.status !== 'approved') || log.date < start || log.date > today) continue;
+    earnedBy.set(log.childId, (earnedBy.get(log.childId) ?? 0) + log.pointsAwarded);
+  }
 
-      let periodPoints = profile.points;
-      if (period === 'daily') {
-        const todayEarned = childLogs
-          .filter((log) => log.date === todayStr)
-          .reduce((sum, log) => sum + log.pointsAwarded, 0);
-        periodPoints = Math.max(todayEarned, Math.round(profile.points * 0.2) || 10);
-      } else if (period === 'weekly') {
-        const weekEarned = childLogs
-          .filter((log) => log.date >= sevenDaysStr)
-          .reduce((sum, log) => sum + log.pointsAwarded, 0);
-        periodPoints = Math.max(weekEarned, Math.round(profile.points * 0.6) || 25);
-      } else {
-        periodPoints = profile.totalEarned || profile.points;
-      }
-
-      let nickname = profile.name;
-      if (profile.showRealNameOnLeaderboard === true) {
-        nickname = profile.name;
-      } else if (profile.nickname && profile.nickname.trim().length > 0) {
-        nickname = profile.nickname.trim();
-      } else {
-        const parts = profile.name.trim().split(/\s+/);
-        nickname = `Bé ${parts[parts.length - 1]}`;
-      }
-
-      return {
-        childId: profile.id,
-        nickname,
-        avatar: profile.avatar,
-        themeColor: profile.themeColor,
-        points: periodPoints,
-        streak: profile.streak,
-        isCurrentChild: profile.id === activeChildId,
-      };
-    })
-    .sort((first, second) => second.points - first.points);
-
-  return entries.map((entry, index) => ({
-    ...entry,
-    tier: getLeagueTier(entry.points),
-    rank: index + 1,
-  }));
+  return profiles
+    .filter((profile) => scope === 'family' || groupmates.has(profile.id))
+    .map((profile) => ({
+      childId: profile.id as string | null,
+      nickname: profile.nickname?.trim() || profile.name,
+      avatar: profile.avatar,
+      themeColor: profile.themeColor,
+      points: earnedBy.get(profile.id) ?? 0,
+      streak: profile.streak,
+      tier: getLeagueTier(profile.totalEarned),
+      isCurrentChild: profile.id === activeChildId,
+    }))
+    .sort((first, second) => second.points - first.points || collator.compare(first.nickname, second.nickname))
+    .map((entry, index) => ({ ...entry, rank: index + 1 }));
 }
+
