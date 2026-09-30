@@ -13,7 +13,12 @@ describe('experience flags', () => {
       dreamCity: false,
       dailyJournal: false,
       parentReengagement: false,
+      habitPrograms: false,
     });
+  });
+
+  it('lets the habit programs flag be switched on by override', () => {
+    expect(resolveExperienceFlags({ habitPrograms: true }).habitPrograms).toBe(true);
   });
 
   it('accepts only known boolean overrides', () => {
