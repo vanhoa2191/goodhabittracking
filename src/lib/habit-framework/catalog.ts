@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import frameworkData from '@/data/habit-framework-v1.vi.json';
-import type { ActivityCategory, AgeStage, HabitActivity } from '@/types';
+import type { ActivityCategory, AgeStage, HabitActivity, Language } from '@/types';
 
 const frameworkStageIdSchema = z.enum(['GD1', 'GD2', 'GD3', 'GD4', 'GD5']);
 const frameworkDomainSchema = z.enum(['NT', 'SK', 'MQH', 'HT', 'TC']);
@@ -8,7 +8,14 @@ const frameworkDomainSchema = z.enum(['NT', 'SK', 'MQH', 'HT', 'TC']);
 const frameworkDataSchema = z.strictObject({
   schemaVersion: z.literal('1.0.0'),
   contentVersion: z.string().min(1),
-  language: z.literal('vi'),
+  language: z.enum(['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko']),
+  translation: z.strictObject({
+    status: z.literal('provisional'),
+    basis: z.literal('owner-approved'),
+    recordedAt: z.iso.date(),
+    authoritativeLanguage: z.literal('vi'),
+    translatedFromContentVersion: z.string().min(1),
+  }).optional(),
   source: z.strictObject({
     file: z.string().min(1),
     sha256: z.string().regex(/^[a-f0-9]{64}$/),
@@ -66,15 +73,34 @@ export type FrameworkHabit = Readonly<{
   evidenceStatus: 'source-only';
 }>;
 
-const parsed = frameworkDataSchema.parse(frameworkData);
+export type ParsedFramework = Readonly<{
+  language: Language;
+  contentVersion: string;
+  stages: readonly FrameworkStage[];
+  habits: readonly FrameworkHabit[];
+}>;
+
+/** Validates a framework file and adds the review markers every habit carries. */
+export function parseFrameworkData(data: unknown, expectedLanguage: Language): ParsedFramework {
+  const parsed = frameworkDataSchema.parse(data);
+  if (parsed.language !== expectedLanguage) throw new Error(`Framework file is ${parsed.language}, expected ${expectedLanguage}.`);
+  return {
+    language: parsed.language,
+    contentVersion: parsed.contentVersion,
+    stages: parsed.stages,
+    habits: parsed.habits.map((habit) => ({
+      ...habit,
+      reviewStatus: 'source-reconciled' as const,
+      evidenceStatus: 'source-only' as const,
+    })),
+  };
+}
+
+const parsed = parseFrameworkData(frameworkData, 'vi');
 
 export const HABIT_FRAMEWORK_VERSION = parsed.contentVersion;
 export const HABIT_FRAMEWORK_STAGES: readonly FrameworkStage[] = parsed.stages;
-export const HABIT_FRAMEWORK_CATALOG: readonly FrameworkHabit[] = parsed.habits.map((habit) => ({
-  ...habit,
-  reviewStatus: 'source-reconciled',
-  evidenceStatus: 'source-only',
-}));
+export const HABIT_FRAMEWORK_CATALOG: readonly FrameworkHabit[] = parsed.habits;
 
 const CATEGORY_BY_DOMAIN: Readonly<Record<FrameworkDomain, ActivityCategory>> = {
   NT: 'mindset',
@@ -106,9 +132,22 @@ export function getFrameworkStageIdFromAge(age: number): FrameworkStageId {
   return 'GD5';
 }
 
+const ADULT_GUIDANCE_LABEL: Readonly<Record<Language, string>> = {
+  vi: 'Người lớn đồng hành',
+  en: 'Adult guidance',
+  fr: 'Accompagnement de l’adulte',
+  de: 'Begleitung durch Erwachsene',
+  it: 'Accompagnamento dell’adulto',
+  es: 'Acompañamiento del adulto',
+  zh: '成人陪伴',
+  ja: '大人のかかわり方',
+  ko: '어른의 동행',
+};
+
 export function createActivityFromFrameworkHabit(
   habit: FrameworkHabit,
   childId: string | null,
+  language: Language = 'vi',
 ): Omit<HabitActivity, 'id' | 'createdAt'> {
   return {
     childId,
@@ -116,7 +155,7 @@ export function createActivityFromFrameworkHabit(
     description: habit.childMeaning,
     instructions: [
       ...habit.activities.slice(0, 3).map((activity, index) => `${index + 1}. ${activity}`),
-      `Người lớn đồng hành: ${habit.parentGuidance}`,
+      `${ADULT_GUIDANCE_LABEL[language]}: ${habit.parentGuidance}`,
     ].join('\n'),
     icon: '✓',
     category: CATEGORY_BY_DOMAIN[habit.primaryDomain],

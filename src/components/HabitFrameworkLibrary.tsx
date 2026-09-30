@@ -4,8 +4,6 @@ import { useMemo, useRef, useState } from 'react';
 import { BookOpenCheck, Check, Plus, ShieldCheck } from 'lucide-react';
 import {
   createActivityFromFrameworkHabit,
-  HABIT_FRAMEWORK_CATALOG,
-  HABIT_FRAMEWORK_STAGES,
   type FrameworkDomain,
   type FrameworkHabit,
   type FrameworkStageId,
@@ -15,6 +13,7 @@ import { useAppStore } from '@/lib/store';
 import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
 import { getParentNavigationCopy } from '@/lib/i18n/parent-navigation-copy';
 import { useSevenDayCutoff } from '@/lib/use-seven-day-cutoff';
+import { useLocalizedFramework } from '@/lib/habit-framework/localized';
 
 const DOMAINS: readonly { readonly id: 'all' | FrameworkDomain; readonly label: string }[] = [
   { id: 'all', label: 'Tất cả' },
@@ -96,6 +95,7 @@ function FrameworkHabitCard({
 export function HabitFrameworkLibrary({ onMutationError }: HabitFrameworkLibraryProps) {
   const { activities, logs, createActivity } = useAppStore();
   const { language } = useTranslation();
+  const framework = useLocalizedFramework(language);
   const navigationCopy = getParentNavigationCopy(language);
   const [selectedStage, setSelectedStage] = useState<FrameworkStageId>('GD1');
   const [selectedDomain, setSelectedDomain] = useState<'all' | FrameworkDomain>('all');
@@ -105,7 +105,7 @@ export function HabitFrameworkLibrary({ onMutationError }: HabitFrameworkLibrary
     () => new Set(activities.flatMap((activity) => activity.frameworkHabitId ? [activity.frameworkHabitId] : [])),
     [activities],
   );
-  const visibleHabits = HABIT_FRAMEWORK_CATALOG.filter((habit) =>
+  const visibleHabits = framework.habits.filter((habit) =>
     habit.stageId === selectedStage
     && (selectedDomain === 'all' || habit.primaryDomain === selectedDomain),
   );
@@ -124,7 +124,7 @@ export function HabitFrameworkLibrary({ onMutationError }: HabitFrameworkLibrary
     setPendingId(habit.id);
     onMutationError('');
     try {
-      const saved = await createActivity(createActivityFromFrameworkHabit(habit, null));
+      const saved = await createActivity(createActivityFromFrameworkHabit(habit, null, framework.language));
       if (!saved) onMutationError(getActivityMutationError(language));
     } catch {
       onMutationError(getActivityMutationError(language));
@@ -145,7 +145,7 @@ export function HabitFrameworkLibrary({ onMutationError }: HabitFrameworkLibrary
       </div>
 
       <div className="flex gap-2 overflow-x-auto pb-1 xl:flex-wrap" aria-label="Giai đoạn phát triển">
-        {HABIT_FRAMEWORK_STAGES.map((stage) => (
+        {framework.stages.map((stage) => (
           <button key={stage.id} type="button" onClick={() => setSelectedStage(stage.id)} aria-pressed={selectedStage === stage.id} className={`shrink-0 rounded-2xl px-3.5 py-2 text-sm font-bold transition-colors ${selectedStage === stage.id ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-zinc-800 dark:text-slate-200 dark:hover:bg-zinc-700'}`}>
             {stage.ageRange} · {stage.title}
           </button>

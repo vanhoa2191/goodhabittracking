@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getHabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
-import { createActivityFromFrameworkHabit, HABIT_FRAMEWORK_CATALOG } from '@/lib/habit-framework/catalog';
+import { createActivityFromFrameworkHabit } from '@/lib/habit-framework/catalog';
+import { useLocalizedFramework } from '@/lib/habit-framework/localized';
 import { newHabitLimit } from '@/lib/habit-programs/config';
 import { cuePlanInputSchema } from '@/lib/habit-programs/cue-plan-input';
 import { defaultStartHabitIds, startCueDefaults } from '@/lib/habit-programs/programs';
@@ -21,7 +22,6 @@ const STEPS = 3;
 const SAVE_WAIT_MS = 10_000;
 const REQUEST_LIMIT_MS = 20_000;
 const TEMPLATE_KEYS = ['cueTemplate1', 'cueTemplate2', 'cueTemplate3', 'cueTemplate4', 'cueTemplate5'] as const;
-const habitById = new Map(HABIT_FRAMEWORK_CATALOG.map((habit) => [habit.id, habit]));
 
 type HabitProgramStartModalProps = {
   readonly program: HabitProgram;
@@ -37,6 +37,8 @@ type HabitProgramStartModalProps = {
 export function HabitProgramStartModal({ program, child, ageYears, onClose, onStarted, onNotConfirmed }: HabitProgramStartModalProps) {
   const { activities, createActivities, saveHabitCuePlan } = useAppStore();
   const { language } = useTranslation();
+  const framework = useLocalizedFramework(language);
+  const habitById = useMemo(() => new Map(framework.habits.map((habit) => [habit.id, habit])), [framework]);
   const copy = getHabitProgramsCopy(language);
   const limit = newHabitLimit(ageYears);
   const childName = child.nickname || child.name;
@@ -64,7 +66,7 @@ export function HabitProgramStartModal({ program, child, ageYears, onClose, onSt
       const additions = await Promise.all(missing.flatMap((habitId) => {
         const habit = habitById.get(habitId);
         if (!habit) return [];
-        return [programActivityId(child.id, habitId).then((id) => ({ ...createActivityFromFrameworkHabit(habit, child.id), id }))];
+        return [programActivityId(child.id, habitId).then((id) => ({ ...createActivityFromFrameworkHabit(habit, child.id, framework.language), id }))];
       }));
       const created = await settleWithin(createActivities(additions), REQUEST_LIMIT_MS);
       if (!created) {
