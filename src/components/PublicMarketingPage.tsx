@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, BookOpen, Compass, Map, Sparkles } from 'lucide-react';
+import { ArrowLeft, BookOpen, Compass, FlaskConical, Map, Sparkles } from 'lucide-react';
 import { BrandMark } from '@/components/BrandMark';
 
 const navigation = [
   { href: '/pricing', label: 'Bảng giá', icon: Sparkles },
   { href: '/framework', label: 'Khung thói quen', icon: Compass },
+  { href: '/science', label: 'Cơ sở khoa học', icon: FlaskConical },
   { href: '/roadmaps', label: 'Lộ trình', icon: Map },
   { href: '/docs', label: 'Hướng dẫn', icon: BookOpen },
 ] as const;

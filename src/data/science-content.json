@@ -1,0 +1,118 @@
+{
+  "sources": [
+    {
+      "id": "lally-2010",
+      "citation": "Lally P, van Jaarsveld CHM, Potts HWW, Wardle J. How are habits formed: modelling habit formation in the real world. European Journal of Social Psychology. 2010;40(6):998-1009.",
+      "doi": "10.1002/ejsp.674"
+    },
+    {
+      "id": "wood-runger-2016",
+      "citation": "Wood W, Rünger D. Psychology of habit. Annual Review of Psychology. 2016;67:289-314.",
+      "doi": "10.1146/annurev-psych-122414-033417"
+    },
+    {
+      "id": "gollwitzer-sheeran-2006",
+      "citation": "Gollwitzer PM, Sheeran P. Implementation intentions and goal achievement: a meta-analysis of effects and processes. Advances in Experimental Social Psychology. 2006;38:69-119.",
+      "doi": "10.1016/S0065-2601(06)38002-1"
+    },
+    {
+      "id": "deci-1999",
+      "citation": "Deci EL, Koestner R, Ryan RM. A meta-analytic review of experiments examining the effects of extrinsic rewards on intrinsic motivation. Psychological Bulletin. 1999;125(6):627-668.",
+      "doi": "10.1037/0033-2909.125.6.627"
+    },
+    {
+      "id": "diamond-2013",
+      "citation": "Diamond A. Executive functions. Annual Review of Psychology. 2013;64:135-168.",
+      "doi": "10.1146/annurev-psych-113011-143750"
+    },
+    {
+      "id": "cengher-2018",
+      "citation": "Cengher M, Budd A, Farrell N, Fienup DM. A review of prompt-fading procedures: implications for effective and efficient skill acquisition. Journal of Developmental and Physical Disabilities. 2018;30:155-173.",
+      "doi": "10.1007/s10882-017-9575-8"
+    },
+    {
+      "id": "paruthi-2016",
+      "citation": "Paruthi S, et al. Recommended amount of sleep for pediatric populations: a consensus statement of the American Academy of Sleep Medicine. Journal of Clinical Sleep Medicine. 2016;12(6):785-786.",
+      "doi": "10.5664/jcsm.6288"
+    }
+  ],
+  "principles": [
+    {
+      "id": "no-magic-number",
+      "title": "Không có con số \"21 ngày\"",
+      "evidence": "Một nghiên cứu theo dõi người lớn trong 12 tuần cho thấy thời gian để một hành vi trở nên gần như tự động rất khác nhau giữa từng người, thường tính bằng nhiều tuần đến nhiều tháng.",
+      "action": "Coi việc xây thói quen là chuyện của vài tuần đến vài tháng, và đừng đánh giá con là \"chậm\" khi chưa đến một mốc nào đó.",
+      "limit": "Các nghiên cứu này chủ yếu ở người lớn, với hành vi đơn giản do họ tự chọn. Chưa có con số tương ứng cho trẻ em.",
+      "sourceIds": [
+        "lally-2010"
+      ]
+    },
+    {
+      "id": "cue-over-willpower",
+      "title": "Tín hiệu quan trọng hơn ý chí",
+      "evidence": "Thói quen là sự liên kết giữa một hoàn cảnh quen thuộc và một hành động, được củng cố khi lặp lại trong hoàn cảnh ổn định. Kế hoạch dạng \"nếu… thì…\" giúp hành động dễ xảy ra hơn.",
+      "action": "Cùng con chọn một câu \"nếu… thì…\" thật cụ thể, ví dụ \"sau khi đánh răng buổi tối, con đọc một trang sách\", và giữ cùng hoàn cảnh mỗi ngày.",
+      "limit": "Phần lớn bằng chứng đến từ người lớn. Ở trẻ em hiệu ứng khiêm tốn hơn và khác nhau theo loại thói quen.",
+      "sourceIds": [
+        "wood-runger-2016",
+        "gollwitzer-sheeran-2006"
+      ]
+    },
+    {
+      "id": "one-miss",
+      "title": "Bỏ lỡ một lần không làm hỏng thói quen",
+      "evidence": "Trong nghiên cứu về quá trình hình thành thói quen, một lần bỏ lỡ không ảnh hưởng đáng kể đến tiến trình; điều quan trọng hơn là lặp lại đúng kế hoạch nhiều lần.",
+      "action": "Hôm sau cứ làm tiếp. Không bắt con làm lại từ đầu và không phạt vì một ngày quên.",
+      "limit": "Bỏ lỡ nhiều lần liên tiếp thì khác: đó là dấu hiệu nên điều chỉnh cách làm (làm nhỏ hơn, đổi giờ, thêm phương án cho cuối tuần).",
+      "sourceIds": [
+        "lally-2010"
+      ]
+    },
+    {
+      "id": "support-then-fade",
+      "title": "Hỗ trợ đúng mức, rồi rút dần",
+      "evidence": "Dạy kỹ năng bằng hỗ trợ nhiều lúc đầu rồi giảm dần là cách làm có cơ sở trong nghiên cứu về hỗ trợ và rút hỗ trợ.",
+      "action": "Bắt đầu bằng làm cùng con, chuyển sang nhắc, rồi để con tự làm khi con đã làm đều.",
+      "limit": "Chưa có nghiên cứu nào cho biết chính xác khi nào nên giảm và giảm bao nhiêu với thói quen hằng ngày của trẻ. Các ngưỡng trong KidHabit là giả thuyết làm việc, không phải sự thật khoa học, và sẽ được xem lại theo dữ liệu thực tế.",
+      "sourceIds": [
+        "cengher-2018"
+      ]
+    },
+    {
+      "id": "specific-recognition",
+      "title": "Ghi nhận cụ thể, phần thưởng ở mức nhẹ",
+      "evidence": "Phân tích gộp nhiều thí nghiệm cho thấy phần thưởng hữu hình báo trước và gắn với việc chỉ cần làm hoặc hoàn thành có thể làm giảm hứng thú của chính hoạt động đó, còn lời khen tích cực có tác dụng ngược lại.",
+      "action": "Nói rõ điều con vừa làm được (\"con đã tự cất đồ chơi mà không cần nhắc\"), giữ phần thưởng vật chất ở mức nhẹ và giảm dần.",
+      "limit": "Điều này không có nghĩa mọi phần thưởng đều xấu; cách và thời điểm thưởng quan trọng.",
+      "sourceIds": [
+        "deci-1999"
+      ]
+    },
+    {
+      "id": "not-too-many",
+      "title": "Đừng ôm quá nhiều thói quen mới cùng lúc",
+      "evidence": "Các kỹ năng tự điều khiển như kiềm chế, giữ thông tin trong đầu và linh hoạt suy nghĩ phát triển dần suốt tuổi thơ và tuổi thiếu niên, nên trẻ nhỏ có ít \"sức\" hơn cho nhiều việc mới một lúc.",
+      "action": "Bắt đầu với một hoặc hai thói quen, làm cho vững rồi mới thêm.",
+      "limit": "Không có nghiên cứu nào cho con số thói quen mới tối đa. Giới hạn trong KidHabit là quy ước thận trọng theo độ tuổi.",
+      "sourceIds": [
+        "diamond-2013"
+      ]
+    },
+    {
+      "id": "sleep-base",
+      "title": "Giấc ngủ là nền",
+      "evidence": "Hiệp hội Y học Giấc ngủ Hoa Kỳ đưa ra khuyến nghị đồng thuận về số giờ ngủ theo từng độ tuổi của trẻ.",
+      "action": "Xem giấc ngủ đủ là điều kiện nền trước khi thêm thói quen buổi tối.",
+      "limit": "Đây là khuyến nghị chuyên gia cho dân số nói chung, không phải chẩn đoán cho một em bé.",
+      "sourceIds": [
+        "paruthi-2016"
+      ]
+    }
+  ],
+  "unknowns": [
+    "Thời gian một thói quen hình thành ở trẻ em: các số liệu hiện có chủ yếu từ người lớn.",
+    "Thời điểm và mức độ nên giảm nhắc nhở cho từng độ tuổi.",
+    "Số thói quen mới tối đa nên xây cùng lúc.",
+    "Ảnh hưởng của việc mất chuỗi ngày liên tiếp đối với trẻ."
+  ]
+}

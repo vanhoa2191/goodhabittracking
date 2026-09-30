@@ -1,5 +1,8 @@
+import scienceData from '../../src/data/science-content.json' with { type: 'json' };
+
 export const navigation = [
   { href: '/framework/', label: 'Khung thói quen' },
+  { href: '/science/', label: 'Cơ sở khoa học' },
   { href: '/roadmaps/', label: 'Lộ trình' },
   { href: '/pricing/', label: 'Bảng giá' },
   { href: '/docs/', label: 'Hướng dẫn' },
@@ -175,6 +178,15 @@ export const publicPages = {
       ['Không bắt đầu từ một danh sách dài', 'KidHabit giúp ba mẹ chọn một mục tiêu vừa sức, diễn giải rõ việc cần làm và tăng dần độ khó khi con đã sẵn sàng.'],
       ['Thói quen gắn với đời sống', 'Các gợi ý xoay quanh tự chăm sóc, học tập, vận động, kết nối gia đình và trách nhiệm phù hợp với từng giai đoạn.'],
       ['Ba mẹ vẫn là người quyết định', 'Khung gợi ý giúp tiết kiệm thời gian. Ba mẹ chọn, điều chỉnh hoặc tự tạo nhiệm vụ dựa trên nhu cầu thật của con.'],
+    ],
+  },
+  science: {
+    title: 'Cơ sở khoa học: điều đã biết và điều chưa biết',
+    description: 'KidHabit dựa trên nghiên cứu về hình thành thói quen để gợi ý cách đồng hành cùng con. Trang này nói rõ bằng chứng đến đâu và giới hạn ở đâu. Đây là công cụ đồng hành cho gia đình, không hứa kết quả cho từng em bé và không thay thế tư vấn của bác sĩ, nhà tâm lý hay chuyên gia giáo dục.',
+    sections: [
+      ...scienceData.principles.map((principle) => [principle.title, `Bằng chứng nói gì. ${principle.evidence} Bạn có thể làm gì. ${principle.action} Giới hạn. ${principle.limit}`]),
+      ['Điều chúng tôi chưa biết', scienceData.unknowns.join(' ')],
+      ['Nguồn', scienceData.sources.map((source) => source.citation + (source.doi ? ` doi:${source.doi}` : '')).join(' ')],
     ],
   },
   roadmaps: {
