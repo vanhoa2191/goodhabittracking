@@ -72,6 +72,27 @@ describe('cloud family sync', () => {
     });
   });
 
+  it.each(['cancelled', 'inactive'])('grants nothing for a %s subscription, whatever plan it still names', async (status) => {
+    const reader = vi.fn(async () => ({
+      familyId,
+      familyRole: 'owner' as const,
+      profiles: [], activities: [], logs: [], rewards: [], redemptions: [],
+      childBadges: [], kudos: [], groups: [], groupMembers: [],
+      subscription: {
+        plan: 'yearly',
+        status,
+        trial_ends_at: null,
+        subscription_ends_at: '2027-09-20T00:00:00.000Z',
+      },
+    }));
+
+    await expect(loadCloudFamilySnapshot(userId, reader)).resolves.toMatchObject({
+      subscriptionPlan: 'free',
+      trialEndsAt: null,
+      subscriptionEndsAt: null,
+    });
+  });
+
   it('rejects malformed cloud rows before state hydration', async () => {
     const reader = vi.fn(async () => ({
       familyId,

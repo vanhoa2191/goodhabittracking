@@ -21,7 +21,8 @@ export function checkIsPro(
 ): boolean {
   if (plan === 'lifetime') return true;
   if (plan === 'solo_monthly' || plan === 'monthly' || plan === 'yearly') {
-    if (!subscriptionEndsAt) return true;
+    // Mirrors family_has_pro_entitlement: a paid plan without an end date is not active.
+    if (!subscriptionEndsAt) return false;
     return new Date(subscriptionEndsAt).getTime() > now;
   }
   if (plan === 'trial') {
