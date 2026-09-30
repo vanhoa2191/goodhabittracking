@@ -13,6 +13,10 @@ vi.mock('@/lib/supabase/server', () => ({
   createServerSupabaseClient: vi.fn(async () => ({ rpc, from })),
 }));
 
+vi.mock('@/lib/security/parent-unlock', () => ({
+  requireParentUnlock: vi.fn(async () => null),
+}));
+
 import { DELETE } from '@/app/api/family/route';
 import { POST } from '@/app/api/privacy/consent/route';
 

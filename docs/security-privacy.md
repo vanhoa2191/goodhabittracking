@@ -12,6 +12,9 @@
 - PayOS fail-closed: bắt buộc cấu hình, strict webhook schema, HMAC timing-safe, amount/description/owner check và idempotency key.
 - Trial chỉ dùng một lần; entitlement và giới hạn số bé được kiểm tra ở database.
 - Leaderboard gia đình/công khai mặc định riêng tư; projection công khai không có family/user ID hoặc thời điểm tạo.
+- Mã PIN phụ huynh được máy chủ kiểm tra: khi nhập đúng, trình duyệt nhận cookie `kidhabit_parent_unlock` (HttpOnly, SameSite=Strict, ký HMAC, gắn với phụ huynh và gia đình, hiệu lực 2 giờ, xóa khi khóa lại). Các thao tác nhạy cảm (xóa gia đình, thu hồi thiết bị, xem hoặc đổi mã ghép của bé, tạo thanh toán, duyệt việc và quà) trả 403 `parent_pin_required` nếu gia đình có PIN mà cookie thiếu hoặc hết hạn; giao diện khi đó quay lại màn hình khóa. Việc bé chạm hoàn thành trên máy phụ huynh không cần PIN.
+- Mọi API ghi bằng cookie từ chối yêu cầu khác nguồn gốc (`Origin`/`Sec-Fetch-Site`).
+- Vai trò `anon` chỉ gọi được các hàm nhận mã thiết bị của bé, đổi mã ghép đôi và bảng xếp hạng công khai; hàm thanh toán, hàng đợi email và ghép đôi chỉ dành cho service role. Hàm mới mặc định đóng.
 - CSP, deny framing, restrictive permissions policy và referrer policy.
 
 ## Đồng thuận và vòng đời

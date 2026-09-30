@@ -12,6 +12,10 @@ vi.mock('@/lib/supabase/server', () => ({
   createServerSupabaseClient: vi.fn(async () => ({ from, rpc })),
 }));
 
+vi.mock('@/lib/security/parent-unlock', () => ({
+  requireParentUnlock: vi.fn(async () => null),
+}));
+
 import { POST as readCredential } from '@/app/api/pairing/credentials/route';
 import { POST as rotateCredential } from '@/app/api/pairing/credentials/rotate/route';
 

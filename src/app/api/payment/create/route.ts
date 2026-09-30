@@ -5,6 +5,8 @@ import { createPaymentRequestSchema } from '@/lib/billing/schemas';
 import { getPricingPlan } from '@/lib/payos';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
+import { requireParentUnlock } from '@/lib/security/parent-unlock';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export const runtime = 'nodejs';
 
@@ -19,6 +21,9 @@ export async function POST(request: NextRequest) {
   if (!parent) {
     return NextResponse.json({ success: false, error: 'Authentication required.' }, { status: 401 });
   }
+
+  const locked = await requireParentUnlock(request, parent, await createServerSupabaseClient());
+  if (locked) return locked;
 
   const parsed = createPaymentRequestSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {
