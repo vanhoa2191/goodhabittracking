@@ -16,7 +16,7 @@
 
 ## Đồng thuận và vòng đời
 
-Cloud onboarding yêu cầu người lớn xác nhận quyền quản lý dữ liệu của bé; consent lưu theo policy version. Export tạo bản sao JSON. Owner có thể xóa toàn bộ family sau confirmation phrase; cascade xóa domain data và session đã ghép nối.
+Cloud onboarding yêu cầu người lớn xác nhận quyền quản lý dữ liệu của bé; consent lưu theo policy version. Giao diện chỉ cho tải nhật ký của bé dưới dạng CSV; file này chứa văn bản của bé nên cần được giữ riêng tư. Định dạng bản sao JSON của gia đình (gồm cả nhật ký, danh sách ước, việc hoãn, kế hoạch tín hiệu và mức hỗ trợ đã ghi) có sẵn trong mã nguồn nhưng chưa được giao diện gọi, nên chưa có export/import toàn bộ dữ liệu cho người dùng. Owner có thể xóa toàn bộ family sau confirmation phrase; cascade xóa domain data và session đã ghép nối.
 
 Bộ thói quen thích ứng lưu hai loại dữ liệu theo gia đình: kế hoạch tín hiệu của từng thói quen (câu tín hiệu, giờ, nơi) và ghi nhận cách bé hoàn thành từng lần ("tự làm", "được nhắc", "làm cùng"). Cả hai bảng bật và ép RLS, chỉ thành viên gia đình đọc được, chỉ ghi qua hàm có kiểm tra quyền (phụ huynh, hoặc thiết bị bé đã ghép đôi cho chính bản ghi của bé) và bị xóa cùng bé hoặc gia đình. Dữ liệu này chỉ để hiển thị và gợi ý điều chỉnh cho phụ huynh, không dùng cho xếp hạng hay so sánh giữa các bé. Bản xuất JSON của gia đình hiện chưa gồm các dòng này (cũng như nhật ký và các dữ liệu trải nghiệm khác).
 

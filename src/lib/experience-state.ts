@@ -191,6 +191,25 @@ export function parseExperienceState(input: unknown, familyId: string, isDemo = 
   return state;
 }
 
+/** Moves every row to another family, for restoring a backup made under a different family id. */
+export function rebindExperienceFamily(state: ExperienceState, familyId: string): ExperienceState {
+  const rebind = <Row extends { readonly family_id: string }>(rows: readonly Row[]): Row[] => (
+    rows.map((row) => ({ ...row, family_id: familyId }))
+  );
+  return {
+    children: rebind(state.children),
+    settings: state.settings ? { ...state.settings, family_id: familyId } : null,
+    letters: rebind(state.letters),
+    quests: rebind(state.quests),
+    wishlists: rebind(state.wishlists),
+    deferredTasks: rebind(state.deferredTasks),
+    supportObservations: rebind(state.supportObservations),
+    cuePlans: rebind(state.cuePlans),
+    journalEntries: rebind(state.journalEntries),
+    cityPurchases: rebind(state.cityPurchases),
+  };
+}
+
 export function setJournalEntry(state: ExperienceState, entry: JournalEntry): ExperienceState {
   return {
     ...state,
