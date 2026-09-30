@@ -8,7 +8,8 @@ const SELF_REPORT_AGE = 15;
 /** From 15 years old a child can say how they did a habit. The age stage alone is not enough to decide. */
 export function childMaySelfReport(child: Pick<ChildProfile, 'age' | 'birthYear' | 'ageStage'>, today: string): boolean {
   if (child.age !== undefined) return child.age >= SELF_REPORT_AGE;
-  if (child.birthYear !== undefined) return Number(today.slice(0, 4)) - child.birthYear >= SELF_REPORT_AGE;
+  // Only the year of birth is known: the birthday may not have come yet, so wait until the child is surely old enough.
+  if (child.birthYear !== undefined) return Number(today.slice(0, 4)) - child.birthYear >= SELF_REPORT_AGE + 1;
   return false;
 }
 

@@ -56,17 +56,30 @@ const accounts = [
 const userIds = [];
 const familyIds = [];
 
-async function cleanup() {
-  if (familyIds.length > 0) {
-    const { error } = await admin.from('families').delete().in('id', familyIds);
-    if (error) throw new Error('Synthetic family cleanup failed.');
+async function removeSyntheticData(userIdList, familyIdList) {
+  const failures = [];
+  const families = new Set(familyIdList.filter(Boolean));
+  for (const userId of userIdList.filter(Boolean)) {
+    // A family may exist for a user whose bootstrap did not finish, so find it by membership too.
+    const found = await admin.from('family_memberships').select('family_id').eq('user_id', userId);
+    for (const row of found.data ?? []) families.add(row.family_id);
   }
-  for (const userId of userIds) {
+  if (families.size > 0) {
+    const { error } = await admin.from('families').delete().in('id', [...families]);
+    if (error) failures.push('families');
+  }
+  for (const userId of userIdList.filter(Boolean)) {
     const { error } = await admin.auth.admin.deleteUser(userId);
-    if (error) throw new Error('Synthetic user cleanup failed.');
+    if (error) failures.push(`user ${userId}`);
   }
+  if (failures.length > 0) throw new Error(`Synthetic cleanup failed for: ${failures.join(', ')}. Remove them by hand.`);
 }
 
+async function cleanup() {
+  await removeSyntheticData(userIds, familyIds);
+}
+
+let successMessage = '';
 try {
   for (const account of accounts) {
     const { data, error } = await admin.auth.admin.createUser({
@@ -359,9 +372,8 @@ try {
   });
   assert(Boolean(membershipEscalation.error), 'Cross-family membership escalation succeeded.');
 
-  process.stdout.write(
-    'Live family boundary verification passed: anonymous access denied, same-family access allowed, cross-family access denied, including habit programs.\n',
-  );
+  successMessage = 'Live family boundary verification passed: anonymous access denied, same-family access allowed, cross-family access denied, including habit programs.\n';
 } finally {
   await cleanup();
 }
+process.stdout.write(successMessage);
