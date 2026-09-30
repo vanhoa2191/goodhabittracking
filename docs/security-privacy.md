@@ -31,3 +31,7 @@ Các mặc định được thiết kế bảo thủ cho dữ liệu trẻ, như
 ## Báo cáo sự cố
 
 Không gửi secret hoặc dữ liệu trẻ qua issue công khai. Dùng kênh support riêng của operator và cung cấp correlation ID, thời điểm, route và reason code.
+
+## Chính sách nội dung (CSP)
+
+Script chỉ được chạy khi mang nonce ngẫu nhiên theo từng yêu cầu (`src/middleware.ts`, kèm `strict-dynamic`); không còn `unsafe-inline` cho script. Style vẫn cho phép `unsafe-inline` vì thuộc tính `style` dựng ở máy chủ không gắn được nonce. Dùng middleware chạy trên edge chứ không phải `proxy.ts` vì bộ chuyển OpenNext cho Cloudflare chưa hỗ trợ proxy chạy Node.js; khi bộ chuyển hỗ trợ có thể đổi tên tệp. Mọi trang render theo yêu cầu nên không được cache ở CDN. Script nội tuyến mới phải lấy nonce từ tiêu đề `x-nonce` (xem `src/app/layout.tsx`).

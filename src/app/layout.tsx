@@ -89,10 +89,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const { language: initialLanguage, hasKnownAppSession } = await getRequestContext();
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
   return (
     <html lang={initialLanguage} data-known-app-session={hasKnownAppSession ? 'true' : undefined} className={`h-full antialiased ${displayFont.variable} ${uiFont.variable} ${monoFont.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: appearanceScript }} />
+        <script nonce={nonce} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: appearanceScript }} />
       </head>
       <body className="min-h-full flex flex-col bg-app-surface dark:bg-zinc-950 text-ink dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
         <PwaRuntime />
