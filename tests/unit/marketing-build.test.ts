@@ -152,7 +152,7 @@ describe('marketing static artifact', () => {
     }
   });
 
-  it('positions KidHabit as education through habits, aimed at sixteen growth portraits', async () => {
+  it('positions KidHabit as education through habits', async () => {
     const { html } = await buildFixture();
     expect(html).toContain('<title>KidHabit Hero | Giáo dục con qua thói quen mỗi ngày</title>');
     expect(html).toMatch(/<h1>Từng thói quen nhỏ vẽ nên chân dung tốt đẹp của con<\/h1>/);
@@ -161,25 +161,17 @@ describe('marketing static artifact', () => {
     expect(html).not.toMatch(/\b(số 1|top 1|#1)\b/i);
   });
 
-  it('shows all sixteen portraits with the summit first and a real habit for each', async () => {
+  it('explains what the portraits section means without listing the sixteen portraits', async () => {
     const { html } = await buildFixture();
     const section = html.slice(html.indexOf('id="chan-dung"'), html.indexOf('class="section shift"'));
-    for (const name of ['Trí Tuệ Học Giả', 'Tâm Thái An Vui', 'Sức Khỏe Người Sắt', 'Luật Sắt Bản Thân', 'Lục Lộc Đại Thuận', 'Làm Người Thành Công']) {
-      expect(section).toContain(name);
-    }
-    expect(section).toContain('47 thói quen');
-    expect(section).toContain('5 giai đoạn từ 0 đến 18 tuổi');
-    expect(section.match(/data-portrait-detail="CD-\d{2}"/g)).toHaveLength(16);
-    expect(section.match(/class="portrait-chip"/g)).toHaveLength(15);
-    expect(section).toMatch(/class="portrait-summit"[^>]*data-portrait="CD-16"|data-portrait="CD-16"[^>]*aria-pressed="true"/);
-    expect(section.match(/<article class="portrait-detail"[^>]*data-portrait-detail="CD-16"><|<article class="portrait-detail" data-portrait-detail="CD-16">/)).not.toBeNull();
-    expect(section.match(/ hidden>/g)).toHaveLength(15);
+    expect(section).toContain('Mỗi thói quen là một nét vẽ nên chân dung của con');
+    expect(section).toContain('Chân dung</strong> là hình ảnh con lớn lên');
+    expect(section).not.toMatch(/16 chân dung|mười sáu|data-portrait|portrait-chip/);
+    for (const age of ['0–3', '3–6', '6–12', '12–15', '15–18']) expect(section).toContain(age);
+    expect(section.match(/<li><span class="growth-age">/g)).toHaveLength(5);
+    expect(section).toContain('href="/framework/"');
     expect(section).toContain('không phải nhãn tính cách hay điểm số');
     expect(section).toContain('không cam kết một kết quả phát triển cụ thể');
-    for (const button of section.match(/<button[^>]*data-portrait=[^>]*>/g) ?? []) {
-      expect(button).toContain('type="button"');
-      expect(button).toMatch(/aria-pressed="(true|false)"/);
-    }
   });
 
   it('wires the pointer effects to elements and only runs them for fine pointers with motion allowed', async () => {
@@ -299,7 +291,7 @@ describe('marketing static artifact', () => {
     expect(pricing).toContain('30 ngày');
   });
 
-  it('renders the shared privacy and terms documents as readable single-column pages', async () => {
+  it('renders the shared privacy and terms documents as readable pages with a table of contents', async () => {
     const outputDir = await makeOutput('kidhabit-marketing-legal-');
     await buildMarketingSite({
       appOrigin: 'https://app.example',

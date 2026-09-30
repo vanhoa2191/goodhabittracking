@@ -1,6 +1,6 @@
 import { buildLegalPages, legalUpdatedLabel } from './legal-content.mjs';
-import { buildPortraitGuide, summitId } from './portraits.mjs';
 import { sessionHintCookie } from './session-hint.mjs';
+import scienceData from '../../src/data/science-content.json' with { type: 'json' };
 import { comparison, faqs, features, mascots, navigation, outcomes, plans, publicPages, safetyPoints, steps, testimonials, trustBar, trustPoints } from './site-content.mjs';
 
 const icons = {
@@ -22,6 +22,13 @@ const icons = {
   users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   'eye-off': '<path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" x2="22" y1="2" y2="22"/>',
   trash: '<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>',
+  flask: '<path d="M10 2v7.5L4.5 19a2 2 0 0 0 1.7 3h11.6a2 2 0 0 0 1.7-3L14 9.5V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/>',
+  search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  lightbulb: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/>',
+  alert: '<circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
+  info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+  file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/>',
+  map: '<path d="M14.1 4.6 9 2 3 5v15l6-3 5.1 2.6L21 19V4l-6.9.6z"/><path d="M9 2v15"/><path d="M15 5v15"/>',
   mail: '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
 };
 
@@ -182,32 +189,27 @@ function renderFaq() {
   return `<section class="section faq-section" aria-labelledby="faq-title"><div class="shell faq-layout"><div><h2 id="faq-title">Điều ba mẹ thường hỏi</h2><p>Nếu cần thêm trợ giúp, hãy xem hướng dẫn hoặc liên hệ với KidHabit.</p><a class="text-link" href="/docs/">Xem hướng dẫn ${icon('arrow')}</a></div><div class="faq-list">${faqs.map((item) => `<details><summary>${item.question}</summary><p>${item.answer}</p></details>`).join('')}</div></div></section>`;
 }
 
-function renderPortraitDetail(portrait, { active = false } = {}) {
-  const example = portrait.example;
-  const isSummit = portrait.id === summitId;
-  return `<article class="portrait-detail" data-portrait-detail="${portrait.id}"${active ? '' : ' hidden'}>
-    <p class="portrait-detail-kicker">${isSummit ? 'Đích tổng hợp' : `Chân dung ${portrait.code}`}</p>
-    <h3>${escapeHtml(portrait.name)}</h3>
-    ${example ? `<p class="portrait-detail-habit"><span>Thói quen tiêu biểu · ${escapeHtml(example.stage)}</span><strong>${escapeHtml(example.name)}</strong></p>
-    <blockquote>${escapeHtml(example.meaning)}</blockquote>` : ''}
-    <p class="portrait-detail-count">${portrait.habitCount} thói quen trong khung hướng tới chân dung này.</p>
-  </article>`;
-}
+const growthStages = [
+  ['0–3', 'Làm mẫu và đồng hành'],
+  ['3–6', 'Làm cùng con'],
+  ['6–12', 'Con tự chọn dần'],
+  ['12–15', 'Con chủ động hơn'],
+  ['15–18', 'Con tự làm chủ'],
+];
+
+const growthPoints = [
+  ['book', 'Mỗi thói quen có lời giải thích', 'Con hiểu vì sao mình làm việc đó, còn ba mẹ biết cách đồng hành cho đúng lúc.'],
+  ['trend-up', 'Việc nhỏ, lặp lại mỗi ngày', 'Những việc vừa sức, làm đều đặn, dần trở thành nếp thay vì một lần cố gắng rồi bỏ.'],
+  ['users', 'Ba mẹ luôn là người quyết định', 'Ba mẹ chọn, điều chỉnh hoặc tự tạo thói quen cho phù hợp với con và nhịp sống của gia đình.'],
+];
 
 function renderPortraits() {
-  const guide = buildPortraitGuide();
-  const summit = guide.portraits.find((portrait) => portrait.id === summitId);
-  const others = guide.portraits.filter((portrait) => portrait.id !== summitId);
-  return `<section class="section portraits" id="chan-dung" aria-labelledby="portraits-title"><div class="shell">
-    <div class="section-heading section-heading-center"><p class="eyebrow">Giáo dục con qua thói quen</p><h2 id="portraits-title">Mỗi thói quen là một nét vẽ nên chân dung của con</h2><p>KidHabit không chỉ đếm việc đã làm. ${guide.habitCount} thói quen của khung, chia thành ${guide.stageCount} giai đoạn từ 0 đến 18 tuổi, đều gắn với các chân dung trong bản đồ ${guide.portraits.length} chân dung, để con lớn lên tự tin, tử tế và làm chủ cuộc sống.</p></div>
-    <div class="portrait-explorer" data-portrait-explorer>
-      <div class="portrait-panel" aria-live="polite" data-portrait-panel>${guide.portraits.map((portrait) => renderPortraitDetail(portrait, { active: portrait.id === summitId })).join('')}</div>
-      <div class="portrait-map">
-        <button type="button" class="portrait-summit" data-portrait="${summit.id}" data-spotlight aria-pressed="true"><span class="portrait-code">${summit.code}</span><span class="portrait-name">${escapeHtml(summit.name)}</span><small>Đích tổng hợp của cả hành trình</small></button>
-        <ul class="portrait-grid">${others.map((portrait) => `<li><button type="button" class="portrait-chip" data-portrait="${portrait.id}" data-spotlight aria-pressed="false"><span class="portrait-code">${portrait.code}</span><span class="portrait-name">${escapeHtml(portrait.name)}</span></button></li>`).join('')}</ul>
-      </div>
-    </div>
-    <p class="portrait-note">Chân dung là hướng trưởng thành, không phải nhãn tính cách hay điểm số cho con. KidHabit là công cụ đồng hành cùng gia đình và không cam kết một kết quả phát triển cụ thể.</p>
+  return `<section class="section growth" id="chan-dung" aria-labelledby="growth-title"><div class="shell">
+    <div class="section-heading section-heading-center"><p class="eyebrow">Giáo dục con qua thói quen</p><h2 id="growth-title">Mỗi thói quen là một nét vẽ nên chân dung của con</h2><p><strong>Chân dung</strong> là hình ảnh con lớn lên: tự tin, tử tế và làm chủ cuộc sống của mình. KidHabit không chỉ đếm việc đã làm, mà giúp ba mẹ chọn những thói quen nhỏ phù hợp với từng độ tuổi để dần vẽ nên hình ảnh ấy.</p></div>
+    <ol class="growth-stages" aria-label="Năm giai đoạn từ 0 đến 18 tuổi">${growthStages.map(([age, label]) => `<li><span class="growth-age">${age}<small>tuổi</small></span><span>${label}</span></li>`).join('')}</ol>
+    <ul class="growth-points">${growthPoints.map(([name, title, text]) => `<li><span class="icon-box">${icon(name)}</span><div><h3>${title}</h3><p>${text}</p></div></li>`).join('')}</ul>
+    <p class="growth-cta"><a class="text-link" href="/framework/">Xem khung thói quen ${icon('arrow')}</a></p>
+    <p class="growth-note">Chân dung là hướng trưởng thành, không phải nhãn tính cách hay điểm số cho con. KidHabit là công cụ đồng hành cùng gia đình và không cam kết một kết quả phát triển cụ thể.</p>
   </div></section>`;
 }
 
@@ -307,16 +309,16 @@ export function renderHome({ marketingOrigin, appOrigin, supportEmail = '', now 
 }
 
 export function renderPricingPage({ marketingOrigin, appOrigin }) {
-  const body = `<main id="noi-dung"><section class="page-hero"><div class="shell"><p class="eyebrow">Bảng giá rõ ràng</p><h1>Chọn nhịp đồng hành phù hợp</h1><p>Ba gói trả phí, không có phí ẩn và không tự động gia hạn.</p></div></section>${renderPricing(appOrigin, 'Ba lựa chọn, một hành trình rõ ràng')}${renderFaq()}</main>`;
+  const body = `<main id="noi-dung">${renderInfoHero({ slug: 'pricing', eyebrow: 'Bảng giá rõ ràng', title: 'Chọn nhịp đồng hành phù hợp', lede: 'Ba gói trả phí, không có phí ẩn và không tự động gia hạn.', mascot: 'bee' })}${renderPricing(appOrigin, 'Ba lựa chọn, một hành trình rõ ràng')}${renderFaq()}</main>`;
   return renderDocument({ title: 'Bảng giá KidHabit Hero', description: 'So sánh các gói KidHabit cho một bé hoặc cả gia đình.', path: '/pricing/', marketingOrigin, appOrigin, body, structuredData: renderStructuredData({ marketingOrigin, appOrigin }) });
 }
 
 function renderContactNote(supportEmail) {
   if (!supportEmail) {
-    return '<p class="shell contact-note">Kênh email hỗ trợ chính thức sẽ được hiển thị trong ứng dụng sau khi cấu hình được phê duyệt.</p>';
+    return `<aside class="callout contact-note"><span class="icon-box">${icon('mail')}</span><p>Kênh email hỗ trợ chính thức sẽ được hiển thị trong ứng dụng sau khi cấu hình được phê duyệt.</p></aside>`;
   }
   const address = escapeHtml(supportEmail);
-  return `<p class="shell contact-note">Email hỗ trợ: <a href="mailto:${address}">${address}</a></p>`;
+  return `<aside class="callout contact-note"><span class="icon-box">${icon('mail')}</span><p>Email hỗ trợ: <a href="mailto:${address}">${address}</a></p></aside>`;
 }
 
 const legalSlugs = new Set(['privacy', 'terms']);
@@ -334,16 +336,78 @@ function renderLegalBlocks(blocks, supportEmail) {
     : `<p>${renderInlineText(block, supportEmail)}</p>`)).join('');
 }
 
+const infoTabsBySlug = {
+  framework: [['pricing', 'Bảng giá'], ['framework', 'Khung thói quen'], ['science', 'Cơ sở khoa học'], ['roadmaps', 'Lộ trình'], ['docs', 'Hướng dẫn'], ['contact', 'Liên hệ']],
+  legal: [['privacy', 'Quyền riêng tư'], ['terms', 'Điều khoản'], ['contact', 'Liên hệ']],
+};
+const infoTabLabels = new Map(Object.values(infoTabsBySlug).flat());
+
+function renderInfoTabs(slug) {
+  const group = legalSlugs.has(slug) ? infoTabsBySlug.legal : infoTabsBySlug.framework;
+  return `<nav class="info-tabs" aria-label="Các trang thông tin">${group.map(([target, label]) => `<a href="/${target}/"${target === slug ? ' aria-current="page"' : ''}>${escapeHtml(label)}</a>`).join('')}</nav>`;
+}
+
+function renderInfoHero({ slug, eyebrow, title, lede, mascot }) {
+  return `<section class="info-hero"><div class="shell info-hero-grid"><div class="info-hero-copy"><p class="eyebrow">${escapeHtml(eyebrow)}</p><h1>${escapeHtml(title)}</h1><p class="info-lede">${escapeHtml(lede)}</p>${renderInfoTabs(slug)}</div><div class="info-hero-art" aria-hidden="true"><img src="/mascots/${mascot}.webp" alt="" width="320" height="320" decoding="async"></div></div></section>`;
+}
+
+function slugify(text) {
+  return text.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
 function renderLegalPage({ slug, marketingOrigin, appOrigin, supportEmail }) {
   const page = buildLegalPages({ supportEmail })[slug];
-  const sections = page.sections.map((section) => `<article><h2>${escapeHtml(section.title)}</h2>${renderLegalBlocks(section.blocks, supportEmail)}</article>`).join('');
-  const body = `<main id="noi-dung"><section class="page-hero"><div class="shell"><h1>${escapeHtml(page.title)}</h1><p>${escapeHtml(page.description)}</p></div></section><section class="section info-page"><div class="shell"><p class="legal-meta">Cập nhật lần cuối: ${legalUpdatedLabel}</p><div class="legal-doc">${sections}</div></div></section></main>`;
+  const anchors = page.sections.map((section, index) => `muc-${index + 1}-${slugify(section.title)}`);
+  const sections = page.sections.map((section, index) => `<article id="${anchors[index]}"><h2>${escapeHtml(section.title)}</h2>${renderLegalBlocks(section.blocks, supportEmail)}</article>`).join('');
+  const toc = `<nav class="legal-toc" aria-label="Mục lục"><p class="legal-toc-title">${icon('list-checks')}Trong trang này</p><ul>${page.sections.map((section, index) => `<li><a href="#${anchors[index]}">${escapeHtml(section.title)}</a></li>`).join('')}</ul></nav>`;
+  const body = `<main id="noi-dung">${renderInfoHero({ slug, eyebrow: 'Minh bạch với ba mẹ', title: page.title, lede: page.description, mascot: 'leo' })}<section class="section info-body"><div class="shell legal-layout">${toc}<div class="legal-doc"><p class="legal-meta">${icon('clock')}Cập nhật lần cuối: ${legalUpdatedLabel}</p>${sections}</div></div></section></main>`;
   return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: `/${slug}/`, marketingOrigin, appOrigin, body });
+}
+
+function shortCitation(source) {
+  const year = source.citation.match(/\b(?:19|20)\d{2}\b/)?.[0] ?? '';
+  return `${source.citation.split(/[ ,]/)[0]} ${year}`.trim();
+}
+
+function renderSciencePage({ marketingOrigin, appOrigin }) {
+  const page = publicPages.science;
+  const sourceById = new Map(scienceData.sources.map((source) => [source.id, source]));
+  const toc = `<nav class="science-toc" aria-label="Các điều nên biết"><ul>${scienceData.principles.map((principle, index) => `<li><a href="#${principle.id}"><span>${String(index + 1).padStart(2, '0')}</span>${escapeHtml(principle.title)}</a></li>`).join('')}</ul></nav>`;
+  const cards = scienceData.principles.map((principle, index) => {
+    const sources = principle.sourceIds.map((id) => `<a href="#source-${id}">${escapeHtml(shortCitation(sourceById.get(id)))}</a>`).join('');
+    return `<article id="${principle.id}" class="science-card">
+      <header class="science-card-head"><span class="science-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span><h3>${escapeHtml(principle.title)}</h3></header>
+      <div class="science-block block-evidence"><h4>${icon('search')}Bằng chứng nói gì</h4><p>${escapeHtml(principle.evidence)}</p></div>
+      <div class="science-block block-action"><h4>${icon('lightbulb')}Bạn có thể làm gì</h4><p>${escapeHtml(principle.action)}</p></div>
+      <div class="science-block block-limit"><h4>${icon('alert')}Giới hạn</h4><p>${escapeHtml(principle.limit)}</p></div>
+      <p class="science-sources">${icon('file')}Nguồn: ${sources}</p>
+    </article>`;
+  }).join('');
+  const unknowns = `<section class="science-unknowns" aria-labelledby="chua-biet"><span class="icon-box">${icon('compass')}</span><div><h2 id="chua-biet">Điều chúng tôi chưa biết</h2><p>Nghiên cứu về hình thành thói quen ở trẻ em còn ít. Đây là những điều chưa có câu trả lời chắc chắn, nên KidHabit coi các ngưỡng của mình là giả thuyết làm việc.</p><ul>${scienceData.unknowns.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul></div></section>`;
+  const sources = `<section class="science-sources-list" aria-labelledby="nguon"><h2 id="nguon">${icon('file')}Nguồn</h2><ol>${scienceData.sources.map((source) => `<li id="source-${source.id}">${escapeHtml(source.citation)}${source.doi ? ` <a href="https://doi.org/${escapeHtml(source.doi)}" rel="noopener noreferrer">doi:${escapeHtml(source.doi)}</a>` : ''}</li>`).join('')}</ol></section>`;
+  const body = `<main id="noi-dung">${renderInfoHero({ slug: 'science', eyebrow: page.eyebrow, title: page.title, lede: page.lede, mascot: 'turtle' })}
+  <section class="section info-body"><div class="shell">
+    <aside class="callout callout-note" role="note"><span class="icon-box">${icon('info')}</span><p>${escapeHtml(page.disclaimer)}</p></aside>
+    <h2 class="science-heading">Bảy điều nên biết</h2>
+    ${toc}
+    <div class="science-grid">${cards}</div>
+    ${unknowns}
+    ${sources}
+  </div></section></main>`;
+  return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: '/science/', marketingOrigin, appOrigin, body });
 }
 
 export function renderInfoPage({ slug, marketingOrigin, appOrigin, supportEmail }) {
   if (legalSlugs.has(slug)) return renderLegalPage({ slug, marketingOrigin, appOrigin, supportEmail });
+  if (slug === 'science') return renderSciencePage({ marketingOrigin, appOrigin });
   const page = publicPages[slug];
-  const body = `<main id="noi-dung"><section class="page-hero"><div class="shell"><h1>${page.title}</h1><p>${page.description}</p></div></section><section class="section info-page"><div class="shell info-grid">${page.sections.map(([title, text]) => `<article><h2>${title}</h2><p>${text}</p></article>`).join('')}</div>${slug === 'contact' ? renderContactNote(supportEmail) : ''}</section></main>`;
+  const isSteps = page.layout === 'steps';
+  const items = page.sections.map(([title, text], index) => {
+    const badge = isSteps ? `<span class="step-number" aria-hidden="true">${index + 1}</span>` : `<span class="icon-box">${icon(page.icons[index] ?? 'check')}</span>`;
+    return `<li class="info-card">${badge}<div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(text)}</p></div></li>`;
+  }).join('');
+  const list = isSteps ? `<ol class="info-cards step-list">${items}</ol>` : `<ul class="info-cards">${items}</ul>`;
+  const extra = slug === 'contact' ? renderContactNote(supportEmail) : '';
+  const body = `<main id="noi-dung">${renderInfoHero({ slug, eyebrow: page.eyebrow, title: page.title, lede: page.description, mascot: page.mascot })}<section class="section info-body"><div class="shell">${list}${extra}</div></section></main>`;
   return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: `/${slug}/`, marketingOrigin, appOrigin, body });
 }

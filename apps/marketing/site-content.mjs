@@ -1,5 +1,3 @@
-import scienceData from '../../src/data/science-content.json' with { type: 'json' };
-
 export const navigation = [
   { href: '/framework/', label: 'Khung thói quen' },
   { href: '/science/', label: 'Cơ sở khoa học' },
@@ -172,6 +170,9 @@ export const faqs = [
 
 export const publicPages = {
   framework: {
+    eyebrow: 'Khung nội dung',
+    mascot: 'panda',
+    icons: ['list-checks', 'book', 'users'],
     title: 'Khung thói quen theo từng giai đoạn',
     description: 'Bắt đầu từ điều phù hợp với độ tuổi, hoàn cảnh và nhịp sống của chính gia đình bạn.',
     sections: [
@@ -181,15 +182,16 @@ export const publicPages = {
     ],
   },
   science: {
-    title: 'Cơ sở khoa học: điều đã biết và điều chưa biết',
-    description: 'KidHabit dựa trên nghiên cứu về hình thành thói quen để gợi ý cách đồng hành cùng con. Trang này nói rõ bằng chứng đến đâu và giới hạn ở đâu. Đây là công cụ đồng hành cho gia đình, không hứa kết quả cho từng em bé và không thay thế tư vấn của bác sĩ, nhà tâm lý hay chuyên gia giáo dục.',
-    sections: [
-      ...scienceData.principles.map((principle) => [principle.title, `Bằng chứng nói gì. ${principle.evidence} Bạn có thể làm gì. ${principle.action} Giới hạn. ${principle.limit}`]),
-      ['Điều chúng tôi chưa biết', scienceData.unknowns.join(' ')],
-      ['Nguồn', scienceData.sources.map((source) => source.citation + (source.doi ? ` doi:${source.doi}` : '')).join(' ')],
-    ],
+    eyebrow: 'Cơ sở khoa học',
+    title: 'Xây thói quen cho trẻ: điều đã biết và điều chưa biết',
+    lede: 'KidHabit dựa trên nghiên cứu về hình thành thói quen để gợi ý cách đồng hành cùng con. Trang này nói rõ bằng chứng đến đâu và giới hạn ở đâu.',
+    description: 'Những điều nghiên cứu về thói quen cho biết, những điều chưa biết, và cách KidHabit dùng chúng một cách thận trọng.',
+    disclaimer: 'KidHabit là công cụ đồng hành cho gia đình. Chúng tôi không hứa kết quả cho từng em bé và không thay thế tư vấn của bác sĩ, nhà tâm lý hay chuyên gia giáo dục.',
   },
   roadmaps: {
+    eyebrow: 'Lộ trình',
+    mascot: 'fox',
+    icons: ['check', 'clock', 'trend-up'],
     title: 'Lộ trình đủ nhỏ để bắt đầu',
     description: 'Một hành trình tốt không cần hoàn hảo. Nó cần rõ ràng, đều đặn và có sự ghi nhận.',
     sections: [
@@ -199,6 +201,9 @@ export const publicPages = {
     ],
   },
   docs: {
+    eyebrow: 'Hướng dẫn',
+    mascot: 'bee',
+    layout: 'steps',
     title: 'Hướng dẫn sử dụng KidHabit',
     description: 'Những bước cơ bản để gia đình bắt đầu, ghép thiết bị và duy trì thói quen.',
     sections: [
@@ -209,6 +214,9 @@ export const publicPages = {
     ],
   },
   contact: {
+    eyebrow: 'Hỗ trợ',
+    mascot: 'bunny',
+    icons: ['alert', 'gift', 'shield'],
     title: 'Liên hệ hỗ trợ',
     description: 'Chuẩn bị đúng thông tin để đội ngũ hỗ trợ xử lý nhanh mà không thu thập dư thừa dữ liệu của trẻ.',
     sections: [

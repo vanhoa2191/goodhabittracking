@@ -55,23 +55,6 @@ if (stickyCta && heroActions && 'IntersectionObserver' in window) {
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const motionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const portraitExplorer = document.querySelector('[data-portrait-explorer]');
-if (portraitExplorer) {
-  portraitExplorer.classList.add('is-live');
-  const details = [...portraitExplorer.querySelectorAll('[data-portrait-detail]')];
-  const triggers = [...portraitExplorer.querySelectorAll('[data-portrait]')];
-  const select = (id) => {
-    for (const detail of details) detail.hidden = detail.dataset.portraitDetail !== id;
-    for (const trigger of triggers) trigger.setAttribute('aria-pressed', String(trigger.dataset.portrait === id));
-  };
-  for (const trigger of triggers) {
-    const choose = () => select(trigger.dataset.portrait);
-    trigger.addEventListener('click', choose);
-    trigger.addEventListener('focus', choose);
-    if (finePointer) trigger.addEventListener('pointerenter', choose);
-  }
-}
-
 if (finePointer && motionAllowed) {
   const hero = document.querySelector('[data-hero]');
   const visual = document.querySelector('.hero-visual');
