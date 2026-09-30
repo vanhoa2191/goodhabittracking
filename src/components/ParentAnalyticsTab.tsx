@@ -9,6 +9,7 @@ import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { ParentJournalPanel } from '@/components/ParentJournalPanel';
 import { AchievementShareDialog } from '@/components/AchievementShareDialog';
 import { localDayKey } from '@/lib/local-day';
+import { PrintWeekButtons } from '@/components/PrintableWeek';
 
 export function ParentAnalyticsTab() {
   const { logs, currentUser, logout } = useAppStore();
@@ -51,6 +52,7 @@ export function ParentAnalyticsTab() {
           <BarChart3 className="w-4 h-4 text-indigo-600" />
           {t.weeklyTrend}
         </h4>
+        <div className="mb-4"><PrintWeekButtons /></div>
 
         <div className="grid grid-cols-7 gap-2 pt-8 pb-2">
           {Array.from({ length: 7 }).map((_, index) => {
