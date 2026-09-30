@@ -10,7 +10,7 @@ const vi = [
   ['phan-thuong', 'Sao và phần thưởng', 'Mỗi nhiệm vụ hoàn thành mang lại số sao đã đặt. Trong mục Đổi quà, bé chạm biểu tượng mục tiêu trên một phần thưởng để theo dõi số sao cần tích lũy. Mục tiêu được lưu cho bé; xin đổi quà là thao tác riêng và phụ huynh là người xác nhận.'],
   ['tam-nghi', 'Tạm nghỉ cùng gia đình', 'Tại Gia đình > Cài đặt, phụ huynh chọn Tạm nghỉ và xác nhận. Khi đang nghỉ, giao diện bé ẩn nhắc tiến độ và chuỗi ngày; bé vẫn có thể làm nhiệm vụ, còn sao và phần thưởng không bị xóa. Chọn Tiếp tục khi cả nhà sẵn sàng.'],
   ['thanh-toan', 'Thanh toán và kích hoạt', 'Kiểm tra chủ tài khoản, số tài khoản, số tiền và nội dung chuyển khoản. Quét QR hoặc mở trang thanh toán bảo mật. Gói được kích hoạt sau khi xác nhận.'],
-  ['dong-bo', 'Đồng bộ, sao lưu và thiết bị', 'Đăng nhập để dùng dữ liệu trên nhiều thiết bị. Bạn cũng có thể tải bản sao lưu và thu hồi thiết bị không còn sử dụng.'],
+  ['dong-bo', 'Đồng bộ và thiết bị', 'Đăng nhập để dùng dữ liệu trên nhiều thiết bị. Bạn cũng có thể thu hồi thiết bị không còn sử dụng.'],
   ['tro-giup', 'Khắc phục sự cố và FAQ', 'Nếu camera không mở, hãy cấp quyền camera, dùng kết nối an toàn hoặc nhập mã thủ công. Nếu thanh toán đang chờ, đừng thanh toán lại ngay.'],
 ] as const;
 const en = [
@@ -23,7 +23,7 @@ const en = [
   ['rewards', 'Stars and rewards', 'Completed tasks earn stars. In Rewards, children can select a gift as their savings goal and track the stars needed. The goal is saved for the child; requesting a reward is separate and parents confirm it.'],
   ['family-break', 'Take a family break', 'Under Family > Settings, choose Take a break and confirm. While paused, the child view hides progress and streak prompts; tasks remain available, and stars and rewards are not deleted. Choose Resume when your family is ready.'],
   ['payment', 'Payment and activation', 'Check account holder, account number, amount, and memo. Scan the QR or open secure checkout. Activation follows verification.'],
-  ['sync', 'Sync, backup, and devices', 'Sign in to use family data across devices. You can export a backup and revoke unused devices.'],
+  ['sync', 'Sync and devices', 'Sign in to use family data across devices. You can revoke devices you no longer use.'],
   ['help', 'Troubleshooting and FAQ', 'If camera scanning is unavailable, grant permission, use a secure connection, or enter the code manually.'],
 ] as const;
 export function getDocsCopy(language: Language) { return language === 'vi' ? { title: 'Tài liệu sử dụng KidHabit', intro: 'Hướng dẫn ngắn gọn cho phụ huynh và bé.', back: 'Quay lại ứng dụng', sections: vi } : { title: 'KidHabit user guide', intro: 'A concise guide for parents and children.', back: 'Back to the app', sections: en }; }
