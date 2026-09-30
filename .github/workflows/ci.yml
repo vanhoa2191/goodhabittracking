@@ -94,6 +94,7 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          NEXT_PUBLIC_HABIT_PROGRAMS: ${{ vars.NEXT_PUBLIC_HABIT_PROGRAMS }}
       - if: steps.configuration.outputs.ready == 'true'
         name: Verify production health after deploy
         run: |
