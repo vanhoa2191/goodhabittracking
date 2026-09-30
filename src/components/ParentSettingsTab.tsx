@@ -13,6 +13,7 @@ import { ThemeSelector } from '@/components/ThemeSelector';
 import { AccountProfileCard } from '@/components/AccountProfileCard';
 import { AnalyticsConsentCard } from '@/components/AnalyticsConsentCard';
 import { LeaderboardSharingCard } from './LeaderboardSharingCard';
+import { FamilyDataCard } from './FamilyDataCard';
 import { ParentReminderConsentCard } from '@/components/ParentReminderConsentCard';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { CaregiverInvitesPanel } from '@/components/CaregiverInvitesPanel';
@@ -163,6 +164,7 @@ export function ParentSettingsTab() {
 
       <h4 id="settings-account" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Tài khoản & đồng bộ</h4>
       {currentUser && <AccountProfileCard />}
+      <FamilyDataCard />
       <h4 id="settings-privacy" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Riêng tư & thông báo</h4>
       {currentUser && <AnalyticsConsentCard />}
       {currentUser && <LeaderboardSharingCard />}

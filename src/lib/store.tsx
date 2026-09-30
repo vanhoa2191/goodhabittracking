@@ -68,6 +68,7 @@ import { useCloudFamilyIdentity } from './store/use-cloud-family-identity';
 import type { FamilyRole } from './store/cloud-family-sync';
 import { buildLeaderboard } from './store/leaderboard';
 import { localDayKey } from '@/lib/habit-fire';
+import { exportFamilyData, importFamilyData } from './store/family-backup-actions';
 import { buildSubscriptionDetails, checkIsPro } from './store/subscription';
 import { adjustProfilePoints } from './store/local-domain-actions';
 import { getMascot } from './mascots';
@@ -190,6 +191,11 @@ interface AppStoreContextType {
   kudos: Kudo[];
   sendKudo: (toChildId: string, emoji?: string) => Promise<boolean>;
   getLeaderboard: (scope: LeaderboardScope, period: LeaderboardPeriod) => LeaderboardEntry[];
+  /** A copy of the family's data as JSON. Never holds the parent PIN or any payment or plan information. */
+  exportFamilyBackup: () => string;
+  /** Restoring replaces this device's data, so it is offered only when the data lives on this device. */
+  canImportFamilyBackup: boolean;
+  importFamilyBackup: (jsonData: string) => boolean;
 
   cloudSyncActive: boolean;
   lastSyncTime: string | null;
@@ -1094,6 +1100,47 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     isDemoSession,
   });
 
+  const exportFamilyBackup = (): string => exportFamilyData({
+    storageMode,
+    activeChildId,
+    parentProfile,
+    profiles,
+    activities,
+    logs,
+    rewards,
+    redemptions,
+    childBadges,
+    groups,
+    kudos,
+    experience,
+  });
+
+  const canImportFamilyBackup = storageMode === 'local' && !currentUser && !isDemoSession;
+
+  const importFamilyBackup = (jsonData: string): boolean => {
+    if (!canImportFamilyBackup) return false;
+    return importFamilyData(
+      jsonData,
+      (parsed) => {
+        setParentProfile(parsed.parentProfile ?? null);
+        setProfiles(parsed.profiles);
+        setActivities(parsed.activities);
+        setLogs(parsed.logs);
+        setRewards(parsed.rewards);
+        setRedemptions(parsed.redemptions);
+        setChildBadges(parsed.childBadges);
+        setGroups(parsed.groups);
+        setKudos(parsed.kudos);
+        setExperience(parsed.experience);
+        setActiveChildIdState(parsed.activeChildId);
+        setStorageModeState('local');
+        setIsDemoSession(false);
+      },
+      localStorage,
+      sessionStorage,
+    );
+  };
+
   // Leaderboard Calculation across scopes (global, group, family) and periods (daily, weekly, monthly)
   const getLeaderboard = (
     scope: LeaderboardScope,
@@ -1251,6 +1298,9 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         kudos,
         sendKudo,
         getLeaderboard,
+        exportFamilyBackup,
+        canImportFamilyBackup,
+        importFamilyBackup,
 
         cloudSyncActive,
         lastSyncTime,
