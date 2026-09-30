@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { CHILD_SESSION_COOKIE, sha256Hex } from '@/lib/pairing/crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -65,6 +66,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   let body: unknown;
   try {
     body = await request.json();

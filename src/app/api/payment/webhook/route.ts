@@ -4,10 +4,13 @@ import { payOSWebhookSchema } from '@/lib/billing/schemas';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { recordOperationalSignal } from '@/lib/observability/operational-signal';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const rawBody: unknown = await request.json().catch(() => null);
   const parsed = payOSWebhookSchema.safeParse(rawBody);

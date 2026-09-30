@@ -7,6 +7,7 @@ import {
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { CHILD_SESSION_COOKIE, sha256Hex } from '@/lib/pairing/crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -40,6 +41,8 @@ function rpcFor(command: ChildDomainCommand, tokenHash: string) {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const parsed = childDomainCommandSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {

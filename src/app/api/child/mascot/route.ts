@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { CHILD_SESSION_COOKIE, sha256Hex } from '@/lib/pairing/crypto';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -40,6 +41,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const parsed = selectionSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: 'Invalid mascot selection.' }, { status: 400 });
 

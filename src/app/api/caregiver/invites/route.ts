@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 const revokeSchema = z.object({ inviteId: z.string().uuid() }).strict();
 
@@ -25,7 +26,9 @@ export async function GET() {
   return NextResponse.json({ invites });
 }
 
-export async function POST() {
+export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const client = await authenticatedClient();
   if (!client) return NextResponse.json({ error: 'Vui lòng đăng nhập.' }, { status: 401 });
   const { data, error } = await client.rpc('create_caregiver_invite', { ttl_hours: 72 });
@@ -37,6 +40,8 @@ export async function POST() {
 }
 
 export async function DELETE(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const client = await authenticatedClient();
   if (!client) return NextResponse.json({ error: 'Vui lòng đăng nhập.' }, { status: 401 });
   const parsed = revokeSchema.safeParse(await request.json().catch(() => null));

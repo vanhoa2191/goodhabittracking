@@ -10,6 +10,7 @@ import { createCorrelationId } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { listAllAuthUsers } from '@/lib/auth/admin-user-directory';
 import { listAllRows } from '@/lib/auth/admin-paginated';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 const readRoles = ['support', 'finance', 'super_admin'] as const;
 const writeRoles = ['support', 'super_admin'] as const;
@@ -74,6 +75,8 @@ const updateSchema = z.object({
 }).strict();
 
 export async function PATCH(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const access = await authorizeAdmin({ roles: writeRoles, requireAal2: true });
   if (!access.authorized) return adminAuthorizationResponse(access, correlationId);

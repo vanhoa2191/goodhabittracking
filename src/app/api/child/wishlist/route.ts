@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { CHILD_SESSION_COOKIE, sha256Hex } from '@/lib/pairing/crypto';
 import { parseChildWishlist } from '@/lib/experience-state';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -40,6 +41,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const body = z.object({ rewardId: z.string().uuid() }).strict().safeParse(await request.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: 'Invalid goal.' }, { status: 400 });
 

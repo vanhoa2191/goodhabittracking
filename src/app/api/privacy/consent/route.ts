@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -11,6 +12,8 @@ const consentSchema = z.object({
 }).strict();
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const parent = await getParentContext();
   if (!parent) return NextResponse.json({ success: false, error: 'Authentication required.' }, { status: 401 });
   const parsed = consentSchema.safeParse(await request.json().catch(() => null));

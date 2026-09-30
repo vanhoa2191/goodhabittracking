@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { normalizeJournalText, parseJournalEntry } from '@/lib/child-journal';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -13,6 +14,8 @@ const journalInput = z.object({
 }).strict();
 
 export async function PUT(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const parent = await getParentContext();
   if (!parent) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
 

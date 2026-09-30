@@ -4,6 +4,7 @@ import { createPayOSPayment } from '@/lib/billing/payos-server';
 import { createPaymentRequestSchema } from '@/lib/billing/schemas';
 import { getPricingPlan } from '@/lib/payos';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
@@ -12,6 +13,8 @@ function createOrderCode(): number {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const parent = await getParentContext();
   if (!parent) {
     return NextResponse.json({ success: false, error: 'Authentication required.' }, { status: 401 });

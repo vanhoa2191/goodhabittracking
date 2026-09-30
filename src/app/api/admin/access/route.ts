@@ -9,6 +9,7 @@ import { recordAdminAudit } from '@/lib/auth/admin-audit-server';
 import { createCorrelationId } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { findAuthUserByEmail } from '@/lib/auth/admin-user-directory';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 const roles = ['super_admin'] as const;
 const grantSchema = z.object({
@@ -37,6 +38,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const access = await authorizeAdmin({ roles, requireAal2: true, allowEmergencyBootstrap: true });
   if (!access.authorized) return adminAuthorizationResponse(access, correlationId);
@@ -93,6 +96,8 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const access = await authorizeAdmin({ roles, requireAal2: true });
   if (!access.authorized) return adminAuthorizationResponse(access, correlationId);

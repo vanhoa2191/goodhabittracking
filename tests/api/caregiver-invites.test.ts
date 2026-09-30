@@ -33,7 +33,7 @@ describe('caregiver invitation routes', () => {
   it('requires authentication before listing or changing invitations', async () => {
     getUser.mockResolvedValue({ data: { user: null }, error: null });
     expect((await GET()).status).toBe(401);
-    expect((await POST()).status).toBe(401);
+    expect((await POST(request('/api/caregiver/invites', 'POST', {}))).status).toBe(401);
     expect((await ACCEPT(request('/api/caregiver/invites/accept', 'POST', { token }))).status).toBe(401);
     expect(rpc).not.toHaveBeenCalled();
   });
@@ -43,7 +43,7 @@ describe('caregiver invitation routes', () => {
       data: [{ invite_id: inviteId, token, expires_at: '2026-10-01T00:00:00.000Z' }],
       error: null,
     });
-    const response = await POST();
+    const response = await POST(request('/api/caregiver/invites', 'POST', {}));
     expect(response.status).toBe(201);
     expect(rpc).toHaveBeenCalledWith('create_caregiver_invite', { ttl_hours: 72 });
     await expect(response.json()).resolves.toEqual({

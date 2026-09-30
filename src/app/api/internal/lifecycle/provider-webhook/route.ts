@@ -2,10 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyResendWebhook } from '@/lib/lifecycle/resend-webhook';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
 export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
   const payload = await request.text();
   const event = verifyResendWebhook({
