@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Database, Lock, PauseCircle, PlayCircle, ShieldCheck } from 'lucide-react';
@@ -12,7 +13,9 @@ import { ChildDevicesPanel } from '@/components/ChildDevicesPanel';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { AccountProfileCard } from '@/components/AccountProfileCard';
 import { AnalyticsConsentCard } from '@/components/AnalyticsConsentCard';
-import { LeaderboardSharingCard } from './LeaderboardSharingCard';
+// These two cards are only needed once the settings tab is open, so they load on demand.
+const LeaderboardSharingCard = dynamic(() => import('./LeaderboardSharingCard').then((module) => module.LeaderboardSharingCard));
+const FamilyDataCard = dynamic(() => import('./FamilyDataCard').then((module) => module.FamilyDataCard));
 import { ParentReminderConsentCard } from '@/components/ParentReminderConsentCard';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { CaregiverInvitesPanel } from '@/components/CaregiverInvitesPanel';
@@ -163,6 +166,7 @@ export function ParentSettingsTab() {
 
       <h4 id="settings-account" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Tài khoản & đồng bộ</h4>
       {currentUser && <AccountProfileCard />}
+      <FamilyDataCard />
       <h4 id="settings-privacy" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Riêng tư & thông báo</h4>
       {currentUser && <AnalyticsConsentCard />}
       {currentUser && <LeaderboardSharingCard />}
