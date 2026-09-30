@@ -8,6 +8,8 @@ const eventSchema = z.discriminatedUnion('event', [
   z.strictObject({ event: z.literal('mascot_letter_read'), mode: z.enum(['local', 'cloud']) }),
   z.strictObject({ event: z.literal('secret_quest_completed'), mode: z.enum(['local', 'cloud']) }),
   z.strictObject({ event: z.literal('wishlist_selected'), mode: z.enum(['local', 'cloud']) }),
+  z.strictObject({ event: z.literal('habit_cue_saved'), mode: z.literal('cloud') }),
+  z.strictObject({ event: z.literal('habit_support_recorded'), level: z.enum(['alone', 'prompted', 'together']), recordedBy: z.enum(['parent', 'child']), mode: z.literal('cloud') }),
 ]);
 
 export type ProductEvent = z.infer<typeof eventSchema>;
