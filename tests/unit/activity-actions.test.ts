@@ -48,6 +48,25 @@ describe('activity actions', () => {
     expect(new Set(state.map((item) => item.id))).toHaveLength(2);
   });
 
+  it('keeps an id the caller chose, so a retry names the same activity', async () => {
+    let state: HabitActivity[] = [];
+    const actions = createActivityActions({
+      currentUser: null,
+      familyId: null,
+      getActivities: () => state,
+      setActivities: (action) => { state = typeof action === 'function' ? action(state) : action; },
+      setCloudSyncActive: () => undefined,
+      isDemoSession: true,
+      syncCloudFamily: vi.fn(async () => true),
+    });
+    const chosen = '99999999-9999-4999-8999-999999999999';
+
+    await actions.createActivities([{ ...activity, id: chosen }, activity]);
+
+    expect(state[0].id).toBe(chosen);
+    expect(state[1].id).not.toBe(chosen);
+  });
+
   it('keeps journey assignments unique after repeated local application', async () => {
     // Given
     let state: HabitActivity[] = [];

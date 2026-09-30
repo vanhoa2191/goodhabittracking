@@ -254,6 +254,14 @@ describe('measuring the feature without measuring the family', () => {
     ]);
   });
 
+  it('does not count the same answer twice when the server says nothing changed', async () => {
+    const track = vi.fn();
+    const { actions } = harness({ track }, () => Response.json({ success: true, changed: false, observation: observationRow('alone') }));
+    await expect(actions.recordSupport(logId, 'alone')).resolves.toBe(true);
+    await expect(actions.recordSupport(logId, 'alone')).resolves.toBe(true);
+    expect(track).not.toHaveBeenCalled();
+  });
+
   it('reports a saved cue without its words, and nothing when saving failed or in a demo', async () => {
     const track = vi.fn();
     const saved = harness({ track }, () => Response.json({ success: true, cuePlan: cueRow() }));

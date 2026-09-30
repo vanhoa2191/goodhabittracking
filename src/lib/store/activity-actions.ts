@@ -5,7 +5,7 @@ import type { ActivityMutation } from '@/lib/domain/activity-mutations';
 import { requestActivityMutation } from './activity-mutation-client';
 import { removeActivity, updateActivityList } from './local-domain-actions';
 
-type NewActivity = Omit<HabitActivity, 'id' | 'createdAt'>;
+type NewActivity = Omit<HabitActivity, 'id' | 'createdAt'> & { readonly id?: string };
 
 type ActivityActionsDependencies = {
   readonly currentUser: User | null;
@@ -64,7 +64,7 @@ export function createActivityActions(
     const createdAt = new Date().toISOString();
     const createdActivities = activities.map((activity) => ({
       ...activity,
-      id: crypto.randomUUID(),
+      id: activity.id ?? crypto.randomUUID(),
       createdAt,
     }));
     if (!dependencies.isDemoSession) {

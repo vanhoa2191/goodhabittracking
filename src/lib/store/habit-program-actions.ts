@@ -79,13 +79,14 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
         },
       );
       if (!response.ok) return false;
-      const saved = z.object({ observation: z.unknown() }).parse(await response.json());
+      const saved = z.object({ changed: z.boolean().optional(), observation: z.unknown() }).parse(await response.json());
       const observation = parseSupportObservation(saved.observation);
       if (observation.log_id !== logId || observation.support_level !== level || observation.child_id !== childId) return false;
       if (dependencies.getScope && dependencies.getScope() !== scopeAtStart) return false;
       // A slower, older answer must not replace a newer one that already arrived.
       dependencies.setExperience((previous) => mergeHabitPrograms(previous, { supportObservations: [observation], cuePlans: [] }));
-      track({ event: 'habit_support_recorded', level: observation.support_level, recordedBy: dependencies.isSignedInParent ? 'parent' : 'child', mode: 'cloud' });
+      // A repeated answer that changed nothing is not a new record.
+      if (saved.changed !== false) track({ event: 'habit_support_recorded', level: observation.support_level, recordedBy: dependencies.isSignedInParent ? 'parent' : 'child', mode: 'cloud' });
       return true;
     } catch {
       return false;

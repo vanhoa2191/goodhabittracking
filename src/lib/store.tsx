@@ -155,9 +155,9 @@ interface AppStoreContextType {
   updateActiveAvatar: (avatar: string, themeColor: string) => Promise<boolean>;
 
   activities: HabitActivity[];
-  createActivity: (activity: Omit<HabitActivity, 'id' | 'createdAt'>) => Promise<boolean>;
+  createActivity: (activity: Omit<HabitActivity, 'id' | 'createdAt'> & { readonly id?: string }) => Promise<boolean>;
   createActivities: (
-    activities: readonly Omit<HabitActivity, 'id' | 'createdAt'>[],
+    activities: readonly (Omit<HabitActivity, 'id' | 'createdAt'> & { readonly id?: string })[],
   ) => Promise<boolean>;
   updateActivity: (id: string, updates: Partial<HabitActivity>) => Promise<boolean>;
   deleteActivity: (id: string) => Promise<boolean>;

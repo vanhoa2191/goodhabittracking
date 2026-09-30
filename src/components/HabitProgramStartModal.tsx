@@ -10,6 +10,7 @@ import { newHabitLimit } from '@/lib/habit-programs/config';
 import { cuePlanInputSchema } from '@/lib/habit-programs/cue-plan-input';
 import { defaultStartHabitIds, startCueDefaults } from '@/lib/habit-programs/programs';
 import type { HabitProgram } from '@/lib/habit-programs/programs';
+import { programActivityId } from '@/lib/habit-programs/program-activity-id';
 import { settleWithin } from '@/lib/habit-programs/settle-within';
 import { fillTemplate } from '@/lib/habit-programs/suggestion-display';
 import type { ChildProfile, HabitActivity } from '@/types';
@@ -60,10 +61,12 @@ export function HabitProgramStartModal({ program, child, ageYears, onClose, onSt
     setPhase('adding');
     const missing = chosen.filter((habitId) => !activityFor(habitId));
     if (missing.length > 0) {
-      const created = await settleWithin(createActivities(missing.flatMap((habitId) => {
+      const additions = await Promise.all(missing.flatMap((habitId) => {
         const habit = habitById.get(habitId);
-        return habit ? [createActivityFromFrameworkHabit(habit, child.id)] : [];
-      })), REQUEST_LIMIT_MS);
+        if (!habit) return [];
+        return [programActivityId(child.id, habitId).then((id) => ({ ...createActivityFromFrameworkHabit(habit, child.id), id }))];
+      }));
+      const created = await settleWithin(createActivities(additions), REQUEST_LIMIT_MS);
       if (!created) {
         onNotConfirmed();
         return;

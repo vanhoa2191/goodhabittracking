@@ -11,7 +11,16 @@ import { createClient } from '@supabase/supabase-js';
 
 const projectRef = process.env.SUPABASE_PROJECT_REF ?? 'osvsvegqietxcfoabdhx';
 const projectUrl = `https://${projectRef}.supabase.co`;
-const appOrigin = new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.kidhabithero.com').origin;
+function readAppOrigin() {
+  const url = new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.kidhabithero.com');
+  assert(
+    url.protocol === 'https:' && !url.username && !url.password && url.pathname === '/' && !url.search && !url.hash,
+    'NEXT_PUBLIC_APP_URL must be an HTTPS origin.',
+  );
+  return url.origin;
+}
+
+const appOrigin = readAppOrigin();
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -73,19 +82,30 @@ const password = `${randomBytes(24).toString('base64url')}aA1!`;
 const families = [0, 1].map(() => ({ parent: createParent(anonKey), userId: null, familyId: null, childId: randomUUID() }));
 const today = new Date().toISOString().slice(0, 10);
 
-async function cleanup() {
-  const ids = families.map((family) => family.familyId).filter(Boolean);
-  if (ids.length > 0) {
-    const { error } = await admin.from('families').delete().in('id', ids);
-    if (error) throw new Error('Synthetic family cleanup failed.');
+async function removeSyntheticData(userIdList, familyIdList) {
+  const failures = [];
+  const families = new Set(familyIdList.filter(Boolean));
+  for (const userId of userIdList.filter(Boolean)) {
+    // A family may exist for a user whose bootstrap did not finish, so find it by membership too.
+    const found = await admin.from('family_memberships').select('family_id').eq('user_id', userId);
+    for (const row of found.data ?? []) families.add(row.family_id);
   }
-  for (const family of families) {
-    if (!family.userId) continue;
-    const { error } = await admin.auth.admin.deleteUser(family.userId);
-    if (error) throw new Error('Synthetic user cleanup failed.');
+  if (families.size > 0) {
+    const { error } = await admin.from('families').delete().in('id', [...families]);
+    if (error) failures.push('families');
   }
+  for (const userId of userIdList.filter(Boolean)) {
+    const { error } = await admin.auth.admin.deleteUser(userId);
+    if (error) failures.push(`user ${userId}`);
+  }
+  if (failures.length > 0) throw new Error(`Synthetic cleanup failed for: ${failures.join(', ')}. Remove them by hand.`);
 }
 
+async function cleanup() {
+  await removeSyntheticData(families.map((family) => family.userId), families.map((family) => family.familyId));
+}
+
+let successMessage = '';
 try {
   for (const [index, family] of families.entries()) {
     const email = `experience-${index}-${runId}@example.invalid`;
@@ -242,10 +262,18 @@ try {
     !afterBuy.error && afterBuy.data.points === 500 - spent && afterBuy.data.total_earned === 500,
     'City purchase changed the earned total or the balance unexpectedly.',
   );
+  const beforeConcurrent = await admin.from('child_profiles').select('points').eq('id', first.childId).single();
+  assert(!beforeConcurrent.error, 'Synthetic balance read failed.');
   const concurrent = await Promise.all([1, 2, 3].map(() => anonymous.rpc('purchase_child_city_item', { session_token_hash: tokenHash, target_item_id: 'library' })));
   assert(
-    concurrent.every(({ error }) => !error) && concurrent.filter(({ data }) => data?.status === 'built').length <= 1,
-    'Concurrent city purchases built the same item more than once.',
+    concurrent.every(({ error, data }) => !error && ['built', 'already_built'].includes(data?.status))
+      && concurrent.filter(({ data }) => data?.status === 'built').length === 1,
+    'Concurrent city purchases did not build the item exactly once.',
+  );
+  const afterConcurrentBalance = await admin.from('child_profiles').select('points').eq('id', first.childId).single();
+  assert(
+    !afterConcurrentBalance.error && beforeConcurrent.data.points - afterConcurrentBalance.data.points === 60,
+    'Concurrent city purchases did not charge the price exactly once.',
   );
   const afterConcurrent = await admin.from('child_city_purchases').select('item_id').eq('child_id', first.childId);
   assert(
@@ -305,9 +333,8 @@ try {
   assert(leftovers.every(({ error, count }) => !error && count === 0), 'Experience rows survived family deletion.');
   first.familyId = null;
 
-  process.stdout.write(
-    `Live experience verification passed: mascot letter, journal, reminder consent and dream city (${cityRouteNote}).\n`,
-  );
+  successMessage = `Live experience verification passed: mascot letter, journal, reminder consent and dream city (${cityRouteNote}).\n`;
 } finally {
   await cleanup();
 }
+process.stdout.write(successMessage);

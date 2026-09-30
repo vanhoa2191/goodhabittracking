@@ -5,7 +5,9 @@ describe('who may say how a habit was done', () => {
   it('allows a child from 15 years old, by age when known and by birth year otherwise', () => {
     expect(childMaySelfReport({ age: 15 }, '2026-09-30')).toBe(true);
     expect(childMaySelfReport({ age: 14 }, '2026-09-30')).toBe(false);
-    expect(childMaySelfReport({ birthYear: 2011 }, '2026-09-30')).toBe(true);
+    // A birth year alone cannot tell whether the birthday has passed, so only a child who is surely 15 qualifies.
+    expect(childMaySelfReport({ birthYear: 2010 }, '2026-09-30')).toBe(true);
+    expect(childMaySelfReport({ birthYear: 2011 }, '2026-09-30')).toBe(false);
     expect(childMaySelfReport({ birthYear: 2012 }, '2026-09-30')).toBe(false);
   });
 
