@@ -19,6 +19,8 @@ const paymentSchema = z.object({
   vietQrUrl: z.string().min(1),
   checkoutUrl: z.string().url(),
   planId: paidPlanSchema,
+  listPrice: z.number().int().positive().optional(),
+  discountPercent: z.number().int().min(1).max(50).optional(),
 });
 
 const createPaymentResponseSchema = z.discriminatedUnion('success', [

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { getParentContext, createPayOSPayment, createAdminSupabaseClient } = vi.hoisted(() => ({
   getParentContext: vi.fn(async () => ({
@@ -39,5 +39,67 @@ describe('POST /api/payment/create', () => {
     expect(response.status).toBe(400);
     expect(createPayOSPayment).not.toHaveBeenCalled();
     expect(createAdminSupabaseClient).not.toHaveBeenCalled();
+  });
+});
+
+describe('POST /api/payment/create referral discount', () => {
+  const insert = vi.fn();
+  const rpc = vi.fn();
+
+  function post(planId: string) {
+    return POST(new NextRequest('http://localhost/api/payment/create', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ planId }),
+    }));
+  }
+
+  beforeEach(() => {
+    insert.mockReset();
+    insert.mockResolvedValue({ error: null });
+    rpc.mockReset();
+    createPayOSPayment.mockReset();
+    createPayOSPayment.mockImplementation(async (input: { planId: string; orderCode: number; amount?: number }) => ({
+      orderCode: input.orderCode, amount: input.amount, description: `KIDHABIT ${input.orderCode}`, accountNumber: '1', accountName: 'A', bankBin: '970', bankName: 'B',
+      qrCode: 'qr', vietQrUrl: 'data:', checkoutUrl: 'https://pay.example/x', planId: input.planId, paymentLinkId: 'link',
+    }));
+    createAdminSupabaseClient.mockReturnValue({
+      rpc,
+      from: () => ({ insert, update: () => ({ eq: () => ({ eq: async () => ({ error: null }) }) }) }),
+    });
+  });
+
+  it('charges 10 percent less for the first yearly plan of a referred family and says so', async () => {
+    rpc.mockResolvedValue({ data: 1000, error: null });
+    const response = await post('yearly');
+    const body = await response.json();
+    expect(rpc).toHaveBeenCalledWith('referral_discount_bps', { target_family: 'family-a' });
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({ plan_id: 'yearly', amount: 359100 }));
+    expect(createPayOSPayment).toHaveBeenCalledWith(expect.objectContaining({ planId: 'yearly', amount: 359100 }));
+    expect(body.payment).toMatchObject({ amount: 359100, listPrice: 399000, discountPercent: 10 });
+  });
+
+  it('charges the list price when the family was not referred or has paid before', async () => {
+    rpc.mockResolvedValue({ data: 0, error: null });
+    const body = await (await post('yearly')).json();
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({ amount: 399000 }));
+    expect(body.payment.listPrice).toBeUndefined();
+    expect(body.payment.discountPercent).toBeUndefined();
+  });
+
+  it.each(['monthly', 'solo_monthly'])('never discounts the %s plan and does not even ask', async (planId) => {
+    rpc.mockResolvedValue({ data: 1000, error: null });
+    await post(planId);
+    expect(rpc).not.toHaveBeenCalled();
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({ plan_id: planId }));
+    expect(insert.mock.calls[0]![0].amount).toBeGreaterThan(0);
+  });
+
+  it('refuses to create an order at the list price when the discount cannot be read', async () => {
+    rpc.mockResolvedValue({ data: null, error: { message: 'down' } });
+    const response = await post('yearly');
+    expect(response.status).toBe(503);
+    expect(insert).not.toHaveBeenCalled();
+    expect(createPayOSPayment).not.toHaveBeenCalled();
   });
 });

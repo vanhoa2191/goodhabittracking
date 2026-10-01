@@ -3,6 +3,7 @@ import { getParentContext } from '@/lib/auth/parent-context';
 import { createPayOSPayment } from '@/lib/billing/payos-server';
 import { createPaymentRequestSchema } from '@/lib/billing/schemas';
 import { getPricingPlan } from '@/lib/payos';
+import { discountedPrice } from '@/lib/billing/referral-discount';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 import { requireParentUnlock } from '@/lib/security/parent-unlock';
@@ -33,6 +34,14 @@ export async function POST(request: NextRequest) {
   try {
     const admin = createAdminSupabaseClient();
     const plan = getPricingPlan(parsed.data.planId);
+    // A family that entered a friend's code pays less for its first yearly plan; the server decides the price.
+    let discountBps = 0;
+    if (parsed.data.planId === 'yearly') {
+      const { data, error: discountError } = await admin.rpc('referral_discount_bps', { target_family: parent.familyId });
+      if (discountError) throw discountError;
+      discountBps = typeof data === 'number' ? data : 0;
+    }
+    const amount = discountedPrice(plan.price, discountBps);
     const orderCode = createOrderCode();
     const description = `KIDHABIT ${orderCode}`.slice(0, 25);
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
@@ -42,7 +51,7 @@ export async function POST(request: NextRequest) {
       family_id: parent.familyId,
       user_id: parent.user.id,
       plan_id: parsed.data.planId,
-      amount: plan.price,
+      amount,
       description,
       status: 'PENDING',
       expires_at: expiresAt,
@@ -50,7 +59,7 @@ export async function POST(request: NextRequest) {
     if (insertError) throw insertError;
 
     try {
-      const payment = await createPayOSPayment({ planId: parsed.data.planId, orderCode });
+      const payment = await createPayOSPayment({ planId: parsed.data.planId, orderCode, amount });
       const { error: updateError } = await admin
         .from('payment_orders')
         .update({
@@ -64,7 +73,8 @@ export async function POST(request: NextRequest) {
 
       const { paymentLinkId, ...publicPayment } = payment;
       void paymentLinkId;
-      return NextResponse.json({ success: true, payment: publicPayment });
+      const discount = amount < plan.price ? { listPrice: plan.price, discountPercent: Math.round(discountBps / 100) } : {};
+      return NextResponse.json({ success: true, payment: { ...publicPayment, ...discount } });
     } catch (error) {
       await admin
         .from('payment_orders')

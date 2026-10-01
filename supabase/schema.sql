@@ -49,3 +49,4 @@
 \ir migrations/202610010001_referral_claim_state.sql
 \ir migrations/202610010002_affiliate_hardening.sql
 \ir migrations/202610010003_affiliate_audit_fixes.sql
+\ir migrations/202610010004_referral_discount.sql

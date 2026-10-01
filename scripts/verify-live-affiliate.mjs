@@ -162,6 +162,13 @@ try {
   assert(!stateBefore.error && stateBefore.data === 'eligible', 'A new unreferred family must be allowed to enter a code.');
   const claim = await referred.client.rpc('claim_referral', { referral_code: code.toLowerCase() });
   assert(!claim.error && claim.data === 'claimed', 'A new family could not be attributed.');
+  // The referred family gets 10 percent off its first yearly plan, decided only on the server.
+  const discountDirect = await referred.client.rpc('referral_discount_bps', { target_family: familyIds[1] });
+  assert(Boolean(discountDirect.error), 'A signed-in parent could read the referral discount directly.');
+  const discountBefore = await admin.rpc('referral_discount_bps', { target_family: familyIds[1] });
+  assert(!discountBefore.error && discountBefore.data === 1000, 'A referred family that has not paid must get 10 percent off.');
+  const discountOther = await admin.rpc('referral_discount_bps', { target_family: familyIds[0] });
+  assert(discountOther.data === 0, 'A family that was not referred got a discount.');
   const secondClaim = await referred.client.rpc('claim_referral', { referral_code: code });
   assert(secondClaim.data === 'already_referred', 'A family was attributed twice.');
   const stateAfter = await referred.client.rpc('referral_claim_state');
@@ -201,6 +208,8 @@ try {
   assert(!overview.error && overview.data.signups === 1 && overview.data.paying === 1, 'The referrer does not see the signup and the paying family.');
   assert(overview.data.amounts.held === 119700 && overview.data.amounts.available === 0, 'A 399,000 order must earn 119,700 and hold it.');
   assert(!JSON.stringify(overview.data).includes(userIds[1]) && !JSON.stringify(overview.data).includes(familyIds[1]), 'The referrer can see who was referred.');
+  const discountAfter = await admin.rpc('referral_discount_bps', { target_family: familyIds[1] });
+  assert(discountAfter.data === 0, 'The referral discount must apply to the first paid order only.');
   const commissionCount = await admin.from('referral_commissions').select('id', { count: 'exact', head: true }).eq('order_code', firstOrder);
   assert(commissionCount.count === 1, 'A repeated payment notice earned a second commission.');
 
@@ -315,7 +324,7 @@ try {
   const referredView = await referred.client.rpc('affiliate_overview');
   assert(referredView.data?.enrolled === false, 'The referred family looks enrolled.');
 
-  successMessage = 'Live affiliate verification passed: enrolment, attribution rules, 30 percent commission once per paid order, hold, reversal, payout controls reachable only by the server, 24-hour bank-change hold, payout request, one-admin claim, amount check, admin resolution and privacy.\n';
+  successMessage = 'Live affiliate verification passed: enrolment, attribution rules, 30 percent commission once per paid order, 10 percent first-yearly-plan discount for the referred family, hold, reversal, payout controls reachable only by the server, 24-hour bank-change hold, payout request, one-admin claim, amount check, admin resolution and privacy.\n';
 } finally {
   await cleanup();
 }

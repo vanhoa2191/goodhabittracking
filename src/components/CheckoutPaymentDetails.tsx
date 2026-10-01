@@ -7,6 +7,7 @@ import { qrFileName, saveQrImage } from '@/lib/save-qr-image';
 import type { PaymentResult } from '@/lib/payos';
 import { useTranslation } from '@/lib/i18n/context';
 import { formatCurrency } from '@/lib/i18n/formatters';
+import { referralDiscountLine } from '@/lib/i18n/referral-discount-copy';
 
 interface CheckoutPaymentDetailsProps {
   readonly payment: PaymentResult;
@@ -123,6 +124,11 @@ export function CheckoutPaymentDetails({
               <div className="font-mono font-black text-base text-indigo-700 dark:text-indigo-300">
                 {formatCurrency(payment.amount, language)}
               </div>
+              {payment.discountPercent && payment.listPrice ? (
+                <div className="mt-1 text-xs font-bold text-emerald-700 dark:text-emerald-300">
+                  {referralDiscountLine(language, payment.discountPercent, formatCurrency(payment.listPrice, language))}
+                </div>
+              ) : null}
             </div>
             <button
               onClick={() => onCopy(String(payment.amount), 'amount')}

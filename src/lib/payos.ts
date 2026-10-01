@@ -92,4 +92,7 @@ export interface PaymentResult {
   vietQrUrl: string;
   checkoutUrl: string;
   planId: string;
+  /** Set when a referral discount was applied: the list price and the percentage taken off it. */
+  listPrice?: number;
+  discountPercent?: number;
 }
