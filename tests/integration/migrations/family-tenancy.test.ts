@@ -265,6 +265,7 @@ describe('family tenancy migration', () => {
       '202610010004_referral_discount.sql',
       '202610010005_admin_audit_fixes.sql',
       '202610020001_admin_followups.sql',
+      '202610020002_family_snapshot.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(

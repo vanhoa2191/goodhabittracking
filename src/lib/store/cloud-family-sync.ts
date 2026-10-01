@@ -141,6 +141,11 @@ function parseCloudFamilyRows(rows: CloudFamilyRows): CloudFamilySnapshot {
   };
 }
 
+/** PostgREST says PGRST202, Postgres itself says 42883, when the function is not in the database. */
+function isMissingFunction(error: { code?: string }): boolean {
+  return error.code === 'PGRST202' || error.code === '42883';
+}
+
 export async function readCloudFamilyRows(
   userId: string,
   supabase: ReturnType<typeof getSupabase> = getSupabase(),
@@ -148,6 +153,19 @@ export async function readCloudFamilyRows(
   if (!supabase) {
     throw new Error('Supabase client is not configured.');
   }
+
+  // One round trip for the whole family. A database that does not have the function yet answers with
+  // 'function not found', and the separate queries below still work.
+  const snapshot = await supabase.rpc('family_snapshot', {
+    include_experience: defaultExperienceFlags.dailyMascotLetter || defaultExperienceFlags.secretQuest,
+    include_journal: defaultExperienceFlags.dailyJournal,
+    include_city: defaultExperienceFlags.dreamCity,
+  });
+  if (!snapshot.error) {
+    if (!snapshot.data) throw new Error('Authenticated account has no family membership.');
+    return snapshot.data as CloudFamilyRows;
+  }
+  if (!isMissingFunction(snapshot.error)) throw snapshot.error;
 
   const membershipResult = await supabase
     .from('family_memberships')
