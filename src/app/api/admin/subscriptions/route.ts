@@ -16,6 +16,8 @@ const schema = z.object({
   plan: z.enum(['free', 'trial', 'solo_monthly', 'monthly', 'yearly', 'lifetime']),
   status: z.enum(['active', 'inactive', 'cancelled']),
   endsAt: z.string().datetime().nullable(),
+  /** The `updated_at` the admin screen loaded; a different value means the subscription changed since (a payment, another admin). */
+  expectedUpdatedAt: z.string().nullable(),
   reason: z.string().trim().min(5).max(500),
 }).strict();
 
@@ -39,9 +41,12 @@ export async function PATCH(request: NextRequest) {
 
   const { data: current } = await admin
     .from('user_subscriptions')
-    .select('plan,status,subscription_ends_at,trial_ends_at')
+    .select('plan,status,subscription_ends_at,trial_ends_at,trial_consumed_at,updated_at')
     .eq('family_id', parsed.data.familyId)
     .maybeSingle();
+  if ((current?.updated_at ?? null) !== parsed.data.expectedUpdatedAt) {
+    return adminJsonResponse({ error: 'The subscription changed since you opened it. Reload and review it before saving.', code: 'subscription_changed', correlationId }, correlationId, 409);
+  }
   const days = parsed.data.plan === 'solo_monthly' || parsed.data.plan === 'monthly'
     ? 31
     : parsed.data.plan === 'yearly'
@@ -86,6 +91,8 @@ export async function PATCH(request: NextRequest) {
     status: parsed.data.status,
     subscription_ends_at: ['solo_monthly', 'monthly', 'yearly'].includes(parsed.data.plan) ? endsAt : null,
     trial_ends_at: parsed.data.plan === 'trial' ? endsAt : null,
+    // A trial granted here is a trial used: it must count as consumed so the family cannot start another later.
+    trial_consumed_at: current?.trial_consumed_at ?? (parsed.data.plan === 'trial' ? new Date().toISOString() : null),
     updated_at: new Date().toISOString(),
   }, { onConflict: 'family_id' });
   await recordAdminAudit(admin, { ...audit, outcome: error ? 'failed' : 'succeeded' });

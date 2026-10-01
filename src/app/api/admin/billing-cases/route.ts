@@ -27,7 +27,7 @@ const createSchema = z.object({
 
 const updateSchema = z.object({
   caseId: z.string().uuid(),
-  status: z.enum(['reviewing', 'approved', 'rejected', 'completed']),
+  status: z.enum(['requested', 'reviewing', 'approved', 'rejected', 'completed']),
   resolutionCode: z.enum([
     'information_provided',
     'payment_link_cancelled',
@@ -44,12 +44,14 @@ export async function GET() {
   const access = await authorizeAdmin({ roles: readRoles });
   if (!access.authorized) return adminAuthorizationResponse(access, correlationId);
   const admin = createAdminSupabaseClient();
-  const { data, error } = await admin
-    .from('billing_support_cases')
-    .select('id,family_id,user_id,order_code,case_type,reason_code,status,resolution_code,created_at,updated_at,resolved_at')
-    .order('created_at', { ascending: false })
-    .limit(200);
-  return error
+  const columns = 'id,family_id,user_id,order_code,case_type,reason_code,status,resolution_code,created_at,updated_at,resolved_at';
+  // Every unresolved case, however old, plus the most recent resolved ones, so old work is never pushed out by new.
+  const [open, closed] = await Promise.all([
+    admin.from('billing_support_cases').select(columns).in('status', ['requested', 'reviewing', 'approved']).order('created_at', { ascending: false }).limit(500),
+    admin.from('billing_support_cases').select(columns).in('status', ['rejected', 'completed']).order('created_at', { ascending: false }).limit(50),
+  ]);
+  const data = [...(open.data ?? []), ...(closed.data ?? [])].sort((a, b) => b.created_at.localeCompare(a.created_at));
+  return open.error || closed.error
     ? adminJsonResponse({ error: 'Could not load billing cases.', correlationId }, correlationId, 503)
     : adminJsonResponse({ cases: data, correlationId }, correlationId);
 }
@@ -142,6 +144,38 @@ export async function PATCH(request: NextRequest) {
     return adminJsonResponse({ error: 'Subscription cancellation requires a completed cancellation case.', correlationId }, correlationId, 409);
   }
 
+  // A closed case is final. Saving the same result again is allowed (a retry), but an old page cannot reopen it.
+  if ((supportCase.status === 'completed' || supportCase.status === 'rejected')
+    && (parsed.data.status !== supportCase.status || parsed.data.resolutionCode !== supportCase.resolution_code)) {
+    return adminJsonResponse({ error: 'This case is already closed.', code: 'case_closed', correlationId }, correlationId, 409);
+  }
+  if (supportCase.case_type === 'refund' && parsed.data.status === 'completed' && parsed.data.resolutionCode === 'manual_refund_confirmed') {
+    if (!supportCase.order_code) {
+      return adminJsonResponse({ error: 'A refund can only be confirmed for a paid order. Link the order first.', code: 'refund_needs_order', correlationId }, correlationId, 409);
+    }
+    const { data: paidOrder } = await admin
+      .from('payment_orders')
+      .select('status')
+      .eq('order_code', supportCase.order_code)
+      .eq('family_id', supportCase.family_id)
+      .maybeSingle();
+    if (paidOrder?.status !== 'PAID') {
+      return adminJsonResponse({ error: 'Only a paid order can be refunded.', code: 'refund_order_not_paid', correlationId }, correlationId, 409);
+    }
+    const { data: alreadyConfirmed } = await admin
+      .from('billing_support_cases')
+      .select('id')
+      .eq('order_code', supportCase.order_code)
+      .eq('case_type', 'refund')
+      .eq('status', 'completed')
+      .eq('resolution_code', 'manual_refund_confirmed')
+      .neq('id', supportCase.id)
+      .limit(1);
+    if ((alreadyConfirmed ?? []).length > 0) {
+      return adminJsonResponse({ error: 'This order already has a confirmed refund.', code: 'refund_already_confirmed', correlationId }, correlationId, 409);
+    }
+  }
+
   const audit: Omit<AdminAuditInput, 'outcome'> = {
     actor: access,
     action: 'billing_case.resolve',
@@ -167,22 +201,25 @@ export async function PATCH(request: NextRequest) {
       .eq('order_code', supportCase.order_code)
       .eq('family_id', supportCase.family_id)
       .maybeSingle();
-    if (!order || order.status !== 'PENDING') return fail('Only a pending payment link can be cancelled.', 409);
-    try {
-      await cancelPayOSPayment(Number(supportCase.order_code), 'Customer support cancellation');
-    } catch {
-      return fail('PayOS did not confirm the cancellation.', 503);
+    // A link already cancelled by an earlier attempt of this same action only needs the case saved, so a retry can finish.
+    if (!order || (order.status !== 'PENDING' && order.status !== 'CANCELLED')) return fail('Only a pending payment link can be cancelled.', 409);
+    if (order.status === 'PENDING') {
+      try {
+        await cancelPayOSPayment(Number(supportCase.order_code), 'Customer support cancellation');
+      } catch {
+        return fail('PayOS did not confirm the cancellation.', 503);
+      }
+      const { data: cancelledOrder, error: orderError } = await admin.from('payment_orders').update({
+        status: 'CANCELLED',
+        cancelled_at: new Date().toISOString(),
+      })
+        .eq('order_code', supportCase.order_code)
+        .eq('family_id', supportCase.family_id)
+        .eq('status', 'PENDING')
+        .select('order_code')
+        .maybeSingle();
+      if (orderError || !cancelledOrder) return fail('Could not store the payment cancellation.', 503);
     }
-    const { data: cancelledOrder, error: orderError } = await admin.from('payment_orders').update({
-      status: 'CANCELLED',
-      cancelled_at: new Date().toISOString(),
-    })
-      .eq('order_code', supportCase.order_code)
-      .eq('family_id', supportCase.family_id)
-      .eq('status', 'PENDING')
-      .select('order_code')
-      .maybeSingle();
-    if (orderError || !cancelledOrder) return fail('Could not store the payment cancellation.', 503);
   }
 
   if (parsed.data.resolutionCode === 'subscription_cancelled') {
@@ -229,10 +266,5 @@ export async function PATCH(request: NextRequest) {
   await recordAdminAudit(admin, { ...audit, outcome: error ? 'failed' : 'succeeded' });
   if (error) return adminJsonResponse({ error: 'Could not update billing case.', correlationId }, correlationId, 503);
 
-  // A confirmed refund on a case that names no order cannot be matched to a commission; say so instead of staying silent.
-  if (!reversal.applies && supportCase.case_type === 'refund' && parsed.data.status === 'completed'
-    && parsed.data.resolutionCode === 'manual_refund_confirmed' && !supportCase.order_code) {
-    referral = 'no_order_code';
-  }
   return adminJsonResponse({ success: true, referralCommission: referral, correlationId }, correlationId);
 }

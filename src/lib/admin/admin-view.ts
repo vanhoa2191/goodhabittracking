@@ -86,7 +86,8 @@ export function matchesFilter(customer: CustomerView, filter: CustomerFilterId, 
     case 'all':
       return true;
     case 'paying':
-      return Boolean(active && subscription && PAID_PLANS.has(subscription.plan));
+      // A paid plan that has run out is not paying any more, whatever its status says.
+      return Boolean(active && subscription && PAID_PLANS.has(subscription.plan) && describeExpiry(subscription, now).tone !== 'bad');
     case 'trial':
       return Boolean(active && subscription?.plan === 'trial');
     case 'expiring': {

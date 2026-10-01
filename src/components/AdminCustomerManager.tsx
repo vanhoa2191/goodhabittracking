@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { useAdminTab } from '@/components/AdminShell';
 import {
@@ -21,6 +22,8 @@ type Subscription = {
   readonly status: 'active' | 'inactive' | 'cancelled';
   readonly subscription_ends_at: string | null;
   readonly trial_ends_at: string | null;
+  /** When the subscription row was last written; sent back so a save can tell that it changed meanwhile. */
+  readonly updated_at?: string | null;
 };
 
 type Customer = {
@@ -30,6 +33,8 @@ type Customer = {
   readonly phone: string;
   readonly marketingConsent: boolean;
   readonly tags: readonly string[];
+  /** What the admin is typing in the tag box; kept raw so a comma can be typed before the next tag. */
+  readonly tagsText?: string;
   readonly notes: string;
   readonly familyId: string | null;
   readonly subscription: Subscription | null;
@@ -96,8 +101,6 @@ function referralCommissionWarning(result: string | null): string | null {
       return 'Hoa hồng giới thiệu của đơn này đang nằm trong một yêu cầu rút tiền. Hãy từ chối yêu cầu đó ở mục Chương trình giới thiệu trước khi chuyển khoản, rồi xử lý lại hồ sơ.';
     case 'already_paid':
       return 'Hoa hồng giới thiệu của đơn này đã được chuyển cho người giới thiệu. Cần xử lý tay (trừ vào khoản sau hoặc thu lại).';
-    case 'no_order_code':
-      return 'Hồ sơ hoàn tiền này không có mã đơn nên hoa hồng giới thiệu (nếu có) chưa được thu hồi. Kiểm tra và xử lý tay.';
     case 'error':
       return 'Không thu hồi được hoa hồng giới thiệu của đơn này do lỗi hệ thống. Kiểm tra mục Chương trình giới thiệu và thử lại.';
     default:
@@ -113,6 +116,8 @@ export function AdminCustomerManager() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [limit, setLimit] = useState(25);
   const tab = useAdminTab();
+  const router = useRouter();
+  const [busyAction, setBusyAction] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [loading, setLoading] = useState(true);
@@ -147,29 +152,39 @@ export function AdminCustomerManager() {
   const load = useCallback(async () => {
     setLoading(true);
     setError('');
-    const [customerResponse, couponResponse, billingCaseResponse] = await Promise.all([
-      fetch('/api/admin/customers'),
-      fetch('/api/admin/coupons'),
-      fetch('/api/admin/billing-cases'),
-    ]);
-    if (!customerResponse.ok) {
-      setError(customerResponse.status === 403
-        ? 'Tài khoản này không có quyền quản trị.'
-        : 'Không tải được dữ liệu khách hàng.');
+    try {
+      const [customerResponse, couponResponse, billingCaseResponse] = await Promise.all([
+        fetch('/api/admin/customers'),
+        fetch('/api/admin/coupons'),
+        fetch('/api/admin/billing-cases'),
+      ]);
+      if (!customerResponse.ok) {
+        setError(customerResponse.status === 403
+          ? 'Tài khoản này không có quyền quản trị.'
+          : 'Không tải được dữ liệu khách hàng.');
+        return;
+      }
+      const customerBody = await customerResponse.json() as { customers: Customer[] };
+      setCustomers(customerBody.customers);
+      const problems: string[] = [];
+      if (couponResponse.ok) {
+        const couponBody = await couponResponse.json() as { coupons: Coupon[] };
+        setCoupons(couponBody.coupons);
+      } else {
+        problems.push('coupon');
+      }
+      if (billingCaseResponse.ok) {
+        const billingCaseBody = await billingCaseResponse.json() as { cases: BillingCase[] };
+        setBillingCases(billingCaseBody.cases);
+      } else {
+        problems.push('hồ sơ thanh toán');
+      }
+      if (problems.length > 0) setError(`Không tải được ${problems.join(' và ')}. Danh sách đang hiện có thể chưa đủ; tải lại trang để thử lại.`);
+    } catch {
+      setError('Không kết nối được máy chủ để tải dữ liệu. Hãy kiểm tra mạng rồi tải lại trang.');
+    } finally {
       setLoading(false);
-      return;
     }
-    const customerBody = await customerResponse.json() as { customers: Customer[] };
-    setCustomers(customerBody.customers);
-    if (couponResponse.ok) {
-      const couponBody = await couponResponse.json() as { coupons: Coupon[] };
-      setCoupons(couponBody.coupons);
-    }
-    if (billingCaseResponse.ok) {
-      const billingCaseBody = await billingCaseResponse.json() as { cases: BillingCase[] };
-      setBillingCases(billingCaseBody.cases);
-    }
-    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -179,8 +194,9 @@ export function AdminCustomerManager() {
   const now = new Date();
   const filterCounts = useMemo(() => countByFilter(customers, new Date()), [customers]);
   const matching = useMemo(
-    () => customers.filter((customer) => matchesFilter(customer, filter, new Date()) && matchesQuery(customer, query)),
-    [customers, filter, query],
+    // The customer being edited stays in the list even when the edit stops matching the filter, so Save stays reachable.
+    () => customers.filter((customer) => customer.id === openId || (matchesFilter(customer, filter, new Date()) && matchesQuery(customer, query))),
+    [customers, filter, query, openId],
   );
   const { shown: visibleCustomers, hidden: hiddenCustomers } = pageOf(matching, limit);
 
@@ -242,16 +258,23 @@ export function AdminCustomerManager() {
         plan: subscription.plan,
         status: subscription.plan === 'free' ? 'inactive' : subscription.status,
         endsAt: endDate ? new Date(`${toDateInput(endDate)}T23:59:59.000Z`).toISOString() : null,
+        expectedUpdatedAt: customer.subscription?.updated_at ?? null,
         reason: changeReason.trim(),
       }),
     });
     if (!response.ok) {
+      if (response.status === 409) {
+        await load();
+        setError('Gói vừa được thay đổi ở nơi khác (ví dụ khách vừa thanh toán). Đã tải lại dữ liệu mới nhất; hãy kiểm tra rồi lưu lại.');
+        return;
+      }
       await handleMutationError(response, 'Không cập nhật được gói đăng ký.');
       return;
     }
     setChangeReason('');
     setNotice(`Đã cập nhật gói của ${customer.fullName || customer.email}.`);
     await load();
+    router.refresh();
   };
 
   const createCoupon = async () => {
@@ -279,6 +302,19 @@ export function AdminCustomerManager() {
     setChangeReason('');
     setNotice('Đã tạo coupon mới.');
     await load();
+  };
+
+  /** Runs one admin action at a time per button, so a double click cannot send the same request twice. */
+  const once = async (key: string, action: () => Promise<void>) => {
+    if (busyAction === key) return;
+    setBusyAction(key);
+    try {
+      await action();
+    } catch {
+      setError('Không kết nối được máy chủ. Hãy thử lại.');
+    } finally {
+      setBusyAction(null);
+    }
   };
 
   const createBillingCase = async () => {
@@ -309,6 +345,7 @@ export function AdminCustomerManager() {
     setChangeReason('');
     setNotice('Đã tạo hồ sơ hỗ trợ và ghi nhận lịch sử xử lý.');
     await load();
+    router.refresh();
   };
 
   const updateBillingCase = async (billingCase: BillingCase) => {
@@ -333,6 +370,7 @@ export function AdminCustomerManager() {
     const warning = referralCommissionWarning(body?.referralCommission ?? null);
     setNotice('Đã cập nhật trạng thái và lưu dấu vết xử lý.');
     await load();
+    router.refresh();
     // load() clears the banner, so the warning is set after it.
     if (warning) setError(warning);
   };
@@ -449,17 +487,17 @@ export function AdminCustomerManager() {
                         className={`${inputClass} mt-1`}
                       />
                     </label>
-                    <button type="button" disabled={!customer.familyId} onClick={() => void saveSubscription(customer)} className="min-h-11 w-full rounded-xl bg-emerald-600 px-4 text-sm font-bold text-white disabled:opacity-50">Lưu gói đăng ký</button>
+                    <button type="button" disabled={!customer.familyId} onClick={() => void once(`sub-${customer.id}`, () => saveSubscription(customer))} className="min-h-11 w-full rounded-xl bg-emerald-600 px-4 text-sm font-bold text-white disabled:opacity-50">Lưu gói đăng ký</button>
                   </div>
 
                   <div className="space-y-3">
                     <label className="block text-xs font-bold">Nhãn chăm sóc, cách nhau bằng dấu phẩy
-                      <input value={customer.tags.join(', ')} onChange={(event) => updateCustomer(customer.id, { tags: event.target.value.split(',').map((tag) => tag.trim()).filter(Boolean) })} className={`${inputClass} mt-1`} />
+                      <input value={customer.tagsText ?? customer.tags.join(', ')} onChange={(event) => updateCustomer(customer.id, { tagsText: event.target.value, tags: event.target.value.split(',').map((tag) => tag.trim()).filter(Boolean) })} className={`${inputClass} mt-1`} />
                     </label>
                     <label className="block text-xs font-bold">Ghi chú chăm sóc khách hàng
                       <textarea value={customer.notes} onChange={(event) => updateCustomer(customer.id, { notes: event.target.value })} rows={3} className={`${inputClass} mt-1 py-2`} />
                     </label>
-                    <button type="button" onClick={() => void saveCustomer(customer)} className="min-h-11 w-full rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white">Lưu hồ sơ khách hàng</button>
+                    <button type="button" onClick={() => void once(`cust-${customer.id}`, () => saveCustomer(customer))} className="min-h-11 w-full rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white">Lưu hồ sơ khách hàng</button>
                   </div>
                 </div>
                     </div>
@@ -498,7 +536,7 @@ export function AdminCustomerManager() {
           </select>
           <input value={caseOrderCode} onChange={(event) => setCaseOrderCode(event.target.value.replace(/\D/g, ''))} inputMode="numeric" placeholder="Mã đơn hàng (nếu có)" aria-label="Mã đơn hàng" className={inputClass} />
         </div>
-        <button type="button" onClick={() => void createBillingCase()} className="mt-3 min-h-11 rounded-xl bg-indigo-600 px-5 text-sm font-bold text-white">Tạo hồ sơ hỗ trợ</button>
+        <button type="button" onClick={() => void once('create-case', createBillingCase)} disabled={busyAction === 'create-case'} className="mt-3 min-h-11 rounded-xl bg-indigo-600 px-5 text-sm font-bold text-white disabled:opacity-60">Tạo hồ sơ hỗ trợ</button>
 
         <div className="mt-5 space-y-3">
           {billingCases.length === 0 && <p className="text-sm text-slate-500">Chưa có hồ sơ hỗ trợ thanh toán.</p>}
@@ -528,7 +566,7 @@ export function AdminCustomerManager() {
                   <option value="subscription_cancelled">Đã hủy gói</option>
                 </select>
               </label>
-              <button type="button" onClick={() => void updateBillingCase(billingCase)} className="min-h-11 rounded-xl bg-emerald-600 px-4 text-sm font-bold text-white">Lưu xử lý</button>
+              <button type="button" onClick={() => void once(`case-${billingCase.id}`, () => updateBillingCase(billingCase))} className="min-h-11 rounded-xl bg-emerald-600 px-4 text-sm font-bold text-white">Lưu xử lý</button>
             </article>
           ))}
         </div>
@@ -543,7 +581,7 @@ export function AdminCustomerManager() {
           <input type="number" min={1} value={maxRedemptions} onChange={(event) => setMaxRedemptions(event.target.value)} placeholder="Lượt dùng, bỏ trống = không giới hạn" className={inputClass} />
           <input type="date" value={couponExpiry} onChange={(event) => setCouponExpiry(event.target.value)} aria-label="Ngày hết hạn coupon" className={inputClass} />
         </div>
-        <button type="button" onClick={() => void createCoupon()} className="mt-3 min-h-11 rounded-xl bg-indigo-600 px-5 text-sm font-bold text-white">Tạo coupon</button>
+        <button type="button" onClick={() => void once('create-coupon', createCoupon)} className="mt-3 min-h-11 rounded-xl bg-indigo-600 px-5 text-sm font-bold text-white">Tạo coupon</button>
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
           {coupons.map((coupon) => (
             <div key={coupon.id} className="rounded-xl border border-slate-200 p-3 text-sm dark:border-zinc-700">
