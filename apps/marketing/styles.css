@@ -436,9 +436,9 @@ html:not(.is-member) [data-member] { display: none !important; }
 .info-card:hover { transform: translateY(-3px); border-color: var(--color-brand); }
 .info-card h2 { margin-bottom: var(--space-2); font-size: var(--step-2); }
 .info-card p { margin-bottom: 0; color: var(--color-ink-soft); }
-.step-list { counter-reset: step; grid-template-columns: 1fr; max-width: 52rem; }
+.info-cards.step-list { counter-reset: step; grid-template-columns: 1fr; max-width: 52rem; }
 .step-list .info-card { grid-template-columns: auto 1fr; align-items: start; }
-.step-number { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; color: var(--color-white); background: var(--color-brand); border-radius: 50%; font: 700 var(--step-2)/1 var(--font-display); box-shadow: 0 4px 0 var(--color-brand-dark); }
+.info-cards .step-number { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; color: var(--color-white); background: var(--color-brand); border-radius: 50%; font: 700 var(--step-2)/1 var(--font-display); box-shadow: 0 4px 0 var(--color-brand-dark); }
 
 .callout { display: flex; align-items: flex-start; gap: var(--space-4); margin-bottom: var(--space-8); padding: var(--space-6); background: var(--color-brand-soft); border-radius: var(--radius-large); }
 .callout p { margin: 0; font-weight: 700; }
