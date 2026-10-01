@@ -142,7 +142,7 @@ function renderFooter(appOrigin) {
       </div>
       <div><h2>Sản phẩm</h2><a href="/framework/">Khung thói quen</a><a href="/science/">Cơ sở khoa học</a><a href="/roadmaps/">Lộ trình</a><a href="/pricing/">Bảng giá</a><a href="/blog/">Blog</a></div>
       <div><h2>Hỗ trợ</h2><a href="/docs/">Hướng dẫn</a><a href="/contact/">Liên hệ</a><a href="${appUrl(appOrigin, '/')}">Đăng nhập ứng dụng</a></div>
-      <div><h2>Thông tin</h2><a href="/privacy/">Quyền riêng tư</a><a href="/terms/">Điều khoản</a></div>
+      <div><h2>Thông tin</h2><a href="/privacy/">Quyền riêng tư</a><a href="/terms/">Điều khoản</a><a href="/gioi-thieu/">Giới thiệu bạn bè</a></div>
     </div>
     <div class="shell footer-bottom"><p>© 2026 KidHabit Hero.</p><p>Dành cho ba mẹ và những người lớn đồng hành cùng trẻ.</p></div>
   </footer>`;
@@ -351,7 +351,7 @@ function renderContactNote(supportEmail) {
   return `<aside class="callout contact-note"><span class="icon-box">${icon('mail')}</span><p>Email hỗ trợ: <a href="mailto:${address}">${address}</a></p></aside>`;
 }
 
-const legalSlugs = new Set(['privacy', 'terms']);
+const legalSlugs = new Set(['privacy', 'terms', 'gioi-thieu']);
 
 function renderInlineText(text, supportEmail) {
   const escaped = escapeHtml(text);
@@ -368,7 +368,7 @@ function renderLegalBlocks(blocks, supportEmail) {
 
 const infoTabsBySlug = {
   framework: [['pricing', 'Bảng giá'], ['framework', 'Khung thói quen'], ['science', 'Cơ sở khoa học'], ['roadmaps', 'Lộ trình'], ['docs', 'Hướng dẫn'], ['blog', 'Blog'], ['contact', 'Liên hệ']],
-  legal: [['privacy', 'Quyền riêng tư'], ['terms', 'Điều khoản'], ['contact', 'Liên hệ']],
+  legal: [['privacy', 'Quyền riêng tư'], ['terms', 'Điều khoản'], ['gioi-thieu', 'Giới thiệu bạn bè'], ['contact', 'Liên hệ']],
 };
 
 function renderInfoTabs(slug) {

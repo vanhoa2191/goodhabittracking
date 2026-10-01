@@ -10,6 +10,7 @@ import { cancelPayOSPayment } from '@/lib/billing/payos-server';
 import { createCorrelationId } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
+import { reverseCommissionForConfirmedRefund } from '@/lib/referral/refund-reversal';
 
 const readRoles = ['support', 'finance', 'super_admin'] as const;
 const createRoles = ['support', 'finance', 'super_admin'] as const;
@@ -201,7 +202,28 @@ export async function PATCH(request: NextRequest) {
     updated_at: new Date().toISOString(),
   }).eq('id', supportCase.id);
   await recordAdminAudit(admin, { ...audit, outcome: error ? 'failed' : 'succeeded' });
-  return error
-    ? adminJsonResponse({ error: 'Could not update billing case.', correlationId }, correlationId, 503)
-    : adminJsonResponse({ success: true, correlationId }, correlationId);
+  if (error) return adminJsonResponse({ error: 'Could not update billing case.', correlationId }, correlationId, 503);
+
+  // A confirmed refund takes back the referral commission that order earned, while it is still held.
+  const reversal = await reverseCommissionForConfirmedRefund(admin, {
+    caseId: supportCase.id,
+    caseType: supportCase.case_type,
+    status: parsed.data.status,
+    resolutionCode: parsed.data.resolutionCode,
+    orderCode: supportCase.order_code,
+  });
+  let referral: string | null = null;
+  if (reversal.applies) {
+    referral = reversal.result;
+    await recordAdminAudit(admin, {
+      ...audit,
+      action: 'affiliate.commission.reverse',
+      targetType: 'payment_order',
+      targetId: String(supportCase.order_code),
+      before: null,
+      after: { referral },
+      outcome: reversal.failed ? 'failed' : 'succeeded',
+    });
+  }
+  return adminJsonResponse({ success: true, referralCommission: referral, correlationId }, correlationId);
 }

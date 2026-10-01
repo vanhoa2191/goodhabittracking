@@ -16,3 +16,4 @@
 Public product proof is registered in [`src/lib/public-proof.ts`](../src/lib/public-proof.ts). Product entries require at least one repository evidence reference. Testimonials additionally require a source reference, recorded consent and a future review date; expired or incomplete entries are excluded by the publication filter. The current registry contains product proof only and no testimonial.
 
 Mọi claim mới phải có owner, nguồn, ngày kiểm tra và phạm vi. UX copy phải phân biệt mô tả tính năng với kết quả giáo dục giả định.
+| Chương trình giới thiệu | Hoa hồng 30% số tiền gia đình được giới thiệu thực trả, trong 12 tháng đầu, giữ 35 ngày, rút tối thiểu 200.000 đồng, chi trả thủ công; người giới thiệu không thấy thông tin gia đình được giới thiệu (`supabase/migrations/202609300010_affiliate_program.sql`, `scripts/verify-live-affiliate.mjs`, `docs/affiliate-program.md`). Không nêu mức thu nhập có thể kiếm được. |

@@ -17,6 +17,7 @@ import { POST as ensureCredential } from '@/app/api/pairing/credentials/route';
 import { POST as rotateCredential } from '@/app/api/pairing/credentials/rotate/route';
 import { POST as createPayment } from '@/app/api/payment/create/route';
 import { POST as runCommand } from '@/app/api/domain/commands/route';
+import { POST as affiliateAction } from '@/app/api/affiliate/route';
 
 const uuid = '11111111-1111-4111-8111-111111111111';
 
@@ -46,6 +47,8 @@ describe('sensitive parent actions need the PIN entered in this browser', () => 
     ['starting a payment', () => createPayment(call('POST', '/api/payment/create', { planId: 'monthly' }))],
     ['approving a task', () => runCommand(call('POST', '/api/domain/commands', { type: 'reviewHabit', logId: uuid, decision: 'approve' }))],
     ['adjusting points by hand', () => runCommand(call('POST', '/api/domain/commands', { type: 'adjustPoints', childId: uuid, amount: 10, reason: 'Extra help', commandId: uuid }))],
+    ['saving referral payout details', () => affiliateAction(call('POST', '/api/affiliate', { action: 'savePayout', bank: 'Vietcombank', accountNumber: '0123456789', accountName: 'Nguyen Van A' }))],
+    ['requesting a referral payout', () => affiliateAction(call('POST', '/api/affiliate', { action: 'requestPayout' }))],
     ['approving a reward', () => runCommand(call('POST', '/api/domain/commands', { type: 'transitionRedemption', redemptionId: uuid, decision: 'approve' }))],
   ];
 

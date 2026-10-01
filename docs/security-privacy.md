@@ -25,6 +25,8 @@ Bộ thói quen thích ứng lưu hai loại dữ liệu theo gia đình: kế h
 
 Bảng xếp hạng công khai chỉ hiện một bé khi cả hai điều kiện cùng đúng: gia đình đã bật chia sẻ (mặc định tắt, chỉ phụ huynh đổi được, ghi thành consent `leaderboard` có thể thu hồi) và hồ sơ của bé được đánh dấu tham gia (bé mới mặc định riêng tư). Hàm công khai chỉ trả biệt danh hoặc "Bé Siêu Nhân", hình đại diện, điểm kiếm được trong kỳ, chuỗi ngày và hạng; không trả mã bé, mã gia đình, tên thật hay tuổi. Điểm là điểm kiếm được từ nhật ký đã xác nhận trong kỳ lịch của người xem, không phải số dư nên tiêu điểm không đổi thứ hạng. Bảng Gia đình và Nhóm chỉ dùng dữ liệu trong gia đình.
 
+Chương trình giới thiệu lưu mã giới thiệu trong cookie `kidhabit_ref` (60 ngày, xóa khi đã ghi nhận) và thông tin ngân hàng của người giới thiệu (chỉ admin được phân quyền xem, số tài khoản chỉ hiện 4 số cuối cho chính chủ). Người giới thiệu không bao giờ thấy thông tin của gia đình được giới thiệu. Chi tiết và quy tắc: [`affiliate-program.md`](affiliate-program.md).
+
 Khôi phục tài khoản Supabase Auth không đồng nghĩa khôi phục dữ liệu đã xóa. Backup operator và quy trình phục hồi nằm trong [`data-recovery.md`](data-recovery.md).
 
 ## Phạm vi pháp lý
