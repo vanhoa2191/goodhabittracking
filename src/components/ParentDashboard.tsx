@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import React, { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
@@ -22,7 +23,8 @@ import { ParentAnalyticsTab } from './ParentAnalyticsTab';
 import { ParentApprovalsTab } from './ParentApprovalsTab';
 import { ParentSettingsTab } from './ParentSettingsTab';
 import { ParentRewardsTab } from './ParentRewardsTab';
-import { ParentJourneysTab } from './ParentJourneysTab';
+// The roadmaps (and their text) are fetched when the tab is opened, which keeps them out of the first download.
+const ParentJourneysTab = dynamic(() => import('./ParentJourneysTab').then((module) => module.ParentJourneysTab));
 import { ParentHabitsTab } from './ParentHabitsTab';
 import { ParentChildrenTab } from './ParentChildrenTab';
 import { ParentNavigation, type ParentSection } from './ParentNavigation';
