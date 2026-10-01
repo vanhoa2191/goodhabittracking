@@ -120,11 +120,25 @@ export function renderLifecycleEmail(message: LifecycleMessage): RenderedEmail {
   }
 }
 
+export type LifecycleEmailProvider = 'resend' | 'brevo';
+
+// Resend stays the default; LIFECYCLE_EMAIL_PROVIDER=brevo switches delivery to Brevo's transactional API.
 export function getLifecycleEmailConfig() {
   const enabled = process.env.LIFECYCLE_EMAILS_ENABLED === 'true';
-  const apiKey = process.env.RESEND_API_KEY?.trim() ?? '';
+  const provider: LifecycleEmailProvider = process.env.LIFECYCLE_EMAIL_PROVIDER?.trim().toLowerCase() === 'brevo' ? 'brevo' : 'resend';
+  const apiKey = (provider === 'brevo' ? process.env.BREVO_API_KEY : process.env.RESEND_API_KEY)?.trim() ?? '';
   const from = process.env.LIFECYCLE_EMAIL_FROM?.trim() ?? '';
-  return { enabled: enabled && Boolean(apiKey) && Boolean(from), apiKey, from };
+  return { enabled: enabled && Boolean(apiKey) && Boolean(from), provider, apiKey, from };
+}
+
+/** Splits "KidHabit <no-reply@example.com>" or a bare address into the name and email Brevo wants. */
+export function parseEmailSender(from: string): { readonly name?: string; readonly email: string } {
+  const match = /^\s*(?:"?([^"<]*?)"?\s*)?<([^<>\s]+@[^<>\s]+)>\s*$/.exec(from);
+  if (match) {
+    const name = match[1]?.trim();
+    return name ? { name, email: match[2] } : { email: match[2] };
+  }
+  return { email: from.trim() };
 }
 
 export async function sendLifecycleEmail(input: {
@@ -135,6 +149,24 @@ export async function sendLifecycleEmail(input: {
   const config = getLifecycleEmailConfig();
   if (!config.enabled) throw new Error('lifecycle_email_not_configured');
   const rendered = renderLifecycleEmail(input.message);
+
+  if (config.provider === 'brevo') {
+    // Brevo has no idempotency header; the outbox's dedupe key already stops a message from being claimed twice.
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: { 'api-key': config.apiKey, 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify({
+        sender: parseEmailSender(config.from),
+        to: [{ email: input.to }],
+        subject: rendered.subject,
+        htmlContent: rendered.html,
+      }),
+    });
+    const body = await response.json().catch(() => null) as { messageId?: string } | null;
+    if (!response.ok || !body?.messageId) throw new Error(`email_provider_${response.status}`);
+    return body.messageId;
+  }
+
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
