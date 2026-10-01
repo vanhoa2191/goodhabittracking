@@ -42,7 +42,7 @@ export type AffiliateCopy = {
     readonly referred: string;
     readonly results: Readonly<Record<'claimed' | 'invalid' | 'self' | 'already_referred' | 'expired' | 'disabled' | 'failed', string>>;
   };
-  readonly messages: Readonly<Record<'saved' | 'invalidDetails' | 'requested' | 'belowMinimum' | 'missingDetails' | 'suspended' | 'failed' | 'loadFailed' | 'pinRequired', string>>;
+  readonly messages: Readonly<Record<'saved' | 'invalidDetails' | 'requested' | 'belowMinimum' | 'missingDetails' | 'detailsRecent' | 'suspended' | 'failed' | 'loadFailed' | 'pinRequired', string>>;
 };
 
 const vi: AffiliateCopy = {
@@ -106,6 +106,7 @@ const vi: AffiliateCopy = {
     requested: 'Đã gửi yêu cầu rút tiền. KidHabit sẽ chuyển khoản và báo cho bạn.',
     belowMinimum: 'Số tiền có thể rút chưa đạt mức tối thiểu.',
     missingDetails: 'Hãy lưu thông tin nhận tiền trước.',
+    detailsRecent: 'Thông tin nhận tiền vừa được đổi. Để an toàn, bạn có thể yêu cầu rút sau 24 giờ.',
     suspended: 'Tài khoản giới thiệu đang bị tạm khóa. Vui lòng liên hệ hỗ trợ.',
     failed: 'Chưa thực hiện được. Vui lòng thử lại.',
     loadFailed: 'Chưa tải được chương trình giới thiệu. Vui lòng thử lại sau.',
@@ -174,6 +175,7 @@ const en: AffiliateCopy = {
     requested: 'Withdrawal requested. KidHabit will transfer the money and let you know.',
     belowMinimum: 'The available amount is below the minimum.',
     missingDetails: 'Save your payout details first.',
+    detailsRecent: 'Your payout details were just changed. For safety you can request a withdrawal after 24 hours.',
     suspended: 'Your referral account is suspended. Please contact support.',
     failed: 'Something went wrong. Please try again.',
     loadFailed: 'Could not load the referral programme. Please try again later.',

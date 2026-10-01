@@ -1,3 +1,4 @@
+import { maskPayoutAccounts } from '@/lib/referral/mask-account';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { AdminAffiliatePayoutActions } from '@/components/AdminAffiliatePayoutActions';
 
@@ -22,18 +23,19 @@ type Overview = {
 
 const money = (value: number) => `${new Intl.NumberFormat('vi-VN').format(value)} đ`;
 
-async function load(): Promise<Overview | null> {
+async function load(canSeeFullAccounts: boolean): Promise<Overview | null> {
   try {
     const { data, error } = await createAdminSupabaseClient().rpc('admin_affiliate_overview');
-    return error || !data ? null : data as Overview;
+    if (error || !data) return null;
+    return canSeeFullAccounts ? data as Overview : maskPayoutAccounts(data as Overview);
   } catch {
     return null;
   }
 }
 
 /** Referral programme totals and the withdrawal requests waiting for a manual bank transfer. */
-export async function AdminAffiliatePanel() {
-  const overview = await load();
+export async function AdminAffiliatePanel({ canSeeFullAccounts }: { readonly canSeeFullAccounts: boolean }) {
+  const overview = await load(canSeeFullAccounts);
   if (!overview) {
     return (
       <section aria-labelledby="affiliate-admin-title" className="rounded-3xl border border-slate-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">

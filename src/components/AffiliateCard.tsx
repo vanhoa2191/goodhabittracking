@@ -115,6 +115,7 @@ export function AffiliateCard() {
           invalid_details: copy.messages.invalidDetails,
           below_minimum: copy.messages.belowMinimum,
           missing_details: copy.messages.missingDetails,
+          details_recent: copy.messages.detailsRecent,
           suspended: copy.messages.suspended,
         };
         setNotice({ kind: 'error', text: known[status] ?? failure(result.status, result.data) });

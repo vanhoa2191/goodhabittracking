@@ -47,3 +47,4 @@
 \ir migrations/202609300009_point_adjustments.sql
 \ir migrations/202609300010_affiliate_program.sql
 \ir migrations/202610010001_referral_claim_state.sql
+\ir migrations/202610010002_affiliate_hardening.sql
