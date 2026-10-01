@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { startEnrollment, verifyCode, type MfaClient } from '@/lib/auth/admin-mfa-flow';
 import { getBrowserSupabase } from '@/lib/supabase/browser';
 
 type MfaState = 'loading' | 'needs_enrollment' | 'needs_challenge' | 'verified' | 'error';
@@ -55,36 +56,39 @@ export function AdminMfaPanel() {
     if (!client) return;
     setBusy(true);
     setMessage('');
-    const { data, error } = await client.auth.mfa.enroll({
-      factorType: 'totp',
-      friendlyName: 'KidHabit Admin',
-    });
+    const result = await startEnrollment(client as unknown as MfaClient, 'KidHabit Admin');
     setBusy(false);
-    if (error) {
+    if (!result.ok) {
       setMessage('Không thể bắt đầu thiết lập. Hãy thử lại.');
       return;
     }
-    setFactorId(data.id);
-    setQrCode(data.totp.qr_code);
-    setSecret(data.totp.secret);
+    setFactorId(result.factorId);
+    setQrCode(result.qrCode);
+    setSecret(result.secret);
   };
 
   const verify = async () => {
     const client = getBrowserSupabase();
-    if (!client || !factorId || !/^\d{6}$/.test(code)) {
-      setMessage('Nhập mã gồm 6 chữ số từ ứng dụng xác thực.');
-      return;
-    }
+    if (!client) return;
     setBusy(true);
     setMessage('');
-    const { error } = await client.auth.mfa.challengeAndVerify({ factorId, code });
+    const result = await verifyCode(client as unknown as MfaClient, factorId, code);
     setBusy(false);
-    if (error) {
-      setMessage('Mã xác minh không đúng hoặc đã hết hạn.');
+    if (!result.ok) {
+      setMessage(result.reason === 'format'
+        ? 'Nhập mã gồm 6 chữ số từ ứng dụng xác thực.'
+        : result.reason === 'rejected'
+          ? 'Mã xác minh không đúng hoặc đã hết hạn. Đợi mã mới trong ứng dụng rồi nhập lại.'
+          : 'Chưa kết nối được dịch vụ xác minh. Hãy thử lại.');
       return;
     }
-    router.push('/admin/security');
-    router.refresh();
+    // This page is already /admin/security, so staying put would change nothing on screen: show the result now,
+    // then go on to the admin page, refreshing so the server renders with the upgraded session.
+    setState('verified');
+    window.setTimeout(() => {
+      router.push('/admin');
+      router.refresh();
+    }, 600);
   };
 
   if (state === 'loading') return <p className="text-sm text-slate-600">Đang kiểm tra bảo mật…</p>;
