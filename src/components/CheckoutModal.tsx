@@ -17,6 +17,9 @@ import { useTranslation } from '@/lib/i18n/context';
 import { CheckoutPaymentDetails } from '@/components/CheckoutPaymentDetails';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { getMarketingOrigin } from '@/lib/site';
+import dynamic from 'next/dynamic';
+
+const ReferralCodeEntry = dynamic(() => import('@/components/ReferralCodeEntry').then((module) => module.ReferralCodeEntry));
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -255,6 +258,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
               onCopy={copyToClipboard}
             />
           ) : null}
+          {canCreatePayment && !isSuccess && <ReferralCodeEntry />}
         </div>
 
         {/* Modal Footer Actions */}

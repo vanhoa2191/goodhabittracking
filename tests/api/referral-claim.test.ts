@@ -7,7 +7,7 @@ const getParentContext = vi.fn();
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext: () => getParentContext() }));
 vi.mock('@/lib/supabase/server', () => ({ createServerSupabaseClient: vi.fn(async () => ({ rpc })) }));
 
-import { POST } from '@/app/api/referral/claim/route';
+import { GET, POST } from '@/app/api/referral/claim/route';
 
 function request(body: unknown, headers: Record<string, string> = {}) {
   return new NextRequest('http://localhost/api/referral/claim', {
@@ -55,5 +55,22 @@ describe('POST /api/referral/claim', () => {
   it('refuses a cross-site request', async () => {
     expect((await POST(request({ code: 'ABCD2345' }, { origin: 'https://evil.example' }))).status).toBe(403);
     expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it.each(['eligible', 'referred', 'closed', 'disabled'])('GET reports the claim state %s', async (state) => {
+    rpc.mockResolvedValue({ data: state, error: null });
+    const response = await GET();
+    expect(rpc).toHaveBeenCalledWith('referral_claim_state');
+    await expect(response.json()).resolves.toEqual({ state });
+    expect(response.headers.get('cache-control')).toBe('no-store');
+  });
+
+  it('GET needs a signed-in parent and reports a database failure as temporary', async () => {
+    getParentContext.mockResolvedValue(null);
+    expect((await GET()).status).toBe(401);
+    expect(rpc).not.toHaveBeenCalled();
+    getParentContext.mockResolvedValue({ familyId: 'family-a', role: 'owner', user: { id: 'user-a' } });
+    rpc.mockResolvedValue({ data: null, error: { message: 'down' } });
+    expect((await GET()).status).toBe(503);
   });
 });

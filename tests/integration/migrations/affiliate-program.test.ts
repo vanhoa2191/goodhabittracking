@@ -83,4 +83,20 @@ describe('affiliate programme migration contract', () => {
     expect(reverse).toContain("return 'in_payout'");
     expect(reverse).toContain("return 'already_paid'");
   });
+
+  it('reports the claim state without exposing the referrer or other families', async () => {
+    const stateMigration = readFileSync(resolve('supabase/migrations/202610010001_referral_claim_state.sql'), 'utf8');
+    const stateVerification = readFileSync(resolve('supabase/preflight/202610010001_referral_claim_state.verify.sql'), 'utf8');
+    await expect(parse(stateMigration)).resolves.toBeDefined();
+    await expect(parse(stateVerification)).resolves.toBeDefined();
+    expect(stateMigration).toContain('returns text');
+    expect(stateMigration).toContain("set search_path = ''");
+    expect(stateMigration).toContain('public.current_family_id()');
+    for (const state of ["'disabled'", "'referred'", "'closed'", "'eligible'"]) expect(stateMigration).toContain(`return ${state}`);
+    expect(stateMigration).toContain('family_created < now() - make_interval(days => settings.attribution_days)');
+    expect(stateMigration).toContain("payment_order.status = 'PAID'");
+    expect(stateMigration).not.toMatch(/referrer_user_id|affiliate_accounts|referral_commissions/);
+    expect(stateMigration).toContain('revoke all on function public.referral_claim_state() from public, anon;');
+    expect(stateMigration).toContain('grant execute on function public.referral_claim_state() to authenticated;');
+  });
 });
