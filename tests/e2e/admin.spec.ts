@@ -88,7 +88,12 @@ test('admin can update customer care data, subscription and a gift coupon', asyn
 
   await page.goto('/admin');
   await expect(page.getByRole('heading', { name: 'Quản trị khách hàng' })).toBeVisible();
+  await expect(page.getByRole('tab', { name: 'Tổng quan' })).toHaveAttribute('aria-selected', 'true');
+
+  await page.getByRole('tab', { name: 'Khách hàng' }).click();
+  await expect(page).toHaveURL(/#khach-hang$/);
   await expect(page.getByText('customer@example.com')).toBeVisible();
+  await page.getByRole('button', { name: /Nguyễn An/ }).click();
   await page.getByLabel('Lý do thao tác quản trị').fill('Cập nhật theo yêu cầu chăm sóc khách hàng');
 
   await page.getByLabel('Gói đăng ký').selectOption('yearly');
@@ -111,6 +116,7 @@ test('admin can update customer care data, subscription and a gift coupon', asyn
   await expect.poll(() => requests.some((request) => request.path === 'customer')).toBe(true);
   await expect(page.getByText(/Đã lưu hồ sơ/)).toBeVisible();
 
+  await page.getByRole('tab', { name: 'Coupon' }).click();
   await page.getByLabel('Lý do thao tác quản trị').fill('Tặng ưu đãi theo yêu cầu chăm sóc khách hàng');
   await page.getByPlaceholder('VD: TANG30NGAY').fill('TANG45');
   await page.getByLabel('Số ngày tặng').fill('45');
@@ -118,6 +124,7 @@ test('admin can update customer care data, subscription and a gift coupon', asyn
   await expect.poll(() => requests.some((request) => request.path === 'coupon')).toBe(true);
   await expect(page.getByText('Đã tạo coupon mới.')).toBeVisible();
 
+  await page.getByRole('tab', { name: 'Thanh toán' }).click();
   await page.getByLabel('Lý do thao tác quản trị').fill('Ghi nhận yêu cầu hỗ trợ thanh toán');
   await page.getByLabel('Khách hàng cần hỗ trợ', { exact: true }).selectOption('11111111-1111-4111-8111-111111111111');
   await page.getByLabel('Loại yêu cầu').selectOption('cancellation');

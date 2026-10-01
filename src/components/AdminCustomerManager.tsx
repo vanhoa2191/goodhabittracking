@@ -2,6 +2,18 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { z } from 'zod';
+import { useAdminTab } from '@/components/AdminShell';
+import {
+  CUSTOMER_FILTERS,
+  PLAN_LABELS,
+  countByFilter,
+  describeExpiry,
+  matchesFilter,
+  matchesQuery,
+  pageOf,
+  type CustomerFilterId,
+  type Tone,
+} from '@/lib/admin/admin-view';
 
 type Subscription = {
   readonly plan: 'free' | 'trial' | 'solo_monthly' | 'monthly' | 'yearly' | 'lifetime';
@@ -45,6 +57,13 @@ type BillingCase = {
 };
 
 const inputClass = 'min-h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm dark:border-zinc-700 dark:bg-zinc-800';
+const TONE_CLASS: Readonly<Record<Tone, string>> = {
+  good: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300',
+  warn: 'bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200',
+  bad: 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300',
+  neutral: 'bg-slate-100 text-slate-700 dark:bg-zinc-800 dark:text-slate-300',
+};
+
 const planSchema = z.enum(['free', 'trial', 'solo_monthly', 'monthly', 'yearly', 'lifetime']);
 const subscriptionStatusSchema = z.enum(['active', 'inactive', 'cancelled']);
 
@@ -89,6 +108,10 @@ export function AdminCustomerManager() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState<CustomerFilterId>('all');
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [limit, setLimit] = useState(25);
+  const tab = useAdminTab();
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [loading, setLoading] = useState(true);
@@ -152,15 +175,13 @@ export function AdminCustomerManager() {
     queueMicrotask(() => void load());
   }, [load]);
 
-  const visibleCustomers = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    if (!normalized) return customers;
-    return customers.filter((customer) =>
-      `${customer.fullName} ${customer.email} ${customer.phone} ${customer.tags.join(' ')}`
-        .toLowerCase()
-        .includes(normalized)
-    );
-  }, [customers, query]);
+  const now = new Date();
+  const filterCounts = useMemo(() => countByFilter(customers, new Date()), [customers]);
+  const matching = useMemo(
+    () => customers.filter((customer) => matchesFilter(customer, filter, new Date()) && matchesQuery(customer, query)),
+    [customers, filter, query],
+  );
+  const { shown: visibleCustomers, hidden: hiddenCustomers } = pageOf(matching, limit);
 
   const updateCustomer = (userId: string, patch: Partial<Customer>) => {
     setCustomers((current) => current.map((customer) =>
@@ -319,38 +340,66 @@ export function AdminCustomerManager() {
     setBillingCases((current) => current.map((item) => item.id === id ? { ...item, ...patch } : item));
   };
 
+  const reasonVisible = tab === 'khach-hang' || tab === 'thanh-toan' || tab === 'coupon';
   return (
-    <div className="space-y-6">
-      {error && <p role="alert" className="rounded-xl bg-rose-50 p-3 text-sm font-bold text-rose-700">{error}</p>}
-      {notice && <p role="status" className="rounded-xl bg-emerald-50 p-3 text-sm font-bold text-emerald-700">{notice}</p>}
-      {mfaRequired && (
+    <div className={`space-y-6 ${reasonVisible ? 'pb-28' : ''}`}>
+      {reasonVisible && error && <p role="alert" className="rounded-xl bg-rose-50 p-3 text-sm font-bold text-rose-700">{error}</p>}
+      {reasonVisible && notice && <p role="status" className="rounded-xl bg-emerald-50 p-3 text-sm font-bold text-emerald-700">{notice}</p>}
+      {reasonVisible && mfaRequired && (
         <a href="/admin/security" className="inline-flex min-h-11 items-center rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white">
           Xác minh hai bước
         </a>
       )}
 
-      <section className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-slate-900">
-        <label className="block text-sm font-bold">Lý do thao tác quản trị
-          <input
-            value={changeReason}
-            onChange={(event) => setChangeReason(event.target.value)}
-            placeholder="Ví dụ: Tặng ưu đãi theo phiếu hỗ trợ KH-123"
-            className={`${inputClass} mt-2`}
-          />
-        </label>
-        <p className="mt-2 text-xs text-slate-600">Bắt buộc khi thay đổi hồ sơ, gói, coupon hoặc kết quả hỗ trợ. Không nhập dữ liệu riêng tư của trẻ.</p>
-      </section>
-
-      <section className="rounded-3xl border border-slate-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
-        <div className="mb-4 flex flex-wrap items-center gap-3">
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Tìm tên, email, số điện thoại hoặc nhãn" className={`${inputClass} flex-1`} />
-          <span className="text-sm font-bold">{visibleCustomers.length} thành viên</span>
+      <section hidden={tab !== 'khach-hang'} aria-labelledby="customers-title" className="space-y-4">
+        <div>
+          <h2 id="customers-title" className="text-xl font-black">Khách hàng</h2>
+          <p className="mt-1 text-sm text-slate-500">Chọn một khách hàng để xem và chỉnh sửa gói, hồ sơ chăm sóc.</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <input value={query} onChange={(event) => { setQuery(event.target.value); setLimit(25); }} placeholder="Tìm tên, email, số điện thoại hoặc nhãn" aria-label="Tìm khách hàng" className={`${inputClass} min-w-0 flex-1`} />
+          <span className="text-sm font-bold tabular-nums">{matching.length} thành viên</span>
+        </div>
+        <div role="group" aria-label="Lọc theo gói" className="flex flex-wrap gap-2">
+          {CUSTOMER_FILTERS.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              aria-pressed={filter === item.id}
+              onClick={() => { setFilter(item.id); setLimit(25); }}
+              className={`min-h-11 rounded-full border px-4 text-sm font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${filter === item.id ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-200 bg-white text-slate-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-200'}`}
+            >
+              {item.label} <span className="tabular-nums opacity-80">{filterCounts[item.id]}</span>
+            </button>
+          ))}
         </div>
 
         {loading ? <p className="py-10 text-center text-sm text-slate-500">Đang tải khách hàng…</p> : (
-          <div className="space-y-4">
-            {visibleCustomers.map((customer) => (
-              <article key={customer.id} className="rounded-2xl border border-slate-200 p-4 dark:border-zinc-700">
+          <ul className="space-y-2">
+            {matching.length === 0 && <li className="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-sm text-slate-500">Không có khách hàng nào khớp.</li>}
+            {visibleCustomers.map((customer) => {
+              const expiry = describeExpiry(customer.subscription, now);
+              const open = openId === customer.id;
+              return (
+                <li key={customer.id} className="rounded-2xl border border-slate-200 bg-white dark:border-zinc-700 dark:bg-zinc-900">
+                  <button
+                    type="button"
+                    aria-expanded={open}
+                    aria-controls={`customer-${customer.id}`}
+                    onClick={() => setOpenId(open ? null : customer.id)}
+                    className="flex min-h-16 w-full flex-wrap items-center gap-x-4 gap-y-1 rounded-2xl px-4 py-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                  >
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate font-extrabold">{customer.fullName || 'Chưa có tên'}</span>
+                      <span className="block truncate text-sm text-slate-500">{customer.email}</span>
+                    </span>
+                    <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-bold text-indigo-800 dark:bg-indigo-950 dark:text-indigo-200">{PLAN_LABELS[customer.subscription?.plan ?? 'free']}</span>
+                    <span className={`rounded-full px-3 py-1 text-xs font-bold ${TONE_CLASS[expiry.tone]}`}>{expiry.label}</span>
+                    {customer.tags.slice(0, 2).map((tag) => <span key={tag} className="rounded-full bg-slate-100 px-2 py-1 text-xs text-slate-600 dark:bg-zinc-800 dark:text-slate-300">{tag}</span>)}
+                    <span aria-hidden="true" className="text-slate-400">{open ? '▾' : '▸'}</span>
+                  </button>
+                  {open && (
+                    <div id={`customer-${customer.id}`} className="border-t border-slate-100 p-4 dark:border-zinc-800">
                 <div className="grid gap-4 lg:grid-cols-3">
                   <div className="space-y-3">
                     <label className="block text-xs font-bold">Họ và tên
@@ -359,7 +408,6 @@ export function AdminCustomerManager() {
                     <label className="block text-xs font-bold">Số điện thoại
                       <input value={customer.phone} onChange={(event) => updateCustomer(customer.id, { phone: event.target.value })} inputMode="tel" className={`${inputClass} mt-1`} />
                     </label>
-                    <p className="break-all text-xs text-slate-500">{customer.email}</p>
                     <label className="flex items-start gap-2 text-xs">
                       <input type="checkbox" checked={customer.marketingConsent} onChange={(event) => updateCustomer(customer.id, { marketingConsent: event.target.checked })} className="mt-0.5" />
                       Khách hàng đồng ý nhận thông tin tiếp thị
@@ -413,13 +461,19 @@ export function AdminCustomerManager() {
                     <button type="button" onClick={() => void saveCustomer(customer)} className="min-h-11 w-full rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white">Lưu hồ sơ khách hàng</button>
                   </div>
                 </div>
-              </article>
-            ))}
-          </div>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        {hiddenCustomers > 0 && (
+          <button type="button" onClick={() => setLimit((current) => current + 25)} className="min-h-11 w-full rounded-xl border border-slate-300 text-sm font-bold">Xem thêm {Math.min(25, hiddenCustomers)} khách hàng ({hiddenCustomers} chưa hiện)</button>
         )}
       </section>
 
-      <section className="rounded-3xl border border-slate-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+      <section hidden={tab !== 'thanh-toan'} className="rounded-3xl border border-slate-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
         <h2 className="text-xl font-black">Hỗ trợ thanh toán và hoàn tiền</h2>
         <p className="mt-1 text-sm text-slate-500">Hủy link chỉ áp dụng cho đơn đang chờ. Hoàn tiền đã thanh toán phải được đối soát thủ công trước khi đánh dấu hoàn tất.</p>
         <div className="mt-4 grid gap-3 md:grid-cols-4">
@@ -479,7 +533,7 @@ export function AdminCustomerManager() {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-slate-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+      <section hidden={tab !== 'coupon'} className="rounded-3xl border border-slate-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
         <h2 className="text-xl font-black">Coupon tặng ngày sử dụng</h2>
         <p className="mt-1 text-sm text-slate-500">Mỗi gia đình chỉ dùng một lần cho mỗi mã.</p>
         <div className="mt-4 grid gap-3 md:grid-cols-4">
@@ -499,6 +553,22 @@ export function AdminCustomerManager() {
           ))}
         </div>
       </section>
+
+      {reasonVisible && (
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-amber-200 bg-amber-50/95 p-3 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] backdrop-blur dark:border-amber-800 dark:bg-zinc-900/95">
+          <div className="mx-auto max-w-6xl">
+            <label className="block text-sm font-bold text-slate-900 dark:text-slate-100">Lý do thao tác quản trị
+              <input
+                value={changeReason}
+                onChange={(event) => setChangeReason(event.target.value)}
+                placeholder="Ví dụ: Tặng ưu đãi theo phiếu hỗ trợ KH-123"
+                className={`${inputClass} mt-1`}
+              />
+            </label>
+            <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">Bắt buộc khi đổi hồ sơ, gói, coupon hoặc kết quả hỗ trợ (ít nhất 5 ký tự). Không nhập dữ liệu riêng tư của trẻ.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
