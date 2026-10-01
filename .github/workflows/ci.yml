@@ -111,6 +111,8 @@ jobs:
           NEXT_PUBLIC_DREAM_CITY: ${{ vars.NEXT_PUBLIC_DREAM_CITY }}
           NEXT_PUBLIC_PARENT_REENGAGEMENT: ${{ vars.NEXT_PUBLIC_PARENT_REENGAGEMENT }}
           NEXT_PUBLIC_EMAIL_CODE_LOGIN: ${{ vars.NEXT_PUBLIC_EMAIL_CODE_LOGIN }}
+          NEXT_PUBLIC_LEGAL_PAGES_APPROVED: ${{ vars.NEXT_PUBLIC_LEGAL_PAGES_APPROVED }}
+          SUPPORT_EMAIL: kidhabithero@gmail.com
       - if: steps.configuration.outputs.ready == 'true'
         name: Verify production health after deploy
         run: |
