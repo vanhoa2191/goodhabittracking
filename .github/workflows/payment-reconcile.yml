@@ -1,0 +1,41 @@
+name: Payment reconcile
+
+# A safety net for PayOS webhooks that never arrive: pending orders are checked against PayOS and activated if paid.
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      CRON_SECRET: ${{ secrets.LIFECYCLE_CRON_SECRET }}
+    steps:
+      - name: Check configuration
+        id: configuration
+        run: |
+          if [ -n "$CRON_SECRET" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "Payment reconcile skipped: configure LIFECYCLE_CRON_SECRET."
+          fi
+      - name: Reconcile pending payments
+        if: steps.configuration.outputs.ready == 'true'
+        run: |
+          status=$(curl --silent --show-error --retry 2 \
+            --output response.json --write-out '%{http_code}' \
+            --request POST \
+            --header "Authorization: Bearer $CRON_SECRET" \
+            https://app.kidhabithero.com/api/internal/billing/reconcile)
+          cat response.json
+          echo
+          if [ "$status" -ge 400 ]; then
+            echo "Reconcile failed with HTTP $status"
+            exit 1
+          fi

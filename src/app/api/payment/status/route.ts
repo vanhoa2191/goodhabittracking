@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { paymentStatusRequestSchema } from '@/lib/billing/schemas';
+import { reconcilePendingOrder } from '@/lib/billing/payos-reconcile';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
@@ -22,7 +24,7 @@ export async function POST(request: NextRequest) {
   const supabase = await createServerSupabaseClient();
   const { data: order, error } = await supabase
     .from('payment_orders')
-    .select('status')
+    .select('status,amount,description')
     .eq('order_code', parsed.data.orderCode)
     .eq('family_id', parent.familyId)
     .maybeSingle();
@@ -32,6 +34,17 @@ export async function POST(request: NextRequest) {
   }
   if (!order) {
     return NextResponse.json({ success: false, error: 'Payment order not found.' }, { status: 404 });
+  }
+
+  if (order.status === 'PENDING') {
+    // The bank transfer may be done while PayOS's webhook has not reached us (or never will), so ask PayOS directly.
+    try {
+      if (await reconcilePendingOrder(createAdminSupabaseClient(), { order_code: parsed.data.orderCode, amount: order.amount, description: order.description, status: order.status })) {
+        return NextResponse.json({ success: true, paid: true, status: 'PAID' });
+      }
+    } catch {
+      // PayOS being unreachable must not turn a pending check into an error.
+    }
   }
 
   return NextResponse.json({ success: true, paid: order.status === 'PAID', status: order.status });
