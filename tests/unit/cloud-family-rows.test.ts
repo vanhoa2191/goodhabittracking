@@ -91,6 +91,12 @@ describe('cloud family rows', () => {
       await expect(readCloudFamilyRows('user-1', client)).resolves.toMatchObject({ familyId });
     });
 
+    it.each([[[]], [{ unexpected: true }], ['text']])('does not trust an answer that is not a family (%j) and reads the tables instead', async (answer) => {
+      const client = fakeSupabase({});
+      (client as unknown as { rpc: unknown }).rpc = async () => ({ data: answer, error: null });
+      await expect(readCloudFamilyRows('user-1', client)).resolves.toMatchObject({ familyId });
+    });
+
     it('does not hide any other database error behind the fallback', async () => {
       const { client, from } = withRpc({ data: null, error: { code: '42501' } });
       await expect(readCloudFamilyRows('user-1', client)).rejects.toMatchObject({ code: '42501' });

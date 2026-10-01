@@ -78,6 +78,7 @@ test('a parent explicitly opts into actionable reminders and can revoke them', a
   await page.route('**/auth/v1/user', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(user) }));
   await page.route('**/rest/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
+    if (path.endsWith('/rpc/family_snapshot')) return route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ code: 'PGRST202', message: 'function not found' }) });
     const payload = path.endsWith('/family_memberships')
       ? { family_id: '66666666-6666-4666-8666-666666666666', role: 'owner' }
       : path.endsWith('/user_subscriptions') || path.endsWith('/family_engagement_settings')
