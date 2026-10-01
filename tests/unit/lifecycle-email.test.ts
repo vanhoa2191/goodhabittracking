@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
+  getLifecycleEmailConfig,
+  parseEmailSender,
   parseLifecycleMessage,
   renderLifecycleEmail,
   sendLifecycleEmail,
@@ -80,5 +82,90 @@ describe('lifecycle email', () => {
     expect(fetchMock).toHaveBeenCalledWith('https://api.resend.com/emails', expect.objectContaining({
       headers: expect.objectContaining({ 'idempotency-key': 'welcome-setup/user-1' }),
     }));
+  });
+
+  describe('provider choice', () => {
+    const message = parseLifecycleMessage({ templateKey: 'welcome_setup', locale: 'vi', payload: {} });
+
+    it('keeps Resend as the default and needs its own key', () => {
+      vi.stubEnv('LIFECYCLE_EMAILS_ENABLED', 'true');
+      vi.stubEnv('LIFECYCLE_EMAIL_FROM', 'KidHabit <no-reply@example.test>');
+      vi.stubEnv('RESEND_API_KEY', '');
+      vi.stubEnv('BREVO_API_KEY', 'brevo-key');
+      expect(getLifecycleEmailConfig()).toMatchObject({ provider: 'resend', enabled: false });
+      vi.stubEnv('RESEND_API_KEY', 're_key');
+      expect(getLifecycleEmailConfig()).toMatchObject({ provider: 'resend', enabled: true, apiKey: 're_key' });
+    });
+
+    it('selects Brevo only when asked and then needs the Brevo key', () => {
+      vi.stubEnv('LIFECYCLE_EMAILS_ENABLED', 'true');
+      vi.stubEnv('LIFECYCLE_EMAIL_FROM', 'no-reply@example.test');
+      vi.stubEnv('RESEND_API_KEY', 're_key');
+      vi.stubEnv('LIFECYCLE_EMAIL_PROVIDER', ' Brevo ');
+      vi.stubEnv('BREVO_API_KEY', '');
+      expect(getLifecycleEmailConfig()).toMatchObject({ provider: 'brevo', enabled: false });
+      vi.stubEnv('BREVO_API_KEY', 'brevo-key');
+      expect(getLifecycleEmailConfig()).toMatchObject({ provider: 'brevo', enabled: true, apiKey: 'brevo-key' });
+      vi.stubEnv('LIFECYCLE_EMAIL_PROVIDER', 'something-else');
+      expect(getLifecycleEmailConfig().provider).toBe('resend');
+    });
+
+    it('stays disabled without the switch or the sender', () => {
+      vi.stubEnv('LIFECYCLE_EMAIL_PROVIDER', 'brevo');
+      vi.stubEnv('BREVO_API_KEY', 'brevo-key');
+      vi.stubEnv('LIFECYCLE_EMAIL_FROM', 'no-reply@example.test');
+      vi.stubEnv('LIFECYCLE_EMAILS_ENABLED', 'false');
+      expect(getLifecycleEmailConfig().enabled).toBe(false);
+      vi.stubEnv('LIFECYCLE_EMAILS_ENABLED', 'true');
+      vi.stubEnv('LIFECYCLE_EMAIL_FROM', '');
+      expect(getLifecycleEmailConfig().enabled).toBe(false);
+    });
+
+    it.each([
+      ['KidHabit Hero <no-reply@kidhabithero.com>', { name: 'KidHabit Hero', email: 'no-reply@kidhabithero.com' }],
+      ['"KidHabit Hero" <no-reply@kidhabithero.com>', { name: 'KidHabit Hero', email: 'no-reply@kidhabithero.com' }],
+      ['<no-reply@kidhabithero.com>', { email: 'no-reply@kidhabithero.com' }],
+      ['no-reply@kidhabithero.com', { email: 'no-reply@kidhabithero.com' }],
+    ])('reads the sender %j', (from, expected) => {
+      expect(parseEmailSender(from)).toEqual(expected);
+    });
+
+    it('sends through Brevo with its key, sender object and the rendered message', async () => {
+      vi.stubEnv('LIFECYCLE_EMAILS_ENABLED', 'true');
+      vi.stubEnv('LIFECYCLE_EMAIL_PROVIDER', 'brevo');
+      vi.stubEnv('BREVO_API_KEY', 'brevo-key');
+      vi.stubEnv('LIFECYCLE_EMAIL_FROM', 'KidHabit Hero <no-reply@kidhabithero.com>');
+      const fetchMock = vi.fn<(url: string, init: { headers: Record<string, string>; body: string }) => Promise<Response>>(async () => new Response(JSON.stringify({ messageId: '<abc@smtp-relay.mailin.fr>' }), { status: 201, headers: { 'content-type': 'application/json' } }));
+      vi.stubGlobal('fetch', fetchMock);
+      await expect(sendLifecycleEmail({ to: 'parent@example.test', dedupeKey: 'k1', message })).resolves.toBe('<abc@smtp-relay.mailin.fr>');
+      const [url, init] = fetchMock.mock.calls[0];
+      expect(url).toBe('https://api.brevo.com/v3/smtp/email');
+      expect(init.headers['api-key']).toBe('brevo-key');
+      const body = JSON.parse(init.body);
+      expect(body.sender).toEqual({ name: 'KidHabit Hero', email: 'no-reply@kidhabithero.com' });
+      expect(body.to).toEqual([{ email: 'parent@example.test' }]);
+      expect(body.subject).toContain('KidHabit Hero');
+      expect(body.htmlContent).toContain('<!doctype html>');
+    });
+
+    it.each([400, 401, 429, 500])('turns a Brevo %i into a retryable provider error', async (status) => {
+      vi.stubEnv('LIFECYCLE_EMAILS_ENABLED', 'true');
+      vi.stubEnv('LIFECYCLE_EMAIL_PROVIDER', 'brevo');
+      vi.stubEnv('BREVO_API_KEY', 'brevo-key');
+      vi.stubEnv('LIFECYCLE_EMAIL_FROM', 'no-reply@kidhabithero.com');
+      vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ code: 'x' }), { status })));
+      await expect(sendLifecycleEmail({ to: 'parent@example.test', dedupeKey: 'k1', message })).rejects.toThrow(`email_provider_${status}`);
+    });
+
+    it('refuses to send when Brevo is selected but not configured', async () => {
+      vi.stubEnv('LIFECYCLE_EMAILS_ENABLED', 'true');
+      vi.stubEnv('LIFECYCLE_EMAIL_PROVIDER', 'brevo');
+      vi.stubEnv('BREVO_API_KEY', '');
+      vi.stubEnv('LIFECYCLE_EMAIL_FROM', 'no-reply@kidhabithero.com');
+      const fetchMock = vi.fn();
+      vi.stubGlobal('fetch', fetchMock);
+      await expect(sendLifecycleEmail({ to: 'parent@example.test', dedupeKey: 'k1', message })).rejects.toThrow('lifecycle_email_not_configured');
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
   });
 });

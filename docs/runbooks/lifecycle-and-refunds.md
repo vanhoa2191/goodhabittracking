@@ -4,7 +4,7 @@
 
 1. Confirm `202609280001_lifecycle_revenue_operations.sql` is applied.
 2. Keep `LIFECYCLE_EMAILS_ENABLED=false` until the sender domain and privacy review are complete.
-3. Set Worker secrets `RESEND_API_KEY`, `LIFECYCLE_EMAIL_FROM`, `CRON_SECRET` and `RESEND_WEBHOOK_SECRET`.
+3. Set Worker secrets `RESEND_API_KEY`, `LIFECYCLE_EMAIL_FROM`, `CRON_SECRET` and `RESEND_WEBHOOK_SECRET`. To deliver through Brevo instead, set `LIFECYCLE_EMAIL_PROVIDER=brevo` and `BREVO_API_KEY` (bounce and complaint handling then lives in the Brevo dashboard; the suppression webhook below is Resend-only).
 4. Set GitHub secret `LIFECYCLE_CRON_SECRET` to the same value as `CRON_SECRET`.
 5. Register the signed provider webhook documented in `docs/deployment.md`.
 6. Enable lifecycle email and manually dispatch once.
