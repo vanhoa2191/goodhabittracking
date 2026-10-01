@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildSubscriptionCapabilities, buildSubscriptionDetails, checkIsPro } from '@/lib/store/subscription';
+import { buildSubscriptionCapabilities, buildSubscriptionDetails, checkIsPro, shouldOfferTrial } from '@/lib/store/subscription';
 
 const now = Date.parse('2026-09-20T00:00:00.000Z');
 
@@ -50,5 +50,16 @@ describe('subscription domain', () => {
     expect(buildSubscriptionCapabilities('solo_monthly', null, '2026-10-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: 1 });
     expect(buildSubscriptionCapabilities('monthly', null, '2026-10-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: null });
     expect(buildSubscriptionCapabilities('yearly', null, '2027-09-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: null });
+  });
+});
+
+describe('free trial offer', () => {
+  it('is shown to families without a paid plan and to families already on the trial', () => {
+    expect(shouldOfferTrial(false, 'free')).toBe(true);
+    expect(shouldOfferTrial(true, 'trial')).toBe(true);
+    expect(shouldOfferTrial(false, 'monthly')).toBe(true);
+  });
+  it('is not shown once a family has a paid plan', () => {
+    for (const plan of ['solo_monthly', 'monthly', 'yearly', 'lifetime'] as const) expect(shouldOfferTrial(true, plan)).toBe(false);
   });
 });

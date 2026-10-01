@@ -100,3 +100,8 @@ export function buildSubscriptionDetails(
 
   return { isPro, plan, label, daysRemaining, statusText };
 }
+
+/** The free trial is an offer for families without a paid plan; a family already on one is not shown it. */
+export function shouldOfferTrial(isPro: boolean, plan: SubscriptionPlan): boolean {
+  return !isPro || plan === 'trial';
+}

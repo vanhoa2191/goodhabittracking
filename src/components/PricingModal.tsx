@@ -15,6 +15,7 @@ import { SubscriptionPlan, Language } from '@/types';
 import { useTranslation } from '@/lib/i18n/context';
 import { formatCurrency } from '@/lib/i18n/formatters';
 import { ModalShell } from '@/components/ui/ModalShell';
+import { shouldOfferTrial } from '@/lib/store/subscription';
 
 interface PricingModalProps {
   isOpen: boolean;
@@ -185,6 +186,8 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
   if (!isOpen) return null;
 
   const subDetails = getSubscriptionDetails();
+  // The trial is an offer for families without a paid plan; once a family has paid, it only shows the plan it is on.
+  const showTrialBanner = shouldOfferTrial(isPro, subscriptionPlan);
   const offerLabel = t.specialOffer.replace(/^[🎁👑]\s*/u, '');
 
   const handleActivateTrial = async () => {
@@ -243,7 +246,8 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
 
         {/* Scrollable Modal Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 scrollbar-thin">
-          {/* 1. Highlight Banner: 7-Day Free Trial */}
+          {/* 1. Highlight Banner: 7-Day Free Trial (offered until the family has a paid plan) */}
+          {showTrialBanner ? (
           <div data-testid="trial-summary" className="rounded-2xl border border-indigo-200 bg-indigo-50 p-4 shadow-sm dark:border-indigo-800 dark:bg-indigo-950/40">
             <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
               <div className="max-w-2xl space-y-1">
@@ -287,6 +291,12 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
             </div>
 
           </div>
+          ) : (
+            <div data-testid="current-plan-summary" className="flex items-center gap-2 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-extrabold text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
+              <Crown className="h-5 w-5" aria-hidden="true" />
+              <span>{t.yourPlanIs.replace('{plan}', subDetails.label)}</span>
+            </div>
+          )}
 
           {trialError && (
             <div role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-200">
@@ -320,7 +330,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                   {badge && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                       <span
-                        className={`text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm ${
+                        className={`whitespace-nowrap text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-sm ${
                           plan.popular
                             ? 'bg-indigo-600 text-white'
                             : 'bg-amber-500 text-white'
