@@ -102,4 +102,29 @@ describe('POST /api/payment/create referral discount', () => {
     expect(insert).not.toHaveBeenCalled();
     expect(createPayOSPayment).not.toHaveBeenCalled();
   });
+
+  it('draws a new order code when two checkouts collide, and gives up after three tries', async () => {
+    rpc.mockResolvedValue({ data: 0, error: null });
+    insert
+      .mockResolvedValueOnce({ error: { code: '23505' } })
+      .mockResolvedValueOnce({ error: null });
+    const response = await post('monthly');
+    expect(response.status).toBe(200);
+    expect(insert).toHaveBeenCalledTimes(2);
+    const codes = insert.mock.calls.map(([row]) => row.order_code);
+    expect(new Set(codes).size).toBe(2);
+    expect(createPayOSPayment).toHaveBeenCalledWith(expect.objectContaining({ orderCode: codes[1] }));
+
+    insert.mockReset();
+    insert.mockResolvedValue({ error: { code: '23505' } });
+    expect((await post('monthly')).status).toBe(503);
+    expect(insert).toHaveBeenCalledTimes(3);
+  });
+
+  it('does not retry an insert that failed for any other reason', async () => {
+    rpc.mockResolvedValue({ data: 0, error: null });
+    insert.mockResolvedValue({ error: { code: '42501' } });
+    expect((await post('monthly')).status).toBe(503);
+    expect(insert).toHaveBeenCalledTimes(1);
+  });
 });

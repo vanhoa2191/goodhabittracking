@@ -56,18 +56,22 @@ type PendingOrder = {
 
 type RpcClient = { rpc: (name: string, args: Record<string, unknown>) => PromiseLike<{ data: unknown; error: unknown }> };
 
+export type OrderOutcome = 'paid' | 'closed' | 'open';
+
 /**
  * Settles a pending order that PayOS reports as fully paid, through the same function the webhook uses, so a
  * webhook that never arrived (or arrives later) cannot leave a paid order unactivated or activate it twice.
- * Returns true when the order is paid after this call.
+ * 'closed' means PayOS itself says the link was cancelled or expired with nothing paid, so no money can still
+ * arrive for it; anything else unsettled stays 'open'.
  */
-export async function reconcilePendingOrder(admin: RpcClient, order: PendingOrder): Promise<boolean> {
-  if (order.status === 'PAID') return true;
-  if (order.status !== 'PENDING') return false;
+export async function reconcileOrderOutcome(admin: RpcClient, order: PendingOrder): Promise<OrderOutcome> {
+  if (order.status === 'PAID') return 'paid';
+  if (order.status !== 'PENDING') return 'open';
   const orderCode = Number(order.order_code);
   const info = await fetchPayOSPaymentInfo(orderCode);
-  if (!info || info.orderCode !== orderCode) return false;
-  if (info.status !== 'PAID' || info.amountPaid !== order.amount || info.amount !== order.amount) return false;
+  if (!info || info.orderCode !== orderCode) return 'open';
+  if ((info.status === 'CANCELLED' || info.status === 'EXPIRED') && info.amountPaid === 0) return 'closed';
+  if (info.status !== 'PAID' || info.amountPaid !== order.amount || info.amount !== order.amount) return 'open';
   const { data, error } = await admin.rpc('process_payos_webhook', {
     incoming_order_code: orderCode,
     incoming_amount: order.amount,
@@ -76,5 +80,10 @@ export async function reconcilePendingOrder(admin: RpcClient, order: PendingOrde
     incoming_payment_link_id: '',
     incoming_payload: info.raw,
   });
-  return !error && (data === 'activated' || data === 'duplicate' || data === 'order_already_paid');
+  return !error && (data === 'activated' || data === 'duplicate' || data === 'order_already_paid') ? 'paid' : 'open';
+}
+
+/** True when the order is paid after this call. */
+export async function reconcilePendingOrder(admin: RpcClient, order: PendingOrder): Promise<boolean> {
+  return (await reconcileOrderOutcome(admin, order)) === 'paid';
 }
