@@ -258,6 +258,7 @@ describe('family tenancy migration', () => {
       '202609300007_account_lifecycle_integrity.sql',
       '202609300008_activation_funnel.sql',
       '202609300009_point_adjustments.sql',
+      '202609300010_affiliate_program.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
