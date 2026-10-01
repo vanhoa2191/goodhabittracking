@@ -106,12 +106,16 @@ test('admin can update customer care data, subscription and a gift coupon', asyn
     plan: 'yearly',
     status: 'active',
     endsAt: '2027-12-31T23:59:59.000Z',
+    expectedUpdatedAt: null,
     reason: 'Cập nhật theo yêu cầu chăm sóc khách hàng',
   });
 
   await page.getByLabel('Lý do thao tác quản trị').fill('Cập nhật thông tin liên hệ khách hàng');
   await page.getByLabel('Số điện thoại').fill('0911222333');
-  await page.getByLabel(/Nhãn chăm sóc/).fill('ưu tiên, giới thiệu');
+  const tags = page.getByLabel(/Nhãn chăm sóc/);
+  await tags.fill('');
+  await tags.pressSequentially('ưu tiên, giới thiệu, ');
+  await expect(tags).toHaveValue('ưu tiên, giới thiệu, ');
   await page.getByRole('button', { name: 'Lưu hồ sơ khách hàng' }).click();
   await expect.poll(() => requests.some((request) => request.path === 'customer')).toBe(true);
   await expect(page.getByText(/Đã lưu hồ sơ/)).toBeVisible();

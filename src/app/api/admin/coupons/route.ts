@@ -33,6 +33,8 @@ const schema = z.object({
   maxRedemptions: z.number().int().positive().nullable(),
   expiresAt: z.string().datetime().nullable(),
   active: z.boolean(),
+  /** Creating is the default; changing an existing coupon must say so. */
+  update: z.boolean().default(false),
   reason: z.string().trim().min(5).max(500),
 }).strict().refine((value) => value.discountPercent !== null || value.bonusDays !== null);
 
@@ -53,6 +55,8 @@ export async function POST(request: NextRequest) {
     .eq('code', value.code)
     .maybeSingle();
   if (currentError) return adminJsonResponse({ error: 'Could not inspect coupon.', correlationId }, correlationId, 503);
+  if (current && !value.update) return adminJsonResponse({ error: 'That coupon code already exists.', code: 'coupon_exists', correlationId }, correlationId, 409);
+  if (!current && value.update) return adminJsonResponse({ error: 'Coupon not found.', correlationId }, correlationId, 404);
   const targetId = current?.id ?? crypto.randomUUID();
   const before = current
     ? {

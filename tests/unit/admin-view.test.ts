@@ -58,17 +58,18 @@ describe('customer filters', () => {
     customer('c', subscription({ plan: 'monthly', subscription_ends_at: plus(2) })),
     customer('d', null),
     customer('e', subscription({ plan: 'monthly', status: 'cancelled' })),
+    customer('f', subscription({ plan: 'monthly', subscription_ends_at: plus(-3) })),
   ];
   it('groups the list the way an admin triages it', () => {
     const ids = (filter: Parameters<typeof matchesFilter>[1]) => list.filter((item) => matchesFilter(item, filter, now)).map((item) => item.id);
-    expect(ids('all')).toEqual(['a', 'b', 'c', 'd', 'e']);
+    expect(ids('all')).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
     expect(ids('paying')).toEqual(['a', 'c']);
     expect(ids('trial')).toEqual(['b']);
     expect(ids('expiring')).toEqual(['b', 'c']);
     expect(ids('none')).toEqual(['d']);
   });
   it('counts each group for the filter chips', () => {
-    expect(countByFilter(list, now)).toEqual({ all: 5, paying: 2, trial: 1, expiring: 2, none: 1 });
+    expect(countByFilter(list, now)).toEqual({ all: 6, paying: 2, trial: 1, expiring: 2, none: 1 });
   });
   it('searches name, email, phone and tags ignoring case and spaces', () => {
     const target = customer('x', null, { fullName: 'Nguyễn An', phone: '0911222333', tags: ['ưu tiên'] });
