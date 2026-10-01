@@ -81,6 +81,17 @@ describe('requireParentUnlock', () => {
     expect(await requireParentUnlock(requestWith(), parent, client({ data: { configured: false }, error: null }))).toBeNull();
   });
 
+  it('refuses a family without a PIN when the action requires one', async () => {
+    const response = await requireParentUnlock(requestWith(), parent, client({ data: { configured: false }, error: null }), { requirePin: true });
+    expect(response?.status).toBe(403);
+    await expect(response?.json()).resolves.toMatchObject({ code: 'parent_pin_not_set' });
+  });
+
+  it('lets a family with an entered PIN through an action that requires one', async () => {
+    const cookie = await issuedCookie(parent, Date.now());
+    expect(await requireParentUnlock(requestWith(cookie), parent, client({ data: { configured: true }, error: null }), { requirePin: true })).toBeNull();
+  });
+
   it('refuses a family with a PIN when the PIN was not entered in this browser', async () => {
     const response = await requireParentUnlock(requestWith(), parent, client({ data: { configured: true }, error: null }));
     expect(response?.status).toBe(403);

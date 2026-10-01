@@ -91,6 +91,31 @@ describe('POST /api/admin/affiliate', () => {
     expect(recordAdminAudit.mock.calls.at(-1)![1].outcome).toBe('failed');
   });
 
+  it('lets an admin claim a payout before transferring and audits it', async () => {
+    rpc.mockResolvedValue({ data: 'claimed', error: null });
+    const response = await POST(post({ payoutId, resolution: 'claim', reason: 'Nhận xử lý chuyển khoản' }));
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledTimes(1);
+    expect(rpc).toHaveBeenCalledWith('admin_claim_affiliate_payout', { target_payout_id: payoutId, admin_user: 'admin-1' });
+    expect(recordAdminAudit.mock.calls.map(([, entry]) => entry.outcome)).toEqual(['attempted', 'succeeded']);
+    expect(recordAdminAudit.mock.calls.at(-1)![1]).toMatchObject({ action: 'affiliate.payout.claim' });
+  });
+
+  it('tells a second admin that someone else already has the payout', async () => {
+    rpc.mockResolvedValue({ data: 'taken', error: null });
+    const response = await POST(post({ payoutId, resolution: 'claim', reason: 'Nhận xử lý chuyển khoản' }));
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toMatchObject({ status: 'taken' });
+    expect(recordAdminAudit.mock.calls.at(-1)![1].outcome).toBe('failed');
+  });
+
+  it.each(['claimed_by_other', 'claim_required', 'amount_mismatch'])('answers a resolution the database refused with %s', async (data) => {
+    rpc.mockResolvedValue({ data, error: null });
+    const response = await POST(post({ payoutId, resolution: 'paid', reference: 'FT1', reason: 'Chuyển khoản xong' }));
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toMatchObject({ status: data });
+  });
+
   it('refuses a cross-site request', async () => {
     const response = await POST(post({ payoutId, resolution: 'paid', reference: 'x', reason: 'Chuyển khoản xong' }, { origin: 'https://evil.example' }));
     expect(response.status).toBe(403);

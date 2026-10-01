@@ -68,18 +68,24 @@ export function clearParentUnlock(response: NextResponse): void {
 
 /**
  * Sensitive parent actions need the PIN to have been entered in this browser. A family that never
- * set a PIN has nothing to unlock. When the PIN state cannot be read the request is refused.
+ * set a PIN has nothing to unlock unless the action asks for `requirePin`. When the PIN state cannot be read the request is refused.
  */
 export async function requireParentUnlock(
   request: NextRequest,
   parent: UnlockSubject,
   supabase: Pick<SupabaseClient, 'rpc'>,
+  options: { readonly requirePin?: boolean } = {},
 ): Promise<NextResponse | null> {
   const { data, error } = await supabase.rpc('get_parent_pin_status', { target_family_id: parent.familyId });
   if (error || !data || typeof data !== 'object') {
     return NextResponse.json({ error: 'Could not check the parent PIN.' }, { status: 503 });
   }
-  if ((data as { configured?: unknown }).configured !== true) return null;
+  if ((data as { configured?: unknown }).configured !== true) {
+    // Actions that move money are not left open for a family that never chose a PIN.
+    return options.requirePin
+      ? NextResponse.json({ error: 'Set a parent PIN first.', code: 'parent_pin_not_set' }, { status: 403 })
+      : null;
+  }
   if (await hasParentUnlock(request, parent)) return null;
   return NextResponse.json({ error: 'Parent PIN required.', code: 'parent_pin_required' }, { status: 403 });
 }

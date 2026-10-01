@@ -20,9 +20,9 @@ Phụ huynh tham gia trong ứng dụng (Cài đặt, mục Giới thiệu bạn
 1. **Ghi nhận.** Trang marketing đọc `?ref=` và đặt cookie `kidhabit_ref` (60 ngày, domain `kidhabithero.com`, chỉ nhận mã 8 ký tự hợp lệ). Sau khi phụ huynh đăng nhập, `ReferralClaimer` gửi mã tới `POST /api/referral/claim`; hàm `claim_referral` quyết định (`claimed`, `self`, `invalid`, `expired`, `already_referred`, `disabled`) và cookie được xóa khi có câu trả lời cuối.
    **Nhập mã thủ công.** Gia đình còn đủ điều kiện (mới trong thời hạn ghi nhận, chưa trả tiền, chưa được giới thiệu) thấy ô "Có mã giới thiệu từ bạn bè?" trong Cài đặt và trong cửa sổ thanh toán. Ô này gọi cùng `POST /api/referral/claim`; `GET` cùng đường dẫn trả `referral_claim_state()` (`eligible`, `referred`, `closed`, `disabled`) để ẩn ô khi không còn áp dụng. Nhập thủ công và cookie dùng chung luật của `claim_referral`, nên không thể ghi nhận hai lần. Mã chỉ ghi nhận được trước khi đơn đầu tiên được thanh toán.
 2. **Sinh hoa hồng.** `process_payos_webhook` gọi `accrue_referral_commission` sau khi đơn chuyển PAID: một khoản cho mỗi đơn (`order_code` duy nhất), trạng thái `pending`, `available_at = now() + hold`. Lỗi ở bước này chỉ cảnh báo, không bao giờ làm hỏng thanh toán.
-3. **Rút tiền.** Người giới thiệu lưu thông tin ngân hàng và bấm yêu cầu (cả hai cần mã PIN phụ huynh đã xác minh ở máy chủ). `request_affiliate_payout` gom các khoản đã hết hạn giữ thành một yêu cầu `requested`.
-4. **Chi trả (admin).** Trang `/admin`, mục Chương trình giới thiệu: chuyển khoản thủ công tới tài khoản trong yêu cầu, rồi bấm "Đã chuyển khoản" kèm mã giao dịch và lý do (bắt buộc, cần MFA, vai trò finance hoặc super admin, ghi nhật ký). "Từ chối" trả các khoản về `pending`.
-5. **Hoàn tiền.** Khi ca hoàn tiền được đánh dấu `completed` với mã `manual_refund_confirmed`, hoa hồng của đơn đó bị thu hồi nếu còn `pending`. Nếu đã `requested`, từ chối yêu cầu rút trước rồi xử lý lại ca; nếu đã `paid`, xử lý tay (trừ vào khoản sau hoặc thu lại).
+3. **Rút tiền.** Người giới thiệu lưu thông tin ngân hàng và bấm yêu cầu (cả hai cần gia đình đã đặt mã PIN phụ huynh và mã đã được nhập trên trình duyệt này; gia đình chưa đặt PIN được yêu cầu đặt trước). `request_affiliate_payout` gom các khoản đã hết hạn giữ thành một yêu cầu `requested`.
+4. **Chi trả (admin).** Trang `/admin`, mục Chương trình giới thiệu. Một quản trị viên bấm "Nhận xử lý" trước khi chuyển khoản (quyền xử lý hết hạn sau 2 giờ; người khác không thể trả hay từ chối khi quyền còn hiệu lực), rồi chuyển khoản thủ công tới tài khoản trong yêu cầu và bấm "Đã chuyển khoản" kèm mã giao dịch và lý do (bắt buộc, cần MFA, vai trò finance hoặc super admin, ghi nhật ký). Hệ thống từ chối đánh dấu đã chuyển khi tổng hoa hồng gắn với yêu cầu khác số tiền (`amount_mismatch`). "Từ chối" trả các khoản về `pending`. Danh sách luôn hiện đủ mọi yêu cầu đang chờ; lịch sử đã xử lý giới hạn 50 dòng gần nhất trong 60 ngày.
+5. **Hoàn tiền.** Khi ca hoàn tiền được đánh dấu `completed` với mã `manual_refund_confirmed`, hoa hồng của đơn đó bị thu hồi nếu còn `pending`. Việc thu hồi chạy TRƯỚC khi ca được đánh dấu hoàn tất: nếu thu hồi lỗi, ca vẫn mở để thử lại (thao tác lặp lại an toàn). Hồ sơ hoàn tiền không có mã đơn không thể khớp hoa hồng, nên trang admin cảnh báo để xử lý tay. Nếu đã `requested`, từ chối yêu cầu rút trước rồi xử lý lại ca; nếu đã `paid`, xử lý tay (trừ vào khoản sau hoặc thu lại).
 
 ## Bảo mật và riêng tư
 
@@ -34,6 +34,11 @@ Phụ huynh tham gia trong ứng dụng (Cài đặt, mục Giới thiệu bạn
 ## Kiểm chứng
 
 `npm run verify:live-affiliate` chạy trên production với dữ liệu tổng hợp tự dọn: đăng ký, tự giới thiệu bị từ chối, gia đình quá hạn, 399.000 đ sinh 119.700 đ, thông báo thanh toán lặp không tính hai lần, giữ hạn, thu hồi, yêu cầu rút, từ chối rồi chi trả, không lộ người được giới thiệu. Chạy lại sau mỗi lần sửa hàm hoặc migration liên quan.
+
+## Giới hạn đã biết
+
+- **Tự giới thiệu qua tài khoản thứ hai.** Một người có thể tạo hai tài khoản và dùng mã của tài khoản này cho tài khoản kia; hệ thống chỉ chặn cùng tài khoản hoặc cùng gia đình. Kết quả là hoàn 30% cho chính họ chứ không có lợi nhuận, và việc chuyển khoản là thủ công nên admin có thể rà soát (ví dụ tên chủ tài khoản nhận tiền trùng tên người trả) trước khi chuyển.
+- **Tổng tiền lớn.** Mỗi yêu cầu rút bị giới hạn dưới 2.000.000.000 đ (cột số nguyên 32 bit); đạt mức đó thì trả về `amount_too_large` và cần xử lý tay.
 
 ## Chưa làm / cần quyết định
 

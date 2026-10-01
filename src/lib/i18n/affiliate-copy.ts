@@ -42,7 +42,7 @@ export type AffiliateCopy = {
     readonly referred: string;
     readonly results: Readonly<Record<'claimed' | 'invalid' | 'self' | 'already_referred' | 'expired' | 'disabled' | 'failed', string>>;
   };
-  readonly messages: Readonly<Record<'saved' | 'invalidDetails' | 'requested' | 'belowMinimum' | 'missingDetails' | 'detailsRecent' | 'suspended' | 'failed' | 'loadFailed' | 'pinRequired', string>>;
+  readonly messages: Readonly<Record<'saved' | 'invalidDetails' | 'requested' | 'belowMinimum' | 'missingDetails' | 'detailsRecent' | 'suspended' | 'failed' | 'loadFailed' | 'pinRequired' | 'pinNotSet', string>>;
 };
 
 const vi: AffiliateCopy = {
@@ -111,6 +111,7 @@ const vi: AffiliateCopy = {
     failed: 'Chưa thực hiện được. Vui lòng thử lại.',
     loadFailed: 'Chưa tải được chương trình giới thiệu. Vui lòng thử lại sau.',
     pinRequired: 'Hãy nhập mã PIN phụ huynh rồi thử lại.',
+    pinNotSet: 'Hãy đặt mã PIN phụ huynh trong Cài đặt trước khi lưu thông tin nhận tiền hoặc yêu cầu rút.',
   },
 };
 
@@ -180,6 +181,7 @@ const en: AffiliateCopy = {
     failed: 'Something went wrong. Please try again.',
     loadFailed: 'Could not load the referral programme. Please try again later.',
     pinRequired: 'Enter the parent PIN and try again.',
+    pinNotSet: 'Set a parent PIN in Settings before saving payout details or requesting a withdrawal.',
   },
 };
 

@@ -1,6 +1,6 @@
 import { maskPayoutAccounts } from '@/lib/referral/mask-account';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
-import { AdminAffiliatePayoutActions } from '@/components/AdminAffiliatePayoutActions';
+import { AdminAffiliatePayoutActions, type PayoutClaimState } from '@/components/AdminAffiliatePayoutActions';
 
 type Payout = {
   readonly id: string;
@@ -12,6 +12,8 @@ type Payout = {
   readonly requestedAt: string;
   readonly resolvedAt: string | null;
   readonly reference: string | null;
+  readonly processingBy?: string | null;
+  readonly processingAt?: string | null;
 };
 
 type Overview = {
@@ -19,6 +21,7 @@ type Overview = {
   readonly referrals: number;
   readonly owed: { readonly held: number; readonly available: number; readonly requested: number; readonly paid: number };
   readonly payouts: readonly Payout[];
+  readonly loadedAt: number;
 };
 
 const money = (value: number) => `${new Intl.NumberFormat('vi-VN').format(value)} đ`;
@@ -27,14 +30,24 @@ async function load(canSeeFullAccounts: boolean): Promise<Overview | null> {
   try {
     const { data, error } = await createAdminSupabaseClient().rpc('admin_affiliate_overview');
     if (error || !data) return null;
-    return canSeeFullAccounts ? data as Overview : maskPayoutAccounts(data as Overview);
+    const loadedAt = Date.now();
+    const overview = canSeeFullAccounts ? data as Overview : maskPayoutAccounts(data as Overview);
+    return { ...overview, loadedAt };
   } catch {
     return null;
   }
 }
 
 /** Referral programme totals and the withdrawal requests waiting for a manual bank transfer. */
-export async function AdminAffiliatePanel({ canSeeFullAccounts }: { readonly canSeeFullAccounts: boolean }) {
+const CLAIM_MINUTES = 120;
+
+function claimStateOf(payout: Payout, adminId: string, now: number): PayoutClaimState {
+  const fresh = payout.processingAt ? now - new Date(payout.processingAt).getTime() < CLAIM_MINUTES * 60_000 : false;
+  if (!payout.processingBy || !fresh) return 'unclaimed';
+  return payout.processingBy === adminId ? 'mine' : 'other';
+}
+
+export async function AdminAffiliatePanel({ canSeeFullAccounts, adminId }: { readonly canSeeFullAccounts: boolean; readonly adminId: string }) {
   const overview = await load(canSeeFullAccounts);
   if (!overview) {
     return (
@@ -76,7 +89,7 @@ export async function AdminAffiliatePanel({ canSeeFullAccounts }: { readonly can
             <p className="font-black tabular-nums">{money(payout.amount)}</p>
             <p className="text-sm">{payout.bank} · {payout.accountNumber} · {payout.accountName}</p>
             <p className="text-xs text-slate-500">Yêu cầu lúc {new Date(payout.requestedAt).toLocaleString('vi-VN')}</p>
-            <AdminAffiliatePayoutActions payoutId={payout.id} />
+            <AdminAffiliatePayoutActions payoutId={payout.id} claimState={claimStateOf(payout, adminId, overview.loadedAt)} />
           </li>
         ))}
       </ul>
