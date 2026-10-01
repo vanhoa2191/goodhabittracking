@@ -25,4 +25,9 @@ describe('admin audit minimization', () => {
     });
     expect(JSON.stringify(snapshot)).not.toMatch(/0911222333|child@example\.com|private support note|secret/i);
   });
+
+  it('keeps the affiliate action fields the database allowlist also accepts', () => {
+    expect(minimizeAdminAuditSnapshot({ claimed: true, referral: 'reversed', accountNumber: '123' }))
+      .toEqual({ claimed: true, referral: 'reversed' });
+  });
 });

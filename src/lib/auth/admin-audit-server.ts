@@ -3,6 +3,7 @@ import 'server-only';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { minimizeAdminAuditSnapshot } from '@/lib/auth/admin-audit';
 import type { AuthorizedAdmin } from '@/lib/auth/admin-access';
+import { logOperationalEvent } from '@/lib/observability/logger';
 
 export type AdminAuditInput = {
   readonly actor: AuthorizedAdmin;
@@ -32,5 +33,14 @@ export async function recordAdminAudit(
     reason: input.reason.trim().slice(0, 500),
     correlation_id: input.correlationId,
   });
+  if (error) {
+    // The admin action may already have happened (outcome succeeded/failed is written after it), so a
+    // lost audit row must at least leave an operational trace to reconcile by correlation id.
+    logOperationalEvent('error', {
+      operation: 'admin_audit_write',
+      reasonCode: `${input.outcome}:${error.code ?? 'unknown'}`,
+      correlationId: input.correlationId,
+    });
+  }
   return !error;
 }
