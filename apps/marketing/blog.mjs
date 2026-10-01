@@ -1,6 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { appUrl, escapeHtml, icon, renderDocument, renderInfoHero, slugify } from './render-site.mjs';
+import { escapeHtml, icon, renderArticleCta, renderDocument, renderInfoHero, slugify } from './render-site.mjs';
 
 // Posts are Markdown files in apps/marketing/blog/<slug>.md with a small header (see docs/blog-guide.md).
 // Everything the build reads is validated here, so a bad post fails the build instead of reaching the site.
@@ -247,7 +247,7 @@ export function renderBlogPost({ post, posts, marketingOrigin, appOrigin }) {
   <section class="section post-body"><div class="shell post-shell">
     ${toc}
     <article class="prose">${html}</article>
-    <aside class="post-cta"><img src="/mascots/${post.mascot}.webp" alt="" width="120" height="120" loading="lazy" decoding="async"><div><h2>Thử cùng con một thói quen nhỏ</h2><p>KidHabit giúp ba mẹ chọn thói quen phù hợp độ tuổi, đặt tín hiệu cùng con và xem lại những việc con đã làm.</p><div class="post-cta-actions"><a class="button" href="${appUrl(appOrigin, '/start')}">Dùng thử 7 ngày</a><a class="text-link" href="/science/">Xem cơ sở khoa học ${icon('arrow')}</a></div></div></aside>
+    ${renderArticleCta({ appOrigin, mascot: post.mascot, heading: 'Thử cùng con một thói quen nhỏ', text: 'KidHabit giúp ba mẹ chọn thói quen phù hợp độ tuổi, đặt tín hiệu cùng con và xem lại những việc con đã làm. Chọn gói phù hợp hoặc dùng thử 7 ngày trước, không cần thẻ.' })}
     ${relatedHtml}
   </div></section></main>`;
   const structuredData = jsonLd({
