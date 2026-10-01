@@ -28,6 +28,12 @@ export const VIETNAMESE_FRAMEWORK: LocalizedFramework = {
 const TRANSLATIONS: Readonly<Partial<Record<Exclude<Language, 'vi'>, () => Promise<unknown>>>> = {
   en: () => import('@/data/habit-framework-v1.en.json').then((module) => module.default),
   ko: () => import('@/data/habit-framework-v1.ko.json').then((module) => module.default),
+  fr: () => import('@/data/habit-framework-v1.fr.json').then((module) => module.default),
+  de: () => import('@/data/habit-framework-v1.de.json').then((module) => module.default),
+  it: () => import('@/data/habit-framework-v1.it.json').then((module) => module.default),
+  es: () => import('@/data/habit-framework-v1.es.json').then((module) => module.default),
+  zh: () => import('@/data/habit-framework-v1.zh.json').then((module) => module.default),
+  ja: () => import('@/data/habit-framework-v1.ja.json').then((module) => module.default),
 };
 
 /** The language whose text a reader of `language` actually sees. */

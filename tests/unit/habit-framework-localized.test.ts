@@ -3,8 +3,7 @@ import { createActivityFromFrameworkHabit, HABIT_FRAMEWORK_CATALOG } from '@/lib
 import { frameworkLanguageFor, loadFramework, VIETNAMESE_FRAMEWORK } from '@/lib/habit-framework/localized';
 import type { Language } from '@/types';
 
-const translated: readonly Language[] = ['en', 'ko'];
-const readsEnglish: readonly Language[] = ['fr', 'de', 'it', 'es', 'zh', 'ja'];
+const translated: readonly Language[] = ['en', 'ko', 'fr', 'de', 'it', 'es', 'zh', 'ja'];
 
 describe('localized habit framework', () => {
   it('gives Vietnamese at once, as the authoritative text', async () => {
@@ -25,12 +24,13 @@ describe('localized habit framework', () => {
 
   it('keeps Vietnamese for Vietnamese readers, uses a translation where one exists, and English elsewhere', () => {
     expect(frameworkLanguageFor('vi')).toBe('vi');
-    expect(frameworkLanguageFor('ko')).toBe('ko');
-    for (const language of readsEnglish) expect(frameworkLanguageFor(language)).toBe('en');
+    for (const language of translated) expect(frameworkLanguageFor(language)).toBe(language);
+    // A language added to the app before its translation exists reads the English text.
+    expect(frameworkLanguageFor('xx' as Language)).toBe('en');
   });
 
-  it.each(readsEnglish)('serves the English text to a reader of %s until that language is translated', async (language) => {
-    expect((await loadFramework(language)).language).toBe('en');
+  it('serves the English text to a reader of a language that has no translation yet', async () => {
+    expect((await loadFramework('xx' as Language)).language).toBe('en');
   });
 
   it('loads a language once and reuses it', async () => {

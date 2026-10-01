@@ -1,0 +1,1465 @@
+{
+  "schemaVersion": "1.0.0",
+  "contentVersion": "1.1.0",
+  "language": "de",
+  "source": {
+    "file": "KHUNG_THOI_QUEN_0-18_TDTT_TDNT_v1.md",
+    "sha256": "85460efcafe42bc585582954dbb559969126b3e09da79c0929762563773f31d0"
+  },
+  "review": {
+    "structureStatus": "approved",
+    "approvalBasis": "user-directed",
+    "evidenceStatus": "source-only",
+    "recordedAt": "2026-09-22"
+  },
+  "translation": {
+    "status": "provisional",
+    "basis": "owner-approved",
+    "recordedAt": "2026-10-01",
+    "authoritativeLanguage": "vi",
+    "translatedFromContentVersion": "1.1.0"
+  },
+  "stages": [
+    {
+      "id": "GD1",
+      "ageRange": "0-3",
+      "title": "Grundlagen von Sicherheit und Sinneswahrnehmung",
+      "adultRole": "Vorleben und beschreiben"
+    },
+    {
+      "id": "GD2",
+      "ageRange": "3-6",
+      "title": "Entdecken & Willenskraft",
+      "adultRole": "Gemeinsam tun und erinnern"
+    },
+    {
+      "id": "GD3",
+      "ageRange": "6-12",
+      "title": "Fleiß und Fähigkeiten",
+      "adultRole": "Begleiten und gemeinsam tun"
+    },
+    {
+      "id": "GD4",
+      "ageRange": "12-15",
+      "title": "Identität & Gefühle",
+      "adultRole": "Ihr Kind begleiten und die Regeln gemeinsam einhalten"
+    },
+    {
+      "id": "GD5",
+      "ageRange": "15-18",
+      "title": "Ausrichtung und Verantwortung",
+      "adultRole": "Berater und Rückhalt"
+    }
+  ],
+  "habits": [
+    {
+      "id": "GD1-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "NT",
+      "name": "Signal-und-Antwort-Schleife (gesehen und beantwortet werden)",
+      "childMeaning": "„Wenn ich rufe, antwortet jemand.“",
+      "successSignal": "Ihr Kind gibt ein Signal (Blickkontakt, Laute oder Zeigen) und erwartet eine Antwort; der Erwachsene antwortet innerhalb von 3–5 Sekunden.",
+      "activities": [
+        "Schauen – warten – antworten: Wenn Ihr Kind einen Laut macht oder brabbelt, schauen Sie ihm in die Augen, wiederholen Sie den Laut und warten Sie, bis es antwortet. 5–10 Wechsel pro Einheit, 4–6 Einheiten/Tag.",
+        "Kuckuck-Spiel: Bringen Sie „da – weg – wieder da“ bei – als Grundlage dafür, dass Dinge weiter existieren, auch wenn man sie nicht sieht.",
+        "Gefühle benennen, wenn Ihr Kind weint: „Du bist ungeduldig, weil du das nicht erreichen kannst.“ – 1 Satz, ohne Erklärung.",
+        "Halten Sie Ihr Kind 3-mal/Tag auf Augenhöhe, jeweils 60 Sekunden, ohne zu sprechen; schauen Sie es einfach an und lächeln Sie (der Vater/die zweite Betreuungsperson, wenn möglich).",
+        "Legen Sie das Telefon während 15 Minuten Spielzeit mit Ihrem Kind beiseite – als Ritual: „Das Telefon bleibt an der Tür.“",
+        "Eine Tafel „Ich rufe – Mama antwortet“: Zählen Sie, wie oft Ihr Kind im Laufe des Tages ein Signal gibt und eine Antwort bekommt (nur zur eigenen Beobachtung; sagen Sie es Ihrem Kind nicht)."
+      ],
+      "parentGuidance": "Die wichtigste Betreuungsperson macht es vor; die zweite Betreuungsperson wiederholt es genau gleich, damit Ihr Kind Vertrauen zu mehr als einer Person entwickelt.",
+      "measurement": "Anteil beantworteter Signale ≥ 80%/Tag; Anzahl gehaltener Blickkontakte ≥ 5-mal/Tag.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-03-NhanCachKienToan",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD1-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "NT",
+      "name": "Ein ruhiger Tagesrhythmus und Selbstberuhigung",
+      "childMeaning": "„Wenn es immer so weitergeht, fühle ich mich sicher.“",
+      "successSignal": "Ihr Kind geht zur Schlafenszeit selbst zu seinem Schlafplatz; das Weinen beim Wechsel von Aktivitäten wird kürzer; es hat einen selbst gewählten „Übergangsgegenstand“.",
+      "activities": [
+        "Feste Reihenfolge vor dem Schlafen (3 Schritte, immer in derselben Reihenfolge): baden → 1 Buch lesen → 1 Lied singen → hinlegen.",
+        "Übergangsritual mit einem klaren Signal: Verwenden Sie denselben 1 Satz („Die Spielzeit ist vorbei, jetzt gehen wir baden“) und dieselbe 1 Handbewegung 30 Sekunden vor dem Wechsel der Aktivität.",
+        "Sicherheitsplatz: eine feste Ecke mit 1 Kissen, 1 Buch und 1 Lampe; Ihr Kind darf dorthin gehen, wenn es müde ist.",
+        "Atmen Sie gemeinsam: Legen Sie Ihre Hand auf die eigene Brust, atmen Sie 3-mal lang ein und aus und zeigen Sie Ihrem Kind, wie es Sie nachahmt (3 Durchgänge, wenn Ihr Kind aufgebracht ist).",
+        "Tagesklänge: Verwenden Sie 1 eigenes Lied zum Schlafen und 1 eigenes Lied zum Spielen – verwenden Sie dasselbe Lied nicht für beides.",
+        "Tagesrhythmus-Tafel (Bilder): Hängen Sie 6 Bildkarten für 6 Zeitpunkte des Tages auf; Ihr Kind zeigt selbst auf die nächste Karte."
+      ],
+      "parentGuidance": "Die Erwachsenen müssen den Rhythmus zuerst einhalten – ein von Erwachsenen verursachter Bruch im Rhythmus zählt nicht als Versagen Ihres Kindes.",
+      "measurement": "Zeit bis zum Einschlafen (Minuten) nimmt über 4 Wochen allmählich ab; Anzahl der Unterbrechungen des Tagesrhythmus < 2 Wochen.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#9DạngNgười:NG-4-ThanTai(trẻ"
+      ]
+    },
+    {
+      "id": "GD1-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "SK",
+      "name": "Gesunder und ausreichender Schlaf",
+      "childMeaning": "„Wenn es dunkel ist, schlafe ich, damit ich morgen weiter wachsen kann.“",
+      "successSignal": "Die gesamte Schlafdauer/24h erreicht den Altersrichtwert; Schlafenszeit und Aufwachzeit weichen zwischen den Tagen um ≤ 30 Minuten voneinander ab.",
+      "activities": [
+        "Messen Sie die gesamte Schlafdauer 3 Tage lang und vergleichen Sie sie dann mit dem Altersrichtwert (12–16h bei 4–12 Monaten; 11–14h bei 1–2 Jahren; 10–13h bei 3 Jahren).",
+        "Optimieren Sie das Schlafzimmer: dunkel – kühl – ruhig; keine Bildschirme im Schlafzimmer; nur 1 Nachtlicht.",
+        "Verringern Sie die Unterstützung beim Einschlafritual schrittweise: von „Mama liegt da, bis du eingeschlafen bist“ → „Mama sitzt 5 Minuten neben dir“ → „Mama bleibt an der Tür“ → „Mama bleibt draußen“. Halten Sie jede Stufe mindestens 5 Tage lang.",
+        "Morgenlicht 15 Minuten/Tag: Gehen Sie innerhalb der ersten 1 Stunde nach dem Aufwachen mit Ihrem Kind nach draußen, um seine innere Uhr zu verankern.",
+        "Schlaf-Sticker-Tafel: Jeden Abend klebt Ihr Kind 1 Mond auf; bei 7 Monden/Woche unternimmt die ganze Familie 1 schöne Sache (keine Sachgeschenke).",
+        "Beruhigen Sie Ihr Kind, wenn es erschrocken aufwacht: Gehen Sie ins Zimmer, sagen Sie 1 Satz, klopfen Sie 3-mal sanft und gehen Sie wieder – nehmen Sie es nicht aus dem Bett."
+      ],
+      "parentGuidance": "Die ganze Familie macht gemeinsam das Licht aus – Ihr Kind lernt den Rhythmus aus der Umgebung, nicht aus Ermahnungen.",
+      "measurement": "Durchschnittliche Schlafstunden/Tag; Anzahl des nächtlichen Aufwachens; Abweichung der Schlafenszeit.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan"
+      ]
+    },
+    {
+      "id": "GD1-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "SK",
+      "name": "Grobmotorische Bewegung und Bewegungsspiel",
+      "childMeaning": "„Mein Körper ist zum Rennen, Klettern, Krabbeln und Rollen da.“",
+      "successSignal": "Ihr Kind beherrscht mindestens 3 altersgerechte grobmotorische Bewegungen (Rollen, Krabbeln, auf einen niedrigen Stuhl klettern, Rennen, Werfen, Treten); es bittet selbst darum, draußen zu spielen.",
+      "activities": [
+        "Ein freier Bewegungsparcours zu Hause: Verwenden Sie Kissen, Kartons und Klebeband für einen „Kletterweg“, den Sie jede Woche verändern.",
+        "Ein Ritual von 20 Minuten draußen jeden Morgen (vor dem Lernen/vor Bildschirmen) – so fest wie Zähneputzen.",
+        "Das Spiel „Der Linie folgen“: Kleben Sie einen Weg auf den Boden – Ihr Kind geht, springt oder krabbelt daran entlang.",
+        "Im Takt springen: Spielen Sie 1 Musikstück, lassen Sie Ihr Kind im Stehen springen und zählen Sie laut 1–2–3–4 (Bewegung + Sprache + Rhythmus).",
+        "Ball und Gleichgewicht: Werfen Sie einen Ball in einen Korb (1m), stehen Sie 3 Sekunden auf 1 Bein und gehen Sie auf einer Linie entlang.",
+        "Eine „5-Felder-Bewegungstafel“: Jeden Tag malt Ihr Kind 1 Feld aus, nachdem es 3 kleine Bewegungen geschafft hat (krabbeln – werfen – springen)."
+      ],
+      "parentGuidance": "Spielen Sie mit Ihrem Kind, statt nur daneben zu stehen und zuzusehen; Sicherheit kommt zuerst, Ergebnisse danach.",
+      "measurement": "Anzahl der Tage/Woche mit ≥ 180 Minuten Gesamtbewegung (freie Spielaktivitäten mitgezählt); Anzahl neu erworbener Fähigkeiten.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD1-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "MQH",
+      "name": "Drei grundlegende Höflichkeitsrituale: Augen – Mund – Hände",
+      "childMeaning": "„Wenn ich jemanden treffe, schaue ich hin, sage Hallo und danke.“",
+      "successSignal": "Ihr Kind beginnt 3 Rituale selbstständig und braucht höchstens 1 Erinnerung: (1) Blickkontakt aufnehmen, (2) Hallo sagen/winken, (3) durch eine Handlung oder einen Laut danken.",
+      "activities": [
+        "Das Ritual „Vier Schritte beim Begegnen“: Anhalten → Schauen → Hallo sagen → Lächeln. Spielen Sie einen Besuch zu Hause nach; üben Sie 2 Minuten/Tag.",
+        "Ein Danke-und-Entschuldigung-Lied: Singen Sie es 1-mal täglich und ändern Sie die Worte so, dass sie sich auf Menschen im Haushalt beziehen.",
+        "„Bo thi (freiwilliges Geben) durch ein Lächeln“ üben [BT-1]: Ihr Kind lächelt Menschen im Haushalt und dann dem Gemüsehändler oder Sicherheitsmitarbeiter zu. Sagen Sie: „Dein Lächeln hat diesen Menschen glücklich gemacht.“",
+        "3 Sekunden Blickkontakt [BT-2]: Halten Sie beim Überreichen von etwas an jemanden 3 Sekunden Blickkontakt. Zählen Sie für Ihr Kind laut mit.",
+        "Sprechen Sie für Ihr Kind, wenn es noch nicht sprechen kann: „Danke, Oma“ (der Erwachsene spricht, das Kind nickt) – sprechen Sie in den ersten 6 Monaten für Ihr Kind und lassen Sie es danach selbst sprechen.",
+        "Ein Bücherregal „Nette Worte“: jede Woche 1 Buch über Begrüßen – Danken – Teilen; lesen Sie vor dem Schlafengehen."
+      ],
+      "parentGuidance": "Die Erwachsenen müssen diese Dinge vor dem Kind tun – Kinder von 0–3 Jahren lernen Höflichkeit durch Nachahmen, nicht durch Belehrung.",
+      "measurement": "Anzahl der Begrüßungen/Danksagungen, die Ihr Kind pro Tag ohne Erinnerung selbst sagt; Anzahl der Menschen, die Ihr Kind im Laufe der Woche von selbst begrüßt.",
+      "conceptTags": [
+        "#7Giàu:G4-PhamChat(Lễ)",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-04-PhamChatUuTu",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#9DạngNgười:NG-7-ThayCo",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#7BốThí:BT-3-NgonThi",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD1-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "MQH",
+      "name": "Teilen und Abwechseln",
+      "childMeaning": "„Ich bin dran – mein Freund ist dran.“",
+      "successSignal": "Ihr Kind kann mindestens 10–20 Sekunden auf seinen Zug warten; es gibt einem Freund Dinge nach dem Spielen zurück; es fragt, bevor es etwas nimmt.",
+      "activities": [
+        "Ein „Abwechseln“-Spiel 3 Minuten/Tag: Rollen Sie einen Ball hin und her und sagen Sie bei jedem Zug „Du bist dran“ / „Mama ist dran“.",
+        "Spielzeug auf zwei Schalen verteilen: Jede Schale gehört einer Person; bevor Ihr Kind etwas von der anderen Schale nimmt, muss es fragen.",
+        "Ein „Darf ich es dir leihen?“-Ritual: Jeden Tag gibt Ihr Kind 1 Gegenstand an jemand anderen und der Erwachsene beschreibt, wie sich die empfangende Person fühlt.",
+        "Mithilfe im Haushalt für ein 2-jähriges Kind: Kleidung in den Korb legen, den Tisch mit einem feuchten Tuch abwischen und Hausschuhe wegräumen – 3 Aufgaben, jeden Tag zur gleichen Zeit.",
+        "Mit 1 Freund/Woche spielen: Laden Sie 1 gleichaltrigen Freund ein, mit 1 Regel, die Ihr Kind auswählt („Wenn wir fertig sind, tauschen wir die Spielsachen“).",
+        "Die Geschichte „Wem hast du heute etwas gegeben?“ erzählen: Fragen Sie beim Abendessen genau 1 Sache; wenn Ihr Kind sich nicht erinnert, erzählen Sie von etwas, das ein Erwachsener gegeben hat."
+      ],
+      "parentGuidance": "Erzwingen Sie das Teilen nicht; machen Sie das Geben zuerst vor und lassen Sie Ihr Kind selbst entscheiden, ob es mitmacht.",
+      "measurement": "Anzahl der Male, die Ihr Kind tagsüber selbst Dinge anbietet oder auf seinen Zug wartet; Anzahl der Male, die Ihr Kind ohne Erinnerung im Haushalt hilft.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach(Bao",
+        "#7Giàu:G4-PhamChat(Nhân)",
+        "#ChânDung:CD-03-NhanCachKienToan",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#7BốThí:BT-6-ThanThi",
+        "#9DạngNgười:NG-2-QuyNhan"
+      ]
+    },
+    {
+      "id": "GD1-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "HT",
+      "name": "Alltagssprache und tägliche Bücher",
+      "childMeaning": "„Jeden Tag gibt es ein Buch und eine neue Geschichte.“",
+      "successSignal": "Ihr Kind hat einen altersgerechten Wortschatz (etwa 20 Wörter mit 18 Monaten → 200–300 Wörter mit 24 Monaten → 900–1000 Wörter mit 3 Jahren); es bringt selbst ein Buch und bittet ums Vorlesen.",
+      "activities": [
+        "Lesen Sie jeden Tag zur gleichen Zeit 10–15 Minuten (vor dem Schlafen) und zeigen Sie beim Lesen auf die Wörter.",
+        "„Anfangen – warten – ausreden lassen“: Wenn Ihr Kind nur ein halbes Wort sagt, sprechen Sie nicht für es – warten Sie 5 Sekunden, damit es den Gedanken beendet.",
+        "Benennen Sie Gegenstände in 100 Momenten/Tag: beim Einkaufen, Spazierengehen und Baden – ein Satz pro Gegenstand.",
+        "Eine Box für neue Wörter: jede Woche 3 neue Wörter auf Karten malen; Ihr Kind verwendet diese Wörter in der Woche.",
+        "Eine Geschichte mit Bildern nacherzählen: Nach dem Lesen zeigt Ihr Kind 3 Bilder in der richtigen Reihenfolge und erzählt die Geschichte nach (eine Grundlage für Leseverständnis).",
+        "Reimen und Gedichte sprechen: 2 Lieder/Gedichte pro Woche; Reime sind in diesem Alter der stärkste Prädiktor für schriftsprachliche Fähigkeiten.",
+        "Beliebige Wörter „lesen“: Schilder, Milchpackungen, Straßennamen – machen Sie die Umgebung zu einem Buch."
+      ],
+      "parentGuidance": "Lesen Sie vor Ihrem Kind, damit es sieht, dass Lesen etwas ist, das Erwachsene tun.",
+      "measurement": "Anzahl neuer Wörter/Woche; Anzahl der Tage/Woche mit vollen 10 Minuten Lesezeit; Dauer, in der Ihr Kind bei einem Buch aufmerksam bleibt.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-01-SucHocTap"
+      ]
+    },
+    {
+      "id": "GD1-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD1",
+      "ageRange": "0-3",
+      "primaryDomain": "TC",
+      "name": "Ordnung und kurze Wartezeiten – die Keime der Selbstbeherrschung",
+      "childMeaning": "„Dinge kommen an ihren Platz – und ich kann ein bisschen warten.“",
+      "successSignal": "Ihr Kind kann ≥ 3 Spielzeuggruppen selbstständig wegräumen; kann 1–2 Minuten warten, wenn ein Erwachsener sagt „Warte kurz auf Mama“; akzeptiert ein „Nein“, ohne länger als 1 Minute zu weinen.",
+      "activities": [
+        "Ein Ritual „Erst wegräumen, dann etwas Neues nehmen“: nur 1 Regel, die in 100% der Fälle gilt.",
+        "Ein Wartespiel: Verstecken Sie einen Gegenstand, zählen Sie 1–5 und lassen Sie Ihr Kind ihn dann nehmen; steigern Sie langsam auf 1–10 und 30 Sekunden.",
+        "Kisten „Dinge kommen an ihren Platz“ mit Bildern der jeweiligen Gegenstände – Ihr Kind sortiert sie (Grundlagen der Mathematik und Ordnung zugleich).",
+        "Machen Sie „warten“ konkret, statt „nein“ zu sagen: „Warte 2 Minuten; nach diesem Lied hole ich es für dich.“ – halten Sie Ihr Wort immer.",
+        "Eine Karte „Das gehört heute nicht dir“: Verwenden Sie sie, wenn Ihr Kind im Supermarkt etwas haben möchte; Ihr Kind darf ein Bild davon in ein „Wunschbuch“ eintragen (eine Grundlage für „eine klare Vorstellung von dem, was man möchte“).",
+        "Bei einer Ablehnung lächeln [BT-1]: Machen Sie vor: „Auch wenn ich es nicht kaufen kann, kann ich trotzdem lächeln.“"
+      ],
+      "parentGuidance": "Sagen Sie niemals „warte“, ohne Ihr Wort zu halten – Kinder von 0–3 Jahren lernen Verlässlichkeit durch die Konsequenz der Erwachsenen.",
+      "measurement": "Anzahl der Male, die Ihr Kind selbst Dinge wegräumt; längste Wartezeit, die Ihr Kind aushält; Anzahl der Male, die Erwachsene ihr Wort halten/nicht halten (Ziel: 100% eingehaltene Versprechen).",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#8TốChất:NTAI-02-KienTri",
+        "#9DạngNgười:NG-4-ThanTai"
+      ]
+    },
+    {
+      "id": "GD2-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "NT",
+      "name": "Gefühle benennen & 3 Atemzüge nehmen",
+      "childMeaning": "„Ich weiß, was ich fühle, und ich kann mich wieder beruhigen.“",
+      "successSignal": "Ihr Kind sagt von sich aus „Ich bin wütend/ich bin traurig“, bevor es wirft oder schreit, ≥ 1 Mal/Woche; es nutzt selbstständig 3 Atemzüge nach 1 Erinnerung.",
+      "activities": [
+        "Eine Tafel mit Bildern zu 5 Grundgefühlen (fröhlich – traurig – wütend – ängstlich – friedlich). Jeden Abend hängt Ihr Kind 1 Karte an die „Gefühlstafel des Tages“.",
+        "Die 3 Schritte zum Beruhigen wie ein Lied üben: 1) Hände auf den Bauch legen. 2) 3 Atemzüge nehmen. 3) „Ich brauche 1 Minute“ sagen. Üben, wenn Ihr Kind fröhlich ist, nicht wenn es wütend ist.",
+        "Eine Ruhe-Ecke (calm corner): Kissen, Kopfhörer, Papier zum Malen. Ihr Kind darf selbst hineingehen – sie ist kein Ort zum Bestrafen.",
+        "Erwachsene benennen ihre eigenen Gefühle: „Mama ist gerade ungeduldig. Ich nehme jetzt 3 Atemzüge.“ – 5 Mal/Woche vorleben.",
+        "„Als ich wütend war“ nacherzählen: Nach dem Beruhigen 1 Bild malen und 3 Sätze erzählen (was passiert ist → Gefühl → Umgang damit).",
+        "Bo thi (großzügiges Geben) aus dem Herzen in der Familie üben [BT-4]: Jede Woche sagt Ihr Kind zu 1 Person „Danke für ...“ – mit etwas Kleinem beginnen, nicht mit einem Geschenk."
+      ],
+      "parentGuidance": "Nicht mitten im Ausbruch etwas beibringen – beruhigen Sie sich zuerst gemeinsam, und sprechen Sie danach darüber.",
+      "measurement": "Anzahl der Male/Woche, in denen Ihr Kind selbst Gefühle benennt; Anzahl der Male, in denen es die 3 Schritte statt Schlagen oder Werfen nutzt.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#7BốThí:BT-4-TamThi",
+        "#8TốChất:NTAI-03-DungCamNhanLoi"
+      ]
+    },
+    {
+      "id": "GD2-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "NT",
+      "name": "Die Wahrheit sagen & mutig Fehler zugeben",
+      "childMeaning": "„Ich sage die Wahrheit und traue mich zu sagen: ‚Ich habe etwas falsch gemacht.‘ – Für die Wahrheit werde ich nicht härter bestraft als fürs Verheimlichen.“",
+      "successSignal": "Ihr Kind sagt von sich aus, was es falsch gemacht hat, ohne dass es befragt werden muss, ≥ 2 Mal/Monat; es lügt nicht, um Folgen zu vermeiden.",
+      "activities": [
+        "Familienregel: „Wer zuerst einen Fehler zugibt, wird zuerst gelobt.“ Wenn Ihr Kind einen Fehler zugibt, lobt ein Erwachsener mit 1 Satz den mutigen Schritt und bespricht erst danach, wie er sich beheben lässt.",
+        "Die Wortwahl ändern: „Danke“ statt „Entschuldigung“ (wie im Ausgangsmaterial): „Danke, dass du Mama die Wahrheit gesagt hast.“ „Danke, dass du gewartet hast.“ – positive Sprache verwenden.",
+        "Erwachsene geben vor Ihrem Kind 1 Mal/Woche eigene Fehler zu: „Mama war gestern aufbrausend. Es tut mir leid. Ich werde langsamer sprechen.“",
+        "Ein Spiel „richtig – falsch – noch nicht bekannt“: 3 Situationen vorgeben, die Ihr Kind sortiert; Verständnisstufe 1 üben (richtig–falsch, wahr–unwahr, sollte–sollte nicht).",
+        "Ein Heft „Was mein Fehler mir gezeigt hat“: Bei jedem größeren Fehler malt Ihr Kind, was passiert ist, und sagt: „Wenn ich es noch einmal machen könnte, würde ich ...“ Keine Strafen eintragen.",
+        "Die goldene Regel: nicht verhören. Statt „Hast du das gemacht?“ sagen: „Schauen wir gemeinsam, was passiert ist.“",
+        "Eine wöchentliche „Mut zur Veränderung“-Aktivität: Jede Woche probiert Ihr Kind etwas aus, das es noch nie gemacht hat (Essen bestellen, nach dem Weg fragen, einen Nachbarn begrüßen) [+NTAI-04]."
+      ],
+      "parentGuidance": "Die Folgen des Wahrheitsagens müssen für Ihr Kind so gering wie möglich bleiben – das ist der einzige Faktor, der seine Ehrlichkeit auf lange Sicht bestimmt.",
+      "measurement": "Anzahl der Male, in denen Ihr Kind selbst Fehler zugibt; Anzahl der festgestellten Lügen (Ziel: schrittweise auf 0 innerhalb von 6 Monaten sinken).",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-03-NhanCachKienToan",
+        "#ChânDung:CD-04-PhamChatUuTu",
+        "#8TốChất:NTAI-03-DungCamNhanLoi",
+        "#8TốChất:NTAI-08-KhiemTon",
+        "#9DạngNgười:NG-1-CaoNhan"
+      ]
+    },
+    {
+      "id": "GD2-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "SK",
+      "name": "Ausreichend schlafen & eine Bildschirm-aus-Routine",
+      "childMeaning": "„Wenn es Zeit ist, gehen die Bildschirme vor mir schlafen.“",
+      "successSignal": "10–13 Stunden/24h schlafen; in den 60 Minuten vor dem Schlafen keine Bildschirme nutzen; die 3-Schritte-Routine befolgen, ohne mehr als 1 Erinnerung zu brauchen.",
+      "activities": [
+        "Eine „Ladestation für Bildschirme“ im Wohnzimmer aufstellen; alle Geräte schlafen dort ab 19h30. Ihr Kind legt sein Gerät selbst in die Station (als Ritual).",
+        "45 Minuten vor dem Schlafen eine Sanduhr: Ihr Kind dreht sie selbst um; wenn der Sand durchgelaufen ist, beginnt das Ritual.",
+        "Eine feste 3-Schritte-Routine: Zähne putzen → ein Buch lesen → 1 Sache aus dem Tag nennen, für die es dankbar ist.",
+        "Bildschirmzeit schrittweise verringern: eine Obergrenze von 60 Minuten/Tag setzen (unter der 2-Stunden-Grenze für ältere Kinder) und bei Überschreitung um 10 Minuten/Woche reduzieren.",
+        "Nächte ohne blaues Licht: gelbes/rotes Nachtlicht; im Sommer Vorhänge gegen das helle Tageslicht, um den Melatonin-Rhythmus zu verankern.",
+        "Eine Mondtafel mit 7 Feldern: Ihr Kind klebt selbst Aufkleber auf und zählt sie – keine materiellen Belohnungen verwenden."
+      ],
+      "parentGuidance": "Auch Erwachsene legen ihr Telefon zur gleichen Zeit weg – eine gemeinsame Regel für alle, keine Sonderregel für Kinder.",
+      "measurement": "Durchschnittliche Schlafstunden; Anzahl der Tage, an denen die Bildschirm-Obergrenze überschritten wird; Anzahl der Nächte, in denen Ihr Kind selbst mit dem Ritual beginnt.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD2-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "SK",
+      "name": "180 Minuten Bewegung & eine zentrale körperliche Fähigkeit",
+      "childMeaning": "„Ich spiele jeden Tag draußen und werde in einer Fähigkeit besser.“",
+      "successSignal": "≥ 180 Minuten Bewegung/Tag; ≥ 60 Minuten bei mittlerer bis hoher Intensität; 1 Fähigkeit zeigt nach 8 Wochen eine messbare Verbesserung (zum Beispiel: 5m → 15m schwimmen, Fahrrad mit 2 Rädern fahren, auf 1 Bein 10 Sekunden stehen).",
+      "activities": [
+        "Eine „goldene Stunde draußen“ von 60 Minuten vor dem Abendessen – so fest wie eine Mahlzeit einplanen.",
+        "Alle 8 Wochen 1 Fähigkeit auswählen: Schwimmen / Fahrradfahren / Seilspringen / Ballspielen. Anfangs- und Endwert auf Papier an der Wand festhalten.",
+        "Ein bebildertes Bewegungs-Tagebuch: Jeden Tag malt Ihr Kind 1 Bild von seiner wichtigsten Bewegung; am Ende der Woche zählen.",
+        "Eine Familienwanderung 1 Mal/Woche (2–4 km, mit einem kleinen Rucksack, den Ihr Kind selbst trägt) – Bewegung + Verantwortung übernehmen + Ausdauer.",
+        "Spiele mit leichter und stärkerer Anstrengung: krabbeln – springen – klettern – werfen; jede Form 10 Minuten, als „Bewegungsmahlzeit“ nutzen.",
+        "Eine vollständige Körperpflege-Routine: selbstständig Zähne putzen (2 Minuten, mit einer Sanduhr), die Hände selbstständig in 6 Schritten waschen, sich selbst anziehen – mit CD-06 Ausgeglichener Körper verbinden.",
+        "Eine „Familien-Fitness“-Einheit von 30 Minuten/Woche: Seilsprünge und Planks jeder Person zählen und auf einer gemeinsamen Tafel notieren – Fitness zu einem Spiel mit Zahlen machen."
+      ],
+      "parentGuidance": "Erwachsene bewegen sich mit; Bildschirme nicht als Belohnung nach Bewegung einsetzen.",
+      "measurement": "Minuten Bewegung/Tag; Werte der ausgewählten Fähigkeit; Anzahl der Einheiten draußen/Woche.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD2-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "MQH",
+      "name": "Sieben Formen des großzügigen Gebens für kleine Kinder: Lächeln – Blick – Worte – Dank",
+      "childMeaning": "„Ich habe 4 Geschenke für andere, die kein Geld kosten: ein Lächeln, einen Blick, Worte und ein Dankeschön.“",
+      "successSignal": "Ihr Kind gibt jeden Tag aus eigener Initiative mindestens 2 der 4 Geschenke; es erkennt Gutes an anderen und spricht es aus.",
+      "activities": [
+        "„Vier Geschenke, die nichts kosten“ als Abzählvers beibringen; jeden Abend erzählt Ihr Kind, wem es welches Geschenk gemacht hat.",
+        "8 Arten von Worten des Gebens [BT-3]: Erwachsene schreiben 8 Wortkarten (Freude – Hoffnung – Vertrauen – Weisheit – Ermutigung – Aufbauendes – Lob – Bestätigung); jede Woche wählt Ihr Kind 2 Karten aus, die es mit anderen nutzt.",
+        "Geben durch den Blick in 3 Stufen [BT-2]: eine Übung zum „Guten sehen“: Ihr Kind muss 1 gute Eigenschaft einer Person nennen, die es nicht mag (Stufe 1–2).",
+        "Nach den 8 Eigenschaften loben: Statt „Du bist so toll!“ sagen: „Du bist bei allen 20 Fragen drangeblieben“ / „Du hast mutig deinen Fehler zugegeben.“ Eine Tafel „Meine 8 Eigenschaften“ anfertigen und aufhängen.",
+        "In der Öffentlichkeit ein Lächeln schenken [BT-1]: Wenn Sie nach draußen gehen, lächelt Ihr Kind und begrüßt 1 fremde Person (eine Sicherheitskraft, eine Verkäuferin oder einen Verkäufer). Der Erwachsene erzählt von der positiven Reaktion.",
+        "Ein Familien-Briefkasten für Dankbarkeit: Jede Person schreibt oder malt 1 Sache, für die sie dankbar ist/Woche; am Ende der Woche den Kasten öffnen.",
+        "Zu Hause durch hilfreiche Taten geben [BT-6]: Ihr Kind wählt 1 Person im Haushalt und hilft 3 Mal/Woche bei 1 Aufgabe, ohne darum gebeten zu werden."
+      ],
+      "parentGuidance": "Sofort loben, wenn Ihr Kind etwas gibt (5-Schritte-Formel: Dankbar anerkennen → das gute Bild größer machen → es anderen erzählen → Verständnis zeigen → weiter anleiten und fördern).",
+      "measurement": "Anzahl der Male/Tag, in denen Ihr Kind ≥ 2 kostenlose Geschenke macht; Anzahl der Lobmomente nach den 8 Eigenschaften/Woche.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-1-NhanThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-4-TamThi",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD2-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "MQH",
+      "name": "Um Erlaubnis bitten – Freunde selbst wählen – sich versöhnen",
+      "childMeaning": "„Ich frage, bevor ich etwas nehme – und ich wähle meine Freunde selbst.“",
+      "successSignal": "Ihr Kind fragt in 80% der Fälle vorher um Erlaubnis; lädt selbstständig ein anderes Kind zum Spielen ein; versöhnt sich selbstständig mit Worten (ohne Vermittlung durch Erwachsene) ≥ 1 Mal/Woche.",
+      "activities": [
+        "Ein Spruch mit 3 Sätzen für Konflikte: „Das gefällt mir nicht.“ → „Ich möchte ...“ → „Spielen wir noch einmal zusammen?“",
+        "Zu Hause abwechselnd die Rolle der „Friedensstifterin“ oder des „Friedensstifters“ übernehmen: 1 Einheit pro Woche, in der Ihr Kind eine Lösung vorschlägt.",
+        "Eine Liste mit 5 Freunden: Ihr Kind malt 5 Gesichter und lädt jede Woche 1 Freund oder 1 Freundin zum Spielen oder Teilen ein (Verbindungen schaffen = ein kleines persönliches Netzwerk).",
+        "Regelmäßig 1 Mal/Woche mit den Großeltern telefonieren oder videochatten: Ihr Kind drückt selbst auf „Anrufen“ und erzählt 3 Sätze ⇒ NG-2 Wohltäter (die Verbindung zu Menschen pflegen, die geholfen haben).",
+        "Direkt vor Ort „Danke“ sagen: Wenn jemand hilft, bedankt sich Ihr Kind direkt, nicht über die Eltern.",
+        "Eine „Darf ich?“-Karte: zu Hause und in der Kita einheitlich verwenden; Erwachsene unterschreiben, wenn Ihr Kind passend um Erlaubnis bittet.",
+        "Toleranz durch hilfreiches Verhalten üben [BT-5]: Wenn ein anderes Kind Ihr Kind ärgert, 3 Schritte üben: erkennen und annehmen → Verständnis für die Person zeigen → die Lektion wertschätzen – anschließend mit Bildern nacherzählen."
+      ],
+      "parentGuidance": "Konflikte nicht für Ihr Kind lösen; 3 Schritte zurücktreten und nur an den Spruch erinnern.",
+      "measurement": "Anteil der passenden Bitten um Erlaubnis; Anzahl der Male, in denen Ihr Kind selbstständig Frieden schließt; Anzahl der Freunde, zu denen es pro Woche von sich aus Kontakt aufnimmt.",
+      "conceptTags": [
+        "#7Giàu:G4-PhamChat(Lễ)",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#7BốThí:BT-5-PhongThi",
+        "#9DạngNgười:NG-2-QuyNhan",
+        "#9DạngNgười:NG-3-NhanMach"
+      ]
+    },
+    {
+      "id": "GD2-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "HT",
+      "name": "Lesen – nacherzählen – „warum“ fragen",
+      "childMeaning": "„Ich lese, kann die Geschichte nacherzählen und frage, warum.“",
+      "successSignal": "Eine Geschichte mit Anfang–Mitte–Ende nacherzählen können; jeden Tag ≥ 5 „Warum-warum?“-Fragen stellen; Buchstaben erkennen und den eigenen Namen schreiben.",
+      "activities": [
+        "15 Minuten/Tag lesen + „in 3 Sätzen nacherzählen“: Figuren → was passiert ist → Ergebnis.",
+        "Eine Fragenbox: Jede Frage Ihres Kindes auf Papier schreiben und in die Box legen; am Ende der Woche gemeinsam 3 Fragen nachschlagen (Fragen üben, die zum gewünschten Ergebnis führen).",
+        "Das „Warum“ zurückgeben: Erwachsene fragen vor der Antwort „Warum glaubst du, ist das so?“ – eigene Erklärungen entwickeln üben.",
+        "Ein Küchenexperiment 1 Mal/Woche: Eis schmilzt, Salz löst sich auf, Pflanzen brauchen Wasser – 1 Zeile Schlussfolgerung mit Bildern festhalten.",
+        "Ein Alphabet zum Anfassen: Buchstaben mit Fingern, Schnur und Mehl formen – mehrere Sinne einsetzen.",
+        "„Ein Buch von mir“: Jeden Monat veröffentlicht Ihr Kind 1 Buch mit 4 Seiten, die es malt und erzählt, und liest es der Familie vor (Grundlage für CD-08 Außergewöhnliche Kommunikation und Vermittlung).",
+        "Im echten Leben zählen: Treppenstufen, Löffel Reis und Fahrzeuge zählen – Mathematik mit dem Körper und der Umgebung verbinden."
+      ],
+      "parentGuidance": "Nie für Ihr Kind antworten; vor der Antwort immer eine Gegenfrage stellen.",
+      "measurement": "Anzahl der Fragen/Tag; Anzahl der erneut gelesenen Bücher/Woche; Anzahl der flüssigen Nacherzählungen.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#9DạngNgười:NG-8-ChuyenGia"
+      ]
+    },
+    {
+      "id": "GD2-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "TC",
+      "name": "Die ersten drei Geldgläser (Geben – Ausgeben – Sparen)",
+      "childMeaning": "„Jeder Geldbetrag, den ich bekomme, wird in drei Teile geteilt: geben – ausgeben – sparen.“",
+      "successSignal": "Ihr Kind teilt Glücks- oder Geschenkgeld selbstständig nach dem vereinbarten Verhältnis in 3 Teile; es kann sagen „Das kaufe ich nicht, weil ich spare“; es wählt selbst 1 Person oder einen Zweck zum „Geben“ aus.",
+      "activities": [
+        "Drei durchsichtige Gläser mit Bildetiketten: 🎁 Geben – 🛒 Ausgeben – 🌱 Sparen. Mit einem Startverhältnis von 20–30–50 (%) und Regeln beginnen, die Ihr Kind mit unterschreibt.",
+        "Ein Ritual zum Aufteilen von Glücksgeld: Jedes Mal, wenn Ihr Kind Geld bekommt, legt es das Geld vor einem Erwachsenen selbst in die 3 Gläser (nicht für das Kind erledigen).",
+        "„Allein einkaufen“ mit Budget: Im Supermarkt hält Ihr Kind 50.000 VND, wählt selbst, bezahlt selbst und nimmt selbst das Wechselgeld entgegen (unter Aufsicht).",
+        "Eine Tafel zum Wert von Arbeit: Für Hausarbeiten über seine Pflichten hinaus (das Auto waschen, die Schuhe der ganzen Familie ordnen) bekommt Ihr Kind eine „Wertschöpfungsvergütung“; für regelmäßige Pflichten gibt es kein Geld – den Unterschied zwischen Pflicht und geschaffenem Wert vermitteln.",
+        "Ein Wunschheft: Den gewünschten Gegenstand + Geldbetrag + benötigte Anzahl der Spartage malen oder schreiben; an die Wand hängen und jeden Tag markieren, wenn genug Geld da ist.",
+        "Eine monatliche „Geben“-Zeit: Ihr Kind entscheidet selbst, was es mit dem Glas „Geben“ kaufen oder wem es etwas schenken möchte (kleine Spende, Geschenk für Großeltern, etwas für ein bedürftiges Kind).",
+        "Ein Tausch- und Geldspiel: Ihr Kind spielt Verkäufer und Käufer; es lernt Preise – Tausch – Wechselgeld."
+      ],
+      "parentGuidance": "Nicht nachkaufen, wenn Ihr Kind sein ganzes Geld ausgegeben hat – lassen Sie es die Folgen seiner Entscheidung erleben (das Ursache-Wirkungs-Prinzip auf sichere Weise).",
+      "measurement": "Anzahl der Male, in denen Ihr Kind selbstständig auf 3 Gläser aufteilt; Anzahl der Dinge, die es selbst „nicht kauft“; Anzahl der „Geben“-Beiträge im Jahr.",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G4-PhamChat(Nhân,",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-6-ThanThi",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD2-HT-02",
+      "sourceAliases": [],
+      "stageId": "GD2",
+      "ageRange": "3-6",
+      "primaryDomain": "HT",
+      "name": "Die Hausarbeit gehört zu meinem Beitrag (kleine Pflichten)",
+      "childMeaning": "„Ich trage zu diesem Zuhause bei.“",
+      "successSignal": "Ihr Kind übernimmt 3 feste, altersgerechte Aufgaben im Haushalt (den Tisch abräumen, Schuhe ordnen, Pflanzen gießen) und erledigt sie ≥ 5 Tage/Woche ohne Erinnerung selbstständig.",
+      "activities": [
+        "Eine bebilderte Tafel mit 3 festen Aufgaben zu bestimmten Tageszeiten (vor dem Essen – nach dem Essen – vor dem Schlafen).",
+        "„Zuständig für diese Woche“: Jede Woche übernimmt Ihr Kind 1 Rolle (Wasser einschenken, Türen prüfen) – der Verantwortung einen Namen und einen ehrenvollen Charakter geben.",
+        "Folgen selbst beheben: Wasser verschütten → aufwischen; etwas fallen lassen → aufheben. Erwachsene erledigen es nicht für das Kind, sondern bleiben nur daneben.",
+        "Jeden Morgen 15 Minuten selbstständig fertig machen: Ihr Kind zieht sich an, packt seinen Rucksack und stellt seine Schuhe selbst bereit.",
+        "1 Gericht/Woche gemeinsam kochen: Ihr Kind übernimmt 1 festen Arbeitsschritt (Eier aufschlagen, Gemüse waschen) – Lebenskompetenz + Gesundheit + Stolz.",
+        "Eine sichtbare „Tafel für die Aufgaben der Familie“: Alle tragen ihre Aufgaben ein; Ihr Kind sieht, dass auch Erwachsene Verantwortung übernehmen, nicht nur Kinder.",
+        "Nach Eigenschaften loben: „Du übernimmst Verantwortung“ / „Du bist drangeblieben, bis du alle 12 Paar Schuhe geordnet hattest“ – eine benannte Fähigkeit mit einer konkreten Handlung verbinden."
+      ],
+      "parentGuidance": "Hausarbeit ist keine Strafe – Hausarbeit niemals als Strafe einsetzen.",
+      "measurement": "Anteil der Tage, an denen Ihr Kind die Hausarbeit selbstständig erledigt; Anzahl der Aufgaben, die es ohne Erinnerung übernimmt; wie gut es seine eigenen Aufgaben benennen kann.",
+      "conceptTags": [
+        "#7Giàu:G4-PhamChat(Nghĩa)",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-04-PhamChatUuTut→CD-04-PhamChatUuTu",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-06-GanhVac",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD3-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "NT",
+      "name": "Dankbarkeitstagebuch und jeden Abend ein Lob",
+      "childMeaning": "“Jeden Tag gibt es mindestens eine Sache, für die ich dankbar sein kann, und eine Sache, die ich gut gemacht habe.”",
+      "successSignal": "Schreibt jeden Abend 3 Zeilen (1 Dankbarkeit – 1 eigene gute Tat – 1 gute Tat eines anderen) an ≥ 5 Tagen/Woche; kann konkrete statt allgemeiner Lobe aussprechen.",
+      "activities": [
+        "Drei-Zeilen-Heft für jeden Abend: \"Heute bin ich dankbar für … / Das habe ich gut gemacht … / An … sehe ich etwas Schönes …\".",
+        "\"Dankbarkeit in schwierigen Situationen\" 1 Mal/Woche: 1 unangenehme Sache und die daraus gewonnene Erkenntnis aufschreiben (Grundlage CD-12 Menschliches Leben verstehen).",
+        "Ngôn thí (Geben durch Worte) [BT-3]: Ihr Kind lobt jeden Tag 1 Person mit 1 konkreten, detailreichen Satz: \"Ich sehe, dass Papa bis 9 Uhr geduldig den Ventilator repariert hat.\"",
+        "Tafel \"Ich sehe etwas Gutes\" [BT-2]: 9 Menschen aus dem Umfeld Ihres Kindes abbilden; jede Woche für 3 verschiedene Menschen je eine gute Eigenschaft aufschreiben.",
+        "Abendritual von 10 Minuten: Bildschirm aus → 3 Zeilen → 3 Atemzüge → schlafen. (Ein inneres Ritual, das mit GD3-SK-01 verbunden ist.)",
+        "Karte \"Wertschätzung und Dankbarkeit\" als Geschenk: Ihr Kind schreibt jeden Monat selbst eine Dankeskarte für 1 Menschen, dem es etwas verdankt (Lehrkraft, Parkwächter, Freund oder Freundin).",
+        "Skala \"Auf welcher Bewusstseinsstufe bin ich heute?\": nur 1 Frage stellen — “Begann das heute für dich bei dir selbst oder bei jemand anderem?” (den Wechsel von Stufe 1 zu Stufe 2 üben)."
+      ],
+      "parentGuidance": "Schreiben Sie als Erwachsene gemeinsam mit Ihrem Kind — es bleibt nur dann dauerhaft dabei, wenn es sieht, dass auch die Eltern schreiben.",
+      "measurement": "Anzahl der Tage/Woche mit 3 Zeilen; Anzahl konkreter Lobe/Woche; Anzahl Dankeskarten/Monat.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#7BốThí:BT-4-TamThi",
+        "#8TốChất:NTAI-07-TranTrongBietOn",
+        "#9DạngNgười:NG-1-CaoNhan(nhận"
+      ]
+    },
+    {
+      "id": "GD3-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "NT",
+      "name": "Eigene Ziele setzen und 66 Tage lang an einer Gewohnheit festhalten",
+      "childMeaning": "“Ich wähle eine Sache, mache sie 66 Tage lang und werde dadurch ein anderer Mensch.”",
+      "successSignal": "Schließt in dieser Phase mindestens 1 Zyklus von 66 Tagen und 1 Zyklus von 100 Tagen ab; kann ein großes Ziel in 3 Schritte teilen; kann sich am Ende jeder Woche selbst einschätzen.",
+      "activities": [
+        "66-Tage-Zyklus: 1 Gewohnheit auswählen (20 Minuten lesen, Plank, Tagebuch schreiben), 66 Kästchen an die Wand zeichnen und jeden Tag eines ausmalen.",
+        "100-Tage-Feier: Eine kleine Feier in der Familie veranstalten, wenn Ihr Kind 100 Tage lang an der Gewohnheit festgehalten hat — aus dem Material: \"Wenn du beharrlich in der Reihe stehen bleibst, bekommst du ein Geschenk.\"",
+        "Formel für ein Ziel in 3 Schritten: Ein klares Bild vom Ziel → in kleine Schritte von ≤ 1 Woche teilen → selbst den Abschluss markieren.",
+        "\"Tafel zur Selbsteinschätzung am Ende der Woche\": 5 Fragen selbst bewerten (1–5): Schlaf – Bewegung – Haushalt – Lernen – eine gute Tat. Ihr Kind bewertet zuerst, die Eltern danach, dann vergleichen sie — das stärkt die Selbstwahrnehmung.",
+        "Herausforderung \"Mut zur Veränderung\" jeden Monat: 1 schwierige Sache ausprobieren, die Ihr Kind noch nie gemacht hat, und vorher – nachher notieren.",
+        "Beharrlichkeitsbaum: 1 Baumstamm an die Wand zeichnen; wenn die Gewohnheit eine Woche lang eingehalten wurde, kommt 1 Blatt dazu; bei 10 Blättern kommt 1 Frucht mit dem Namen der Leistung dazu.",
+        "Ein inneres Bild festhalten: Jeden Abend schließt Ihr Kind 30 Sekunden die Augen und sieht sich beim Erreichen des Ziels — eine Technik aus dem Material für die Fähigkeit, dranzubleiben."
+      ],
+      "parentGuidance": "Wählen Sie als Erwachsene eine eigene Gewohnheit und durchlaufen Sie parallel den 66-Tage-Zyklus.",
+      "measurement": "Anzahl abgeschlossener 66/100-Tage-Zyklen; Anteil der Tage, an denen die Gewohnheit eingehalten wurde; Anzahl der Ziele, die Ihr Kind selbst in Schritte geteilt hat.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD3-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "SK",
+      "name": "9–12 Stunden Schlaf und ein bildschirmfreies Abendritual",
+      "childMeaning": "“Schlafen ist die Kampfkunst des Geistes.”",
+      "successSignal": "Schläft 9–12 Stunden; die Schlafenszeit weicht um ≤ 30 Minuten ab; in den letzten 60 Minuten des Tages keine Unterhaltung über Bildschirme; beginnt das Ritual selbstständig.",
+      "activities": [
+        "\"Bildschirm-Sperrstunde\": Um 20h00 kommen alle Geräte in die Ladestation im Wohnzimmer — eine Regel für die ganze Familie, ohne Ausnahme für Ihr Kind, wenn auch die Erwachsenen keine Ausnahme machen.",
+        "7-Tage-Schlaftagebuch: Schlafenszeit – Aufstehzeit – Gefühl am Morgen (1–5) notieren. Am Ende der Woche gemeinsam das Diagramm ansehen.",
+        "Festes Ritual in 3 Schritten: Rucksack packen → 3 Dankbarkeitszeilen → 3 Atemzüge.",
+        "Abends möglichst wenig Licht: warmes Licht, kein blaues Licht; kein Fernseher im Schlafzimmer.",
+        "Begrenzter Plan für das Ausschlafen am Wochenende: höchstens ≤ 1 Stunde länger schlafen als an Werktagen (zu viel Nachschlaf bringt den Rhythmus durcheinander).",
+        "Karte \"Was bekomme ich für weniger Bildschirmzeit?\": Für jede Stunde weniger Bildschirmzeit notiert Ihr Kind, was es stattdessen gemacht hat (lesen – bewegen – mit dem Geschwisterkind spielen) — so wird die Reduktion zu einem sichtbaren Zielbild."
+      ],
+      "parentGuidance": "Prüfen Sie zuerst die Umgebung und erst danach den Willen — wenn ein Gerät im Schlafzimmer liegt, scheitert Ihr Kind am Umfeld, nicht an sich selbst.",
+      "measurement": "Durchschnittliche Schlafstunden/Woche; Anzahl der Verstöße gegen die Sperrstunde; selbst bewertetes Energielevel am Morgen.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD3-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "SK",
+      "name": "60 Minuten Bewegung und eine Sportart mit messbarem Fortschritt",
+      "childMeaning": "“Jeden Tag 60 Minuten — und jeden Monat sehe ich, dass meine Zahl besser wird.”",
+      "successSignal": "Im Durchschnitt ≥ 60 Minuten/Tag Bewegung mit mittlerer bis hoher Intensität; 1 Schwerpunkt-Sportart mit monatlich steigenden Messwerten im Tagebuch; kann sich aufwärmen und dehnen.",
+      "activities": [
+        "Eine Schwerpunkt-Sportart für 6–12 Monate auswählen: Schwimmen / Kampfsport / Tischtennis / Laufen / Basketball — zunächst einen 66-Tage-Zyklus einhalten und erst dann wechseln.",
+        "Messwert-Tagebuch: Jede Woche 3 Zahlen notieren (Anzahl der Runden, Meter, Plank-Minuten). Von Hand ein Diagramm zeichnen.",
+        "\"Bewegung mit der Familie\" 3 Einheiten/Woche: Radfahren, Joggen, Badminton — mit einem spielerischen Punktestand zwischen den Familienmitgliedern, wobei jeder ein eigenes Ziel hat.",
+        "Nach dem Abendessen 30 Minuten spazieren: Das unterstützt die Verdauung und ist zugleich Zeit für ein Gespräch zu zweit mit Papa oder Mama (und eine Beziehungsgwohnheit).",
+        "Gesundheit und Körperhaltung wie ein Vorbild: Schreibtisch in der richtigen Höhe, ausreichend Licht, aufrecht sitzen nach 20-20-20 (20 Minuten – 20 Fuß weit schauen – 20 Sekunden).",
+        "Ein \"Fitness-Termin mit 5 Messwerten\" pro Quartal: Plank, 1 Minute Seilspringen, 400 m laufen, Rumpfbeugen, auf 1 Bein stehen — eine Vergleichstabelle pro Quartal führen.",
+        "Grundernährung mit 5 Gruppen: Ihr Kind stellt 1 Mal/Woche selbst ein Frühstück mit allen 5 Gruppen zusammen; es lernt, Zuckerangaben zu lesen."
+      ],
+      "parentGuidance": "Trainieren Sie gemeinsam, statt Sport nur anzusehen; verwenden Sie Süßigkeiten oder Bildschirmzeit nach dem Training nicht als Belohnung.",
+      "measurement": "Bewegungsminuten/Tag; Messwerte der 5 Fitnessübungen pro Quartal; Anzahl der Trainingseinheiten/Woche.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-01-SucHocTap"
+      ]
+    },
+    {
+      "id": "GD3-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "MQH",
+      "name": "Bewusst kommunizieren: Ausreden lassen – nachfragen – in 3 Ebenen sprechen",
+      "childMeaning": "“Ich höre bis zum Ende zu, frage zum richtigen Verständnis nach und spreche dann in 3 Ebenen: Tatsache – Gefühl – Wunsch.”",
+      "successSignal": "Unterbricht nicht; fragt zum Bestätigen des Verständnisses nach (\"Meinen Sie, dass …?\"); kann bei einem Streit in 3 Ebenen sprechen; bedankt sich und entschuldigt sich ohne Erinnerung.",
+      "activities": [
+        "\"Den ganzen Satz anhören\" üben: Familienregel — wer zuhört, darf erst antworten, wenn die andere Person den Satz beendet hat; 1 Woche lang Punkte sammeln.",
+        "Übung zum Sprechen in 3 Ebenen: “Ich beobachte … (Tatsache) / Ich fühle … (Gefühl) / Ich wünsche mir … (Wunsch)” — bei Konflikten mit Freunden oder Eltern verwenden.",
+        "\"Reporter\" spielen: Ihr Kind interviewt 1 erwachsene Person zu Hause jede Woche mit 5 Fragen über deren Kindheit — und übt dabei Verbundenheit, Dankbarkeit und Verständnis für das menschliche Leben.",
+        "Geben durch Worte mit 8 Arten des Sprechens: Jede Woche 1 Art üben (Freude, Hoffnung, Vertrauen, Weisheit, Ermutigung, konstruktives Feedback, Lob, Bestätigung) und festhalten, wem gegenüber sie verwendet wurde.",
+        "Vor kleinem Publikum sprechen: Ihr Kind hält jeden Monat eine Präsentation von 3 Minuten vor der Familie (Grundlage CD-08 Außergewöhnliche Werbung).",
+        "Dankesritual im Alltag: Lehrkraft, Sicherheitskraft oder Reinigungskraft danken — 1 Person/Woche, direkt ausgesprochen.",
+        "\"Das Gespräch lesen\": Nach jedem wichtigen Gespräch notiert Ihr Kind: Was braucht diese Person? Was kann ich geben? — Grundlage der Gabe durch den Blick auf Stufe 3 (Veränderung wahrnehmen)."
+      ],
+      "parentGuidance": "Hören Sie Ihrem Kind zuerst den ganzen Satz an — Kinder lernen Kommunikation dadurch, wie mit ihnen gesprochen wird.",
+      "measurement": "Anzahl der Unterbrechungen (Ziel: weniger); Anzahl der Verwendungen der 3-Ebenen-Struktur; Anzahl der Menschen, denen Ihr Kind aus eigenem Antrieb pro Woche dankt.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#8TốChất:NTAI-07-TranTrongBietOn",
+        "#9DạngNgười:NG-3-NhanMach"
+      ]
+    },
+    {
+      "id": "GD3-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "MQH",
+      "name": "9 Arten von Menschen im Umfeld Ihres Kindes erkennen und Beziehungen pflegen",
+      "childMeaning": "“Menschen um mich herum helfen mir auf unterschiedliche Weise — ich muss sie erkennen und richtig mit ihnen umgehen.”",
+      "successSignal": "Kann ≥ 5 der 9 Arten von Menschen aus dem eigenen Alltag nennen (mit den Namen echter Menschen); kann zu jeder erkannten Art 1 passende Handlung ausführen.",
+      "activities": [
+        "Tafel \"Meine 9 Menschen\": Ihr Kind zeichnet 9 Felder und trägt für jede Art den Namen einer echten Person ein (weiser Mensch – Förderer – Beziehungskontakt – Glücksbringer – talentierter Mensch – weiser Mentor – Lehrkraft – Fachperson – wohlwollender Ratgeber). Jedes Quartal aktualisieren.",
+        "Passende Formen des Umgangs:",
+        "Tagebuch \"Wer hat mir diese Woche geholfen?\": Jede Woche 3 Menschen notieren; am Monatsende 1 Person auswählen und ihr durch eine Handlung danken.",
+        "Einer Gruppe oder einem Verein beitreten und eine kleine Aufgabe mit Namen übernehmen (Gruppensekretär oder Gruppensekretärin, Materialverantwortliche oder Materialverantwortlicher) — Grundlage für CD-13 Menschen wohlwollend führen.",
+        "1 Mal/Monat einen Freund oder eine Freundin nach Hause einladen; Ihr Kind erstellt selbst einen \"Spielplan\" und räumt vorher und nachher selbst auf.",
+        "Pro Quartal 1 Person mit einem ungewöhnlichen Beruf interviewen: 5 feste Fragen stellen (Was machst du? – Was ist schwierig? – Was gefällt dir? – Was musst du lernen? – Welchen Rat hast du für mich?) — Grundlage für NG-8 Fachperson und CD-11 Weitblick.",
+        "\"Regeln zum Schutz von Beziehungen\": 3 Arten von Aussagen, die man hinter dem Rücken nicht macht (schlechtreden – urteilen – private Dinge eines Freundes oder einer Freundin weitererzählen)."
+      ],
+      "parentGuidance": "Sprechen Sie mit wertschätzenden Worten über andere und vermeiden Sie Urteile — Kinder übernehmen, wie Eltern über abwesende Menschen sprechen.",
+      "measurement": "Anzahl der Arten von Menschen, die Ihr Kind erkennt (Ziel ≥ 5 von 9); Anzahl passender Handlungen pro Quartal; Anzahl der Male, bei denen Ihr Kind selbst zwei Freunde miteinander bekannt macht.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G4-PhamChat",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#9DạngNgười:NG-1…NG-9",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-6-ThanThi",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-06-GanhVac"
+      ]
+    },
+    {
+      "id": "GD3-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "HT",
+      "name": "Lernmethode: Aktiv lesen – Notizen machen – selbst testen",
+      "childMeaning": "“Lernen heißt nicht, etwas noch einmal zu lesen — Lernen heißt, sich selbst Fragen zu stellen und sie zu beantworten.”",
+      "successSignal": "Verwendet selbstständig 3 Werkzeuge (vor dem Lesen Fragen stellen / Notizen mit Schaubildern machen / sich selbst testen, ohne ins Buch zu sehen); findet eigene Fehler; lernt selbstständig in 1 Schwerpunktgebiet weiter.",
+      "activities": [
+        "Aktiv lesen in 3 Schritten: (1) Überschrift ansehen → 3 Fragen aufschreiben; (2) lesen → die Fragen beantworten; (3) mit 5 Stichpunkten zusammenfassen.",
+        "Selbsttest (retrieval practice): Jeden Abend 10 Fragen selbst formulieren und beantworten, ohne ins Buch zu sehen — eine besonders wirksame Form des Erinnerns.",
+        "Verteiltes Wiederholen (spaced repetition): Zeitplan mit 1 Tag – 3 Tagen – 7 Tagen – 21 Tagen; im Kalender markieren.",
+        "1 Mindmap pro Woche: von Hand zeichnen und ausmalen — Ihr Kind erklärt sie einem Geschwisterkind oder Freund (die Technik \"Erklären = ein zweites Mal lernen\").",
+        "\"Fehlerbank\": Heft mit Fehlern aus jedem Fach sowie Gründen und Korrekturen. Jeden Monat 1 alten Fehler \"begleichen\".",
+        "Ein selbst gewähltes Schwerpunktgebiet: 1 Thema, das Ihr Kind mag (Dinosaurier, Programmieren, Schach, Zeichnen) — jede Woche 1 kleines Werk, am Quartalsende 1 großes Werk (CD-05).",
+        "\"Lesen, um zu lernen\": Ab 8 Jahren jede Woche 1 Sachtext und 1 fiktionalen Text lesen; \"3 neue Dinge, die ich gelernt habe\" festhalten.",
+        "Ihr Kind bewertet zuerst, die Eltern danach: Selbstbewertung üben — eine Fähigkeit für die Steuerung auf höherer Ebene."
+      ],
+      "parentGuidance": "Fragen Sie: \"Welche Methode hast du schon ausprobiert?\" statt die Antwort vorzugeben; respektieren Sie das Tempo Ihres Kindes.",
+      "measurement": "Anzahl der Selbsttest-Einheiten/Woche; selbst bewertete Punktzahl im Vergleich zur tatsächlichen Punktzahl (eine kleiner werdende Abweichung = wachsende Selbstwahrnehmung); Anzahl der Werke im Schwerpunktgebiet/Quartal.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#8TốChất:NTAI-02-KienTri",
+        "#9DạngNgười:NG-8-ChuyenGia"
+      ]
+    },
+    {
+      "id": "GD3-HT-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "HT",
+      "name": "25 Minuten konzentriertes Lernen und eine Zeitbank",
+      "childMeaning": "“25 Minuten ohne Unterbrechung sind wie 2 Stunden mit Unterbrechungen.”",
+      "successSignal": "Schließt ≥ 2 konzentrierte Lerneinheiten von 25 Minuten/Tag ab; kann selbst eine ablenkungsfreie Umgebung schaffen; kann die eigene \"Zeitbank\" verwalten.",
+      "activities": [
+        "Kinder-Pomodoro 25–5: 25 Minuten konzentrieren, 5 Minuten bewegen; 2–4 Einheiten/Tag; Sanduhr oder Stoppuhr verwenden.",
+        "60-sekündiges Start-Ritual: Tisch aufräumen → 3 Ziele für die Einheit setzen → das \"Konzentrationslicht\" einschalten (eine eigene Lampe).",
+        "Karte \"Die schwierigste Aufgabe zuerst\" (eat the frog): Jeden Tag 1 schwierige Aufgabe auswählen, die nach dem Aufstehen zuerst erledigt wird.",
+        "Zeitbank: Jede Woche 3 Stunden freie Zeit erhalten; Ihr Kind teilt sie selbst ein und trägt sie ein; wer zu viel verbraucht, bekommt in der folgenden Woche weniger — Finanzen zuerst über Zeit und später über Geld lernen.",
+        "Tafel mit 2 Spalten \"Ich habe die Kontrolle\" / \"Die Tätigkeit kontrolliert mich\": Aktivitäten einordnen und Spalte 2 allmählich leeren.",
+        "Eine feste \"goldene Stunde\" für das schwierigste Fach jeden Tag (immer dasselbe Zeitfenster) — den eigenen biologischen Rhythmus nutzen.",
+        "1 bildschirmfreier Abend pro Woche: Jede Woche 1 Abend ganz ohne Bildschirm verbringen, an dem die ganze Familie mitmacht — die Fähigkeit stärken, Langeweile auszuhalten."
+      ],
+      "parentGuidance": "Geben Sie während einer Konzentrationseinheit keine zusätzlichen Aufgaben; respektieren Sie das Licht für \"Ich bin konzentriert\".",
+      "measurement": "Anzahl konzentrierter Lerneinheiten/Woche; Anzahl der Minuten aus der Zeitbank, die wie geplant verwendet wurden; Anzahl der Male, bei denen Ihr Kind selbst eine ablenkungsfreie Umgebung schafft.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD3-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "TC",
+      "name": "Persönliches Budget: 4 Umschläge",
+      "childMeaning": "“Geld geht in 4 Richtungen: geben – ausgeben – sparen – investieren.”",
+      "successSignal": "Hält Einnahmen und Ausgaben 1 Monat lang durchgehend fest; teilt das Geld nach selbst unterschriebenen Anteilen auf 4 Umschläge auf; kann Pflichten von geschaffenem Wert unterscheiden; hat Ersparnisse für ein konkretes Ziel.",
+      "activities": [
+        "Von 3 Gläsern (GD2) auf 4 Umschläge wechseln: 🎁 Geben – 🛒 Ausgeben – 🌱 Sparen – 🏦 Investieren (Ihr Kind schlägt die Anteile vor, die Eltern legen sie fest und Ihr Kind unterschreibt).",
+        "Handschriftliches Einnahmen-Ausgaben-Buch mit 3 Spalten (Datum – Einnahmen – Ausgaben – Rest), täglich führen; am Monatsende von Hand ein Diagramm zeichnen.",
+        "Drei Arten von Geld zu Hause: (a) Pflichtgeld — Haushaltspflichten, unbezahlt; (b) Wertgeld — Arbeit über die Pflichten hinaus, nach Marktpreisen bezahlt; (c) Wissensgeld — Dinge, die Ihr Kind selbst herstellt (illustrierte Bücher, Videos, Handarbeiten) und zu selbst festgelegten Preisen an Verwandte verkauft. ⇒ vermitteln: G7_Materieller Wohlstand ist die Frucht von Wert.",
+        "Erstes Produkt: Ihr Kind stellt pro Quartal 1 Produkt zum Tauschen oder Verkaufen her (Werbung lernen, Grundlage CD-08).",
+        "Sparziel mit Bild: Foto des gewünschten Gegenstands und seinen Preis aufhängen; jede Woche den Fortschritt verfolgen.",
+        "24-Stunden-Regel: Bei einem Gegenstand > 100.000 VND 24 Stunden mit dem Kauf warten — Impulskäufe bremsen.",
+        "\"Tag ohne Ausgaben\": 1 Tag pro Woche nichts ausgeben, Gefühle und die alternative Beschäftigung festhalten — Selbstbeherrschung und Zufriedenheit ohne Kaufen üben.",
+        "Gezielt spenden: Den Umschlag fürs Geben 2 Mal/Jahr verwenden; Ihr Kind wählt selbst die Person oder den Zweck und übergibt die Spende selbst."
+      ],
+      "parentGuidance": "Kaufen Sie nicht nachträglich ein und verleihen Sie nicht zu leicht; tragen Sie jedes Darlehen mit Rückzahlungstermin ein.",
+      "measurement": "Anzahl der Tage mit Einträgen/Woche; erreichte Sparquote; Anzahl der Produkte, die Ihr Kind herstellt; Anzahl erfolgreicher Fälle des \"24 Stunden Wartens\".",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#7BốThí:BT-6-ThanThi",
+        "#7BốThí:BT-7-ToaThi",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD3-TC-02",
+      "sourceAliases": [],
+      "stageId": "GD3",
+      "ageRange": "6-12",
+      "primaryDomain": "TC",
+      "name": "Größere Verantwortung und Geld verdienen durch echten Wert",
+      "childMeaning": "“Ich bitte nicht um Geld — ich schaffe Wert und tausche ihn gegen Geld.”",
+      "successSignal": "Schließt 1 kleines Projekt mit einem echten Kunden oder Empfänger ab; kann einen Preis festlegen, ein Produkt vorstellen und Feedback annehmen; weiß, wie man Gutes weitergibt.",
+      "activities": [
+        "Kleines Verkaufsprojekt 1 Mal/Jahr: Limonade, Süßigkeiten oder Handarbeiten auf einem Schulfest oder vor dem Haus verkaufen. Mit Preisliste, Gewinn-und-Verlust-Zahlen und Auswertung.",
+        "Projekt \"Für jemand anderen werben\" [noch vor der eigenen Werbung]: Ihr Kind erstellt 1 Video oder Plakat, das den Laden eines Verwandten oder einen Mitschüler vorstellt.",
+        "Eine benannte Verantwortung: 1 Rolle in einer Klasse oder Gruppe übernehmen (stellvertretende Klassenleitung für das Lernen, Materialverwaltung) — die konkreten Aufgaben dieser Rolle aufschreiben.",
+        "Feedback-Tagebuch: Nach jeder Aufgabe 1 Sache notieren, die andere gelobt haben, und 1 Sache, die verbessert werden soll (Grundlage für NTAI-03 Mut, Fehler zuzugeben).",
+        "\"Den Eltern ein Produkt in 1 Satz verkaufen\": 1 Produkt in 30 Sekunden vorstellen — Grundlage CD-08 Außergewöhnliche Werbung.",
+        "Vom Gewinn geben: Ihr Kind legt 1 Teil des Gewinns zurück, um anderen etwas zu schenken oder zu helfen — der Kreislauf von Wert schaffen → geben wird vollständig.",
+        "1 Mal/Quartal einen Ort besuchen, an dem Dinge hergestellt werden (Werkstatt, Bauernhof oder kleines Unternehmen von Bekannten) — sehen, wie Wert entsteht."
+      ],
+      "parentGuidance": "Unterstützen Sie Ihr Kind, ohne die Arbeit für es zu erledigen; lassen Sie es Preise festlegen und die Ergebnisse von Gewinn und Verlust erleben.",
+      "measurement": "Anzahl abgeschlossener Projekte/Jahr; Geld, das Ihr Kind selbst verdient; Anzahl der Male, bei denen es Feedback erhält und Verbesserungen umsetzt.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G7-VatChat",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-08-QuangBaSieuPham",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#8TốChất:NTAI-06-GanhVac",
+        "#8TốChất:NTAI-04-DungCamThayDoi",
+        "#9DạngNgười:NG-3-NhanMach"
+      ]
+    },
+    {
+      "id": "GD4-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "NT",
+      "name": "Erkenntnistagebuch: von „die anderen sind schuld“ zu „es beginnt bei mir“",
+      "childMeaning": "„Was in meinem Leben erschaffe ich selbst, und was nicht?“",
+      "successSignal": "kann Ebene 1 (richtig–falsch, gut–schlecht) und Ebene 2 (die Ursache beginnt bei mir) unterscheiden; nutzt bei schwierigen Situationen die 3 Schritte Annehmen → den Menschen mit Verständnis begegnen → die Lektion wertschätzen; gibt weniger anderen die Schuld.",
+      "activities": [
+        "Abendliches 5-Zeilen-Tagebuch: Ereignis → Gefühl → mein eigener Anteil daran → Was braucht die andere Person? → Was mache ich künftig anders?",
+        "Übung zu 5 Erkenntnisebenen: Wählen Sie jede Woche 1 unangenehme Situation und schreiben Sie sie aus 2 Blickwinkeln neu: Ebene 1 (wer hat recht, wer hat unrecht?) und Ebene 2 (die Ursache beginnt bei mir). Vergleichen Sie, wie sich die beiden Sichtweisen anfühlen.",
+        "Ritual in 3 Schritten zum „Überwinden einer schwierigen Situation“ [BT-4, BT-5]: Wenn etwas Unerwünschtes passiert → (1) annehmen, (2) dem Menschen mit Verständnis begegnen, (3) die Lektion wertschätzen. Schreiben Sie für jeden Schritt 1 Satz auf.",
+        "„Mein Gesetzbuch“: Jeden Monat 1 Regel aufschreiben, die Ihr Kind aus einer Erfahrung selbst ableitet (zum Beispiel: „Wenn ich < 7h schlafe, werde ich zu meinem Geschwisterkind gereizt“).",
+        "Dreimal nachfragen: Wenn ein Problem auftaucht, dreimal hintereinander „Warum?“ fragen, bis die Grundursache sichtbar wird (Grundlage NG-8: Fachperson).",
+        "Bewusst mit dem Herzen geben: Jede Woche 1 Sache aufschreiben, für die Ihr Kind einer Person dankbar ist, die es genervt hat — inwiefern war diese Person für Ihr Kind ein „Meister“ oder ein „Wohltäter“?",
+        "24 Stunden ohne Urteil sprechen: Einen Tag lang nichts Urteilendes über andere sagen; die Zahl der Momente notieren, in denen Ihr Kind etwas sagen wollte, es aber nicht gesagt hat."
+      ],
+      "parentGuidance": "Fragen Sie: „Wo siehst du deinen Anteil?“ statt „Warum machst du …?“; diskutieren Sie nicht über richtig und falsch, solange Ihr Kind von seinen Gefühlen überwältigt ist.",
+      "measurement": "Wie oft Ihr Kind in schwierigen Situationen selbst die 3 Schritte nutzt; wie oft es seinen eigenen Verantwortungsanteil erkennt; wie viele selbst abgeleitete „Regeln“ pro Monat entstehen.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#7BốThí:BT-4-TamThi",
+        "#7BốThí:BT-5-PhongThi",
+        "#8TốChất:NTAI-03-DungCamNhanLoi",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD4-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "NT",
+      "name": "Meine eisernen Regeln (Stufe 1) — eigene Regeln setzen und einhalten",
+      "childMeaning": "„Ich habe 3 eigene Regeln — und halte sie auch ein, wenn niemand zusieht.“",
+      "successSignal": "hat ein von ihm selbst handgeschriebenes Regelwerk mit ≤ 5 Regeln und selbst festgelegten Folgen; hält die eigenen Regeln ≥ 80%/Woche über 3 Monate ein.",
+      "activities": [
+        "Feierliche Unterzeichnung „Meine eisernen Regeln“: Ihr Kind schreibt 3–5 Regeln auf (zum Beispiel: kein Handy nach 22h30; nicht lügen; 3 Trainingseinheiten/Woche). Sie ändern den Inhalt nicht, sondern fragen nur: „Woran messen wir das?“",
+        "Eine wöchentliche Selbstbewertung mit 7 Feldern an einem privaten Ort (nicht öffentlich, damit daraus keine Bühne wird).",
+        "Selbst festgelegte Folgen, nicht von Ihnen auferlegt: Bei einem Verstoß zum Beispiel in der folgenden Woche 1 Tag keine sozialen Medien. Erinnern Sie nur an die unterschriebene Regel und erfinden Sie keine neue Strafe.",
+        "Gemeinsame Hausregeln, von beiden Seiten unterschrieben: Regeln, die die ganze Familie betreffen (Ruhezeiten, Dinge ausleihen), werden zwischen Ihnen und Ihrem Kind ausgehandelt und gemeinsam unterschrieben — Ihr Kind muss sie ändern dürfen.",
+        "„Auch Erwachsene haben Regeln“: Machen Sie 3 eigene Regeln öffentlich (kein Handy beim Essen; 3 Laufeinheiten/Woche) — die Regeln müssen für beide Seiten gelten.",
+        "1 Bildschirm-freier Termin/Woche (die ganze Familie) und 1 Termin/Woche für anstrengende Hausarbeit (gemeinsam).",
+        "10 Minuten Wochenrückblick: 3 Fragen — Welche Regel wurde eingehalten? Welche nicht? Wie ändern wir die Regeln? (Änderungen sind erlaubt, damit Ihr Kind die Regeln nicht ganz aufgibt.)"
+      ],
+      "parentGuidance": "Verwenden Sie Regeln nicht als Waffe, wenn Sie wütend sind; erinnern Sie erst dann daran, wenn beide Seiten wieder ruhig sind.",
+      "measurement": "Anteil der selbst eingehaltenen Regeln; Zahl der begründeten Regeländerungen; Zahl der Verstöße und der selbst gemeldeten Verstöße.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD4-NT-03",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "NT",
+      "name": "Gefühle unter Druck selbst regulieren (in der Pubertät)",
+      "childMeaning": "„Ich habe 4 Schritte, um wieder ruhiger zu werden, und weiß, wann ich eine Pause brauche.“",
+      "successSignal": "erkennt 3 körperliche Zeichen, dass es bald die Kontrolle verliert (heißes Gesicht, schneller Herzschlag, laute Stimme); kann die Situation 5 Minuten verlassen und anschließend weiterreden; verwendet keine beleidigenden Worte.",
+      "activities": [
+        "Karte körperlicher Zeichen: Ihr Kind zeichnet seine 3 eigenen Zeichen auf einen Zettel und hängt ihn im Zimmer auf.",
+        "Der 4-Schritte-Ablauf „STOPP – ATMEN – SAGEN – WÄHLEN“: Nicht weiterreden → 4 Atemzüge (4-4-4-4) → sagen, was man wahrnimmt → 1 von 2 Reaktionen wählen.",
+        "Vereinbarung „5 Minuten Abstand“: In einem Streit darf Ihr Kind sagen: „Ich brauche 5 Minuten“, und gehen, ohne dass das als unhöflich gilt; nach 5 Minuten reden beide wieder. Das ist eine unterschriebene Familienregel.",
+        "Tagebuch für hitzige Situationen: Nach jedem Ausbruch 4 Zeilen schreiben: Was ist passiert – wie habe ich mich gefühlt – was habe ich getan – was mache ich beim nächsten Mal (auf Grundlage des Mutes, Fehler zuzugeben, ohne sich selbst Vorwürfe zu machen).",
+        "Körperliches Ritual zum Stressabbau: 20 Liegestütze, 5 Minuten gehen, eine kühle Dusche — Ihr Kind wählt vorher seine Liste mit „3 Möglichkeiten zum Stressabbau“.",
+        "Positive Sprache neu lernen: „Entschuldigung, dass ich so oft gereizt bin“ ersetzen durch „Danke, Mama, dass du geduldig mit mir bist“ (im Ausgangstext heißt es, dass ein Dank bereits eine Entschuldigung enthält).",
+        "Im Schwierigen ein Lächeln schenken [BT-1]: 1-mal täglich lächeln, obwohl man gerade genervt ist — das Ergebnis notieren."
+      ],
+      "parentGuidance": "Bleiben Sie ruhig, wenn Ihr Kind laut wird; wenn Sie selbst die Fassung verlieren, entschuldigen Sie sich zuerst — zeigen Sie es durch Ihr eigenes Verhalten.",
+      "measurement": "Wie oft der 4-Schritte-Ablauf genutzt wird; wie oft „5 Minuten Abstand“ erfolgreich genutzt werden; wie oft beleidigende Worte fallen (Ziel: 0).",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#7BốThí:BT-1-NhanThi",
+        "#7BốThí:BT-5-PhongThi",
+        "#8TốChất:NTAI-03-DungCamNhanLoi"
+      ]
+    },
+    {
+      "id": "GD4-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "SK",
+      "name": "8–10 Stunden Schlaf & eine Schlafenszeit vor 23h",
+      "childMeaning": "„Schlaf entscheidet, ob ich gereizt bin oder nicht — er ist also keine Nebensache.“",
+      "successSignal": "schläft 8–10 Stunden; die Schlafenszeit weicht um ≤ 45 Minuten ab; geht vor einem wichtigen Tag selbstständig früher schlafen.",
+      "activities": [
+        "Schlafenszeiten 7 Tage lang in einem Tagebuch erfassen; gemeinsam den Zusammenhang zwischen Schlafenszeit ↔ Stimmung am nächsten Tag betrachten (selbst entdecken statt belehrt werden).",
+        "„Abschaltzeit“: Ihr Kind legt selbst eine Zeit zum Ausschalten der Geräte und eine Zeit zum Lichtaus fest und schreibt sie in seine eisernen Regeln.",
+        "Geräte außerhalb des Schlafzimmers laden: Das ist die wichtigste Veränderung der Umgebung, weil das Belohnungssystem in diesem Alter den Willen stark beeinflusst.",
+        "Strategie bei verschobenem Rhythmus: An 3 aufeinanderfolgenden Tagen die Aufstehzeit jeden Tag um 20 Minuten vorverlegen + 15 Minuten Morgenlicht.",
+        "Kurzer Mittagsschlaf von ≤ 25 Minuten (falls nötig) und nicht nach 15h.",
+        "30 Minuten zum Herunterfahren: kein neuer Lernstoff, keine sozialen Medien, eine warme Dusche oder Lesen auf Papier.",
+        "Alle 2 Wochen die Zahlen neu betrachten: Ihr Kind stellt seine Schlafübersicht vor — Schlaf wird zu etwas, das Ihr Kind selbst in die Hand nimmt, nicht zu etwas, das Sie verwalten."
+      ],
+      "parentGuidance": "Halten Sie sich an dieselben Regeln — laden Sie Ihre Geräte außerhalb des Schlafzimmers und machen Sie zur gleichen Zeit das Licht aus.",
+      "measurement": "durchschnittliche Schlafdauer; Abweichung der Schlafenszeit; Zahl der Tage mit < 8 Stunden Schlaf.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD4-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "SK",
+      "name": "Gesund und stark: Krafttraining & grundlegende Ernährung",
+      "childMeaning": "„Ich trainiere, damit mein Körper gesund ist und mir gefällt — nicht, um anderen zu gefallen.“",
+      "successSignal": "≥ 60 Minuten Bewegung/Tag; 2–3 Kraft- oder Fitnesseinheiten/Woche mit Aufzeichnungen; kann Nährwertangaben lesen und 1 ausgewogene Mahlzeit auswählen.",
+      "activities": [
+        "Trainingsplan mit 3 Bereichen: Kraft (2 Einheiten) – Ausdauer (2 Einheiten) – Beweglichkeit/Gleichgewicht (täglich 10 Minuten). Übungen und Werte klar notieren.",
+        "Wöchentliches Tagebuch mit 4 Werten: maximale Liegestütze, Plank, 1-km-Lauf, Zahl der Trainingseinheiten. Den Fortschritt monatlich als Diagramm darstellen.",
+        "Technik vor Umfang: Grundbewegungen (Kniebeugen, Liegestütze, Sit-ups, Ausfallschritte) mit Videos oder einer anleitenden Person richtig lernen — Verletzungen vorzubeugen ist eine Regel.",
+        "„Eine Sportart mit Gegnern“ 1-mal/Woche: Basketball, Badminton, Kampfsport, Schwimmen — Gewinnen und Verlieren sowie Spielregeln kennenlernen.",
+        "3 ausgewogene Mahlzeiten: Ihr Kind plant 3 Speisepläne/2 Wochen; die Regel lautet „genug Eiweiß – genug Gemüse – Wasser vor Limonade“.",
+        "3 Dinge sind absolut verboten: Tabak, Alkohol, Aufputschmittel — mit einer handgeschriebenen Familienvereinbarung und einem Satz zum „Nein“-Sagen, wenn Freunde dazu einladen (5 Situationen als Rollenspiel).",
+        "Bildschirmzeit mit Regeln: eine von Ihrem Kind vorgeschlagene tägliche Obergrenze + eine Tracking-Funktion; 1 Tag/Woche ohne Bildschirm.",
+        "Haltung & Aussehen: Sitzhaltung beim Lernen prüfen, ein Rucksack mit 2 Trägern und ≤ 10% des Körpergewichts, vollständige Körperpflege am Morgen."
+      ],
+      "parentGuidance": "Trainieren Sie mindestens 1-mal/Woche gemeinsam; kommentieren Sie das Aussehen nicht negativ, sondern nur Werte und Anstrengung.",
+      "measurement": "Zahl der Trainingseinheiten/Woche; 4 Fitnesswerte pro Monat; Zahl der Tage mit ≥ 60 Minuten Bewegung.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-01-SucHocTap"
+      ]
+    },
+    {
+      "id": "GD4-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "MQH",
+      "name": "Mitgefühl zeigen (in kleinem Rahmen): eine Gruppe führen",
+      "childMeaning": "„Ich führe, indem ich ein Vorbild bin und anderen helfe, besser zu werden.“",
+      "successSignal": "übernimmt in 1 Gruppe (Klasse, Club, Team) mindestens 3 Monate lang eine echte verantwortungsvolle Rolle; kann mindestens 2 Menschen eine Fähigkeit beibringen; kann vor der Gruppe Fehler zugeben.",
+      "activities": [
+        "Eine verantwortungsvolle Rolle in einem Club oder in der Klasse mit klar aufgeschriebenen Aufgaben übernehmen; Erwachsene erledigen die Aufgabe nicht für Ihr Kind.",
+        "„Eine Fähigkeit weitergeben“ (Wissen im Kleinen teilen) [BT-7]: Ihr Kind bringt 1 Freund, der darin weniger gut ist, eine eigene Fähigkeit bei — und fasst sie in 5 Schritten zusammen, damit andere sie nachmachen können.",
+        "1 Gruppenveranstaltung organisieren: Aufgaben verteilen, Fristen setzen, 2 Besprechungen selbst durchführen — mit einem 1-seitigen Protokoll.",
+        "Regeln für den Umgang in der Gruppe: Bei einem Fehler vor der Gruppe den eigenen Fehler zugeben (Grundlage NTAI-03); bei jeder Besprechung öffentlich etwas Gutes über ein Mitglied sagen (Grundlage BT-3, Geben durch freundliche Worte).",
+        "Tagebuch „Wem habe ich geholfen, besser zu werden?“: Jeden Monat 3 Menschen und 1 konkrete Handlung notieren.",
+        "Schwächere schützen: einen konkreten Plan für den Fall haben, dass Ihr Kind Mobbing sieht (nicht schweigen, nicht filmen, einen Erwachsenen informieren, die betroffene Person begleiten) — 3 Situationen als Rollenspiel.",
+        "Than thi (Geben durch Zeit und körperlichen Einsatz) bewusst praktizieren [BT-6]: 2 Stunden/Monat einer bestimmten Person bei einer bestimmten Aufgabe helfen (einem jüngeren Geschwisterkind beim Lernen helfen, Großeltern helfen, die Nachbarschaft aufräumen)."
+      ],
+      "parentGuidance": "Seien Sie Ratgeber, nicht Manager; lassen Sie die Gruppe eigene Fehler machen und korrigieren; stellen Sie nur 3 offene Fragen.",
+      "measurement": "Zeit in der Rolle; Zahl der Menschen, denen Ihr Kind etwas beibringt; Zahl der organisierten Veranstaltungen; Zahl der Fehler, die Ihr Kind vor der Gruppe zugibt.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G2-TamThai",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#9DạngNgười:NG-3-NhanMach",
+        "#9DạngNgười:NG-7-ThayCo",
+        "#7BốThí:BT-6-ThanThi",
+        "#7BốThí:BT-7-ToaThi",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-06-GanhVac"
+      ]
+    },
+    {
+      "id": "GD4-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "MQH",
+      "name": "Fortgeschrittene Kommunikation: Entschuldigen – Danken – Feedback in 3 Schichten",
+      "childMeaning": "„Ich kann Schwieriges sagen, ohne die andere Person zu verletzen.“",
+      "successSignal": "kann sich entschuldigen, ohne „aber“ zu sagen; nimmt Feedback an, ohne sich zu verteidigen; kann Freunden oder Eltern Feedback nach der 3-Schichten-Struktur geben; kann höflich „Nein“ sagen.",
+      "activities": [
+        "Struktur für Feedback in 3 Schichten: „Ich sehe … (Fakten) → Ich fühle … → Ich schlage vor …“. 2-mal/Woche anhand echter Situationen üben.",
+        "Entschuldigung in 4 Teilen: das eigene Tun anerkennen → die Auswirkung auf die andere Person benennen → sagen, wie man es wiedergutmacht → fragen: „Was muss ich noch tun?“ Das Wort „aber“ in einer Entschuldigung nicht verwenden.",
+        "Danken statt sich entschuldigen: die Formulierung aus dem Ausgangstext üben — „Danke, dass du auf mich gewartet hast“ statt „Entschuldigung, dass ich zu spät bin“.",
+        "In 3 Schritten „Nein“ sagen: danken → einen kurzen Grund nennen → eine andere Möglichkeit vorschlagen. 5 Situationen als Rollenspiel, in denen andere einladen (Schwänzen, um auszugehen, Drogen ausprobieren, schlecht über einen Freund reden).",
+        "Lob auf Grundlage von 8 Eigenschaften: Jede Woche 3 Komplimente an 3 verschiedene Menschen richten, die eine Eigenschaft benennen (Ausdauer, Verantwortung übernehmen, Bescheidenheit, Mut, Fehler zuzugeben, Wertschätzung und Dankbarkeit, Beitrag leisten, Lernfähigkeit, Mut zur Veränderung).",
+        "Mit anspruchsvollen Erwachsenen sprechen: 5 Beispielsätze (begrüßen – bestätigen, was man verstanden hat – fragen – vorschlagen – danken); mit Lehrkräften oder Nachbarn üben.",
+        "Nachrichten vor dem Senden prüfen (60 Sekunden): sich 3 Fragen stellen — stimmt es? Ist es nötig? Ist es freundlich? (Die „eisernen Regeln“ auf soziale Medien anwenden.)"
+      ],
+      "parentGuidance": "Nehmen Sie Feedback von Ihrem Kind an, ohne es zu bestrafen — wenn Ihr Kind für die Wahrheit ausgeschimpft wird, stirbt diese Gewohnheit sofort.",
+      "measurement": "Zahl der Entschuldigungen mit der richtigen Struktur; Zahl der Situationen, in denen Ihr Kind selbstständig Feedback in 3 Schichten gibt; Zahl der erfolgreich ausgesprochenen „Neins“; Zahl der vor dem Senden geprüften Nachrichten.",
+      "conceptTags": [
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G4-PhamChat(Lễ)",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-3-NgonThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#8TốChất:NTAI-07-TranTrongBietOn",
+        "#8TốChất:NTAI-08-KhiemTon"
+      ]
+    },
+    {
+      "id": "GD4-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "HT",
+      "name": "Selbstständiges Lernen: planen – selbst bewerten – Verantwortung für Ergebnisse übernehmen",
+      "childMeaning": "„Letztlich bin ich selbst für mein Lernen verantwortlich.“",
+      "successSignal": "erstellt ohne Erinnerung Wochen- und Monatspläne; bewertet die eigene Arbeit vor der Benotung; weiß, wen es wann um Hilfe bitten kann; hat 1 selbst initiiertes Lernprodukt.",
+      "activities": [
+        "Ein 1-seitiger Wochenplan: 3 Ziele + Zeitblöcke; nur Ihr Kind schreibt ihn, und Sie fragen einfach: „Wobei brauchst du Unterstützung?“",
+        "Fortgeschrittenes Lernen mit Abständen: ein Zeitplan für 1–3–7–21–60 Tage; selbst gemachte Lernkarten verwenden.",
+        "Eine „Fehlerbank“ nach Fach + Fehlerdiagnose: Fehler durch Missverständnis / Unachtsamkeit / Zeitmangel — für jede Art eine andere Korrektur.",
+        "1-mal pro Halbjahr projektbasiert lernen: ein echtes Produkt (eine kleine Recherche, ein Modell, ein Video, eine Anwendung) — auf Grundlage von CD-08 Teilen und Bekanntmachen + CD-05 Fähigkeit.",
+        "Selbsttest „3 Stunden ohne Ablenkung“: 1-mal pro Woche 90 Minuten selbstständig unter prüfungsähnlichen Bedingungen eine Übungsarbeit bearbeiten.",
+        "Eine Fachperson fragen: [NG-8] In jedem Halbjahr 1 Person, die in einem für Ihr Kind wichtigen Bereich gut ist, interviewen oder per E-Mail befragen und 5 vorbereitete Fragen stellen.",
+        "1 anspruchsvolles Buch/Monat lesen: ein gehaltvolles Sachbuch; 1 Seite Zusammenfassung + 1 Kritik schreiben.",
+        "Tagebuch „Was habe ich an meiner Art zu lernen verändert?“: Jeden Monat 1 neue Erkenntnis über das Lernen notieren."
+      ],
+      "parentGuidance": "Gehen Sie von Beaufsichtigen zu Beraten über: Fragen Sie regelmäßig, 1-mal/Woche, 3 Fragen („Was willst du erreichen?“ „Was ist die größte Schwierigkeit?“ „Was brauchst du von uns?“).",
+      "measurement": "Zahl der Wochen, für die Ihr Kind selbstständig im Voraus plant; Unterschied zwischen Selbstbewertung und tatsächlichen Noten; Zahl der Produkte pro Halbjahr; Zahl der langen selbstständigen Lerneinheiten.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD4-HT-02",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "HT",
+      "name": "Klar sehen: tief lesen – beide Seiten argumentieren – Systeme erkennen",
+      "childMeaning": "„Ich sehe die Ursachen hinter Ereignissen und das ganze System.“",
+      "successSignal": "liest 1 Sachbuch/Monat; kann für beide Seiten eines umstrittenen Themas argumentieren; kann für 1 echtes Problem im eigenen Leben ein Ursache-Wirkungs-Diagramm zeichnen.",
+      "activities": [
+        "Beide Seiten vertreten: Alle 2 Wochen schreibt Ihr Kind 1 Seite für die Seite, der es nicht zustimmt — es muss die Gegenposition verstehen.",
+        "Diagramm Ursache–Bedingungen–Ergebnis: 1 echtes Ereignis (eine schlechte Note, Streit mit einem Freund) nehmen und die Kette Bewusstsein – Bedingungen – Ergebnis zeichnen; anschließend einen Punkt zum Eingreifen finden.",
+        "„5 Quellen lesen“: Zu einem Thema 5 Quellen mit unterschiedlichen Sichtweisen lesen und eine Vergleichstabelle erstellen (Quelle – Argument – Daten – Verzerrung).",
+        "Fragen auf 5 Ebenen [Ebene 1→5]: Den Blickwinkel auf dasselbe Ereignis verändern üben: Richtig/falsch → Die Ursache liegt in mir → Leerheit (an sich gibt es kein Problem) → Natürliches Wissen (das Passende tun) → Umfassendes Gewahrsein.",
+        "Tagebuch „Erkenntnisebenen“: Nach jedem wichtigen Ereignis notieren: „Auf welcher Ebene bin ich gerade und auf welche Ebene kann ich mich bewegen?“",
+        "15 grundlegende Begriffe zusammenfassen: Für 1 Fähigkeit, in der Ihr Kind gut ist, ihre Muster – Grundsätze – Formeln – Methoden – Umgebung – Werkzeuge aufschreiben (auf Grundlage von Fachperson und Wissen weitergeben).",
+        "1 Dokumentation anschauen + jeden Monat 5 Beobachtungen mit Belegen aufschreiben."
+      ],
+      "parentGuidance": "Geben Sie in einer Diskussion nach, wenn Ihr Kind ein starkes Argument hat — Ihr Kind muss erleben, dass gute Argumente wichtiger sind als der Status.",
+      "measurement": "Zahl der Bücher/Monat; Zahl der Texte, die beide Seiten vertreten; Zahl der gezeichneten Ursache-Wirkungs-Diagramme; Zahl der Situationen, in denen Ihr Kind auf eine höhere Erkenntnisebene wechselt.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#9DạngNgười:NG-1-CaoNhan",
+        "#9DạngNgười:NG-8-ChuyenGia",
+        "#7BốThí:BT-3-NgonThi"
+      ]
+    },
+    {
+      "id": "GD4-TC-01",
+      "sourceAliases": [],
+      "stageId": "GD4",
+      "ageRange": "12-15",
+      "primaryDomain": "TC",
+      "name": "Finanzen im Teenageralter: Konten – Aufzeichnungen – erstes Einkommen",
+      "childMeaning": "„Ich verwalte echtes Geld, führe Aufzeichnungen und übernehme selbst Verantwortung dafür.“",
+      "successSignal": "hat ein eigenes Konto und 3 Monate lang vollständige Einnahmen- und Ausgabenaufzeichnungen; hat zum ersten Mal selbst Geld verdient; hat einen kleinen Notgroschen; versteht Zinsen, Inflation und Finanzbetrug auf grundlegender Ebene.",
+      "activities": [
+        "Ein Sparkonto + ein Ausgabenkonto mit einer Tracking-App eröffnen; Ihr Kind verwaltet beide, und Sie schauen nur mit seiner Erlaubnis hinein (Selbstständigkeit respektieren).",
+        "Monatliches Budget mit 4 erweiterten Umschlägen: Geben 10% – Ausgeben 60% – Sparen 20% – Investieren/Lernen 10% (diese Anteile sind ein Ausgangspunkt; Ihr Kind darf Änderungen vorschlagen und die Vereinbarung unterschreiben).",
+        "Erster Job: Nachhilfe geben, in einem Laden helfen, Inhalte erstellen, Dinge herstellen — mindestens 1-mal in dieser Stufe; aufschreiben, was Ihr Kind über Geld und Menschen gelernt hat.",
+        "Lektion zum Schutz vor Betrug: 5 simulierte Situationen (Investitionen mit hohen Zinsen, leichte Arbeit mit hohem Lohn, Online-Kredite, unbekannte Rabattcodes, Geldverdienen-Apps) — Ihr Kind erkennt Warnzeichen und sagt „Nein“.",
+        "Notizbuch „Wert des Geldes“: Den Preis von 5 Dingen in Arbeitsstunden umrechnen — den Wert von Zeit vermitteln.",
+        "1 kontrollierte Investition in Lernen oder eine kleine Investition: zum Beispiel einen Kurs, den Ihr Kind selbst bezahlt, um 1 Fähigkeit zu verbessern; oder eine sehr kleine, beaufsichtigte Investition, um Zinseszins und Risiko zu verstehen.",
+        "Geben mit eigenem Budget: Ihr Kind wählt jedes Quartal 1 Person oder 1 Sache aus, der es etwas geben möchte, und überreicht es persönlich.",
+        "Familientreffen zu Finanzen 1-mal/Monat: Ihr Kind hört zu oder beteiligt sich an einem Teil des Treffens (Planung größerer Ausgaben) — Lernen durch echte Erfahrungen statt durch Vorträge."
+      ],
+      "parentGuidance": "Retten Sie das Budget nicht, wenn Ihr Kind alles ausgegeben hat; wenn Sie Geld verleihen, halten Sie Zinsen und eine Frist in einer Vereinbarung fest.",
+      "measurement": "Zahl der Monate mit vollständigen Aufzeichnungen; selbst verdiente Geldsumme; ob ein Notgroschen vorhanden ist; Ergebnisse der 5 Tests zum Erkennen von Betrug.",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#7BốThí:BT-6-ThanThi",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD5-NT-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "NT",
+      "name": "Die eigenen eisernen Regeln (Stufe 2): Leitbild und Wochenrhythmus",
+      "childMeaning": "„Ich schreibe auf, wer ich werden möchte, und wiederhole es jede Woche, bis es wahr wird.“",
+      "successSignal": "Das Kind hat ein selbst verfasstes persönliches Leitbild mit ≤ 20 Sätzen; hält einen Wochenrhythmus (3–5 feste Rituale) ≥ 12 Wochen in Folge ein; reflektiert jede Woche ohne Erinnerung.",
+      "activities": [
+        "Ein Leitbild schreiben: 3 Teile — (1) Wer bin ich, wenn ich allein bin? (2) Welche 5 Werte vertrete ich? (3) Wer möchte ich mit 25 Jahren für wen sein?",
+        "Ein Wochenrhythmus mit 5 Ritualen: 1 Einheit für Fitness – 1 Einheit vertieftes Lernen von 3 Stunden – 1 Einheit, um anderen zu helfen – 1 Einheit Stille und Nachdenken – 1 Treffen mit einer erfahrenen Person.",
+        "Wöchentliche Reflexion von 15 Minuten (5 Fragen): Welche Regel habe ich eingehalten? Wer hat mir geholfen? Wem habe ich geholfen? Was habe ich verändert? Welche 1 Anpassung mache ich nächste Woche?",
+        "„Selbstdisziplin-Challenge“ 1 Mal/Monat: 1 Tag ohne soziale Medien; 1 Tag nur mit einfacher Nahrung; 1 Mal 60 Minuten am Stück gehen oder schwimmen. Ziel: Ausdauer trainieren (Geduld + Beharrlichkeit + ein wenig Dickköpfigkeit — wörtlich aus dem Material).",
+        "Ein Heft „Was ich ausgehalten habe“: unangenehme Situationen festhalten, in denen das Kind nicht reagiert hat — als Beleg für die eisernen Regeln.",
+        "Das innere Bild 2 Minuten/Tag festigen: die Augen schließen und sich mit allen 5 Sinnen klar sehen, wie man mit 25 Jahren ist (Was sehe, höre und fühle ich?).",
+        "Selbsteinschätzung anhand von 16 Persönlichkeitsbildern: jedes Quartal beliebige ≥ 5 Bilder mit 1–10 bewerten und ein Quartal lang am niedrigsten bewerteten Bild arbeiten."
+      ],
+      "parentGuidance": "Als Berater begleiten — nur fragen, keine Regeln anstelle des Kindes aufstellen; wenn Eltern weitere Regeln möchten, diese wie unter zwei Erwachsenen aushandeln.",
+      "measurement": "Anzahl der Wochen mit eingehaltenem Rhythmus; Anzahl der pünktlichen Selbstreflexionen; vierteljährliche Selbstbewertung der 16 Persönlichkeitsbilder.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#ChânDung:CD-02-TamThaiAnVui",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    },
+    {
+      "id": "GD5-NT-02",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "NT",
+      "name": "Das eigene Lebensziel erkennen: ein ausreichend großer Traum (4 Überlebensantriebe)",
+      "childMeaning": "„Ich weiß, wohin ich will, für wen und warum — nicht nur, um Geld zu verdienen.“",
+      "successSignal": "Das Kind erstellt eine Traumkarte mit 4 Ebenen (Selbst – Familie – Organisation/Gemeinschaft – Gesellschaft); unterscheidet den eigenen Traum von Träumen, die andere ihm zuschreiben; kennt 3 Bedingungen für einen ausreichend großen Traum: Lebensaufgabe + Leidenschaft + 4 Überlebensantriebe.",
+      "activities": [
+        "Traumkarte mit 4 Ebenen: 4 ineinanderliegende Kreise zeichnen und für jeden Kreis ein Ziel bis zum Alter von 25 Jahren eintragen.",
+        "„Ein ausreichend großer Traum“ mit 5 Kriterien: bestimmen, für wen man Wert schafft und worin der Dienst an anderen besteht (Geld, Schönheit, Ansehen, Nutzen, Sinn — nach dem Material über 4 Überlebensantriebe).",
+        "5 erfahrene Personen aus 2 Bereichen interviewen, die das Kind interessieren: nach Wendepunkt, größtem Fehler und 3 Dingen fragen, die junge Menschen lernen sollten — pro Person 1 Seite zusammenfassen.",
+        "Aufgabe „Wessen Traum ist das?“: Erwartungen aufschreiben, die das Kind von Eltern/Gesellschaft wahrnimmt, und markieren, was wirklich sein eigener Traum ist — Grundlage für CD-12 Menschliches Leben verstehen.",
+        "3 Umfelder ausprobieren: pro Jahr ≥ 3 Orte erleben (Schnupperkurs, Ehrenamt, Projekt, Nebenjob, Verein) und „beibehalten/wechseln“ aufschreiben.",
+        "Ein 1-Satz-Leitbild für die Lebensaufgabe: es vor der Familie laut sagen, an die Wand hängen und alle 6 Monate aktualisieren.",
+        "„Erst Beitrag macht ganz“: 1 langfristige Aufgabe zum Beitragen auswählen (jüngere Kinder unterrichten, Umweltprojekt, 1 Person unterstützen) — mit NTAI-05 verbinden."
+      ],
+      "parentGuidance": "Dem Kind keinen eigenen Traum überstülpen; die einzige Aufgabe besteht darin, nach dem „Warum?“ zu fragen, damit das Kind selbst Klarheit gewinnt.",
+      "measurement": "Vorhandensein einer Traumkarte mit 4 Ebenen; Anzahl der Erlebniseinheiten/Jahr; ob das Kind den eigenen Traum selbst unterscheiden kann.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#ChânDung:CD-16-LamNguoiThanhCong",
+        "#9DạngNgười:NG-5-NhanTai",
+        "#9DạngNgười:NG-6-MinhSu",
+        "#8TốChất:NTAI-04-DungCamThayDoi",
+        "#8TốChất:NTAI-06-GanhVac"
+      ]
+    },
+    {
+      "id": "GD5-NT-03",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "NT",
+      "name": "Menschliches Leben verstehen: bewusstes großzügiges Geben und das Gute, das man weitergibt",
+      "childMeaning": "„Ich gebe bewusst — und ich verstehe, was mein Geben bewirkt.“",
+      "successSignal": "Praktiziert alle 7 Formen des großzügigen Gebens in 1 Schuljahr (mit Aufzeichnungen); unterscheidet Informationsweitergabe – großzügiges Geben von Energie – Wertschöpfung (materielle Mittel); erklärt mit eigenen Worten, warum gute Taten sowohl dem Empfänger als auch dem Gebenden Freude und neue Einsichten bringen.",
+      "activities": [
+        "7 Formen des großzügigen Gebens in 7 Wochen praktizieren: jede Woche 1 Form in den Mittelpunkt stellen und die tatsächlichen Ergebnisse festhalten (siehe Tabelle der 7 Formen des großzügigen Gebens in Teil 3).",
+        "Bo thi (Geben durch Lehren) in der Praxis [BT-7]: 1 Fähigkeit einer weniger geübten Person beibringen, bis sie sie selbstständig anwenden kann, und sie anschließend in 5–15 Schritten für andere zusammenfassen.",
+        "Ein 3-monatiges Unterstützungsprojekt: 1 konkrete Person/1 konkrete Gruppe auswählen und mit einem Ziel sowie messbaren Ergebnissen unterstützen.",
+        "Heft mit 3 Dimensionen des guten Handelns: wöchentlich 3 Spalten verfolgen — anderen Freude bereiten (Freude für andere), anderen zu mehr Verständnis verhelfen (Gutes für andere), und was man selbst zurückerhält (nicht zum Aufrechnen, sondern um Ursache und Wirkung zu erkennen).",
+        "„Widrigkeiten sind weise Lehrmeister“: zu den 3 größten Enttäuschungen des Jahres 3 Schritte des Annehmens – des Mitgefühls – der Wertschätzung für die Lektion und das, was sie lehrt, aufschreiben.",
+        "Bedeutsame Beziehungen pflegen: 9 Arten von Menschen im echten Leben selbst erkennen und festhalten, wie man derzeit mit ihnen umgeht (Grundlage NG-1…NG-9).",
+        "Gespräche, die Verständnis fördern [BT-3 auf höchstem Niveau]: jeden Monat 1 tiefes Gespräch führen, das einem anderen zu einem klaren inneren Bild – klarem Begriffsverständnis – einem ausgeglichenen und zuversichtlichen Inneren verhilft; 3 verwendete Fragen notieren."
+      ],
+      "parentGuidance": "In diesem Alter nicht zu viel verbal loben — Begegnungen mit Menschen organisieren, die Hilfe brauchen, statt über das Helfen zu belehren.",
+      "measurement": "Anzahl der im Jahr vollständig praktizierten Formen des großzügigen Gebens/7; Anzahl der Menschen, denen das Kind tatsächlich geholfen hat, kompetenter zu werden; Anzahl der Gespräche, die Verständnis fördern.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-12-ThauHieuNhanSinh",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#7BốThí:BT-1…BT-7",
+        "#8TốChất:NTAI-05-CongHien",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD5-SK-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "SK",
+      "name": "Gesundheit eines eisernen Menschen (Athletenstufe): Trainingsplan – Ernährung – Erholung",
+      "childMeaning": "„Ich habe ein System, das meinen Körper das ganze Jahr über gesund hält, nicht nur ein paar Wochen.“",
+      "successSignal": "Hält 4–5 Trainingseinheiten/Woche über 3 aufeinanderfolgende Monate ein; hat Fortschrittsdaten; schläft 8–10 Stunden; organisiert die Ernährung vor und nach dem Training selbst; weiß, wie man sich von einer leichten Verletzung erholt.",
+      "activities": [
+        "Ein 12-wöchiger Trainingszyklus mit messbaren Zielen: Kraft + Ausdauer + Beweglichkeit; bei jeder Einheit Daten aufzeichnen.",
+        "„Eisentabelle“ mit 5 Messwerten/Quartal: Plank, Liegestütze, 1-km-Lauf, Standweitsprung, Sit-ups in 1 Minute — 4 Quartale über 2 Jahre vergleichen.",
+        "Zufuhr – Verbrauch – Erholung: 7-Tage-Tagebuch zu Essen – Schlaf – Training; Zusammenhänge suchen (zum Beispiel: Schlaf < 7 h → Leistung sinkt).",
+        "Techniken zur Verletzungsprävention: dynamisches Aufwärmen, Dehnen nach dem Training und die Regel, die Trainingsbelastung um ≤ 10 %/Woche zu steigern.",
+        "1 echter Wettkampf/Lauf im Jahr: anmelden, zielgerichtet trainieren, abschließen — die Erfahrung machen, sich voll einzusetzen.",
+        "Die Regel „Nein, danke“: eine Liste schädlicher Substanzen + ein vorher eingeübtes Skript, um „Nein“ zu sagen (Grundlage NTAI-04 Mut zur Veränderung + CD-10 Eiserne Regeln).",
+        "Psychische Gesundheit: ausreichend schlafen, 1 Einheit/Woche vollständig offline verbringen, 1 Person haben, mit der man bei Überlastung ehrlich sprechen kann, und Anzeichen kennen, bei denen professionelle Hilfe nötig ist."
+      ],
+      "parentGuidance": "Den Plan unterstützen (zum Training fahren, Mahlzeiten vorbereiten), nicht die Rolle des Trainers übernehmen — das Kind besitzt den Plan.",
+      "measurement": "Anzahl der Trainingseinheiten/Woche; Werte aus den 5 Tests pro Quartal; durchschnittliche Schlafdauer; abgeschlossene Sportveranstaltungen.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri"
+      ]
+    },
+    {
+      "id": "GD5-SK-02",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "SK",
+      "name": "Körper und Aussehen pflegen (ausgeglichene Körperform)",
+      "childMeaning": "„Ich kümmere mich um meinen Körper wie um einen wichtigen Freund — denn ich werde diesen Körper mein ganzes Leben lang brauchen.“",
+      "successSignal": "Hat feste Pflegerituale (Hygiene, Körperhaltung, Schlaf, Kleidung passend zum Anlass); kann passende Kleidung für 3 Situationen auswählen (Schule – Treffen mit Erwachsenen – Feierlichkeiten); hält beim Lernen und beim Sprechen im Stehen eine gute Haltung.",
+      "activities": [
+        "Körperpflege-Rhythmus in 3 Abschnitten: morgens (15 Minuten) – nach der Schule (10 Minuten) – abends (20 Minuten); als Checkliste aufschreiben.",
+        "Ein Termin „Mein Kleiderschrank“: Das Kind räumt den Schrank selbst auf, sortiert nach Anlass und legt ungetragene Kleidung weg; den eigenen Stil entwickeln = Respekt für die Menschen, denen man begegnet.",
+        "Körperhaltung – Blickkontakt – Lächeln üben: 5 Minuten/Tag vor dem Spiegel in 3 Situationen (begrüßen – um Erlaubnis bitten – 30 Sekunden präsentieren).",
+        "Fotos „Vorher – nachher, 12 Wochen“: jeden Monat ein Foto im aufrechten Stand machen und die Verbesserung der Körperhaltung vergleichen.",
+        "Informierte Haut-, Haar- und Zahnpflege: 3 Grundlagen lernen, ohne Trends aus sozialen Medien zu folgen; die Regel „Aussehen online nicht vergleichen“.",
+        "Den eigenen Lebensraum mitpflegen: 15 Minuten/Tag im eigenen Zimmer verbringen (Grundlage der eisernen Regeln), was sich direkt auf die Stimmung auswirkt.",
+        "Geben durch Lächeln und Blickkontakt [BT-1, BT-2]: jeden Tag damit beginnen, der ersten Person, der man begegnet, ein echtes Lächeln und echten Blickkontakt zu schenken."
+      ],
+      "parentGuidance": "Vor dem Kind niemals abwertend über das Aussehen des Kindes oder anderer Menschen sprechen; nur über Gewohnheiten und Körperhaltung sprechen.",
+      "measurement": "Anteil der Tage mit eingehaltenen Pflegeritualen; selbst bewertete Körperhaltung; Anzahl der Präsentationsübungen/Woche.",
+      "conceptTags": [
+        "#7Giàu:G6-TheChat",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-06-ThanHinhNguoiMau",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#7BốThí:BT-1-NhanThi",
+        "#7BốThí:BT-2-NhanThi-AnhMat",
+        "#8TốChất:NTAI-07-TranTrongBietOn"
+      ]
+    },
+    {
+      "id": "GD5-MQH-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "MQH",
+      "name": "Eine gute Verbindung werden: 9 Arten von Menschen in einer Person",
+      "childMeaning": "„Ich helfe anderen, voranzukommen — auf alle 9 Arten.“",
+      "successSignal": "Für jede Art von Mensch kann das Kind 1 Handlung ausführen, um diese Rolle zu verkörpern: jemandem 1 Sichtweise geben (NG-1), 1 Person durch eine schwierige Zeit helfen (NG-2), 2 Menschen miteinander verbinden, die voneinander profitieren können (NG-3), die Wünsche eines anderen „vervielfachen“ helfen (NG-4), Verantwortung für jemanden übernehmen (NG-5), 1 Person zu ihrem Traum führen (NG-6), 1 Person etwas beibringen (NG-7), jemandem eine Denkweise zur Vereinfachung von Problemen geben (NG-8), die Lebensaufgabe 1 Person weiterführen (NG-9).",
+      "activities": [
+        "Eine 9-Felder-Tabelle „Das bin ich geworden …“: in jedes Feld 1 echte Handlung aus den letzten 12 Monaten eintragen.",
+        "1 Person begleiten (Mentoring in beide Richtungen): 1 weniger geübte Person mit einer 3-monatigen Verpflichtung und einem Ziel übernehmen.",
+        "Ein Netzwerk bewusst aufbauen: 1 kleine Gruppe zu einem Thema organisieren; jeden Monat 1 neue Person einladen; selbst die Rolle des „Verbinders“ übernehmen.",
+        "Tagebuch „Wie ich mit anderen umgehe“: jede Woche 1 Person festhalten, die geholfen hat, und was man im Gegenzug für sie getan hat (Dankbarkeit erkennen – würdigen – erwidern).",
+        "1 Mal/Monat tief empfundenen Dank aussprechen: 1 Person, der man dankbar ist, anrufen oder direkt mit ihr sprechen und die Lektion benennen, die sie vermittelt hat — zugleich eine Möglichkeit, weise Menschen im eigenen Leben zu halten.",
+        "„Nicht urteilen“ üben: 7 Tage lang niemanden schlechtreden; bei einem Verstoß diesen selbst notieren und neu beginnen.",
+        "Konflikte mit 7 Formen des großzügigen Gebens lösen: bei 1 echten Konflikt nacheinander Geben durch ein Lächeln → Geben durch Blickkontakt → Geben durch Worte → Geben aus dem Herzen → Raum geben anwenden und das Ergebnis festhalten."
+      ],
+      "parentGuidance": "Für das Kind ein Netzwerk schaffen — es aktiv mit guten Menschen bekannt machen, ohne eine Gegenleistung zu verlangen.",
+      "measurement": "Anzahl der ausgefüllten Felder in der Tabelle der 9 Arten von Menschen; Anzahl der Menschen, die das Kind begleitet; Anzahl der Konflikte, die mit 7 Formen des großzügigen Gebens gelöst wurden.",
+      "conceptTags": [
+        "#7Giàu:G2-TamThai",
+        "#7Giàu:G3-NhanCach",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-13-BacAiLinhChung",
+        "#ChânDung:CD-14-DucHanhThienHa",
+        "#ChânDung:CD-09-GiaoTiepThongThai",
+        "#9DạngNgười:NG-1…NG-9",
+        "#7BốThí:BT-3",
+        "#7BốThí:BT-6",
+        "#7BốThí:BT-7"
+      ]
+    },
+    {
+      "id": "GD5-MQH-02",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "MQH",
+      "name": "Förderung und persönliche Kommunikation (einen guten Eindruck hinterlassen)",
+      "childMeaning": "„Ich erzähle die Geschichte von dem, was ich tue — wahrheitsgemäß und so, dass es anderen nützt.“",
+      "successSignal": "Hat einen öffentlichen Kanal/ein öffentliches Profil, das die eigene Arbeit vorstellt (Portfolio, Inhaltskanal, Artikel); hat ≥ 1 Produkt, das von Menschen außerhalb der Familie genutzt oder anerkannt wird; weiß, wie man andere vor sich selbst bekannt macht.",
+      "activities": [
+        "Ein 1-seitiges Kompetenzprofil: Fähigkeiten – Produkte – Beiträge; alle 6 Monate aktualisieren.",
+        "Ein kleiner Inhaltskanal zu 1 Thema: 1 Beitrag/Woche über 12 Wochen veröffentlichen (Lerninhalte, Tipps, eigener Weg) — Geben durch Worte an die Öffentlichkeit üben.",
+        "Zuerst andere fördern: 1 Beitrag/Video über 1 Projekt, 1 Freund oder 1 kleines Geschäft erstellen — „erst Förderer, dann Unternehmer werden“.",
+        "Vor echtem Publikum sprechen: ≥ 2 Mal/Jahr Menschen außerhalb der Familie etwas präsentieren (Klasse, Verein, Gemeinschaft).",
+        "Die 3-Tore-Regel für veröffentlichte Inhalte: wahrheitsgemäß – schadet niemandem – nützlich für die Lesenden.",
+        "1 Mal/Jahr ein öffentliches Produkt: 1 kleines Produkt/Projekt mit echten Nutzern veröffentlichen und Rückmeldungen sammeln.",
+        "Feedback von einer Fachperson einholen [NG-8]: jedes Quartal das Produkt 1 erfahreneren Person schicken und um 3 Hinweise bitten."
+      ],
+      "parentGuidance": "Technischen Rückhalt geben, aber keine Inhalte anstelle des Kindes erstellen; den Kanal des Kindes nicht für die Werbung der Eltern verwenden.",
+      "measurement": "Anzahl veröffentlichter Beiträge; Anzahl öffentlicher Produkte; Anzahl der Präsentationen vor Menschen außerhalb der Familie; Anzahl erhaltener Rückmeldungen von Fachleuten.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G3-NhanCach",
+        "#ChânDung:CD-08-QuangBaSieuPham",
+        "#ChânDung:CD-07-SucKhoeNguoiSat→CD-07-SucKhoeNguoiSat",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#9DạngNgười:NG-7-ThayCo",
+        "#7BốThí:BT-3-NgonThi",
+        "#8TốChất:NTAI-05-CongHien"
+      ]
+    },
+    {
+      "id": "GD5-HT-01",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "HT",
+      "name": "Gelehrtenwissen: selbstständiges vertieftes Lernen und Wissensprodukte",
+      "childMeaning": "„Ich lerne, um etwas zu erschaffen — nicht, um Noten zu bekommen.“",
+      "successSignal": "Hat 1 vertieftes Fachgebiet mit einem konkreten Produkt; kann selbstständig aus Originalquellen lernen (Originalbücher, Fachmaterialien, Fachleute); erreicht 1 der folgenden Formen: ein vertiefter Artikel – ein echtes Projekt – eine bedeutsame Prüfung/Auszeichnung.",
+      "activities": [
+        "1 Schwerpunkt für 12 Monate vertieften Lernens auswählen und ein messbares Ergebnisziel festlegen.",
+        "Plan für selbstständiges Lernen in 4 Bausteinen: Grundlagenwissen – praktische Fähigkeiten – Produkt – Feedback von Fachleuten.",
+        "Originalmaterial lesen: jeden Monat 1 originale Fachquelle (Lehrbuch, Fachartikel, Originalbuch) + 1-seitige Zusammenfassung.",
+        "Jedes Quartal ein Wissensprodukt: Artikel, Modell, Anwendung oder Minikurs — es muss echte Nutzer haben.",
+        "„15 Quellenbegriffe zusammenfassen“ [Grundlage des Gebens durch Lehren]: für den Schwerpunkt Gesetze – Grundprinzipien – Schlüssel – Formeln – Methoden – Leitprinzipien – Werkzeuge – Umfelder – Sichtweisen – innere Haltungen – Fähigkeiten – Kultur – Bezugsrahmen – Quellenbegriffe – Codes aufschreiben.",
+        "Das Gelernte weitergeben (Feynman): das Thema 3 verschiedenen Menschen beibringen; wo man feststeckt, hat man es noch nicht verstanden.",
+        "Fachliches Fehlerjournal: Fehler im Schwerpunkt + Ursachen + Wege zur Korrektur festhalten.",
+        "Lernen lernen: jedes Quartal 1 neue Methode ausprobieren (Auswendiglernen, Schnelllesen, Aufsatzschreiben, Präsentieren) und ihre Wirksamkeit bewerten."
+      ],
+      "parentGuidance": "Nach dem Produkt fragen, statt Noten zu kontrollieren; „Was hast du geschaffen?“ wichtiger nehmen als „Welche Note hast du bekommen?“. ",
+      "measurement": "Anzahl der Produkte/Quartal; Anzahl gelesener Originalquellen; Anzahl der Menschen, denen das Kind etwas beibringt; Qualität des Feedbacks von Fachleuten.",
+      "conceptTags": [
+        "#7Giàu:G1-TriTue",
+        "#7Giàu:G5-NangLuc",
+        "#ChânDung:CD-01-TriTueHocGia",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#9DạngNgười:NG-8-ChuyenGia",
+        "#9DạngNgười:NG-9-ThienTriThuc",
+        "#8TốChất:NTAI-01-SucHocTap",
+        "#7BốThí:BT-7-ToaThi"
+      ]
+    },
+    {
+      "id": "GD5-TC-01",
+      "sourceAliases": [
+        "GD5-HT-02"
+      ],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "TC",
+      "name": "Persönliche Finanzen steuern: Budget – Notgroschen – Anlagegrundlagen",
+      "childMeaning": "„Ich weiß, wo mein Geld ist, wohin es fließt und wann ich mit dem Investieren beginnen kann.“",
+      "successSignal": "Erstellt und verfolgt ein Budget über ≥ 6 aufeinanderfolgende Monate; hat einen Notgroschen in Höhe von 1–3 Monaten persönlicher Ausgaben; erklärt Zinseszins, Risiko und Diversifikation mit Zahlenbeispielen; hat ein regelmäßiges Einkommen aus 1 Quelle über ≥ 3 Monate.",
+      "activities": [
+        "Ein 6-Monats-Budget mit echten Daten: Einnahmen – Ausgaben – Sparen – Geben; die letzten 3 Monate analysieren, um 2 Ausgabenlecks zu finden.",
+        "Ziel für den Notgroschen: einen Betrag in Höhe von 1–3 Monatsausgaben festlegen und den Fortschritt verfolgen.",
+        "4 Begriffe vor dem Investieren verstehen: Zinseszins – Inflation – Risiko – Diversifikation; 3 konkrete Zahlenaufgaben mit einer Tabellenkalkulation lösen.",
+        "Eine beaufsichtigte, sehr kleine Anlagesimulation: das Gefühl von Gewinnen und Verlusten verstehen; nur Geld verwenden, das die Schulbildung nicht beeinträchtigt.",
+        "Betrugsprävention Stufe 2: 5 echte Betrugsfälle analysieren (Schneeballsysteme, Wucherkredite, Scheinanlagen) und 3 gemeinsame Warnzeichen aufschreiben.",
+        "Finanzplan nach dem Abschluss: Einnahmen und Ausgaben für die ersten 6 Monate schätzen (Hochschule/Ausbildung/Arbeit) — Grundlage für CD-15 Wohlstand in Harmonie.",
+        "Das Prinzip „erst Wert schaffen, dann Geld“: Jede Einnahme muss mit 1 Wert verbunden sein, den man bereits für jemand anderen geschaffen hat; dies klar festhalten.",
+        "1 Mal/Monat eine Familien-Finanzbesprechung: Das Kind stellt den Eltern 10 Minuten lang sein Budget vor."
+      ],
+      "parentGuidance": "Als Finanzberater begleiten und mit echten Zahlen arbeiten; finanzielle Schwierigkeiten der Familie altersgerecht teilen.",
+      "measurement": "Anzahl der Monate mit Budget; Betrag im Notgroschen; Ergebnisse der 3 Begriffstests; Anzahl der Einkommensquellen.",
+      "conceptTags": [
+        "#7Giàu:G7-VatChat",
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G4-PhamChat(Tín)",
+        "#ChânDung:CD-15-LucLocDaiThuan",
+        "#ChânDung:CD-10-LuatSatBanThan",
+        "#8TốChất:NTAI-02-KienTri",
+        "#8TốChất:NTAI-03-DungCamNhanLoi"
+      ]
+    },
+    {
+      "id": "GD5-HT-03",
+      "sourceAliases": [],
+      "stageId": "GD5",
+      "ageRange": "15-18",
+      "primaryDomain": "HT",
+      "name": "Der Weg zum Traumberuf: ausprobieren – eingrenzen – festlegen",
+      "childMeaning": "„Ich muss nicht sicher sein — ich muss genug ausprobieren, klug eingrenzen und mich mit einem Plan B festlegen.“",
+      "successSignal": "Absolviert 3 Runden: ≥ 5 Umfelder ausprobieren (15–16) → auf 2 eingrenzen (16–17) → sich auf 1 mit einem Notfallplan festlegen (17–18); hat 1 berufliche Mentorin oder einen beruflichen Mentor (eine erfahrenere Person) mindestens 6 Monate an seiner Seite.",
+      "activities": [
+        "Die Proberunde – 5 Umfelder in 12 Monaten: Nebenjob, Ehrenamt, Schnupperkurse, Projekte, Vereine. Für jedes Umfeld „Was gefällt mir – was gefällt mir nicht – wo passt es zu mir?“ festhalten.",
+        "Berufstabelle mit 3 Spalten: Beruf – Was die tägliche Arbeit umfasst – Was man für den Einstieg lernen muss. Für 5 interessante Berufe ausfüllen (Grundlage für die vereinfachende Denkweise von Fachleuten).",
+        "3 Menschen interviewen, die in diesem Beruf arbeiten: 5 feste Fragen stellen und um 1 konkreten Rat für das Alter von 18 bitten.",
+        "Eine Mentorin oder einen Mentor finden [NG-6 weise Mentorin bzw. weiser Mentor im Kleinen]: 1 Person, die 5–10 Jahre weiter ist, 1 Mal/Monat mit einem klaren Lernziel treffen.",
+        "In 1 Bereich ≥ 100 Stunden den Beruf ausprobieren/echt arbeiten — eine unersetzliche Voraussetzung dafür, „zu wissen, was zu mir passt“.",
+        "Plan mit 2 Wegen: Plan A (Festlegung) + Plan B (Notfallplan), mit klaren Bedingungen für einen Wechsel.",
+        "Projekt/Präsentation „Was wähle ich und warum?“: vor der Familie + 1 familienfremden Person präsentieren, die in diesem Beruf arbeitet.",
+        "Alle 6 Monate prüfen: Passt es noch zur Traumkarte (GD5-NT-02)? Bei Bedarf anpassen — aber das Ziel nicht nur wegen Schwierigkeiten ändern (Prinzip der Beharrlichkeit: die Vorgehensweise ändern, nicht das Ziel)."
+      ],
+      "parentGuidance": "Den Beruf des Kindes nicht auswählen; nur 3 Dinge geben — Informationen, Erfahrungen und Mentoren.",
+      "measurement": "Anzahl der ausprobierten Umfelder; Anzahl der Mentorentreffen; Anzahl der Stunden echter Arbeit; ob Plan B vorhanden ist.",
+      "conceptTags": [
+        "#7Giàu:G5-NangLuc",
+        "#7Giàu:G1-TriTue",
+        "#ChânDung:CD-05-NangLucXuatChung",
+        "#ChânDung:CD-11-TamNhinThauSuot",
+        "#ChânDung:CD-16-LamNguoiThanhCong",
+        "#9DạngNgười:NG-6-MinhSu",
+        "#9DạngNgười:NG-8-ChuyenGia",
+        "#8TốChất:NTAI-06-GanhVac",
+        "#8TốChất:NTAI-04-DungCamThayDoi"
+      ]
+    }
+  ]
+}

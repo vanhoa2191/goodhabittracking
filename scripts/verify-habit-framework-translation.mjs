@@ -5,7 +5,7 @@ import { resolve } from 'node:path';
 // and leave no Vietnamese text behind in the fields that were translated.
 const vietnamese = JSON.parse(readFileSync(resolve('src/data/habit-framework-v1.vi.json'), 'utf8'));
 // Languages not listed here fall back to the English text in the app. Add a language once its file exists.
-const LANGUAGES = ['en', 'ko'];
+const LANGUAGES = ['en', 'ko', 'fr', 'de', 'it', 'es', 'zh', 'ja'];
 
 // Letters that only Vietnamese uses (plain â, ê, ô, à, é… are ordinary in French, Spanish and Italian).
 const VIETNAMESE_LETTERS = /[ăơưđĂƠƯĐạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼẾỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴỶỸ]/u;
