@@ -1,6 +1,6 @@
-import { MONTHLY_JOURNEY_PLANS, WEEKLY_JOURNEY_PLANS, type HabitTemplate } from '@/lib/constants';
+import { LEGACY_MONTHLY_JOURNEY_PLANS, LEGACY_WEEKLY_JOURNEY_PLANS, type HabitTemplate } from '@/lib/constants';
 import type { Language } from '@/types';
-import { getJourneyHabitText } from './journey-content';
+import { getLegacyJourneyHabitText } from './legacy-journey-content';
 
 type JourneyReference = [planId: string, habitIndex: number];
 
@@ -15,7 +15,7 @@ const REFERENCES: Record<HabitTemplate['pack'], JourneyReference[]> = {
   physical: [['month-1',0],['month-1',5]],
 };
 
-const JOURNEYS = [...WEEKLY_JOURNEY_PLANS, ...MONTHLY_JOURNEY_PLANS];
+const JOURNEYS = [...LEGACY_WEEKLY_JOURNEY_PLANS, ...LEGACY_MONTHLY_JOURNEY_PLANS];
 
 export function localizeWitTemplate(
   template: HabitTemplate,
@@ -27,6 +27,6 @@ export function localizeWitTemplate(
   if (!reference) return template;
   const plan = JOURNEYS.find((candidate) => candidate.id === reference[0]);
   if (!plan) return template;
-  const text = getJourneyHabitText(plan, reference[1], language);
+  const text = getLegacyJourneyHabitText(plan, reference[1], language);
   return { ...template, title: text.title, description: text.description };
 }

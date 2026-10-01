@@ -56,7 +56,7 @@ test('the older journeys tab points to the new programs', async ({ page }) => {
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
   await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Thiết kế' }).click();
-  await page.getByRole('tab', { name: 'Lộ trình Tuần / Tháng' }).click();
+  await page.getByRole('tab', { name: 'Lộ trình theo tuổi' }).click();
   await expect(page.getByTestId('journeys-programs-note')).toContainText('Chương trình');
 });
 

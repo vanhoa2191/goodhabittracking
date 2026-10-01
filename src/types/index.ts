@@ -151,7 +151,8 @@ export interface ParentConfig {
   supabaseAnonKey?: string;
 }
 
-export interface JourneyPlan {
+/** A fixed weekly or monthly plan of the earlier journeys; now only a library of translated habit text. */
+export interface LegacyJourneyPlan {
   id: string;
   type: 'weekly' | 'monthly';
   periodLabel: string;
@@ -163,6 +164,33 @@ export interface JourneyPlan {
     id: string;
     title: string;
     description: string;
+    icon: string;
+    category: ActivityCategory;
+    points: number;
+    timeOfDay: TimeOfDay;
+    durationMinutes?: number;
+    requiresApproval?: boolean;
+  }[];
+}
+
+export interface JourneyPlan {
+  id: string;
+  type: 'stage';
+  /** The age stage of the framework this roadmap belongs to (GD1 = 0-3 years up to GD5 = 15-18). */
+  ageStageId: 'GD1' | 'GD2' | 'GD3' | 'GD4' | 'GD5';
+  /** The weeks a family can expect to look at this step (a guide, not a deadline). */
+  weeks: readonly [number, number];
+  periodLabel: string;
+  title: { [key in Language]?: string };
+  description: { [key in Language]?: string };
+  icon: string;
+  themeColor: string;
+  habits: {
+    id: string;
+    title: string;
+    description: string;
+    /** English text, read by every language other than Vietnamese. */
+    en?: { title: string; description: string };
     icon: string;
     category: ActivityCategory;
     points: number;

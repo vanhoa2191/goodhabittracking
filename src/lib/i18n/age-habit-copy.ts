@@ -1,7 +1,7 @@
-import { MONTHLY_JOURNEY_PLANS, WEEKLY_JOURNEY_PLANS } from '@/lib/constants';
+import { LEGACY_MONTHLY_JOURNEY_PLANS, LEGACY_WEEKLY_JOURNEY_PLANS } from '@/lib/constants';
 import { generateAgeAdaptedHabits } from '@/lib/wit-framework';
 import type { AgeStage, Language } from '@/types';
-import { getJourneyHabitText } from './journey-content';
+import { getLegacyJourneyHabitText } from './legacy-journey-content';
 import { getOnboardingCopy } from './onboarding-copy';
 
 type ActivityLike = { title: string; description?: string; targetAgeStage?: AgeStage | 'all' };
@@ -14,7 +14,7 @@ const REFERENCES: Record<AgeStage, JourneyReference[]> = {
   '12-18': [['month-4',4],['month-3',3],['month-4',4],['month-4',2],['month-2',2],['month-2',1]],
 };
 
-const JOURNEYS = [...WEEKLY_JOURNEY_PLANS, ...MONTHLY_JOURNEY_PLANS];
+const JOURNEYS = [...LEGACY_WEEKLY_JOURNEY_PLANS, ...LEGACY_MONTHLY_JOURNEY_PLANS];
 
 export function localizeAgeAdaptedHabit<T extends ActivityLike>(activity: T, language: Language): T {
   const stage = activity.targetAgeStage;
@@ -27,7 +27,7 @@ export function localizeAgeAdaptedHabit<T extends ActivityLike>(activity: T, lan
   const reference = REFERENCES[stage][index];
   const plan = reference && JOURNEYS.find((candidate) => candidate.id === reference[0]);
   if (!reference || !plan) return activity;
-  const description = getJourneyHabitText(plan, reference[1], language).description;
+  const description = getLegacyJourneyHabitText(plan, reference[1], language).description;
   const title = getOnboardingCopy(language).stages[stage].habitTitles[index];
   return { ...activity, title, description };
 }

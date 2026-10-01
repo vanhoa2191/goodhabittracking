@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MONTHLY_JOURNEY_PLANS, WEEKLY_JOURNEY_PLANS } from '@/lib/constants';
+import { AGE_JOURNEY_PLANS } from '@/lib/journeys/age-journeys';
 import {
   findJourneyAssignment,
   getCurrentJourneyIndex,
@@ -7,9 +7,13 @@ import {
   getMissingJourneyAssignments,
   getJourneyStageProgress,
 } from '@/lib/journey-progress';
-import type { ActivityLog, HabitActivity } from '@/types';
+import type { ActivityLog, HabitActivity, JourneyPlan } from '@/types';
 
-const plan = WEEKLY_JOURNEY_PLANS[0];
+// A plan with four habits exercises the multi-habit paths of the progress functions; the shipped roadmaps add one at a time.
+const plan: JourneyPlan = {
+  ...AGE_JOURNEY_PLANS[0],
+  habits: AGE_JOURNEY_PLANS.slice(0, 4).map((step) => step.habits[0]),
+};
 const activity: HabitActivity = {
   id: '11111111-1111-4111-8111-111111111111',
   childId: '22222222-2222-4222-8222-222222222222',
@@ -29,7 +33,7 @@ const activity: HabitActivity = {
 describe('journey progress', () => {
   it('recognizes a legacy localized assignment without creating a duplicate', () => {
     // Given
-    const legacy = { ...activity, title: 'Kind smile: Greet family warmly' };
+    const legacy = { ...activity, title: plan.habits[0].en?.title ?? '' };
 
     // When
     const assignment = findJourneyAssignment(plan, 0, activity.childId, [legacy]);
@@ -90,7 +94,7 @@ describe('journey progress', () => {
 
     // Then
     expect(current).toBe(1);
-    expect(getJourneyHabitKey(plan, 0)).toBe('week-1:0');
+    expect(getJourneyHabitKey(plan, 0)).toBe('gd1-step-1:gd1-1');
   });
 
   it('keeps assignment identity when a plan is reordered or its copy changes', () => {
@@ -108,11 +112,13 @@ describe('journey progress', () => {
   });
 
   it('has a unique stable identity for every journey habit', () => {
-    for (const journey of [...WEEKLY_JOURNEY_PLANS, ...MONTHLY_JOURNEY_PLANS]) {
+    const all: string[] = [];
+    for (const journey of AGE_JOURNEY_PLANS) {
       const keys = journey.habits.map((_, index) => getJourneyHabitKey(journey, index));
-      expect(new Set(keys).size).toBe(keys.length);
-      expect(keys.every((key) => /^(week|month)-[1-4]:\d{1,2}$/.test(key))).toBe(true);
+      expect(keys.every((key) => /^gd[1-5]-step-[1-3]:gd[1-5]-[1-3]$/.test(key))).toBe(true);
+      all.push(...keys);
     }
+    expect(new Set(all).size).toBe(all.length);
   });
 
   it('adds a shared habit only when no child already has that habit', () => {
