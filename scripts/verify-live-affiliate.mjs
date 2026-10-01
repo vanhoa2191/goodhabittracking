@@ -223,6 +223,12 @@ try {
   assert(badDetails.data?.status === 'invalid_details', 'Invalid payout details were accepted.');
   const saved = await savePayoutDetails({ bank: 'Vietcombank', account_number: '0123456789', account_name: 'Nguyen Van Test' });
   assert(saved.data?.status === 'saved', 'Payout details could not be saved.');
+  // A bank account changed in the last day cannot receive a payout yet, whatever is owed.
+  const tooSoon = await requestPayout();
+  assert(tooSoon.data?.status === 'details_recent', 'A payout was possible right after the bank details changed.');
+  const ageDetails = () => admin.from('affiliate_accounts').update({ payout_details_changed_at: new Date(Date.now() - 2 * 86_400_000).toISOString() }).eq('user_id', referrerId);
+  const aged = await ageDetails();
+  assert(!aged.error, 'Could not age the payout details change.');
   const stillHeld = await requestPayout();
   assert(stillHeld.data?.status === 'below_minimum' && stillHeld.data.available === 0, 'A commission inside the hold was paid out.');
 
@@ -237,12 +243,6 @@ try {
   assert(!release.error, 'Could not release the held commissions.');
   overview = await referrer.client.rpc('affiliate_overview');
   assert(overview.data.amounts.available === 239400 && overview.data.amounts.held === 0, 'Released commissions are not available (reversed ones must not count).');
-
-  // A bank account changed in the last day cannot receive a payout yet.
-  const tooSoon = await requestPayout();
-  assert(tooSoon.data?.status === 'details_recent', 'A payout was possible right after the bank details changed.');
-  const settleDetails = await admin.from('affiliate_accounts').update({ payout_details_changed_at: new Date(Date.now() - 2 * 86_400_000).toISOString() }).eq('user_id', referrerId);
-  assert(!settleDetails.error, 'Could not age the payout details change.');
 
   const requested = await requestPayout();
   assert(requested.data?.status === 'requested' && requested.data.amount === 239400, 'The payout was not requested for the available amount.');
