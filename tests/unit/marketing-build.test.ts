@@ -67,6 +67,46 @@ describe('marketing static artifact', () => {
     expect(html).not.toContain('manifest.webmanifest');
   });
 
+  it.each(['framework', 'science', 'roadmaps', 'docs'])('ends /%s with a call to action that leads to the plans and the trial', async (route) => {
+    const { outputDir } = await buildFixture();
+    const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
+    const cta = html.match(/<aside class="post-cta article-cta"[\s\S]*?<\/aside>/)?.[0] ?? '';
+    expect(cta).toContain('<a class="button" href="/pricing/">Chọn gói và mua');
+    expect(cta).toMatch(/href="https:\/\/app\.example\/start">Hoặc dùng thử 7 ngày/);
+    // It closes the article: nothing but the footer follows it.
+    expect(html.slice(html.indexOf(cta) + cta.length)).not.toContain('<article');
+  });
+
+  it.each(['privacy', 'terms', 'gioi-thieu', 'contact', 'pricing'])('does not put the buying call to action on /%s', async (route) => {
+    const { outputDir } = await buildFixture();
+    const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
+    expect(html).not.toContain('article-cta');
+  });
+
+  it('ends every blog post with the same call to action', async () => {
+    const { outputDir } = await buildFixture();
+    const html = await readFile(join(outputDir, 'blog', 'bat-dau-voi-it-thoi-quen', 'index.html'), 'utf8');
+    expect(html).toContain('article-cta');
+    expect(html).toContain('<a class="button" href="/pricing/">Chọn gói và mua');
+  });
+
+  it('describes the framework by stage with a few examples, using the real counts', async () => {
+    const { outputDir } = await buildFixture();
+    const html = await readFile(join(outputDir, 'framework', 'index.html'), 'utf8');
+    expect(html).toContain('47 thói quen');
+    expect(html).toContain('5 giai đoạn');
+    for (const age of ['0-3', '3-6', '6-12', '12-15', '15-18']) expect(html).toContain(`${age} tuổi`);
+    expect(html).toContain('Vai trò của ba mẹ');
+    expect(html).toContain('Khi con gọi, có người trả lời.');
+    expect(html.match(/class="fw-habit"/g)?.length).toBe(15);
+    // The measurable thresholds of the framework are not published as claims.
+    expect(html).not.toMatch(/≥\s*\d+\s*%/);
+    expect(html).toContain('không phải chuẩn phát triển');
+    const questions = [...html.matchAll(/<summary>/g)].length;
+    expect(questions).toBe(4);
+    expect(html).toContain('"@type":"FAQPage"');
+  });
+
   it.each(['', 'pricing', 'framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'gioi-thieu', 'contact'])(
     'gives /%s a descriptive snippet, a breadcrumb trail and no numeric portrait claim',
     async (route) => {

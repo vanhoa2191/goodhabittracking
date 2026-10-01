@@ -1,6 +1,7 @@
 import { buildLegalPages, legalUpdatedLabel } from './legal-content.mjs';
 import { sessionHintCookie } from './session-hint.mjs';
 import scienceData from '../../src/data/science-content.json' with { type: 'json' };
+import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
 import { comparison, faqs, features, mascots, navigation, outcomes, plans, publicPages, safetyPoints, steps, testimonials, trustBar, trustPoints } from './site-content.mjs';
 
 const icons = {
@@ -343,6 +344,9 @@ export function renderPricingPage({ marketingOrigin, appOrigin }) {
   return renderDocument({ title: 'Bảng giá KidHabit Hero | Dùng thử 7 ngày', description: 'So sánh ba gói KidHabit cho một bé hoặc cả gia đình: giá rõ ràng, không phí ẩn, không tự động gia hạn và có 7 ngày dùng thử trước khi quyết định.', path: '/pricing/', marketingOrigin, appOrigin, body, structuredData: `${renderStructuredData({ marketingOrigin, appOrigin })}${renderPageStructuredData({ name: 'Bảng giá', description: 'So sánh ba gói KidHabit cho một bé hoặc cả gia đình.', path: '/pricing/', marketingOrigin, faqItems: faqs })}` });
 }
 
+// Articles end with the purchase call to action; legal pages, pricing and contact do not.
+const articleSlugs = new Set(['roadmaps', 'docs']);
+
 function renderContactNote(supportEmail) {
   if (!supportEmail) {
     return `<aside class="callout contact-note"><span class="icon-box">${icon('mail')}</span><p>Kênh email hỗ trợ chính thức sẽ được hiển thị trong ứng dụng sau khi cấu hình được phê duyệt.</p></aside>`;
@@ -422,13 +426,104 @@ function renderSciencePage({ marketingOrigin, appOrigin }) {
     <div class="science-grid">${cards}</div>
     ${unknowns}
     ${sources}
+    ${renderArticleCta({ appOrigin, mascot: 'turtle' })}
   </div></section></main>`;
   return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: '/science/', marketingOrigin, appOrigin, body, structuredData: renderPageStructuredData({ name: page.title, description: page.description, path: '/science/', marketingOrigin }) });
+}
+
+// The call to action that closes every article: it leads to the plans so a reader who is convinced can buy,
+// with the free trial as the softer second choice.
+export function renderArticleCta({ appOrigin, mascot = 'leo', heading = 'Sẵn sàng cùng con bắt đầu?', text = 'Chọn gói phù hợp với gia đình hoặc dùng thử 7 ngày trước. Không cần thẻ, không tự động trừ tiền, hoàn tiền trong 30 ngày nếu chưa hài lòng.' }) {
+  return `<aside class="post-cta article-cta" aria-labelledby="article-cta-title"><img src="/mascots/${mascot}.webp" alt="" width="120" height="120" loading="lazy" decoding="async"><div><h2 id="article-cta-title">${escapeHtml(heading)}</h2><p>${escapeHtml(text)}</p><div class="post-cta-actions"><a class="button" href="/pricing/">Chọn gói và mua ${icon('arrow')}</a><a class="text-link" href="${appUrl(appOrigin, '/start')}">Hoặc dùng thử 7 ngày ${icon('arrow')}</a></div></div></aside>`;
+}
+
+const frameworkFaqs = [
+  {
+    question: 'Có phải làm hết tất cả thói quen trong khung không?',
+    answer: 'Không. Khung là thư viện để chọn, không phải danh sách bài tập phải hoàn thành. Nên bắt đầu với một đến ba việc cùng lúc, thêm việc mới khi con đã quen.',
+  },
+  {
+    question: 'Con tôi không đúng tuổi của giai đoạn thì sao?',
+    answer: 'Các mốc tuổi chỉ là gợi ý. Hãy chọn giai đoạn theo mức sẵn sàng của con: nếu một việc còn quá khó, lùi về giai đoạn trước; nếu con làm quá dễ, thử việc ở giai đoạn sau.',
+  },
+  {
+    question: 'Khung có thay thế tư vấn của bác sĩ hay chuyên gia không?',
+    answer: 'Không. KidHabit là công cụ đồng hành cho gia đình, không chẩn đoán và không hứa kết quả cho từng bé. Nếu lo lắng về sự phát triển của con, hãy hỏi bác sĩ, nhà tâm lý hoặc chuyên gia giáo dục.',
+  },
+  {
+    question: 'Tôi có thể tự tạo thói quen ngoài khung không?',
+    answer: 'Có. Khung giúp tiết kiệm thời gian, nhưng ba mẹ vẫn chọn, chỉnh sửa hoặc tự tạo nhiệm vụ theo nhu cầu thật của con.',
+  },
+];
+
+function renderFrameworkPage({ marketingOrigin, appOrigin }) {
+  const page = publicPages.framework;
+  const habitCount = frameworkData.habits.length;
+  const stageCount = frameworkData.stages.length;
+  const youngest = frameworkData.stages[0].ageRange.split('-')[0];
+  const oldest = frameworkData.stages.at(-1).ageRange.split('-')[1];
+  const first = frameworkData.habits[0];
+  const principles = [
+    ['Không bắt đầu từ một danh sách dài', 'Một danh sách quá dài làm cả nhà nản ngay từ tuần đầu. Khung giúp ba mẹ chọn một đến ba việc vừa sức với tuổi của con, rồi tăng dần khi con đã quen.', 'list-checks'],
+    ['Mỗi giai đoạn, vai trò của ba mẹ khác nhau', 'Với trẻ nhỏ, ba mẹ làm mẫu và mô tả. Với tuổi đi học, ba mẹ làm cùng và giám sát. Với thiếu niên, ba mẹ đồng hành và làm cố vấn. Mỗi giai đoạn bên dưới ghi rõ vai trò này.', 'users'],
+    ['Việc nhỏ, nói bằng lời của con', `Mỗi thói quen có một câu mà con có thể hiểu, chẳng hạn ${first.childMeaning} Ba mẹ không phải tự nghĩ cách diễn giải từng việc.`, 'book'],
+    ['Ba mẹ vẫn là người quyết định', 'Khung gợi ý để tiết kiệm thời gian. Ba mẹ chọn, điều chỉnh hoặc tự tạo nhiệm vụ dựa trên nhu cầu thật của con và nhịp sống của gia đình.', 'check'],
+  ];
+  const principleCards = principles.map(([title, text, glyph]) => `<li class="info-card"><span class="icon-box">${icon(glyph)}</span><div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></div></li>`).join('');
+  const stageNav = `<nav class="fw-stage-nav" aria-label="Các giai đoạn"><ul>${frameworkData.stages.map((stage) => `<li><a href="#${stage.id.toLowerCase()}"><strong>${escapeHtml(stage.ageRange)} tuổi</strong><span>${escapeHtml(stage.title)}</span></a></li>`).join('')}</ul></nav>`;
+  // Parents get a picture of each stage and three examples, not the whole list: the full framework lives in the app.
+  const stageStory = {
+    GD1: { text: 'Bé học rằng thế giới an toàn và có người đáp lại mình. Ba mẹ làm mẫu và nói ra từng việc: nếp ngày êm, giấc ngủ, những lượt chơi cùng nhau.', pick: [0, 2, 5] },
+    GD2: { text: 'Bé bắt đầu tự làm và tự chọn. Ba mẹ làm cùng và nhắc nhẹ: gọi tên cảm xúc, nói thật, giúp việc nhà, chia tiền thành ba phần.', pick: [0, 1, 8] },
+    GD3: { text: 'Bé tập làm đều đặn và tự hào về việc mình hoàn thành. Ba mẹ theo dõi và cùng làm: học cách học, giữ một thói quen nhiều ngày, quản lý tiền nhỏ.', pick: [0, 1, 6] },
+    GD4: { text: 'Bé tìm xem mình là ai và học điều hòa cảm xúc. Ba mẹ đồng hành và cùng tuân luật chung: tự đặt luật cho mình, giữ giờ ngủ, nhận trách nhiệm việc học.', pick: [1, 2, 7] },
+    GD5: { text: 'Bé chuẩn bị tự lập: đặt hướng đi, chăm thân thể, quản lý tiền của mình và thử nghề. Ba mẹ làm cố vấn và hậu thuẫn.', pick: [1, 5, 9] },
+  };
+  const shortName = (name) => name.replace(/\s*[(—].*$/, '').trim();
+  const stages = frameworkData.stages.map((stage, index) => {
+    const habits = frameworkData.habits.filter((habit) => habit.stageId === stage.id);
+    const story = stageStory[stage.id];
+    const examples = story.pick.map((position) => habits[position]).filter(Boolean);
+    const more = habits.length - examples.length;
+    const items = examples.map((habit) => `<li class="fw-habit"><h4>${escapeHtml(shortName(habit.name))}</h4><p>${escapeHtml(habit.childMeaning)}</p></li>`).join('');
+    return `<section class="fw-stage" id="${stage.id.toLowerCase()}" aria-labelledby="${stage.id.toLowerCase()}-title">
+      <header class="fw-stage-head"><span class="fw-stage-age" aria-hidden="true">${escapeHtml(stage.ageRange)}</span><div><p class="eyebrow">Giai đoạn ${index + 1} · ${escapeHtml(stage.ageRange)} tuổi</p><h3 id="${stage.id.toLowerCase()}-title">${escapeHtml(stage.title)}</h3><p class="fw-stage-role"><strong>Vai trò của ba mẹ:</strong> ${escapeHtml(stage.adultRole)}</p></div></header>
+      <p class="fw-stage-story">${escapeHtml(story.text)}</p>
+      <p class="fw-examples-label">Ví dụ về những việc con sẽ nghe:</p>
+      <ul class="fw-habits">${items}</ul>
+      ${more > 0 ? `<p class="fw-more">Và ${more} thói quen khác trong giai đoạn này, xem đầy đủ trong ứng dụng.</p>` : ''}
+    </section>`;
+  }).join('');
+  const howSteps = [
+    ['Chọn giai đoạn theo mức sẵn sàng', 'Bắt đầu từ giai đoạn gần với tuổi của con. Nếu việc quá khó, lùi một bước; nếu quá dễ, thử việc ở giai đoạn sau.'],
+    ['Chọn một thói quen', 'Mở khung trong ứng dụng, chọn một việc có thể hoàn thành trong vài phút và thêm vào gia đình. Tên việc và hướng dẫn hiện theo ngôn ngữ ba mẹ đang đọc.'],
+    ['Thống nhất cách ghi nhận với con', 'Cùng con chọn tín hiệu nhắc, cách ghi nhận bằng sao và phần thưởng nhỏ trước khi bắt đầu, để con biết điều gì sẽ xảy ra.'],
+    ['Nhìn lại cuối tuần và điều chỉnh', 'Xem con đã làm được gì, khen đúng việc cụ thể, rồi chỉnh độ khó hoặc thêm một việc mới khi con đã vững.'],
+  ];
+  const howList = `<ol class="info-cards step-list how-steps">${howSteps.map(([title, text], index) => `<li class="info-card"><span class="step-number" aria-hidden="true">${index + 1}</span><div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></div></li>`).join('')}</ol>`;
+  const faq = `<div class="fw-faq">${frameworkFaqs.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join('')}</div>`;
+  const body = `<main id="noi-dung">${renderInfoHero({ slug: 'framework', eyebrow: page.eyebrow, title: page.title, lede: `Bộ khung gồm ${habitCount} thói quen cho trẻ từ ${youngest} đến ${oldest} tuổi, chia thành ${stageCount} giai đoạn. Mỗi thói quen là một việc nhỏ, nói bằng lời của con. Bạn không cần làm hết: chọn một việc vừa sức rồi tăng dần.`, mascot: page.mascot })}
+  <section class="section info-body"><div class="shell">
+    <h2 class="fw-heading">Khung được thiết kế như thế nào</h2>
+    <ul class="info-cards">${principleCards}</ul>
+    <h2 class="fw-heading">${stageCount} giai đoạn, ${habitCount} thói quen</h2>
+    <p class="fw-lede">Chọn giai đoạn gần nhất với con để hình dung việc nhỏ nào hợp với tuổi. Nội dung do KidHabit tổng hợp để gợi ý, không phải chuẩn phát triển chính thức.</p>
+    ${stageNav}
+    <div class="fw-stages">${stages}</div>
+    <h2 class="fw-heading">Cách bắt đầu với khung</h2>
+    ${howList}
+    <h2 class="fw-heading">Câu hỏi thường gặp</h2>
+    ${faq}
+    <aside class="callout callout-note" role="note"><span class="icon-box">${icon('info')}</span><p>KidHabit là công cụ đồng hành cho gia đình. Chúng tôi không hứa kết quả cho từng em bé và không thay thế tư vấn của bác sĩ, nhà tâm lý hay chuyên gia giáo dục.</p></aside>
+    ${renderArticleCta({ appOrigin, mascot: page.mascot })}
+  </div></section></main>`;
+  return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: '/framework/', marketingOrigin, appOrigin, body, structuredData: renderPageStructuredData({ name: page.title, description: page.description, path: '/framework/', marketingOrigin, faqItems: frameworkFaqs }) });
 }
 
 export function renderInfoPage({ slug, marketingOrigin, appOrigin, supportEmail }) {
   if (legalSlugs.has(slug)) return renderLegalPage({ slug, marketingOrigin, appOrigin, supportEmail });
   if (slug === 'science') return renderSciencePage({ marketingOrigin, appOrigin });
+  if (slug === 'framework') return renderFrameworkPage({ marketingOrigin, appOrigin });
   const page = publicPages[slug];
   const isSteps = page.layout === 'steps';
   const items = page.sections.map(([title, text], index) => {
@@ -436,7 +531,7 @@ export function renderInfoPage({ slug, marketingOrigin, appOrigin, supportEmail 
     return `<li class="info-card">${badge}<div><h2>${escapeHtml(title)}</h2><p>${escapeHtml(text)}</p></div></li>`;
   }).join('');
   const list = isSteps ? `<ol class="info-cards step-list">${items}</ol>` : `<ul class="info-cards">${items}</ul>`;
-  const extra = slug === 'contact' ? renderContactNote(supportEmail) : '';
+  const extra = slug === 'contact' ? renderContactNote(supportEmail) : (articleSlugs.has(slug) ? renderArticleCta({ appOrigin, mascot: page.mascot ?? 'leo' }) : '');
   const body = `<main id="noi-dung">${renderInfoHero({ slug, eyebrow: page.eyebrow, title: page.title, lede: page.description, mascot: page.mascot })}<section class="section info-body"><div class="shell">${list}${extra}</div></section></main>`;
   return renderDocument({ title: `${page.title} | KidHabit Hero`, description: page.description, path: `/${slug}/`, marketingOrigin, appOrigin, body, structuredData: renderPageStructuredData({ name: page.title, description: page.description, path: `/${slug}/`, marketingOrigin }) });
 }
