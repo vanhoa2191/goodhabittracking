@@ -128,6 +128,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         blocks: [
           'KidHabit dùng cookie và bộ nhớ cục bộ cần thiết để giữ phiên đăng nhập, phiên thiết bị của bé, ngôn ngữ và giao diện. KidHabit không dùng cookie quảng cáo.',
           'Khi phụ huynh đăng nhập, KidHabit đặt thêm một cookie báo hiệu “đã đăng nhập” dùng chung giữa trang giới thiệu và ứng dụng để hiển thị nút phù hợp. Cookie này không chứa thông tin cá nhân hay phiên đăng nhập, hết hạn sau 7 ngày và bị xóa khi bạn đăng xuất.',
+          'Nếu bạn vào KidHabit qua liên kết của chương trình giới thiệu, trình duyệt lưu mã giới thiệu trong cookie kidhabit_ref tối đa 60 ngày chỉ để ghi nhận người đã giới thiệu bạn khi bạn tạo tài khoản; cookie bị xóa khi việc ghi nhận hoàn tất. Xem trang Chương trình giới thiệu bạn bè.',
           'Trang giới thiệu tải phông chữ từ dịch vụ Google Fonts, nên địa chỉ mạng của bạn có thể được gửi tới Google khi xem trang.',
         ],
       },
@@ -250,5 +251,77 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
     ],
   };
 
-  return { privacy, terms };
+  const referral = {
+    title: 'Chương trình giới thiệu bạn bè',
+    description: 'Cách chương trình giới thiệu của KidHabit Hero hoạt động: hoa hồng 30% trên mỗi khoản thanh toán của gia đình được giới thiệu, thời gian giữ, cách rút tiền và các quy tắc.',
+    sections: [
+      {
+        title: '1. Chương trình là gì',
+        blocks: [
+          'Bất kỳ phụ huynh nào có tài khoản KidHabit Hero đều có thể tham gia. Sau khi đồng ý các điều khoản này trong ứng dụng (Cài đặt, mục Giới thiệu bạn bè), bạn nhận một liên kết riêng. Khi một gia đình mới đăng ký qua liên kết đó và trả tiền cho một gói, bạn nhận hoa hồng.',
+          'Đây là cách cảm ơn người giới thiệu, không phải công việc hay hợp đồng lao động, và KidHabit không cam kết mức thu nhập nào.',
+        ],
+      },
+      {
+        title: '2. Hoa hồng bao nhiêu và tính thế nào',
+        blocks: [
+          'Hoa hồng là 30% số tiền gia đình được giới thiệu thực trả cho mỗi khoản thanh toán, làm tròn xuống đồng gần nhất, cho mọi thanh toán trong 12 tháng đầu kể từ ngày họ tạo tài khoản. Dùng thử miễn phí không phát sinh hoa hồng.',
+          'Gia đình được ghi nhận khi họ đăng nhập lần đầu trong vòng 60 ngày kể từ khi bấm vào liên kết của bạn và chưa trả tiền trước đó. Mỗi gia đình chỉ gắn với một người giới thiệu; nếu có nhiều liên kết, liên kết được dùng sau cùng trước khi đăng ký được tính.',
+          'Tỉ lệ, thời hạn ghi nhận, thời hạn hưởng và mức rút tối thiểu có thể thay đổi cho các gia đình đăng ký sau thời điểm thay đổi; thay đổi được thông báo trên trang này.',
+        ],
+      },
+      {
+        title: '3. Thời gian giữ và hoàn tiền',
+        blocks: [
+          'Mỗi khoản hoa hồng được giữ 35 ngày kể từ lúc thanh toán thành công, đủ để qua thời hạn hoàn tiền 30 ngày. Hết thời gian giữ, khoản đó mới có thể rút.',
+          'Nếu đơn hàng được hoàn tiền, hoa hồng của đơn đó bị thu hồi. Nếu đã nằm trong một yêu cầu rút, KidHabit từ chối yêu cầu đó trước rồi thu hồi; nếu đã chuyển, KidHabit có thể trừ vào các khoản hoa hồng sau của bạn.',
+        ],
+      },
+      {
+        title: '4. Rút tiền',
+        blocks: [
+          'Bạn lưu tên ngân hàng, số tài khoản và tên chủ tài khoản trong ứng dụng, rồi yêu cầu rút khi số tiền có thể rút đạt tối thiểu 200.000 đồng. Việc lưu thông tin và yêu cầu rút cần mã PIN phụ huynh.',
+          'KidHabit chuyển khoản thủ công vào tài khoản bạn đã lưu và ghi lại mã giao dịch ngân hàng; bạn thấy trạng thái “Đã chuyển” trong ứng dụng. Hãy kiểm tra kỹ thông tin tài khoản: KidHabit không chịu trách nhiệm cho khoản chuyển đến tài khoản mà bạn đã nhập sai.',
+        ],
+      },
+      {
+        title: '5. Thuế',
+        blocks: [
+          'Hoa hồng có thể thuộc diện chịu thuế thu nhập cá nhân. Bạn tự chịu trách nhiệm kê khai và nộp thuế theo quy định. Khi pháp luật yêu cầu, KidHabit có thể khấu trừ thuế trước khi chuyển khoản và cung cấp chứng từ khấu trừ cho bạn.',
+        ],
+      },
+      {
+        title: '6. Quy tắc dành cho người giới thiệu',
+        blocks: [
+          [
+            'Không tự giới thiệu mình hoặc gia đình mình, không tạo tài khoản giả hay đơn hàng giả để nhận hoa hồng.',
+            'Không gửi thư rác, không đăng liên kết ở nơi người đọc không mong đợi, không mạo danh KidHabit Hero.',
+            'Chỉ nói đúng về sản phẩm theo các trang công khai của KidHabit. Không hứa kết quả cho một em bé, không đưa ra tuyên bố về y tế hay tâm lý.',
+            'Không dùng tên KidHabit làm từ khóa quảng cáo trả tiền hoặc tạo trang có tên gần giống để đón khách tìm KidHabit.',
+            'Không dùng hay thu thập thông tin của trẻ em để giới thiệu.',
+          ],
+          'Nếu vi phạm hoặc có dấu hiệu gian lận, KidHabit có thể từ chối hoặc thu hồi hoa hồng, tạm khóa hay chấm dứt tài khoản giới thiệu của bạn.',
+        ],
+      },
+      {
+        title: '7. Quyền riêng tư',
+        blocks: [
+          'Bạn chỉ thấy số lượng gia đình đã đăng ký, số đã trả tiền và số tiền hoa hồng. Bạn không thấy tên, email hay bất kỳ thông tin nào của gia đình được giới thiệu; gia đình được giới thiệu cũng không thấy thông tin của bạn.',
+          'Để ghi nhận người giới thiệu, trình duyệt của người truy cập lưu mã giới thiệu trong cookie kidhabit_ref tối đa 60 ngày; cookie bị xóa ngay khi việc ghi nhận hoàn tất. Thông tin ngân hàng của bạn chỉ dùng để chuyển hoa hồng và chỉ nhân viên được phân quyền xem.',
+        ],
+      },
+      {
+        title: '8. Thay đổi hoặc chấm dứt chương trình',
+        blocks: [
+          'KidHabit có thể thay đổi hoặc chấm dứt chương trình. Hoa hồng hợp lệ đã ghi nhận trước thời điểm thay đổi vẫn được xử lý theo các điều kiện áp dụng lúc đó.',
+        ],
+      },
+      {
+        title: '9. Liên hệ',
+        blocks: [contactBlock(supportEmail, 'Nếu có câu hỏi về chương trình giới thiệu hoặc khoản hoa hồng,')],
+      },
+    ],
+  };
+
+  return { privacy, terms, 'gioi-thieu': referral };
 }

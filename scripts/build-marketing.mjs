@@ -6,7 +6,7 @@ import { renderHome, renderInfoPage, renderPricingPage } from '../apps/marketing
 import { renderHeadersFile } from '../apps/marketing/security-headers.mjs';
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const routes = ['framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'contact'];
+const routes = ['framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'gioi-thieu', 'contact'];
 
 function validateOrigin(value, name) {
   let url;

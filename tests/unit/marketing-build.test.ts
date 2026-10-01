@@ -67,7 +67,7 @@ describe('marketing static artifact', () => {
     expect(html).not.toContain('manifest.webmanifest');
   });
 
-  it.each(['', 'pricing', 'framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'contact'])(
+  it.each(['', 'pricing', 'framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'gioi-thieu', 'contact'])(
     'gives /%s a descriptive snippet, a breadcrumb trail and no numeric portrait claim',
     async (route) => {
       const { outputDir } = await buildFixture();
@@ -93,6 +93,34 @@ describe('marketing static artifact', () => {
     expect(home).not.toContain('Bảng xếp hạng mặc định tắt');
   });
 
+  it('publishes the referral programme with its real numbers and rules', async () => {
+    const { outputDir } = await buildFixture();
+    const page = await readFile(join(outputDir, 'gioi-thieu', 'index.html'), 'utf8');
+    const text = page.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    for (const fact of ['30%', '12 tháng đầu', '35 ngày', '200.000 đồng', 'kidhabit_ref', '60 ngày', 'thuế thu nhập cá nhân']) {
+      expect(text).toContain(fact);
+    }
+    expect(text).toContain('không cam kết mức thu nhập nào');
+    expect(page).toContain('href="/gioi-thieu/"');
+    expect(await readFile(join(outputDir, 'sitemap.xml'), 'utf8')).toContain('/gioi-thieu/');
+  });
+
+  it('links the programme from the footer of every page and mentions its cookie in the privacy policy', async () => {
+    const { outputDir, html } = await buildFixture();
+    expect(html).toContain('<a href="/gioi-thieu/">Giới thiệu bạn bè</a>');
+    const privacy = await readFile(join(outputDir, 'privacy', 'index.html'), 'utf8');
+    expect(privacy).toContain('kidhabit_ref');
+  });
+
+  it('keeps a well-formed referral code in a cookie for 60 days and ignores anything else', async () => {
+    const { outputDir } = await buildFixture();
+    const script = await readFile(join(outputDir, 'client.js'), 'utf8');
+    expect(script).toContain('[A-HJ-NP-Z2-9]{8}');
+    expect(script).toContain('kidhabit_ref=');
+    expect(script).toContain('60 * 24 * 60 * 60');
+    expect(script).toContain("Domain=kidhabithero.com");
+  });
+
   it('ships security headers that allow only the page\'s own inline script by hash', async () => {
     const { outputDir, html } = await buildFixture();
     const headers = await readFile(join(outputDir, '_headers'), 'utf8');
@@ -109,7 +137,7 @@ describe('marketing static artifact', () => {
 
   it('builds every public information route as a self-contained static page', async () => {
     const { outputDir } = await buildFixture();
-    for (const route of ['pricing', 'framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'contact']) {
+    for (const route of ['pricing', 'framework', 'science', 'roadmaps', 'docs', 'privacy', 'terms', 'gioi-thieu', 'contact']) {
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
       expect(html).toContain(`<link rel="canonical" href="https://www.example/${route}/">`);
       expect(html).toContain('<main');

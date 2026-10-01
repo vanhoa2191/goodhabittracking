@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { AdminCustomerManager } from '@/components/AdminCustomerManager';
 import { AdminFunnelPanel } from '@/components/AdminFunnelPanel';
+import { AdminAffiliatePanel } from '@/components/AdminAffiliatePanel';
 import { authorizeAdmin } from '@/lib/auth/admin-access';
 
 export default async function AdminPage() {
@@ -32,6 +33,7 @@ export default async function AdminPage() {
           </div>
         </header>
         <AdminFunnelPanel />
+        <AdminAffiliatePanel />
         <AdminCustomerManager />
       </div>
     </main>

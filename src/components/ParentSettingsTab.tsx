@@ -16,6 +16,7 @@ import { AnalyticsConsentCard } from '@/components/AnalyticsConsentCard';
 // These two cards are only needed once the settings tab is open, so they load on demand.
 const LeaderboardSharingCard = dynamic(() => import('./LeaderboardSharingCard').then((module) => module.LeaderboardSharingCard));
 const FamilyDataCard = dynamic(() => import('./FamilyDataCard').then((module) => module.FamilyDataCard));
+const AffiliateCard = dynamic(() => import('./AffiliateCard').then((module) => module.AffiliateCard));
 import { ParentReminderConsentCard } from '@/components/ParentReminderConsentCard';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { CaregiverInvitesPanel } from '@/components/CaregiverInvitesPanel';
@@ -167,6 +168,7 @@ export function ParentSettingsTab() {
       <h4 id="settings-account" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Tài khoản & đồng bộ</h4>
       {currentUser && <AccountProfileCard />}
       <FamilyDataCard />
+      {currentUser && <AffiliateCard />}
       <h4 id="settings-privacy" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Riêng tư & thông báo</h4>
       {currentUser && <AnalyticsConsentCard />}
       {currentUser && <LeaderboardSharingCard />}

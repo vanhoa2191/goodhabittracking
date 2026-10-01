@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { z } from 'zod';
 import { AppStoreProvider } from '@/lib/store';
+import { ReferralClaimer } from '@/components/ReferralClaimer';
 import { getBrowserSupabase, isSupabaseConfigured } from '@/lib/supabase/browser';
 
 const consentResponse = z.strictObject({ enabled: z.boolean() });
@@ -122,7 +123,7 @@ export function AnalyticsConsentProvider({ children }: Readonly<{ children: Reac
   const value = useMemo(() => ({ enabled: consent.displayedEnabled, isLoading, isSaving, hasError, save }), [consent.displayedEnabled, hasError, isLoading, isSaving, save]);
   return (
     <AnalyticsConsentContext.Provider value={value}>
-      <AppStoreProvider analyticsOptIn={consent.committedEnabled}>{children}</AppStoreProvider>
+      <AppStoreProvider analyticsOptIn={consent.committedEnabled}>{children}<ReferralClaimer /></AppStoreProvider>
     </AnalyticsConsentContext.Provider>
   );
 }

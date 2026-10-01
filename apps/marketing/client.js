@@ -1,3 +1,14 @@
+// A visitor who arrives through a referral link keeps the code for 60 days so the family that signs up
+// later can be credited to the parent who shared it. Only a well-formed code is stored.
+(() => {
+  const code = (new URLSearchParams(window.location.search).get('ref') || '').trim().toUpperCase();
+  if (!/^[A-HJ-NP-Z2-9]{8}$/.test(code)) return;
+  const parts = [`kidhabit_ref=${code}`, `Max-Age=${60 * 24 * 60 * 60}`, 'Path=/', 'SameSite=Lax'];
+  if (window.location.protocol === 'https:') parts.push('Secure');
+  if (window.location.hostname === 'kidhabithero.com' || window.location.hostname.endsWith('.kidhabithero.com')) parts.push('Domain=kidhabithero.com');
+  document.cookie = parts.join('; ');
+})();
+
 const toggle = document.querySelector('.nav-toggle');
 const navigation = document.querySelector('#primary-navigation');
 
