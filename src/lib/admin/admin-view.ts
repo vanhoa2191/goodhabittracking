@@ -119,3 +119,20 @@ export function countByFilter(customers: readonly CustomerView[], now: Date): Re
 export function pageOf<T>(items: readonly T[], limit: number): { readonly shown: readonly T[]; readonly hidden: number } {
   return { shown: items.slice(0, limit), hidden: Math.max(0, items.length - limit) };
 }
+
+const PLAN_DAYS: Readonly<Partial<Record<SubscriptionView['plan'], number>>> = { solo_monthly: 31, monthly: 31, yearly: 366, trial: 7 };
+
+/**
+ * What choosing a plan in the admin screen should set. A plan only takes effect while its status is active, so
+ * picking one turns it on and starts a full period from today (the admin can still edit the date or cancel);
+ * picking "no plan" switches it off.
+ */
+export function planChangePatch(plan: SubscriptionView['plan'], now: Date): Pick<SubscriptionView, 'plan' | 'status' | 'subscription_ends_at' | 'trial_ends_at'> {
+  if (plan === 'free') return { plan, status: 'inactive', subscription_ends_at: null, trial_ends_at: null };
+  const days = PLAN_DAYS[plan];
+  if (!days) return { plan, status: 'active', subscription_ends_at: null, trial_ends_at: null };
+  const end = new Date(now.getTime() + days * DAY_MS).toISOString();
+  return plan === 'trial'
+    ? { plan, status: 'active', subscription_ends_at: null, trial_ends_at: end }
+    : { plan, status: 'active', subscription_ends_at: end, trial_ends_at: null };
+}

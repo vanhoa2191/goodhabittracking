@@ -6,6 +6,7 @@ import {
   matchesFilter,
   matchesQuery,
   pageOf,
+  planChangePatch,
   parseAdminTab,
   type CustomerView,
   type SubscriptionView,
@@ -78,5 +79,28 @@ describe('customer filters', () => {
     const items = Array.from({ length: 30 }, (_, index) => index);
     expect(pageOf(items, 25)).toEqual({ shown: items.slice(0, 25), hidden: 5 });
     expect(pageOf(items, 50)).toEqual({ shown: items, hidden: 0 });
+  });
+});
+
+describe('planChangePatch', () => {
+  it('turns a chosen paid plan on and starts a full period from today', () => {
+    const monthly = planChangePatch('monthly', now);
+    expect(monthly).toMatchObject({ plan: 'monthly', status: 'active', trial_ends_at: null });
+    expect(Date.parse(monthly.subscription_ends_at!) - now.getTime()).toBe(31 * 86_400_000);
+    expect(Date.parse(planChangePatch('yearly', now).subscription_ends_at!) - now.getTime()).toBe(366 * 86_400_000);
+    expect(planChangePatch('solo_monthly', now).status).toBe('active');
+  });
+  it('puts a trial end on the trial and not on the paid end', () => {
+    const trial = planChangePatch('trial', now);
+    expect(trial).toMatchObject({ plan: 'trial', status: 'active', subscription_ends_at: null });
+    expect(Date.parse(trial.trial_ends_at!) - now.getTime()).toBe(7 * 86_400_000);
+  });
+  it('gives a lifetime plan no end date and switches "no plan" off', () => {
+    expect(planChangePatch('lifetime', now)).toEqual({ plan: 'lifetime', status: 'active', subscription_ends_at: null, trial_ends_at: null });
+    expect(planChangePatch('free', now)).toEqual({ plan: 'free', status: 'inactive', subscription_ends_at: null, trial_ends_at: null });
+  });
+  it('is what an admin needs after choosing a plan for a customer who had none', () => {
+    const patch = planChangePatch('monthly', now);
+    expect(describeExpiry({ ...patch }, now)).toMatchObject({ tone: 'good', label: 'Còn 31 ngày' });
   });
 });
