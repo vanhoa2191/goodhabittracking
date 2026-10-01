@@ -68,7 +68,7 @@ Trang quản trị có workflow hỗ trợ, hủy và hoàn tiền. Chỉ link P
 7. Supabase Auth redirect allowlist chỉ cần app callback/origin. Không thêm Pages origin vào luồng OAuth vì marketing không đăng nhập.
 8. Đăng ký PayOS webhook, return và cancel trên app origin; webhook là `https://<app-origin>/api/payment/webhook`. Pages không nhận callback thanh toán.
 
-Các trang `/privacy`, `/terms`, `/contact` luôn build được ở trạng thái bản nháp nhưng mặc định `noindex` và không xuất hiện trong footer/checkout. Chỉ đặt `NEXT_PUBLIC_LEGAL_PAGES_APPROVED=true` sau khi chủ sản phẩm hoặc tư vấn pháp lý duyệt đúng phiên bản nội dung đang commit; đồng thời cấu hình `SUPPORT_EMAIL` bằng hộp thư hỗ trợ chính thức. Khi cờ bật, checkout yêu cầu phụ huynh mở và đồng ý điều khoản/quyền riêng tư trước khi tạo đơn PayOS.
+Các trang `/privacy`, `/terms`, `/contact` luôn build được ở trạng thái bản nháp nhưng mặc định `noindex` và không xuất hiện trong footer/checkout. Chỉ đặt `NEXT_PUBLIC_LEGAL_PAGES_APPROVED=true` sau khi chủ sản phẩm hoặc tư vấn pháp lý duyệt đúng phiên bản nội dung đang commit; đồng thời cấu hình `SUPPORT_EMAIL` bằng hộp thư hỗ trợ chính thức. Khi cờ bật, checkout yêu cầu phụ huynh mở và đồng ý điều khoản/quyền riêng tư trước khi tạo đơn PayOS. Bản deploy lấy cờ từ biến repo cùng tên (`gh variable set NEXT_PUBLIC_LEGAL_PAGES_APPROVED --body true`) và email hỗ trợ từ `ci.yml`; cờ được nhúng lúc build nên đổi biến xong phải deploy lại.
 
 Không đưa secret vào `wrangler.jsonc`, GitHub Actions log hoặc `NEXT_PUBLIC_*`.
 `PAIRING_RATE_LIMIT_SECRET` phải là giá trị ngẫu nhiên tối thiểu 32 ký tự.
