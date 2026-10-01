@@ -34,6 +34,7 @@ import { generateAgeAdaptedHabits } from './wit-framework';
 import type { User } from '@supabase/supabase-js';
 import { createActivityActions } from './store/activity-actions';
 import { createHabitActions } from './store/habit-actions';
+import { resolveActiveChildId } from './store/active-child';
 import { createProfileActions } from './store/profile-actions';
 import type { ProfileCreateResult } from './store/profile-actions';
 import { createRewardActions } from './store/reward-actions';
@@ -247,7 +248,9 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
 
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
   const [experience, setExperience] = useState<ExperienceState>(emptyExperienceState);
-  const [activeChildId, setActiveChildIdState] = useState<string | null>(null);
+  const [selectedChildId, setActiveChildIdState] = useState<string | null>(null);
+  // Saving must use the child the screens show, which is the first child until one is selected.
+  const activeChildId = resolveActiveChildId(profiles, selectedChildId);
   const [activities, setActivities] = useState<HabitActivity[]>([]);
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [rewards, setRewards] = useState<Reward[]>([]);
