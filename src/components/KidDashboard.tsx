@@ -55,6 +55,7 @@ import { ChildSelfReportPrompt } from './ChildSelfReportPrompt';
 import { useChildHabitPhases } from '@/lib/habit-programs/use-child-habit-phases';
 import { DreamCityCard } from './DreamCityCard';
 import { BadgeCelebration } from './BadgeCelebration';
+import { kidPraise } from '@/lib/i18n/kid-praise-copy';
 import { isActivityDueOn } from '@/lib/habit-programs/opportunities';
 import { getBadgeCopy } from '@/lib/badges/badge-copy';
 import type { BadgeGroupKey } from '@/lib/badges/badge-copy';
@@ -95,6 +96,7 @@ export function KidDashboard() {
   const [selectedTask, setSelectedTask] = useState<HabitActivity | null>(null);
   const [completionError, setCompletionError] = useState<string | null>(null);
   const [pointBurstId, setPointBurstId] = useState<string | null>(null);
+  const [praise, setPraise] = useState<{ readonly activityId: string; readonly text: string } | null>(null);
   const [completionStatusId, setCompletionStatusId] = useState<string | null>(null);
   const [savingTaskId, setSavingTaskId] = useState<string | null>(null);
   const visibleTab = isFamilyPaused && activeTab === 'leaderboard' ? 'tasks' : activeTab;
@@ -112,16 +114,26 @@ export function KidDashboard() {
     if (savingTaskId === activity.id) return;
     setCompletionError(null);
     setSavingTaskId(activity.id);
-    // The reward shows on the tap and is taken back if the server then refuses the tick; the vibration waits for
-    // the server, because a buzz tells the child it worked.
+    // The reward and the praise show on the tap and are taken back if the server then refuses the tick; the
+    // vibration waits for the server, because a buzz tells the child it worked. The praise is words, so it also
+    // reaches a child whose device is set to reduce motion.
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isCompleting && !reduceMotion) setPointBurstId(activity.id);
+    if (isCompleting) {
+      if (!reduceMotion) setPointBurstId(activity.id);
+      setPraise({
+        activityId: activity.id,
+        text: kidPraise(language, { points: activity.points, waitsForParent: activity.requiresApproval, seed: activity.id }),
+      });
+    } else {
+      setPraise(null);
+    }
     const saved = await toggleActivity(activity.id, date);
     setSavingTaskId(null);
     if (!saved) {
       setFailureCode(getLastToggleFailure());
       setCompletionError(activity.id);
       setPointBurstId(null);
+      setPraise(null);
       return;
     }
     setCompletionStatusId(activity.id);
@@ -133,6 +145,7 @@ export function KidDashboard() {
       }
     }
     window.setTimeout(() => setPointBurstId((id) => id === activity.id ? null : id), 1200);
+    window.setTimeout(() => setPraise((current) => current?.activityId === activity.id ? null : current), 4000);
   };
 
   const changeTaskDeferral = async (activity: HabitActivity, date: string, deferred: boolean) => {
@@ -702,7 +715,18 @@ export function KidDashboard() {
                               </button>
                             </div>
                           )}
-                          {completionStatusId === act.id && <span role="status" className="sr-only">{language === 'vi' ? `Đã cập nhật nhiệm vụ “${act.title}”` : `Updated task “${act.title}”`}</span>}
+                          {(praise?.activityId === act.id || completionStatusId === act.id) && (
+                            <p
+                              role="status"
+                              data-testid={praise?.activityId === act.id ? 'task-praise' : undefined}
+                              className={praise?.activityId === act.id
+                                ? 'mt-3 rounded-xl bg-emerald-100 px-3 py-2 text-center text-sm font-extrabold text-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-100'
+                                : 'sr-only'}
+                            >
+                              {praise?.activityId === act.id ? praise.text : null}
+                              <span className="sr-only">{language === 'vi' ? ` Đã cập nhật nhiệm vụ “${act.title}”` : ` Updated task “${act.title}”`}</span>
+                            </p>
+                          )}
                           {completionError === act.id && <p role="alert" className="mt-3 text-sm font-bold text-rose-600">{questCopy.saveError}{failureCode ? <span className="ml-2 text-xs font-semibold text-rose-400">({failureCode})</span> : null}</p>}
                         </div>
                         </QuestSwipeSurface>

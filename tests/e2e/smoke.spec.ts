@@ -108,6 +108,7 @@ test('demo child can inspect and independently complete a full task card', async
   const pointBurst = expect(taskCard.getByTestId('point-burst')).toContainText('+10');
   await taskToggle.click();
   await pointBurst;
+  await expect(taskCard.getByTestId('task-praise')).toContainText('+10 sao');
   // The first quest ever completed earns the first badge; congratulate, then carry on.
   await page.getByRole('button', { name: 'Tuyệt vời!' }).click();
   await expect(page.getByRole('dialog', { name: 'Chi tiết nhiệm vụ' })).toHaveCount(0);
@@ -134,6 +135,7 @@ test('reduced motion uses static task completion feedback', async ({ page }) => 
 
   // Then
   await expect(taskCard.getByRole('status')).toContainText('Đã cập nhật nhiệm vụ');
+  await expect(taskCard.getByTestId('task-praise')).toContainText('+10 sao');
   await expect(taskCard.getByTestId('point-burst')).toHaveCount(0);
 });
 
