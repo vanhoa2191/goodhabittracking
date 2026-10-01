@@ -28,6 +28,7 @@ import {
   Heart,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
+import { getLastToggleFailure } from '@/lib/store/habit-actions';
 import { useTranslation } from '@/lib/i18n/context';
 import { HabitActivity, TimeOfDay } from '@/types';
 import { HabitTimerModal } from './HabitTimerModal';
@@ -84,6 +85,7 @@ export function KidDashboard() {
   const copy = getKidDashboardCopy(language);
   const questCopy = getKidQuestCopy(language);
 
+  const [failureCode, setFailureCode] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'tasks' | 'leaderboard' | 'rewards' | 'badges'>('tasks');
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [selectedTimerActivity, setSelectedTimerActivity] = useState<HabitActivity | null>(null);
@@ -113,6 +115,7 @@ export function KidDashboard() {
     const saved = await toggleActivity(activity.id, date);
     setSavingTaskId(null);
     if (!saved) {
+      setFailureCode(getLastToggleFailure());
       setCompletionError(activity.id);
       setPointBurstId(null);
       return;
@@ -700,7 +703,7 @@ export function KidDashboard() {
                             </div>
                           )}
                           {completionStatusId === act.id && <span role="status" className="sr-only">{language === 'vi' ? `Đã cập nhật nhiệm vụ “${act.title}”` : `Updated task “${act.title}”`}</span>}
-                          {completionError === act.id && <p role="alert" className="mt-3 text-sm font-bold text-rose-600">{questCopy.saveError}</p>}
+                          {completionError === act.id && <p role="alert" className="mt-3 text-sm font-bold text-rose-600">{questCopy.saveError}{failureCode ? <span className="ml-2 text-xs font-semibold text-rose-400">({failureCode})</span> : null}</p>}
                         </div>
                         </QuestSwipeSurface>
                       );

@@ -53,6 +53,22 @@ type HabitActions = {
   readonly rejectLog: (logId: string) => void;
 };
 
+// Why the last tick could not be saved, as a short code the child screen shows next to its message, so a report
+// from a family says which step failed instead of only that something did.
+let lastToggleFailure: string | null = null;
+export function getLastToggleFailure(): string | null {
+  return lastToggleFailure;
+}
+function failureCodeOf(error: unknown): string {
+  const status = (error as { status?: unknown } | null)?.status;
+  if (typeof status === 'number') return `request-${status}`;
+  return error instanceof Error ? `error-${error.name}` : 'error';
+}
+const failedWith = (code: string): false => {
+  lastToggleFailure = code;
+  return false;
+};
+
 export function createHabitActions(dependencies: Dependencies): HabitActions {
   const cloudUser = (): User | null => {
     const user = dependencies.cloud.currentUser;
@@ -88,16 +104,17 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
   return {
     toggleActivity: async (activityId, date) => {
       const childId = dependencies.state.activeChildId;
-      if (!childId) return false;
+      lastToggleFailure = null;
+      if (!childId) return failedWith('no-child');
       const activity = dependencies.state.activities.find((candidate) => candidate.id === activityId);
-      if (!activity) return false;
+      if (!activity) return failedWith('no-activity');
       const existingLog = dependencies.state.logs.find((log) =>
         log.activityId === activityId && log.childId === childId && log.date === date,
       );
 
       if (!dependencies.isDemoSession) {
         const user = cloudUser();
-        if (!user && !dependencies.cloud.isFamilyConnected) return false;
+        if (!user && !dependencies.cloud.isFamilyConnected) return failedWith('no-session');
         try {
           let commandStatus: string;
           if (!user) {
@@ -111,7 +128,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
                 commandId: crypto.randomUUID(),
               })).status;
             }
-            if (!await dependencies.cloud.refreshChildSession()) return false;
+            if (!await dependencies.cloud.refreshChildSession()) return failedWith('refresh-session');
           } else if (existingLog) {
             commandStatus = (await requestDomainCommand({ type: 'undoHabit', logId: existingLog.id })).status;
           } else {
@@ -123,8 +140,8 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
               commandId: crypto.randomUUID(),
             })).status;
           }
-          if (user && !await dependencies.cloud.syncCloudFamily(user)) return false;
-          if (commandStatus === 'points_already_spent') return false;
+          if (user && !await dependencies.cloud.syncCloudFamily(user)) return failedWith('sync');
+          if (commandStatus === 'points_already_spent') return failedWith('points-spent');
           if (commandStatus === 'undone' || commandStatus === 'pending_approval' || commandStatus === 'completed') {
             trackProductEvent({ event: 'task_ticked', action: commandStatus, mode: 'cloud' }, dependencies.analyticsSink);
           }
@@ -137,7 +154,7 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
             'Saving habit completion failed:',
             error instanceof Error ? error.message : 'unknown',
           );
-          return false;
+          return failedWith(failureCodeOf(error));
         }
       }
 
