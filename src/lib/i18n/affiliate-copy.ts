@@ -40,6 +40,7 @@ export type AffiliateCopy = {
     readonly submit: string;
     readonly submitting: string;
     readonly referred: string;
+    readonly discountApplied: (percent: number, listPrice: string) => string;
     readonly results: Readonly<Record<'claimed' | 'invalid' | 'self' | 'already_referred' | 'expired' | 'disabled' | 'failed', string>>;
   };
   readonly messages: Readonly<Record<'saved' | 'invalidDetails' | 'requested' | 'belowMinimum' | 'missingDetails' | 'detailsRecent' | 'suspended' | 'failed' | 'loadFailed' | 'pinRequired' | 'pinNotSet', string>>;
@@ -47,7 +48,7 @@ export type AffiliateCopy = {
 
 const vi: AffiliateCopy = {
   title: 'Giới thiệu bạn bè',
-  intro: (percent) => `Chia sẻ liên kết của bạn. Khi một gia đình mới đăng ký qua đó và trả tiền, bạn nhận hoa hồng ${percent}% trên mỗi khoản thanh toán của họ.`,
+  intro: (percent) => `Chia sẻ liên kết của bạn. Khi một gia đình mới đăng ký qua đó và trả tiền, bạn nhận hoa hồng ${percent}% trên mỗi khoản thanh toán của họ, và bạn bè được giảm 10% khi mua gói năm lần đầu.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `Hoa hồng ${percent}% trên số tiền gia đình được giới thiệu thực trả, cho mọi thanh toán trong ${Math.round(windowDays / 30)} tháng đầu kể từ khi họ đăng ký.`,
     `Mỗi khoản được giữ ${holdDays} ngày (qua thời hạn hoàn tiền) rồi mới rút được. Đơn được hoàn tiền thì hoa hồng bị thu hồi.`,
@@ -84,14 +85,15 @@ const vi: AffiliateCopy = {
   tax: 'Hoa hồng có thể thuộc diện chịu thuế thu nhập cá nhân; bạn tự chịu trách nhiệm kê khai theo quy định.',
   entry: {
     prompt: 'Có mã giới thiệu từ bạn bè?',
-    hint: 'Nhập mã gồm 8 ký tự để người giới thiệu được ghi nhận. Chỉ nhập được một lần, trong lúc gia đình còn mới và chưa thanh toán.',
+    hint: 'Nhập mã gồm 8 ký tự để người giới thiệu được ghi nhận và bạn được giảm 10% khi mua gói năm. Chỉ nhập được một lần, trong lúc gia đình còn mới và chưa thanh toán.',
     label: 'Mã giới thiệu',
     placeholder: 'Ví dụ K7M2QX9P',
     submit: 'Áp dụng mã',
     submitting: 'Đang kiểm tra…',
-    referred: 'Gia đình bạn đã được ghi nhận qua lời giới thiệu của một người bạn. Cảm ơn bạn!',
+    referred: 'Gia đình bạn đã được ghi nhận qua lời giới thiệu của một người bạn, nên được giảm 10% khi mua gói năm lần đầu. Cảm ơn bạn!',
+    discountApplied: (percent, listPrice) => `Đã giảm ${percent}% nhờ mã giới thiệu (giá gốc ${listPrice}).`,
     results: {
-      claimed: 'Đã ghi nhận mã giới thiệu. Cảm ơn bạn!',
+      claimed: 'Đã ghi nhận mã giới thiệu. Bạn được giảm 10% khi mua gói năm lần đầu. Cảm ơn bạn!',
       invalid: 'Mã không đúng hoặc không còn hiệu lực. Kiểm tra lại 8 ký tự bạn nhận được.',
       self: 'Bạn không thể dùng mã giới thiệu của chính mình.',
       already_referred: 'Gia đình bạn đã có một mã giới thiệu được ghi nhận.',
@@ -117,7 +119,7 @@ const vi: AffiliateCopy = {
 
 const en: AffiliateCopy = {
   title: 'Refer a friend',
-  intro: (percent) => `Share your link. When a new family signs up through it and pays, you earn ${percent}% of each of their payments.`,
+  intro: (percent) => `Share your link. When a new family signs up through it and pays, you earn ${percent}% of each of their payments, and your friend gets 10% off their first yearly plan.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `${percent}% of what the referred family actually pays, on every payment in their first ${Math.round(windowDays / 30)} months after signing up.`,
     `Each commission is held for ${holdDays} days (past the refund window) before you can withdraw it. A refunded order takes its commission back.`,
@@ -154,14 +156,15 @@ const en: AffiliateCopy = {
   tax: 'Commissions may be subject to personal income tax; you are responsible for declaring them as required.',
   entry: {
     prompt: 'Have a referral code from a friend?',
-    hint: 'Enter the 8-character code so your friend gets credit. It can be entered once, while your family is new and has not paid.',
+    hint: 'Enter the 8-character code so your friend gets credit and you get 10% off your first yearly plan. It can be entered once, while your family is new and has not paid.',
     label: 'Referral code',
     placeholder: 'Example K7M2QX9P',
     submit: 'Apply code',
     submitting: 'Checking…',
-    referred: 'Your family was referred by a friend. Thank you!',
+    referred: 'Your family was referred by a friend, so you get 10% off your first yearly plan. Thank you!',
+    discountApplied: (percent, listPrice) => `${percent}% off with your referral code (list price ${listPrice}).`,
     results: {
-      claimed: 'Referral code recorded. Thank you!',
+      claimed: 'Referral code recorded. You get 10% off your first yearly plan. Thank you!',
       invalid: 'That code is not right or is no longer valid. Check the 8 characters you were given.',
       self: 'You cannot use your own referral code.',
       already_referred: 'A referral code is already recorded for your family.',

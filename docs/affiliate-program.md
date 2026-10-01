@@ -11,6 +11,7 @@ Phụ huynh tham gia trong ứng dụng (Cài đặt, mục Giới thiệu bạn
 | `earning_window_days` | 365 | chỉ đơn trong 12 tháng đầu kể từ ngày tạo gia đình sinh hoa hồng |
 | `hold_days` | 35 | giữ qua hạn hoàn tiền 30 ngày rồi mới rút được |
 | `min_payout_vnd` | 200000 | mức rút tối thiểu |
+| `referred_discount_bps` | 1000 | giảm 10% gói năm đầu tiên của gia đình được giới thiệu (xem bên dưới) |
 | `enabled` | true | tắt thì ẩn thẻ, không ghi nhận, không sinh hoa hồng mới |
 
 Đổi tỉ lệ chỉ áp dụng cho hoa hồng sinh sau đó (mỗi dòng lưu `rate_bps` của lúc sinh). Cập nhật `terms_version` khi điều khoản đổi.
@@ -23,6 +24,10 @@ Phụ huynh tham gia trong ứng dụng (Cài đặt, mục Giới thiệu bạn
 3. **Rút tiền.** Người giới thiệu lưu thông tin ngân hàng và bấm yêu cầu (cả hai cần gia đình đã đặt mã PIN phụ huynh và mã đã được nhập trên trình duyệt này; gia đình chưa đặt PIN được yêu cầu đặt trước). `request_affiliate_payout` gom các khoản đã hết hạn giữ thành một yêu cầu `requested`.
 4. **Chi trả (admin).** Trang `/admin`, mục Chương trình giới thiệu. Một quản trị viên bấm "Nhận xử lý" trước khi chuyển khoản (quyền xử lý hết hạn sau 2 giờ; người khác không thể trả hay từ chối khi quyền còn hiệu lực), rồi chuyển khoản thủ công tới tài khoản trong yêu cầu và bấm "Đã chuyển khoản" kèm mã giao dịch và lý do (bắt buộc, cần MFA, vai trò finance hoặc super admin, ghi nhật ký). Hệ thống từ chối đánh dấu đã chuyển khi tổng hoa hồng gắn với yêu cầu khác số tiền (`amount_mismatch`). "Từ chối" trả các khoản về `pending`. Danh sách luôn hiện đủ mọi yêu cầu đang chờ; lịch sử đã xử lý giới hạn 50 dòng gần nhất trong 60 ngày.
 5. **Hoàn tiền.** Khi ca hoàn tiền được đánh dấu `completed` với mã `manual_refund_confirmed`, hoa hồng của đơn đó bị thu hồi nếu còn `pending`. Việc thu hồi chạy TRƯỚC khi ca được đánh dấu hoàn tất: nếu thu hồi lỗi, ca vẫn mở để thử lại (thao tác lặp lại an toàn). Hồ sơ hoàn tiền không có mã đơn không thể khớp hoa hồng, nên trang admin cảnh báo để xử lý tay. Nếu đã `requested`, từ chối yêu cầu rút trước rồi xử lý lại ca; nếu đã `paid`, xử lý tay (trừ vào khoản sau hoặc thu lại).
+
+## Ưu đãi cho gia đình được giới thiệu
+
+Gia đình đã được ghi nhận (qua liên kết hoặc nhập mã thủ công) được giảm `referred_discount_bps` (mặc định 10%) khi mua **gói năm** lần đầu, tức khi gia đình chưa có đơn nào `PAID`. Máy chủ quyết định giá: `/api/payment/create` gọi `referral_discount_bps(target_family)` (chỉ `service_role`), tạo đơn PayOS với số tiền đã giảm (399.000 đ thành 359.100 đ) và trả về `listPrice`, `discountPercent` để màn thanh toán hiện "Đã giảm 10% nhờ mã giới thiệu". Các gói tháng và trọn đời không giảm. Vì hoa hồng tính trên số tiền thực trả, người giới thiệu nhận 30% của 359.100 đ (107.730 đ) cho đơn đó. Nếu bạn đổi phần trăm trong bảng cài đặt, nhớ đổi cả câu chữ "10%" trong `src/lib/i18n/affiliate-copy.ts` và trang `/gioi-thieu/`.
 
 ## Bảo mật và riêng tư
 

@@ -52,6 +52,8 @@ export function verifyPayOSWebhook(
 export async function createPayOSPayment(input: {
   planId: PaidPlan;
   orderCode: number;
+  /** The amount to charge when it differs from the list price (a referral discount); defaults to the plan price. */
+  amount?: number;
 }): Promise<PaymentResult & { paymentLinkId: string }> {
   const {
     PAYOS_CLIENT_ID: clientId,
@@ -59,6 +61,7 @@ export async function createPayOSPayment(input: {
     PAYOS_CHECKSUM_KEY: checksumKey,
   } = requireSafePayOSConfig();
   const plan = getPricingPlan(input.planId);
+  const amount = input.amount ?? plan.price;
   const description = `KIDHABIT ${input.orderCode}`.slice(0, 25);
   const returnUrlValue = new URL('/checkout', getAppOrigin());
   returnUrlValue.searchParams.set('payment', 'success');
@@ -69,7 +72,7 @@ export async function createPayOSPayment(input: {
   const returnUrl = returnUrlValue.toString();
   const cancelUrl = cancelUrlValue.toString();
   const signatureFields = {
-    amount: plan.price,
+    amount,
     cancelUrl,
     description,
     orderCode: input.orderCode,
@@ -85,7 +88,7 @@ export async function createPayOSPayment(input: {
     },
     body: JSON.stringify({
       ...signatureFields,
-      items: [{ name: plan.name, quantity: 1, price: plan.price }],
+      items: [{ name: plan.name, quantity: 1, price: amount }],
       signature: createPayOSSignature(signatureFields, checksumKey),
     }),
   });
@@ -98,7 +101,7 @@ export async function createPayOSPayment(input: {
   const provider = parsed.data.data;
   if (
     provider.orderCode !== input.orderCode
-    || provider.amount !== plan.price
+    || provider.amount !== amount
     || provider.description !== description
   ) {
     throw new Error('PayOS returned payment details that do not match the order.');

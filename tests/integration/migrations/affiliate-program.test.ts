@@ -201,4 +201,29 @@ describe('affiliate programme migration contract', () => {
       expect(overview).not.toContain('limit 100');
     });
   });
+
+  describe('referral discount migration', () => {
+    const discount = readFileSync(resolve('supabase/migrations/202610010004_referral_discount.sql'), 'utf8');
+    const discountVerification = readFileSync(resolve('supabase/preflight/202610010004_referral_discount.verify.sql'), 'utf8');
+
+    it('parses as PostgreSQL SQL', async () => {
+      await expect(parse(discount)).resolves.toBeDefined();
+      await expect(parse(discountVerification)).resolves.toBeDefined();
+    });
+
+    it('defaults to 10 percent, bounded, and applies only to a referred family that has not paid', () => {
+      expect(discount).toContain('referred_discount_bps integer not null default 1000');
+      expect(discount).toContain('between 0 and 5000');
+      expect(discount).toContain('settings.enabled');
+      expect(discount).toContain('referral.referred_family_id = target_family');
+      expect(discount).toContain("payment_order.status = 'PAID'");
+    });
+
+    it('is readable by the service role only', () => {
+      expect(discount).toContain('revoke all on function public.referral_discount_bps(uuid) from public, anon, authenticated;');
+      expect(discount).toContain('grant execute on function public.referral_discount_bps(uuid) to service_role;');
+      expect(discount).not.toMatch(/grant execute on function public\.referral_discount_bps\(uuid\) to (authenticated|anon)/);
+      expect(discount).toContain("set search_path = ''");
+    });
+  });
 });
