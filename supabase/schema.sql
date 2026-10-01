@@ -45,3 +45,4 @@
 \ir migrations/202609300007_account_lifecycle_integrity.sql
 \ir migrations/202609300008_activation_funnel.sql
 \ir migrations/202609300009_point_adjustments.sql
+\ir migrations/202609300010_affiliate_program.sql

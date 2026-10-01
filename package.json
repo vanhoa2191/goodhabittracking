@@ -23,6 +23,7 @@
     "verify:live-boundaries": "node scripts/verify-live-family-boundaries.mjs",
     "verify:live-lifecycle": "node scripts/verify-live-family-lifecycle.mjs",
     "verify:live-experience": "node scripts/verify-live-experience.mjs",
+    "verify:live-affiliate": "node scripts/verify-live-affiliate.mjs",
     "verify:marketing-release": "node scripts/verify-marketing-release.mjs",
     "verify:habit-framework": "node scripts/verify-habit-framework-source.mjs",
     "verify:habit-framework-translation": "node scripts/verify-habit-framework-translation.mjs",
