@@ -19,6 +19,40 @@ describe('lifecycle email', () => {
     expect(rendered.html).not.toMatch(/child name|tên bé|habit title|tên thói quen/i);
   });
 
+  it('wraps every template in the shared shell and links to the app only with fixed URLs', () => {
+    const keys = ['welcome_setup', 'trial_ending', 'payment_receipt', 'support_status', 'refund_status', 'subscription_cancelled'] as const;
+    for (const templateKey of keys) {
+      for (const locale of ['vi', 'en']) {
+        const { html } = renderLifecycleEmail(parseLifecycleMessage({
+          templateKey,
+          locale,
+          payload: { trialEndsAt: '2026-10-20T00:00:00.000Z', orderCode: 1, amount: 1000, planId: 'monthly', status: 'approved' },
+        }));
+        expect(html).toContain('<!doctype html>');
+        expect(html).toContain(`lang="${locale}"`);
+        expect(html).not.toMatch(/<script|<img/i);
+        const links = [...html.matchAll(/href="([^"]+)"/g)].map((match) => match[1]);
+        for (const link of links) expect(link).toMatch(/^https:\/\/app\.kidhabithero\.com\//);
+      }
+    }
+  });
+
+  it('escapes payload text and keeps the call to action on the checkout page for trial mail', () => {
+    const { html } = renderLifecycleEmail(parseLifecycleMessage({
+      templateKey: 'payment_receipt',
+      locale: 'en',
+      payload: { orderCode: 7, amount: 1000, planId: '<b>x</b>' },
+    }));
+    expect(html).not.toContain('<b>x</b>');
+    expect(html).toContain('&lt;b&gt;x&lt;/b&gt;');
+    const trial = renderLifecycleEmail(parseLifecycleMessage({
+      templateKey: 'trial_ending',
+      locale: 'vi',
+      payload: { trialEndsAt: '2026-10-20T00:00:00.000Z' },
+    }));
+    expect(trial.html).toContain('href="https://app.kidhabithero.com/checkout"');
+  });
+
   it('rejects free-form payload fields before sending', () => {
     expect(() => parseLifecycleMessage({
       templateKey: 'welcome_setup',
