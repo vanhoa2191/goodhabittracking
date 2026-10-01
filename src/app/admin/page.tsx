@@ -33,7 +33,7 @@ export default async function AdminPage() {
           </div>
         </header>
         <AdminFunnelPanel />
-        <AdminAffiliatePanel canSeeFullAccounts={access.role !== 'support'} />
+        <AdminAffiliatePanel canSeeFullAccounts={access.role !== 'support'} adminId={access.user.id} />
         <AdminCustomerManager />
       </div>
     </main>

@@ -96,12 +96,23 @@ describe('/api/affiliate', () => {
     ['details_recent', 409],
   ])('answers a payout request that the programme reports as %s with %i', async (status, expected) => {
     const cookie = await unlockCookie();
-    rpc.mockImplementation(async () => ({ data: { configured: false }, error: null }));
+    rpc.mockImplementation(async () => ({ data: { configured: true }, error: null }));
     adminRpc.mockResolvedValue({ data: { status, amount: 239400 }, error: null });
     const response = await POST(post({ action: 'requestPayout' }, cookie));
     expect(adminRpc).toHaveBeenCalledWith('request_affiliate_payout', { target_user: 'user-a' });
     expect(response.status).toBe(expected);
     await expect(response.json()).resolves.toMatchObject({ status });
+  });
+
+  it.each([
+    ['saving payout details', payout],
+    ['requesting a payout', { action: 'requestPayout' }],
+  ])('asks a family without a PIN to set one before %s', async (_label, body) => {
+    rpc.mockImplementation(async () => ({ data: { configured: false }, error: null }));
+    const response = await POST(post(body));
+    expect(response.status).toBe(403);
+    await expect(response.json()).resolves.toMatchObject({ code: 'parent_pin_not_set' });
+    expect(adminRpc).not.toHaveBeenCalled();
   });
 
   it('refuses a cross-site request', async () => {

@@ -261,6 +261,7 @@ describe('family tenancy migration', () => {
       '202609300010_affiliate_program.sql',
       '202610010001_referral_claim_state.sql',
       '202610010002_affiliate_hardening.sql',
+      '202610010003_affiliate_audit_fixes.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(

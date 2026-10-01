@@ -97,6 +97,7 @@ export function AffiliateCard() {
 
   const failure = (status: number, data: Record<string, unknown> | null): string => {
     if (status === 403 && data?.code === 'parent_pin_required') return copy.messages.pinRequired;
+    if (status === 403 && data?.code === 'parent_pin_not_set') return copy.messages.pinNotSet;
     return copy.messages.failed;
   };
 

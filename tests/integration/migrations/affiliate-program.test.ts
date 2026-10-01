@@ -153,4 +153,52 @@ describe('affiliate programme migration contract', () => {
       expect(handler.indexOf('return existing.code')).toBeLessThan(handler.indexOf('code_generation_failed'));
     });
   });
+
+  describe('audit fixes migration', () => {
+    const fixes = readFileSync(resolve('supabase/migrations/202610010003_affiliate_audit_fixes.sql'), 'utf8');
+    const fixesVerification = readFileSync(resolve('supabase/preflight/202610010003_affiliate_audit_fixes.verify.sql'), 'utf8');
+    const part = (name: string) => {
+      const start = fixes.indexOf(`create or replace function public.${name}(`);
+      expect(start, `${name} is defined`).toBeGreaterThan(-1);
+      return fixes.slice(start, fixes.indexOf('\n$$;', start));
+    };
+
+    it('parses as PostgreSQL SQL', async () => {
+      await expect(parse(fixes)).resolves.toBeDefined();
+      await expect(parse(fixesVerification)).resolves.toBeDefined();
+    });
+
+    it('lets only a family manager attribute a family, also through a direct call', () => {
+      const claim = part('claim_referral');
+      expect(claim).toContain('public.can_manage_family(actor_family)');
+      expect(claim.indexOf('can_manage_family')).toBeLessThan(claim.indexOf('insert into public.referrals'));
+      expect(part('referral_claim_state')).toContain('public.can_manage_family(actor_family)');
+    });
+
+    it('moves exactly the commissions it totalled into the payout', () => {
+      const request = part('request_affiliate_payout');
+      expect(request).toContain('array_agg(locked.id)');
+      expect(request).toContain('where id = any(chosen)');
+      expect(request).not.toContain('referral.referrer_user_id = target_user\n    and commission.status');
+      expect(request).toContain('total bigint');
+    });
+
+    it('needs a fresh claim by the same admin before a payout is paid or contested', () => {
+      const claim = part('admin_claim_affiliate_payout');
+      expect(claim).toContain("return 'taken'");
+      expect(claim).toContain("interval '2 hours'");
+      const resolveFn = part('admin_resolve_affiliate_payout');
+      expect(resolveFn).toContain("return 'claimed_by_other'");
+      expect(resolveFn).toContain("return 'claim_required'");
+      expect(fixes).toContain('grant execute on function public.admin_claim_affiliate_payout(uuid, uuid) to service_role;');
+      expect(fixes).not.toMatch(/grant execute on function public\.admin_claim_affiliate_payout\(uuid, uuid\) to authenticated/);
+    });
+
+    it('lists every waiting payout and caps only the resolved history', () => {
+      const overview = part('admin_affiliate_overview');
+      expect(overview).toContain("where affiliate_payout.status = 'requested')");
+      expect(overview).toContain('limit 50');
+      expect(overview).not.toContain('limit 100');
+    });
+  });
 });

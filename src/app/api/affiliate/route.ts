@@ -44,8 +44,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: 'enrolled', code: data });
   }
 
-  // Payout details and payouts move money, so they need the parent PIN entered in this browser.
-  const locked = await requireParentUnlock(request, parent, supabase);
+  // Payout details and payouts move money, so the family must have a parent PIN and it must have been entered in this browser.
+  const locked = await requireParentUnlock(request, parent, supabase, { requirePin: true });
   if (locked) return locked;
 
   // The database only lets the service role touch payout details, so the PIN check above cannot be skipped

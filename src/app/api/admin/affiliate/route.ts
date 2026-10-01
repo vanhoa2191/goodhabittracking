@@ -15,7 +15,7 @@ const resolveRoles = ['finance', 'super_admin'] as const;
 
 const resolveSchema = z.object({
   payoutId: z.string().uuid(),
-  resolution: z.enum(['paid', 'rejected']),
+  resolution: z.enum(['claim', 'paid', 'rejected']),
   reference: z.string().trim().max(120).default(''),
   note: z.string().trim().max(500).default(''),
   reason: z.string().trim().min(5).max(500),
@@ -60,6 +60,20 @@ export async function POST(request: NextRequest) {
     return adminJsonResponse({ error: 'Could not record the admin action.', correlationId }, correlationId, 503);
   }
 
+  if (parsed.data.resolution === 'claim') {
+    const claimed = await admin.rpc('admin_claim_affiliate_payout', { target_payout_id: parsed.data.payoutId, admin_user: access.user.id });
+    const claimedOk = !claimed.error && claimed.data === 'claimed';
+    await recordAdminAudit(admin, { ...audit, action: 'affiliate.payout.claim', before: null, after: { claimed: claimedOk }, outcome: claimedOk ? 'succeeded' : 'failed' });
+    if (claimed.error) return adminJsonResponse({ error: 'Could not claim the payout.', correlationId }, correlationId, 503);
+    if (!claimedOk) {
+      const message = claimed.data === 'taken'
+        ? 'Another admin is already handling this payout. Wait for them to finish or for the claim to expire after two hours.'
+        : 'The payout was already resolved or could not be found.';
+      return adminJsonResponse({ error: message, status: claimed.data, correlationId }, correlationId, 409);
+    }
+    return adminJsonResponse({ success: true, correlationId }, correlationId);
+  }
+
   const { data, error } = await admin.rpc('admin_resolve_affiliate_payout', {
     target_payout_id: parsed.data.payoutId,
     resolution: parsed.data.resolution,
@@ -70,6 +84,15 @@ export async function POST(request: NextRequest) {
   const ok = !error && data === parsed.data.resolution;
   await recordAdminAudit(admin, { ...audit, outcome: ok ? 'succeeded' : 'failed' });
   if (error) return adminJsonResponse({ error: 'Could not update the payout.', correlationId }, correlationId, 503);
+  if (data === 'claimed_by_other' || data === 'claim_required') {
+    return adminJsonResponse({
+      error: data === 'claim_required'
+        ? 'Claim this payout first, then transfer the money and record the bank reference.'
+        : 'Another admin is handling this payout. Wait for them to finish or for the claim to expire after two hours.',
+      status: data,
+      correlationId,
+    }, correlationId, 409);
+  }
   if (data === 'amount_mismatch') {
     return adminJsonResponse({ error: 'The commissions in this payout no longer add up to its amount, usually because a refund took one back. Reject the payout so the parent can request again.', status: data, correlationId }, correlationId, 409);
   }

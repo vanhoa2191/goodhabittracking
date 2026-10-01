@@ -255,6 +255,23 @@ try {
   assert(!adminView.error && payout, 'The admin cannot see the payout request.');
   const inPayout = await admin.rpc('admin_reverse_referral_commission', { target_order_code: firstOrder, reason: 'Synthetic' });
   assert(inPayout.data === 'in_payout', 'A commission inside a payout request was reversed.');
+  // One admin handles a payout at a time: it must be claimed before it is paid, and nobody else can touch it meanwhile.
+  const unclaimedPaid = await admin.rpc('admin_resolve_affiliate_payout', {
+    target_payout_id: payout.id, resolution: 'paid', admin_user: userIds[0], payout_reference: 'SYNTHETIC-UNCLAIMED', payout_note: '',
+  });
+  assert(unclaimedPaid.data === 'claim_required', 'A payout was marked paid without being claimed first.');
+  const firstClaim = await admin.rpc('admin_claim_affiliate_payout', { target_payout_id: payout.id, admin_user: userIds[0] });
+  assert(firstClaim.data === 'claimed', 'An admin could not claim a waiting payout.');
+  const secondClaim2 = await admin.rpc('admin_claim_affiliate_payout', { target_payout_id: payout.id, admin_user: userIds[1] });
+  assert(secondClaim2.data === 'taken', 'A second admin claimed a payout somebody else is handling.');
+  const otherPaid = await admin.rpc('admin_resolve_affiliate_payout', {
+    target_payout_id: payout.id, resolution: 'paid', admin_user: userIds[1], payout_reference: 'SYNTHETIC-OTHER', payout_note: '',
+  });
+  assert(otherPaid.data === 'claimed_by_other', 'A second admin paid a payout somebody else is handling.');
+  const otherReject = await admin.rpc('admin_resolve_affiliate_payout', {
+    target_payout_id: payout.id, resolution: 'rejected', admin_user: userIds[1], payout_reference: '', payout_note: '',
+  });
+  assert(otherReject.data === 'claimed_by_other', 'A second admin rejected a payout somebody else is handling.');
   const noReference = await admin.rpc('admin_resolve_affiliate_payout', {
     target_payout_id: payout.id, resolution: 'paid', admin_user: userIds[0], payout_reference: '', payout_note: '',
   });
@@ -269,7 +286,7 @@ try {
   const restore = await admin.from('affiliate_payouts').update({ amount: 239400 }).eq('id', payout.id);
   assert(!restore.error, 'Could not restore the payout amount.');
   const rejected = await admin.rpc('admin_resolve_affiliate_payout', {
-    target_payout_id: payout.id, resolution: 'rejected', admin_user: null, payout_reference: '', payout_note: 'Synthetic rejection',
+    target_payout_id: payout.id, resolution: 'rejected', admin_user: userIds[0], payout_reference: '', payout_note: 'Synthetic rejection',
   });
   assert(rejected.data === 'rejected', 'The payout could not be rejected.');
   overview = await referrer.client.rpc('affiliate_overview');
@@ -278,12 +295,14 @@ try {
   assert(again2.data?.status === 'requested', 'The commissions could not be requested again after a rejection.');
   const newView = await admin.rpc('admin_affiliate_overview');
   const secondPayout = (newView.data?.payouts ?? []).find((entry) => entry.status === 'requested');
+  const secondClaimed = await admin.rpc('admin_claim_affiliate_payout', { target_payout_id: secondPayout.id, admin_user: userIds[0] });
+  assert(secondClaimed.data === 'claimed', 'The second payout could not be claimed.');
   const paid = await admin.rpc('admin_resolve_affiliate_payout', {
-    target_payout_id: secondPayout.id, resolution: 'paid', admin_user: null, payout_reference: 'SYNTHETIC-FT', payout_note: '',
+    target_payout_id: secondPayout.id, resolution: 'paid', admin_user: userIds[0], payout_reference: 'SYNTHETIC-FT', payout_note: '',
   });
   assert(paid.data === 'paid', 'The payout could not be marked paid.');
   const resolvedTwice = await admin.rpc('admin_resolve_affiliate_payout', {
-    target_payout_id: secondPayout.id, resolution: 'paid', admin_user: null, payout_reference: 'AGAIN', payout_note: '',
+    target_payout_id: secondPayout.id, resolution: 'paid', admin_user: userIds[0], payout_reference: 'AGAIN', payout_note: '',
   });
   assert(resolvedTwice.data === 'already_resolved', 'A payout was resolved twice.');
   overview = await referrer.client.rpc('affiliate_overview');
@@ -296,7 +315,7 @@ try {
   const referredView = await referred.client.rpc('affiliate_overview');
   assert(referredView.data?.enrolled === false, 'The referred family looks enrolled.');
 
-  successMessage = 'Live affiliate verification passed: enrolment, attribution rules, 30 percent commission once per paid order, hold, reversal, payout controls reachable only by the server, 24-hour bank-change hold, payout request, amount check, admin resolution and privacy.\n';
+  successMessage = 'Live affiliate verification passed: enrolment, attribution rules, 30 percent commission once per paid order, hold, reversal, payout controls reachable only by the server, 24-hour bank-change hold, payout request, one-admin claim, amount check, admin resolution and privacy.\n';
 } finally {
   await cleanup();
 }

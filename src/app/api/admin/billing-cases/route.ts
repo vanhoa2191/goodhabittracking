@@ -193,18 +193,9 @@ export async function PATCH(request: NextRequest) {
     if (subscriptionError) return fail('Could not cancel the subscription.', 503);
   }
 
-  const terminal = parsed.data.status === 'completed' || parsed.data.status === 'rejected';
-  const { error } = await admin.from('billing_support_cases').update({
-    status: parsed.data.status,
-    resolution_code: parsed.data.resolutionCode,
-    assigned_to: access.user.id,
-    resolved_at: terminal ? new Date().toISOString() : null,
-    updated_at: new Date().toISOString(),
-  }).eq('id', supportCase.id);
-  await recordAdminAudit(admin, { ...audit, outcome: error ? 'failed' : 'succeeded' });
-  if (error) return adminJsonResponse({ error: 'Could not update billing case.', correlationId }, correlationId, 503);
-
-  // A confirmed refund takes back the referral commission that order earned, while it is still held.
+  // A confirmed refund takes back the referral commission that order earned, while it is still held. This runs
+  // before the case is marked completed: if it fails the case stays open and can be retried (the reversal is
+  // idempotent), instead of leaving a completed refund whose commission is still payable.
   const reversal = await reverseCommissionForConfirmedRefund(admin, {
     caseId: supportCase.id,
     caseType: supportCase.case_type,
@@ -224,7 +215,20 @@ export async function PATCH(request: NextRequest) {
       after: { referral },
       outcome: reversal.failed ? 'failed' : 'succeeded',
     });
+    if (reversal.failed) return fail('The referral commission could not be reversed, so the refund was not marked complete. Try again.', 503);
   }
+
+  const terminal = parsed.data.status === 'completed' || parsed.data.status === 'rejected';
+  const { error } = await admin.from('billing_support_cases').update({
+    status: parsed.data.status,
+    resolution_code: parsed.data.resolutionCode,
+    assigned_to: access.user.id,
+    resolved_at: terminal ? new Date().toISOString() : null,
+    updated_at: new Date().toISOString(),
+  }).eq('id', supportCase.id);
+  await recordAdminAudit(admin, { ...audit, outcome: error ? 'failed' : 'succeeded' });
+  if (error) return adminJsonResponse({ error: 'Could not update billing case.', correlationId }, correlationId, 503);
+
   // A confirmed refund on a case that names no order cannot be matched to a commission; say so instead of staying silent.
   if (!reversal.applies && supportCase.case_type === 'refund' && parsed.data.status === 'completed'
     && parsed.data.resolutionCode === 'manual_refund_confirmed' && !supportCase.order_code) {
