@@ -40,7 +40,6 @@ export type AffiliateCopy = {
     readonly submit: string;
     readonly submitting: string;
     readonly referred: string;
-    readonly discountApplied: (percent: number, listPrice: string) => string;
     readonly results: Readonly<Record<'claimed' | 'invalid' | 'self' | 'already_referred' | 'expired' | 'disabled' | 'failed', string>>;
   };
   readonly messages: Readonly<Record<'saved' | 'invalidDetails' | 'requested' | 'belowMinimum' | 'missingDetails' | 'detailsRecent' | 'suspended' | 'failed' | 'loadFailed' | 'pinRequired' | 'pinNotSet', string>>;
@@ -91,7 +90,6 @@ const vi: AffiliateCopy = {
     submit: 'Áp dụng mã',
     submitting: 'Đang kiểm tra…',
     referred: 'Gia đình bạn đã được ghi nhận qua lời giới thiệu của một người bạn, nên được giảm 10% khi mua gói năm lần đầu. Cảm ơn bạn!',
-    discountApplied: (percent, listPrice) => `Đã giảm ${percent}% nhờ mã giới thiệu (giá gốc ${listPrice}).`,
     results: {
       claimed: 'Đã ghi nhận mã giới thiệu. Bạn được giảm 10% khi mua gói năm lần đầu. Cảm ơn bạn!',
       invalid: 'Mã không đúng hoặc không còn hiệu lực. Kiểm tra lại 8 ký tự bạn nhận được.',
@@ -162,7 +160,6 @@ const en: AffiliateCopy = {
     submit: 'Apply code',
     submitting: 'Checking…',
     referred: 'Your family was referred by a friend, so you get 10% off your first yearly plan. Thank you!',
-    discountApplied: (percent, listPrice) => `${percent}% off with your referral code (list price ${listPrice}).`,
     results: {
       claimed: 'Referral code recorded. You get 10% off your first yearly plan. Thank you!',
       invalid: 'That code is not right or is no longer valid. Check the 8 characters you were given.',
