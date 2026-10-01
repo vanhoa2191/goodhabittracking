@@ -5,14 +5,15 @@ import { Check, CheckCircle2, Gift } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { parentApprovalsCopy } from '@/lib/i18n/parent-approvals-copy';
-import { MascotAvatar } from './MascotAvatar';
 import { ParentReminderBanner } from './ParentReminderBanner';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { HabitProgressSummary } from './HabitProgressSummary';
 import { HabitSupportPrompt } from './HabitSupportPrompt';
-import { localDayKey } from '@/lib/local-day';
+import { ParentTodayCard } from './ParentTodayCard';
+import { WeeklyReviewCard } from './WeeklyReviewCard';
+import { getParentTodayCopy } from '@/lib/i18n/parent-today-copy';
 
-export function ParentApprovalsTab() {
+export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: () => void } = {}) {
   const {
     profiles,
     activities,
@@ -27,48 +28,37 @@ export function ParentApprovalsTab() {
   } = useAppStore();
   const { t, language } = useTranslation();
   const copy = parentApprovalsCopy[language];
+  const todayCopy = getParentTodayCopy(language);
+  const [chosenChildId, setChosenChildId] = React.useState<string | null>(null);
+  const focusChildId = profiles.some((profile) => profile.id === chosenChildId) ? chosenChildId! : (profiles[0]?.id ?? '');
   const pendingLogs = logs.filter((log) => log.status === 'pending_approval');
   const pendingRedemptions = redemptions.filter((redemption) => redemption.status === 'pending');
   const pendingCount = pendingLogs.length + pendingRedemptions.length;
   const familyPaused = Boolean(experience.settings?.paused_at);
-  const today = localDayKey();
 
   return (
     <div className="space-y-6">
       {defaultExperienceFlags.parentReengagement && <ParentReminderBanner pendingCount={pendingCount} familyPaused={familyPaused} />}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {profiles.map((profile) => {
-          const doneCount = logs.filter(
-            (log) => log.childId === profile.id
-              && log.date === today
-              && (log.status === 'completed' || log.status === 'approved')
-          ).length;
-
-          return (
-            <div key={profile.id} className="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-slate-100 dark:border-zinc-800 shadow-xs">
-              <div className="flex items-center gap-3 mb-3">
-                <MascotAvatar avatar={profile.avatar} alt="" className="h-12 w-12 text-3xl" />
-                <div>
-                  <h4 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">{profile.name}</h4>
-                  <div className="flex items-center gap-2 text-xs text-slate-400">
-                    <span>⭐ {profile.points} {copy.stars}</span><span>•</span><span className="text-amber-500 font-bold">🔥 {profile.streak} {copy.days}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="text-xs text-slate-500 font-medium">
-                <strong className="text-slate-800 dark:text-slate-200">{copy.todayDone(doneCount)}</strong>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {defaultExperienceFlags.habitPrograms && (
-        <>
-          <HabitSupportPrompt />
-          <HabitProgressSummary />
-        </>
+      {profiles.length > 1 && (
+        <div role="group" aria-label={todayCopy.chooseChild} className="flex flex-wrap gap-2">
+          {profiles.map((profile) => (
+            <button
+              key={profile.id}
+              type="button"
+              aria-pressed={focusChildId === profile.id}
+              onClick={() => setChosenChildId(profile.id)}
+              className={`min-h-11 rounded-full border px-4 text-sm font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${focusChildId === profile.id ? 'border-indigo-600 bg-indigo-600 text-white' : 'border-slate-200 bg-white text-slate-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-200'}`}
+            >
+              {profile.nickname || profile.name}
+            </button>
+          ))}
+        </div>
       )}
+
+      {focusChildId && <ParentTodayCard childId={focusChildId} />}
+
+      <h3 className="px-1 text-sm font-extrabold text-slate-600 dark:text-slate-300">{todayCopy.actionsTitle}</h3>
+      {defaultExperienceFlags.habitPrograms && <HabitSupportPrompt />}
 
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
         <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
@@ -139,6 +129,13 @@ export function ParentApprovalsTab() {
           </div>
         )}
       </div>
+
+      {defaultExperienceFlags.habitPrograms && (
+        <>
+          <HabitProgressSummary childId={focusChildId || undefined} onOpenHabits={onOpenHabits} />
+          {focusChildId && <WeeklyReviewCard childId={focusChildId} />}
+        </>
+      )}
     </div>
   );
 }

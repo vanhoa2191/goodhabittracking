@@ -185,4 +185,20 @@ describe('summarizeChildHabits', () => {
     expect(result.suggestions.map((entry) => entry.suggestion.code)).toContain('too-many-new');
     expect(result.suggestions.length).toBeLessThanOrEqual(3);
   });
+
+  it('gives each planned habit its last seven days and how the child mostly did it', () => {
+    const result = summarizeChildHabits({
+      child,
+      activities: [activity(readingId)],
+      logs: [log(readingId, '2026-01-12'), log(readingId, '2026-01-13')],
+      experience: state({ cuePlans: [plan(readingId, { created_at: '2026-01-10T12:00:00.000Z' })] }),
+      pausePeriods: [],
+      today: '2026-01-13',
+    });
+    const habit = result.habits[0]!;
+    expect(habit.recent).toHaveLength(7);
+    expect(habit.recent.at(-1)).toMatchObject({ date: '2026-01-13', state: 'done' });
+    expect(habit.recent.filter((dot) => dot.state === 'done').length).toBeGreaterThanOrEqual(2);
+    expect(habit.lean).toBeNull();
+  });
 });

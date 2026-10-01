@@ -4,6 +4,7 @@ import { localDayKey } from '@/lib/habit-fire';
 import type { ActivityLog, ChildProfile, HabitActivity } from '@/types';
 import { habitTraits } from './habit-traits';
 import { buildOpportunities, weekStart } from './opportunities';
+import { lastSevenDays, supportLean, type DayDot, type SupportLean } from './week-dots';
 import { evaluateHabitPhase } from './phase';
 import type { PhaseEvaluation } from './phase';
 import { overloadSuggestion, rankChildSuggestions, suggestAdjustments } from './suggestions';
@@ -19,6 +20,10 @@ export type HabitSummary = {
   readonly since: string;
   readonly evaluation: PhaseEvaluation;
   readonly suggestions: readonly Suggestion[];
+  /** The seven days ending today (empty for weekly habits, which have one chance per week). */
+  readonly recent: readonly DayDot[];
+  /** How the child mostly did it over those days, when it was recorded. */
+  readonly lean: SupportLean;
 };
 
 export type ChildHabitSummary = {
@@ -94,6 +99,7 @@ export function summarizeChildHabits(input: SummaryInput): ChildHabitSummary {
     });
 
     const evaluation = evaluateHabitPhase({ opportunities, hasCuePlan: true, cadence: traits.cadence });
+    const recent = traits.cadence === 'weekly' ? [] : lastSevenDays(opportunities, today);
     habits.push({
       activityId: activity.id,
       title: activity.title,
@@ -102,6 +108,8 @@ export function summarizeChildHabits(input: SummaryInput): ChildHabitSummary {
       since,
       evaluation,
       suggestions: suggestAdjustments({ evaluation, complexity: traits.complexity, ageYears, today }),
+      recent,
+      lean: supportLean(recent),
     });
   }
 
