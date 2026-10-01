@@ -32,6 +32,16 @@ export type AffiliateCopy = {
   readonly status: Readonly<Record<'pending' | 'available' | 'requested' | 'paid' | 'reversed', string>>;
   readonly plan: Readonly<Record<string, string>>;
   readonly tax: string;
+  readonly entry: {
+    readonly prompt: string;
+    readonly hint: string;
+    readonly label: string;
+    readonly placeholder: string;
+    readonly submit: string;
+    readonly submitting: string;
+    readonly referred: string;
+    readonly results: Readonly<Record<'claimed' | 'invalid' | 'self' | 'already_referred' | 'expired' | 'disabled' | 'failed', string>>;
+  };
   readonly messages: Readonly<Record<'saved' | 'invalidDetails' | 'requested' | 'belowMinimum' | 'missingDetails' | 'suspended' | 'failed' | 'loadFailed' | 'pinRequired', string>>;
 };
 
@@ -72,6 +82,24 @@ const vi: AffiliateCopy = {
   status: { pending: 'Đang giữ', available: 'Có thể rút', requested: 'Đã yêu cầu rút', paid: 'Đã chuyển', reversed: 'Đã thu hồi' },
   plan: { solo_monthly: 'Gói Một Bé', monthly: 'Gói Gia Đình · Tháng', yearly: 'Gói Năm', lifetime: 'Trọn Đời' },
   tax: 'Hoa hồng có thể thuộc diện chịu thuế thu nhập cá nhân; bạn tự chịu trách nhiệm kê khai theo quy định.',
+  entry: {
+    prompt: 'Có mã giới thiệu từ bạn bè?',
+    hint: 'Nhập mã gồm 8 ký tự để người giới thiệu được ghi nhận. Chỉ nhập được một lần, trong lúc gia đình còn mới và chưa thanh toán.',
+    label: 'Mã giới thiệu',
+    placeholder: 'Ví dụ K7M2QX9P',
+    submit: 'Áp dụng mã',
+    submitting: 'Đang kiểm tra…',
+    referred: 'Gia đình bạn đã được ghi nhận qua lời giới thiệu của một người bạn. Cảm ơn bạn!',
+    results: {
+      claimed: 'Đã ghi nhận mã giới thiệu. Cảm ơn bạn!',
+      invalid: 'Mã không đúng hoặc không còn hiệu lực. Kiểm tra lại 8 ký tự bạn nhận được.',
+      self: 'Bạn không thể dùng mã giới thiệu của chính mình.',
+      already_referred: 'Gia đình bạn đã có một mã giới thiệu được ghi nhận.',
+      expired: 'Rất tiếc, mã giới thiệu chỉ áp dụng cho gia đình mới và chưa thanh toán nên không thể ghi nhận.',
+      disabled: 'Chương trình giới thiệu đang tạm dừng.',
+      failed: 'Chưa ghi nhận được. Vui lòng thử lại.',
+    },
+  },
   messages: {
     saved: 'Đã lưu thông tin nhận tiền.',
     invalidDetails: 'Thông tin chưa hợp lệ. Kiểm tra lại ngân hàng, số tài khoản và tên chủ tài khoản.',
@@ -122,6 +150,24 @@ const en: AffiliateCopy = {
   status: { pending: 'Held', available: 'Available', requested: 'Withdrawal requested', paid: 'Paid out', reversed: 'Reversed' },
   plan: { solo_monthly: 'Single Child plan', monthly: 'Family plan · Monthly', yearly: 'Yearly plan', lifetime: 'Lifetime' },
   tax: 'Commissions may be subject to personal income tax; you are responsible for declaring them as required.',
+  entry: {
+    prompt: 'Have a referral code from a friend?',
+    hint: 'Enter the 8-character code so your friend gets credit. It can be entered once, while your family is new and has not paid.',
+    label: 'Referral code',
+    placeholder: 'Example K7M2QX9P',
+    submit: 'Apply code',
+    submitting: 'Checking…',
+    referred: 'Your family was referred by a friend. Thank you!',
+    results: {
+      claimed: 'Referral code recorded. Thank you!',
+      invalid: 'That code is not right or is no longer valid. Check the 8 characters you were given.',
+      self: 'You cannot use your own referral code.',
+      already_referred: 'A referral code is already recorded for your family.',
+      expired: 'Sorry, referral codes only apply to new families that have not paid yet, so this one cannot be recorded.',
+      disabled: 'The referral programme is paused.',
+      failed: 'Could not record it. Please try again.',
+    },
+  },
   messages: {
     saved: 'Payout details saved.',
     invalidDetails: 'Those details do not look right. Check the bank, account number and holder name.',

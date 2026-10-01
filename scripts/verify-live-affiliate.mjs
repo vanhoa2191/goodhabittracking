@@ -125,7 +125,7 @@ try {
   assert(!settings.error && settings.data.commission_bps === 3000, 'The commission must default to 30 percent.');
 
   // Anonymous callers and plain table reads are refused.
-  for (const [name, args] of [['affiliate_enroll', { accept_terms: true }], ['claim_referral', { referral_code: 'AAAAAAAA' }], ['affiliate_overview', {}]]) {
+  for (const [name, args] of [['affiliate_enroll', { accept_terms: true }], ['claim_referral', { referral_code: 'AAAAAAAA' }], ['affiliate_overview', {}], ['referral_claim_state', {}]]) {
     const result = await anonymous.rpc(name, args);
     assert(Boolean(result.error), `${name} was callable by an anonymous client.`);
   }
@@ -158,14 +158,20 @@ try {
   assert(selfClaim.data === 'self', 'A parent could refer their own family.');
   const wrongCode = await referred.client.rpc('claim_referral', { referral_code: 'ZZZZZZZZ' });
   assert(wrongCode.data === 'invalid', 'An unknown code was accepted.');
+  const stateBefore = await referred.client.rpc('referral_claim_state');
+  assert(!stateBefore.error && stateBefore.data === 'eligible', 'A new unreferred family must be allowed to enter a code.');
   const claim = await referred.client.rpc('claim_referral', { referral_code: code.toLowerCase() });
   assert(!claim.error && claim.data === 'claimed', 'A new family could not be attributed.');
   const secondClaim = await referred.client.rpc('claim_referral', { referral_code: code });
   assert(secondClaim.data === 'already_referred', 'A family was attributed twice.');
+  const stateAfter = await referred.client.rpc('referral_claim_state');
+  assert(stateAfter.data === 'referred', 'The family must show as referred after a code was recorded.');
   const oldFamily = await admin.from('families').update({ created_at: new Date(Date.now() - 90 * 86_400_000).toISOString() }).eq('id', familyIds[2]);
   assert(!oldFamily.error, 'Could not age the late family.');
   const lateClaim = await late.client.rpc('claim_referral', { referral_code: code });
   assert(lateClaim.data === 'expired', 'A family outside the attribution window was attributed.');
+  const lateState = await late.client.rpc('referral_claim_state');
+  assert(lateState.data === 'closed', 'A family outside the attribution window must not be offered the code box.');
 
   // Paid orders earn 30 percent, once each.
   let orderNumber = Date.now() * 100;

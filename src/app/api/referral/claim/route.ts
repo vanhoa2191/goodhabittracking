@@ -26,3 +26,13 @@ export async function POST(request: NextRequest) {
   if (error || typeof data !== 'string') return NextResponse.json({ error: 'Could not record the referral.' }, { status: 503 });
   return NextResponse.json({ status: data });
 }
+
+// Whether this family can still enter a code by hand: 'eligible', 'referred', 'closed' or 'disabled'.
+export async function GET() {
+  const parent = await getParentContext();
+  if (!parent) return NextResponse.json({ error: 'Authentication required.' }, { status: 401 });
+  const supabase = await createServerSupabaseClient();
+  const { data, error } = await supabase.rpc('referral_claim_state');
+  if (error || typeof data !== 'string') return NextResponse.json({ error: 'Could not read the referral state.' }, { status: 503 });
+  return NextResponse.json({ state: data }, { headers: { 'cache-control': 'no-store' } });
+}

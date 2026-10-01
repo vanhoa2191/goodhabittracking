@@ -33,6 +33,15 @@ describe('affiliate copy', () => {
     }
   });
 
+  it('answers every outcome of entering a code by hand in both languages', () => {
+    for (const language of ['vi', 'en'] as const) {
+      const { entry } = getAffiliateCopy(language);
+      expect(Object.keys(entry.results).sort()).toEqual(['already_referred', 'claimed', 'disabled', 'expired', 'failed', 'invalid', 'self']);
+      for (const text of [entry.prompt, entry.hint, entry.submit, entry.referred, ...Object.values(entry.results)]) expect(text.length).toBeGreaterThan(5);
+      expect(entry.hint).toContain('8');
+    }
+  });
+
   it('shows English to every language other than Vietnamese', () => {
     const others: readonly Language[] = ['en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'];
     for (const language of others) expect(getAffiliateCopy(language)).toBe(getAffiliateCopy('en'));
