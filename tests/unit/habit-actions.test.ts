@@ -168,7 +168,7 @@ describe('habit actions', () => {
     expect(fixture.analyticsSink).not.toHaveBeenCalled();
   });
 
-  it('persists a cloud completion before authoritative sync without optimistic local state', async () => {
+  it('shows a cloud completion at once and lets the server reload settle it afterwards', async () => {
     // Given
     requestDomainCommand.mockResolvedValue({ status: 'completed' });
     const fixture = createState('cloud', user);
@@ -185,7 +185,10 @@ describe('habit actions', () => {
       date: '2026-09-20',
     }));
     expect(fixture.syncCloudFamily).toHaveBeenCalledWith(user);
-    expect(fixture.read()).toEqual({ profiles: [child], logs: [], childBadges: [] });
+    expect(fixture.read().logs).toEqual([
+      expect.objectContaining({ activityId: activity.id, status: 'completed', pointsAwarded: 20 }),
+    ]);
+    expect(fixture.read().profiles[0]?.points).toBe(20);
     expect(fixture.analyticsSink).toHaveBeenCalledWith({ event: 'task_ticked', action: 'completed', mode: 'cloud' });
   });
 
@@ -244,11 +247,12 @@ describe('habit actions', () => {
     await unauthorised.actions.toggleActivity(activity.id, '2026-09-20');
     expect(getLastToggleFailure()).toBe('request-401');
 
+    // A reload that fails after the server saved the tick does not turn the tick into a failure.
     requestDomainCommand.mockResolvedValueOnce({ status: 'completed' });
     const notSynced = createState('cloud', user);
     notSynced.syncCloudFamily.mockResolvedValueOnce(false);
-    await notSynced.actions.toggleActivity(activity.id, '2026-09-20');
-    expect(getLastToggleFailure()).toBe('sync');
+    await expect(notSynced.actions.toggleActivity(activity.id, '2026-09-20')).resolves.toBe(true);
+    expect(getLastToggleFailure()).toBeNull();
 
     requestDomainCommand.mockResolvedValueOnce({ status: 'completed' });
     const worked = createState('cloud', user);
@@ -258,6 +262,54 @@ describe('habit actions', () => {
     const missing = createState('demo');
     await missing.actions.toggleActivity('not-an-activity', '2026-09-20');
     expect(getLastToggleFailure()).toBe('no-activity');
+  });
+
+  it('puts the card on screen before the server answers and rolls it back when the server refuses', async () => {
+    let refuse: (reason: Error) => void = () => undefined;
+    requestDomainCommand.mockReturnValue(new Promise((_, reject) => { refuse = reject; }));
+    const fixture = createState('cloud', user);
+
+    const pending = fixture.actions.toggleActivity(activity.id, '2026-09-20');
+    expect(fixture.read().logs).toHaveLength(1);
+    expect(fixture.read().profiles[0]?.points).toBe(20);
+
+    refuse(Object.assign(new Error('refused'), { status: 409 }));
+    expect(await pending).toBe(false);
+    expect(fixture.read()).toEqual({ profiles: [child], logs: [], childBadges: [] });
+    expect(fixture.syncCloudFamily).not.toHaveBeenCalled();
+  });
+
+  it('restores the card when an undo would take back spent points', async () => {
+    const log: ActivityLog = { id: 'log-1', activityId: activity.id, childId: child.id, date: '2026-09-20', status: 'completed', pointsAwarded: 20, completedAt: '2026-09-20T10:00:00.000Z' };
+    requestDomainCommand.mockResolvedValue({ status: 'points_already_spent' });
+    const fixture = createState('cloud', user, false, [log]);
+
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20')).toBe(false);
+    expect(fixture.read().logs).toEqual([log]);
+  });
+
+  it('gives the optimistic log the id the server created so an immediate undo can find it', async () => {
+    const serverId = '33333333-3333-4333-8333-333333333333';
+    requestDomainCommand.mockResolvedValue({ status: 'completed', logId: serverId });
+    const fixture = createState('cloud', user);
+
+    await fixture.actions.toggleActivity(activity.id, '2026-09-20');
+    expect(fixture.read().logs.map((log) => log.id)).toEqual([serverId]);
+  });
+
+  it('runs one family reload at a time and one follow-up for the taps made meanwhile', async () => {
+    requestDomainCommand.mockResolvedValue({ status: 'completed' });
+    const fixture = createState('cloud', user);
+    let finish: (ok: boolean) => void = () => undefined;
+    fixture.syncCloudFamily.mockReturnValueOnce(new Promise<boolean>((resolve) => { finish = resolve; }));
+
+    await fixture.actions.toggleActivity(activity.id, '2026-09-20');
+    await fixture.actions.toggleActivity(activity.id, '2026-09-21');
+    await fixture.actions.toggleActivity(activity.id, '2026-09-22');
+    expect(fixture.syncCloudFamily).toHaveBeenCalledTimes(1);
+
+    finish(true);
+    await vi.waitFor(() => expect(fixture.syncCloudFamily).toHaveBeenCalledTimes(2));
   });
 
   it('does not count a duplicate cloud command as a completed task', async () => {
