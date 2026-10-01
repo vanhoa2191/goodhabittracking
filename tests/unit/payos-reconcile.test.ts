@@ -6,7 +6,7 @@ vi.mock('@/lib/billing/payos-config', () => ({
 }));
 
 import { createPayOSSignature } from '@/lib/billing/payos-signature';
-import { fetchPayOSPaymentInfo, reconcilePendingOrder } from '@/lib/billing/payos-reconcile';
+import { fetchPayOSPaymentInfo, reconcileOrderOutcome, reconcilePendingOrder } from '@/lib/billing/payos-reconcile';
 
 const order = { order_code: 123456, amount: 49000, description: 'KIDHABIT 123456', status: 'PENDING' };
 
@@ -89,5 +89,21 @@ describe('PayOS reconciliation', () => {
     await expect(reconcilePendingOrder({ rpc }, order)).resolves.toBe(false);
     rpc.mockResolvedValue({ data: null, error: { message: 'down' } });
     await expect(reconcilePendingOrder({ rpc }, order)).resolves.toBe(false);
+  });
+
+  it.each(['CANCELLED', 'EXPIRED'])('reports a %s link with nothing paid as closed so it can stop being polled', async (status) => {
+    vi.stubGlobal('fetch', vi.fn(async () => payosAnswer({ ...paid, status, amountPaid: 0 })));
+    await expect(reconcileOrderOutcome({ rpc }, order)).resolves.toBe('closed');
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
+  it('never closes an order that has money on it, even if PayOS calls the link cancelled', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => payosAnswer({ ...paid, status: 'CANCELLED', amountPaid: 49000 })));
+    await expect(reconcileOrderOutcome({ rpc }, order)).resolves.toBe('open');
+  });
+
+  it('keeps a pending link open', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => payosAnswer({ ...paid, status: 'PENDING', amountPaid: 0 })));
+    await expect(reconcileOrderOutcome({ rpc }, order)).resolves.toBe('open');
   });
 });

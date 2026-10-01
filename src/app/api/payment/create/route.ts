@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getParentContext } from '@/lib/auth/parent-context';
+import { createOrderCode, isUniqueViolation } from '@/lib/billing/order-code';
 import { createPayOSPayment } from '@/lib/billing/payos-server';
 import { createPaymentRequestSchema } from '@/lib/billing/schemas';
 import { getPricingPlan } from '@/lib/payos';
@@ -10,10 +11,6 @@ import { requireParentUnlock } from '@/lib/security/parent-unlock';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export const runtime = 'nodejs';
-
-function createOrderCode(): number {
-  return Date.now() * 100 + (crypto.getRandomValues(new Uint8Array(1))[0] % 100);
-}
 
 export async function POST(request: NextRequest) {
   const crossSite = rejectCrossSiteRequest(request);
@@ -42,20 +39,25 @@ export async function POST(request: NextRequest) {
       discountBps = typeof data === 'number' ? data : 0;
     }
     const amount = discountedPrice(plan.price, discountBps);
-    const orderCode = createOrderCode();
-    const description = `KIDHABIT ${orderCode}`.slice(0, 25);
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
-    const { error: insertError } = await admin.from('payment_orders').insert({
-      order_code: orderCode,
-      family_id: parent.familyId,
-      user_id: parent.user.id,
-      plan_id: parsed.data.planId,
-      amount,
-      description,
-      status: 'PENDING',
-      expires_at: expiresAt,
-    });
+    // Two checkouts in the same millisecond can draw the same code; the second simply draws again.
+    let orderCode = 0;
+    let insertError: { code?: string } | null = null;
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      orderCode = createOrderCode();
+      ({ error: insertError } = await admin.from('payment_orders').insert({
+        order_code: orderCode,
+        family_id: parent.familyId,
+        user_id: parent.user.id,
+        plan_id: parsed.data.planId,
+        amount,
+        description: `KIDHABIT ${orderCode}`.slice(0, 25),
+        status: 'PENDING',
+        expires_at: expiresAt,
+      }));
+      if (!isUniqueViolation(insertError)) break;
+    }
     if (insertError) throw insertError;
 
     try {

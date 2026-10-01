@@ -1,12 +1,15 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { reconcilePendingOrder, limit } = vi.hoisted(() => ({ reconcilePendingOrder: vi.fn(), limit: vi.fn() }));
+const { reconcileOrderOutcome, limit, closeOrder, order } = vi.hoisted(() => ({ reconcileOrderOutcome: vi.fn(), limit: vi.fn(), closeOrder: vi.fn(), order: vi.fn() }));
 
-vi.mock('@/lib/billing/payos-reconcile', () => ({ reconcilePendingOrder }));
+vi.mock('@/lib/billing/payos-reconcile', () => ({ reconcileOrderOutcome }));
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminSupabaseClient: () => ({
-    from: () => ({ select: () => ({ eq: () => ({ gte: () => ({ order: () => ({ limit }) }) }) }) }),
+    from: () => ({
+      select: () => ({ eq: () => ({ gte: () => ({ order: (...args: unknown[]) => { order(...args); return { limit }; } }) }) }),
+      update: (patch: unknown) => ({ eq: (_column: string, code: unknown) => ({ eq: async () => closeOrder(patch, code) }) }),
+    }),
   }),
 }));
 
@@ -22,8 +25,11 @@ function call(token?: string, headers: Record<string, string> = {}) {
 
 describe('POST /api/internal/billing/reconcile', () => {
   beforeEach(() => {
-    reconcilePendingOrder.mockReset();
+    reconcileOrderOutcome.mockReset();
     limit.mockReset();
+    closeOrder.mockReset();
+    order.mockReset();
+    closeOrder.mockResolvedValue({ error: null });
     vi.stubEnv('CRON_SECRET', secret);
     limit.mockResolvedValue({ data: [{ order_code: 1, amount: 49000, description: 'KIDHABIT 1', status: 'PENDING' }, { order_code: 2, amount: 29000, description: 'KIDHABIT 2', status: 'PENDING' }], error: null });
   });
@@ -39,16 +45,36 @@ describe('POST /api/internal/billing/reconcile', () => {
   });
 
   it('checks each pending order and counts what it activated', async () => {
-    reconcilePendingOrder.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
+    reconcileOrderOutcome.mockResolvedValueOnce('paid').mockResolvedValueOnce('open');
     const response = await call(secret);
     expect(response.status).toBe(200);
-    await expect(response.json()).resolves.toMatchObject({ checked: 2, activated: 1, failed: 0 });
-    expect(reconcilePendingOrder).toHaveBeenCalledTimes(2);
+    await expect(response.json()).resolves.toMatchObject({ checked: 2, activated: 1, closed: 0, failed: 0 });
+    expect(reconcileOrderOutcome).toHaveBeenCalledTimes(2);
+    expect(closeOrder).not.toHaveBeenCalled();
   });
 
   it('keeps going when PayOS fails for one order', async () => {
-    reconcilePendingOrder.mockRejectedValueOnce(new Error('network')).mockResolvedValueOnce(true);
+    reconcileOrderOutcome.mockRejectedValueOnce(new Error('network')).mockResolvedValueOnce('paid');
     await expect((await call(secret)).json()).resolves.toMatchObject({ checked: 2, activated: 1, failed: 1 });
+  });
+
+  it('looks at the newest pending orders first so a fresh payment is never crowded out by abandoned ones', async () => {
+    reconcileOrderOutcome.mockResolvedValue('open');
+    await call(secret);
+    expect(order).toHaveBeenCalledWith('created_at', { ascending: false });
+  });
+
+  it('closes an order PayOS reports as cancelled or expired, so it stops being checked', async () => {
+    reconcileOrderOutcome.mockResolvedValueOnce('closed').mockResolvedValueOnce('open');
+    await expect((await call(secret)).json()).resolves.toMatchObject({ checked: 2, activated: 0, closed: 1, failed: 0 });
+    expect(closeOrder).toHaveBeenCalledTimes(1);
+    expect(closeOrder).toHaveBeenCalledWith(expect.objectContaining({ status: 'CANCELLED' }), 1);
+  });
+
+  it('counts a failed close as a failure rather than hiding it', async () => {
+    reconcileOrderOutcome.mockResolvedValue('closed');
+    closeOrder.mockResolvedValue({ error: { message: 'down' } });
+    await expect((await call(secret)).json()).resolves.toMatchObject({ closed: 0, failed: 2 });
   });
 
   it('reports a database failure as temporary', async () => {

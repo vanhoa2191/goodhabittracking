@@ -1,6 +1,6 @@
 import { timingSafeEqual } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
-import { reconcilePendingOrder } from '@/lib/billing/payos-reconcile';
+import { reconcileOrderOutcome } from '@/lib/billing/payos-reconcile';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
@@ -15,8 +15,10 @@ function authorized(request: NextRequest): boolean {
 }
 
 /**
- * Safety net for payments whose PayOS webhook never arrived: every pending order from the last three days is
- * checked against PayOS and activated if it was paid. Safe to run often and alongside the webhook.
+ * Safety net for payments whose PayOS webhook never arrived: pending orders from the last three days are
+ * checked against PayOS, newest first, and activated if they were paid. Orders PayOS reports as cancelled or
+ * expired with nothing paid are closed here, so abandoned checkouts do not fill the batch and crowd out a fresh
+ * payment. Safe to run often and alongside the webhook.
  */
 export async function POST(request: NextRequest) {
   const crossSite = rejectCrossSiteRequest(request);
@@ -30,7 +32,7 @@ export async function POST(request: NextRequest) {
     .select('order_code,amount,description,status')
     .eq('status', 'PENDING')
     .gte('created_at', since)
-    .order('created_at', { ascending: true })
+    .order('created_at', { ascending: false })
     .limit(25);
   if (error) {
     logOperationalEvent('error', { operation: 'payment_reconcile', reasonCode: 'database_failure', correlationId, route: request.nextUrl.pathname, status: 503 });
@@ -38,13 +40,24 @@ export async function POST(request: NextRequest) {
   }
 
   let activated = 0;
+  let closed = 0;
   let failed = 0;
   for (const order of orders ?? []) {
     try {
-      if (await reconcilePendingOrder(admin, order)) activated += 1;
+      const outcome = await reconcileOrderOutcome(admin, order);
+      if (outcome === 'paid') activated += 1;
+      if (outcome === 'closed') {
+        const { error: closeError } = await admin
+          .from('payment_orders')
+          .update({ status: 'CANCELLED', cancelled_at: new Date().toISOString() })
+          .eq('order_code', order.order_code)
+          .eq('status', 'PENDING');
+        if (closeError) failed += 1;
+        else closed += 1;
+      }
     } catch {
       failed += 1;
     }
   }
-  return NextResponse.json({ checked: orders?.length ?? 0, activated, failed, correlationId });
+  return NextResponse.json({ checked: orders?.length ?? 0, activated, closed, failed, correlationId });
 }
