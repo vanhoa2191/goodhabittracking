@@ -8,6 +8,7 @@ import {
 import { recordAdminAudit, type AdminAuditInput } from '@/lib/auth/admin-audit-server';
 import { createCorrelationId } from '@/lib/observability/logger';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
+import { maskPayoutAccounts, type AffiliateOverviewPayload } from '@/lib/referral/mask-account';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
 const resolveRoles = ['finance', 'super_admin'] as const;
@@ -25,9 +26,9 @@ export async function GET() {
   const access = await authorizeAdmin({ roles: ['support', 'finance', 'super_admin'] });
   if (!access.authorized) return adminAuthorizationResponse(access, correlationId);
   const { data, error } = await createAdminSupabaseClient().rpc('admin_affiliate_overview');
-  return error || !data
-    ? adminJsonResponse({ error: 'Could not load the referral programme.', correlationId }, correlationId, 503)
-    : adminJsonResponse({ ...(data as Record<string, unknown>), correlationId }, correlationId);
+  if (error || !data) return adminJsonResponse({ error: 'Could not load the referral programme.', correlationId }, correlationId, 503);
+  const overview = access.role === 'support' ? maskPayoutAccounts(data as AffiliateOverviewPayload) : (data as AffiliateOverviewPayload);
+  return adminJsonResponse({ ...overview, correlationId }, correlationId);
 }
 
 // Money leaves the business only through this route: the admin transfers it by hand first, then records
@@ -69,6 +70,9 @@ export async function POST(request: NextRequest) {
   const ok = !error && data === parsed.data.resolution;
   await recordAdminAudit(admin, { ...audit, outcome: ok ? 'succeeded' : 'failed' });
   if (error) return adminJsonResponse({ error: 'Could not update the payout.', correlationId }, correlationId, 503);
+  if (data === 'amount_mismatch') {
+    return adminJsonResponse({ error: 'The commissions in this payout no longer add up to its amount, usually because a refund took one back. Reject the payout so the parent can request again.', status: data, correlationId }, correlationId, 409);
+  }
   if (!ok) return adminJsonResponse({ error: 'The payout was already resolved or could not be found.', status: data, correlationId }, correlationId, 409);
   return adminJsonResponse({ success: true, correlationId }, correlationId);
 }

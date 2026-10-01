@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 import { requireParentUnlock } from '@/lib/security/parent-unlock';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export const runtime = 'nodejs';
@@ -47,8 +48,12 @@ export async function POST(request: NextRequest) {
   const locked = await requireParentUnlock(request, parent, supabase);
   if (locked) return locked;
 
+  // The database only lets the service role touch payout details, so the PIN check above cannot be skipped
+  // by calling the database directly with the parent's session.
+  const admin = createAdminSupabaseClient();
   if (command.action === 'savePayout') {
-    const { data, error } = await supabase.rpc('affiliate_save_payout_details', {
+    const { data, error } = await admin.rpc('affiliate_save_payout_details', {
+      target_user: parent.user.id,
       bank: command.bank,
       account_number: command.accountNumber,
       account_name: command.accountName,
@@ -58,7 +63,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status }, { status: status === 'saved' ? 200 : 400 });
   }
 
-  const { data, error } = await supabase.rpc('request_affiliate_payout');
+  const { data, error } = await admin.rpc('request_affiliate_payout', { target_user: parent.user.id });
   if (error || !data) return NextResponse.json({ error: 'Could not request the payout.' }, { status: 503 });
   const result = data as { status?: string; amount?: number; available?: number; minimum?: number };
   return NextResponse.json(result, { status: result.status === 'requested' ? 200 : 409 });

@@ -68,6 +68,23 @@ function billingReasonLabel(reason: BillingCase['reason_code']) {
   }[reason];
 }
 
+
+// What a confirmed refund did to the referral commission of that order; anything that still needs a person is shown as a warning.
+function referralCommissionWarning(result: string | null): string | null {
+  switch (result) {
+    case 'in_payout':
+      return 'Hoa hồng giới thiệu của đơn này đang nằm trong một yêu cầu rút tiền. Hãy từ chối yêu cầu đó ở mục Chương trình giới thiệu trước khi chuyển khoản, rồi xử lý lại hồ sơ.';
+    case 'already_paid':
+      return 'Hoa hồng giới thiệu của đơn này đã được chuyển cho người giới thiệu. Cần xử lý tay (trừ vào khoản sau hoặc thu lại).';
+    case 'no_order_code':
+      return 'Hồ sơ hoàn tiền này không có mã đơn nên hoa hồng giới thiệu (nếu có) chưa được thu hồi. Kiểm tra và xử lý tay.';
+    case 'error':
+      return 'Không thu hồi được hoa hồng giới thiệu của đơn này do lỗi hệ thống. Kiểm tra mục Chương trình giới thiệu và thử lại.';
+    default:
+      return null;
+  }
+}
+
 export function AdminCustomerManager() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [coupons, setCoupons] = useState<Coupon[]>([]);
@@ -290,8 +307,12 @@ export function AdminCustomerManager() {
       return;
     }
     setChangeReason('');
+    const body = await response.json().catch(() => null) as { referralCommission?: string | null } | null;
+    const warning = referralCommissionWarning(body?.referralCommission ?? null);
     setNotice('Đã cập nhật trạng thái và lưu dấu vết xử lý.');
     await load();
+    // load() clears the banner, so the warning is set after it.
+    if (warning) setError(warning);
   };
 
   const patchBillingCase = (id: string, patch: Partial<BillingCase>) => {

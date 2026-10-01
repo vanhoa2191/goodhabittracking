@@ -2,9 +2,11 @@ import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const rpc = vi.fn();
+const adminRpc = vi.fn();
 const getParentContext = vi.fn();
 
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext: () => getParentContext() }));
+vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: () => ({ rpc: adminRpc }) }));
 vi.mock('@/lib/supabase/server', () => ({ createServerSupabaseClient: vi.fn(async () => ({ rpc })) }));
 
 import { GET, POST } from '@/app/api/affiliate/route';
@@ -32,6 +34,7 @@ const payout = { action: 'savePayout', bank: 'Vietcombank', accountNumber: '0123
 describe('/api/affiliate', () => {
   beforeEach(() => {
     rpc.mockReset();
+    adminRpc.mockReset();
     getParentContext.mockReset();
     getParentContext.mockResolvedValue(parent);
     vi.stubEnv('PAIRING_RATE_LIMIT_SECRET', 'x'.repeat(40));
@@ -70,16 +73,19 @@ describe('/api/affiliate', () => {
     expect(response.status).toBe(403);
     await expect(response.json()).resolves.toMatchObject({ code: 'parent_pin_required' });
     expect(rpc.mock.calls.map(([name]) => name)).toEqual(['get_parent_pin_status']);
+    expect(adminRpc).not.toHaveBeenCalled();
   });
 
   it('saves payout details once the PIN was entered, validating them first', async () => {
     const cookie = await unlockCookie();
     rpc.mockImplementation(async (name: string) => (name === 'get_parent_pin_status' ? { data: { configured: true }, error: null } : { data: { status: 'saved' }, error: null }));
+    adminRpc.mockResolvedValue({ data: { status: 'saved' }, error: null });
     expect((await POST(post({ ...payout, accountNumber: '12' }, cookie))).status).toBe(400);
     expect((await POST(post({ ...payout, extra: true }, cookie))).status).toBe(400);
     const response = await POST(post(payout, cookie));
     expect(response.status).toBe(200);
-    expect(rpc).toHaveBeenCalledWith('affiliate_save_payout_details', { bank: 'Vietcombank', account_number: '0123456789', account_name: 'Nguyen Van A' });
+    expect(adminRpc).toHaveBeenCalledWith('affiliate_save_payout_details', { target_user: 'user-a', bank: 'Vietcombank', account_number: '0123456789', account_name: 'Nguyen Van A' });
+    expect(rpc.mock.calls.map(([name]) => name)).not.toContain('affiliate_save_payout_details');
   });
 
   it.each([
@@ -87,10 +93,13 @@ describe('/api/affiliate', () => {
     ['below_minimum', 409],
     ['missing_details', 409],
     ['suspended', 409],
+    ['details_recent', 409],
   ])('answers a payout request that the programme reports as %s with %i', async (status, expected) => {
     const cookie = await unlockCookie();
-    rpc.mockImplementation(async (name: string) => (name === 'get_parent_pin_status' ? { data: { configured: false }, error: null } : { data: { status, amount: 239400 }, error: null }));
+    rpc.mockImplementation(async () => ({ data: { configured: false }, error: null }));
+    adminRpc.mockResolvedValue({ data: { status, amount: 239400 }, error: null });
     const response = await POST(post({ action: 'requestPayout' }, cookie));
+    expect(adminRpc).toHaveBeenCalledWith('request_affiliate_payout', { target_user: 'user-a' });
     expect(response.status).toBe(expected);
     await expect(response.json()).resolves.toMatchObject({ status });
   });

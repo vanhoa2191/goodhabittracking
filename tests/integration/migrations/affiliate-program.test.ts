@@ -99,4 +99,58 @@ describe('affiliate programme migration contract', () => {
     expect(stateMigration).toContain('revoke all on function public.referral_claim_state() from public, anon;');
     expect(stateMigration).toContain('grant execute on function public.referral_claim_state() to authenticated;');
   });
+
+  describe('hardening migration', () => {
+    const hardening = readFileSync(resolve('supabase/migrations/202610010002_affiliate_hardening.sql'), 'utf8');
+    const hardeningVerification = readFileSync(resolve('supabase/preflight/202610010002_affiliate_hardening.verify.sql'), 'utf8');
+    const part = (name: string) => {
+      const start = hardening.indexOf(`create or replace function public.${name}(`);
+      expect(start, `${name} is defined`).toBeGreaterThan(-1);
+      return hardening.slice(start, hardening.indexOf('\n$$;', start));
+    };
+
+    it('parses as PostgreSQL SQL', async () => {
+      await expect(parse(hardening)).resolves.toBeDefined();
+      await expect(parse(hardeningVerification)).resolves.toBeDefined();
+    });
+
+    it('lets only the service role move payout money, with the user named explicitly', () => {
+      expect(hardening).toContain('drop function if exists public.affiliate_save_payout_details(text, text, text);');
+      expect(hardening).toContain('drop function if exists public.request_affiliate_payout();');
+      expect(hardening).toContain('revoke all on function public.request_affiliate_payout(uuid) from public, anon, authenticated;');
+      expect(hardening).toContain('grant execute on function public.request_affiliate_payout(uuid) to service_role;');
+      expect(hardening).toContain('grant execute on function public.affiliate_save_payout_details(uuid, text, text, text) to service_role;');
+      expect(hardening).not.toMatch(/grant execute on function public\.(request_affiliate_payout|affiliate_save_payout_details)\([^)]*\) to authenticated/);
+      expect(part('request_affiliate_payout')).not.toContain('auth.uid()');
+    });
+
+    it('locks the commissions before totalling them and holds a payout after a bank change', () => {
+      const request = part('request_affiliate_payout');
+      expect(request).toContain('for update of commission');
+      expect(request.indexOf('for update of commission')).toBeLessThan(request.indexOf('insert into public.affiliate_payouts'));
+      expect(request).toContain("payout_details_changed_at > now() - interval '24 hours'");
+      expect(request).toContain("'details_recent'");
+      expect(part('affiliate_save_payout_details')).toContain('payout_details_changed_at = now()');
+    });
+
+    it('refuses to mark a payout paid when its commissions no longer add up', () => {
+      const resolve = part('admin_resolve_affiliate_payout');
+      expect(resolve).toContain('attached <> payout.amount');
+      expect(resolve).toContain("return 'amount_mismatch'");
+    });
+
+    it('computes the commission in numeric and skips a family the referrer has joined', () => {
+      const accrual = part('accrue_referral_commission');
+      expect(accrual).toContain('paid_order.amount::numeric * settings.commission_bps / 10000');
+      expect(accrual).not.toContain('paid_order.amount * settings.commission_bps');
+      expect(accrual).toContain('membership.user_id = referral.referrer_user_id and membership.family_id = paid_order.family_id');
+    });
+
+    it('returns the existing code when two enrolments race', () => {
+      const enroll = part('affiliate_enroll');
+      const handler = enroll.slice(enroll.indexOf('exception when unique_violation'));
+      expect(handler).toContain('select * into existing from public.affiliate_accounts where user_id = actor;');
+      expect(handler.indexOf('return existing.code')).toBeLessThan(handler.indexOf('code_generation_failed'));
+    });
+  });
 });

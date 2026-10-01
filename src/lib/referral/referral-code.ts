@@ -10,10 +10,13 @@ export function normalizeReferralCode(input: string | null | undefined): string 
 }
 
 export function readReferralCookie(cookieHeader: string): string | null {
+  // The value is checked against the code alphabet, so it needs no URL decoding; a cookie planted by a sibling
+  // subdomain (a malformed percent sequence, a second copy) can never break the page or hide a valid one.
   for (const part of cookieHeader.split(';')) {
     const separator = part.indexOf('=');
     if (separator < 0 || part.slice(0, separator).trim() !== REFERRAL_COOKIE) continue;
-    return normalizeReferralCode(decodeURIComponent(part.slice(separator + 1).trim()));
+    const code = normalizeReferralCode(part.slice(separator + 1).trim());
+    if (code) return code;
   }
   return null;
 }

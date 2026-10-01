@@ -30,6 +30,12 @@ describe('referral code', () => {
     expect(readReferralCookie(`prefix${REFERRAL_COOKIE}=ABCD2345`)).toBeNull();
   });
 
+  it('survives a cookie planted with a broken percent sequence and still finds a valid copy', () => {
+    expect(() => readReferralCookie(`${REFERRAL_COOKIE}=%`)).not.toThrow();
+    expect(readReferralCookie(`${REFERRAL_COOKIE}=%E0%A4%A`)).toBeNull();
+    expect(readReferralCookie(`${REFERRAL_COOKIE}=%; ${REFERRAL_COOKIE}=abcd2345`)).toBe('ABCD2345');
+  });
+
   it('builds the share link on the public site and tolerates a trailing slash', () => {
     expect(referralLink('https://kidhabithero.com', 'ABCD2345')).toBe('https://kidhabithero.com/?ref=ABCD2345');
     expect(referralLink('https://kidhabithero.com/', 'ABCD2345')).toBe('https://kidhabithero.com/?ref=ABCD2345');

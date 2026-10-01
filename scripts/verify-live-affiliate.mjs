@@ -204,14 +204,26 @@ try {
   const commissionCount = await admin.from('referral_commissions').select('id', { count: 'exact', head: true }).eq('order_code', firstOrder);
   assert(commissionCount.count === 1, 'A repeated payment notice earned a second commission.');
 
+  // Payout controls are reachable only through the server (service role) with the user named explicitly,
+  // so the parent PIN checked in the route cannot be skipped with the parent's own session.
+  const referrerId = userIds[0];
+  const requestPayout = () => admin.rpc('request_affiliate_payout', { target_user: referrerId });
+  const savePayoutDetails = (details) => admin.rpc('affiliate_save_payout_details', { target_user: referrerId, ...details });
+  const direct = await referrer.client.rpc('request_affiliate_payout', { target_user: referrerId });
+  assert(Boolean(direct.error), 'A signed-in parent could call the payout request directly.');
+  const directSave = await referrer.client.rpc('affiliate_save_payout_details', { target_user: referrerId, bank: 'Vietcombank', account_number: '0123456789', account_name: 'Nguyen Van Test' });
+  assert(Boolean(directSave.error), 'A signed-in parent could change payout details directly.');
+  const oldRequest = await referrer.client.rpc('request_affiliate_payout');
+  assert(Boolean(oldRequest.error), 'The old payout request function is still reachable.');
+
   // Nothing can be requested while the hold lasts or details are missing, or below the minimum.
-  const early = await referrer.client.rpc('request_affiliate_payout');
+  const early = await requestPayout();
   assert(early.data?.status === 'missing_details', 'A payout was possible without payout details.');
-  const badDetails = await referrer.client.rpc('affiliate_save_payout_details', { bank: 'X', account_number: '1', account_name: '' });
+  const badDetails = await savePayoutDetails({ bank: 'X', account_number: '1', account_name: '' });
   assert(badDetails.data?.status === 'invalid_details', 'Invalid payout details were accepted.');
-  const saved = await referrer.client.rpc('affiliate_save_payout_details', { bank: 'Vietcombank', account_number: '0123456789', account_name: 'Nguyen Van Test' });
+  const saved = await savePayoutDetails({ bank: 'Vietcombank', account_number: '0123456789', account_name: 'Nguyen Van Test' });
   assert(saved.data?.status === 'saved', 'Payout details could not be saved.');
-  const stillHeld = await referrer.client.rpc('request_affiliate_payout');
+  const stillHeld = await requestPayout();
   assert(stillHeld.data?.status === 'below_minimum' && stillHeld.data.available === 0, 'A commission inside the hold was paid out.');
 
   const secondOrder = await settleOrder('yearly', 399000);
@@ -226,9 +238,15 @@ try {
   overview = await referrer.client.rpc('affiliate_overview');
   assert(overview.data.amounts.available === 239400 && overview.data.amounts.held === 0, 'Released commissions are not available (reversed ones must not count).');
 
-  const requested = await referrer.client.rpc('request_affiliate_payout');
+  // A bank account changed in the last day cannot receive a payout yet.
+  const tooSoon = await requestPayout();
+  assert(tooSoon.data?.status === 'details_recent', 'A payout was possible right after the bank details changed.');
+  const settleDetails = await admin.from('affiliate_accounts').update({ payout_details_changed_at: new Date(Date.now() - 2 * 86_400_000).toISOString() }).eq('user_id', referrerId);
+  assert(!settleDetails.error, 'Could not age the payout details change.');
+
+  const requested = await requestPayout();
   assert(requested.data?.status === 'requested' && requested.data.amount === 239400, 'The payout was not requested for the available amount.');
-  const second = await referrer.client.rpc('request_affiliate_payout');
+  const second = await requestPayout();
   assert(second.data?.status === 'below_minimum', 'The same commissions were requested twice.');
 
   // Admin side.
@@ -241,13 +259,22 @@ try {
     target_payout_id: payout.id, resolution: 'paid', admin_user: userIds[0], payout_reference: '', payout_note: '',
   });
   assert(noReference.data === 'reference_required', 'A payout was marked paid without a bank reference.');
+  // A payout whose commissions no longer add up to its amount cannot be marked paid.
+  const inflate = await admin.from('affiliate_payouts').update({ amount: 239401 }).eq('id', payout.id);
+  assert(!inflate.error, 'Could not inflate the payout for the mismatch check.');
+  const mismatch = await admin.rpc('admin_resolve_affiliate_payout', {
+    target_payout_id: payout.id, resolution: 'paid', admin_user: userIds[0], payout_reference: 'SYNTHETIC-MISMATCH', payout_note: '',
+  });
+  assert(mismatch.data === 'amount_mismatch', 'A payout larger than its commissions was marked paid.');
+  const restore = await admin.from('affiliate_payouts').update({ amount: 239400 }).eq('id', payout.id);
+  assert(!restore.error, 'Could not restore the payout amount.');
   const rejected = await admin.rpc('admin_resolve_affiliate_payout', {
     target_payout_id: payout.id, resolution: 'rejected', admin_user: null, payout_reference: '', payout_note: 'Synthetic rejection',
   });
   assert(rejected.data === 'rejected', 'The payout could not be rejected.');
   overview = await referrer.client.rpc('affiliate_overview');
   assert(overview.data.amounts.available === 239400 && overview.data.amounts.requested === 0, 'A rejected payout did not return the commissions.');
-  const again2 = await referrer.client.rpc('request_affiliate_payout');
+  const again2 = await requestPayout();
   assert(again2.data?.status === 'requested', 'The commissions could not be requested again after a rejection.');
   const newView = await admin.rpc('admin_affiliate_overview');
   const secondPayout = (newView.data?.payouts ?? []).find((entry) => entry.status === 'requested');
@@ -269,7 +296,7 @@ try {
   const referredView = await referred.client.rpc('affiliate_overview');
   assert(referredView.data?.enrolled === false, 'The referred family looks enrolled.');
 
-  successMessage = 'Live affiliate verification passed: enrolment, attribution rules, 30 percent commission once per paid order, hold, reversal, payout request, admin resolution and privacy.\n';
+  successMessage = 'Live affiliate verification passed: enrolment, attribution rules, 30 percent commission once per paid order, hold, reversal, payout controls reachable only by the server, 24-hour bank-change hold, payout request, amount check, admin resolution and privacy.\n';
 } finally {
   await cleanup();
 }

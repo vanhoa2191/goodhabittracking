@@ -225,5 +225,10 @@ export async function PATCH(request: NextRequest) {
       outcome: reversal.failed ? 'failed' : 'succeeded',
     });
   }
+  // A confirmed refund on a case that names no order cannot be matched to a commission; say so instead of staying silent.
+  if (!reversal.applies && supportCase.case_type === 'refund' && parsed.data.status === 'completed'
+    && parsed.data.resolutionCode === 'manual_refund_confirmed' && !supportCase.order_code) {
+    referral = 'no_order_code';
+  }
   return adminJsonResponse({ success: true, referralCommission: referral, correlationId }, correlationId);
 }
