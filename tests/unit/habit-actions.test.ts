@@ -21,7 +21,7 @@ vi.mock('@/lib/sound', () => ({
   },
 }));
 
-import { createHabitActions } from '@/lib/store/habit-actions';
+import { createHabitActions, getLastToggleFailure } from '@/lib/store/habit-actions';
 
 const child: ChildProfile = {
   id: 'child-1',
@@ -161,6 +161,7 @@ describe('habit actions', () => {
 
     // Then
     expect(saved).toBe(false);
+    expect(getLastToggleFailure()).toBe('no-session');
     expect(fixture.read()).toEqual({ profiles: [child], logs: [], childBadges: [] });
     expect(requestDomainCommand).not.toHaveBeenCalled();
     expect(fixture.setCloudSyncActive).toHaveBeenCalledWith(false);
@@ -230,9 +231,33 @@ describe('habit actions', () => {
 
     // Then
     expect(saved).toBe(false);
+    expect(getLastToggleFailure()).toBe('error-Error');
     expect(fixture.read().logs).toEqual([]);
     expect(fixture.setCloudSyncActive).toHaveBeenCalledWith(false);
     expect(fixture.analyticsSink).not.toHaveBeenCalled();
+  });
+
+  it('names the failing step with a short code the child screen can show', async () => {
+    const withStatus = (status: number) => Object.assign(new Error('refused'), { status });
+    requestDomainCommand.mockRejectedValueOnce(withStatus(401));
+    const unauthorised = createState('cloud', user);
+    await unauthorised.actions.toggleActivity(activity.id, '2026-09-20');
+    expect(getLastToggleFailure()).toBe('request-401');
+
+    requestDomainCommand.mockResolvedValueOnce({ status: 'completed' });
+    const notSynced = createState('cloud', user);
+    notSynced.syncCloudFamily.mockResolvedValueOnce(false);
+    await notSynced.actions.toggleActivity(activity.id, '2026-09-20');
+    expect(getLastToggleFailure()).toBe('sync');
+
+    requestDomainCommand.mockResolvedValueOnce({ status: 'completed' });
+    const worked = createState('cloud', user);
+    await expect(worked.actions.toggleActivity(activity.id, '2026-09-20')).resolves.toBe(true);
+    expect(getLastToggleFailure()).toBeNull();
+
+    const missing = createState('demo');
+    await missing.actions.toggleActivity('not-an-activity', '2026-09-20');
+    expect(getLastToggleFailure()).toBe('no-activity');
   });
 
   it('does not count a duplicate cloud command as a completed task', async () => {
