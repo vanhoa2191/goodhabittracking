@@ -33,7 +33,7 @@ export function ParentJourneyStage({
       <details className="group min-w-0 rounded-2xl border border-sand-200 bg-white shadow-xs open:border-indigo-200 dark:border-zinc-700 dark:bg-zinc-900 dark:open:border-indigo-700" open={current}>
         <summary className="flex cursor-pointer list-none items-start justify-between gap-3 rounded-2xl p-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:p-5 [&::-webkit-details-marker]:hidden" aria-current={current ? 'step' : undefined}>
           <span className="min-w-0 space-y-1">
-            <span className="block text-sm font-bold text-indigo-700 dark:text-indigo-300">{getJourneyPeriodLabel(language, plan.type, plan.id)} · {status}</span>
+            <span className="block text-sm font-bold text-indigo-700 dark:text-indigo-300">{getJourneyPeriodLabel(language, plan.weeks)} · {status}</span>
             <span className="block text-base font-extrabold leading-snug text-sand-900 dark:text-slate-100">{title}</span>
             <span className="block text-sm text-sand-700 dark:text-slate-300">{copy.practiced(progress.practicedCount, progress.totalCount)}</span>
           </span>

@@ -283,7 +283,7 @@ test('demo parent can unlock and navigate every management section', async ({ pa
   const sections = [
     ['Hôm nay', 'Duyệt việc', /Nhiệm vụ chờ bố mẹ duyệt/],
     ['Thiết kế', 'Quản lý việc', /Nuôi dưỡng tâm thái/],
-    ['Thiết kế', 'Lộ trình Tuần \/ Tháng', /Các lộ trình theo tuần và tháng/],
+    ['Thiết kế', 'Lộ trình theo tuổi', /Lộ trình khoảng 12 tuần theo từng độ tuổi/],
     ['Thiết kế', 'Đổi quà', /Kho quà của bé/],
     ['Gia đình', 'Hồ sơ các con', /Mã kết nối cố định cho từng bé/],
     ['Hôm nay', 'Thống kê', /Báo cáo thói quen/],
@@ -295,7 +295,7 @@ test('demo parent can unlock and navigate every management section', async ({ pa
     await page.getByRole('tab', { name: new RegExp(tabName) }).click();
     if (tabName === 'Quản lý việc') await page.getByRole('button', { name: 'Thư viện', exact: true }).click();
     await expect(page.getByText(visibleText).first()).toBeVisible();
-    if (tabName === 'Lộ trình Tuần \/ Tháng') {
+    if (tabName === 'Lộ trình theo tuổi') {
       await page.getByRole('button', { name: /^(Áp dụng lộ trình cho bé|Thêm \d+ việc còn lại)$/ }).first().click();
       const journeyDialog = page.getByRole('dialog', { name: 'Áp dụng lộ trình cho bé' });
       await expect(journeyDialog).toBeVisible();
@@ -342,18 +342,20 @@ test('an English journey creates localized habits', async ({ page }) => {
   await setupOrUnlockParent(page);
 
   await page.getByRole('tab', { name: 'Design' }).click();
-  await page.getByRole('tab', { name: 'Week & Month Journeys' }).click();
+  await page.getByRole('tab', { name: 'Age Roadmaps' }).click();
+  await page.getByRole('button', { name: '6–12', exact: true }).click();
   await page.getByRole('button', { name: /^(Apply Journey to Child|Add \d+ remaining habits)$/ }).first().click();
   const journeyDialog = page.getByRole('dialog', { name: 'Apply Journey to Child' });
   await journeyDialog.getByRole('button', { name: 'Confirm and apply' }).click();
 
-  await expect(page.getByRole('heading', { name: 'Kind smile: Greet family warmly' })).toBeVisible();
-  await expect(page.getByText('Nhan thí: Nở nụ cười chào đón người thân')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Each evening one thing to be grateful for and one thing you did well' })).toBeVisible();
+  await expect(page.getByText('Mỗi tối một điều biết ơn và một điều con làm tốt')).toHaveCount(0);
 
-  await page.getByRole('tab', { name: 'Week & Month Journeys' }).click();
+  await page.getByRole('tab', { name: 'Age Roadmaps' }).click();
+  await page.getByRole('button', { name: '6–12', exact: true }).click();
   await expect(page.getByRole('button', { name: 'All habits in this stage are already on the schedule.' })).toBeDisabled();
   await page.getByRole('tab', { name: 'Habits' }).click();
-  await expect(page.getByRole('heading', { name: 'Kind smile: Greet family warmly' })).toHaveCount(1);
+  await expect(page.getByRole('heading', { name: 'Each evening one thing to be grateful for and one thing you did well' })).toHaveCount(1);
 });
 
 test('applying a journey to all children adds only their missing assignments', async ({ page }) => {
@@ -368,12 +370,14 @@ test('applying a journey to all children adds only their missing assignments', a
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
   await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Thiết kế' }).click();
-  await page.getByRole('tab', { name: 'Lộ trình Tuần / Tháng' }).click();
+  await page.getByRole('tab', { name: 'Lộ trình theo tuổi' }).click();
+  await page.getByRole('button', { name: /^6–12 tuổi$/ }).click();
   await page.getByRole('button', { name: /^(Áp dụng lộ trình cho bé|Thêm \d+ việc còn lại)$/ }).first().click();
   let dialog = page.getByRole('dialog', { name: 'Áp dụng lộ trình cho bé' });
   await dialog.getByRole('button', { name: 'Xác nhận áp dụng' }).click();
 
-  await page.getByRole('tab', { name: 'Lộ trình Tuần / Tháng' }).click();
+  await page.getByRole('tab', { name: 'Lộ trình theo tuổi' }).click();
+  await page.getByRole('button', { name: /^6–12 tuổi$/ }).click();
   await page.getByLabel('Xem hành trình của bé').selectOption(childIds[1]);
   await page.getByRole('button', { name: /^(Áp dụng lộ trình cho bé|Thêm \d+ việc còn lại)$/ }).first().click();
   dialog = page.getByRole('dialog', { name: 'Áp dụng lộ trình cho bé' });
@@ -383,35 +387,37 @@ test('applying a journey to all children adds only their missing assignments', a
   await expect.poll(() => page.evaluate(() => {
     const snapshot = JSON.parse(sessionStorage.getItem('kidhabit_demo_state') || '{}');
     return (snapshot.activities || [])
-      .filter((item: { journeyHabitKey?: string }) => item.journeyHabitKey === 'week-1:0')
+      .filter((item: { journeyHabitKey?: string }) => item.journeyHabitKey === 'gd3-step-1:gd3-1')
       .map((item: { childId: string | null }) => item.childId)
       .sort();
   })).toEqual([...childIds].sort());
 });
 
-test('parent journey map shows weekly and monthly stages without mobile overflow', async ({ page }, testInfo) => {
+test('parent age roadmap shows the three steps of a stage without mobile overflow', async ({ page }, testInfo) => {
   await page.goto('/');
   await page.getByTestId('landing-primary-action').first().click();
   await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
   await setupOrUnlockParent(page);
   await page.getByRole('tab', { name: 'Thiết kế' }).click();
-  await page.getByRole('tab', { name: 'Lộ trình Tuần / Tháng' }).click();
+  await page.getByRole('tab', { name: 'Lộ trình theo tuổi' }).click();
 
   for (const width of [375, 768, 1280]) {
     await page.setViewportSize({ width, height: 900 });
-    await expect(page.getByRole('listitem').filter({ hasText: 'Tuần 1:' })).toBeVisible();
+    await page.getByRole('button', { name: /^6–12 tuổi$/ }).click();
+    await expect(page.getByTestId('journey-stage-summary')).toContainText('Cần cù và kỹ năng');
+    await expect(page.getByRole('listitem').filter({ hasText: 'Bước 1 ·' })).toBeVisible();
+    await expect(page.getByRole('listitem').filter({ hasText: 'Bước 3 ·' })).toHaveCount(1);
     await expect(page.getByText('Đang thực hành').first()).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-    await page.screenshot({ path: testInfo.outputPath(`journey-weekly-${width}.png`), fullPage: true });
+    await page.screenshot({ path: testInfo.outputPath(`journey-stage-${width}.png`), fullPage: true });
 
-    await page.getByRole('button', { name: 'Lộ trình Tháng Phát Triển' }).click();
-    await expect(page.getByRole('listitem').filter({ hasText: 'Tháng 4:' })).toHaveCount(1);
+    await page.getByRole('button', { name: /^12–15 tuổi$/ }).click();
+    await expect(page.getByTestId('journey-stage-summary')).toContainText('Bản sắc và cảm xúc');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-    await page.screenshot({ path: testInfo.outputPath(`journey-monthly-${width}.png`), fullPage: true });
-    await page.getByRole('button', { name: 'Lộ trình 4 Tuần Nền Tảng' }).click();
   }
 
-  const nextStage = page.getByRole('listitem').filter({ hasText: 'Tuần 2:' }).locator('details');
+  await page.getByRole('button', { name: /^6–12 tuổi$/ }).click();
+  const nextStage = page.getByRole('listitem').filter({ hasText: 'Bước 2 ·' }).locator('details');
   await expect(nextStage).not.toHaveAttribute('open');
   await nextStage.locator('summary').focus();
   await page.keyboard.press('Enter');

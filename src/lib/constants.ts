@@ -4,7 +4,7 @@ import {
   HabitActivity,
   Reward,
   ActivityCategory,
-  JourneyPlan,
+  LegacyJourneyPlan,
 } from '@/types';
 import { EXTRA_BADGES } from '@/lib/badges/badge-catalog';
 
@@ -938,9 +938,9 @@ export const WIT_HABIT_PACKS: {
 export const HABIT_TEMPLATES = WIT_HABIT_PACKS.flatMap((pack) => pack.items);
 
 // ==========================================
-// ROADMAP & JOURNEY PLANS (BY WEEK & BY MONTH)
+// EARLIER WEEKLY & MONTHLY JOURNEYS (text library only, not offered as journeys any more)
 // ==========================================
-export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
+export const LEGACY_WEEKLY_JOURNEY_PLANS: LegacyJourneyPlan[] = [
   {
     id: 'week-1',
     type: 'weekly',
@@ -1185,7 +1185,7 @@ export const WEEKLY_JOURNEY_PLANS: JourneyPlan[] = [
   },
 ];
 
-export const MONTHLY_JOURNEY_PLANS: JourneyPlan[] = [
+export const LEGACY_MONTHLY_JOURNEY_PLANS: LegacyJourneyPlan[] = [
   {
     id: 'month-1',
     type: 'monthly',

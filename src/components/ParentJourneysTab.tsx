@@ -5,7 +5,7 @@ import { Check, Compass, X } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { useTranslation } from '@/lib/i18n/context';
-import { MONTHLY_JOURNEY_PLANS, WEEKLY_JOURNEY_PLANS } from '@/lib/constants';
+import { JOURNEY_STAGES, journeyPlansForStage, journeyStageForAge, type JourneyStageId } from '@/lib/journeys/age-journeys';
 import type { HabitActivity, JourneyPlan } from '@/types';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { getJourneyPeriodLabel, journeyCopy } from '@/lib/i18n/journey-copy';
@@ -21,7 +21,7 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
   const { t, language } = useTranslation();
   const copy = journeyCopy[language];
   const mapCopy = journeyMapCopy[language];
-  const [journeyType, setJourneyType] = useState<'weekly' | 'monthly'>('weekly');
+  const [chosenStageId, setChosenStageId] = useState<JourneyStageId | null>(null);
   const [selectedChildId, setSelectedChildId] = useState('');
   const [selectedPlan, setSelectedPlan] = useState<JourneyPlan | null>(null);
   const [targetChildId, setTargetChildId] = useState('');
@@ -29,7 +29,11 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
   const [isApplying, setIsApplying] = useState(false);
   const closeModal = useCallback(() => setSelectedPlan(null), []);
 
-  const plans = journeyType === 'weekly' ? WEEKLY_JOURNEY_PLANS : MONTHLY_JOURNEY_PLANS;
+  const childProfile = profiles.find((profile) => profile.id === (profiles.some((candidate) => candidate.id === selectedChildId) ? selectedChildId : profiles[0]?.id));
+  const childAge = childProfile?.age ?? (childProfile?.birthYear ? new Date().getFullYear() - childProfile.birthYear : null);
+  const stageId = chosenStageId ?? journeyStageForAge(childAge);
+  const stage = JOURNEY_STAGES.find((candidate) => candidate.id === stageId) ?? JOURNEY_STAGES[2];
+  const plans = journeyPlansForStage(stage.id);
   const childId = profiles.some((profile) => profile.id === selectedChildId)
     ? selectedChildId : profiles[0]?.id || '';
   const progress = childId
@@ -85,13 +89,22 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
             <p className="mt-1 text-sm text-sand-700 dark:text-slate-300">{copy.description}</p>
             {defaultExperienceFlags.habitPrograms && language === 'vi' && (
               <p data-testid="journeys-programs-note" className="mt-2 rounded-2xl bg-indigo-50 p-3 text-sm font-semibold text-indigo-900 dark:bg-indigo-950/30 dark:text-indigo-200">
-                Đây là lộ trình cố định theo tuần và tháng. Chương trình mới, đi theo nhịp riêng của từng bé, nằm ở Thiết kế › Quản lý việc › Chương trình.
+                Lộ trình này gợi ý thứ tự thêm thói quen theo độ tuổi. Chương trình đi theo nhịp riêng của từng bé nằm ở Thiết kế › Quản lý việc › Chương trình.
               </p>
             )}
           </div>
-          <div className="flex flex-wrap gap-1 rounded-2xl bg-sand-100 p-1 dark:bg-zinc-900" role="group" aria-label={t.journeys}>
-            <button type="button" onClick={() => setJourneyType('weekly')} aria-pressed={journeyType === 'weekly'} className={`min-h-11 rounded-xl px-4 text-sm font-bold ${journeyType === 'weekly' ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300' : 'text-sand-700 hover:text-sand-900 dark:text-slate-300'}`}>{t.weeklyRoadmap}</button>
-            <button type="button" onClick={() => setJourneyType('monthly')} aria-pressed={journeyType === 'monthly'} className={`min-h-11 rounded-xl px-4 text-sm font-bold ${journeyType === 'monthly' ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300' : 'text-sand-700 hover:text-sand-900 dark:text-slate-300'}`}>{t.monthlyRoadmap}</button>
+          <div className="flex flex-wrap gap-1 rounded-2xl bg-sand-100 p-1 dark:bg-zinc-900" role="group" aria-label={language === 'vi' ? 'Độ tuổi' : 'Age stage'}>
+            {JOURNEY_STAGES.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setChosenStageId(item.id)}
+                aria-pressed={stage.id === item.id}
+                className={`min-h-11 rounded-xl px-3 text-sm font-bold ${stage.id === item.id ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300' : 'text-sand-700 hover:text-sand-900 dark:text-slate-300'}`}
+              >
+                {item.ageRange}{language === 'vi' ? ' tuổi' : ''}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -103,6 +116,11 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
             </select>
           </div>
         ) : <p className="rounded-2xl border border-sand-200 bg-white p-4 text-sm text-sand-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-300">{mapCopy.noChild}</p>}
+
+        <div className="rounded-2xl border border-sand-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900" data-testid="journey-stage-summary">
+          <p className="text-sm font-extrabold text-indigo-700 dark:text-indigo-300">{stage.ageRange}{language === 'vi' ? ' tuổi' : ' years'} · {stage.title[language === 'vi' ? 'vi' : 'en']}</p>
+          <p className="mt-1 text-sm text-sand-700 dark:text-slate-300">{stage.adultRole[language === 'vi' ? 'vi' : 'en']}. {language === 'vi' ? 'Mỗi bước thêm một thói quen và giữ các thói quen trước; ở lại một bước bao lâu tùy nhịp của bé.' : 'Each step adds one habit and keeps the earlier ones; stay on a step as long as your child needs.'}</p>
+        </div>
 
         {currentPlan && childId && (
           <div className="grid gap-3 rounded-2xl border border-indigo-200 bg-indigo-50 p-4 dark:border-indigo-900 dark:bg-indigo-950/40 sm:grid-cols-2 sm:p-5">
@@ -131,7 +149,7 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
             <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
               <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
                 <span className="text-2xl sm:text-3xl p-1.5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 shrink-0">{selectedPlan.icon}</span>
-                <div className="min-w-0 flex-1"><span className="text-xs font-extrabold text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full inline-block">{getJourneyPeriodLabel(language, selectedPlan.type, selectedPlan.id)}</span><h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 mt-0.5 truncate leading-tight [word-break:auto-phrase]">{selectedPlan.title[language] || selectedPlan.title.en || selectedPlan.title.vi}</h3></div>
+                <div className="min-w-0 flex-1"><span className="text-xs font-extrabold text-indigo-600 bg-indigo-50 dark:bg-indigo-950/40 px-2 py-0.5 rounded-full inline-block">{getJourneyPeriodLabel(language, selectedPlan.weeks)}</span><h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 mt-0.5 truncate leading-tight [word-break:auto-phrase]">{selectedPlan.title[language] || selectedPlan.title.en || selectedPlan.title.vi}</h3></div>
               </div>
               <button type="button" onClick={closeModal} className="p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shrink-0" aria-label={t.close}><X className="w-5 h-5" /></button>
             </div>
