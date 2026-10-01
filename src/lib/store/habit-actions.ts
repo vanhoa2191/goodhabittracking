@@ -101,6 +101,28 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
       });
   };
 
+  // One reload at a time: a tap made while a reload is running schedules a single follow-up, so a slow reload
+  // never lands on top of a newer tap with older data.
+  let reloading = false;
+  let reloadAgain = false;
+  const reloadInBackground = (user: User | null): void => {
+    if (reloading) {
+      reloadAgain = true;
+      return;
+    }
+    reloading = true;
+    const reload = user ? dependencies.cloud.syncCloudFamily(user) : dependencies.cloud.refreshChildSession();
+    void reload
+      .catch(() => false)
+      .finally(() => {
+        reloading = false;
+        if (reloadAgain) {
+          reloadAgain = false;
+          reloadInBackground(user);
+        }
+      });
+  };
+
   return {
     toggleActivity: async (activityId, date) => {
       const childId = dependencies.state.activeChildId;
@@ -115,40 +137,79 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
       if (!dependencies.isDemoSession) {
         const user = cloudUser();
         if (!user && !dependencies.cloud.isFamilyConnected) return failedWith('no-session');
+        // The card changes the moment it is tapped; the server stays the authority. If it refuses, the screen goes
+        // back to what it showed, and the full family reload runs behind the tap instead of in front of it.
+        const before = {
+          profiles: [...dependencies.state.profiles],
+          logs: [...dependencies.state.logs],
+          childBadges: [...dependencies.state.childBadges],
+        };
+        const restore = (): void => {
+          dependencies.state.setProfiles(before.profiles);
+          dependencies.state.setLogs(before.logs);
+          dependencies.state.setChildBadges(before.childBadges);
+        };
+        const completedAt = new Date().toISOString();
+        const guessedLogId = crypto.randomUUID();
+        const guess = toggleLocalHabit({
+          profiles: before.profiles,
+          logs: before.logs,
+          childBadges: before.childBadges,
+          badges: dependencies.badges ?? DEFAULT_BADGES,
+          activity,
+          childId,
+          date,
+          today: localDayKey(new Date(completedAt)),
+          logId: guessedLogId,
+          completedAt,
+        });
+        dependencies.state.setLogs(guess.logs);
+        dependencies.state.setProfiles(guess.profiles);
+        dependencies.state.setChildBadges(guess.childBadges);
+        if (guess.kind === 'undone') sounds.playClick();
+        else sounds.playTaskComplete();
         try {
-          let commandStatus: string;
+          let result: { readonly status: string; readonly logId?: string };
           if (!user) {
             if (existingLog) {
-              commandStatus = (await requestChildDomainCommand({ type: 'undoHabit', logId: existingLog.id })).status;
+              result = await requestChildDomainCommand({ type: 'undoHabit', logId: existingLog.id });
             } else {
-              commandStatus = (await requestChildDomainCommand({
+              result = await requestChildDomainCommand({
                 type: 'completeHabit',
                 activityId,
                 date,
-                commandId: crypto.randomUUID(),
-              })).status;
+                commandId: guessedLogId,
+              });
             }
-            if (!await dependencies.cloud.refreshChildSession()) return failedWith('refresh-session');
           } else if (existingLog) {
-            commandStatus = (await requestDomainCommand({ type: 'undoHabit', logId: existingLog.id })).status;
+            result = await requestDomainCommand({ type: 'undoHabit', logId: existingLog.id });
           } else {
-            commandStatus = (await requestDomainCommand({
+            result = await requestDomainCommand({
               type: 'completeHabit',
               activityId,
               childId,
               date,
-              commandId: crypto.randomUUID(),
-            })).status;
+              commandId: guessedLogId,
+            });
           }
-          if (user && !await dependencies.cloud.syncCloudFamily(user)) return failedWith('sync');
-          if (commandStatus === 'points_already_spent') return failedWith('points-spent');
+          const commandStatus = result.status;
+          if (commandStatus === 'points_already_spent') {
+            restore();
+            return failedWith('points-spent');
+          }
+          // Until the reload brings the real row, the new log carries the server's id so an immediate undo finds it.
+          if (guess.kind !== 'undone' && result.logId) {
+            const serverLogId = result.logId;
+            dependencies.state.setLogs((previous) => previous.map((log) => log.id === guessedLogId ? { ...log, id: serverLogId } : log));
+          }
+          // Whatever the server decided (pending vs completed, points, streak) replaces the guess a moment later.
+          reloadInBackground(user);
           if (commandStatus === 'undone' || commandStatus === 'pending_approval' || commandStatus === 'completed') {
             trackProductEvent({ event: 'task_ticked', action: commandStatus, mode: 'cloud' }, dependencies.analyticsSink);
           }
-          if (commandStatus === 'undone') sounds.playClick();
-          else sounds.playTaskComplete();
           return true;
         } catch (error: unknown) {
+          restore();
           dependencies.cloud.setCloudSyncActive(false);
           console.error(
             'Saving habit completion failed:',

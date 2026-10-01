@@ -112,15 +112,7 @@ export function KidDashboard() {
     if (savingTaskId === activity.id) return;
     setCompletionError(null);
     setSavingTaskId(activity.id);
-    const saved = await toggleActivity(activity.id, date);
-    setSavingTaskId(null);
-    if (!saved) {
-      setFailureCode(getLastToggleFailure());
-      setCompletionError(activity.id);
-      setPointBurstId(null);
-      return;
-    }
-    setCompletionStatusId(activity.id);
+    // The reward shows on the tap; it is taken back if the server then refuses the tick.
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (isCompleting) {
       if (!reduceMotion && 'vibrate' in navigator) {
@@ -130,8 +122,17 @@ export function KidDashboard() {
           void error;
         }
       }
+      if (!reduceMotion) setPointBurstId(activity.id);
     }
-    if (isCompleting && !reduceMotion) setPointBurstId(activity.id);
+    const saved = await toggleActivity(activity.id, date);
+    setSavingTaskId(null);
+    if (!saved) {
+      setFailureCode(getLastToggleFailure());
+      setCompletionError(activity.id);
+      setPointBurstId(null);
+      return;
+    }
+    setCompletionStatusId(activity.id);
     window.setTimeout(() => setPointBurstId((id) => id === activity.id ? null : id), 1200);
   };
 
