@@ -323,7 +323,7 @@ export function ParentDashboard() {
 
       <ParentNavigation activeSection={activeTab} onSelectSection={setActiveTab} pendingCount={pendingLogs.length + pendingRedemptions.length}>
 
-      {activeTab === 'approvals' && <ParentApprovalsTab />}
+      {activeTab === 'approvals' && <ParentApprovalsTab onOpenHabits={() => setActiveTab('habits')} />}
 
       {activeTab === 'habits' && <ParentHabitsTab onOpenHabit={handleOpenHabitModal} onOpenHandbook={() => setIsPortraitModalOpen(true)} />}
 

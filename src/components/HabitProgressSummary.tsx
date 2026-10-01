@@ -1,13 +1,15 @@
 'use client';
 
 import { useAppStore } from '@/lib/store';
+import { getParentTodayCopy } from '@/lib/i18n/parent-today-copy';
+import { newHabitLimit } from '@/lib/habit-programs/config';
 import { useTranslation } from '@/lib/i18n/context';
 import { getHabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
 import type { HabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
 import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
 import { localizeDemoActivity } from '@/lib/i18n/demo-content-copy';
 import { localDayKey } from '@/lib/habit-fire';
-import { summarizeChildHabits } from '@/lib/habit-programs/summary';
+import { childAgeYears, summarizeChildHabits } from '@/lib/habit-programs/summary';
 import { fillTemplate, suggestionKey, visibleSuggestions } from '@/lib/habit-programs/suggestion-display';
 import type { SuggestionCode } from '@/lib/habit-programs/suggestions';
 import type { HabitPhase } from '@/lib/habit-programs/types';
@@ -31,15 +33,17 @@ const REASON_KEY: Record<SuggestionCode, keyof HabitProgramsCopy> = {
 };
 
 /** Where each planned habit stands for each child, with a few plainly worded suggestions. Guidance, never a score. */
-export function HabitProgressSummary() {
+export function HabitProgressSummary({ childId, onOpenHabits }: { readonly childId?: string; readonly onOpenHabits?: () => void } = {}) {
   const { profiles, activities, logs, experience, familyPausePeriods } = useAppStore();
   const { language } = useTranslation();
   const copy = getHabitProgramsCopy(language);
+  const today_ = getParentTodayCopy(language);
   const { dismissed, dismiss } = useSuggestionDismissals();
   const now = new Date();
   const today = localDayKey(now);
 
   const sections = profiles
+    .filter((child) => !childId || child.id === childId)
     .map((child) => ({
       child,
       summary: summarizeChildHabits({ child, activities, logs, experience, pausePeriods: familyPausePeriods, today }),
@@ -51,27 +55,68 @@ export function HabitProgressSummary() {
     return activity ? localizeAgeAdaptedHabit(localizeDemoActivity(activity, language), language).title : '';
   };
 
+  const childForLimit = profiles.find((profile) => !childId || profile.id === childId);
+  const limit = childForLimit ? newHabitLimit(childAgeYears(childForLimit, today)) : 3;
+  const buildingCount = sections.reduce((sum, { summary }) => sum + summary.habits.filter((habit) => habit.evaluation.phase !== 'maintain').length, 0);
+
   return (
-    <section data-testid="habit-progress-summary" aria-labelledby="habit-progress-title" className="space-y-4 rounded-3xl border border-slate-100 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
+    <section data-testid="habit-progress-summary" id="habit-progress" aria-labelledby="habit-progress-title" className="space-y-4 rounded-3xl border border-slate-100 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
       <div>
-        <h3 id="habit-progress-title" className="text-base font-extrabold text-slate-800 dark:text-slate-100">{copy.summaryTitle}</h3>
+        <h3 id="habit-progress-title" className="text-base font-extrabold text-slate-800 dark:text-slate-100">
+          {copy.summaryTitle}{sections.length > 0 ? ` · ${today_.building(buildingCount, limit)}` : ''}
+        </h3>
         <p className="text-xs text-slate-500 dark:text-slate-300">{copy.summaryIntro}</p>
       </div>
-      {sections.length === 0 && <p className="text-sm text-slate-600 dark:text-slate-300">{copy.summaryEmpty}</p>}
+      {sections.length === 0 && (
+        <div className="space-y-3 rounded-2xl border border-dashed border-indigo-200 bg-indigo-50/60 p-4 dark:border-indigo-900 dark:bg-indigo-950/30">
+          <p className="text-sm text-slate-700 dark:text-slate-200">{copy.summaryEmpty}</p>
+          <p className="text-sm font-bold text-slate-800 dark:text-slate-100">{today_.emptyTitle}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-300">{today_.emptyBody}</p>
+          {onOpenHabits && (
+            <button type="button" data-testid="habit-progress-empty-cta" onClick={onOpenHabits} className="min-h-11 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+              {today_.emptyCta}
+            </button>
+          )}
+        </div>
+      )}
       {sections.map(({ child, summary }) => {
         const suggestions = visibleSuggestions(summary.suggestions, child.id, dismissed, now);
         return (
           <div key={child.id} data-child-id={child.id} className="space-y-3">
-            <h4 className="text-sm font-black text-slate-700 dark:text-slate-100">{child.nickname || child.name}</h4>
-            <ul className="space-y-2">
-              {summary.habits.map((habit) => (
-                <li key={habit.activityId} data-activity-id={habit.activityId} data-phase={habit.evaluation.phase} className="flex flex-wrap items-center justify-between gap-2 rounded-2xl bg-slate-50 px-3 py-2 dark:bg-zinc-800/60">
-                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-100">{titleOf(habit.activityId)}</span>
-                  <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">
-                    {copy[PHASE_KEY[habit.evaluation.phase]]}
-                  </span>
-                </li>
-              ))}
+            {!childId && <h4 className="text-sm font-black text-slate-700 dark:text-slate-100">{child.nickname || child.name}</h4>}
+            <ul className="grid gap-3 md:grid-cols-2">
+              {summary.habits.map((habit) => {
+                const doneDays = habit.recent.filter((dot) => dot.state === 'done').length;
+                return (
+                  <li key={habit.activityId} data-activity-id={habit.activityId} data-phase={habit.evaluation.phase} className="space-y-2 rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 dark:border-zinc-700 dark:bg-zinc-800/60">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <span className="text-sm font-bold text-slate-800 dark:text-slate-100">{titleOf(habit.activityId)}</span>
+                      <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">
+                        {copy[PHASE_KEY[habit.evaluation.phase]]}
+                      </span>
+                    </div>
+                    {habit.recent.length > 0 && (
+                      <>
+                        <ul aria-label={today_.lastSevenDays} className="flex gap-1">
+                          {habit.recent.map((dot) => (
+                            <li
+                              key={dot.date}
+                              data-day-state={dot.state}
+                              title={`${dot.date}: ${dot.state === 'done' ? today_.dayDone : dot.state === 'missed' ? today_.dayMissed : today_.dayNone}`}
+                              className={`h-2.5 flex-1 rounded-full ${dot.state === 'done' ? 'bg-indigo-600' : dot.state === 'missed' ? 'bg-slate-300 dark:bg-zinc-600' : 'bg-slate-100 dark:bg-zinc-800'}`}
+                            >
+                              <span className="sr-only">{dot.date}: {dot.state === 'done' ? today_.dayDone : dot.state === 'missed' ? today_.dayMissed : today_.dayNone}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <p className="text-xs text-slate-600 dark:text-slate-300">
+                          {today_.doneOfSeven(doneDays)}{habit.lean ? ` · ${today_.lean[habit.lean]}` : ''}
+                        </p>
+                      </>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
             <p className="text-xs text-slate-500 dark:text-slate-300">{copy.typicalTime}</p>
             {suggestions.length > 0 && (
