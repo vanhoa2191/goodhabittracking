@@ -26,6 +26,7 @@ test('a signed-in parent opens the parent dashboard and Home leaves for marketin
   await page.route('**/auth/v1/user', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(user) }));
   await page.route('**/rest/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
+    if (path.endsWith('/rpc/family_snapshot')) return route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ code: 'PGRST202', message: 'function not found' }) });
     const payload = path.endsWith('/family_memberships')
       ? { family_id: '33333333-3333-4333-8333-333333333333', role: 'owner' }
       : path.endsWith('/user_subscriptions') || path.endsWith('/family_engagement_settings') ? null : [];

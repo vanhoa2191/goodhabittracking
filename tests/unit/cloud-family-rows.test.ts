@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { readCloudFamilyRows } from '@/lib/store/cloud-family-sync';
 
 const familyId = '11111111-1111-4111-8111-111111111111';
@@ -18,6 +18,7 @@ function fakeSupabase(tables: Record<string, TableResult>) {
     return tables[table] ?? { data: table === 'user_subscriptions' || table === 'family_engagement_settings' ? null : [], error: null };
   };
   return {
+    rpc: async () => ({ data: null, error: { code: 'PGRST202' } }),
     from(table: string) {
       const query = {
         select: () => query,
@@ -55,5 +56,51 @@ describe('cloud family rows', () => {
     await expect(readCloudFamilyRows('user-1', fakeSupabase({
       child_task_deferrals: { data: null, error: { code: 'PGRST205' } },
     }))).rejects.toMatchObject({ code: 'PGRST205' });
+  });
+
+  describe('one round trip', () => {
+    const snapshot = {
+      familyId, familyRole: 'owner', profiles: [], activities: [], logs: [], rewards: [], redemptions: [], childBadges: [],
+      kudos: [], groups: [], groupMembers: [], subscription: null,
+      experience: { children: [], settings: null, letters: [], quests: [], wishlists: [], deferredTasks: [], supportObservations: [observation], cuePlans: [], journalEntries: [], cityPurchases: [] },
+    };
+
+    function withRpc(result: { data: unknown; error: { code: string } | null }) {
+      const from = vi.fn();
+      const rpc = vi.fn(async () => result);
+      return { client: { rpc, from } as unknown as NonNullable<Parameters<typeof readCloudFamilyRows>[1]>, from, rpc };
+    }
+
+    it('reads everything with the single function and touches no table', async () => {
+      const { client, from, rpc } = withRpc({ data: snapshot, error: null });
+      const rows = await readCloudFamilyRows('user-1', client);
+      expect(rpc).toHaveBeenCalledWith('family_snapshot', expect.objectContaining({ include_journal: expect.any(Boolean) }));
+      expect(from).not.toHaveBeenCalled();
+      expect(rows.familyId).toBe(familyId);
+      expect(rows.experience).toMatchObject({ supportObservations: [observation] });
+    });
+
+    it('says the account has no family when the function returns nothing', async () => {
+      const { client } = withRpc({ data: null, error: null });
+      await expect(readCloudFamilyRows('user-1', client)).rejects.toThrow('no family membership');
+    });
+
+    it.each(['PGRST202', '42883'])('falls back to the separate queries when the database has no function (%s)', async (code) => {
+      const client = fakeSupabase({});
+      (client as unknown as { rpc: unknown }).rpc = async () => ({ data: null, error: { code } });
+      await expect(readCloudFamilyRows('user-1', client)).resolves.toMatchObject({ familyId });
+    });
+
+    it.each([[[]], [{ unexpected: true }], ['text']])('does not trust an answer that is not a family (%j) and reads the tables instead', async (answer) => {
+      const client = fakeSupabase({});
+      (client as unknown as { rpc: unknown }).rpc = async () => ({ data: answer, error: null });
+      await expect(readCloudFamilyRows('user-1', client)).resolves.toMatchObject({ familyId });
+    });
+
+    it('does not hide any other database error behind the fallback', async () => {
+      const { client, from } = withRpc({ data: null, error: { code: '42501' } });
+      await expect(readCloudFamilyRows('user-1', client)).rejects.toMatchObject({ code: '42501' });
+      expect(from).not.toHaveBeenCalled();
+    });
   });
 });

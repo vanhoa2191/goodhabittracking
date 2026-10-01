@@ -141,12 +141,37 @@ function parseCloudFamilyRows(rows: CloudFamilyRows): CloudFamilySnapshot {
   };
 }
 
+function isFamilyRows(value: unknown): value is CloudFamilyRows {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+    && typeof (value as { familyId?: unknown }).familyId === 'string';
+}
+
+/** PostgREST says PGRST202, Postgres itself says 42883, when the function is not in the database. */
+function isMissingFunction(error: { code?: string }): boolean {
+  return error.code === 'PGRST202' || error.code === '42883';
+}
+
 export async function readCloudFamilyRows(
   userId: string,
   supabase: ReturnType<typeof getSupabase> = getSupabase(),
 ): Promise<CloudFamilyRows> {
   if (!supabase) {
     throw new Error('Supabase client is not configured.');
+  }
+
+  // One round trip for the whole family. A database that does not have the function yet answers with
+  // 'function not found', and the separate queries below still work.
+  const snapshot = await supabase.rpc('family_snapshot', {
+    include_experience: defaultExperienceFlags.dailyMascotLetter || defaultExperienceFlags.secretQuest,
+    include_journal: defaultExperienceFlags.dailyJournal,
+    include_city: defaultExperienceFlags.dreamCity,
+  });
+  if (!snapshot.error) {
+    if (snapshot.data === null) throw new Error('Authenticated account has no family membership.');
+    // An answer that is not a family (a proxy or an older database answering something else) is not trusted.
+    if (isFamilyRows(snapshot.data)) return snapshot.data;
+  } else if (!isMissingFunction(snapshot.error)) {
+    throw snapshot.error;
   }
 
   const membershipResult = await supabase

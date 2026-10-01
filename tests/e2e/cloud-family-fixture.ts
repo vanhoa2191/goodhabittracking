@@ -107,6 +107,7 @@ export async function installCloudFamilyFixture(
   }));
   await page.route('**/rest/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
+    if (path.endsWith('/rpc/family_snapshot')) return route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ code: 'PGRST202', message: 'function not found' }) });
     let payload: unknown = [];
     if (path.endsWith('/family_memberships')) payload = {
       family_id: cloudFamilyIds.family,
