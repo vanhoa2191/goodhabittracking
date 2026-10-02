@@ -398,6 +398,7 @@ export function KidDashboard() {
       <div className={`grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>
         <button
           onClick={() => setActiveTab('tasks')}
+          aria-pressed={visibleTab === 'tasks'}
           className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
             visibleTab === 'tasks'
               ? 'bg-white dark:bg-zinc-800 text-indigo-600 dark:text-indigo-400 shadow-sm'
@@ -409,6 +410,7 @@ export function KidDashboard() {
         </button>
         {!isFamilyPaused && <button
           onClick={() => setActiveTab('leaderboard')}
+          aria-pressed={visibleTab === 'leaderboard'}
           className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
             visibleTab === 'leaderboard'
               ? 'bg-white dark:bg-zinc-800 text-amber-500 shadow-sm'
@@ -421,6 +423,7 @@ export function KidDashboard() {
         </button>}
         <button
           onClick={() => setActiveTab('rewards')}
+          aria-pressed={visibleTab === 'rewards'}
           className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
             visibleTab === 'rewards'
               ? 'bg-white dark:bg-zinc-800 text-pink-600 dark:text-pink-400 shadow-sm'
@@ -433,6 +436,7 @@ export function KidDashboard() {
         </button>
         <button
           onClick={() => setActiveTab('badges')}
+          aria-pressed={visibleTab === 'badges'}
           className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
             visibleTab === 'badges'
               ? 'bg-white dark:bg-zinc-800 text-amber-600 dark:text-amber-400 shadow-sm'
