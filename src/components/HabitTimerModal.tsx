@@ -5,6 +5,7 @@ import { Play, Pause, RotateCcw, X, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { HabitActivity } from '@/types';
 import { useTranslation } from '@/lib/i18n/context';
+import { getSmallModalsCopy } from '@/lib/i18n/small-modals-copy';
 import { sounds } from '@/lib/sound';
 import { ModalShell } from '@/components/ui/ModalShell';
 
@@ -16,7 +17,8 @@ interface HabitTimerModalProps {
 }
 
 export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: HabitTimerModalProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  const modalCopy = getSmallModalsCopy(language);
   const initialSeconds = (activity?.durationMinutes || 2) * 60;
   const [timeLeft, setTimeLeft] = useState(initialSeconds);
   const [isRunning, setIsRunning] = useState(false);
@@ -87,7 +89,7 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
   const strokeDashoffset = circumference - (progressPercent / 100) * circumference;
 
   return (
-    <ModalShell isOpen={isOpen} onClose={onClose} label="Đồng hồ thói quen" maxWidth="sm" mobileSheet={false} className="text-center">
+    <ModalShell isOpen={isOpen} onClose={onClose} label={modalCopy.timerLabel} maxWidth="sm" mobileSheet={false} className="text-center">
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between text-left">
           <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
@@ -99,7 +101,7 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
                 {activity.title}
               </h3>
               <p className="text-xs text-slate-400 mt-0.5 truncate">
-                {activity.description || `${activity.durationMinutes || 2} phút rèn luyện`}
+                {activity.description || modalCopy.minutesOfPractice(activity.durationMinutes || 2)}
               </p>
             </div>
           </div>

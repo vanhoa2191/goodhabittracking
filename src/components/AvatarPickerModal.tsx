@@ -5,18 +5,22 @@ import { Sparkles, Palette, Check, X } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { getProfileMutationCopy } from '@/lib/i18n/profile-mutation-copy';
+import { getSmallModalsCopy } from '@/lib/i18n/small-modals-copy';
 import { getMascot, MASCOTS } from '@/lib/mascots';
 import { MascotAvatar } from './MascotAvatar';
 
-export const THEME_COLOR_OPTIONS = [
-  { hex: '#3b82f6', name: 'Xanh Đại Dương' },
-  { hex: '#ec4899', name: 'Hồng Ngọt Ngào' },
-  { hex: '#10b981', name: 'Xanh Lá Tươi Vui' },
-  { hex: '#f59e0b', name: 'Vàng Rực Rỡ' },
-  { hex: '#8b5cf6', name: 'Tím Phép Thuật' },
-  { hex: '#06b6d4', name: 'Xanh Lam Ngọc' },
-  { hex: '#f43f5e', name: 'Đỏ Năng Lượng' },
-  { hex: '#6366f1', name: 'Chàm Thông Thái' },
+// The names are looked up by key in the current language; the hex values are what gets saved on the profile.
+type ColorNameKey = 'colorOcean' | 'colorPink' | 'colorGreen' | 'colorGold' | 'colorPurple' | 'colorTeal' | 'colorRed' | 'colorIndigo';
+
+export const THEME_COLOR_OPTIONS: readonly { readonly hex: string; readonly nameKey: ColorNameKey }[] = [
+  { hex: '#3b82f6', nameKey: 'colorOcean' },
+  { hex: '#ec4899', nameKey: 'colorPink' },
+  { hex: '#10b981', nameKey: 'colorGreen' },
+  { hex: '#f59e0b', nameKey: 'colorGold' },
+  { hex: '#8b5cf6', nameKey: 'colorPurple' },
+  { hex: '#06b6d4', nameKey: 'colorTeal' },
+  { hex: '#f43f5e', nameKey: 'colorRed' },
+  { hex: '#6366f1', nameKey: 'colorIndigo' },
 ];
 
 interface AvatarPickerModalProps {
@@ -39,6 +43,7 @@ export function AvatarPickerModal({
   cooldownStatus,
 }: AvatarPickerModalProps) {
   const { t, language } = useTranslation();
+  const modalCopy = getSmallModalsCopy(language);
   const copy = getProfileMutationCopy(language);
   const currentMascotId = getMascot(currentAvatar)?.id ?? currentAvatar;
   const [selectedAvatar, setSelectedAvatar] = useState(currentMascotId);
@@ -64,7 +69,7 @@ export function AvatarPickerModal({
   };
 
   return (
-    <ModalShell isOpen={isOpen} onClose={onClose} label="Chọn hình đại diện">
+    <ModalShell isOpen={isOpen} onClose={onClose} label={modalCopy.avatarPickerLabel}>
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -164,7 +169,7 @@ export function AvatarPickerModal({
                       {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                     </span>
                     <span className="min-w-0 text-xs font-bold text-slate-700 dark:text-slate-200">
-                      {color.name}
+                      {modalCopy[color.nameKey]}
                     </span>
                   </button>
                 );

@@ -8,6 +8,8 @@ import { Database, Lock, PauseCircle, PlayCircle, ShieldCheck } from 'lucide-rea
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getParentSettingsCopy } from '@/lib/i18n/parent-settings-copy';
+import { getPinCopy } from '@/lib/i18n/pin-copy';
+import { getSettingsLayoutCopy } from '@/lib/i18n/settings-layout-copy';
 import { familyPauseCopy } from '@/lib/i18n/family-pause-copy';
 import { ChildDevicesPanel } from '@/components/ChildDevicesPanel';
 import { ThemeSelector } from '@/components/ThemeSelector';
@@ -42,6 +44,8 @@ export function ParentSettingsTab() {
   } = useAppStore();
   const { t, language } = useTranslation();
   const copy = getParentSettingsCopy(language);
+  const pinCopy = getPinCopy(language);
+  const layout = getSettingsLayoutCopy(language);
   const pauseCopy = familyPauseCopy[language];
   const isPaused = Boolean(experience.settings?.paused_at);
   const [newPinInput, setNewPinInput] = useState('');
@@ -96,7 +100,7 @@ export function ParentSettingsTab() {
     setPinChangeError(false);
     if (!/^\d{4}$/.test(newPinInput) || newPinInput !== confirmPinInput) {
       setPinChangeError(true);
-      setPinChangeNotice(newPinInput !== confirmPinInput ? 'Hai mã PIN mới chưa khớp.' : copy.pinInvalid);
+      setPinChangeNotice(newPinInput !== confirmPinInput ? pinCopy.newMismatch : copy.pinInvalid);
       return;
     }
     setIsSavingPin(true);
@@ -108,9 +112,9 @@ export function ParentSettingsTab() {
       if (result.status !== 'updated') {
         setPinChangeError(true);
         setPinChangeNotice(result.status === 'locked'
-          ? `Bạn đã thử quá nhiều lần. Hãy thử lại sau ${Math.ceil(result.retryAfterSeconds / 60)} phút.`
+          ? pinCopy.tooManyAttemptsMinutes(Math.ceil(result.retryAfterSeconds / 60))
           : result.status === 'invalid_current'
-            ? 'Mã PIN hiện tại chưa đúng.'
+            ? pinCopy.currentWrong
             : copy.pinInvalid);
         return;
       }
@@ -120,7 +124,7 @@ export function ParentSettingsTab() {
       setConfirmPinInput('');
     } catch {
       setPinChangeError(true);
-      setPinChangeNotice('Chưa thể lưu mã PIN. Vui lòng thử lại.');
+      setPinChangeNotice(pinCopy.cannotSave);
     } finally {
       setIsSavingPin(false);
     }
@@ -130,17 +134,17 @@ export function ParentSettingsTab() {
     <div className="space-y-6">
       <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">{t.parentSettings}</h3>
 
-      <nav aria-label="Nhóm cài đặt" className="flex flex-wrap gap-2 text-sm">
+      <nav aria-label={layout.groupNav} className="flex flex-wrap gap-2 text-sm">
         {[
-          ['settings-devices', 'Thiết bị & nhịp gia đình'],
-          ['settings-account', 'Tài khoản'],
-          ['settings-privacy', 'Riêng tư & thông báo'],
-          ['settings-appearance', 'Giao diện'],
-          ['settings-security', 'Bảo vệ bằng PIN'],
+          ['settings-devices', layout.navDevices],
+          ['settings-account', layout.navAccount],
+          ['settings-privacy', layout.navPrivacy],
+          ['settings-appearance', layout.navAppearance],
+          ['settings-security', layout.navSecurity],
         ].map(([href, label]) => <a key={href} href={`#${href}`} className="inline-flex min-h-11 items-center rounded-xl border border-slate-200 bg-white px-3 font-bold text-indigo-700 hover:bg-indigo-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{label}</a>)}
       </nav>
 
-      <h4 id="settings-devices" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Thiết bị & nhịp gia đình</h4>
+      <h4 id="settings-devices" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">{layout.sectionDevices}</h4>
 
       <ChildDevicesPanel key={currentUser?.id ?? 'signed-out'} />
       <PwaInstallPanel />
@@ -166,48 +170,48 @@ export function ParentSettingsTab() {
         {pauseError && <p role="alert" className="mt-3 text-sm font-semibold text-rose-700 dark:text-rose-300">{pauseCopy.error}</p>}
       </section>
 
-      <h4 id="settings-account" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Tài khoản & đồng bộ</h4>
+      <h4 id="settings-account" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">{layout.sectionAccount}</h4>
       {currentUser && <AccountProfileCard />}
       <FamilyDataCard />
       {currentUser && <ReferralCodeEntry />}
       {currentUser && <AffiliateCard />}
-      <h4 id="settings-privacy" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Riêng tư & thông báo</h4>
+      <h4 id="settings-privacy" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">{layout.sectionPrivacy}</h4>
       {currentUser && <AnalyticsConsentCard />}
       {currentUser && <LeaderboardSharingCard />}
       {currentUser && defaultExperienceFlags.parentReengagement && <ParentReminderConsentCard />}
 
-      <Link href={new URL('/docs/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{language === 'vi' ? 'Mở tài liệu hướng dẫn' : 'Open user guide'}</Link>
-      {legalPagesApproved && <nav aria-label="Quyền riêng tư và hỗ trợ" className="grid gap-2 sm:grid-cols-3">
-        <Link href={new URL('/privacy/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">Quyền riêng tư</Link>
-        <Link href={new URL('/terms/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">Điều khoản</Link>
-        <Link href={new URL('/contact/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">Liên hệ hỗ trợ</Link>
+      <Link href={new URL('/docs/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{layout.openGuide}</Link>
+      {legalPagesApproved && <nav aria-label={layout.legalNav} className="grid gap-2 sm:grid-cols-3">
+        <Link href={new URL('/privacy/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.privacy}</Link>
+        <Link href={new URL('/terms/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.terms}</Link>
+        <Link href={new URL('/contact/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.contact}</Link>
       </nav>}
 
-      <h4 id="settings-appearance" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Giao diện</h4>
+      <h4 id="settings-appearance" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">{layout.sectionAppearance}</h4>
       <div className="rounded-3xl border border-slate-100 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
         <ThemeSelector />
       </div>
 
-      <h4 id="settings-security" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">Bảo vệ khu vực phụ huynh</h4>
+      <h4 id="settings-security" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">{layout.sectionSecurity}</h4>
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
         <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 mb-2 flex items-center gap-2">
           <Lock className="w-4 h-4 text-indigo-600" />
           {t.changePin}
         </h4>
-        <p className="mb-4 text-sm text-slate-600 dark:text-slate-300">Không chia sẻ mã PIN này với trẻ.</p>
+        <p className="mb-4 text-sm text-slate-600 dark:text-slate-300">{pinCopy.neverShare}</p>
         {currentUser && parentPinConfigured === null ? (
           pinStatusError ? (
             <div className="max-w-sm rounded-2xl border border-rose-200 bg-rose-50 p-4 dark:border-rose-900 dark:bg-rose-950/30">
-              <p role="alert" className="text-sm font-semibold text-rose-700 dark:text-rose-300">Chưa thể kiểm tra trạng thái mã PIN. Chưa có thay đổi nào được gửi.</p>
-              <button type="button" onClick={() => void handleRetryPinStatus()} className="mt-3 min-h-11 rounded-xl border border-rose-300 bg-white px-4 text-sm font-bold text-rose-700 dark:border-rose-800 dark:bg-zinc-900 dark:text-rose-300">Thử lại</button>
+              <p role="alert" className="text-sm font-semibold text-rose-700 dark:text-rose-300">{pinCopy.statusError}</p>
+              <button type="button" onClick={() => void handleRetryPinStatus()} className="mt-3 min-h-11 rounded-xl border border-rose-300 bg-white px-4 text-sm font-bold text-rose-700 dark:border-rose-800 dark:bg-zinc-900 dark:text-rose-300">{pinCopy.retry}</button>
             </div>
-          ) : <p role="status" className="text-sm font-semibold text-slate-600 dark:text-slate-300">Đang kiểm tra trạng thái mã PIN…</p>
+          ) : <p role="status" className="text-sm font-semibold text-slate-600 dark:text-slate-300">{pinCopy.statusChecking}</p>
         ) : (
           <div className="grid max-w-sm gap-3">
-            {parentPinConfigured && <label className="text-sm font-bold text-slate-700 dark:text-slate-200">Mã PIN hiện tại<input type="password" inputMode="numeric" autoComplete="current-password" pattern="[0-9]*" maxLength={4} value={currentPinInput} onChange={(event) => setCurrentPinInput(event.target.value.replace(/\D/g, ''))} className="mt-1 min-h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-center font-bold tracking-widest dark:border-zinc-700 dark:bg-zinc-800" /></label>}
-            <label className="text-sm font-bold text-slate-700 dark:text-slate-200">Mã PIN mới<input type="password" inputMode="numeric" autoComplete="new-password" pattern="[0-9]*" maxLength={4} value={newPinInput} onChange={(event) => setNewPinInput(event.target.value.replace(/\D/g, ''))} placeholder={copy.newPinPlaceholder} className="mt-1 min-h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-center font-bold tracking-widest dark:border-zinc-700 dark:bg-zinc-800" /></label>
-            <label className="text-sm font-bold text-slate-700 dark:text-slate-200">Nhập lại mã PIN mới<input type="password" inputMode="numeric" autoComplete="new-password" pattern="[0-9]*" maxLength={4} value={confirmPinInput} onChange={(event) => setConfirmPinInput(event.target.value.replace(/\D/g, ''))} className="mt-1 min-h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-center font-bold tracking-widest dark:border-zinc-700 dark:bg-zinc-800" /></label>
-            <button type="button" onClick={() => void handleSavePin()} disabled={isSavingPin} aria-busy={isSavingPin} className="min-h-11 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white transition-all hover:bg-indigo-700 disabled:opacity-60">{isSavingPin ? 'Đang lưu…' : t.save}</button>
+            {parentPinConfigured && <label className="text-sm font-bold text-slate-700 dark:text-slate-200">{copy.currentPin}<input type="password" inputMode="numeric" autoComplete="current-password" pattern="[0-9]*" maxLength={4} value={currentPinInput} onChange={(event) => setCurrentPinInput(event.target.value.replace(/\D/g, ''))} className="mt-1 min-h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-center font-bold tracking-widest dark:border-zinc-700 dark:bg-zinc-800" /></label>}
+            <label className="text-sm font-bold text-slate-700 dark:text-slate-200">{pinCopy.newPin}<input type="password" inputMode="numeric" autoComplete="new-password" pattern="[0-9]*" maxLength={4} value={newPinInput} onChange={(event) => setNewPinInput(event.target.value.replace(/\D/g, ''))} placeholder={copy.newPinPlaceholder} className="mt-1 min-h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-center font-bold tracking-widest dark:border-zinc-700 dark:bg-zinc-800" /></label>
+            <label className="text-sm font-bold text-slate-700 dark:text-slate-200">{pinCopy.confirmNewPin}<input type="password" inputMode="numeric" autoComplete="new-password" pattern="[0-9]*" maxLength={4} value={confirmPinInput} onChange={(event) => setConfirmPinInput(event.target.value.replace(/\D/g, ''))} className="mt-1 min-h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-center font-bold tracking-widest dark:border-zinc-700 dark:bg-zinc-800" /></label>
+            <button type="button" onClick={() => void handleSavePin()} disabled={isSavingPin} aria-busy={isSavingPin} className="min-h-11 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white transition-all hover:bg-indigo-700 disabled:opacity-60">{isSavingPin ? pinCopy.saving : t.save}</button>
           </div>
         )}
         {pinChangeNotice && <p role={pinChangeError ? 'alert' : 'status'} className={`mt-3 text-sm font-bold ${pinChangeError ? 'text-rose-700 dark:text-rose-300' : 'text-emerald-700 dark:text-emerald-300'}`}>{pinChangeNotice}</p>}
