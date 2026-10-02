@@ -13,10 +13,13 @@ import { CheckoutModal } from '@/components/CheckoutModal';
 import { OnboardingModal } from '@/components/OnboardingModal';
 import { Portrait16Modal } from '@/components/Portrait16Modal';
 import { demoSessionCopy } from '@/lib/i18n/demo-session-copy';
-import { CustomerProfilePrompt } from '@/components/CustomerProfilePrompt';
 import { CaregiverDashboard } from '@/components/CaregiverDashboard';
 import { PaymentReturnNotice } from '@/components/PaymentReturnNotice';
 import { getMarketingOrigin } from '@/lib/site';
+import dynamic from 'next/dynamic';
+
+// The profile prompt is shown once, right after a first sign-in, so its text and code load only when it is needed.
+const CustomerProfilePrompt = dynamic(() => import('@/components/CustomerProfilePrompt').then((module) => module.CustomerProfilePrompt));
 
 const IN_APP_SESSION_KEY = 'kidhabit_in_app';
 const DEMO_SESSION_KEY = 'kidhabit_demo_session';
