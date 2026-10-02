@@ -35,16 +35,16 @@
     "ci": "npm run lint && npm run typecheck && npm run test && npm run verify:habit-framework && npm run verify:habit-framework-translation && npm run check:secrets && npm audit --audit-level=high && npm run build:cloudflare && npm run check:performance"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "1.19.11",
+    "@opennextjs/cloudflare": "1.20.7",
     "@supabase/ssr": "^0.12.7",
-    "@supabase/supabase-js": "^2.116.0",
+    "@supabase/supabase-js": "^2.117.2",
     "canvas-confetti": "^1.9.4",
-    "lucide-react": "^1.47.0",
+    "lucide-react": "^1.48.0",
     "next": "16.3.8",
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.4",
-    "react": "19.2.8",
-    "react-dom": "19.2.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {
