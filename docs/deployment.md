@@ -20,6 +20,8 @@ Tên miền gắn vào Worker trong Cloudflare (Workers & Pages → service → 
 
 Danh sách bàn giao khi đổi địa chỉ (làm ở ngoài repo):
 
+> **Dự án Supabase production** (từ 02/10/2026): `evkwelozdcmsmwdzhlxz`, vùng Singapore (`ap-southeast-1`), gần Worker và người dùng ở Việt Nam. Dự án cũ `osvsvegqietxcfoabdhx` (Sydney) được giữ vài ngày làm đường lui rồi xóa. Dùng khóa API dạng JWT (tab *Legacy API keys*), vì phần kiểm tra sức khỏe gọi REST bằng `Authorization: Bearer`. Một dự án Supabase mới không dựng được chỉ từ `supabase/migrations`: migration đầu tiên giả định các bảng gốc đã có, nên chuyển dự án phải dùng `pg_dump` (cấu trúc và dữ liệu), rồi đặt lại quyền `anon`/`authenticated`/`service_role` y như dự án cũ (pg_dump không ghi quyền mặc định mà dự án mới tự cấp) và chạy toàn bộ `supabase/preflight/*.verify.sql` để xác nhận.
+
 1. **Supabase Auth → URL Configuration:** đặt Site URL là `https://app.kidhabithero.com` và thêm `https://app.kidhabithero.com/**` vào Redirect URLs. Giữ địa chỉ `workers.dev` cũ trong giai đoạn chuyển tiếp. Thiếu bước này, đăng nhập Google sẽ quay về địa chỉ sai.
 2. **PayOS:** đổi webhook thành `https://app.kidhabithero.com/api/payment/webhook`. URL trả về và hủy được tạo theo từng đơn từ `NEXT_PUBLIC_APP_URL`, không cần cấu hình riêng.
 3. **Cloudflare (vùng `kidhabithero.com`):** bật *Always Use HTTPS*; tạo bản ghi `www` (CNAME có proxy) kèm Redirect Rule `www.kidhabithero.com` → `https://kidhabithero.com`.

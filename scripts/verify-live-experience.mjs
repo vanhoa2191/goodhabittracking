@@ -9,7 +9,7 @@ import { createClient } from '@supabase/supabase-js';
 // The dream city routes answer 404 until their build flag is on; then the city is certified through the database
 // functions only (the same ones the routes call) and through the routes too once they are reachable.
 
-const projectRef = process.env.SUPABASE_PROJECT_REF ?? 'osvsvegqietxcfoabdhx';
+const projectRef = process.env.SUPABASE_PROJECT_REF ?? 'evkwelozdcmsmwdzhlxz';
 const projectUrl = `https://${projectRef}.supabase.co`;
 function readAppOrigin() {
   const url = new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.kidhabithero.com');

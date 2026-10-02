@@ -3,7 +3,7 @@ import { randomBytes } from 'node:crypto';
 
 import { createClient } from '@supabase/supabase-js';
 
-const projectRef = process.env.SUPABASE_PROJECT_REF ?? 'osvsvegqietxcfoabdhx';
+const projectRef = process.env.SUPABASE_PROJECT_REF ?? 'evkwelozdcmsmwdzhlxz';
 const projectUrl = `https://${projectRef}.supabase.co`;
 
 function assert(condition, message) {
