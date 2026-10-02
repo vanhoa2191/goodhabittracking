@@ -101,7 +101,7 @@ export const steps = [
     image: 'kid-tasks',
     alt: 'Danh sách nhiệm vụ buổi sáng của bé trong KidHabit, có việc đã hoàn thành và số sao thưởng',
     caption: 'Mỗi việc có hướng dẫn rõ ràng và số sao thưởng. Ảnh là màn hình của bé.',
-    bullets: ['Giao diện riêng cho bé, chỉ có nhiệm vụ, tiến độ và phần thưởng', 'Bé vào bằng mã QR hoặc mã nhập tay, không cần tài khoản riêng', 'Vuốt hoặc chạm để hoàn thành, có đồng hồ đếm giờ khi việc cần thời gian'],
+    bullets: ['Giao diện riêng cho bé, tự đổi theo ba dải tuổi: 3–8, 9–12 và từ 13 tuổi', 'Bé vào bằng mã QR hoặc mã nhập tay, không cần tài khoản riêng', 'Vuốt hoặc chạm để hoàn thành, có đồng hồ đếm giờ khi việc cần thời gian'],
   },
   {
     image: 'parent-approvals',
@@ -138,6 +138,10 @@ export const faqs = [
   {
     question: 'KidHabit có thay thế việc ba mẹ dạy con không?',
     answer: 'Không. KidHabit là công cụ đồng hành: ba mẹ chọn thói quen, duyệt và khen. Ứng dụng không thay việc dạy con và không cam kết một kết quả phát triển cụ thể.',
+  },
+  {
+    question: 'Giao diện của bé có đổi theo tuổi không?',
+    answer: 'Có. Kích thước nút, cách khen và nhãn phần thưởng đổi theo ba dải tuổi: 3–8, 9–12 và từ 13 tuổi. Từ 13 tuổi, bạn tự chọn kiểu gọn hoặc có bạn đồng hành. Ba mẹ có thể ghim một dải cho từng bé hoặc giữ giao diện cũ. Bé dưới 3 tuổi, hoặc chưa có năm sinh, vẫn dùng giao diện mặc định.',
   },
   {
     question: 'Trẻ có dùng chung giao diện với phụ huynh không?',

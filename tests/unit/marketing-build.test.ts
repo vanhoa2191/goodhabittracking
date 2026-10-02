@@ -283,6 +283,16 @@ describe('marketing static artifact', () => {
     expect(html).not.toContain('Lộ trình tuần và tháng');
   });
 
+  it('describes the age-tuned child screen as a feature with its limits, without promising results', async () => {
+    const { html } = await buildFixture();
+    expect(html).toContain('Giao diện của bé có đổi theo tuổi không?');
+    expect(html).toContain('3–8, 9–12 và từ 13 tuổi');
+    expect(html).toContain('Bé dưới 3 tuổi, hoặc chưa có năm sinh, vẫn dùng giao diện mặc định.');
+    expect(html).not.toMatch(/tăng động lực|đảm bảo|cam kết hiệu quả/i);
+    const ledger = await readFile('docs/claims-ledger.md', 'utf8');
+    expect(ledger).toContain('Giao diện của bé tự đổi theo tuổi');
+  });
+
   it('answers the age, the trial and the replace-the-parent questions and does not say "đủ điều kiện"', async () => {
     const { html } = await buildFixture();
     for (const question of ['Con bao nhiêu tuổi thì phù hợp?', 'Hết 7 ngày dùng thử thì sao?', 'KidHabit có thay thế việc ba mẹ dạy con không?']) expect(html).toContain(question);
