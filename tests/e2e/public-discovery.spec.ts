@@ -31,7 +31,11 @@ test('app origin still owns install and share resources', async ({ request }) =>
   expect(manifest.headers()['content-type']).toContain('application/manifest+json');
   expect((await manifest.json()).name).toBe('KidHabit Hero');
 
-  const image = await request.get('/opengraph-image');
+  // The share image is a static file; the page's own og:image tag says where it is.
+  const page = await request.get('/');
+  const imagePath = new URL(/property="og:image" content="([^"]+)"/.exec(await page.text())?.[1] ?? '', 'http://localhost').pathname;
+  expect(imagePath).toMatch(/opengraph-image/);
+  const image = await request.get(imagePath);
   expect(image.status()).toBe(200);
   expect(image.headers()['content-type']).toContain('image/png');
 });

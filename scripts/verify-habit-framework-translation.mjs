@@ -19,8 +19,8 @@ const failures = [];
 
 function verify(language) {
   const fail = (message) => failures.push(`[${language}] ${message}`);
-  const file = resolve(`src/data/habit-framework-v1.${language}.json`);
-  if (!existsSync(file)) return fail(`src/data/habit-framework-v1.${language}.json is missing`);
+  const file = resolve(`public/data/habit-framework-v1.${language}.json`);
+  if (!existsSync(file)) return fail(`public/data/habit-framework-v1.${language}.json is missing`);
   const translated = JSON.parse(readFileSync(file, 'utf8'));
 
   const text = (path, value) => {
