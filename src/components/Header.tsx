@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
@@ -32,6 +32,7 @@ import { PinModal } from './PinModal';
 import { FontSettingsModal } from './FontSettingsModal';
 import { DeviceConnectModal } from './DeviceConnectModal';
 import { getHeaderCopy } from '@/lib/i18n/header-copy';
+import { useModalFocus } from '@/lib/use-modal-focus';
 import { BrandMark } from '@/components/BrandMark';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { MascotAvatar } from '@/components/MascotAvatar';
@@ -81,6 +82,8 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuPanelRef = useRef<HTMLDivElement>(null);
+  useModalFocus(isMobileMenuOpen, () => setIsMobileMenuOpen(false), menuPanelRef);
   const [soundEnabled, setSoundEnabled] = useState(sounds.enabled);
 
   const toggleSound = () => {
@@ -157,7 +160,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
               <span className="font-extrabold text-slate-800 dark:text-slate-100 text-base sm:text-lg tracking-tight block leading-tight">
                 {t.appName}
               </span>
-              <span className="text-xs text-slate-400 font-medium block">
+              <span className="hidden text-xs text-slate-500 font-medium 2xl:block">
                 {t.appSlogan}
               </span>
             </div>
@@ -224,7 +227,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
 
           {/* Right Action Controls */}
           <div className="flex items-center gap-1 sm:gap-2">
-            <Link href={marketingDocsUrl} className="hidden min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-zinc-800 lg:flex"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Tài liệu' : 'Docs'}</Link>
+            <Link href={marketingDocsUrl} aria-label={language === 'vi' ? 'Tài liệu' : 'Docs'} title={language === 'vi' ? 'Tài liệu' : 'Docs'} className="hidden min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl px-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-zinc-800 lg:flex 2xl:px-3"><BookOpen aria-hidden="true" className="h-4 w-4" /><span className="hidden whitespace-nowrap 2xl:inline">{language === 'vi' ? 'Tài liệu' : 'Docs'}</span></Link>
             <div className="hidden 2xl:block">
               <ThemeSelector compact />
             </div>
@@ -246,7 +249,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
             {/* Desktop Only: Font Customization (xl:flex) */}
             <button
               onClick={() => setIsFontModalOpen(true)}
-              className="hidden 2xl:flex min-w-[38px] min-h-[38px] p-2 rounded-xl text-slate-500 hover:text-indigo-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center gap-1 text-xs font-bold cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              className="hidden xl:flex min-w-[38px] min-h-[38px] p-2 rounded-xl text-slate-500 hover:text-indigo-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center gap-1 text-xs font-bold cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               title={t.fontSettingsTitle}
             >
               <Type className="w-4 h-4" />
@@ -257,7 +260,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
               type="button"
               data-testid="sound-toggle"
               onClick={toggleSound}
-              className={`${shell === 'kid' ? 'hidden min-[360px]:flex' : 'hidden 2xl:flex'} min-w-11 min-h-11 p-2 rounded-xl text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500`}
+              className={`${shell === 'kid' ? 'hidden min-[360px]:flex' : 'hidden xl:flex'} min-w-11 min-h-11 p-2 rounded-xl text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500`}
               title={soundEnabled ? t.soundOn : t.soundOff}
               aria-label={soundEnabled ? t.soundOn : t.soundOff}
               aria-pressed={soundEnabled}
@@ -266,9 +269,12 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
             </button>
 
             {/* Desktop Only: Language Switcher Dropdown (xl:block) */}
-            <div className="relative hidden 2xl:block">
+            <div className="relative hidden xl:block">
               <button
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+                aria-expanded={isLangMenuOpen}
+                aria-haspopup="true"
+                aria-label={currentLang.label}
                 className="min-h-[38px] flex items-center gap-1 py-1.5 px-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               >
                 <span>{currentLang.flag}</span>
@@ -323,13 +329,13 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                 title={homeLabel}
               >
                 <House className="w-4 h-4" aria-hidden="true" />
-                <span className="hidden lg:inline">{homeLabel}</span>
+                <span className="hidden whitespace-nowrap 2xl:inline">{homeLabel}</span>
               </Link>
             )}
 
             {/* Google Account */}
             {currentUser ? (
-              <div className="hidden 2xl:flex min-h-[38px] items-center gap-1.5 py-1 px-2.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-xs font-semibold text-slate-700 dark:text-slate-200">
+              <div className="hidden xl:flex min-h-11 items-center gap-1.5 py-1 px-2.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-xs font-semibold text-slate-700 dark:text-slate-200">
                 {currentUser.user_metadata?.avatar_url ? (
                   <Image
                     src={currentUser.user_metadata.avatar_url}
@@ -348,15 +354,17 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                 <button
                   onClick={logout}
                   title={t.logout}
-                  className="p-1 hover:text-rose-600 transition-colors cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 rounded"
+                  aria-label={t.logout}
+                  className="-mr-1.5 flex min-h-11 min-w-11 items-center justify-center hover:text-rose-600 transition-colors cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 rounded-full"
                 >
-                  <LogOut className="w-3.5 h-3.5" />
+                  <LogOut className="w-3.5 h-3.5" aria-hidden="true" />
                 </button>
               </div>
             ) : (
               <button
                 onClick={loginWithGoogle}
-                className="hidden 2xl:flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold bg-white dark:bg-zinc-900 hover:bg-slate-50 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-slate-200 transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                aria-label={t.googleLogin}
+                className="hidden xl:flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold bg-white dark:bg-zinc-900 hover:bg-slate-50 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-slate-200 transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 title={t.googleLogin}
               >
                 <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
@@ -377,7 +385,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                     d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
                   />
                 </svg>
-                <span>{t.googleLogin}</span>
+                <span className="hidden whitespace-nowrap 2xl:inline">{t.googleLogin}</span>
               </button>
             )}
 
@@ -388,7 +396,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
               className={`max-[429px]:hidden min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-black transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
                 isPro
                   ? subscriptionPlan === 'trial'
-                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-amber-200 dark:shadow-none animate-pulse'
+                    ? 'bg-gradient-to-r from-amber-700 to-orange-700 text-white shadow-amber-200 dark:shadow-none animate-trial-pulse'
                     : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-indigo-200 dark:shadow-none'
                   : 'bg-amber-100 hover:bg-amber-200 text-amber-950 dark:bg-amber-950/70 dark:text-amber-300 border border-amber-300/80 dark:border-amber-800/80'
               }`}
@@ -420,6 +428,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
             {hasDashboardAccess && (!currentUser || mode === 'kid') && (
               <button
                 onClick={handleParentModeClick}
+                aria-label={mode === 'parent' ? copy.backToChild : undefined}
                 className={`${mode === 'parent' ? 'max-[429px]:hidden ' : ''}min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
                   mode === 'parent'
                     ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none'
@@ -428,9 +437,9 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
               >
                 {mode === 'parent' ? (
                   <>
-                    <Unlock className="w-3.5 h-3.5 shrink-0" />
-                    <span className="hidden sm:inline whitespace-nowrap">{t.parentMode}</span>
-                    <span className="sm:hidden whitespace-nowrap text-xs">{t.parentShort}</span>
+                    <Unlock className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                    <span className="hidden whitespace-nowrap 2xl:inline">{copy.backToChild}</span>
+                    <span className="whitespace-nowrap text-xs 2xl:hidden">{copy.backToChildShort}</span>
                   </>
                 ) : (
                   <>
@@ -460,6 +469,8 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                 type="button"
                 data-testid="more-menu"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-expanded={isMobileMenuOpen}
+                aria-haspopup="dialog"
                 className="relative z-50 min-w-[38px] min-h-[38px] p-2 rounded-full text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all flex items-center justify-center cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 border border-slate-200/80 dark:border-zinc-800"
                 aria-label={t.moreMenu}
               >
@@ -476,8 +487,12 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                   />
                   {/* Anchored to the screen, not the button, so it can never slide off an edge; it scrolls inside when tall. */}
                   <div
+                    ref={menuPanelRef}
                     data-testid="more-menu-panel"
+                    role="dialog"
+                    aria-modal="true"
                     aria-label={t.moreMenu}
+                    tabIndex={-1}
                     className="fixed right-3 top-[4.5rem] w-[min(18rem,calc(100vw-1.5rem))] max-h-[calc(100dvh-5.5rem)] overflow-y-auto overscroll-contain bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-zinc-800 p-3 z-40 animate-fade-in space-y-3"
                   >
                     {/* Header in Mobile Menu */}
@@ -488,9 +503,9 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                       <button
                         onClick={() => setIsMobileMenuOpen(false)}
                         aria-label={t.close}
-                        className="p-1 text-slate-400 hover:text-slate-600 rounded-lg"
+                        className="-mr-2 flex min-h-11 min-w-11 items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                       >
-                        <X className="w-4 h-4" />
+                        <X className="w-4 h-4" aria-hidden="true" />
                       </button>
                     </div>
 
@@ -520,8 +535,9 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                               logout();
                               setIsMobileMenuOpen(false);
                             }}
-                            className="p-1.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors shrink-0"
+                            className="flex min-h-11 min-w-11 items-center justify-center text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors shrink-0"
                             title={t.logout}
+                            aria-label={t.logout}
                           >
                             <LogOut className="w-4 h-4" />
                           </button>
