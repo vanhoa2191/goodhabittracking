@@ -22,6 +22,8 @@ interface ModalShellProps {
   readonly className?: string;
   readonly isOpen: boolean;
   readonly label: string;
+  /** Id of the visible heading inside the dialog; screen readers then announce that heading instead of `label`. */
+  readonly titleId?: string;
   readonly maxWidth?: ModalWidth;
   readonly mobileSheet?: boolean;
   readonly onClose: () => void;
@@ -49,6 +51,7 @@ export function ModalShell({
   className = '',
   isOpen,
   label,
+  titleId,
   maxWidth = 'md',
   mobileSheet = true,
   onClose,
@@ -82,7 +85,8 @@ export function ModalShell({
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
-        aria-label={label}
+        aria-label={titleId ? undefined : label}
+        aria-labelledby={titleId}
         tabIndex={-1}
         className={`relative flex max-h-[calc(100dvh-env(safe-area-inset-top))] w-full flex-col overflow-hidden border border-slate-100 bg-white pb-[env(safe-area-inset-bottom)] shadow-2xl dark:border-zinc-800 dark:bg-zinc-900 sm:max-h-[90dvh] ${MAX_WIDTH_CLASSES[maxWidth]} ${mobileCorners} ${className}`}
         onMouseDown={(event) => event.stopPropagation()}

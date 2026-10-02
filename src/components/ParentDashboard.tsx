@@ -1,8 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import React, { useCallback, useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
+import React, { useCallback, useState } from 'react';
 import {
   Lock,
   ShieldCheck,
@@ -34,7 +33,6 @@ import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
 import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 import { getProfileMutationCopy, getProfileMutationError } from '@/lib/i18n/profile-mutation-copy';
 import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
-import { useModalFocus } from '@/lib/use-modal-focus';
 import { MASCOTS, getMascotLabel } from '@/lib/mascots';
 import { MascotAvatar } from './MascotAvatar';
 import { ModalShell } from './ui/ModalShell';
@@ -77,19 +75,6 @@ export function ParentDashboard() {
   const closeChildModal = useCallback(() => {
     if (!isSavingChild) setIsChildModalOpen(false);
   }, [isSavingChild]);
-
-  useModalFocus(isChildModalOpen, closeChildModal);
-
-  useEffect(() => {
-    if (!isChildModalOpen) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isChildModalOpen]);
 
   const [isAdjustPointsModalOpen, setIsAdjustPointsModalOpen] = useState(false);
   const [adjustingChildId, setAdjustingChildId] = useState<string>('');
@@ -595,245 +580,249 @@ export function ParentDashboard() {
       )}
 
       {/* CREATE / EDIT CHILD MODAL */}
-      {isChildModalOpen && typeof document !== 'undefined' && createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs sm:backdrop-blur-sm p-3 sm:p-4 animate-fade-in overflow-y-auto">
-          <div role="dialog" aria-modal="true" aria-label={editingChild ? t.editChildTitle : t.addChildTitle} className="relative w-full max-w-md max-h-[90dvh] sm:max-h-[85vh] flex flex-col bg-white dark:bg-zinc-900 rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 dark:border-zinc-800 my-auto overflow-hidden">
-            {/* Header */}
-            <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
-              <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                <MascotAvatar avatar={childForm.avatar} alt="" className="h-10 w-10 text-xl" />
-                <span>{editingChild ? t.editChildTitle : t.addChildTitle}</span>
-              </h3>
-              <button
-                type="button"
-                onClick={closeChildModal}
-                disabled={isSavingChild}
-                className="p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shrink-0"
-                aria-label={t.close}
-              >
-                <X className="w-5 h-5" />
-              </button>
+      {isChildModalOpen && (
+        <ModalShell
+          isOpen={isChildModalOpen}
+          label={editingChild ? t.editChildTitle : t.addChildTitle}
+          titleId="child-modal-title"
+          onClose={closeChildModal}
+          maxWidth="md"
+          mobileSheet={false}
+        >
+          {/* Header */}
+          <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
+            <h3 id="child-modal-title" className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 flex items-center gap-2">
+              <MascotAvatar avatar={childForm.avatar} alt="" className="h-10 w-10 text-xl" />
+              <span>{editingChild ? t.editChildTitle : t.addChildTitle}</span>
+            </h3>
+            <button
+              type="button"
+              onClick={closeChildModal}
+              disabled={isSavingChild}
+              className="p-2 rounded-full text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shrink-0"
+              aria-label={t.close}
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Scrollable Body */}
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
+            {/* Real Name */}
+            <div>
+              <label htmlFor="child-real-name" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                {t.realName} *
+              </label>
+              <input
+                id="child-real-name"
+                type="text"
+                placeholder={copy.childNamePlaceholder}
+                value={childForm.name}
+                onChange={(e) => setChildForm({ ...childForm, name: e.target.value })}
+                className="w-full py-2.5 px-3.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+              />
             </div>
 
-            {/* Scrollable Body */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 overscroll-contain">
-              {/* Real Name */}
-              <div>
-                <label htmlFor="child-real-name" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
-                  {t.realName} *
+            {/* Age & Age Stage Configuration */}
+            <div className="p-3.5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/50 space-y-3">
+              <div className="flex items-center justify-between">
+                <label htmlFor="child-age" className="text-xs font-bold text-amber-950 dark:text-amber-200 flex items-center gap-1.5">
+                  <span>🎂</span>
+                  <span>{onboardingCopy.ageLabel} {childForm.age} {onboardingCopy.ageUnit}</span>
                 </label>
-                <input
-                  id="child-real-name"
-                  type="text"
-                  placeholder={copy.childNamePlaceholder}
-                  value={childForm.name}
-                  onChange={(e) => setChildForm({ ...childForm, name: e.target.value })}
-                  className="w-full py-2.5 px-3.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
-                />
-              </div>
-
-              {/* Age & Age Stage Configuration */}
-              <div className="p-3.5 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/50 space-y-3">
-                <div className="flex items-center justify-between">
-                  <label htmlFor="child-age" className="text-xs font-bold text-amber-950 dark:text-amber-200 flex items-center gap-1.5">
-                    <span>🎂</span>
-                    <span>{onboardingCopy.ageLabel} {childForm.age} {onboardingCopy.ageUnit}</span>
-                  </label>
-                  <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">
-                    {kidCopy.stageLabels[childForm.ageStage]}
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <input
-                    id="child-age"
-                    type="range"
-                    min="0"
-                    max="18"
-                    value={childForm.age}
-                    onChange={(e) => {
-                      const newAge = Number(e.target.value);
-                      const stage = getStageFromAge(newAge);
-                      setChildForm({
-                        ...childForm,
-                        age: newAge,
-                        birthYear: new Date().getFullYear() - newAge,
-                        ageStage: stage,
-                      });
-                    }}
-                    className="flex-1 accent-amber-500"
-                  />
-                  <div className="w-14 text-center font-black text-sm bg-white dark:bg-zinc-800 py-1 px-2 rounded-xl border border-amber-200 dark:border-amber-800">
-                    {childForm.age} {onboardingCopy.ageUnit}
-                  </div>
-                </div>
-
-                <div className="text-xs text-amber-900/80 dark:text-amber-200/80 leading-relaxed">
-                  <span>
-                    <strong>{kidCopy.stageLabels[childForm.ageStage]}</strong>: {onboardingCopy.stages[childForm.ageStage].summary}
-                  </span>
-                </div>
-
-                {!editingChild && (
-                  <label className="flex items-center gap-2 pt-2 border-t border-amber-200/60 dark:border-amber-900/40 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={childForm.autoLoadAgeHabits}
-                      onChange={(e) => setChildForm({ ...childForm, autoLoadAgeHabits: e.target.checked })}
-                      className="rounded text-amber-600 focus:ring-amber-500"
-                    />
-                    <span>{copy.autoLoadAgeBundle(onboardingCopy.stageLabels[childForm.ageStage])}</span>
-                  </label>
-                )}
-              </div>
-
-              {/* Leaderboard Nickname */}
-              <div>
-                <label htmlFor="child-leaderboard-nickname" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
-                  {t.leaderboardNickname}
-                </label>
-                <input
-                  id="child-leaderboard-nickname"
-                  type="text"
-                  placeholder={t.nicknamePlaceholder}
-                  value={childForm.nickname}
-                  onChange={(e) => setChildForm({ ...childForm, nickname: e.target.value })}
-                  className="w-full py-2.5 px-3.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
-                />
-                <p className="text-xs text-slate-400 mt-1">
-                  {copy.nicknameHelp}
-                </p>
-              </div>
-
-              {/* Privacy Option Selection */}
-              <div className="p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 space-y-2.5">
-                <span className="block text-xs font-bold text-indigo-900 dark:text-indigo-200">
-                  🛡️ {t.leaderboardPrivacyTitle}
-                </span>
-                
-                <label className="flex items-start gap-2.5 cursor-pointer text-xs">
-                  <input
-                    type="radio"
-                    name="leaderboard_privacy"
-                    checked={!childForm.showRealNameOnLeaderboard}
-                    onChange={() => setChildForm({ ...childForm, showRealNameOnLeaderboard: false })}
-                    className="mt-0.5 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  <div>
-                    <span className="font-bold text-slate-800 dark:text-slate-200 block">
-                      {t.showNicknameOnly}
-                    </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">
-                      {copy.rankingNickname(childForm.nickname.trim() || (childForm.name ? `${onboardingCopy.nicknamePrefix} ${childForm.name.trim().split(/\s+/).pop()}` : copy.nicknameFallback))}
-                    </span>
-                  </div>
-                </label>
-
-                <label className="flex items-start gap-2.5 cursor-pointer text-xs">
-                  <input
-                    type="radio"
-                    name="leaderboard_privacy"
-                    checked={childForm.showRealNameOnLeaderboard}
-                    onChange={() => setChildForm({ ...childForm, showRealNameOnLeaderboard: true })}
-                    className="mt-0.5 text-indigo-600 focus:ring-indigo-500"
-                  />
-                  <div>
-                    <span className="font-bold text-slate-800 dark:text-slate-200 block">
-                      {t.showRealNameOption}
-                    </span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">
-                      {copy.rankingName(childForm.name || copy.realNameFallback)}
-                    </span>
-                  </div>
-                </label>
-
-                <div className="pt-2 border-t border-indigo-100 dark:border-indigo-900/40">
-                  <label className="flex items-center gap-2 cursor-pointer text-xs">
-                    <input
-                      type="checkbox"
-                      checked={childForm.isPublicOnLeaderboard}
-                      onChange={(e) => setChildForm({ ...childForm, isPublicOnLeaderboard: e.target.checked })}
-                      className="rounded text-indigo-600 focus:ring-indigo-500"
-                    />
-                    <span className="font-semibold text-slate-700 dark:text-slate-300">
-                      {t.participateInPublicLeaderboard}
-                    </span>
-                  </label>
-                </div>
-              </div>
-
-              {/* Live Preview of Leaderboard Card */}
-              <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/80 border border-slate-200/80 dark:border-zinc-700 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <MascotAvatar avatar={childForm.avatar} alt="" className="h-11 w-11 text-2xl" />
-                  <div>
-                    <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">
-                      {copy.rankingPreview}
-                    </div>
-                    <div className="text-xs font-black text-indigo-600 dark:text-indigo-400">
-                      {childForm.showRealNameOnLeaderboard
-                        ? (childForm.name || copy.realNameFallback)
-                        : (childForm.nickname.trim() || (childForm.name ? `${onboardingCopy.nicknamePrefix} ${childForm.name.trim().split(/\s+/).pop()}` : copy.nicknameFallback))}
-                    </div>
-                  </div>
-                </div>
-                <span className="text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-md">
-                  ⭐ 120 {copy.stars}
+                <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">
+                  {kidCopy.stageLabels[childForm.ageStage]}
                 </span>
               </div>
 
-              {/* Mascot Avatar Selection */}
-              <div>
-                <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
-                  {copy.mascot(getMascotLabel(childForm.avatar))}
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  {MASCOTS.map((mascot) => (
-                    <button
-                      type="button"
-                      key={mascot.id}
-                      onClick={() => setChildForm({ ...childForm, avatar: mascot.id, themeColor: mascot.themeColor })}
-                      aria-pressed={childForm.avatar === mascot.id}
-                      className={`relative flex min-h-24 flex-col items-center justify-center rounded-2xl border p-1 transition-all ${
-                        childForm.avatar === mascot.id
-                          ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-500/20 dark:bg-indigo-950/30'
-                          : 'border-sand-200 bg-sand-50 dark:border-zinc-700 dark:bg-zinc-800'
-                      }`}
-                    >
-                      <MascotAvatar avatar={mascot.id} alt="" priority className="h-16 w-16" />
-                      <span className="text-xs font-extrabold text-sand-900 dark:text-slate-100">{mascot.name}</span>
-                    </button>
-                  ))}
+              <div className="flex items-center gap-3">
+                <input
+                  id="child-age"
+                  type="range"
+                  min="0"
+                  max="18"
+                  value={childForm.age}
+                  onChange={(e) => {
+                    const newAge = Number(e.target.value);
+                    const stage = getStageFromAge(newAge);
+                    setChildForm({
+                      ...childForm,
+                      age: newAge,
+                      birthYear: new Date().getFullYear() - newAge,
+                      ageStage: stage,
+                    });
+                  }}
+                  className="flex-1 accent-amber-500"
+                />
+                <div className="w-14 text-center font-black text-sm bg-white dark:bg-zinc-800 py-1 px-2 rounded-xl border border-amber-200 dark:border-amber-800">
+                  {childForm.age} {onboardingCopy.ageUnit}
                 </div>
+              </div>
+
+              <div className="text-xs text-amber-900/80 dark:text-amber-200/80 leading-relaxed">
+                <span>
+                  <strong>{kidCopy.stageLabels[childForm.ageStage]}</strong>: {onboardingCopy.stages[childForm.ageStage].summary}
+                </span>
+              </div>
+
+              {!editingChild && (
+                <label className="flex items-center gap-2 pt-2 border-t border-amber-200/60 dark:border-amber-900/40 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={childForm.autoLoadAgeHabits}
+                    onChange={(e) => setChildForm({ ...childForm, autoLoadAgeHabits: e.target.checked })}
+                    className="rounded text-amber-600 focus:ring-amber-500"
+                  />
+                  <span>{copy.autoLoadAgeBundle(onboardingCopy.stageLabels[childForm.ageStage])}</span>
+                </label>
+              )}
+            </div>
+
+            {/* Leaderboard Nickname */}
+            <div>
+              <label htmlFor="child-leaderboard-nickname" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                {t.leaderboardNickname}
+              </label>
+              <input
+                id="child-leaderboard-nickname"
+                type="text"
+                placeholder={t.nicknamePlaceholder}
+                value={childForm.nickname}
+                onChange={(e) => setChildForm({ ...childForm, nickname: e.target.value })}
+                className="w-full py-2.5 px-3.5 rounded-xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
+              />
+              <p className="text-xs text-slate-400 mt-1">
+                {copy.nicknameHelp}
+              </p>
+            </div>
+
+            {/* Privacy Option Selection */}
+            <div className="p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-100 dark:border-indigo-900/40 space-y-2.5">
+              <span className="block text-xs font-bold text-indigo-900 dark:text-indigo-200">
+                🛡️ {t.leaderboardPrivacyTitle}
+              </span>
+            
+              <label className="flex items-start gap-2.5 cursor-pointer text-xs">
+                <input
+                  type="radio"
+                  name="leaderboard_privacy"
+                  checked={!childForm.showRealNameOnLeaderboard}
+                  onChange={() => setChildForm({ ...childForm, showRealNameOnLeaderboard: false })}
+                  className="mt-0.5 text-indigo-600 focus:ring-indigo-500"
+                />
+                <div>
+                  <span className="font-bold text-slate-800 dark:text-slate-200 block">
+                    {t.showNicknameOnly}
+                  </span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    {copy.rankingNickname(childForm.nickname.trim() || (childForm.name ? `${onboardingCopy.nicknamePrefix} ${childForm.name.trim().split(/\s+/).pop()}` : copy.nicknameFallback))}
+                  </span>
+                </div>
+              </label>
+
+              <label className="flex items-start gap-2.5 cursor-pointer text-xs">
+                <input
+                  type="radio"
+                  name="leaderboard_privacy"
+                  checked={childForm.showRealNameOnLeaderboard}
+                  onChange={() => setChildForm({ ...childForm, showRealNameOnLeaderboard: true })}
+                  className="mt-0.5 text-indigo-600 focus:ring-indigo-500"
+                />
+                <div>
+                  <span className="font-bold text-slate-800 dark:text-slate-200 block">
+                    {t.showRealNameOption}
+                  </span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400">
+                    {copy.rankingName(childForm.name || copy.realNameFallback)}
+                  </span>
+                </div>
+              </label>
+
+              <div className="pt-2 border-t border-indigo-100 dark:border-indigo-900/40">
+                <label className="flex items-center gap-2 cursor-pointer text-xs">
+                  <input
+                    type="checkbox"
+                    checked={childForm.isPublicOnLeaderboard}
+                    onChange={(e) => setChildForm({ ...childForm, isPublicOnLeaderboard: e.target.checked })}
+                    className="rounded text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span className="font-semibold text-slate-700 dark:text-slate-300">
+                    {t.participateInPublicLeaderboard}
+                  </span>
+                </label>
               </div>
             </div>
 
-            {/* Fixed Footer */}
-            <div className="shrink-0 p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/70 space-y-3 pb-safe">
-              {childSaveError && <p role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">{childSaveError}</p>}
-              <div className="flex items-center justify-end gap-2.5">
-              <button
-                type="button"
-                onClick={closeChildModal}
-                disabled={isSavingChild}
-                className="py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors disabled:cursor-wait disabled:opacity-50"
-              >
-                {t.cancel}
-              </button>
-              <button
-                type="button"
-                onClick={() => void handleSaveChild()}
-                disabled={isSavingChild}
-                aria-busy={isSavingChild}
-                className="py-2.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-md active:scale-95 disabled:cursor-wait disabled:opacity-60"
-              >
-                {isSavingChild ? profileCopy.saving : t.save}
-              </button>
+            {/* Live Preview of Leaderboard Card */}
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-zinc-800/80 border border-slate-200/80 dark:border-zinc-700 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <MascotAvatar avatar={childForm.avatar} alt="" className="h-11 w-11 text-2xl" />
+                <div>
+                  <div className="text-xs text-slate-400 font-bold uppercase tracking-wider">
+                    {copy.rankingPreview}
+                  </div>
+                  <div className="text-xs font-black text-indigo-600 dark:text-indigo-400">
+                    {childForm.showRealNameOnLeaderboard
+                      ? (childForm.name || copy.realNameFallback)
+                      : (childForm.nickname.trim() || (childForm.name ? `${onboardingCopy.nicknamePrefix} ${childForm.name.trim().split(/\s+/).pop()}` : copy.nicknameFallback))}
+                  </div>
+                </div>
+              </div>
+              <span className="text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-md">
+                ⭐ 120 {copy.stars}
+              </span>
+            </div>
+
+            {/* Mascot Avatar Selection */}
+            <div>
+              <label className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                {copy.mascot(getMascotLabel(childForm.avatar))}
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {MASCOTS.map((mascot) => (
+                  <button
+                    type="button"
+                    key={mascot.id}
+                    onClick={() => setChildForm({ ...childForm, avatar: mascot.id, themeColor: mascot.themeColor })}
+                    aria-pressed={childForm.avatar === mascot.id}
+                    className={`relative flex min-h-24 flex-col items-center justify-center rounded-2xl border p-1 transition-all ${
+                      childForm.avatar === mascot.id
+                        ? 'border-indigo-600 bg-indigo-50 ring-2 ring-indigo-500/20 dark:bg-indigo-950/30'
+                        : 'border-sand-200 bg-sand-50 dark:border-zinc-700 dark:bg-zinc-800'
+                    }`}
+                  >
+                    <MascotAvatar avatar={mascot.id} alt="" priority className="h-16 w-16" />
+                    <span className="text-xs font-extrabold text-sand-900 dark:text-slate-100">{mascot.name}</span>
+                  </button>
+                ))}
               </div>
             </div>
           </div>
-        </div>,
-        document.body,
+
+          {/* Fixed Footer */}
+          <div className="shrink-0 p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/70 space-y-3 pb-safe">
+            {childSaveError && <p role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">{childSaveError}</p>}
+            <div className="flex items-center justify-end gap-2.5">
+            <button
+              type="button"
+              onClick={closeChildModal}
+              disabled={isSavingChild}
+              className="py-2.5 px-4 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors disabled:cursor-wait disabled:opacity-50"
+            >
+              {t.cancel}
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleSaveChild()}
+              disabled={isSavingChild}
+              aria-busy={isSavingChild}
+              className="py-2.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-md active:scale-95 disabled:cursor-wait disabled:opacity-60"
+            >
+              {isSavingChild ? profileCopy.saving : t.save}
+            </button>
+            </div>
+          </div>
+        </ModalShell>
       )}
 
       {/* ADJUST POINTS MODAL */}
