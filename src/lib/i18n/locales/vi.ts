@@ -90,7 +90,7 @@ export const vi = {
   featLocalOnly: 'Chỉ lưu trên 1 máy',
   featRoadmapBasic: 'Xem mẫu cơ bản',
   featRoadmapOneClick: 'Áp dụng 1-chạm & tùy biến linh hoạt',
-  featRoadmaps: 'Lộ trình 4 Tuần & 12 Tháng',
+  featRoadmaps: 'Lộ trình theo độ tuổi',
   featSupport: 'Hỗ trợ kỹ thuật',
   featSupportCommunity: 'Cộng đồng',
   featSupportPriority: 'Ưu tiên 24/7',
