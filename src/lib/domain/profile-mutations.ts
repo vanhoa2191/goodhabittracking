@@ -28,7 +28,9 @@ const profileSchema = editableProfileFieldsSchema.extend({
   { message: 'Initial points and total earned must match.' },
 );
 
-const profileUpdatesSchema = editableProfileFieldsSchema.partial().refine(
+const ageBandOverrideSchema = z.enum(['young', 'tween', 'teen', 'off']).nullable();
+
+const profileUpdatesSchema = editableProfileFieldsSchema.extend({ ageBandOverride: ageBandOverrideSchema }).partial().refine(
   (updates) => Object.keys(updates).length > 0,
   { message: 'At least one profile field is required.' },
 );

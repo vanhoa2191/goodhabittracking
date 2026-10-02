@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import type { ChildProfile } from '@/types';
-import { ageBandTraits, resolveAgeBand } from '@/lib/age-band';
+import { ageBandTraits, effectiveAgeBandOverride, resolveAgeBand } from '@/lib/age-band';
 import type { AgeBand, AgeBandTraits } from '@/lib/age-band';
 import {
   EMPTY_AGE_THEME_PREFERENCE,
@@ -41,7 +41,7 @@ export function useAgeTheme(child: ChildProfile | null | undefined): AgeTheme {
   }, [childId, preference]);
 
   const band = defaultExperienceFlags.ageTheme && child
-    ? resolveAgeBand(child, new Date(), preference.override)
+    ? resolveAgeBand(child, new Date(), effectiveAgeBandOverride(child.ageBandOverride, preference.override))
     : null;
 
   return {

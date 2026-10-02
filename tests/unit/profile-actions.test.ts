@@ -247,4 +247,30 @@ describe('profile actions', () => {
       mascot_selected_at: expect.any(String),
     })]);
   });
+
+  it('sends a parent\'s age band choice, and null to clear it, in the cloud update', async () => {
+    requestProfileMutation.mockResolvedValue({ profileId: 'child-1' });
+    const actions = createProfileActions({
+      activeChildId: null,
+      currentUser: {
+        id: 'user-a', app_metadata: {}, user_metadata: {}, aud: 'authenticated',
+        created_at: '2026-09-20T00:00:00.000Z',
+      },
+      experience: emptyExperienceState,
+      familyId: 'family-a',
+      profiles: [],
+      setActiveChildId: vi.fn(),
+      setActivities: vi.fn(),
+      setCloudSyncActive: vi.fn(),
+      setExperience: vi.fn(),
+      setProfiles: vi.fn(),
+      isDemoSession: false,
+      syncCloudFamily: vi.fn(async () => true),
+    });
+
+    await actions.updateProfile('child-1', { ageBandOverride: 'off' });
+    await actions.updateProfile('child-1', { ageBandOverride: null });
+    expect(requestProfileMutation).toHaveBeenNthCalledWith(1, { type: 'update', profileId: 'child-1', updates: { ageBandOverride: 'off' } });
+    expect(requestProfileMutation).toHaveBeenNthCalledWith(2, { type: 'update', profileId: 'child-1', updates: { ageBandOverride: null } });
+  });
 });

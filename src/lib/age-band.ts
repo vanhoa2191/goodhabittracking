@@ -70,3 +70,11 @@ export function resolveAgeBand(
   if (profile.ageStage === '12-18') return 'teen';
   return null;
 }
+
+/** A parent's pinned choice wins over the one this device remembers; with neither, the child's age decides. */
+export function effectiveAgeBandOverride(
+  parentChoice: AgeBandOverride | null | undefined,
+  deviceChoice: AgeBandOverride | null | undefined,
+): AgeBandOverride | null {
+  return parentChoice ?? deviceChoice ?? null;
+}

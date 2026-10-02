@@ -11,6 +11,12 @@ export type AgeThemeCopy = {
   readonly styleCompact: string;
   readonly styleCompanion: string;
   readonly switchStyle: string;
+  readonly parentLabel: string;
+  readonly parentHelp: string;
+  readonly optionAuto: string;
+  readonly optionYoung: string;
+  readonly optionTween: string;
+  readonly optionTeen: string;
 };
 
 const COPY: Record<Language, AgeThemeCopy> = {
@@ -25,6 +31,12 @@ const COPY: Record<Language, AgeThemeCopy> = {
     styleCompact: 'Gọn',
     styleCompanion: 'Có bạn đồng hành',
     switchStyle: 'Đổi phong cách',
+    parentLabel: 'Giao diện của bé theo tuổi',
+    parentHelp: 'Tự động theo tuổi là hợp nhất. Chọn một dải để ghim cho bé, hoặc giữ giao diện cũ. Lựa chọn của ba mẹ được ưu tiên hơn lựa chọn trên thiết bị của bé.',
+    optionAuto: 'Tự động theo tuổi',
+    optionYoung: 'Dải 3–8 tuổi',
+    optionTween: 'Dải 9–12 tuổi',
+    optionTeen: 'Dải từ 13 tuổi',
   },
   en: {
     pointsLabel: 'Points',
@@ -37,6 +49,12 @@ const COPY: Record<Language, AgeThemeCopy> = {
     styleCompact: 'Lean',
     styleCompanion: 'With a companion',
     switchStyle: 'Change style',
+    parentLabel: "Child's screen by age",
+    parentHelp: "Automatic by age fits best. Pin a band for this child, or keep the old look. A parent's choice takes priority over the one on the child's device.",
+    optionAuto: 'Automatic by age',
+    optionYoung: 'Ages 3–8',
+    optionTween: 'Ages 9–12',
+    optionTeen: 'Ages 13 and up',
   },
   fr: {
     pointsLabel: 'Points',
@@ -49,6 +67,12 @@ const COPY: Record<Language, AgeThemeCopy> = {
     styleCompact: 'Épuré',
     styleCompanion: 'Avec un compagnon',
     switchStyle: 'Changer de style',
+    parentLabel: 'Écran de l’enfant selon l’âge',
+    parentHelp: 'L’automatique selon l’âge convient le mieux. Fixez une tranche pour cet enfant ou gardez l’ancien aspect. Le choix du parent prime sur celui de l’appareil de l’enfant.',
+    optionAuto: 'Automatique selon l’âge',
+    optionYoung: '3–8 ans',
+    optionTween: '9–12 ans',
+    optionTeen: '13 ans et plus',
   },
   de: {
     pointsLabel: 'Punkte',
@@ -61,6 +85,12 @@ const COPY: Record<Language, AgeThemeCopy> = {
     styleCompact: 'Schlicht',
     styleCompanion: 'Mit Begleiter',
     switchStyle: 'Stil ändern',
+    parentLabel: 'Bildschirm des Kindes nach Alter',
+    parentHelp: 'Automatisch nach Alter passt am besten. Lege eine Altersstufe für dieses Kind fest oder behalte das alte Aussehen. Die Wahl der Eltern geht vor der Wahl auf dem Gerät des Kindes.',
+    optionAuto: 'Automatisch nach Alter',
+    optionYoung: '3–8 Jahre',
+    optionTween: '9–12 Jahre',
+    optionTeen: 'Ab 13 Jahren',
   },
   it: {
     pointsLabel: 'Punti',
@@ -73,6 +103,12 @@ const COPY: Record<Language, AgeThemeCopy> = {
     styleCompact: 'Essenziale',
     styleCompanion: 'Con un compagno',
     switchStyle: 'Cambia stile',
+    parentLabel: 'Schermo del bambino per età',
+    parentHelp: 'L’automatico in base all’età funziona meglio. Fissa una fascia per questo bambino oppure mantieni l’aspetto precedente. La scelta del genitore ha la precedenza su quella sul dispositivo del bambino.',
+    optionAuto: 'Automatico per età',
+    optionYoung: '3–8 anni',
+    optionTween: '9–12 anni',
+    optionTeen: 'Da 13 anni',
   },
   es: {
     pointsLabel: 'Puntos',
@@ -85,6 +121,12 @@ const COPY: Record<Language, AgeThemeCopy> = {
     styleCompact: 'Sencillo',
     styleCompanion: 'Con compañero',
     switchStyle: 'Cambiar de estilo',
+    parentLabel: 'Pantalla del niño según la edad',
+    parentHelp: 'Lo automático según la edad es lo mejor. Fija una franja para este niño o mantén el aspecto anterior. La elección de los padres tiene prioridad sobre la del dispositivo del niño.',
+    optionAuto: 'Automático según la edad',
+    optionYoung: '3–8 años',
+    optionTween: '9–12 años',
+    optionTeen: 'Desde 13 años',
   },
   zh: {
     pointsLabel: '积分',
@@ -97,6 +139,12 @@ const COPY: Record<Language, AgeThemeCopy> = {
     styleCompact: '简洁',
     styleCompanion: '有伙伴陪伴',
     switchStyle: '更换风格',
+    parentLabel: '按年龄调整孩子的界面',
+    parentHelp: '按年龄自动调整最合适。你也可以为孩子固定一个年龄段，或保留旧界面。家长的选择优先于孩子设备上的选择。',
+    optionAuto: '按年龄自动',
+    optionYoung: '3–8 岁',
+    optionTween: '9–12 岁',
+    optionTeen: '13 岁及以上',
   },
   ja: {
     pointsLabel: 'ポイント',
@@ -109,6 +157,12 @@ const COPY: Record<Language, AgeThemeCopy> = {
     styleCompact: 'シンプル',
     styleCompanion: '仲間といっしょ',
     switchStyle: 'スタイルを変更',
+    parentLabel: '年齢に合わせたお子さまの画面',
+    parentHelp: '年齢に合わせた自動設定がおすすめです。年齢帯を固定したり、前の画面のままにもできます。保護者の選択は、お子さまの端末での選択より優先されます。',
+    optionAuto: '年齢に合わせて自動',
+    optionYoung: '3～8歳',
+    optionTween: '9～12歳',
+    optionTeen: '13歳以上',
   },
   ko: {
     pointsLabel: '포인트',
@@ -121,6 +175,12 @@ const COPY: Record<Language, AgeThemeCopy> = {
     styleCompact: '간결하게',
     styleCompanion: '친구와 함께',
     switchStyle: '스타일 바꾸기',
+    parentLabel: '나이에 맞춘 아이 화면',
+    parentHelp: '나이에 따른 자동 설정이 가장 좋아요. 아이에게 연령대를 고정하거나 예전 화면을 유지할 수 있어요. 부모님의 선택이 아이 기기의 선택보다 우선해요.',
+    optionAuto: '나이에 따라 자동',
+    optionYoung: '3~8세',
+    optionTween: '9~12세',
+    optionTeen: '13세 이상',
   },
 };
 

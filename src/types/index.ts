@@ -53,6 +53,8 @@ export interface ChildProfile {
   birthYear?: number;
   age?: number;
   ageStage?: AgeStage;
+  /** A parent's choice for how the child's screen is tuned to age; null or absent follows the child's age. */
+  ageBandOverride?: 'young' | 'tween' | 'teen' | 'off' | null;
   lastActiveDate?: string;
   leagueTier?: LeagueTier;
   createdAt: string;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ageBandTraits, isAgeBandOverride, resolveAgeBand } from '@/lib/age-band';
+import { ageBandTraits, effectiveAgeBandOverride, isAgeBandOverride, resolveAgeBand } from '@/lib/age-band';
 
 const now = new Date('2026-10-02T09:00:00+07:00');
 
@@ -66,5 +66,16 @@ describe('isAgeBandOverride', () => {
   it('accepts only the three bands and off', () => {
     for (const value of ['young', 'tween', 'teen', 'off']) expect(isAgeBandOverride(value)).toBe(true);
     for (const value of ['', 'old', null, undefined, 3]) expect(isAgeBandOverride(value)).toBe(false);
+  });
+});
+
+describe('effectiveAgeBandOverride', () => {
+  it("puts a parent's choice before the device's, and either before the age", () => {
+    expect(effectiveAgeBandOverride('teen', 'off')).toBe('teen');
+    expect(effectiveAgeBandOverride('off', 'young')).toBe('off');
+    expect(effectiveAgeBandOverride(null, 'off')).toBe('off');
+    expect(effectiveAgeBandOverride(undefined, 'tween')).toBe('tween');
+    expect(effectiveAgeBandOverride(null, null)).toBeNull();
+    expect(effectiveAgeBandOverride(undefined, undefined)).toBeNull();
   });
 });

@@ -18,6 +18,9 @@ import {
 } from '@/types';
 import { getStageFromAge } from '@/lib/wit-framework';
 import { AgeStage } from '@/types';
+import type { AgeBandOverride } from '@/lib/age-band';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
+import { getAgeThemeCopy } from '@/lib/i18n/age-theme-copy';
 import { ParentAnalyticsTab } from './ParentAnalyticsTab';
 import { ParentApprovalsTab } from './ParentApprovalsTab';
 import { ParentSettingsTab } from './ParentSettingsTab';
@@ -55,6 +58,7 @@ export function ParentDashboard() {
   const { t, language } = useTranslation();
   const copy = getParentPrimaryCopy(language);
   const kidCopy = getKidDashboardCopy(language);
+  const ageThemeCopy = getAgeThemeCopy(language);
   const onboardingCopy = getOnboardingCopy(language);
   const profileCopy = getProfileMutationCopy(language);
 
@@ -124,6 +128,7 @@ export function ParentDashboard() {
     isPublicOnLeaderboard: boolean;
     avatar: string;
     themeColor: string;
+    ageBandOverride: AgeBandOverride | '';
   }>({
     name: '',
     nickname: '',
@@ -135,6 +140,7 @@ export function ParentDashboard() {
     isPublicOnLeaderboard: false,
     avatar: 'mascot:leo',
     themeColor: '#F59E0B',
+    ageBandOverride: '',
   });
 
   // Open Habit Create / Edit
@@ -211,6 +217,7 @@ export function ParentDashboard() {
         isPublicOnLeaderboard: child.isPublicOnLeaderboard ?? true,
         avatar: child.avatar,
         themeColor: child.themeColor,
+        ageBandOverride: child.ageBandOverride ?? '',
       });
     } else {
       setEditingChild(null);
@@ -226,6 +233,7 @@ export function ParentDashboard() {
         isPublicOnLeaderboard: false,
         avatar: 'mascot:leo',
         themeColor: '#F59E0B',
+        ageBandOverride: '',
       });
     }
     setIsChildModalOpen(true);
@@ -248,6 +256,7 @@ export function ParentDashboard() {
         isPublicOnLeaderboard: childForm.isPublicOnLeaderboard,
         avatar: childForm.avatar,
         themeColor: childForm.themeColor,
+        ...(defaultExperienceFlags.ageTheme ? { ageBandOverride: childForm.ageBandOverride || null } : {}),
       });
     } else {
       const result = await createProfile({
@@ -665,6 +674,26 @@ export function ParentDashboard() {
                 </span>
               </div>
 
+              {editingChild && defaultExperienceFlags.ageTheme && (
+                <div className="pt-2 border-t border-amber-200/60 dark:border-amber-900/40">
+                  <label htmlFor="child-age-band" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    {ageThemeCopy.parentLabel}
+                  </label>
+                  <select
+                    id="child-age-band"
+                    value={childForm.ageBandOverride}
+                    onChange={(e) => setChildForm({ ...childForm, ageBandOverride: e.target.value as AgeBandOverride | '' })}
+                    className="w-full min-h-11 py-2 px-3 rounded-xl border border-slate-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-sm font-medium focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                  >
+                    <option value="">{ageThemeCopy.optionAuto}</option>
+                    <option value="young">{ageThemeCopy.optionYoung}</option>
+                    <option value="tween">{ageThemeCopy.optionTween}</option>
+                    <option value="teen">{ageThemeCopy.optionTeen}</option>
+                    <option value="off">{ageThemeCopy.keepOld}</option>
+                  </select>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{ageThemeCopy.parentHelp}</p>
+                </div>
+              )}
               {!editingChild && (
                 <label className="flex items-center gap-2 pt-2 border-t border-amber-200/60 dark:border-amber-900/40 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
                   <input
