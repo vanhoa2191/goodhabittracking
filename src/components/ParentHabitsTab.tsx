@@ -164,8 +164,8 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
                     {hasCue ? `✓ ${cueCopy.cueSet}` : cueCopy.cueButton}
                   </button>
                 )}
-                <button onClick={() => onOpenHabit(localized)} className="p-2 text-slate-400 hover:text-indigo-600 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors" title={t.edit}><Edit2 className="w-4 h-4" /></button>
-                <button onClick={() => void removeActivity(activity.id)} className="p-2 text-slate-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 dark:hover:bg-zinc-800 transition-colors" title={t.delete}><Trash2 className="w-4 h-4" /></button>
+                <button onClick={() => onOpenHabit(localized)} className="flex min-h-11 min-w-11 items-center justify-center text-slate-500 hover:text-indigo-600 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" title={t.edit} aria-label={`${t.edit}: ${localized.title}`}><Edit2 aria-hidden="true" className="w-4 h-4" /></button>
+                <button onClick={() => void removeActivity(activity.id)} className="flex min-h-11 min-w-11 items-center justify-center text-slate-500 hover:text-rose-600 rounded-xl hover:bg-rose-50 dark:hover:bg-zinc-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500" title={t.delete} aria-label={`${t.delete}: ${localized.title}`}><Trash2 aria-hidden="true" className="w-4 h-4" /></button>
               </div>
             </div>
           );

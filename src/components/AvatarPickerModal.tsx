@@ -156,6 +156,7 @@ export function AvatarPickerModal({
                     type="button"
                     key={color.hex}
                     onClick={() => setSelectedColor(color.hex)}
+                    aria-pressed={isSelected}
                     className={`flex min-h-11 items-center gap-2 p-2 rounded-xl border text-left transition-all ${
                       isSelected
                         ? 'border-slate-800 dark:border-white shadow-sm ring-2 ring-indigo-500/20 bg-indigo-50/40 dark:bg-indigo-950/30'

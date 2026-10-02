@@ -62,7 +62,7 @@ export function ParentAnalyticsTab() {
         </h4>
         <div className="mb-4"><PrintWeekButtons /></div>
 
-        <div className="grid grid-cols-7 gap-2 pt-8 pb-2">
+        <div role="group" aria-label={t.weeklyTrend} className="grid grid-cols-7 gap-2 pt-8 pb-2">
           {Array.from({ length: 7 }).map((_, index) => {
             const date = new Date();
             date.setDate(date.getDate() - (6 - index));
@@ -70,12 +70,15 @@ export function ParentAnalyticsTab() {
             const count = logs.filter(
               (log) => log.date === dateKey && (log.status === 'completed' || log.status === 'approved')
             ).length;
-            const heightPercent = Math.min(100, Math.max(12, count * 20));
+            // A day with nothing done is an empty track, not a short bar that reads as some activity.
+            const heightPercent = count === 0 ? 0 : Math.min(100, Math.max(12, count * 20));
+
+            const dayName = new Intl.DateTimeFormat(language, { weekday: 'long' }).format(date);
 
             return (
-              <div key={dateKey} className="flex flex-col items-center gap-2">
-                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400">
-                  {count > 0 ? count : ''}
+              <div key={dateKey} role="img" aria-label={`${dayName}: ${count}`} className="flex flex-col items-center gap-2">
+                <span className={`text-xs font-bold ${count > 0 ? 'text-indigo-700 dark:text-indigo-300' : 'text-slate-500 dark:text-slate-400'}`}>
+                  {count}
                 </span>
                 <div className="w-full h-32 bg-slate-50 dark:bg-zinc-800 rounded-2xl flex items-end p-1">
                   <div
@@ -83,7 +86,7 @@ export function ParentAnalyticsTab() {
                     style={{ height: `${heightPercent}%` }}
                   />
                 </div>
-                <span className="text-xs font-semibold text-slate-400">
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
                   {new Intl.DateTimeFormat(language, { weekday: 'short' }).format(date)}
                 </span>
               </div>

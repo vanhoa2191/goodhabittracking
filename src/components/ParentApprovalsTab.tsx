@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Check, CheckCircle2, Gift } from 'lucide-react';
+import { Check, CheckCircle2, Gift, Inbox } from 'lucide-react';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { parentApprovalsCopy } from '@/lib/i18n/parent-approvals-copy';
@@ -66,7 +67,7 @@ export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: (
           {copy.pendingTasks} ({pendingLogs.length})
         </h3>
         {pendingLogs.length === 0 ? (
-          <p className="text-xs text-slate-400 italic">{copy.noPendingTasks}</p>
+          <EmptyState icon={Inbox} title={copy.noPendingTasks} />
         ) : (
           <div className="space-y-3">
             {pendingLogs.map((log) => {
@@ -101,7 +102,7 @@ export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: (
           {copy.pendingRewards} ({pendingRedemptions.length})
         </h3>
         {pendingRedemptions.length === 0 ? (
-          <p className="text-xs text-slate-400 italic">{copy.noPendingRewards}</p>
+          <EmptyState icon={Gift} title={copy.noPendingRewards} />
         ) : (
           <div className="space-y-3">
             {pendingRedemptions.map((redemption) => {
