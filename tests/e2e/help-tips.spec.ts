@@ -21,7 +21,8 @@ test('a ? explains a feature in a sentence or two and opens the matching part of
   await expect(popover).toContainText('cần duyệt');
 
   await popover.getByRole('button', { name: 'Xem chi tiết' }).click();
-  const detail = page.getByRole('dialog', { name: /Việc chờ duyệt/ });
+  // The window's name follows the section on show, so find it by being the one modal dialog.
+  const detail = page.locator('[role="dialog"][aria-modal="true"]');
   // The first open compiles and downloads the detail window and the guide chapter, which is slow on a cold dev server.
   await expect(detail.getByRole('heading', { name: /Việc và quà cần duyệt/ })).toBeVisible({ timeout: 30_000 });
   await expect(detail).toContainText('Nhiệm vụ chờ ba mẹ duyệt', { timeout: 30_000 });
