@@ -16,7 +16,7 @@ Chương trình có hai phía, kết nối với nhau qua một **mã giới thi
 | **Người giới thiệu** (một phụ huynh đang dùng KidHabit) | **Hoa hồng 30%** trên số tiền thực trả của gia đình được giới thiệu |
 | **Gia đình được giới thiệu** | **Giảm 10%** khi mua Gói Năm lần đầu (399.000đ còn 359.100đ) |
 
-Điều khoản công khai: trang `/gioi-thieu/` trên [website](11-website-va-trang-cong-khai.md#trang-chinh). Quy tắc kỹ thuật và vận hành: [Chương trình giới thiệu bạn bè](../affiliate-program.md).
+Điều khoản công khai: trang `/gioi-thieu/` trên [website](11-website-va-trang-cong-khai.md#trang-chinh). <!--op-->Quy tắc kỹ thuật và vận hành: [Chương trình giới thiệu bạn bè](../affiliate-program.md).<!--/op-->
 
 <a id="tham-gia"></a>
 ## Cho người giới thiệu: tham gia và chia sẻ
@@ -58,7 +58,7 @@ Kết quả hiện ngay: đã ghi nhận; mã không đúng; không thể dùng 
 1. Đặt [mã PIN phụ huynh](05-gia-dinh-va-cai-dat.md#pin) (bắt buộc), nhập PIN trên trình duyệt này.
 2. Ở thẻ **Nhận tiền hoa hồng**, nhập ngân hàng, số tài khoản và tên chủ tài khoản, bấm **Lưu thông tin**. Số tài khoản chỉ hiện 4 số cuối. Đổi thông tin nhận tiền thì phải đợi **24 giờ** mới yêu cầu rút được.
 3. Khi số "Có thể rút" đạt **tối thiểu 200.000đ**, bấm **Yêu cầu rút tiền**.
-4. Đội vận hành chuyển khoản **thủ công** và báo lại; yêu cầu chuyển sang "Đã chuyển". Việc xử lý phía quản trị: [10. Quản trị](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
+4. Đội vận hành chuyển khoản **thủ công** và báo lại; yêu cầu chuyển sang "Đã chuyển". <!--op-->Việc xử lý phía quản trị: [10. Quản trị](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).<!--/op-->
 
 Hoa hồng có thể thuộc diện chịu thuế thu nhập cá nhân; người nhận tự chịu trách nhiệm kê khai.
 

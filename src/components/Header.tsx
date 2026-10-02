@@ -106,6 +106,8 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
   const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === language) || SUPPORTED_LANGUAGES[0];
   const shell = mode;
   const marketingDocsUrl = new URL('/docs/', marketingHomeUrl).href;
+  // A signed-in parent reads the guide inside the app (with its ? help); a visitor reads the one on the website.
+  const docsUrl = currentUser || mode === 'parent' ? '/docs' : marketingDocsUrl;
   const homeLabel = language === 'vi' ? 'Trang chủ' : 'Home';
 
   if (isFamilyConnected && !currentUser) {
@@ -227,7 +229,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
 
           {/* Right Action Controls */}
           <div className="flex items-center gap-1 sm:gap-2">
-            <Link href={marketingDocsUrl} aria-label={language === 'vi' ? 'Tài liệu' : 'Docs'} title={language === 'vi' ? 'Tài liệu' : 'Docs'} className="hidden min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl px-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-zinc-800 lg:flex 2xl:px-3"><BookOpen aria-hidden="true" className="h-4 w-4" /><span className="hidden whitespace-nowrap 2xl:inline">{language === 'vi' ? 'Tài liệu' : 'Docs'}</span></Link>
+            <Link href={docsUrl} aria-label={language === 'vi' ? 'Tài liệu' : 'Docs'} title={language === 'vi' ? 'Tài liệu' : 'Docs'} className="hidden min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl px-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-zinc-800 lg:flex 2xl:px-3"><BookOpen aria-hidden="true" className="h-4 w-4" /><span className="hidden whitespace-nowrap 2xl:inline">{language === 'vi' ? 'Tài liệu' : 'Docs'}</span></Link>
             <div className="hidden 2xl:block">
               <ThemeSelector compact />
             </div>
@@ -611,7 +613,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                       </button>
                     )}
 
-                    <Link href={marketingDocsUrl} onClick={() => setIsMobileMenuOpen(false)} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-indigo-50 px-3 text-sm font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>
+                    <Link href={docsUrl} onClick={() => setIsMobileMenuOpen(false)} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-indigo-50 px-3 text-sm font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</Link>
 
                     {/* Quick Tools: Font Settings & Sound */}
                     <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100 dark:border-zinc-800">

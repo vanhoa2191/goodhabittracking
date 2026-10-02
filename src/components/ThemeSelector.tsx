@@ -4,6 +4,7 @@ import { Monitor, Moon, Sun } from 'lucide-react';
 import { useAppearance, type ThemeChoice } from '@/lib/appearance-context';
 import { useTranslation } from '@/lib/i18n/context';
 import { getAppearanceCopy } from '@/lib/i18n/appearance-copy';
+import { HelpTip } from '@/components/help/HelpTip';
 
 export function ThemeSelector({ compact = false }: { compact?: boolean }) {
   const { theme, setTheme } = useAppearance();
@@ -17,7 +18,7 @@ export function ThemeSelector({ compact = false }: { compact?: boolean }) {
 
   return (
     <div>
-      {!compact && <p className="mb-2 text-sm font-bold text-slate-700 dark:text-slate-200">{labels.appearance}</p>}
+      {!compact && <div className="flex items-center gap-1"><p className="mb-2 text-sm font-bold text-slate-700 dark:text-slate-200">{labels.appearance}</p><HelpTip topic="settings.theme" /></div>}
       <div className="inline-flex rounded-2xl border border-slate-200 bg-slate-100 p-1 dark:border-zinc-700 dark:bg-zinc-800" aria-label={labels.appearance}>
         {options.map(({ value, label, Icon }) => (
           <button

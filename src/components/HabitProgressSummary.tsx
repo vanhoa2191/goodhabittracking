@@ -14,6 +14,7 @@ import { fillTemplate, suggestionKey, visibleSuggestions } from '@/lib/habit-pro
 import type { SuggestionCode } from '@/lib/habit-programs/suggestions';
 import type { HabitPhase } from '@/lib/habit-programs/types';
 import { useSuggestionDismissals } from '@/lib/habit-programs/use-suggestion-dismissals';
+import { HelpTip } from '@/components/help/HelpTip';
 
 const PHASE_KEY: Record<HabitPhase, 'phaseAnchor' | 'phaseBuild' | 'phaseFade' | 'phaseMaintain'> = {
   anchor: 'phaseAnchor',
@@ -62,9 +63,9 @@ export function HabitProgressSummary({ childId, onOpenHabits }: { readonly child
   return (
     <section data-testid="habit-progress-summary" id="habit-progress" aria-labelledby="habit-progress-title" className="space-y-4 rounded-3xl border border-slate-100 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
       <div>
-        <h3 id="habit-progress-title" className="text-base font-extrabold text-slate-800 dark:text-slate-100">
+        <div className="flex items-center gap-1"><h3 id="habit-progress-title" className="text-base font-extrabold text-slate-800 dark:text-slate-100">
           {copy.summaryTitle}{sections.length > 0 ? ` · ${today_.building(buildingCount, limit)}` : ''}
-        </h3>
+        </h3><HelpTip topic="progress.summary" /></div>
         <p className="text-xs text-slate-500 dark:text-slate-300">{copy.summaryIntro}</p>
       </div>
       {sections.length === 0 && (

@@ -10,6 +10,7 @@ import {
   revokeChildDevice,
   type ChildDevice,
 } from '@/lib/devices/device-management-client';
+import { HelpTip } from '@/components/help/HelpTip';
 
 export function ChildDevicesPanel() {
   const { profiles, currentUser } = useAppStore();
@@ -71,10 +72,10 @@ export function ChildDevicesPanel() {
   return (
     <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800 space-y-4">
       <div>
-        <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2">
+        <div className="flex items-center gap-1"><h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2">
           <Smartphone className="w-4 h-4 text-indigo-600" />
           {copy.childDevices}
-        </h4>
+        </h4><HelpTip topic="settings.devices" /></div>
         <p className="text-xs text-slate-400 mt-1">{copy.childDevicesDescription}</p>
       </div>
       {errorMessage && <p role="alert" className="text-xs font-semibold text-rose-600">{errorMessage}</p>}

@@ -5,6 +5,7 @@ import { BellRing } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { parentReminderCopy } from '@/lib/i18n/parent-reminder-copy';
 import { useParentReminderConsent } from '@/lib/parent-reminder-context';
+import { HelpTip } from '@/components/help/HelpTip';
 
 export function ParentReminderConsentCard() {
   const { language } = useTranslation();
@@ -18,10 +19,10 @@ export function ParentReminderConsentCard() {
 
   return (
     <section className="rounded-3xl border border-sand-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900" aria-labelledby="parent-reminder-title">
-      <h4 id="parent-reminder-title" className="flex items-center gap-2 text-base font-extrabold text-sand-900 dark:text-slate-100">
+      <div className="flex items-center gap-1"><h4 id="parent-reminder-title" className="flex items-center gap-2 text-base font-extrabold text-sand-900 dark:text-slate-100">
         <BellRing data-testid="parent-reminder-title-icon" aria-hidden="true" className="h-5 w-5 shrink-0 text-indigo-600" />
         {copy.title}
-      </h4>
+      </h4><HelpTip topic="settings.reminders" /></div>
       <p className="mt-2 text-sm leading-6 text-slate-700 [word-break:auto-phrase] dark:text-slate-300">{copy.description}</p>
       <label className="mt-4 flex min-h-11 items-start gap-3 rounded-2xl border border-sand-200 bg-sand-50 p-4 text-sm font-bold text-sand-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-100">
         <input type="checkbox" checked={enabled} onChange={(event) => void save(event.target.checked)} disabled={isLoading || isSaving} className="mt-0.5 h-5 w-5 shrink-0 accent-indigo-600" />

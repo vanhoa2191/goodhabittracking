@@ -6,6 +6,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { getAchievementShareCopy } from '@/lib/i18n/achievement-share-copy';
 import { buildSafeAchievementShare } from '@/lib/safe-achievement-share';
 import { ModalShell } from '@/components/ui/ModalShell';
+import { HelpTip } from '@/components/help/HelpTip';
 
 export function AchievementShareDialog() {
   const { language } = useTranslation();
@@ -31,7 +32,7 @@ export function AchievementShareDialog() {
   return (
     <>
       <section className="rounded-3xl border border-violet-100 bg-gradient-to-br from-violet-50 to-amber-50 p-6 dark:border-violet-900 dark:from-violet-950/30 dark:to-amber-950/20">
-        <h4 className="flex items-center gap-2 text-base font-black text-slate-900 dark:text-white"><Share2 className="h-5 w-5 text-violet-600" aria-hidden="true" />{copy.title}</h4>
+        <div className="flex items-center gap-1"><h4 className="flex items-center gap-2 text-base font-black text-slate-900 dark:text-white"><Share2 className="h-5 w-5 text-violet-600" aria-hidden="true" />{copy.title}</h4><HelpTip topic="stats.share" /></div>
         <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{copy.privacy}</p>
         <button type="button" onClick={() => { setNotice(''); setOpen(true); }} className="mt-4 min-h-11 rounded-xl bg-violet-700 px-4 text-sm font-bold text-white hover:bg-violet-800">{copy.share}</button>
       </section>

@@ -15,6 +15,7 @@ import { programActivityId } from '@/lib/habit-programs/program-activity-id';
 import { settleWithin } from '@/lib/habit-programs/settle-within';
 import { fillTemplate } from '@/lib/habit-programs/suggestion-display';
 import type { ChildProfile, HabitActivity } from '@/types';
+import { HelpTip } from '@/components/help/HelpTip';
 
 type Phase = 'edit' | 'adding' | 'saving' | 'failed';
 
@@ -109,7 +110,7 @@ export function HabitProgramStartModal({ program, child, ageYears, onClose, onSt
         <div>
           <p className="text-xs font-bold text-slate-600 dark:text-slate-300">{fillTemplate(copy.programStepOf, { step: String(step), total: String(STEPS) })}</p>
           <h2 className="text-lg font-black text-slate-900 dark:text-white">{program.name}</h2>
-          <h3 className="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">{titles[step - 1]}</h3>
+          <div className="flex items-center gap-1"><h3 className="mt-1 text-sm font-bold text-slate-700 dark:text-slate-200">{titles[step - 1]}</h3><HelpTip topic="habits.programStart" /></div>
         </div>
 
         {step === 1 && (

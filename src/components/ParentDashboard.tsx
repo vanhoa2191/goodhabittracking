@@ -40,6 +40,7 @@ import { MASCOTS, getMascotLabel } from '@/lib/mascots';
 import { MascotAvatar } from './MascotAvatar';
 import { ModalShell } from './ui/ModalShell';
 import { getPointsAdjustCopy } from '@/lib/i18n/points-adjust-copy';
+import { HelpTip } from '@/components/help/HelpTip';
 
 export function ParentDashboard() {
   const {
@@ -453,9 +454,9 @@ export function ParentDashboard() {
                 </div>
 
                 <div>
-                  <label htmlFor="habit-points" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <div className="mb-1 flex items-center gap-1"><label htmlFor="habit-points" className="block text-xs font-bold text-slate-600 dark:text-slate-300">
                     {t.pointsLabel}
-                  </label>
+                  </label><HelpTip topic="habits.form.points" /></div>
                   <input
                     id="habit-points"
                     type="number"
@@ -469,9 +470,9 @@ export function ParentDashboard() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="habit-time-of-day" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <div className="mb-1 flex items-center gap-1"><label htmlFor="habit-time-of-day" className="block text-xs font-bold text-slate-600 dark:text-slate-300">
                     {t.timeOfDayLabel}
-                  </label>
+                  </label><HelpTip topic="habits.form.time" /></div>
                   <select
                     id="habit-time-of-day"
                     value={habitForm.timeOfDay}
@@ -488,9 +489,9 @@ export function ParentDashboard() {
                 </div>
 
                 <div>
-                  <label htmlFor="habit-recurrence" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <div className="mb-1 flex items-center gap-1"><label htmlFor="habit-recurrence" className="block text-xs font-bold text-slate-600 dark:text-slate-300">
                     {t.recurrenceLabel}
-                  </label>
+                  </label><HelpTip topic="habits.form.recurrence" /></div>
                   <select
                     id="habit-recurrence"
                     value={habitForm.recurrenceType}
@@ -509,9 +510,9 @@ export function ParentDashboard() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="habit-duration" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <div className="mb-1 flex items-center gap-1"><label htmlFor="habit-duration" className="block text-xs font-bold text-slate-600 dark:text-slate-300">
                     {copy.durationMinutes}
-                  </label>
+                  </label><HelpTip topic="habits.form.duration" /></div>
                   <input
                     id="habit-duration"
                     type="number"
@@ -525,9 +526,9 @@ export function ParentDashboard() {
                 </div>
 
                 <div>
-                  <label htmlFor="habit-child" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+                  <div className="mb-1 flex items-center gap-1"><label htmlFor="habit-child" className="block text-xs font-bold text-slate-600 dark:text-slate-300">
                     {t.assignLabel}
-                  </label>
+                  </label><HelpTip topic="habits.form.assign" /></div>
                   <select
                     id="habit-child"
                     value={habitForm.childId || ''}
@@ -557,6 +558,7 @@ export function ParentDashboard() {
                 <label htmlFor="requiresApprovalCheck" className="text-xs text-slate-600 dark:text-slate-300 font-medium cursor-pointer">
                   {t.requiresApprovalLabel}
                 </label>
+                <HelpTip topic="habits.form.approval" />
               </div>
             </div>
 
@@ -639,6 +641,7 @@ export function ParentDashboard() {
                   <span>🎂</span>
                   <span>{onboardingCopy.ageLabel} {childForm.age} {onboardingCopy.ageUnit}</span>
                 </label>
+                <HelpTip topic="children.age" />
                 <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">
                   {kidCopy.stageLabels[childForm.ageStage]}
                 </span>
@@ -676,9 +679,9 @@ export function ParentDashboard() {
 
               {editingChild && defaultExperienceFlags.ageTheme && (
                 <div className="pt-2 border-t border-amber-200/60 dark:border-amber-900/40">
-                  <label htmlFor="child-age-band" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  <div className="mb-1 flex items-center gap-1"><label htmlFor="child-age-band" className="block text-xs font-bold text-slate-700 dark:text-slate-300">
                     {ageThemeCopy.parentLabel}
-                  </label>
+                  </label><HelpTip topic="children.ageTheme" /></div>
                   <select
                     id="child-age-band"
                     value={childForm.ageBandOverride}
@@ -709,9 +712,9 @@ export function ParentDashboard() {
 
             {/* Leaderboard Nickname */}
             <div>
-              <label htmlFor="child-leaderboard-nickname" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
+              <div className="mb-1 flex items-center gap-1"><label htmlFor="child-leaderboard-nickname" className="block text-xs font-bold text-slate-600 dark:text-slate-300">
                 {t.leaderboardNickname}
-              </label>
+              </label><HelpTip topic="children.leaderboard" /></div>
               <input
                 id="child-leaderboard-nickname"
                 type="text"

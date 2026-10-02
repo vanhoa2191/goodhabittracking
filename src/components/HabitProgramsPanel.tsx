@@ -12,6 +12,7 @@ import { childAgeYears } from '@/lib/habit-programs/summary';
 import { fillTemplate } from '@/lib/habit-programs/suggestion-display';
 import type { ChildProfile } from '@/types';
 import { HabitProgramStartModal } from './HabitProgramStartModal';
+import { HelpTip } from '@/components/help/HelpTip';
 
 
 type Target = { readonly program: HabitProgram; readonly child: ChildProfile; readonly ageYears: number };
@@ -29,7 +30,7 @@ export function HabitProgramsPanel({ onStarted, onNotConfirmed }: { readonly onS
   return (
     <section data-testid="habit-programs" aria-labelledby="habit-programs-title" className="space-y-4">
       <div>
-        <h3 id="habit-programs-title" className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{copy.programsTitle}</h3>
+        <div className="flex items-center gap-1"><h3 id="habit-programs-title" className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{copy.programsTitle}</h3><HelpTip topic="habits.programs" /></div>
         <p className="text-sm text-slate-600 dark:text-slate-300">{copy.programsIntro}</p>
       </div>
       {profiles.length === 0 && <p className="text-sm text-slate-600 dark:text-slate-300">{copy.programsEmpty}</p>}

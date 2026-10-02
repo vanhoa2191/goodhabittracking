@@ -16,6 +16,7 @@ import { readPairingCredential, type PairingCredential } from '@/lib/store/pairi
 import { MascotAvatar } from './MascotAvatar';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
 import { InlineNotice, useNotice } from '@/components/ui/InlineNotice';
+import { HelpTip } from '@/components/help/HelpTip';
 
 interface ParentChildrenTabProps {
   onAdjustPoints: (childId: string) => void;
@@ -107,10 +108,10 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-md shadow-indigo-200 dark:shadow-none shrink-0"><Smartphone className="w-5 h-5" /></div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h4 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100">{copy.pairingTitle}</h4>
+                <div className="flex items-center gap-1"><h4 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100">{copy.pairingTitle}</h4><HelpTip topic="children.pairing" /></div>
                 <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">{copy.oneTimeCodeBadge}</span>
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{copy.pairingDescription}</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{copy.pairingDescription}<HelpTip topic="children.regenerate" /></p>
             </div>
           </div>
           <button
@@ -144,7 +145,7 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">{t.manageProfiles} ({profiles.length})</h3>
+          <div className="flex items-center gap-1"><h3 className="font-black text-lg text-slate-800 dark:text-slate-100">{t.manageProfiles} ({profiles.length})</h3><HelpTip topic="children.profiles" /></div>
           <p className="text-xs text-slate-400">{copy.profilesIntro}</p>
         </div>
         <button onClick={() => onOpenChild()} className="py-2.5 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-md flex items-center gap-2 active:scale-95">
@@ -203,7 +204,8 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
             <div className="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-zinc-800/80 flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <button onClick={() => onAdjustPoints(child.id)} className="py-1.5 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-bold transition-colors">⭐ {t.adjustPoints}</button>
-                {child.ageStage && <button onClick={() => void loadAgeBundle(child)} disabled={pendingChildId === child.id} aria-busy={pendingChildId === child.id} className="py-1.5 px-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold transition-colors disabled:cursor-wait disabled:opacity-60" title={copy.ageBundleTitle}>⚡ {copy.addAgeBundle}</button>}
+                <HelpTip topic="children.adjustPoints" />
+                {child.ageStage && (<><button onClick={() => void loadAgeBundle(child)} disabled={pendingChildId === child.id} aria-busy={pendingChildId === child.id} className="py-1.5 px-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold transition-colors disabled:cursor-wait disabled:opacity-60" title={copy.ageBundleTitle}>⚡ {copy.addAgeBundle}</button><HelpTip topic="children.ageBundle" /></>)}
               </div>
               <div className="flex items-center gap-1">
                 <button onClick={() => onOpenChild(child)} aria-label={`${t.editChildTitle}: ${child.name}`} className="p-2 text-slate-400 hover:text-indigo-600 rounded-xl hover:bg-slate-50 transition-colors"><Edit2 className="w-4 h-4" /></button>

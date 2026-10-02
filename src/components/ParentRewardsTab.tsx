@@ -11,6 +11,7 @@ import { localizeDemoReward } from '@/lib/i18n/demo-content-copy';
 import { getRewardMutationCopy } from '@/lib/i18n/reward-mutation-copy';
 import { RewardTemplateLibrary } from './RewardTemplateLibrary';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
+import { HelpTip } from '@/components/help/HelpTip';
 
 const EMPTY_REWARD = {
   title: '',
@@ -76,7 +77,7 @@ export function ParentRewardsTab() {
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">{t.yourRewards} ({localizedRewards.length})</h3>
+            <div className="flex items-center gap-1"><h3 className="font-black text-lg text-slate-800 dark:text-slate-100">{t.yourRewards} ({localizedRewards.length})</h3><HelpTip topic="rewards.manage" /></div>
             <p className="text-xs text-slate-400">{copy.rewardsIntro}</p>
           </div>
           <button onClick={() => openRewardModal()} className="flex min-h-11 items-center gap-2 rounded-2xl bg-amber-700 px-5 py-2.5 text-xs font-bold text-white shadow-md transition-colors transition-transform hover:bg-amber-800 active:scale-95">

@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useState } from 'react';
 import { Gift } from 'lucide-react';
+import { HelpTip } from '@/components/help/HelpTip';
 import { useTranslation } from '@/lib/i18n/context';
 import { getAffiliateCopy, type AffiliateCopy } from '@/lib/i18n/affiliate-copy';
 import { clearReferralCookieString, normalizeReferralCode } from '@/lib/referral/referral-code';
@@ -92,6 +93,7 @@ export function ReferralCodeEntry() {
       <div className="flex items-center gap-2 text-sm font-black text-slate-900 dark:text-white">
         <Gift className="h-4 w-4 text-indigo-600 dark:text-indigo-300" aria-hidden="true" />
         <label htmlFor={inputId}>{copy.entry.prompt}</label>
+        <HelpTip topic="settings.referralCode" />
       </div>
       <p id={hintId} className="mt-1 text-xs leading-5 text-slate-600 dark:text-slate-400">{copy.entry.hint}</p>
       <div className="mt-3 flex flex-col gap-2 sm:flex-row">

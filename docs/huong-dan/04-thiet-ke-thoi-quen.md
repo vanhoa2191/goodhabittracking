@@ -97,7 +97,7 @@ Từ lúc có tín hiệu, ứng dụng theo dõi **giai đoạn** của từng 
 
 `Thiết kế → Đổi quà` là nơi ba mẹ tạo phần thưởng để bé dùng sao ([bé đổi quà thế nào](02-man-hinh-be.md#qua)).
 
-- **Tạo quà**: tên quà, số sao cần đổi, mô tả hoặc điều kiện, số lượng (nhập -1 là không giới hạn). Có thể sửa hoặc xóa.
+- **Tạo quà**: tên quà, số sao cần đổi (từ 5 sao), mô tả hoặc điều kiện. Quà tạo từ màn hình này không giới hạn số lần đổi. Có thể sửa hoặc xóa.
 - **Gợi ý quà ý nghĩa**: thư viện mẫu chia hai loại, **phi vật chất** (thời gian bên nhau, trải nghiệm, quyền được chọn) và **vật chất có mục đích** (hỗ trợ sở thích, vận động, học tập, tinh thần cho đi), kèm số sao gợi ý. Chọn "Thêm vào kho quà".
 - Yêu cầu của bé hiện ở [Hôm nay → Duyệt việc](03-hom-nay-va-duyet-viec.md#duyet).
 

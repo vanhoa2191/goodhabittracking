@@ -6,6 +6,7 @@ import { createJournalCsv } from '@/lib/child-journal';
 import { useTranslation } from '@/lib/i18n/context';
 import { journalCopy } from '@/lib/i18n/journal-copy';
 import { useAppStore } from '@/lib/store';
+import { HelpTip } from '@/components/help/HelpTip';
 
 export function ParentJournalPanel() {
   const { experience, profiles } = useAppStore();
@@ -36,7 +37,7 @@ export function ParentJournalPanel() {
             <BookOpen aria-hidden="true" className="h-5 w-5" />
           </span>
           <div>
-            <h4 id="parent-journal-title" className="text-base font-extrabold text-sand-900 dark:text-slate-100">{copy.parentTitle}</h4>
+            <div className="flex items-center gap-1"><h4 id="parent-journal-title" className="text-base font-extrabold text-sand-900 dark:text-slate-100">{copy.parentTitle}</h4><HelpTip topic="stats.journal" /></div>
             <p className="mt-1 text-sm leading-6 text-slate-700 dark:text-slate-300">{copy.parentDescription}</p>
           </div>
         </div>

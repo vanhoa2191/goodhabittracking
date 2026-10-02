@@ -6,6 +6,7 @@ import { localDayKey } from '@/lib/habit-fire';
 import { isActivityDueOn } from '@/lib/habit-programs/opportunities';
 import { getParentTodayCopy } from '@/lib/i18n/parent-today-copy';
 import { MascotAvatar } from './MascotAvatar';
+import { HelpTip } from '@/components/help/HelpTip';
 
 /** How the chosen child's day is going: tasks done of the tasks scheduled, and a streak that never scolds. */
 export function ParentTodayCard({ childId }: { readonly childId: string }) {
@@ -31,7 +32,7 @@ export function ParentTodayCard({ childId }: { readonly childId: string }) {
         <div className="flex items-center gap-3">
           <MascotAvatar avatar={child.avatar} alt="" className="h-12 w-12 text-3xl" />
           <div>
-            <h3 id="parent-today-title" className="text-sm font-semibold text-slate-500 dark:text-slate-300">{copy.todayOf(child.nickname || child.name)}</h3>
+            <div className="flex items-center gap-1"><h3 id="parent-today-title" className="text-sm font-semibold text-slate-500 dark:text-slate-300">{copy.todayOf(child.nickname || child.name)}</h3><HelpTip topic="today.card" /></div>
             <p className="text-xl font-extrabold text-slate-900 dark:text-white">{scheduled.length === 0 ? copy.noTasksToday : copy.doneOfTotal(done, scheduled.length)}</p>
           </div>
         </div>

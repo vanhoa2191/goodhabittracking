@@ -12,6 +12,7 @@ import { localDayKey } from '@/lib/local-day';
 import { PrintWeekButtons } from '@/components/PrintableWeek';
 import { useConfirm } from '@/components/ui/ConfirmDialog';
 import { InlineNotice, useNotice } from '@/components/ui/InlineNotice';
+import { HelpTip } from '@/components/help/HelpTip';
 
 const DELETE_FAMILY_PHRASE = 'DELETE FAMILY';
 
@@ -56,11 +57,11 @@ export function ParentAnalyticsTab() {
       </h3>
 
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
-        <h4 className="font-bold text-sm text-slate-700 dark:text-slate-200 mb-4 flex items-center gap-2">
+        <div className="flex items-center gap-1"><h4 className="font-bold text-sm text-slate-700 dark:text-slate-200 mb-4 flex items-center gap-2">
           <BarChart3 className="w-4 h-4 text-indigo-600" />
           {t.weeklyTrend}
-        </h4>
-        <div className="mb-4"><PrintWeekButtons /></div>
+        </h4><HelpTip topic="stats.weekly" /></div>
+        <div className="mb-4 flex flex-wrap items-center gap-1"><PrintWeekButtons /><HelpTip topic="stats.print" /></div>
 
         <div role="group" aria-label={t.weeklyTrend} className="grid grid-cols-7 gap-2 pt-8 pb-2">
           {Array.from({ length: 7 }).map((_, index) => {
@@ -100,7 +101,7 @@ export function ParentAnalyticsTab() {
       <AchievementShareDialog />
 
       <div className="rounded-3xl border border-rose-200 bg-rose-50 p-6 dark:border-rose-900 dark:bg-rose-950/30">
-          <h4 className="text-sm font-bold text-rose-800 dark:text-rose-200">{copy.deleteFamily}</h4>
+          <div className="flex items-center gap-1"><h4 className="text-sm font-bold text-rose-800 dark:text-rose-200">{copy.deleteFamily}</h4><HelpTip topic="stats.deleteFamily" /></div>
           <p className="mt-1 text-xs leading-relaxed text-rose-700 dark:text-rose-300">
             {copy.deleteFamilyDescription}
           </p>

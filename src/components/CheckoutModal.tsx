@@ -19,6 +19,7 @@ import { CheckoutPaymentDetails } from '@/components/CheckoutPaymentDetails';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { getMarketingOrigin } from '@/lib/site';
 import dynamic from 'next/dynamic';
+import { HelpTip } from '@/components/help/HelpTip';
 
 const ReferralCodeEntry = dynamic(() => import('@/components/ReferralCodeEntry').then((module) => module.ReferralCodeEntry));
 
@@ -280,6 +281,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
               <RefreshCw className={`w-3.5 h-3.5 ${isCheckingStatus ? 'animate-spin' : ''}`} />
               <span>{isCheckingStatus ? t.checkingPayment : t.iHaveTransferredBtn}</span>
             </button>
+            <HelpTip topic="payment.activation" />
           </div>
         </div>
     </ModalShell>
