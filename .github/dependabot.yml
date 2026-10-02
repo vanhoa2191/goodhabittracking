@@ -8,11 +8,16 @@ updates:
     groups:
       actions:
         patterns: ['*']
+  # Major npm releases (TypeScript, Vitest, Node types…) are upgraded deliberately in their own branch,
+  # not proposed every week; minor and patch releases still arrive grouped.
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: '*'
+        update-types: [version-update:semver-major]
     groups:
       minor-and-patch:
         update-types: [minor, patch]
