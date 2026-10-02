@@ -72,13 +72,13 @@ export async function generateMetadata(): Promise<Metadata> {
       url: '/',
       siteName: copy.appName,
       locale: language === 'vi' ? 'vi_VN' : language,
-      images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: copy.appName }],
+      images: [{ url: '/opengraph-image.png', width: 1200, height: 630, alt: copy.appName }],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description: copy.appSlogan,
-      images: ['/opengraph-image'],
+      images: ['/opengraph-image.png'],
     },
   };
 }
