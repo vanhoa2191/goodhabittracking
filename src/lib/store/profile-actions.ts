@@ -74,6 +74,7 @@ function mutationUpdates(updates: Partial<ChildProfile>) {
     themeColor: updates.themeColor,
     birthYear: updates.birthYear,
     ageStage: updates.ageStage,
+    ageBandOverride: updates.ageBandOverride,
   };
   return Object.fromEntries(
     Object.entries(candidates).filter(([, value]) => value !== undefined),

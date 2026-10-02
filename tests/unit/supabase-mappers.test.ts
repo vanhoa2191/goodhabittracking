@@ -33,6 +33,28 @@ describe('Supabase domain mappers', () => {
     });
   });
 
+  it('carries a parent\'s age band choice, and nothing when none was made', () => {
+    const row = {
+      id: '11111111-1111-4111-8111-111111111111',
+      user_id: '22222222-2222-4222-8222-222222222222',
+      family_id: '33333333-3333-4333-8333-333333333333',
+      name: 'Minh An',
+      show_real_name_on_leaderboard: false,
+      is_public_on_leaderboard: false,
+      avatar: '🦁',
+      theme_color: '#6366f1',
+      points: 0,
+      total_earned: 0,
+      level: 1,
+      streak: 0,
+      created_at: '2026-09-19T00:00:00.000Z',
+    };
+    expect(mapChildProfileRow({ ...row, age_band_override: 'teen' }).ageBandOverride).toBe('teen');
+    expect(mapChildProfileRow({ ...row, age_band_override: null }).ageBandOverride).toBeUndefined();
+    expect(mapChildProfileRow(row).ageBandOverride).toBeUndefined();
+    expect(() => mapChildProfileRow({ ...row, age_band_override: 'toddler' })).toThrow();
+  });
+
   it('round-trips framework activity metadata', () => {
     const activity = mapHabitActivityRow({
       id: '11111111-1111-4111-8111-111111111111',

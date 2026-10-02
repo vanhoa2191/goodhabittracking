@@ -44,6 +44,7 @@ const childProfileSchema = z.object({
   streak: z.number(),
   birthYear: optionalNumber,
   ageStage: z.enum(['0-3', '3-6', '6-12', '12-18']).nullish().transform((value) => value ?? undefined),
+  ageBandOverride: z.enum(['young', 'tween', 'teen', 'off']).nullish().transform((value) => value ?? undefined),
   lastActiveDate: optionalString,
   leagueTier: z.enum(['bronze', 'silver', 'gold', 'diamond']).nullish().transform((value) => value ?? undefined),
   createdAt: z.string(),
