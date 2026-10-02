@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Keyboard, LoaderCircle } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { getDeviceConnectCopy } from '@/lib/i18n/device-connect-copy';
+import { getChildQrScannerCopy } from '@/lib/i18n/child-qr-scanner-copy';
 
 type ChildQrScannerProps = {
   readonly onCancel: () => void;
@@ -26,6 +27,7 @@ export function ChildQrScanner({ onCancel, onDetected }: ChildQrScannerProps) {
   const [state, setState] = useState<'requesting' | 'active' | 'invalid' | 'denied' | 'unavailable' | 'error'>('requesting');
   const { language } = useTranslation();
   const copy = getDeviceConnectCopy(language);
+  const scannerCopy = getChildQrScannerCopy(language);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -95,8 +97,8 @@ export function ChildQrScanner({ onCancel, onDetected }: ChildQrScannerProps) {
           </div>
         )}
       </div>
-      {state === 'requesting' && <p role="status" className="text-center text-sm font-semibold text-slate-600 dark:text-slate-300">Đang mở camera…</p>}
-      {state === 'active' && <p role="status" className="text-center text-sm font-semibold text-slate-600 dark:text-slate-300">Đưa mã QR vào giữa khung.</p>}
+      {state === 'requesting' && <p role="status" className="text-center text-sm font-semibold text-slate-600 dark:text-slate-300">{scannerCopy.openingCamera}</p>}
+      {state === 'active' && <p role="status" className="text-center text-sm font-semibold text-slate-600 dark:text-slate-300">{scannerCopy.alignQr}</p>}
       {message && (
         <p role={terminal ? 'alert' : 'status'} className="rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
           {message} {terminal ? copy.manualFallback : ''}

@@ -7,6 +7,7 @@ import { ParentDashboard } from '@/components/ParentDashboard';
 import { AppEntryGate } from '@/components/AppEntryGate';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
+import { getAppFooterCopy } from '@/lib/i18n/app-footer-copy';
 import { PricingModal } from '@/components/PricingModal';
 import { CheckoutModal } from '@/components/CheckoutModal';
 import { OnboardingModal } from '@/components/OnboardingModal';
@@ -65,6 +66,7 @@ export default function Home() {
   } = useAppStore();
   const { t, language } = useTranslation();
   const demoCopy = demoSessionCopy[language];
+  const footerCopy = getAppFooterCopy(language);
 
   const sessionInApp = useSyncExternalStore(
     subscribeToInAppSession,
@@ -158,11 +160,11 @@ export default function Home() {
             <span className="min-w-0 break-words">{t.appName} &bull; {t.appSlogan}</span>
           </p>
           <span className="hidden sm:inline text-slate-300 dark:text-zinc-700">&bull;</span>
-          {!(isFamilyConnected && !currentUser) && <a href={new URL('/pricing/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Bảng giá' : 'Pricing'}</a>}
-          {!(isFamilyConnected && !currentUser) && <a href={new URL('/docs/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{language === 'vi' ? 'Tài liệu sử dụng' : 'User guide'}</a>}
-          {!(isFamilyConnected && !currentUser) && <a href={new URL('/privacy/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Quyền riêng tư</a>}
-          {!(isFamilyConnected && !currentUser) && <a href={new URL('/terms/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Điều khoản</a>}
-          {!(isFamilyConnected && !currentUser) && <a href={new URL('/contact/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">Liên hệ</a>}
+          {!(isFamilyConnected && !currentUser) && <a href={new URL('/pricing/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{footerCopy.pricing}</a>}
+          {!(isFamilyConnected && !currentUser) && <a href={new URL('/docs/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{footerCopy.guide}</a>}
+          {!(isFamilyConnected && !currentUser) && <a href={new URL('/privacy/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{footerCopy.privacy}</a>}
+          {!(isFamilyConnected && !currentUser) && <a href={new URL('/terms/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{footerCopy.terms}</a>}
+          {!(isFamilyConnected && !currentUser) && <a href={new URL('/contact/', marketingOrigin).href} className="font-bold text-indigo-600 hover:underline dark:text-indigo-400">{footerCopy.contact}</a>}
         </div>
       </footer>
 
