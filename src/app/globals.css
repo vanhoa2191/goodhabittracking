@@ -226,3 +226,16 @@ button, input, select, textarea {
   .print-week-root .print-week-summary { margin-top: 12pt; font-size: 12pt; font-weight: 600; }
   .print-week-root .print-week-footer { margin-top: 18pt; font-size: 9pt; color: #666; }
 }
+
+/* The child's screen tuned to age (see src/lib/age-band.ts; the numbers here match its traits). */
+[data-age-band='young'] { --kid-tap: 64px; --kid-radius: 24px; --kid-font-scale: 1.1; }
+[data-age-band='tween'] { --kid-tap: 48px; --kid-radius: 16px; --kid-font-scale: 1; }
+[data-age-band='teen'] { --kid-tap: 44px; --kid-radius: 10px; --kid-font-scale: 1; }
+[data-age-band] [data-testid='kid-hero'],
+[data-age-band] [data-task-card] { border-radius: var(--kid-radius); }
+[data-age-band] [data-task-toggle] {
+  width: var(--kid-tap);
+  height: var(--kid-tap);
+  border-radius: calc(var(--kid-radius) * 0.75);
+}
+[data-age-band] [data-task-card] h4 { font-size: calc(1rem * var(--kid-font-scale)); }
