@@ -4,12 +4,14 @@ import { parse } from '@libpg-query/parser';
 import { describe, expect, it } from 'vitest';
 
 const migration = readFileSync(resolve('supabase/migrations/202610020003_age_band_override.sql'), 'utf8');
+const preflight = readFileSync(resolve('supabase/preflight/202610020003_age_band_override.verify.sql'), 'utf8');
 const rollback = readFileSync(resolve('supabase/rollbacks/202610020003_age_band_override.rollback.sql'), 'utf8');
 
 describe('age band override migration', () => {
   it('parses, with the migration and its rollback', async () => {
     await expect(parse(migration)).resolves.toBeDefined();
     await expect(parse(rollback)).resolves.toBeDefined();
+    await expect(parse(preflight)).resolves.toBeDefined();
   });
 
   it('adds a column limited to the three bands and off', () => {
