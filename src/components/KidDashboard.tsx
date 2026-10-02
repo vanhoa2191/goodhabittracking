@@ -61,6 +61,9 @@ import type { BadgeGroupKey } from '@/lib/badges/badge-copy';
 import { badgeProgress, computeBadgeMetrics, countHeldPortraitBadges } from '@/lib/badges/badge-progress';
 import { useBadgeAwards } from '@/lib/badges/use-badge-awards';
 import { ReadAloudButton } from './ReadAloudButton';
+import { AgeThemeNotice } from './AgeThemeNotice';
+import { useAgeTheme } from './useAgeTheme';
+import { getAgeThemeCopy } from '@/lib/i18n/age-theme-copy';
 
 export function KidDashboard() {
   const {
@@ -107,6 +110,7 @@ export function KidDashboard() {
     experience,
     pausePeriods: familyPausePeriods,
   });
+  const ageTheme = useAgeTheme(activeChild);
   const badgeAwards = useBadgeAwards({ child: activeChild ?? null, badges, logs, activities, childBadges });
 
   const completeTask = async (activity: HabitActivity, date: string, isCompleting: boolean) => {
@@ -121,7 +125,7 @@ export function KidDashboard() {
       if (!reduceMotion) setPointBurstId(activity.id);
       setPraise({
         activityId: activity.id,
-        text: kidPraise(language, { points: activity.points, waitsForParent: activity.requiresApproval, seed: activity.id }),
+        text: kidPraise(language, { points: activity.points, waitsForParent: activity.requiresApproval, seed: activity.id, band: ageTheme.band }),
       });
     } else {
       setPraise(null);
@@ -263,7 +267,12 @@ export function KidDashboard() {
     .filter((group) => group.items.length > 0);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6 sm:py-8 space-y-6 animate-fade-in">
+    <div
+      data-age-band={ageTheme.band ?? undefined}
+      data-age-style={ageTheme.band === 'teen' ? (ageTheme.leanTeen ? 'compact' : 'companion') : undefined}
+      className="max-w-4xl mx-auto px-4 py-6 sm:py-8 space-y-6 animate-fade-in"
+    >
+      {ageTheme.showNotice && <AgeThemeNotice theme={ageTheme} language={language} />}
       {/* Kid Profile Hero Card */}
       <div
         data-testid="kid-hero"
@@ -277,7 +286,7 @@ export function KidDashboard() {
 
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-5">
           <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-            <div className="relative group shrink-0">
+            {!ageTheme.leanTeen && <div className="relative group shrink-0">
               <button
                 type="button"
                 onClick={() => setIsAvatarPickerOpen(true)}
@@ -290,7 +299,7 @@ export function KidDashboard() {
                   <Palette className="w-5 h-5 text-white drop-shadow" />
                 </span>
               </button>
-            </div>
+            </div>}
 
             <div className="min-w-0">
               <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
@@ -311,11 +320,22 @@ export function KidDashboard() {
               <h1 className="font-display text-xl min-[360px]:text-2xl sm:text-3xl font-bold leading-tight tracking-tight">
                 {activeChild.name}
               </h1>
-              <p className="text-sm text-amber-950/80 font-semibold">
-                {activeChild.ageStage === '0-3'
-                  ? copy.infantJournal(activeChild.name)
-                  : `${t.greeting} ${activeChild.name}! ✨`}
-              </p>
+              {ageTheme.band !== 'teen' && (
+                <p className="text-sm text-amber-950/80 font-semibold">
+                  {activeChild.ageStage === '0-3'
+                    ? copy.infantJournal(activeChild.name)
+                    : `${t.greeting} ${activeChild.name}! ✨`}
+                </p>
+              )}
+              {ageTheme.band === 'teen' && !ageTheme.showNotice && (
+                <button
+                  type="button"
+                  onClick={ageTheme.toggleTeenStyle}
+                  className="mt-1 min-h-11 rounded-lg px-1 text-xs font-bold text-amber-950/80 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                >
+                  {getAgeThemeCopy(language).switchStyle}
+                </button>
+              )}
             </div>
           </div>
 
@@ -326,7 +346,7 @@ export function KidDashboard() {
               <div className="min-w-0 leading-tight">
                 <div className="text-xl font-black">{activeChild.points}</div>
                 <div className="truncate text-xs font-semibold text-amber-950 uppercase sm:tracking-wide">
-                  {t.stars}
+                  {ageTheme.traits?.rewardWord === 'points' ? getAgeThemeCopy(language).pointsLabel : t.stars}
                 </div>
               </div>
             </div>
@@ -649,6 +669,7 @@ export function KidDashboard() {
                                 event.stopPropagation();
                                 void completeTask(act, dateStr, !isDone);
                               }}
+                              data-task-toggle
                               className={`shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-90 hover:scale-105 border-2 shadow-xs hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                                 isDone
                                   ? 'bg-emerald-500 border-emerald-600 text-white shadow-emerald-200 dark:shadow-none'
