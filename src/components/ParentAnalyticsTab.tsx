@@ -10,16 +10,22 @@ import { ParentJournalPanel } from '@/components/ParentJournalPanel';
 import { AchievementShareDialog } from '@/components/AchievementShareDialog';
 import { localDayKey } from '@/lib/local-day';
 import { PrintWeekButtons } from '@/components/PrintableWeek';
+import { useConfirm } from '@/components/ui/ConfirmDialog';
+import { InlineNotice, useNotice } from '@/components/ui/InlineNotice';
+
+const DELETE_FAMILY_PHRASE = 'DELETE FAMILY';
 
 export function ParentAnalyticsTab() {
   const { logs, currentUser, logout } = useAppStore();
   const { t, language } = useTranslation();
   const copy = getParentSecondaryCopy(language);
   const [isDeletingFamily, setIsDeletingFamily] = useState(false);
+  const { confirm, dialog } = useConfirm();
+  const { notice, notify } = useNotice();
 
   const handleDeleteFamily = async () => {
-    const confirmation = window.prompt(copy.deleteFamilyPrompt);
-    if (confirmation !== 'DELETE FAMILY') return;
+    const confirmation = DELETE_FAMILY_PHRASE;
+    if (!await confirm({ message: copy.deleteFamilyPrompt, confirmLabel: t.delete, destructive: true, requireText: confirmation })) return;
 
     setIsDeletingFamily(true);
     try {
@@ -36,13 +42,15 @@ export function ParentAnalyticsTab() {
       await logout();
       window.location.reload();
     } catch (error) {
-      alert(error instanceof Error ? error.message : copy.deleteFamilyError);
+      notify(error instanceof Error ? error.message : copy.deleteFamilyError, 'error');
       setIsDeletingFamily(false);
     }
   };
 
   return (
     <div className="space-y-6">
+      {dialog}
+      <InlineNotice notice={notice} />
       <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">
         {t.analytics} ({copy.analyticsReport})
       </h3>

@@ -64,6 +64,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   const [phone, setPhone] = useState(isValidPhone(parentProfile?.phoneOrEmail) ? parentProfile?.phoneOrEmail ?? '' : '');
   const [marketingConsent, setMarketingConsent] = useState(false);
   const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [parentNameError, setParentNameError] = useState<string | null>(null);
   const [isSavingParent, setIsSavingParent] = useState(false);
   const [isProfileLoading, setIsProfileLoading] = useState(false);
   const currentUserId = currentUser?.id ?? null;
@@ -130,7 +131,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   const handleNextStep = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!parentName.trim()) {
-      alert(copy.parentNameRequired);
+      setParentNameError(copy.parentNameRequired);
       return;
     }
 
@@ -164,7 +165,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   const handleCompleteRegistration = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!childName.trim()) {
-      alert(copy.childNameRequired);
+      setSubmitError(copy.childNameRequired);
       return;
     }
     if (!hasConsent) {
@@ -284,9 +285,12 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   required
                   placeholder={copy.parentNamePlaceholder}
                   value={parentName}
-                  onChange={(e) => setParentName(e.target.value)}
+                  onChange={(e) => { setParentName(e.target.value); setParentNameError(null); }}
+                  aria-invalid={parentNameError ? true : undefined}
+                  aria-describedby={parentNameError ? 'onboarding-parent-name-error' : undefined}
                   className="w-full py-2.5 px-3.5 rounded-2xl border border-slate-200 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-800 text-sm font-semibold focus:ring-2 focus:ring-indigo-500 focus:outline-hidden"
                 />
+                {parentNameError && <p id="onboarding-parent-name-error" role="alert" className="mt-1.5 text-xs font-bold text-rose-700 dark:text-rose-300">{parentNameError}</p>}
               </div>
 
               {/* Parent Role */}
