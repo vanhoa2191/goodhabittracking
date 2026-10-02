@@ -85,7 +85,7 @@ export const vi = {
   featCloudSync: 'Đồng bộ Cloud đa thiết bị',
   featFullSync: 'Đồng bộ tức thì mọi điện thoại & iPad',
   featHabitBasic: 'Thói quen cơ bản',
-  featHabitFull: '50+ thói quen chuẩn & 7 việc tốt',
+  featHabitFull: '40+ thói quen chuẩn & 7 việc tốt',
   featHabitLib: 'Thư viện thói quen toàn diện',
   featLocalOnly: 'Chỉ lưu trên 1 máy',
   featRoadmapBasic: 'Xem mẫu cơ bản',

@@ -85,7 +85,7 @@ export const it = {
   featCloudSync: 'Sincronizzazione Cloud dispositivi',
   featFullSync: 'Sincronizzazione istantanea su smartphone e tablet',
   featHabitBasic: 'Abitudini di base',
-  featHabitFull: '50+ abitudini e 7 buone azioni',
+  featHabitFull: '40+ abitudini e 7 buone azioni',
   featHabitLib: 'Libreria completa di abitudini',
   featLocalOnly: 'Solo su questo dispositivo',
   featRoadmapBasic: 'Anteprima di base',

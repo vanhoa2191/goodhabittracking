@@ -10,8 +10,8 @@ export const PRICING_PLANS: PricingPlan[] = [
     description: 'Mở khóa trọn bộ tính năng Pro, không cần thẻ tín dụng',
     features: [
       'Không giới hạn số lượng bé',
-      'Mở khóa trọn bộ 50+ thói quen & 7 Bố thí',
-      'Lộ trình 4 tuần & 12 tháng chuyên sâu',
+      'Mở khóa trọn bộ 40+ thói quen & 7 Bố thí',
+      'Lộ trình theo độ tuổi',
       'Đồng bộ đám mây trên nhiều thiết bị',
       'Bảng xếp hạng & Thử thách nhóm',
       'Không tự động trừ tiền khi hết hạn',
