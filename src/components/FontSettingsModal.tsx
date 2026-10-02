@@ -9,6 +9,7 @@ import {
   FontSizeChoice,
 } from '@/lib/appearance-context';
 import { useTranslation } from '@/lib/i18n/context';
+import { getSmallModalsCopy } from '@/lib/i18n/small-modals-copy';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { ThemeSelector } from '@/components/ThemeSelector';
 
@@ -19,12 +20,13 @@ interface FontSettingsModalProps {
 
 export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
   const { fontFamily, setFontFamily, fontSize, setFontSize } = useAppearance();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  const modalCopy = getSmallModalsCopy(language);
 
   if (!isOpen) return null;
 
   return (
-    <ModalShell isOpen={isOpen} onClose={onClose} label="Cài đặt chữ">
+    <ModalShell isOpen={isOpen} onClose={onClose} label={modalCopy.fontSettingsLabel}>
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -121,9 +123,9 @@ export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
 
           {/* Live Preview Box */}
           <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-indigo-50 dark:from-zinc-800 dark:to-zinc-800 border border-slate-200/80 dark:border-zinc-700 text-center">
-            <span className="text-xs font-bold text-slate-500 block mb-1">Xem trước mẫu chữ:</span>
+            <span className="text-xs font-bold text-slate-500 block mb-1">{modalCopy.fontPreviewLabel}</span>
             <p className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 leading-relaxed">
-              🌟 Chào bé yêu! Hôm nay chúng mình cùng hoàn thành việc tốt và tích sao đổi quà nhé!
+              <span aria-hidden="true">🌟 </span>{modalCopy.fontPreviewText}
             </p>
           </div>
         </div>
