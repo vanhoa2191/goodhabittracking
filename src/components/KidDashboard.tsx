@@ -438,7 +438,7 @@ export function KidDashboard() {
       {defaultExperienceFlags.habitPrograms && visibleTab === 'tasks' && <ChildSelfReportPrompt />}
 
       {/* Main Tab Navigation */}
-      <div className={`hidden sm:grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>
+      <div data-testid="kid-tabs" className={`hidden sm:grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>
         <button
           onClick={() => setActiveTab('tasks')}
           aria-pressed={visibleTab === 'tasks'}

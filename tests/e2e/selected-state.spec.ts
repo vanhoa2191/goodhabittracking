@@ -5,7 +5,7 @@ test('the child navigation says which section is open', async ({ page }) => {
   await page.goto('/?demo=1');
   const tabs = page.getByRole('button', { pressed: true });
   await expect(tabs.first()).toBeVisible();
-  const nav = page.locator('div.grid').filter({ has: page.getByRole('button', { name: /Nhiệm vụ|Tasks/i }) }).first();
+  const nav = page.locator('[data-testid="kid-tabs"], [data-testid="kid-bottom-nav"]').filter({ visible: true }).first();
   await expect(nav.getByRole('button', { pressed: true })).toHaveCount(1);
   await expect(nav.getByRole('button', { pressed: true })).toContainText(/Nhiệm vụ|Tasks/i);
   const second = nav.getByRole('button', { pressed: false }).first();
