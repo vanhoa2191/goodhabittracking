@@ -2,7 +2,7 @@
 
 import { getRewardStockCopy } from '@/lib/i18n/reward-mutation-copy';
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
   Sparkles,
@@ -111,6 +111,17 @@ export function KidDashboard() {
     pausePeriods: familyPausePeriods,
   });
   const ageTheme = useAgeTheme(activeChild);
+  const contentTopRef = useRef<HTMLDivElement | null>(null);
+  const [contentTopInView, setContentTopInView] = useState(true);
+  const activeChildId = activeChild?.id;
+  // The list sits under the letter and the journal card; this tells the bottom bar whether the child can already see it.
+  useEffect(() => {
+    const target = contentTopRef.current;
+    if (!target || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(([entry]) => setContentTopInView(entry?.isIntersecting ?? true), { rootMargin: '0px 0px -72px 0px' });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [activeChildId]);
   const badgeAwards = useBadgeAwards({ child: activeChild ?? null, badges, logs, activities, childBadges });
 
   const completeTask = async (activity: HabitActivity, date: string, isCompleting: boolean) => {
@@ -223,6 +234,20 @@ export function KidDashboard() {
   const totalDue = dueActivities.length;
   const progressPercent = totalDue > 0 ? Math.round((completedCount / totalDue) * 100) : 100;
 
+  const bottomTabs: { id: 'tasks' | 'leaderboard' | 'rewards' | 'badges'; Icon: typeof CheckCheck; label: string; tone: string }[] = [
+    { id: 'tasks', Icon: CheckCheck, label: t.tasks, tone: 'text-indigo-600 dark:text-indigo-400' },
+    ...(isFamilyPaused ? [] : [{ id: 'leaderboard' as const, Icon: Trophy, label: t.bxhShort, tone: 'text-amber-600 dark:text-amber-400' }]),
+    { id: 'rewards', Icon: Gift, label: t.rewardsShort, tone: 'text-pink-600 dark:text-pink-400' },
+    { id: 'badges', Icon: Award, label: t.badgesShort, tone: 'text-amber-600 dark:text-amber-400' },
+  ];
+
+  // The bottom bar opens a section and brings its content to the top, past the letter and the journal card.
+  const showTab = (tab: 'tasks' | 'leaderboard' | 'rewards' | 'badges') => {
+    setActiveTab(tab);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    contentTopRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  };
+
   // Group activities by time of day
   const timeSections: { key: TimeOfDay; title: string; icon: React.ReactNode; color: string }[] = [
     { key: 'morning', title: t.morning, icon: <Sun className="w-4 h-4" />, color: 'text-amber-500 bg-amber-50 dark:bg-amber-950/30' },
@@ -267,10 +292,11 @@ export function KidDashboard() {
     .filter((group) => group.items.length > 0);
 
   return (
+    <>
     <div
       data-age-band={ageTheme.band ?? undefined}
       data-age-style={ageTheme.band === 'teen' ? (ageTheme.leanTeen ? 'compact' : 'companion') : undefined}
-      className="max-w-4xl mx-auto px-4 py-6 sm:py-8 space-y-6 animate-fade-in"
+      className="max-w-4xl mx-auto px-4 pt-6 pb-28 sm:py-8 space-y-6 animate-fade-in"
     >
       {ageTheme.showNotice && <AgeThemeNotice theme={ageTheme} language={language} />}
       {/* Kid Profile Hero Card */}
@@ -409,12 +435,10 @@ export function KidDashboard() {
         />
       )}
 
-      {defaultExperienceFlags.dailyJournal && activeChild.ageStage !== '0-3' && <DailyJournalCard />}
-
       {defaultExperienceFlags.habitPrograms && visibleTab === 'tasks' && <ChildSelfReportPrompt />}
 
       {/* Main Tab Navigation */}
-      <div className={`grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>
+      <div className={`hidden sm:grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>
         <button
           onClick={() => setActiveTab('tasks')}
           aria-pressed={visibleTab === 'tasks'}
@@ -467,6 +491,8 @@ export function KidDashboard() {
           <span className="sm:hidden">{t.badgesShort}</span>
         </button>
       </div>
+
+      <div ref={contentTopRef} aria-hidden="true" className="-my-3 h-px scroll-mt-20" />
 
       {/* TAB 1: DAILY TASKS */}
       {visibleTab === 'tasks' && (
@@ -1005,8 +1031,45 @@ export function KidDashboard() {
       />
       <TaskDetailsModal activity={selectedTask} onClose={() => setSelectedTask(null)} />
 
+      {/* The evening note comes after the day's content, so the list is not pushed down by it. */}
+      {defaultExperienceFlags.dailyJournal && activeChild.ageStage !== '0-3' && <DailyJournalCard />}
+
       {/* Child Mascot / Avatar Picker Modal */}
       {isAvatarPickerOpen && <MascotPickerController onClose={() => setIsAvatarPickerOpen(false)} />}
     </div>
+
+      <nav
+        aria-label={copy.navLabel}
+        data-testid="kid-bottom-nav"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden dark:border-zinc-800 dark:bg-zinc-900/95"
+      >
+        <div className={`mx-auto grid max-w-xl ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} gap-1 px-2 py-1.5`}>
+          {bottomTabs.map(({ id, Icon, label, tone }) => {
+            const selected = visibleTab === id;
+            const nudge = id === 'tasks' && selected && !contentTopInView && totalDue - completedCount > 0;
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => showTab(id)}
+                aria-pressed={selected}
+                data-nudge={nudge ? 'true' : undefined}
+                className={`relative flex min-h-14 min-w-0 flex-col items-center justify-center gap-0.5 rounded-xl px-1 text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                  selected ? `bg-slate-100 dark:bg-zinc-800 ${tone}` : 'text-slate-600 dark:text-slate-300'
+                } ${nudge ? 'ring-2 ring-indigo-400 motion-safe:animate-pulse' : ''}`}
+              >
+                <Icon aria-hidden="true" className="h-5 w-5 shrink-0" />
+                <span className="max-w-full truncate">{label}</span>
+                {id === 'tasks' && totalDue - completedCount > 0 && (
+                  <span aria-hidden="true" className="absolute right-2 top-0.5 min-w-5 rounded-full bg-rose-500 px-1.5 text-center text-[11px] font-black leading-5 text-white">
+                    {totalDue - completedCount}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+    </>
   );
 }
