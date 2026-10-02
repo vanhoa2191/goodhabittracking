@@ -169,3 +169,15 @@ if (finePointer && motionAllowed) {
     }
   });
 }
+
+// Images below the first screen are lazy so the page opens fast. Once the page has loaded and the browser is idle,
+// the rest are fetched in the background, so a quick scroll never lands on an empty phone frame or mascot card.
+(() => {
+  const warm = () => {
+    if (navigator.connection && navigator.connection.saveData) return;
+    for (const image of document.querySelectorAll('img[loading="lazy"]')) image.loading = 'eager';
+  };
+  const afterLoad = () => ('requestIdleCallback' in window ? window.requestIdleCallback(warm, { timeout: 4000 }) : window.setTimeout(warm, 2000));
+  if (document.readyState === 'complete') afterLoad();
+  else window.addEventListener('load', afterLoad, { once: true });
+})();

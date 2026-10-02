@@ -201,7 +201,7 @@ describe('marketing static artifact', () => {
 
   it('orders the sales story from promise to proof to price to action', async () => {
     const { html } = await buildFixture();
-    const order = ['class="hero"', 'class="trust-bar"', 'id="chan-dung"', 'class="section shift"', 'id="cach-hoat-dong"', 'class="section features"', 'class="section companions"', 'class="section safety"', 'class="section early"', 'id="bang-gia"', 'class="section faq-section"', 'class="final-cta"'];
+    const order = ['class="hero"', 'class="section shift"', 'id="cach-hoat-dong"', 'id="chan-dung"', 'class="section companions"', 'class="section safety"', 'id="bang-gia"', 'class="section faq-section"', 'class="final-cta"'];
     const positions = order.map((marker) => html.indexOf(marker));
     expect(positions.every((position) => position > -1)).toBe(true);
     expect([...positions].sort((a, b) => a - b)).toEqual(positions);
@@ -210,12 +210,14 @@ describe('marketing static artifact', () => {
   it('shows real product screens with sample-data disclosure, sized and lazily loaded below the fold', async () => {
     const { outputDir, html } = await buildFixture();
     expect(html).toMatch(/<img class="phone-screen" src="\/screens\/kid-home\.webp"[^>]*width="600" height="1298"[^>]*fetchpriority="high"/);
-    for (const screen of ['kid-tasks', 'kid-home', 'parent-approvals']) {
+    for (const screen of ['kid-tasks', 'kid-home', 'parent-approvals', 'parent-roadmap']) {
       expect((await stat(join(outputDir, 'screens', `${screen}.webp`))).size).toBeGreaterThan(5000);
       expect(html).toContain(`src="/screens/${screen}.webp"`);
     }
     const stepImages = html.match(/<img src="\/screens\/[^"]+"[^>]*>/g) ?? [];
     expect(stepImages).toHaveLength(3);
+    // Every screen is used once: the hero's child screen is not repeated in the steps.
+    expect(html.match(/src="\/screens\/kid-home\.webp"/g)).toHaveLength(1);
     for (const image of stepImages) {
       expect(image).toMatch(/alt="[^"]{20,}"/);
       expect(image).toContain('loading="lazy"');
@@ -238,12 +240,13 @@ describe('marketing static artifact', () => {
     expect(new Set(trialLinks).size).toBe(3);
   });
 
-  it('invites early families instead of inventing testimonials, and publishes only consented quotes', async () => {
+  it('shows no early-families invitation and no mailto link on the home page, and publishes only consented quotes', async () => {
     const outputDir = await makeOutput('kidhabit-marketing-early-');
     await buildMarketingSite({ appOrigin: 'https://app.example', marketingOrigin: 'https://www.example', outputDir, supportEmail: 'support@example.com' });
     const html = await readFile(join(outputDir, 'index.html'), 'utf8');
-    expect(html).toContain('Cùng xây KidHabit với những gia đình đầu tiên');
-    expect(html).toContain('href="mailto:support@example.com?subject=');
+    expect(html).not.toContain('Cùng xây KidHabit với những gia đình đầu tiên');
+    expect(html).not.toContain('Chương trình gia đình đầu tiên');
+    expect(html).not.toContain('mailto:');
     expect(html).not.toContain('class="quote-card"');
     expect(html).not.toContain('Gia đình nói gì');
 
@@ -261,18 +264,57 @@ describe('marketing static artifact', () => {
     }
   });
 
-  it('positions KidHabit as education through habits', async () => {
+  it('leads with the parents’ tiredness and names the audience, keeping the portrait idea as depth lower down', async () => {
     const { html } = await buildFixture();
-    expect(html).toContain('<title>KidHabit Hero | Giáo dục con qua thói quen mỗi ngày</title>');
-    expect(html).toMatch(/<h1>Từng thói quen nhỏ vẽ nên chân dung tốt đẹp của con<\/h1>/);
-    expect(html).toContain('Ứng dụng đồng hành giáo dục con qua thói quen');
-    expect(html).toContain('Mỗi thói quen là một nét vẽ nên chân dung của con');
+    expect(html).toContain('<title>KidHabit Hero | Bớt nhắc, để con tự làm việc nhỏ mỗi ngày</title>');
+    expect(html).toMatch(/<h1>Bớt nhắc, để con tự làm việc nhỏ mỗi ngày<\/h1>/);
+    expect(html).toContain('Ứng dụng thói quen cho bé 4–12 tuổi');
+    expect(html).not.toContain('Từng thói quen nhỏ vẽ nên chân dung tốt đẹp của con</h1>');
+    expect(html.indexOf('Mỗi thói quen là một nét vẽ nên chân dung của con')).toBeGreaterThan(html.indexOf('id="cach-hoat-dong"'));
     expect(html).not.toMatch(/\b(số 1|top 1|#1)\b/i);
+  });
+
+  it('highlights the yearly plan, says what follows the trial and keeps the plan features current', async () => {
+    const { html } = await buildFixture();
+    expect(html).toMatch(/price-card price-card-featured" data-plan="yearly"/);
+    expect(html).not.toMatch(/price-card price-card-featured" data-plan="monthly"/);
+    expect(html).toContain('Hết 7 ngày dùng thử, ba mẹ chọn một gói để tiếp tục ghi nhận việc của con.');
+    expect(html).toContain('Lộ trình theo độ tuổi');
+    expect(html).not.toContain('Lộ trình tuần và tháng');
+  });
+
+  it('answers the age, the trial and the replace-the-parent questions and does not say "đủ điều kiện"', async () => {
+    const { html } = await buildFixture();
+    for (const question of ['Con bao nhiêu tuổi thì phù hợp?', 'Hết 7 ngày dùng thử thì sao?', 'KidHabit có thay thế việc ba mẹ dạy con không?']) expect(html).toContain(question);
+    expect(html).not.toContain('đủ điều kiện');
+  });
+
+  it('says the trial promise a few times, not on every screen', async () => {
+    const { html } = await buildFixture();
+    const text = html.slice(html.indexOf('<body')).replace(/<[^>]+>/g, ' ');
+    expect((text.match(/không cần thẻ/gi) ?? []).length).toBeLessThanOrEqual(6);
+    expect((text.match(/hoàn tiền/gi) ?? []).length).toBeLessThanOrEqual(6);
+  });
+
+  it('scrolls to a section from the top navigation when the home page has it, and links to the page otherwise', async () => {
+    const { outputDir, html } = await buildFixture();
+    const nav = (page: string) => page.match(/<nav id="primary-navigation"[\s\S]*?<\/nav>/)?.[0] ?? '';
+    const home = nav(html);
+    expect(home).toContain('<a href="#chan-dung">Khung thói quen</a>');
+    expect(home).toContain('<a href="#bang-gia">Bảng giá</a>');
+    // No section for these on the home page: they open their own pages.
+    for (const href of ['/science/', '/roadmaps/', '/blog/', '/docs/']) expect(home).toContain(`<a href="${href}">`);
+    for (const id of ['chan-dung', 'bang-gia']) expect(html).toContain(`id="${id}"`);
+    // Elsewhere the same items go to their pages.
+    const pricing = nav(await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8'));
+    expect(pricing).toContain('<a href="/framework/">Khung thói quen</a>');
+    expect(pricing).toContain('<a href="/pricing/">Bảng giá</a>');
+    expect(pricing).not.toContain('href="#');
   });
 
   it('explains what the portraits section means without listing the sixteen portraits', async () => {
     const { html } = await buildFixture();
-    const section = html.slice(html.indexOf('id="chan-dung"'), html.indexOf('class="section shift"'));
+    const section = html.slice(html.indexOf('id="chan-dung"'), html.indexOf('class="section companions"'));
     expect(section).toContain('Mỗi thói quen là một nét vẽ nên chân dung của con');
     expect(section).toContain('Chân dung</strong> là hình ảnh con lớn lên');
     expect(section).not.toMatch(/16 chân dung|mười sáu|data-portrait|portrait-chip/);
@@ -287,7 +329,7 @@ describe('marketing static artifact', () => {
     const { html } = await buildFixture();
     expect(html).toContain('<section class="hero" data-hero>');
     expect(html.match(/class="phone[^"]*" data-tilt/g)?.length).toBeGreaterThanOrEqual(4);
-    expect(html.match(/data-spotlight/g)?.length).toBeGreaterThan(15);
+    expect(html.match(/data-spotlight/g)?.length).toBeGreaterThan(8);
     expect(html.match(/data-magnetic/g)).toHaveLength(4);
     const script = await readFile(join(process.cwd(), 'apps', 'marketing', 'client.js'), 'utf8');
     expect(script).toContain("(hover: hover) and (pointer: fine)");
@@ -333,7 +375,9 @@ describe('marketing static artifact', () => {
     const { html } = await buildFixture();
     expect(html).toContain('Nhắc mãi không phải cách duy nhất');
     expect(html).toContain('Ba mẹ nắm quyền, con được bảo vệ');
-    expect(html.match(/<li>\s*<svg class="icon[^>]*>[\s\S]*?<\/svg><div><strong>/g)).toHaveLength(4);
+    const safety = html.match(/<ul class="safety-list">[\s\S]*?<\/ul>/)?.[0] ?? '';
+    expect(safety.match(/<li>/g)).toHaveLength(4);
+    expect(html).toContain('không quảng cáo, không bán dữ liệu của bé');
     expect(html).not.toMatch(/\b(số 1|top 1|#1)\b/i);
   });
 
