@@ -7,6 +7,7 @@ import type { Language } from '@/types';
 import { dailyLetterFor, letterFromTemplateKey } from '@/lib/daily-mascot-letter';
 import { getMascot } from '@/lib/mascots';
 import { useAppStore } from '@/lib/store';
+import { getLetterCopy } from '@/lib/i18n/letter-copy';
 
 const cloudLetterSchema = z.object({
   templateKey: z.string().regex(/^(leo|bunny|panda|fox|turtle|bee)_[0-2]$/),
@@ -88,7 +89,7 @@ export function MorningMascotLetter({ childId, childName, avatar, language }: Pr
   const selectedTemplate = isDemoSession ? localRow?.template_key ?? templateKey : cloudReady?.templateKey;
   const readAt = isDemoSession ? localRow?.read_at ?? null : cloudReady?.readAt ?? null;
   const letter = selectedTemplate ? letterFromTemplateKey(selectedTemplate, language, childName, now) : null;
-  const isVietnamese = language === 'vi';
+  const copy = getLetterCopy(language);
   const letterMascot = selectedTemplate ? getMascot(`mascot:${selectedTemplate.split('_')[0]}`) : null;
   const mascotName = letterMascot?.name ?? getMascot(avatar)?.name ?? 'Leo';
 
@@ -132,16 +133,16 @@ export function MorningMascotLetter({ childId, childName, avatar, language }: Pr
         </span>
         <div className="min-w-0 flex-1">
           <h2 id="morning-letter-title" className="text-lg font-extrabold text-sand-900 dark:text-slate-100">
-            {isVietnamese ? `Thư buổi sáng từ ${mascotName}` : `Morning letter from ${mascotName}`}
+            {copy.title(mascotName)}
           </h2>
           <p className="text-sm font-medium text-sand-700 dark:text-slate-300">
-            {new Intl.DateTimeFormat(isVietnamese ? 'vi-VN' : 'en-US', { day: 'numeric', month: 'long' }).format(now)}
+            {new Intl.DateTimeFormat(language, { day: 'numeric', month: 'long' }).format(now)}
           </p>
         </div>
         {readAt && (
           <div className="basis-full pl-14 sm:ml-auto sm:basis-auto sm:pl-0">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-sm font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-              <CheckCircle2 className="size-4" /> {isVietnamese ? 'Đã đọc' : 'Read'}
+              <CheckCircle2 className="size-4" /> {copy.read}
             </span>
           </div>
         )}
@@ -149,9 +150,9 @@ export function MorningMascotLetter({ childId, childName, avatar, language }: Pr
 
       {cloudError ? (
         <div className="mt-4" role="status">
-          <p className="text-sm text-sand-700 dark:text-slate-300">{isVietnamese ? 'Chưa tải được thư. Vui lòng thử lại.' : 'The letter could not be loaded. Please try again.'}</p>
+          <p className="text-sm text-sand-700 dark:text-slate-300">{copy.loadFailed}</p>
           <button type="button" onClick={() => setRetryCount((count) => count + 1)} className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl border border-amber-300 px-4 text-sm font-bold text-sand-900 hover:bg-amber-100 dark:border-zinc-600 dark:text-slate-100 dark:hover:bg-zinc-800">
-            <RotateCcw className="size-4" /> {isVietnamese ? 'Thử lại' : 'Try again'}
+            <RotateCcw className="size-4" /> {copy.retry}
           </button>
         </div>
       ) : letter ? (
@@ -161,17 +162,17 @@ export function MorningMascotLetter({ childId, childName, avatar, language }: Pr
             <>
               {readError && (
                 <p className="mt-3 text-sm font-semibold text-red-700 dark:text-red-300" role="alert">
-                  {isVietnamese ? 'Chưa lưu được trạng thái đã đọc. Hãy thử lại.' : 'Could not save your read status. Please try again.'}
+                  {copy.saveFailed}
                 </p>
               )}
               <button type="button" disabled={saving} onClick={() => void markRead()} className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-indigo-600 px-5 text-sm font-bold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60">
-                <CheckCircle2 className="size-4" /> {saving ? (isVietnamese ? 'Đang lưu…' : 'Saving…') : (isVietnamese ? 'Mình đã đọc' : 'I have read it')}
+                <CheckCircle2 className="size-4" /> {saving ? copy.saving : copy.markRead}
               </button>
             </>
           )}
         </>
       ) : (
-        <p className="mt-4 text-sm text-sand-700 dark:text-slate-300" role="status">{isVietnamese ? 'Đang mở thư…' : 'Opening your letter…'}</p>
+        <p className="mt-4 text-sm text-sand-700 dark:text-slate-300" role="status">{copy.opening}</p>
       )}
     </section>
   );
