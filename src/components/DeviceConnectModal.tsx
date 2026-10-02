@@ -74,8 +74,14 @@ export function DeviceConnectModal({ isOpen, onClose, onSuccess }: DeviceConnect
   }, [connectWithFamilyCode, copy.defaultFamily, copy.errorFallback, onSuccess]);
 
   useEffect(() => {
-    const token = new URL(window.location.href).searchParams.get('pair');
-    if (token && token.length >= 32) queueMicrotask(() => setDeepLinkToken(token));
+    const url = new URL(window.location.href);
+    const token = url.searchParams.get('pair');
+    if (token === null) return;
+    // The link a camera app opened is used once: take it off the address bar at once, so a reload, a bookmark or a
+    // shared screenshot of the address never carries the pairing code.
+    url.searchParams.delete('pair');
+    window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    if (token.length >= 32) queueMicrotask(() => setDeepLinkToken(token));
   }, []);
 
   useEffect(() => {
