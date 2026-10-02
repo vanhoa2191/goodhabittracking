@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Copy, UserRoundPlus, XCircle } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { getCaregiverCopy } from '@/lib/i18n/caregiver-copy';
+import { HelpTip } from '@/components/help/HelpTip';
 
 type InviteSummary = Readonly<{
   id: string;
@@ -79,7 +80,7 @@ export function CaregiverInvitesPanel() {
 
   return (
     <section className="rounded-3xl border border-indigo-100 bg-white p-6 dark:border-indigo-900 dark:bg-zinc-900" aria-labelledby="caregiver-invites-title">
-      <h4 id="caregiver-invites-title" className="flex items-center gap-2 text-base font-black text-slate-900 dark:text-white"><UserRoundPlus className="h-5 w-5 text-indigo-600" aria-hidden="true" />{copy.panelTitle}</h4>
+      <div className="flex items-center gap-1"><h4 id="caregiver-invites-title" className="flex items-center gap-2 text-base font-black text-slate-900 dark:text-white"><UserRoundPlus className="h-5 w-5 text-indigo-600" aria-hidden="true" />{copy.panelTitle}</h4><HelpTip topic="settings.caregivers" /></div>
       <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{copy.panelIntro}</p>
       <button type="button" onClick={() => void createInvite()} disabled={busy} className="mt-4 min-h-11 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white hover:bg-indigo-700 disabled:opacity-60">{copy.panelCreate}</button>
 

@@ -8,6 +8,7 @@ import type { PaymentResult } from '@/lib/payos';
 import { useTranslation } from '@/lib/i18n/context';
 import { formatCurrency } from '@/lib/i18n/formatters';
 import { referralDiscountLine } from '@/lib/i18n/referral-discount-copy';
+import { HelpTip } from '@/components/help/HelpTip';
 
 interface CheckoutPaymentDetailsProps {
   readonly payment: PaymentResult;
@@ -43,7 +44,7 @@ export function CheckoutPaymentDetails({
       <div className="flex items-center justify-between p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/40 text-amber-900 dark:text-amber-200">
         <div className="flex items-center gap-2 text-xs font-bold">
           <Clock className="w-4 h-4 text-amber-600" />
-          <span>{t.paymentHoldTimer}</span>
+          <span>{t.paymentHoldTimer}</span><HelpTip topic="payment.timer" />
         </div>
         <span className="font-mono font-black text-sm text-amber-600 dark:text-amber-400">
           {timeFormatted}
@@ -141,9 +142,9 @@ export function CheckoutPaymentDetails({
 
           <div className="p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-400 dark:border-amber-600/80 space-y-1.5">
             <div className="flex items-center justify-between">
-              <div className="text-xs uppercase font-black text-amber-700 dark:text-amber-300">
+              <div className="flex items-center gap-1"><div className="text-xs uppercase font-black text-amber-700 dark:text-amber-300">
                 {t.transferMemoLabel}
-              </div>
+              </div><HelpTip topic="payment.memo" /></div>
               <button
                 onClick={() => onCopy(payment.description, 'memo')}
                 className="min-h-[34px] py-1 px-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-black transition-all flex items-center gap-1 cursor-pointer active:scale-95 shrink-0"

@@ -6,6 +6,7 @@ import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getFamilyDataCopy } from '@/lib/i18n/family-data-copy';
 import { localDayKey } from '@/lib/habit-fire';
+import { HelpTip } from '@/components/help/HelpTip';
 
 type Message = { readonly kind: 'ok' | 'error'; readonly text: string } | null;
 
@@ -49,7 +50,7 @@ export function FamilyDataCard() {
 
   return (
     <section data-testid="family-data" className="rounded-3xl border border-sand-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900" aria-labelledby="family-data-title">
-      <h4 id="family-data-title" className="text-base font-extrabold text-sand-900 dark:text-slate-100">{copy.title}</h4>
+      <div className="flex items-center gap-1"><h4 id="family-data-title" className="text-base font-extrabold text-sand-900 dark:text-slate-100">{copy.title}</h4><HelpTip topic="settings.familyData" /></div>
       <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">{copy.intro}</p>
       <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">{copy.private}</p>
       <div className="mt-4 flex flex-wrap gap-3">

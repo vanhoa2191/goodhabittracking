@@ -15,6 +15,7 @@ import { getParentNavigationCopy } from '@/lib/i18n/parent-navigation-copy';
 import { useSevenDayCutoff } from '@/lib/use-seven-day-cutoff';
 import { useLocalizedFramework } from '@/lib/habit-framework/localized';
 import { getFrameworkLibraryCopy } from '@/lib/i18n/framework-library-copy';
+import { HelpTip } from '@/components/help/HelpTip';
 
 const DOMAINS = [
   { id: 'all', label: 'domainAll' },
@@ -143,7 +144,7 @@ export function HabitFrameworkLibrary({ onMutationError }: HabitFrameworkLibrary
       <div className="flex items-start gap-3">
         <span className="rounded-2xl bg-indigo-100 p-2.5 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300"><BookOpenCheck className="h-5 w-5" /></span>
         <div className="space-y-1">
-          <h4 id="framework-library-title" className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{copy.title}</h4>
+          <div className="flex items-center gap-1"><h4 id="framework-library-title" className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{copy.title}</h4><HelpTip topic="habits.framework" /></div>
           <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{copy.intro}</p>
         </div>
       </div>

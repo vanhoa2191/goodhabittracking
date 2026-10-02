@@ -25,7 +25,7 @@
 | **Gói Một Bé** | 29.000đ / tháng | 1 bé | Gia đình bắt đầu cùng một bé |
 | **Gói Gia Đình · Tháng** | 49.000đ / tháng | Không giới hạn | Nhiều bé hoặc muốn dùng trọn bộ tính năng |
 | **Gói Gia Đình · Năm** | 399.000đ / năm (giá gốc 588.000đ, tiết kiệm 189.000đ, 32%) | Không giới hạn | Duy trì đủ lâu để việc nhỏ thành nếp |
-| **Trọn đời** | Không bán | Không giới hạn | Chỉ do quản trị viên cấp thủ công ([10](10-quan-tri-va-van-hanh.md#khach-hang)) |
+| **Trọn đời** | Không bán | Không giới hạn | Chỉ do quản trị viên cấp thủ công<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 Tất cả là **thanh toán một lần**, không tự động gia hạn. Màn hình bảng giá còn liệt kê thêm quyền lợi cho gói gia đình (báo cáo theo dõi hằng tuần, thi đua gia đình, hỗ trợ kỹ thuật nhanh) và cho Gói Năm (ưu tiên hỗ trợ, ebook cẩm nang nuôi dạy con); ebook hiện **chưa phát hành**.
 
@@ -66,7 +66,7 @@ Gói được kích hoạt khi hệ thống **xác nhận được** khoản ti�
 2. **Hỏi lại PayOS**: khi ba mẹ đứng ở màn hình thanh toán, ứng dụng hỏi thẳng PayOS về đơn. Không phụ thuộc webhook.
 3. **Đối soát nền**: cứ 10 phút một lần, một tác vụ nền rà các đơn còn chờ và hỏi PayOS.
 
-Nếu đã chuyển khoản mà chưa thấy gói: chờ vài phút, mở lại `/checkout`, rồi liên hệ hỗ trợ kèm mã đơn. Đội vận hành xem được đơn ở [Quản trị → Thanh toán](10-quan-tri-va-van-hanh.md#thanh-toan-admin).
+Nếu đã chuyển khoản mà chưa thấy gói: chờ vài phút, mở lại `/checkout`, rồi liên hệ hỗ trợ kèm mã đơn. <!--op-->Đội vận hành xem được đơn ở [Quản trị → Thanh toán](10-quan-tri-va-van-hanh.md#thanh-toan-admin).<!--/op-->
 
 <a id="cong-don"></a>
 ## Cộng dồn thời gian
@@ -94,7 +94,7 @@ Gia đình nhập mã giới thiệu (qua liên kết `?ref=` hoặc nhập tay)
 - **Link thanh toán đang chờ** có thể được hủy bởi đội hỗ trợ; đơn chỉ chuyển sang "đã hủy" sau khi PayOS xác nhận.
 - **Hủy gói** do đội hỗ trợ xử lý và có email xác nhận. Không có khoản trừ tiền tự động nào được tạo.
 
-Quy trình nội bộ: [Vận hành email và hoàn tiền](../runbooks/lifecycle-and-refunds.md) và [10. Quản trị](10-quan-tri-va-van-hanh.md#phieu-ho-tro).
+<!--op-->Quy trình nội bộ: [Vận hành email và hoàn tiền](../runbooks/lifecycle-and-refunds.md) và [10. Quản trị](10-quan-tri-va-van-hanh.md#phieu-ho-tro).<!--/op-->
 
 <a id="email"></a>
 ## Email gửi cho bạn

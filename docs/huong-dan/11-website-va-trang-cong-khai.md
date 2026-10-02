@@ -82,7 +82,7 @@ Mọi câu trên website phải khớp sản phẩm đang chạy và không hứ
 <a id="tren-ung-dung"></a>
 ## Trang công khai trên ứng dụng
 
-Ứng dụng cũng phục vụ một số trang công khai (`/pricing`, `/framework`, `/roadmaps`, `/science`, `/docs`, `/privacy`, `/terms`, `/contact`, `/checkout`, `/start`, `/invite/caregiver`) với điều hướng quay lại website cho phần giới thiệu. Chúng **không lập chỉ mục**; website mới là nơi tìm kiếm tìm thấy. Riêng `/checkout`, `/start` và `/invite/caregiver` là các bước thao tác thật ([7](07-goi-va-thanh-toan.md), [5](05-gia-dinh-va-cai-dat.md#nguoi-cham-soc)). Ứng dụng cũng có `/docs` (hướng dẫn ngắn trong ứng dụng) và `/admin` ([10](10-quan-tri-va-van-hanh.md)).
+Ứng dụng cũng phục vụ một số trang công khai (`/pricing`, `/framework`, `/roadmaps`, `/science`, `/docs`, `/privacy`, `/terms`, `/contact`, `/checkout`, `/start`, `/invite/caregiver`) với điều hướng quay lại website cho phần giới thiệu. Chúng **không lập chỉ mục**; website mới là nơi tìm kiếm tìm thấy. Riêng `/checkout`, `/start` và `/invite/caregiver` là các bước thao tác thật ([7](07-goi-va-thanh-toan.md), [5](05-gia-dinh-va-cai-dat.md#nguoi-cham-soc)). Ứng dụng cũng có `/docs`, là bản hướng dẫn **đầy đủ** dành cho phụ huynh (các chương của bộ tài liệu này, có tìm kiếm và liên kết từ dấu ? trong khu phụ huynh; xem [1](01-bat-dau.md#tro-giup)), và `/admin` ([10](10-quan-tri-va-van-hanh.md)).
 
 <a id="lien-quan"></a>
 ## Liên quan

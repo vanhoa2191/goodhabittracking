@@ -16,6 +16,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { formatCurrency } from '@/lib/i18n/formatters';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { shouldOfferTrial } from '@/lib/store/subscription';
+import { HelpTip } from '@/components/help/HelpTip';
 
 interface PricingModalProps {
   isOpen: boolean;
@@ -221,9 +222,9 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 tracking-tight">
+                <div className="flex items-center gap-1"><h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 tracking-tight">
                   {t.pricingModalTitle}
-                </h2>
+                </h2><HelpTip topic="payment.plans" /></div>
                 <span className="hidden sm:inline-flex text-xs font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
                   {t.vietQrOneTouch || 'VietQR 1-Chạm'}
                 </span>
@@ -258,9 +259,9 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                   </span>
                   <span className="hidden text-sm font-bold text-indigo-800 dark:text-indigo-200 sm:inline">{t.noCreditCardNeeded}</span>
                 </div>
-                <h3 className="text-base font-black tracking-tight text-slate-950 dark:text-white sm:text-lg">
+                <div className="flex items-center gap-1"><h3 className="text-base font-black tracking-tight text-slate-950 dark:text-white sm:text-lg">
                   {t.freeTrialTitle}
-                </h3>
+                </h3><HelpTip topic="payment.trial" /></div>
                 <p className="hidden text-sm font-medium leading-5 text-slate-700 dark:text-slate-200 sm:block">
                   {t.freeTrialDesc}
                 </p>

@@ -49,12 +49,12 @@ Ba nhóm người dùng của ứng dụng, mỗi nhóm thấy phần riêng:
 
 ## Danh mục tính năng
 
-Cột "Trạng thái" cho biết tính năng đang bật cho mọi người dùng (**Bật**) hay đang tắt bằng cờ phát hành (**Tắt**). Trạng thái lấy từ biến cấu hình của bản phát hành hiện tại; người vận hành đổi được ở [triển khai](../deployment.md).
+Cột "Trạng thái" cho biết tính năng đang bật cho mọi người dùng (**Bật**) hay chưa mở cho người dùng (**Tắt**).<!--op--> Trạng thái lấy từ biến cấu hình của bản phát hành hiện tại; người vận hành đổi được ở [triển khai](../deployment.md).<!--/op-->
 
 | Tính năng | Ai dùng | Ở đâu | Điều kiện | Trạng thái | Liên quan |
 |---|---|---|---|---|---|
 | Đăng nhập Google | Phụ huynh | Màn hình vào | Không | Bật | [1](01-bat-dau.md#dang-nhap) |
-| Đăng nhập bằng mã gửi qua email | Phụ huynh | Màn hình vào | Cờ `emailCodeLogin` | **Tắt** | [1](01-bat-dau.md#dang-nhap) |
+| Đăng nhập bằng mã gửi qua email | Phụ huynh | Màn hình vào | Chưa mở<!--op--> (cờ `emailCodeLogin`)<!--/op--> | **Tắt** | [1](01-bat-dau.md#dang-nhap) |
 | Bản demo (dữ liệu mẫu) | Mọi người | Màn hình vào | Không | Bật | [1](01-bat-dau.md#demo) |
 | Thiết lập gia đình hai bước | Phụ huynh | Lần đầu | Đồng ý quyền quản lý dữ liệu | Bật | [1](01-bat-dau.md#thiet-lap) |
 | Chín ngôn ngữ, tự nhận diện | Mọi người | Mọi nơi | Không | Bật | [1](01-bat-dau.md#ngon-ngu) |
@@ -112,7 +112,9 @@ Cột "Trạng thái" cho biết tính năng đang bật cho mọi người dùn
 - Khi thêm hoặc đổi tính năng, cập nhật **bảng danh mục ở trên** và tệp mô tả nó; thêm liên kết tới các tính năng liên quan ở cuối tệp ("Liên quan").
 - Mỗi mục có neo `<a id="…"></a>` để liên kết; không đổi tên neo đã dùng. Bài kiểm tra `tests/unit/user-guide-links.test.ts` báo lỗi nếu một liên kết nội bộ hoặc neo bị gãy.
 - Giá, ngưỡng và cờ phát hành lấy từ mã nguồn; khi khác nhau thì mã nguồn đúng, sửa tài liệu cho khớp.
-- Cập nhật lần cuối: 02/10/2026.
+- Cập nhật lần cuối: 03/10/2026.
+- Các chương 1 đến 9, 12 và 13 cũng hiển thị trong ứng dụng (`/docs` và dấu ? ở khu phụ huynh). Sau khi sửa Markdown, chạy `npm run guide:build` để dựng lại `public/guide`; bài kiểm tra `tests/unit/guide-build.test.ts` báo lỗi nếu quên. Phần chỉ dành cho người vận hành đặt giữa `<!--op-->` và `<!--/op-->` thì không hiện trong ứng dụng.
+- Thêm dấu ? cho một tính năng mới: thêm mã vào `src/lib/guide/help-topic-id.ts`, viết giải thích (tiếng Việt và tiếng Anh) trong `src/lib/guide/help-topics.ts` trỏ tới một mục có sẵn của hướng dẫn, rồi đặt `<HelpTip topic="…" />` cạnh tiêu đề trên màn hình.
 
 ## Tài liệu kỹ thuật đi kèm
 

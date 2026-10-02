@@ -13,6 +13,7 @@ import { HabitSupportPrompt } from './HabitSupportPrompt';
 import { ParentTodayCard } from './ParentTodayCard';
 import { WeeklyReviewCard } from './WeeklyReviewCard';
 import { getParentTodayCopy } from '@/lib/i18n/parent-today-copy';
+import { HelpTip } from '@/components/help/HelpTip';
 
 export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: () => void } = {}) {
   const {
@@ -62,10 +63,10 @@ export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: (
       {defaultExperienceFlags.habitPrograms && <HabitSupportPrompt />}
 
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
-        <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
+        <div className="flex items-center gap-1"><h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
           <CheckCircle2 className="w-5 h-5 text-indigo-600" />
           {copy.pendingTasks} ({pendingLogs.length})
-        </h3>
+        </h3><HelpTip topic="approvals.tasks" /></div>
         {pendingLogs.length === 0 ? (
           <EmptyState icon={Inbox} title={copy.noPendingTasks} />
         ) : (
@@ -97,10 +98,10 @@ export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: (
       </div>
 
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
-        <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
+        <div className="flex items-center gap-1"><h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
           <Gift className="w-5 h-5 text-pink-600" />
           {copy.pendingRewards} ({pendingRedemptions.length})
-        </h3>
+        </h3><HelpTip topic="approvals.rewards" /></div>
         {pendingRedemptions.length === 0 ? (
           <EmptyState icon={Gift} title={copy.noPendingRewards} />
         ) : (

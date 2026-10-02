@@ -12,6 +12,7 @@ import { addDays } from '@/lib/habit-programs/opportunities';
 import { selectSupportPromptItems } from '@/lib/habit-programs/parent-ui-state';
 import { fillTemplate } from '@/lib/habit-programs/suggestion-display';
 import type { SupportLevel } from '@/lib/habit-programs/types';
+import { HelpTip } from '@/components/help/HelpTip';
 
 const LEVELS: readonly { level: SupportLevel; key: 'levelAlone' | 'levelPrompted' | 'levelTogether' }[] = [
   { level: 'alone', key: 'levelAlone' },
@@ -45,7 +46,7 @@ export function HabitSupportPrompt() {
   return (
     <section data-testid="habit-support-prompt" aria-labelledby="habit-support-title" className="space-y-3 rounded-3xl border border-slate-100 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900">
       <div>
-        <h3 id="habit-support-title" className="text-base font-extrabold text-slate-800 dark:text-slate-100">{copy.supportTitle}</h3>
+        <div className="flex items-center gap-1"><h3 id="habit-support-title" className="text-base font-extrabold text-slate-800 dark:text-slate-100">{copy.supportTitle}</h3><HelpTip topic="support.prompt" /></div>
         <p className="text-xs text-slate-500 dark:text-slate-300">{copy.supportIntro}</p>
         <p data-testid="self-report-hint" className="mt-1 text-xs text-slate-500 dark:text-slate-300">{copy.parentSelfReportHint}</p>
       </div>

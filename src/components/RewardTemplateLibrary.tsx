@@ -7,6 +7,7 @@ import { getRewardMutationCopy } from '@/lib/i18n/reward-mutation-copy';
 import { getRewardLibraryCopy } from '@/lib/i18n/reward-library-copy';
 import { MEANINGFUL_REWARD_TEMPLATES, type RewardTemplateKind } from '@/lib/reward-templates';
 import { useAppStore } from '@/lib/store';
+import { HelpTip } from '@/components/help/HelpTip';
 
 type RewardTemplateLibraryProps = Readonly<{
   onMutationError: (message: string) => void;
@@ -52,7 +53,7 @@ export function RewardTemplateLibrary({ onMutationError }: RewardTemplateLibrary
       <div className="flex items-start gap-3">
         <span className="rounded-2xl bg-amber-100 p-2.5 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"><HeartHandshake className="h-5 w-5" /></span>
         <div className="space-y-1">
-          <h4 id="reward-library-title" className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{library.title}</h4>
+          <div className="flex items-center gap-1"><h4 id="reward-library-title" className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{library.title}</h4><HelpTip topic="rewards.templates" /></div>
           <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">{library.intro}</p>
         </div>
       </div>

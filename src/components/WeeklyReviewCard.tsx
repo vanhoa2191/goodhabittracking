@@ -9,6 +9,7 @@ import { buildWeeklyReview } from '@/lib/habit-programs/weekly-review';
 import { getParentTodayCopy } from '@/lib/i18n/parent-today-copy';
 import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
 import { localizeDemoActivity } from '@/lib/i18n/demo-content-copy';
+import { HelpTip } from '@/components/help/HelpTip';
 
 /** A five-minute weekly look back for one child: one thing to praise, one to adjust, and whether to wait before adding a habit. */
 export function WeeklyReviewCard({ childId }: { readonly childId: string }) {
@@ -34,7 +35,7 @@ export function WeeklyReviewCard({ childId }: { readonly childId: string }) {
         <span aria-hidden="true" className="text-slate-400 transition-transform group-open:rotate-90">▸</span>
       </summary>
       <div className="mt-3 space-y-2 text-sm text-slate-700 dark:text-slate-200">
-        <p className="text-xs text-slate-500 dark:text-slate-300">{copy.weeklyIntro}</p>
+        <div className="flex items-center gap-1"><p className="text-xs text-slate-500 dark:text-slate-300">{copy.weeklyIntro}</p><HelpTip topic="weekly.review" /></div>
         {review.next === 'unknown' ? <p>{copy.weeklyNoData}</p> : (
           <ul className="space-y-2">
             {review.praise && <li>{copy.weeklyPraise(titleOf(review.praise.activityId))}</li>}

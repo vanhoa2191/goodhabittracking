@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { UserRound } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { getAccountProfileCopy } from '@/lib/i18n/account-profile-copy';
+import { HelpTip } from '@/components/help/HelpTip';
 
 type ProfileResponse = {
   readonly profile: {
@@ -96,9 +97,9 @@ export function AccountProfileCard() {
 
   return (
     <section className="space-y-4 rounded-3xl border border-slate-100 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900" aria-busy={loadState === 'loading' || isSaving}>
-      <h4 className="flex items-center gap-2 text-sm font-extrabold">
+      <div className="flex items-center gap-1"><h4 className="flex items-center gap-2 text-sm font-extrabold">
         <UserRound aria-hidden="true" className="h-4 w-4 text-indigo-600" />{copy.title}
-      </h4>
+      </h4><HelpTip topic="settings.account" /></div>
 
       {loadState === 'loading' && <p role="status" className="text-sm font-semibold text-slate-600 dark:text-slate-300">{copy.loading}</p>}
 
@@ -140,6 +141,7 @@ export function AccountProfileCard() {
             <button type="button" onClick={() => void redeem()} disabled={isRedeeming || coupon.trim() === ''} className="min-h-11 rounded-xl border px-4 text-sm font-bold disabled:cursor-not-allowed disabled:opacity-60">
               {copy.redeem}
             </button>
+            <HelpTip topic="settings.coupon" />
           </div>
         </>
       )}

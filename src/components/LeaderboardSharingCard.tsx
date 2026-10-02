@@ -5,6 +5,7 @@ import { Trophy } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { getLeaderboardCopy } from '@/lib/i18n/leaderboard-copy';
 import { loadLeaderboardSharing, saveLeaderboardSharing } from '@/lib/store/public-leaderboard-client';
+import { HelpTip } from '@/components/help/HelpTip';
 
 type Status = 'loading' | 'ready' | 'saving' | 'saved' | 'failed' | 'load-failed';
 
@@ -43,10 +44,10 @@ export function LeaderboardSharingCard() {
 
   return (
     <section data-testid="leaderboard-sharing" className="rounded-3xl border border-sand-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900" aria-labelledby="leaderboard-sharing-title">
-      <h4 id="leaderboard-sharing-title" className="flex items-center gap-2 text-base font-extrabold text-sand-900 dark:text-slate-100">
+      <div className="flex items-center gap-1"><h4 id="leaderboard-sharing-title" className="flex items-center gap-2 text-base font-extrabold text-sand-900 dark:text-slate-100">
         <Trophy aria-hidden="true" className="h-5 w-5 shrink-0 text-indigo-600" />
         {copy.sharingTitle}
-      </h4>
+      </h4><HelpTip topic="settings.leaderboardSharing" /></div>
       <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">{copy.sharingIntro}</p>
       <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">{copy.sharingWhatShown}</p>
       <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">{copy.sharingChildrenHint}</p>

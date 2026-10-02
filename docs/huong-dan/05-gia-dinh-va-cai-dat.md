@@ -73,7 +73,7 @@ Dành cho ông bà hoặc người thân muốn theo dõi tiến độ mà **kh�
 | **Giao diện** | Sáng, tối, theo thiết bị |
 | **Bảo vệ khu vực phụ huynh** | Mã PIN |
 
-Cuối trang có "Mở tài liệu hướng dẫn" (trang `/docs`) và liên kết Quyền riêng tư, Điều khoản, Liên hệ hỗ trợ ([11](11-website-va-trang-cong-khai.md)).
+Cuối trang có "Mở tài liệu hướng dẫn" (trang `/docs` trong ứng dụng; xem [tìm trợ giúp ngay trong ứng dụng](01-bat-dau.md#tro-giup)) và liên kết Quyền riêng tư, Điều khoản, Liên hệ hỗ trợ ([11](11-website-va-trang-cong-khai.md)).
 
 <a id="tai-khoan"></a>
 ## Tài khoản và đồng bộ

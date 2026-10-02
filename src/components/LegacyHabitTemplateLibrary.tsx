@@ -12,6 +12,7 @@ import { localizeWitTemplate } from '@/lib/i18n/wit-template-copy';
 import { useAppStore } from '@/lib/store';
 import { useSevenDayCutoff } from '@/lib/use-seven-day-cutoff';
 import { matchesLegacyTemplateAssignment } from '@/lib/legacy-template-identity';
+import { HelpTip } from '@/components/help/HelpTip';
 
 type LegacyHabitTemplateLibraryProps = Readonly<{
   onMutationError: (message: string) => void;
@@ -81,7 +82,7 @@ export function LegacyHabitTemplateLibrary({ onMutationError }: LegacyHabitTempl
       <div className="flex items-center gap-2">
         <span className="rounded-2xl bg-amber-100 p-2 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"><Sparkles className="h-5 w-5" /></span>
         <div>
-          <h4 className="text-sm font-extrabold text-slate-800 dark:text-slate-100">{t.witSectionTitle}</h4>
+          <div className="flex items-center gap-1"><h4 className="text-sm font-extrabold text-slate-800 dark:text-slate-100">{t.witSectionTitle}</h4><HelpTip topic="habits.library" /></div>
           <p className="text-sm text-slate-600 dark:text-slate-300">{copy.libraryIntro}</p>
         </div>
       </div>

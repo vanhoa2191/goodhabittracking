@@ -48,7 +48,7 @@ flowchart TD
 - **Hai vòng lặp chạy hằng ngày**: *việc → bé tick → ba mẹ duyệt → sao → quà → xin quà → duyệt*, và *tick → ghi cách bé làm → giai đoạn và gợi ý → chỉnh việc*.
 - **Gói là cổng** vào hầu hết khu phụ huynh: dùng thử và gói quyết định số bé và có quản lý được hay không.
 - **Giới thiệu bạn bè** đi vòng qua thanh toán: mã trước khi mua cho giảm giá, thanh toán thành công sinh hoa hồng.
-- **Quản trị** không nằm trong luồng của gia đình, chỉ hỗ trợ thanh toán, hoàn tiền, chi trả.
+<!--op-->- **Quản trị** không nằm trong luồng của gia đình, chỉ hỗ trợ thanh toán, hoàn tiền, chi trả.<!--/op-->
 
 <a id="phu-thuoc"></a>
 ## Ma trận phụ thuộc
@@ -103,9 +103,9 @@ Bấm [Tạm nghỉ](05-gia-dinh-va-cai-dat.md#tam-nghi): chuỗi không bị ph
 
 Tham gia [chương trình](08-gioi-thieu-ban-be.md#tham-gia) → gửi liên kết → bạn nhập mã, được [giảm 10%](07-goi-va-thanh-toan.md#giam-gia) khi mua Gói Năm → bạn trả → bạn có [hoa hồng giữ 35 ngày](08-gioi-thieu-ban-be.md#hoa-hong) → đặt PIN và lưu tài khoản → [rút tiền](08-gioi-thieu-ban-be.md#rut-tien) → quản trị [chuyển khoản](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
 
-### E. Khách xin hoàn tiền
+<!--op-->### E. Khách xin hoàn tiền
 
-Khách gửi mã đơn trong 30 ngày → hỗ trợ [mở ca](10-quan-tri-va-van-hanh.md#phieu-ho-tro) → tài chính duyệt → hoàn thủ công → xác nhận hoàn tất → [hoa hồng](08-gioi-thieu-ban-be.md#hoan-tien-hoa-hong) của đơn bị thu hồi → khách nhận [email](07-goi-va-thanh-toan.md#email).
+Khách gửi mã đơn trong 30 ngày → hỗ trợ [mở ca](10-quan-tri-va-van-hanh.md#phieu-ho-tro) → tài chính duyệt → hoàn thủ công → xác nhận hoàn tất → [hoa hồng](08-gioi-thieu-ban-be.md#hoan-tien-hoa-hong) của đơn bị thu hồi → khách nhận [email](07-goi-va-thanh-toan.md#email).<!--/op-->
 
 <a id="mot-ngay"></a>
 ## Một ngày điển hình
@@ -148,4 +148,4 @@ Khi liên hệ hỗ trợ ([Liên hệ](11-website-va-trang-cong-khai.md#trang-c
 <a id="lien-quan"></a>
 ## Liên quan
 
-[Mục lục](README.md) · [Thuật ngữ](13-thuat-ngu.md) · [Bảo mật và riêng tư](09-bao-mat-va-rieng-tu.md) · [Quản trị và vận hành](10-quan-tri-va-van-hanh.md)
+[Mục lục](README.md) · [Thuật ngữ](13-thuat-ngu.md) · [Bảo mật và riêng tư](09-bao-mat-va-rieng-tu.md)<!--op--> · [Quản trị và vận hành](10-quan-tri-va-van-hanh.md)<!--/op-->

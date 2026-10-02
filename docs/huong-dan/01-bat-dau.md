@@ -4,7 +4,7 @@
 
 ## Trong tài liệu này
 
-[Ba cách vào ứng dụng](#cach-vao) · [Đăng nhập](#dang-nhap) · [Thiết lập gia đình](#thiet-lap) · [Thông tin khách hàng](#thong-tin) · [Vai trò](#vai-tro) · [Bản demo](#demo) · [Ngôn ngữ](#ngon-ngu) · [Liên quan](#lien-quan)
+[Ba cách vào ứng dụng](#cach-vao) · [Đăng nhập](#dang-nhap) · [Thiết lập gia đình](#thiet-lap) · [Thông tin khách hàng](#thong-tin) · [Vai trò](#vai-tro) · [Bản demo](#demo) · [Ngôn ngữ](#ngon-ngu) · [Tìm trợ giúp ngay trong ứng dụng](#tro-giup) · [Liên quan](#lien-quan)
 
 <a id="cach-vao"></a>
 ## Ba cách vào ứng dụng
@@ -23,7 +23,7 @@ Phụ huynh đã đăng nhập vào thẳng bảng quản lý; muốn xem lại 
 ## Đăng nhập
 
 - **Google** là cách đăng nhập chính của phụ huynh.
-- **Mã một lần gửi qua email** là cách thứ hai, hiện **đang tắt** cho đến khi người vận hành bật cờ `emailCodeLogin` ([hướng dẫn bật](../deployment.md)). Khi bật, ô "Hoặc nhận mã đăng nhập qua email" xuất hiện cạnh nút Google. Ba mẹ nhập email, nhận mã vài chữ số, nhập lại để vào. Gửi lại mã được sau vài giây; gửi quá nhiều lần sẽ phải chờ vài phút.
+- **Mã một lần gửi qua email** là cách thứ hai, hiện **đang tắt** cho đến khi được bật<!--op--> (cờ `emailCodeLogin`, [hướng dẫn bật](../deployment.md))<!--/op-->. Khi bật, ô "Hoặc nhận mã đăng nhập qua email" xuất hiện cạnh nút Google. Ba mẹ nhập email, nhận mã vài chữ số, nhập lại để vào. Gửi lại mã được sau vài giây; gửi quá nhiều lần sẽ phải chờ vài phút.
 - Đăng nhập lỗi sẽ hiện thông báo ngắn và nút thử lại, không có thay đổi nào được lưu.
 
 Phụ huynh đăng nhập từ một liên kết giới thiệu (`?ref=`) được ghi nhận giới thiệu tự động ([8](08-gioi-thieu-ban-be.md#ghi-nhan)). Người được mời làm người chăm sóc đăng nhập Google rồi chấp nhận lời mời ([5](05-gia-dinh-va-cai-dat.md#nguoi-cham-soc)).
@@ -70,6 +70,16 @@ Chỉ phụ huynh trong gia đình mới bắt đầu dùng thử hoặc thanh t
 Ứng dụng có chín ngôn ngữ: Việt, Anh, Pháp, Đức, Ý, Tây Ban Nha, Trung, Nhật, Hàn. Ngôn ngữ ban đầu được chọn theo thứ tự: lựa chọn đã lưu của bạn, quốc gia (từ Cloudflare), ngôn ngữ trình duyệt, rồi tiếng Anh. Đổi bằng nút chọn ngôn ngữ trên thanh trên cùng; lựa chọn lưu lại để trang, tiêu đề và giao diện luôn cùng một ngôn ngữ.
 
 Một số nội dung chi tiết (lộ trình theo tuổi, màn hình Hôm nay) chưa dịch đủ chín thứ tiếng và sẽ hiện tiếng Anh ở ngôn ngữ chưa có bản dịch.
+
+<a id="tro-giup"></a>
+## Tìm trợ giúp ngay trong ứng dụng
+
+Bộ hướng dẫn này nằm sẵn trong ứng dụng, ở hai dạng:
+
+- **Dấu ? cạnh từng mục.** Ở khu phụ huynh, cạnh tiêu đề của mỗi tính năng (duyệt việc, tín hiệu, mã PIN, mã ghép, thanh toán…) có một dấu **?** nhỏ. Rê chuột, chạm hoặc dùng phím Tab tới đó để đọc giải thích ngắn một hai câu. Bấm **Xem chi tiết** để mở đúng phần liên quan của hướng dẫn ngay trên màn hình, không rời khỏi chỗ đang làm; trong cửa sổ đó, bấm vào liên kết tới phần khác để đọc tiếp và nút **Quay lại** để trở về. Nhấn **Esc** hoặc chạm ra ngoài để đóng giải thích.
+- **Trang tài liệu riêng.** Nút **Tài liệu** trên thanh trên cùng (hoặc `Gia đình → Cài đặt → Mở tài liệu hướng dẫn`) mở trang `/docs`: danh sách các chương, ô **tìm kiếm** (gõ có dấu hay không dấu đều được), nhóm lối tắt **"Tôi muốn…"** cho các việc hay làm, và từng chương có mục lục riêng. Nút **Mở hướng dẫn đầy đủ** trong cửa sổ chi tiết cũng dẫn tới đúng vị trí trên trang này.
+
+Hướng dẫn đầy đủ hiện có bằng tiếng Việt; ở ngôn ngữ khác, dấu ? vẫn giải thích bằng tiếng Anh và có bản tóm tắt nhanh, còn phần chi tiết đọc bằng tiếng Việt.
 
 <a id="lien-quan"></a>
 ## Liên quan

@@ -8,6 +8,7 @@ import { getHabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
 import { cuePlanInputSchema } from '@/lib/habit-programs/cue-plan-input';
 import { fillTemplate } from '@/lib/habit-programs/suggestion-display';
 import type { HabitActivity } from '@/types';
+import { HelpTip } from '@/components/help/HelpTip';
 
 type HabitCueEditorProps = {
   readonly activity: HabitActivity;
@@ -71,7 +72,7 @@ export function HabitCueEditor({ activity, title, childOptions, defaultChildId, 
     <ModalShell isOpen onClose={onClose} label={fillTemplate(copy.cueTitle, { habit: title })} maxWidth="md">
       <div className="space-y-4 overflow-y-auto p-5 sm:p-6" aria-busy={isSaving}>
         <div>
-          <h2 className="text-lg font-black text-slate-900 dark:text-white">{fillTemplate(copy.cueTitle, { habit: title })}</h2>
+          <div className="flex items-center gap-1"><h2 className="text-lg font-black text-slate-900 dark:text-white">{fillTemplate(copy.cueTitle, { habit: title })}</h2><HelpTip topic="habits.cue" /></div>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{copy.cueIntro}</p>
         </div>
         {childOptions.length > 1 ? (

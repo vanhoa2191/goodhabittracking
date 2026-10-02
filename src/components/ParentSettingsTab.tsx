@@ -26,6 +26,7 @@ import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { CaregiverInvitesPanel } from '@/components/CaregiverInvitesPanel';
 import { PwaInstallPanel } from '@/components/PwaInstallPanel';
 import { getMarketingOrigin } from '@/lib/site';
+import { HelpTip } from '@/components/help/HelpTip';
 
 const SETTINGS_SECTIONS = [
   { id: 'settings-devices', nav: 'navDevices' },
@@ -193,10 +194,10 @@ export function ParentSettingsTab() {
       {currentUser && familyRole === 'owner' && <CaregiverInvitesPanel />}
 
       <section className="rounded-3xl border border-sand-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900" aria-labelledby="family-pause-title">
-        <h4 id="family-pause-title" className="flex items-center gap-2 text-base font-extrabold text-sand-900 dark:text-slate-100">
+        <div className="flex items-center gap-1"><h4 id="family-pause-title" className="flex items-center gap-2 text-base font-extrabold text-sand-900 dark:text-slate-100">
           {isPaused ? <PauseCircle aria-hidden="true" className="h-5 w-5 text-amber-700" /> : <PlayCircle aria-hidden="true" className="h-5 w-5 text-indigo-600" />}
           {pauseCopy.title}
-        </h4>
+        </h4><HelpTip topic="settings.pause" /></div>
         <p className="mt-2 text-sm text-slate-700 dark:text-slate-300" role="status">{isPaused ? pauseCopy.paused : pauseCopy.active}</p>
         {isConfirmingPause ? (
           <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
@@ -222,7 +223,7 @@ export function ParentSettingsTab() {
       {currentUser && <LeaderboardSharingCard />}
       {currentUser && defaultExperienceFlags.parentReengagement && <ParentReminderConsentCard />}
 
-      <Link href={new URL('/docs/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{layout.openGuide}</Link>
+      <Link href="/docs" className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{layout.openGuide}</Link>
       {legalPagesApproved && <nav aria-label={layout.legalNav} className="grid gap-2 sm:grid-cols-3">
         <Link href={new URL('/privacy/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.privacy}</Link>
         <Link href={new URL('/terms/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.terms}</Link>
@@ -236,10 +237,10 @@ export function ParentSettingsTab() {
 
       <h4 id="settings-security" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionSecurity}</h4>
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
-        <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 mb-2 flex items-center gap-2">
+        <div className="flex items-center gap-1"><h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 mb-2 flex items-center gap-2">
           <Lock className="w-4 h-4 text-indigo-600" />
           {t.changePin}
-        </h4>
+        </h4><HelpTip topic="settings.pin" /></div>
         <p className="mb-4 text-sm text-slate-600 dark:text-slate-300">{pinCopy.neverShare}</p>
         {currentUser && parentPinConfigured === null ? (
           pinStatusError ? (

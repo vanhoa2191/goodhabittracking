@@ -18,6 +18,7 @@ import { HabitProgramsPanel } from './HabitProgramsPanel';
 import { cueChildOptions, keepIfOtherEditor } from '@/lib/habit-programs/parent-ui-state';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { getHabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
+import { HelpTip } from '@/components/help/HelpTip';
 
 interface ParentHabitsTabProps {
   onOpenHabit: (habit?: HabitActivity) => void;
@@ -60,14 +61,17 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <button
-            type="button"
-            onClick={onOpenHandbook}
-            className="py-2.5 px-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 text-xs font-bold transition-colors transition-transform border border-amber-200 dark:border-amber-800 flex items-center gap-2 active:scale-95"
-          >
-            <BookOpen className="w-4 h-4 text-amber-600" />
-            <span>{copy.handbook}</span>
-          </button>
+          <span className="inline-flex items-center gap-1">
+            <button
+              type="button"
+              onClick={onOpenHandbook}
+              className="py-2.5 px-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 text-xs font-bold transition-colors transition-transform border border-amber-200 dark:border-amber-800 flex items-center gap-2 active:scale-95"
+            >
+              <BookOpen className="w-4 h-4 text-amber-600" />
+              <span>{copy.handbook}</span>
+            </button>
+            <HelpTip topic="habits.handbook" />
+          </span>
           <button
             onClick={() => onOpenHabit()}
             className="py-2.5 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-colors transition-transform shadow-md flex items-center gap-2 active:scale-95"
@@ -110,7 +114,7 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
       ) : (
       <section aria-label={navigationCopy.inUse} className="space-y-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h4 className="text-base font-extrabold text-slate-800 dark:text-slate-100">{navigationCopy.inUse} ({visibleActivities.length})</h4>
+          <div className="flex items-center gap-1"><h4 className="text-base font-extrabold text-slate-800 dark:text-slate-100">{navigationCopy.inUse} ({visibleActivities.length})</h4><HelpTip topic="habits.inUse" /></div>
           <select aria-label={navigationCopy.filterByChild} value={selectedChildId} onChange={(event) => setSelectedChildId(event.target.value)} className="min-h-11 max-w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-200">
             <option value="all">{navigationCopy.allChildren}</option>
             {profiles.map((profile) => <option key={profile.id} value={profile.id}>{profile.name}</option>)}

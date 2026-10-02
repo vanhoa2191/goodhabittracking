@@ -6,6 +6,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { getAffiliateCopy, type AffiliateCopy } from '@/lib/i18n/affiliate-copy';
 import { referralLink } from '@/lib/referral/referral-code';
 import { getMarketingOrigin } from '@/lib/site';
+import { HelpTip } from '@/components/help/HelpTip';
 
 type Settings = {
   readonly commissionBps: number;
@@ -131,7 +132,7 @@ export function AffiliateCard() {
   if (!overview) {
     return (
       <section className="rounded-3xl border border-slate-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900" aria-labelledby={titleId}>
-        <h4 id={titleId} className="text-base font-extrabold text-slate-900 dark:text-slate-100">{copy.title}</h4>
+        <div className="flex items-center gap-1"><h4 id={titleId} className="text-base font-extrabold text-slate-900 dark:text-slate-100">{copy.title}</h4><HelpTip topic="settings.affiliate" /></div>
         {loadFailed && <p role="alert" className="mt-2 text-sm font-semibold text-rose-700 dark:text-rose-300">{copy.messages.loadFailed}</p>}
       </section>
     );
@@ -149,7 +150,7 @@ export function AffiliateCard() {
   if (!overview.enrolled) {
     return (
       <section data-testid="affiliate-card" className="rounded-3xl border border-slate-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900" aria-labelledby={titleId}>
-        <h4 id={titleId} className="flex items-center gap-2 text-base font-extrabold text-slate-900 dark:text-slate-100"><Gift aria-hidden="true" className="h-4 w-4 text-indigo-600" />{copy.title}</h4>
+        <div className="flex items-center gap-1"><h4 id={titleId} className="flex items-center gap-2 text-base font-extrabold text-slate-900 dark:text-slate-100"><Gift aria-hidden="true" className="h-4 w-4 text-indigo-600" />{copy.title}</h4><HelpTip topic="settings.affiliate" /></div>
         <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">{copy.intro(percent)}</p>
         <ul className="mt-3 list-disc space-y-1 pl-5 text-sm leading-6 text-slate-700 dark:text-slate-300">
           {rules.map((rule) => <li key={rule}>{rule}</li>)}
@@ -180,7 +181,7 @@ export function AffiliateCard() {
 
   return (
     <section data-testid="affiliate-card" className="rounded-3xl border border-slate-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900" aria-labelledby={titleId}>
-      <h4 id={titleId} className="flex items-center gap-2 text-base font-extrabold text-slate-900 dark:text-slate-100"><Gift aria-hidden="true" className="h-4 w-4 text-indigo-600" />{copy.title}</h4>
+      <div className="flex items-center gap-1"><h4 id={titleId} className="flex items-center gap-2 text-base font-extrabold text-slate-900 dark:text-slate-100"><Gift aria-hidden="true" className="h-4 w-4 text-indigo-600" />{copy.title}</h4><HelpTip topic="settings.affiliate" /></div>
       <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">{copy.intro(percent)}</p>
 
       <div className="mt-4">
