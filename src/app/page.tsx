@@ -8,15 +8,17 @@ import { AppEntryGate } from '@/components/AppEntryGate';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getAppFooterCopy } from '@/lib/i18n/app-footer-copy';
-import { PricingModal } from '@/components/PricingModal';
-import { CheckoutModal } from '@/components/CheckoutModal';
-import { OnboardingModal } from '@/components/OnboardingModal';
-import { Portrait16Modal } from '@/components/Portrait16Modal';
 import { demoSessionCopy } from '@/lib/i18n/demo-session-copy';
 import { CaregiverDashboard } from '@/components/CaregiverDashboard';
 import { PaymentReturnNotice } from '@/components/PaymentReturnNotice';
 import { getMarketingOrigin } from '@/lib/site';
 import dynamic from 'next/dynamic';
+
+// Dialogs that open on a tap load their code and text when the page is idle, not in the first download.
+const PricingModal = dynamic(() => import('@/components/PricingModal').then((module) => module.PricingModal));
+const CheckoutModal = dynamic(() => import('@/components/CheckoutModal').then((module) => module.CheckoutModal));
+const OnboardingModal = dynamic(() => import('@/components/OnboardingModal').then((module) => module.OnboardingModal));
+const Portrait16Modal = dynamic(() => import('@/components/Portrait16Modal').then((module) => module.Portrait16Modal));
 
 // The profile prompt is shown once, right after a first sign-in, so its text and code load only when it is needed.
 const CustomerProfilePrompt = dynamic(() => import('@/components/CustomerProfilePrompt').then((module) => module.CustomerProfilePrompt));
