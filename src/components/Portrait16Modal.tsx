@@ -19,6 +19,7 @@ import { useAgeHabitBundleMutation } from '@/lib/store/use-age-habit-bundle-muta
 import { PortraitGivingPanel } from './PortraitGivingPanel';
 import { PortraitMatrixPanel } from './PortraitMatrixPanel';
 import { PortraitModelingPanel } from './PortraitModelingPanel';
+import { InlineNotice, useNotice } from '@/components/ui/InlineNotice';
 
 interface Portrait16ModalProps {
   isOpen: boolean;
@@ -35,6 +36,7 @@ export function Portrait16Modal({ isOpen, onClose }: Portrait16ModalProps) {
   const [selectedStage, setSelectedStage] = useState<AgeStage>(activeChild?.ageStage || '3-6');
   const [checkedChecklist, setCheckedChecklist] = useState<number[]>([]);
   const { applyAgeBundle, mutationError, pendingChildId } = useAgeHabitBundleMutation();
+  const { notice, notify } = useNotice();
 
   if (!isOpen) return null;
 
@@ -42,13 +44,12 @@ export function Portrait16Modal({ isOpen, onClose }: Portrait16ModalProps) {
 
   const handleApplyHabits = async () => {
     if (!activeChild) {
-      alert(guide.ui.noChild);
+      notify(guide.ui.noChild, 'error');
       return;
     }
     const saved = await applyAgeBundle(activeChild.id, selectedStage);
     if (!saved) return;
-    alert(guide.ui.applySuccess(stageLabel, activeChild.name));
-    onClose();
+    notify(guide.ui.applySuccess(stageLabel, activeChild.name));
   };
 
   const toggleChecklist = (idx: number) => {
@@ -90,6 +91,8 @@ export function Portrait16Modal({ isOpen, onClose }: Portrait16ModalProps) {
             <X className="w-5 h-5" />
           </button>
         </div>
+
+        {notice && <div className="shrink-0 px-4 pt-3"><InlineNotice notice={notice} /></div>}
 
         {/* Modal Top Tabs */}
         <div role="tablist" className="shrink-0 flex p-2 bg-slate-50 dark:bg-zinc-800/60 border-b border-slate-100 dark:border-zinc-800 gap-1 overflow-x-auto">

@@ -10,6 +10,7 @@ import { getParentSecondaryCopy } from '@/lib/i18n/parent-secondary-copy';
 import { localizeDemoReward } from '@/lib/i18n/demo-content-copy';
 import { getRewardMutationCopy } from '@/lib/i18n/reward-mutation-copy';
 import { RewardTemplateLibrary } from './RewardTemplateLibrary';
+import { useConfirm } from '@/components/ui/ConfirmDialog';
 
 const EMPTY_REWARD = {
   title: '',
@@ -24,6 +25,7 @@ export function ParentRewardsTab() {
   const { t, language } = useTranslation();
   const copy = getParentSecondaryCopy(language);
   const mutationCopy = getRewardMutationCopy(language);
+  const { confirm, dialog } = useConfirm();
   const localizedRewards = rewards.map((reward) => localizeDemoReward(reward, language));
   const [editingReward, setEditingReward] = useState<Reward | null>(null);
   const [rewardForm, setRewardForm] = useState(EMPTY_REWARD);
@@ -63,7 +65,7 @@ export function ParentRewardsTab() {
   };
 
   const handleDeleteReward = async (reward: Reward) => {
-    if (!window.confirm(mutationCopy.deleteConfirm(reward.title))) return;
+    if (!await confirm({ message: mutationCopy.deleteConfirm(reward.title), confirmLabel: t.delete, destructive: true })) return;
     setMutationError('');
     const deleted = await deleteReward(reward.id);
     if (!deleted) setMutationError(mutationCopy.deleteError);
@@ -149,6 +151,7 @@ export function ParentRewardsTab() {
               </div>
             </div>
       </ModalShell>
+      {dialog}
     </>
   );
 }

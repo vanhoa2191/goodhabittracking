@@ -14,6 +14,8 @@ import { useAgeHabitBundleMutation } from '@/lib/store/use-age-habit-bundle-muta
 import { getProfileMutationCopy } from '@/lib/i18n/profile-mutation-copy';
 import { readPairingCredential, type PairingCredential } from '@/lib/store/pairing-client';
 import { MascotAvatar } from './MascotAvatar';
+import { useConfirm } from '@/components/ui/ConfirmDialog';
+import { InlineNotice, useNotice } from '@/components/ui/InlineNotice';
 
 interface ParentChildrenTabProps {
   onAdjustPoints: (childId: string) => void;
@@ -37,6 +39,8 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
   const [regeneratingChildId, setRegeneratingChildId] = useState<string | null>(null);
   const [deletingChildId, setDeletingChildId] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState('');
+  const { confirm, dialog } = useConfirm();
+  const { notice, notify } = useNotice();
   const { applyAgeBundle, mutationError, pendingChildId } = useAgeHabitBundleMutation();
   const canManagePairing = Boolean(currentUser);
 
@@ -44,7 +48,7 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
     if (!child.ageStage) return;
     const saved = await applyAgeBundle(child.id, child.ageStage);
     if (!saved) return;
-    alert(copy.ageBundleLoaded(onboarding.stageLabels[child.ageStage], child.name));
+    notify(copy.ageBundleLoaded(onboarding.stageLabels[child.ageStage], child.name));
   };
 
   const copyChildCode = (childId: string, code: string) => {
@@ -69,7 +73,7 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
   };
 
   const regenerateCode = async (child: ChildProfile) => {
-    if (!confirm(copy.regenerateCodeConfirm(child.name))) return;
+    if (!await confirm({ message: copy.regenerateCodeConfirm(child.name), confirmLabel: copy.regenerateCodeTitle })) return;
     setRegeneratingChildId(child.id);
     const code = await regenerateChildCode(child.id);
     if (code) {
@@ -84,7 +88,7 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
   };
 
   const removeChild = async (child: ChildProfile) => {
-    if (!confirm(profileCopy.deleteConfirm(child.name))) return;
+    if (!await confirm({ message: profileCopy.deleteConfirm(child.name), confirmLabel: t.delete, destructive: true })) return;
     setDeletingChildId(child.id);
     setDeleteError('');
     const deleted = await deleteProfile(child.id);
@@ -94,6 +98,8 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
 
   return (
     <div className="space-y-6">
+      {dialog}
+      <InlineNotice notice={notice} />
       {deleteError && <p role="alert" className="rounded-xl bg-rose-50 px-4 py-3 text-xs font-semibold text-rose-700 dark:bg-rose-950/30 dark:text-rose-300">{deleteError}</p>}
       <div className="bg-gradient-to-br from-indigo-50/90 via-white to-purple-50/90 dark:from-zinc-900 dark:via-zinc-900 dark:to-indigo-950/30 rounded-3xl p-5 sm:p-6 border-2 border-indigo-200/80 dark:border-zinc-800 shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -111,7 +117,7 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
             type="button"
             onClick={async () => {
               const codes = await generateChildCodes();
-              if (Object.keys(codes).length > 0) alert(copy.allCodesRefreshed);
+              if (Object.keys(codes).length > 0) notify(copy.allCodesRefreshed);
             }}
             disabled={!canManagePairing}
             className="py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-indigo-600 disabled:active:scale-100"
