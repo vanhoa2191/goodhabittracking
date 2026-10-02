@@ -15,6 +15,7 @@ describe('experience flags', () => {
       parentReengagement: false,
       habitPrograms: false,
       emailCodeLogin: false,
+      ageTheme: false,
     });
   });
 
@@ -24,6 +25,10 @@ describe('experience flags', () => {
 
   it('lets the email code login flag be switched on by override', () => {
     expect(resolveExperienceFlags({ emailCodeLogin: true }).emailCodeLogin).toBe(true);
+  });
+
+  it('lets the age theme flag be switched on by override', () => {
+    expect(resolveExperienceFlags({ ageTheme: true }).ageTheme).toBe(true);
   });
 
   it('accepts only known boolean overrides', () => {
