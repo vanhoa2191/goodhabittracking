@@ -1,4 +1,8 @@
+'use client';
+
 import { Fragment } from 'react';
+import { useTranslation } from '@/lib/i18n/context';
+import { getPublicShellCopy } from '@/lib/i18n/public-shell-copy';
 
 type Block = string | readonly string[];
 
@@ -31,9 +35,11 @@ export function LegalDocument({
   readonly updatedLabel: string;
   readonly supportEmail: string;
 }) {
+  const { language } = useTranslation();
+  const copy = getPublicShellCopy(language);
   return (
     <>
-      <p className="text-sm font-semibold">Cập nhật lần cuối: {updatedLabel}</p>
+      <p className="text-sm font-semibold">{copy.updated} {updatedLabel}</p>
       {sections.map((section) => (
         <section key={section.title}>
           <h2>{section.title}</h2>
