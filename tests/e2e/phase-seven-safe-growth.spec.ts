@@ -39,7 +39,7 @@ test('owner previews a generic milestone before explicitly sharing it', async ({
   await page.locator('#parent-section-analytics').click();
   await page.getByRole('button', { name: 'Chia sẻ cột mốc gia đình' }).click();
 
-  const dialog = page.getByRole('dialog', { name: 'Xem trước nội dung chia sẻ' });
+  const dialog = page.getByRole('dialog', { name: 'Cột mốc gia đình cùng KidHabit Hero' });
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText('Gia đình mình vừa duy trì thêm một tuần tích cực');
   await expect(dialog).not.toContainText('Bé Cloud');
