@@ -53,3 +53,5 @@
 \ir migrations/202610010005_admin_audit_fixes.sql
 \ir migrations/202610020001_admin_followups.sql
 \ir migrations/202610020002_family_snapshot.sql
+\ir migrations/202610020003_age_band_override.sql
+\ir migrations/202610020004_member_read_scope.sql
