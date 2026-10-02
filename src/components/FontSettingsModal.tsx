@@ -67,6 +67,7 @@ export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
                     key={sizeKey}
                     type="button"
                     onClick={() => setFontSize(sizeKey)}
+                    aria-pressed={isSelected}
                     className={`p-2.5 sm:p-3 rounded-2xl border text-center transition-all flex flex-col items-center gap-1 ${
                       isSelected
                         ? 'border-indigo-600 bg-indigo-50/70 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-extrabold shadow-xs scale-[1.02]'
@@ -95,6 +96,7 @@ export function FontSettingsModal({ isOpen, onClose }: FontSettingsModalProps) {
                     key={f.id}
                     type="button"
                     onClick={() => setFontFamily(f.id)}
+                    aria-pressed={isSelected}
                     style={{ fontFamily: f.cssFont }}
                     className={`w-full p-3 sm:p-3.5 rounded-2xl border text-left transition-all flex items-center justify-between gap-3 ${
                       isSelected
