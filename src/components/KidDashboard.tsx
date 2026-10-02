@@ -326,7 +326,7 @@ export function KidDashboard() {
               <Star className="w-6 h-6 shrink-0 fill-current text-amber-300" />
               <div className="min-w-0 leading-tight">
                 <div className="text-xl font-black">{activeChild.points}</div>
-                <div className="truncate text-[11px] sm:text-xs font-semibold text-amber-950 uppercase sm:tracking-wide">
+                <div className="truncate text-xs font-semibold text-amber-950 uppercase sm:tracking-wide">
                   {t.stars}
                 </div>
               </div>
@@ -336,7 +336,7 @@ export function KidDashboard() {
               <Award className="w-6 h-6 shrink-0 text-emerald-300" />
               <div className="min-w-0 leading-tight">
                 <div className="text-xl font-black">{unlockedBadgeIds.size}</div>
-                <div className="truncate text-[11px] sm:text-xs font-semibold text-amber-950 uppercase sm:tracking-wide">
+                <div className="truncate text-xs font-semibold text-amber-950 uppercase sm:tracking-wide">
                   <span className="sm:hidden">{t.badgesShort}</span>
                   <span className="hidden sm:inline">{t.myBadges}</span>
                 </div>
@@ -700,7 +700,7 @@ export function KidDashboard() {
                                 <Circle aria-hidden="true" className="w-6 h-6 stroke-[2.5]" />
                               )}
                             </button>
-                            {pointBurstId === act.id && <span data-testid="point-burst" className="pointer-events-none absolute right-3 top-0 -translate-y-1/2 rounded-full bg-amber-400 px-2 py-1 text-xs font-black text-slate-900 motion-safe:animate-bounce">+{act.points} ⭐</span>}
+                            {pointBurstId === act.id && <span data-testid="point-burst" className="pointer-events-none absolute right-3 top-0 -translate-y-1/2 rounded-full bg-amber-400 px-2 py-1 text-xs font-black text-slate-900 animate-burst-pop">+{act.points} ⭐</span>}
                           </div>
                           {!isDone && !isPending && (
                             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3 dark:border-zinc-700/70">
