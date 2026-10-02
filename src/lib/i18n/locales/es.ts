@@ -85,7 +85,7 @@ export const es = {
   featCloudSync: 'Sincronización Cloud multidispositivo',
   featFullSync: 'Sincronización instantánea en móviles y tabletas',
   featHabitBasic: 'Hábitos básicos',
-  featHabitFull: '50+ hábitos y 7 buenas acciones',
+  featHabitFull: '40+ hábitos y 7 buenas acciones',
   featHabitLib: 'Biblioteca completa de hábitos',
   featLocalOnly: 'Solo en este dispositivo',
   featRoadmapBasic: 'Vista previa básica',
