@@ -5,6 +5,7 @@ import { Check, Compass, X } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { useTranslation } from '@/lib/i18n/context';
+import { getJourneysTabCopy } from '@/lib/i18n/journeys-tab-copy';
 import { JOURNEY_STAGES, journeyPlansForStage, journeyStageForAge, type JourneyStageId } from '@/lib/journeys/age-journeys';
 import type { HabitActivity, JourneyPlan } from '@/types';
 import { ModalShell } from '@/components/ui/ModalShell';
@@ -20,6 +21,7 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
   const { profiles, activities, logs, createActivities } = useAppStore();
   const { t, language } = useTranslation();
   const copy = journeyCopy[language];
+  const tabCopy = getJourneysTabCopy(language);
   const mapCopy = journeyMapCopy[language];
   const [chosenStageId, setChosenStageId] = useState<JourneyStageId | null>(null);
   const [selectedChildId, setSelectedChildId] = useState('');
@@ -93,7 +95,7 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
               </p>
             )}
           </div>
-          <div className="flex flex-wrap gap-1 rounded-2xl bg-sand-100 p-1 dark:bg-zinc-900" role="group" aria-label={language === 'vi' ? 'Độ tuổi' : 'Age stage'}>
+          <div className="flex flex-wrap gap-1 rounded-2xl bg-sand-100 p-1 dark:bg-zinc-900" role="group" aria-label={tabCopy.ageGroup}>
             {JOURNEY_STAGES.map((item) => (
               <button
                 key={item.id}
@@ -102,7 +104,7 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
                 aria-pressed={stage.id === item.id}
                 className={`min-h-11 rounded-xl px-3 text-sm font-bold ${stage.id === item.id ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300' : 'text-sand-700 hover:text-sand-900 dark:text-slate-300'}`}
               >
-                {item.ageRange}{language === 'vi' ? ' tuổi' : ''}
+                {item.ageRange}{language === 'vi' ? tabCopy.ageSuffix : ''}
               </button>
             ))}
           </div>
@@ -118,8 +120,8 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
         ) : <p className="rounded-2xl border border-sand-200 bg-white p-4 text-sm text-sand-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-300">{mapCopy.noChild}</p>}
 
         <div className="rounded-2xl border border-sand-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900" data-testid="journey-stage-summary">
-          <p className="text-sm font-extrabold text-indigo-700 dark:text-indigo-300">{stage.ageRange}{language === 'vi' ? ' tuổi' : ' years'} · {stage.title[language === 'vi' ? 'vi' : 'en']}</p>
-          <p className="mt-1 text-sm text-sand-700 dark:text-slate-300">{stage.adultRole[language === 'vi' ? 'vi' : 'en']}. {language === 'vi' ? 'Mỗi bước thêm một thói quen và giữ các thói quen trước; ở lại một bước bao lâu tùy nhịp của bé.' : 'Each step adds one habit and keeps the earlier ones; stay on a step as long as your child needs.'}</p>
+          <p className="text-sm font-extrabold text-indigo-700 dark:text-indigo-300">{stage.ageRange}{tabCopy.ageSuffix} · {stage.title[language === 'vi' ? 'vi' : 'en']}</p>
+          <p className="mt-1 text-sm text-sand-700 dark:text-slate-300">{stage.adultRole[language === 'vi' ? 'vi' : 'en']}. {tabCopy.stepNote}</p>
         </div>
 
         {currentPlan && childId && (

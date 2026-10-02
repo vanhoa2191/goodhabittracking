@@ -17,6 +17,7 @@ import { sounds } from '@/lib/sound';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { useTranslation } from '@/lib/i18n/context';
 import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
+import { getOnboardingExtraCopy } from '@/lib/i18n/onboarding-extra-copy';
 import { getProfileMutationCopy, getProfileMutationError } from '@/lib/i18n/profile-mutation-copy';
 import { MASCOTS, getMascotLabel } from '@/lib/mascots';
 import { getMarketingOrigin } from '@/lib/site';
@@ -44,6 +45,7 @@ type ParentRole = (typeof PARENT_ROLES)[number];
 export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   const { language } = useTranslation();
   const copy = getOnboardingCopy(language);
+  const extra = getOnboardingExtraCopy(language);
   const profileCopy = getProfileMutationCopy(language);
   const {
     parentProfile,
@@ -191,9 +193,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
         const trialResult = await activateFreeTrial();
         if (!trialResult.success) {
           setIsSubmitting(false);
-          setSubmitError(language === 'vi'
-            ? 'Không thể bắt đầu 7 ngày dùng thử. Nếu bạn đã dùng thử trước đó, vui lòng chọn một gói để tiếp tục.'
-            : 'Could not start the 7-day trial. If you have already used it, please choose a plan to continue.');
+          setSubmitError(extra.trialFailed);
           return;
         }
       }
@@ -522,7 +522,11 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   {copy.consent}
                 </span>
               </label>
-              {legalPagesApproved && <p className="text-center text-xs text-slate-600 dark:text-slate-300">Xem <Link href={`${marketingOrigin}/privacy`} target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">Quyền riêng tư</Link> và <Link href={`${marketingOrigin}/terms`} target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">Điều khoản sử dụng</Link> trước khi tiếp tục.</p>}
+              {legalPagesApproved && <p className="text-center text-xs text-slate-600 dark:text-slate-300">{extra.legalTemplate.split(/(\[privacy\]|\[terms\])/).map((part, index) => {
+                if (part === '[privacy]') return <Link key={index} href={`${marketingOrigin}/privacy`} target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">{extra.privacy}</Link>;
+                if (part === '[terms]') return <Link key={index} href={`${marketingOrigin}/terms`} target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">{extra.terms}</Link>;
+                return <React.Fragment key={index}>{part}</React.Fragment>;
+              })}</p>}
 
               {submitError && (
                 <p role="alert" className="rounded-xl bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-200">
@@ -531,7 +535,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
               )}
 
               {/* Action Buttons */}
-              <Link href={`${marketingOrigin}/docs`} className="flex min-h-11 items-center justify-center gap-2 rounded-xl text-sm font-bold text-indigo-700 hover:bg-indigo-50 dark:text-indigo-300 dark:hover:bg-indigo-950/30"><BookOpen className="h-4 w-4" />{language === 'vi' ? 'Xem hướng dẫn sử dụng' : 'View user guide'}</Link>
+              <Link href={`${marketingOrigin}/docs`} className="flex min-h-11 items-center justify-center gap-2 rounded-xl text-sm font-bold text-indigo-700 hover:bg-indigo-50 dark:text-indigo-300 dark:hover:bg-indigo-950/30"><BookOpen className="h-4 w-4" />{extra.guide}</Link>
               <div className="flex items-center gap-3 pt-2">
                 <button
                   type="button"
@@ -549,7 +553,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
                   <span>{isSubmitting
                     ? copy.saving
                     : currentUser && !isPro
-                      ? (language === 'vi' ? 'Bắt đầu 7 ngày dùng thử & tạo hồ sơ' : 'Start the 7-day trial & create profile')
+                      ? extra.startTrial
                       : copy.complete}</span>
                 </button>
               </div>
