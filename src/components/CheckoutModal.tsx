@@ -14,6 +14,7 @@ import type { PricingPlan } from '@/types';
 import type { PaymentResult } from '@/lib/payos';
 import { createPaymentOrder, readPaymentStatus } from '@/lib/billing/payment-client';
 import { useTranslation } from '@/lib/i18n/context';
+import { getCheckoutLegalCopy } from '@/lib/i18n/checkout-legal-copy';
 import { CheckoutPaymentDetails } from '@/components/CheckoutPaymentDetails';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { getMarketingOrigin } from '@/lib/site';
@@ -31,7 +32,8 @@ const marketingOrigin = getMarketingOrigin();
 
 export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   const { syncNow, currentUser, familyId, familyRole } = useAppStore();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  const legal = getCheckoutLegalCopy(language);
 
   const [isLoading, setIsLoading] = useState(true);
   const [paymentData, setPaymentData] = useState<PaymentResult | null>(null);
@@ -199,19 +201,25 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
           {/* Success screen */}
           {!canCreatePayment ? (
             <div role="alert" className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm font-semibold leading-6 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
-              Vui lòng đăng nhập bằng tài khoản phụ huynh và chờ dữ liệu gia đình tải xong trước khi thanh toán.
+              {legal.signInRequired}
             </div>
           ) : legalPagesApproved && !hasConfirmedTerms ? (
             <div className="space-y-5 rounded-2xl border border-indigo-200 bg-indigo-50 p-5 dark:border-indigo-800 dark:bg-indigo-950/30">
               <div>
-                <h3 className="text-lg font-black text-slate-900 dark:text-white">Xác nhận trước khi tạo đơn</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Bạn sẽ thanh toán một lần cho kỳ đã chọn. KidHabit không tự động gia hạn hoặc tự động trừ tiền kỳ tiếp theo.</p>
+                <h3 className="text-lg font-black text-slate-900 dark:text-white">{legal.confirmTitle}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">{legal.confirmBody}</p>
               </div>
               <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-indigo-200 bg-white p-4 text-sm font-semibold text-slate-800 dark:border-indigo-800 dark:bg-zinc-900 dark:text-slate-100">
                 <input type="checkbox" checked={hasAcceptedTerms} onChange={(event) => setHasAcceptedTerms(event.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-indigo-600" />
-                <span>Tôi đã đọc và đồng ý với <Link href={new URL('/terms/', marketingOrigin).href} target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Điều khoản sử dụng</Link> và <Link href={new URL('/privacy/', marketingOrigin).href} target="_blank" className="text-indigo-700 underline dark:text-indigo-300">Quyền riêng tư</Link>.</span>
+                <span>
+                  {legal.agreeTemplate.split(/(\[terms\]|\[privacy\])/).map((part, index) => {
+                    if (part === '[terms]') return <Link key={index} href={new URL('/terms/', marketingOrigin).href} target="_blank" className="text-indigo-700 underline dark:text-indigo-300">{legal.termsLink}</Link>;
+                    if (part === '[privacy]') return <Link key={index} href={new URL('/privacy/', marketingOrigin).href} target="_blank" className="text-indigo-700 underline dark:text-indigo-300">{legal.privacyLink}</Link>;
+                    return <React.Fragment key={index}>{part}</React.Fragment>;
+                  })}
+                </span>
               </label>
-              <button type="button" disabled={!hasAcceptedTerms} onClick={() => setHasConfirmedTerms(true)} className="min-h-11 w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-extrabold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">Tiếp tục tạo đơn thanh toán</button>
+              <button type="button" disabled={!hasAcceptedTerms} onClick={() => setHasConfirmedTerms(true)} className="min-h-11 w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-extrabold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">{legal.continueButton}</button>
             </div>
           ) : isSuccess ? (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-4 animate-fade-in">
