@@ -25,7 +25,6 @@ import {
   Trophy,
   Palette,
   BookOpen,
-  Heart,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { getLastToggleFailure } from '@/lib/store/habit-actions';
@@ -608,27 +607,7 @@ export function KidDashboard() {
 
                               <div className="ml-12 flex items-center gap-2 mt-2 flex-wrap">
                                   <ReadAloudButton text={act.description ? `${act.title}. ${act.description}` : act.title} language={language} />
-                                  {/* Parent Role (Thân Giáo) Tag */}
-                                  {act.isParentRole && (
-                                    <span className="inline-flex items-center gap-1 text-xs font-extrabold px-2 py-0.5 rounded-md bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300">
-                                      <Heart className="w-3 h-3 fill-current text-rose-500" />
-                                      {copy.parentRole}
-                                    </span>
-                                  )}
-
-                                  {/* 7 Bo Thi Tag */}
-                                  {act.boThi7Key && (
-                                    <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300">
-                                      🎁 {act.boThi7Key}
-                                    </span>
-                                  )}
-
-                                  {/* 16 Portraits Tag */}
-                                  {act.portrait16Key && (
-                                    <span className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300">
-                                      ✨ {act.portrait16Key}
-                                    </span>
-                                  )}
+                                  {/* The parent-role, 7-ways and 16-portraits labels live in the task details, one tap away. */}
 
                                   {/* Points tag */}
                                   <span className="inline-flex items-center gap-1 text-xs font-extrabold px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400">
