@@ -8,6 +8,7 @@ import { AppEntryGate } from '@/components/AppEntryGate';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getAppFooterCopy } from '@/lib/i18n/app-footer-copy';
+import { SignInErrorNotice } from '@/components/SignInErrorNotice';
 import { demoSessionCopy } from '@/lib/i18n/demo-session-copy';
 import { CaregiverDashboard } from '@/components/CaregiverDashboard';
 import { PaymentReturnNotice } from '@/components/PaymentReturnNotice';
@@ -57,6 +58,8 @@ export default function Home() {
     currentUser,
     familyRole,
     loginWithGoogle,
+    signInError,
+    clearSignInError,
     isPricingModalOpen,
     setIsPricingModalOpen,
     isCheckoutModalOpen,
@@ -130,6 +133,7 @@ export default function Home() {
       <div>
         <Header hasAppSession={canOpenApp} marketingHomeUrl={marketingOrigin.href} />
         <PaymentReturnNotice />
+        <SignInErrorNotice message={signInError} onDismiss={clearSignInError} />
         <main>
           {renderGateway ? (
             <AppEntryGate
