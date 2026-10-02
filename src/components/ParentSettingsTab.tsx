@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,6 +27,33 @@ import { CaregiverInvitesPanel } from '@/components/CaregiverInvitesPanel';
 import { PwaInstallPanel } from '@/components/PwaInstallPanel';
 import { getMarketingOrigin } from '@/lib/site';
 
+const SETTINGS_SECTIONS = [
+  { id: 'settings-devices', nav: 'navDevices' },
+  { id: 'settings-account', nav: 'navAccount' },
+  { id: 'settings-privacy', nav: 'navPrivacy' },
+  { id: 'settings-appearance', nav: 'navAppearance' },
+  { id: 'settings-security', nav: 'navSecurity' },
+] as const;
+
+/** The section whose heading was last scrolled past, so the sticky links can show where the reader is. */
+function useActiveSection(): string {
+  const [active, setActive] = useState<string>(SETTINGS_SECTIONS[0].id);
+  useEffect(() => {
+    const headings = SETTINGS_SECTIONS
+      .map((section) => document.getElementById(section.id))
+      .filter((element): element is HTMLElement => element !== null);
+    if (headings.length === 0 || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting);
+      const first = visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (first) setActive(first.target.id);
+    }, { rootMargin: '-140px 0px -65% 0px' });
+    headings.forEach((heading) => observer.observe(heading));
+    return () => observer.disconnect();
+  }, []);
+  return active;
+}
+
 const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
 const marketingOrigin = getMarketingOrigin();
 
@@ -46,6 +74,7 @@ export function ParentSettingsTab() {
   const copy = getParentSettingsCopy(language);
   const pinCopy = getPinCopy(language);
   const layout = getSettingsLayoutCopy(language);
+  const activeSection = useActiveSection();
   const pauseCopy = familyPauseCopy[language];
   const isPaused = Boolean(experience.settings?.paused_at);
   const [newPinInput, setNewPinInput] = useState('');
@@ -134,17 +163,30 @@ export function ParentSettingsTab() {
     <div className="space-y-6">
       <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">{t.parentSettings}</h3>
 
-      <nav aria-label={layout.groupNav} className="flex flex-wrap gap-2 text-sm">
-        {[
-          ['settings-devices', layout.navDevices],
-          ['settings-account', layout.navAccount],
-          ['settings-privacy', layout.navPrivacy],
-          ['settings-appearance', layout.navAppearance],
-          ['settings-security', layout.navSecurity],
-        ].map(([href, label]) => <a key={href} href={`#${href}`} className="inline-flex min-h-11 items-center rounded-xl border border-slate-200 bg-white px-3 font-bold text-indigo-700 hover:bg-indigo-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{label}</a>)}
+      <nav
+        aria-label={layout.groupNav}
+        className="sticky top-[4.75rem] z-30 flex flex-wrap gap-2 rounded-2xl border border-slate-100 bg-white/90 p-2 text-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/90"
+      >
+        {SETTINGS_SECTIONS.map((section) => {
+          const current = activeSection === section.id;
+          return (
+            <a
+              key={section.id}
+              href={`#${section.id}`}
+              aria-current={current ? 'location' : undefined}
+              className={`inline-flex min-h-11 items-center rounded-xl border px-3 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                current
+                  ? 'border-indigo-600 bg-indigo-600 text-white'
+                  : 'border-slate-200 bg-white text-indigo-700 hover:bg-indigo-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300'
+              }`}
+            >
+              {layout[section.nav]}
+            </a>
+          );
+        })}
       </nav>
 
-      <h4 id="settings-devices" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">{layout.sectionDevices}</h4>
+      <h4 id="settings-devices" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionDevices}</h4>
 
       <ChildDevicesPanel key={currentUser?.id ?? 'signed-out'} />
       <PwaInstallPanel />
@@ -170,12 +212,12 @@ export function ParentSettingsTab() {
         {pauseError && <p role="alert" className="mt-3 text-sm font-semibold text-rose-700 dark:text-rose-300">{pauseCopy.error}</p>}
       </section>
 
-      <h4 id="settings-account" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">{layout.sectionAccount}</h4>
+      <h4 id="settings-account" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionAccount}</h4>
       {currentUser && <AccountProfileCard />}
       <FamilyDataCard />
       {currentUser && <ReferralCodeEntry />}
       {currentUser && <AffiliateCard />}
-      <h4 id="settings-privacy" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">{layout.sectionPrivacy}</h4>
+      <h4 id="settings-privacy" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionPrivacy}</h4>
       {currentUser && <AnalyticsConsentCard />}
       {currentUser && <LeaderboardSharingCard />}
       {currentUser && defaultExperienceFlags.parentReengagement && <ParentReminderConsentCard />}
@@ -187,12 +229,12 @@ export function ParentSettingsTab() {
         <Link href={new URL('/contact/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.contact}</Link>
       </nav>}
 
-      <h4 id="settings-appearance" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">{layout.sectionAppearance}</h4>
+      <h4 id="settings-appearance" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionAppearance}</h4>
       <div className="rounded-3xl border border-slate-100 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
         <ThemeSelector />
       </div>
 
-      <h4 id="settings-security" className="scroll-mt-24 text-base font-black text-slate-900 dark:text-white">{layout.sectionSecurity}</h4>
+      <h4 id="settings-security" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionSecurity}</h4>
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
         <h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 mb-2 flex items-center gap-2">
           <Lock className="w-4 h-4 text-indigo-600" />
