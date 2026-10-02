@@ -8,7 +8,7 @@ const trackedFiles = execFileSync('git', ['ls-files', '--cached', '--others', '-
 const detectors = [
   {
     name: 'private environment value',
-    pattern: /^[ \t]*(?:export[ \t]+)?(?:PAYOS_API_KEY|PAYOS_CHECKSUM_KEY|SUPABASE_SERVICE_ROLE_KEY|PAIRING_RATE_LIMIT_SECRET|CRON_SECRET|RESEND_API_KEY|BREVO_API_KEY|RESEND_WEBHOOK_SECRET|CLOUDFLARE_API_TOKEN|SUPABASE_ACCESS_TOKEN)[ \t]*=[ \t]*(?!$|#|your[-_]|replace[-_]|example|<)[^ \t\r\n#]+/m,
+    pattern: /^[ \t]*(?:export[ \t]+)?(?:PAYOS_API_KEY|PAYOS_CHECKSUM_KEY|SUPABASE_SERVICE_ROLE_KEY|PAIRING_RATE_LIMIT_SECRET|PARENT_UNLOCK_SECRET|CRON_SECRET|RESEND_API_KEY|BREVO_API_KEY|RESEND_WEBHOOK_SECRET|CLOUDFLARE_API_TOKEN|SUPABASE_ACCESS_TOKEN)[ \t]*=[ \t]*(?!$|#|your[-_]|replace[-_]|example|<)[^ \t\r\n#]+/m,
   },
   { name: 'private key', pattern: /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/ },
   { name: 'GitHub token', pattern: /\bgh[pousr]_[A-Za-z0-9]{36,}\b/ },

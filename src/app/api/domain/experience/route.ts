@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { cuePlanFields, timeMatchesKind } from '@/lib/habit-programs/cue-plan-input';
-import { parseCuePlan, parseDeferredTask, parseExperienceState, parseSupportObservation } from '@/lib/experience-state';
+import { experienceColumns, parseCuePlan, parseDeferredTask, parseExperienceState, parseSupportObservation } from '@/lib/experience-state';
 import { isMissingTable } from '@/lib/supabase/missing-table';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
@@ -42,19 +42,19 @@ export async function GET() {
   const [
     children, settings, letters, quests, wishlists, deferredTasks, supportObservations, cuePlans, journalEntries, cityPurchases,
   ] = await Promise.all([
-    supabase.from('child_engagement_profiles').select('*').eq('family_id', parent.familyId),
-    supabase.from('family_engagement_settings').select('*').eq('family_id', parent.familyId).maybeSingle(),
-    supabase.from('daily_mascot_letters').select('*').eq('family_id', parent.familyId),
-    supabase.from('secret_quests').select('*').eq('family_id', parent.familyId),
-    supabase.from('child_wishlists').select('*').eq('family_id', parent.familyId),
-    supabase.from('child_task_deferrals').select('*').eq('family_id', parent.familyId),
-    supabase.from('habit_support_observations').select('*').eq('family_id', parent.familyId),
-    supabase.from('habit_cue_plans').select('*').eq('family_id', parent.familyId),
+    supabase.from('child_engagement_profiles').select(experienceColumns.child_engagement_profiles.join(',')).eq('family_id', parent.familyId),
+    supabase.from('family_engagement_settings').select(experienceColumns.family_engagement_settings.join(',')).eq('family_id', parent.familyId).maybeSingle(),
+    supabase.from('daily_mascot_letters').select(experienceColumns.daily_mascot_letters.join(',')).eq('family_id', parent.familyId),
+    supabase.from('secret_quests').select(experienceColumns.secret_quests.join(',')).eq('family_id', parent.familyId),
+    supabase.from('child_wishlists').select(experienceColumns.child_wishlists.join(',')).eq('family_id', parent.familyId),
+    supabase.from('child_task_deferrals').select(experienceColumns.child_task_deferrals.join(',')).eq('family_id', parent.familyId),
+    supabase.from('habit_support_observations').select(experienceColumns.habit_support_observations.join(',')).eq('family_id', parent.familyId),
+    supabase.from('habit_cue_plans').select(experienceColumns.habit_cue_plans.join(',')).eq('family_id', parent.familyId),
     defaultExperienceFlags.dailyJournal
-      ? supabase.from('child_journal_entries').select('*').eq('family_id', parent.familyId)
+      ? supabase.from('child_journal_entries').select(experienceColumns.child_journal_entries.join(',')).eq('family_id', parent.familyId)
       : Promise.resolve({ data: [], error: null }),
     defaultExperienceFlags.dreamCity
-      ? supabase.from('child_city_purchases').select('*').eq('family_id', parent.familyId)
+      ? supabase.from('child_city_purchases').select(experienceColumns.child_city_purchases.join(',')).eq('family_id', parent.familyId)
       : Promise.resolve({ data: [], error: null }),
   ]);
   // Until the habit program migration is applied, its tables do not exist; that must not break the rest of the family.

@@ -188,11 +188,27 @@ export function mapChildBadgeRow(input: unknown): ChildBadge {
 
 const kudoRowSchema = z.object({
   id: z.string().uuid(), family_id: z.string().uuid(), from_child_id: z.string().uuid().nullable().optional(),
-  from_child_name: z.string(), to_child_id: z.string().uuid(), emoji: z.string(), sent_at: z.string(),
+  to_child_id: z.string().uuid(), emoji: z.string(), sent_at: z.string(),
 });
 
 export function mapKudoRow(input: unknown): Kudo {
   const row = kudoRowSchema.parse(input);
+  // The kudos table keeps only the sender's id; the family sync fills in the name from the profiles.
   return { id: row.id, familyId: row.family_id, fromChildId: row.from_child_id ?? undefined,
-    fromChildName: row.from_child_name, toChildId: row.to_child_id, emoji: row.emoji, sentAt: row.sent_at };
+    fromChildName: '', toChildId: row.to_child_id, emoji: row.emoji, sentAt: row.sent_at };
 }
+
+/**
+ * The columns the browser reads from each family table: exactly the fields the parsers above use, so a
+ * column added to a table later stays on the server until it is added here. `family_snapshot` returns the
+ * same lists (tests/unit/family-snapshot-columns.test.ts compares them).
+ */
+export const familyCoreColumns = {
+  child_profiles: Object.keys(childProfileRowSchema.shape),
+  habit_activities: Object.keys(habitActivityRowSchema.shape),
+  activity_logs: Object.keys(activityLogRowSchema.shape),
+  rewards: Object.keys(rewardRowSchema.shape),
+  redemptions: Object.keys(redemptionRowSchema.shape),
+  child_badges: Object.keys(childBadgeRowSchema.shape),
+  kudos: Object.keys(kudoRowSchema.shape),
+} as const;

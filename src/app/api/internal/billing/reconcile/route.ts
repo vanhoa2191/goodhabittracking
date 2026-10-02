@@ -1,18 +1,11 @@
-import { timingSafeEqual } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { reconcileOrderOutcome } from '@/lib/billing/payos-reconcile';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
+import { hasBearerSecret } from '@/lib/security/bearer-secret';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
 export const runtime = 'nodejs';
-
-function authorized(request: NextRequest): boolean {
-  const configured = process.env.CRON_SECRET?.trim();
-  const provided = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '') ?? '';
-  if (!configured || configured.length !== provided.length) return false;
-  return timingSafeEqual(Buffer.from(configured), Buffer.from(provided));
-}
 
 /**
  * Safety net for payments whose PayOS webhook never arrived: pending orders from the last three days are
@@ -23,7 +16,7 @@ function authorized(request: NextRequest): boolean {
 export async function POST(request: NextRequest) {
   const crossSite = rejectCrossSiteRequest(request);
   if (crossSite) return crossSite;
-  if (!authorized(request)) return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
+  if (!hasBearerSecret(request, process.env.CRON_SECRET)) return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
   const correlationId = createCorrelationId();
   const admin = createAdminSupabaseClient();
   const since = new Date(Date.now() - 3 * 86_400_000).toISOString();

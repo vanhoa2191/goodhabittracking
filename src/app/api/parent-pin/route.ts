@@ -3,13 +3,24 @@ import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
-import { clearParentUnlock, issueParentUnlock } from '@/lib/security/parent-unlock';
+import { clearParentUnlock, issueParentUnlock, parentPinVersion } from '@/lib/security/parent-unlock';
 
 export const runtime = 'nodejs';
 
 const pinSchema = z.string().regex(/^\d{4}$/);
 const verifySchema = z.object({ pin: pinSchema }).strict();
 const changeSchema = z.object({ currentPin: pinSchema.optional(), newPin: pinSchema }).strict();
+
+type ParentClient = NonNullable<Awaited<ReturnType<typeof parentClient>>>;
+
+/** Unlocks this browser for the PIN that is current now; refuses when that version cannot be read. */
+async function unlockedResponse(context: ParentClient, data: unknown, status: number): Promise<NextResponse> {
+  const pinStatus = await context.supabase.rpc('get_parent_pin_status', { target_family_id: context.parent.familyId });
+  if (pinStatus.error || !pinStatus.data) return NextResponse.json({ error: 'Could not verify PIN.' }, { status: 503 });
+  const response = NextResponse.json(data, { status });
+  await issueParentUnlock(response, context.parent, parentPinVersion(pinStatus.data));
+  return response;
+}
 
 async function parentClient() {
   const parent = await getParentContext();
@@ -40,9 +51,8 @@ export async function POST(request: NextRequest) {
   });
   if (error || !data) return NextResponse.json({ error: 'Could not verify PIN.' }, { status: 503 });
   const status = typeof data === 'object' && data && 'status' in data ? data.status : null;
-  const response = NextResponse.json(data, { status: status === 'locked' ? 429 : status === 'verified' ? 200 : 409 });
-  if (status === 'verified') await issueParentUnlock(response, context.parent);
-  return response;
+  if (status === 'verified') return unlockedResponse(context, data, 200);
+  return NextResponse.json(data, { status: status === 'locked' ? 429 : 409 });
 }
 
 export async function DELETE(request: NextRequest) {
@@ -67,7 +77,6 @@ export async function PUT(request: NextRequest) {
   });
   if (error || !data) return NextResponse.json({ error: 'Could not update PIN.' }, { status: 503 });
   const status = typeof data === 'object' && data && 'status' in data ? data.status : null;
-  const response = NextResponse.json(data, { status: status === 'updated' ? 200 : status === 'invalid_format' ? 400 : status === 'locked' ? 429 : 409 });
-  if (status === 'updated') await issueParentUnlock(response, context.parent);
-  return response;
+  if (status === 'updated') return unlockedResponse(context, data, 200);
+  return NextResponse.json(data, { status: status === 'invalid_format' ? 400 : status === 'locked' ? 429 : 409 });
 }

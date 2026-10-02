@@ -10,7 +10,13 @@ const readyEnvironment = {
   PAYOS_API_KEY: 'api-current',
   PAYOS_CHECKSUM_KEY: 'checksum-current',
   PAIRING_RATE_LIMIT_SECRET: 'pairing-rate-limit-secret-at-least-32-bytes',
+  CRON_SECRET: 'operations-secret',
 };
+
+const operations = () => new Request('https://app.kidhabithero.com/api/health', {
+  headers: { authorization: 'Bearer operations-secret' },
+});
+const anonymous = () => new Request('https://app.kidhabithero.com/api/health');
 
 describe('GET /api/health', () => {
   beforeEach(() => {
@@ -26,7 +32,7 @@ describe('GET /api/health', () => {
   it('reports ready only when database, billing, and pairing configuration are complete', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
 
-    const response = await GET();
+    const response = await GET(operations());
 
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({
@@ -40,11 +46,24 @@ describe('GET /api/health', () => {
     });
   });
 
+  it('shows anonymous callers only the overall status and the build', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    vi.stubEnv('PAIRING_RATE_LIMIT_SECRET', '');
+
+    const response = await GET(anonymous());
+
+    expect(response.status).toBe(503);
+    const body = await response.json();
+    expect(body.status).toBe('degraded');
+    expect(body).not.toHaveProperty('checks');
+    expect(Object.keys(body).sort()).toEqual(['status', 'version']);
+  });
+
   it('fails readiness when the pairing secret is absent', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
     vi.stubEnv('PAIRING_RATE_LIMIT_SECRET', '');
 
-    const response = await GET();
+    const response = await GET(operations());
 
     expect(response.status).toBe(503);
     await expect(response.json()).resolves.toMatchObject({
@@ -57,7 +76,7 @@ describe('GET /api/health', () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
     vi.mocked(fetch).mockResolvedValue(new Response('{"message":"Invalid API key"}', { status: 401 }));
 
-    const response = await GET();
+    const response = await GET(operations());
 
     expect(response.status).toBe(503);
     await expect(response.json()).resolves.toMatchObject({
@@ -74,9 +93,9 @@ describe('GET /api/health', () => {
     const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);
 
-    await GET();
-    await GET();
-    await GET();
+    await GET(operations());
+    await GET(operations());
+    await GET(operations());
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
@@ -88,9 +107,9 @@ describe('GET /api/health', () => {
     vi.useFakeTimers();
     try {
       vi.setSystemTime(new Date('2026-10-01T00:00:00Z'));
-      await GET();
+      await GET(operations());
       vi.setSystemTime(new Date('2026-10-01T00:00:11Z'));
-      await GET();
+      await GET(operations());
     } finally {
       vi.useRealTimers();
     }

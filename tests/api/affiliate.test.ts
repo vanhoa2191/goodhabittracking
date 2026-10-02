@@ -25,7 +25,7 @@ function post(body: unknown, cookie?: string) {
 
 async function unlockCookie(): Promise<string> {
   const response = NextResponse.json({});
-  await issueParentUnlock(response, parent);
+  await issueParentUnlock(response, parent, '');
   return response.cookies.get(PARENT_UNLOCK_COOKIE)!.value;
 }
 

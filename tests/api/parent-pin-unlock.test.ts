@@ -9,7 +9,7 @@ vi.mock('@/lib/auth/parent-context', () => ({
 vi.mock('@/lib/supabase/server', () => ({ createServerSupabaseClient: vi.fn(async () => ({ rpc })) }));
 
 import { DELETE, POST } from '@/app/api/parent-pin/route';
-import { PARENT_UNLOCK_COOKIE } from '@/lib/security/parent-unlock';
+import { hasParentUnlock, PARENT_UNLOCK_COOKIE } from '@/lib/security/parent-unlock';
 
 function request(method: string, body?: unknown) {
   return new NextRequest('http://localhost/api/parent-pin', {
@@ -35,6 +35,27 @@ describe('parent PIN unlock cookie', () => {
     const refused = await POST(request('POST', { pin: '0000' }));
     expect(refused.status).toBe(409);
     expect(refused.cookies.get(PARENT_UNLOCK_COOKIE)).toBeUndefined();
+  });
+
+  it('is bound to the PIN version that is current when it is issued', async () => {
+    rpc.mockImplementation(async (name: string) => (name === 'verify_parent_pin'
+      ? { data: { status: 'verified' }, error: null }
+      : { data: { configured: true, version: '42' }, error: null }));
+    const verified = await POST(request('POST', { pin: '1234' }));
+    const cookie = verified.cookies.get(PARENT_UNLOCK_COOKIE)!.value;
+    const next = new NextRequest('http://localhost/api/x', { headers: { cookie: `${PARENT_UNLOCK_COOKIE}=${cookie}` } });
+    const parent = { familyId: 'family-a', user: { id: 'user-a' } };
+    expect(await hasParentUnlock(next, parent, '42')).toBe(true);
+    expect(await hasParentUnlock(next, parent, '43')).toBe(false);
+  });
+
+  it('is not issued when the current PIN version cannot be read', async () => {
+    rpc.mockImplementation(async (name: string) => (name === 'verify_parent_pin'
+      ? { data: { status: 'verified' }, error: null }
+      : { data: null, error: { message: 'down' } }));
+    const response = await POST(request('POST', { pin: '1234' }));
+    expect(response.status).toBe(503);
+    expect(response.cookies.get(PARENT_UNLOCK_COOKIE)).toBeUndefined();
   });
 
   it('is cleared when the parent locks again', async () => {

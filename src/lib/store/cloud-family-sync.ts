@@ -13,9 +13,10 @@ import type {
 import { getSupabase } from '@/lib/supabase';
 import { emptyWhenTableMissing } from '@/lib/supabase/missing-table';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
-import { emptyExperienceState, parseExperienceState } from '@/lib/experience-state';
+import { emptyExperienceState, experienceColumns, parseExperienceState } from '@/lib/experience-state';
 import type { ExperienceState } from '@/lib/experience-state';
 import {
+  familyCoreColumns,
   mapActivityLogRow,
   mapChildBadgeRow,
   mapChildProfileRow,
@@ -78,6 +79,8 @@ const groupRowSchema = z.object({
   created_at: z.string(),
 });
 
+const groupColumns = Object.keys(groupRowSchema.shape).join(',');
+
 const groupMemberRowSchema = z.object({
   group_id: z.string().uuid(),
   child_id: z.string().uuid(),
@@ -105,16 +108,22 @@ function parseCloudFamilyRows(rows: CloudFamilyRows): CloudFamilySnapshot {
     ? null
     : subscriptionRowSchema.parse(rows.subscription);
 
+  const profiles = rows.profiles.map(mapChildProfileRow);
+  const profileNames = new Map(profiles.map((profile) => [profile.id, profile.name]));
+
   return {
     familyId,
     familyRole: familyRoleSchema.parse(rows.familyRole),
-    profiles: rows.profiles.map(mapChildProfileRow),
+    profiles,
     activities: rows.activities.map(mapHabitActivityRow),
     logs: rows.logs.map(mapActivityLogRow),
     rewards: rows.rewards.map(mapRewardRow),
     redemptions: rows.redemptions.map(mapRedemptionRow),
     childBadges: rows.childBadges.map(mapChildBadgeRow),
-    kudos: rows.kudos.map(mapKudoRow),
+    kudos: rows.kudos.map(mapKudoRow).map((kudo) => ({
+      ...kudo,
+      fromChildName: (kudo.fromChildId && profileNames.get(kudo.fromChildId)) || kudo.fromChildName,
+    })),
     groups: rows.groups.map((input) => {
       const group = groupRowSchema.parse(input);
       return {
@@ -210,33 +219,33 @@ export async function readCloudFamilyRows(
     journalEntriesResult,
     cityPurchasesResult,
   ] = await Promise.all([
-    supabase.from('child_profiles').select('*').eq('family_id', familyId),
-    supabase.from('habit_activities').select('*').eq('family_id', familyId),
-    supabase.from('activity_logs').select('*').eq('family_id', familyId),
-    supabase.from('rewards').select('*').eq('family_id', familyId),
-    supabase.from('redemptions').select('*').eq('family_id', familyId),
-    supabase.from('child_badges').select('*').eq('family_id', familyId),
-    supabase.from('kudos').select('*').eq('family_id', familyId).order('sent_at', { ascending: false }).limit(50),
-    supabase.from('group_teams').select('*').eq('family_id', familyId),
+    supabase.from('child_profiles').select(familyCoreColumns.child_profiles.join(',')).eq('family_id', familyId),
+    supabase.from('habit_activities').select(familyCoreColumns.habit_activities.join(',')).eq('family_id', familyId),
+    supabase.from('activity_logs').select(familyCoreColumns.activity_logs.join(',')).eq('family_id', familyId),
+    supabase.from('rewards').select(familyCoreColumns.rewards.join(',')).eq('family_id', familyId),
+    supabase.from('redemptions').select(familyCoreColumns.redemptions.join(',')).eq('family_id', familyId),
+    supabase.from('child_badges').select(familyCoreColumns.child_badges.join(',')).eq('family_id', familyId),
+    supabase.from('kudos').select(familyCoreColumns.kudos.join(',')).eq('family_id', familyId).order('sent_at', { ascending: false }).limit(50),
+    supabase.from('group_teams').select(groupColumns).eq('family_id', familyId),
     supabase.from('group_members').select('group_id, child_id').eq('family_id', familyId),
     supabase
       .from('user_subscriptions')
       .select('plan, status, trial_ends_at, subscription_ends_at')
       .eq('family_id', familyId)
       .maybeSingle(),
-    experienceEnabled ? supabase.from('child_engagement_profiles').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
-    experienceEnabled ? supabase.from('family_engagement_settings').select('*').eq('family_id', familyId).maybeSingle() : Promise.resolve({ data: null, error: null }),
-    experienceEnabled ? supabase.from('daily_mascot_letters').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
-    experienceEnabled ? supabase.from('secret_quests').select('*').eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
-    supabase.from('child_wishlists').select('*').eq('family_id', familyId),
-    supabase.from('child_task_deferrals').select('*').eq('family_id', familyId),
-    supabase.from('habit_support_observations').select('*').eq('family_id', familyId).then(emptyWhenTableMissing),
-    supabase.from('habit_cue_plans').select('*').eq('family_id', familyId).then(emptyWhenTableMissing),
+    experienceEnabled ? supabase.from('child_engagement_profiles').select(experienceColumns.child_engagement_profiles.join(',')).eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
+    experienceEnabled ? supabase.from('family_engagement_settings').select(experienceColumns.family_engagement_settings.join(',')).eq('family_id', familyId).maybeSingle() : Promise.resolve({ data: null, error: null }),
+    experienceEnabled ? supabase.from('daily_mascot_letters').select(experienceColumns.daily_mascot_letters.join(',')).eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
+    experienceEnabled ? supabase.from('secret_quests').select(experienceColumns.secret_quests.join(',')).eq('family_id', familyId) : Promise.resolve({ data: [], error: null }),
+    supabase.from('child_wishlists').select(experienceColumns.child_wishlists.join(',')).eq('family_id', familyId),
+    supabase.from('child_task_deferrals').select(experienceColumns.child_task_deferrals.join(',')).eq('family_id', familyId),
+    supabase.from('habit_support_observations').select(experienceColumns.habit_support_observations.join(',')).eq('family_id', familyId).then(emptyWhenTableMissing),
+    supabase.from('habit_cue_plans').select(experienceColumns.habit_cue_plans.join(',')).eq('family_id', familyId).then(emptyWhenTableMissing),
     defaultExperienceFlags.dailyJournal
-      ? supabase.from('child_journal_entries').select('*').eq('family_id', familyId)
+      ? supabase.from('child_journal_entries').select(experienceColumns.child_journal_entries.join(',')).eq('family_id', familyId)
       : Promise.resolve({ data: [], error: null }),
     defaultExperienceFlags.dreamCity
-      ? supabase.from('child_city_purchases').select('*').eq('family_id', familyId)
+      ? supabase.from('child_city_purchases').select(experienceColumns.child_city_purchases.join(',')).eq('family_id', familyId)
       : Promise.resolve({ data: [], error: null }),
   ]);
 
