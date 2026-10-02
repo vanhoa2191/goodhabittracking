@@ -108,6 +108,10 @@ describe('POST /api/payment/create referral discount', () => {
     insert
       .mockResolvedValueOnce({ error: { code: '23505' } })
       .mockResolvedValueOnce({ error: null });
+    // Two draws in the same millisecond can land on the same two random digits (one time in a hundred), which
+    // would make this assertion flaky; a clock that moves on every read keeps the two codes apart.
+    let tick = 1_790_000_000_000;
+    const clock = vi.spyOn(Date, 'now').mockImplementation(() => tick++);
     const response = await post('monthly');
     expect(response.status).toBe(200);
     expect(insert).toHaveBeenCalledTimes(2);
@@ -119,6 +123,7 @@ describe('POST /api/payment/create referral discount', () => {
     insert.mockResolvedValue({ error: { code: '23505' } });
     expect((await post('monthly')).status).toBe(503);
     expect(insert).toHaveBeenCalledTimes(3);
+    clock.mockRestore();
   });
 
   it('does not retry an insert that failed for any other reason', async () => {
