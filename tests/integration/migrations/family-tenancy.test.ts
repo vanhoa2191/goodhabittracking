@@ -266,6 +266,8 @@ describe('family tenancy migration', () => {
       '202610010005_admin_audit_fixes.sql',
       '202610020001_admin_followups.sql',
       '202610020002_family_snapshot.sql',
+      '202610020003_age_band_override.sql',
+      '202610020004_member_read_scope.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
