@@ -26,7 +26,8 @@ import { ParentRewardsTab } from './ParentRewardsTab';
 // The roadmaps (and their text) are fetched when the tab is opened, which keeps them out of the first download.
 const ParentJourneysTab = dynamic(() => import('./ParentJourneysTab').then((module) => module.ParentJourneysTab));
 import { ParentHabitsTab } from './ParentHabitsTab';
-import { ParentChildrenTab } from './ParentChildrenTab';
+// The children tab draws pairing QR codes in the browser only, so its code (and the PNG encoder behind it) stays out of the server worker.
+const ParentChildrenTab = dynamic(() => import('./ParentChildrenTab').then((module) => module.ParentChildrenTab), { ssr: false });
 import { ParentNavigation, type ParentSection } from './ParentNavigation';
 import { getParentPrimaryCopy } from '@/lib/i18n/parent-primary-copy';
 import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';

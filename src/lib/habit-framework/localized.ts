@@ -23,22 +23,20 @@ export const VIETNAMESE_FRAMEWORK: LocalizedFramework = {
   habits: HABIT_FRAMEWORK_CATALOG,
 };
 
-// Each translation is its own file, fetched only for a reader of that language, so none of them
-// weighs on the initial bundle. A language without a file reads the English text.
-const TRANSLATIONS: Readonly<Partial<Record<Exclude<Language, 'vi'>, () => Promise<unknown>>>> = {
-  en: () => import('@/data/habit-framework-v1.en.json').then((module) => module.default),
-  ko: () => import('@/data/habit-framework-v1.ko.json').then((module) => module.default),
-  fr: () => import('@/data/habit-framework-v1.fr.json').then((module) => module.default),
-  de: () => import('@/data/habit-framework-v1.de.json').then((module) => module.default),
-  it: () => import('@/data/habit-framework-v1.it.json').then((module) => module.default),
-  es: () => import('@/data/habit-framework-v1.es.json').then((module) => module.default),
-  zh: () => import('@/data/habit-framework-v1.zh.json').then((module) => module.default),
-  ja: () => import('@/data/habit-framework-v1.ja.json').then((module) => module.default),
-};
+// Each translation is a static file under /data, fetched only for a reader of that language. They are kept out
+// of the JavaScript bundles on purpose: bundled, all eight would ship inside the server worker. A language
+// without a file reads the English text.
+const TRANSLATED_LANGUAGES: ReadonlySet<Language> = new Set<Language>(['en', 'ko', 'fr', 'de', 'it', 'es', 'zh', 'ja']);
+
+async function fetchTranslation(language: Language): Promise<unknown> {
+  const response = await fetch(`/data/habit-framework-v1.${language}.json`);
+  if (!response.ok) throw new Error(`The ${language} framework text could not be loaded.`);
+  return response.json();
+}
 
 /** The language whose text a reader of `language` actually sees. */
 export function frameworkLanguageFor(language: Language): Language {
-  return language === 'vi' || TRANSLATIONS[language as Exclude<Language, 'vi'>] ? language : 'en';
+  return language === 'vi' || TRANSLATED_LANGUAGES.has(language) ? language : 'en';
 }
 
 const loads = new Map<Language, Promise<LocalizedFramework>>();
@@ -48,7 +46,7 @@ export function loadFramework(requested: Language): Promise<LocalizedFramework> 
   if (language === 'vi') return Promise.resolve(VIETNAMESE_FRAMEWORK);
   let load = loads.get(language);
   if (!load) {
-    load = TRANSLATIONS[language as Exclude<Language, 'vi'>]!().then((data) => {
+    load = fetchTranslation(language).then((data) => {
       const parsed = parseFrameworkData(data, language);
       return { language, stages: parsed.stages, habits: parsed.habits };
     });

@@ -1,4 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { createActivityFromFrameworkHabit, HABIT_FRAMEWORK_CATALOG } from '@/lib/habit-framework/catalog';
 import { frameworkLanguageFor, loadFramework, VIETNAMESE_FRAMEWORK } from '@/lib/habit-framework/localized';
 import type { Language } from '@/types';
@@ -6,6 +8,12 @@ import type { Language } from '@/types';
 const translated: readonly Language[] = ['en', 'ko', 'fr', 'de', 'it', 'es', 'zh', 'ja'];
 
 describe('localized habit framework', () => {
+  // The translations are static files served from /data; the test serves the same files from disk.
+  beforeAll(() => {
+    vi.stubGlobal('fetch', async (url: string) => new Response(readFileSync(resolve('public', url.replace(/^\//, '')), 'utf8')));
+  });
+  afterAll(() => vi.unstubAllGlobals());
+
   it('gives Vietnamese at once, as the authoritative text', async () => {
     expect(await loadFramework('vi')).toBe(VIETNAMESE_FRAMEWORK);
     expect(VIETNAMESE_FRAMEWORK.habits).toBe(HABIT_FRAMEWORK_CATALOG);
