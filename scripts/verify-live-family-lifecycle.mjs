@@ -4,7 +4,7 @@ import { randomBytes, randomUUID } from 'node:crypto';
 import { createBrowserClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
 
-const projectRef = process.env.SUPABASE_PROJECT_REF ?? 'osvsvegqietxcfoabdhx';
+const projectRef = process.env.SUPABASE_PROJECT_REF ?? 'evkwelozdcmsmwdzhlxz';
 const projectUrl = `https://${projectRef}.supabase.co`;
 function readAppOrigin() {
   const value = process.env.NEXT_PUBLIC_APP_URL ?? 'https://app.kidhabithero.com';
