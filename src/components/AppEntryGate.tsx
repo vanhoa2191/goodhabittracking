@@ -47,14 +47,23 @@ export function AppEntryGate({
         </div>
 
         <div className="rounded-3xl border border-indigo-100 bg-white p-5 shadow-2xl shadow-indigo-100/70 dark:border-indigo-900/70 dark:bg-zinc-900 dark:shadow-none sm:p-7">
-          <div className="grid gap-3" aria-busy={isLoading}>
+          {isLoading ? (
+            // While the session is being checked there is nothing to press yet: show where the buttons will be
+            // instead of a purple login button that is switched off.
+            <div role="status" aria-live="polite" className="grid gap-3">
+              <div aria-hidden="true" className="h-14 animate-pulse rounded-2xl bg-slate-100 dark:bg-zinc-800" />
+              <div aria-hidden="true" className="h-14 animate-pulse rounded-2xl bg-slate-100 dark:bg-zinc-800" />
+              <div aria-hidden="true" className="h-12 animate-pulse rounded-2xl bg-slate-100 dark:bg-zinc-800" />
+              <p className="text-center text-sm font-semibold text-slate-600 dark:text-slate-300">{copy.loading}</p>
+            </div>
+          ) : (
+            <div className="grid gap-3">
             <button
               type="button"
               onClick={onLoginGoogle}
-              disabled={isLoading}
               className="flex min-h-14 w-full items-center justify-between gap-3 rounded-2xl bg-indigo-600 px-5 py-3 text-left font-extrabold text-white shadow-lg shadow-indigo-200 transition-transform hover:-translate-y-0.5 hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-indigo-400 disabled:cursor-wait disabled:opacity-60 dark:shadow-none"
             >
-              <span className="flex items-center gap-3"><LogIn aria-hidden="true" className="h-5 w-5" />{isLoading ? copy.loading : copy.parentLogin}</span>
+              <span className="flex items-center gap-3"><LogIn aria-hidden="true" className="h-5 w-5" />{copy.parentLogin}</span>
               <ArrowRight aria-hidden="true" className="h-5 w-5" />
             </button>
 
@@ -63,7 +72,6 @@ export function AppEntryGate({
             <button
               type="button"
               onClick={onOpenPairing}
-              disabled={isLoading}
               className="flex min-h-14 w-full items-center justify-between gap-3 rounded-2xl border-2 border-amber-300 bg-amber-50 px-5 py-3 text-left font-extrabold text-amber-950 transition-transform hover:-translate-y-0.5 hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-amber-400 disabled:cursor-wait disabled:opacity-60 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100"
             >
               <span className="flex items-center gap-3"><Camera aria-hidden="true" className="h-5 w-5" />{copy.childEntry}</span>
@@ -74,12 +82,12 @@ export function AppEntryGate({
               type="button"
               data-testid="landing-primary-action"
               onClick={onStartDemo}
-              disabled={isLoading}
               className="flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl px-5 py-3 font-bold text-indigo-700 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-indigo-400 disabled:cursor-wait disabled:opacity-60 dark:text-indigo-300 dark:hover:bg-indigo-950/40"
             >
               <PlayCircle aria-hidden="true" className="h-5 w-5" /> {copy.demo}
             </button>
-          </div>
+            </div>
+          )}
 
           <div className="mt-5 border-t border-slate-200 pt-4 text-center dark:border-zinc-700">
             <Link href={marketingHomeUrl} className="inline-flex min-h-11 items-center gap-2 rounded-xl px-3 text-sm font-bold text-slate-700 hover:bg-slate-100 hover:text-indigo-700 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-indigo-400 dark:text-slate-200 dark:hover:bg-zinc-800">
