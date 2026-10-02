@@ -59,6 +59,22 @@ describe('GET /api/health', () => {
     expect(Object.keys(body).sort()).toEqual(['status', 'version']);
   });
 
+  it('names the deployed commit as its version', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    vi.stubEnv('NEXT_PUBLIC_COMMIT_SHA', '11957de7a2960d6b544351fbd5c5cb2aeb758135');
+
+    await expect((await GET(anonymous())).json()).resolves.toMatchObject({ version: '11957de7a296' });
+  });
+
+  it('reports a local build when no commit is known', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    vi.stubEnv('NEXT_PUBLIC_COMMIT_SHA', '');
+    vi.stubEnv('CF_PAGES_COMMIT_SHA', '');
+    vi.stubEnv('VERCEL_GIT_COMMIT_SHA', '');
+
+    await expect((await GET(anonymous())).json()).resolves.toMatchObject({ version: 'local' });
+  });
+
   it('fails readiness when the pairing secret is absent', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
     vi.stubEnv('PAIRING_RATE_LIMIT_SECRET', '');

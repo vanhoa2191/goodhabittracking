@@ -92,7 +92,7 @@ Không dùng Cloudflare Pages cho dự án này. Project Pages cũ `goodhabittra
 
 1. Build và deploy static marketing service trước; chạy verifier trên URL live, kiểm tra ba CTA mở đúng app checkout.
 2. Chỉ khi marketing Worker xanh mới deploy Worker app có app gateway/noindex mới.
-3. Kiểm tra `/api/health` trả HTTP 200, `status=ready` và mọi dependency check là `true`; sau đó kiểm tra guest, parent, child, PWA và payment return.
+3. Kiểm tra `/api/health` trả HTTP 200, `status=ready` và `version` là 12 ký tự đầu của commit vừa deploy (CI build với `NEXT_PUBLIC_COMMIT_SHA` và chờ tới khi bản mới trả lời); từng dependency check chỉ hiện khi gửi `Authorization: Bearer $CRON_SECRET` và phải đều `true`. Sau đó kiểm tra guest, parent, child, PWA và payment return.
 4. Rollback app bằng redeploy Worker commit trước. Rollback marketing bằng version Worker `kidhabit-home` trước hoặc build/deploy commit marketing trước. Không rollback schema bằng cách xóa dữ liệu.
 
 Nếu website giới thiệu lỗi sau app cutover, app vẫn truy cập trực tiếp được ở Worker origin; khôi phục version `kidhabit-home` trước, không chuyển auth hoặc checkout sang website giới thiệu.

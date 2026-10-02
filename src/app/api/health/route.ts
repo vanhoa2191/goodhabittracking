@@ -53,7 +53,8 @@ export async function GET(request: Request) {
           pairingConfig: pairingReady,
         },
       }),
-      version: process.env.CF_PAGES_COMMIT_SHA?.slice(0, 12) || process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 12) || 'local',
+      // The deploy workflow builds with NEXT_PUBLIC_COMMIT_SHA, so this names the commit that is live.
+      version: (process.env.NEXT_PUBLIC_COMMIT_SHA || process.env.CF_PAGES_COMMIT_SHA || process.env.VERCEL_GIT_COMMIT_SHA)?.slice(0, 12) || 'local',
     },
     { status: ready ? 200 : 503 }
   );

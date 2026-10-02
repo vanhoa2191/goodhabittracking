@@ -103,6 +103,7 @@ jobs:
       - if: steps.configuration.outputs.ready == 'true'
         run: npm run deploy:cloudflare
         env:
+          NEXT_PUBLIC_COMMIT_SHA: ${{ github.sha }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_HABIT_PROGRAMS: ${{ vars.NEXT_PUBLIC_HABIT_PROGRAMS }}
@@ -117,10 +118,24 @@ jobs:
       - if: steps.configuration.outputs.ready == 'true'
         name: Verify production health after deploy
         run: |
-          curl --fail --silent --show-error --retry 5 --retry-all-errors \
-            --retry-delay 5 --max-time 15 \
-            https://app.kidhabithero.com/api/health | \
-            jq -e '(.status == "ready") and ((.checks // {}) | to_entries | all(.value == true))' >/dev/null
+          # Wait until the new build answers (its version is this commit) and every dependency check passes.
+          # The component checks are only returned with the operations secret.
+          expected="${GITHUB_SHA:0:12}"
+          for attempt in $(seq 1 18); do
+            body="$(curl --fail --silent --show-error --max-time 15 \
+              ${OPERATIONS_CRON_SECRET:+--header "Authorization: Bearer $OPERATIONS_CRON_SECRET"} \
+              https://app.kidhabithero.com/api/health || true)"
+            if printf '%s' "$body" | jq -e --arg version "$expected" \
+              '(.status == "ready") and (.version == $version) and ((.checks // {}) | to_entries | all(.value == true))' >/dev/null; then
+              echo "Production is ready on $expected."
+              break
+            fi
+            if [ "$attempt" -eq 18 ]; then
+              echo "Production did not report ready on $expected: $body"
+              exit 1
+            fi
+            sleep 10
+          done
           if [ -n "$OPERATIONS_CRON_SECRET" ]; then
             curl --fail --silent --show-error --retry 5 --retry-all-errors \
               --retry-delay 5 --max-time 15 \
