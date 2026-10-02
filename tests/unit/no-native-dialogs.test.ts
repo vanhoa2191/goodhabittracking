@@ -17,9 +17,9 @@ const NATIVE = /(?<![\w.])(?:window\.)?(?:alert|prompt)\(|window\.confirm\(/;
 const BARE_CONFIRM = /(?<![\w.])confirm\(/;
 const definesOwnConfirm = (source: string) => /(function confirm\b|const confirm\b|\bconfirm\s*[,}]|\{[^}]*\bconfirm\b[^}]*\}\s*=\s*use(?:Confirm|[A-Z]))/.test(source);
 
-describe('components', () => {
+describe('components and the store', () => {
   it('never open a native browser dialog', () => {
-    const offenders = sources('src/components').flatMap((file) => {
+    const offenders = [...sources('src/components'), ...sources('src/lib/store')].flatMap((file) => {
       const source = readFileSync(file, 'utf8');
       const bareIsNative = !definesOwnConfirm(source);
       return source.split('\n').flatMap((line, index) => {

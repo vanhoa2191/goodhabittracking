@@ -47,6 +47,8 @@ type Dependencies = {
   readonly onIdentityReady: () => void;
   readonly onIdentityStart: () => void;
   readonly onIdentityUser: () => void;
+  /** Receives the reason when Google sign-in cannot be opened (null clears it); the page shows it. */
+  readonly onSignInError: (message: string | null) => void;
   readonly setters: Setters;
 };
 
@@ -79,7 +81,7 @@ export function shouldApplyCloudSnapshot(requestedUserId: string, activeUserId: 
 }
 
 export function useCloudFamilyIdentity(dependencies: Dependencies) {
-  const { currentUser, familyId, resetFamilyScope, onIdentityReady, onIdentityStart, onIdentityUser } = dependencies;
+  const { currentUser, familyId, resetFamilyScope, onIdentityReady, onIdentityStart, onIdentityUser, onSignInError } = dependencies;
   const familyIdRef = useRef(familyId);
   const currentUserRef = useRef(currentUser);
   useEffect(() => {
@@ -181,10 +183,11 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
 
   const loginWithGoogle = async (): Promise<void> => {
     sounds.playClick();
+    onSignInError(null);
     const { error } = await signInWithGoogle();
     if (!error) return;
     console.error('Google Sign In Error:', error);
-    alert(`Không thể mở đăng nhập Google: ${error.message}`);
+    onSignInError(error.message);
   };
 
   const logout = async (): Promise<void> => {

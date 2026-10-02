@@ -92,6 +92,9 @@ interface AppStoreContextType {
 
   currentUser: User | null;
   loginWithGoogle: () => Promise<void>;
+  /** Why Google sign-in could not be opened, until the next attempt or until it is dismissed. */
+  signInError: string | null;
+  clearSignInError: () => void;
   logout: () => Promise<void>;
 
   // Parent Profile & Onboarding
@@ -397,6 +400,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
 
   const isPro = checkIsPro(subscriptionPlan, trialEndsAt, subscriptionEndsAt);
 
+  const [signInError, setSignInError] = useState<string | null>(null);
   const {
     loginWithGoogle,
     logout,
@@ -407,6 +411,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     onIdentityReady,
     onIdentityStart,
     onIdentityUser,
+    onSignInError: setSignInError,
     familyId,
     resetFamilyScope,
     setters: {
@@ -1233,6 +1238,8 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
 
         currentUser,
         loginWithGoogle,
+        signInError,
+        clearSignInError: () => setSignInError(null),
         logout,
 
         // Parent Profile & Onboarding
