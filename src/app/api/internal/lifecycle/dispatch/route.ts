@@ -1,8 +1,8 @@
-import { timingSafeEqual } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { getLifecycleEmailConfig, parseLifecycleMessage, sendLifecycleEmail } from '@/lib/lifecycle/email';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { hasBearerSecret } from '@/lib/security/bearer-secret';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
@@ -16,13 +16,6 @@ type ClaimedMessage = {
   readonly recipient_email: string;
 };
 
-function authorized(request: NextRequest): boolean {
-  const configured = process.env.CRON_SECRET?.trim();
-  const provided = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '') ?? '';
-  if (!configured || configured.length !== provided.length) return false;
-  return timingSafeEqual(Buffer.from(configured), Buffer.from(provided));
-}
-
 function providerErrorCode(error: unknown): string {
   if (!(error instanceof Error)) return 'unknown_provider_failure';
   return /^email_provider_\d{3}$/.test(error.message) ? error.message : 'provider_failure';
@@ -32,7 +25,7 @@ export async function POST(request: NextRequest) {
   const crossSite = rejectCrossSiteRequest(request);
   if (crossSite) return crossSite;
   const correlationId = createCorrelationId();
-  if (!authorized(request)) return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
+  if (!hasBearerSecret(request, process.env.CRON_SECRET)) return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
   if (!getLifecycleEmailConfig().enabled) {
     return NextResponse.json({ error: 'Lifecycle email is not configured.' }, { status: 409 });
   }

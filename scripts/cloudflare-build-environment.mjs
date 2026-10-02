@@ -4,6 +4,7 @@ const serverOnlyNames = [
   'PAYOS_CHECKSUM_KEY',
   'SUPABASE_SERVICE_ROLE_KEY',
   'PAIRING_RATE_LIMIT_SECRET',
+  'PARENT_UNLOCK_SECRET',
 ];
 
 const backendBrowserNames = [

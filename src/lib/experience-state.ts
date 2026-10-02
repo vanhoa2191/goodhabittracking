@@ -78,6 +78,20 @@ const timeMatchesKind = (plan: { cue_kind: string; cue_time: string | null }) =>
 const timeMatchesKindMessage = { message: 'A time cue needs a time of day and an event cue must not have one.' };
 const cuePlanRow = z.object(cuePlanShape).refine(timeMatchesKind, timeMatchesKindMessage);
 
+/** The columns the browser reads from each experience table: exactly the fields the parsers here use. */
+export const experienceColumns = {
+  child_engagement_profiles: Object.keys(childEngagementRow.shape),
+  family_engagement_settings: Object.keys(familySettingsRow.shape),
+  daily_mascot_letters: Object.keys(dailyLetterRow.shape),
+  secret_quests: Object.keys(secretQuestRow.shape),
+  child_wishlists: Object.keys(wishlistRow.shape),
+  child_task_deferrals: Object.keys(deferredTaskRow.shape),
+  habit_support_observations: Object.keys(supportObservationRow.shape),
+  habit_cue_plans: Object.keys(cuePlanShape),
+  child_journal_entries: Object.keys(journalEntrySchema.shape),
+  child_city_purchases: Object.keys(cityPurchaseSchema.shape),
+} as const;
+
 export type ChildEngagement = z.infer<typeof childEngagementRow>;
 export type FamilyEngagementSettings = z.infer<typeof familySettingsRow>;
 export type FamilyPausePeriod = z.infer<typeof pausePeriodRow>;

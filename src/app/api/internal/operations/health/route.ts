@@ -1,4 +1,3 @@
-import { timingSafeEqual } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import {
   evaluateOperationalHealth,
@@ -6,18 +5,12 @@ import {
   type OperationalHealthInput,
 } from '@/lib/observability/operational-health';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { hasBearerSecret } from '@/lib/security/bearer-secret';
 
 export const runtime = 'nodejs';
 
-function authorized(request: NextRequest): boolean {
-  const configured = process.env.CRON_SECRET?.trim();
-  const provided = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '') ?? '';
-  if (!configured || configured.length !== provided.length) return false;
-  return timingSafeEqual(Buffer.from(configured), Buffer.from(provided));
-}
-
 export async function GET(request: NextRequest) {
-  if (!authorized(request)) return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
+  if (!hasBearerSecret(request, process.env.CRON_SECRET)) return NextResponse.json({ error: 'Forbidden.' }, { status: 403 });
 
   const admin = createAdminSupabaseClient();
   const windowStart = new Date(Date.now() - 15 * 60_000).toISOString();

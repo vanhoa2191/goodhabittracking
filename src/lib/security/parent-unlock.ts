@@ -8,16 +8,25 @@ const encoder = new TextEncoder();
 
 type UnlockSubject = { readonly familyId: string; readonly user: { readonly id: string } };
 
+/** `PARENT_UNLOCK_SECRET` keeps this cookie apart from pairing; until it is configured the pairing secret signs it. */
 function signingSecret(): string {
+  const dedicated = process.env.PARENT_UNLOCK_SECRET?.trim() ?? '';
+  if (dedicated.length >= 32) return dedicated;
   const configured = getPairingSecret();
   if (configured) return configured;
   if (process.env.NODE_ENV === 'production') {
-    throw new Error('PAIRING_RATE_LIMIT_SECRET must be at least 32 characters in production.');
+    throw new Error('PARENT_UNLOCK_SECRET or PAIRING_RATE_LIMIT_SECRET must be at least 32 characters in production.');
   }
   return 'local-development-parent-unlock-secret';
 }
 
-async function sign(userId: string, familyId: string, expiresAt: number): Promise<string> {
+/** The PIN version from `get_parent_pin_status`; it changes whenever the PIN is set or changed. */
+export function parentPinVersion(status: unknown): string {
+  const version = status && typeof status === 'object' ? (status as { version?: unknown }).version : null;
+  return typeof version === 'string' ? version : '';
+}
+
+async function sign(userId: string, familyId: string, pinVersion: string, expiresAt: number): Promise<string> {
   const key = await crypto.subtle.importKey(
     'raw',
     encoder.encode(signingSecret()),
@@ -25,7 +34,7 @@ async function sign(userId: string, familyId: string, expiresAt: number): Promis
     false,
     ['sign'],
   );
-  const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(`parent-unlock:v1:${userId}:${familyId}:${expiresAt}`));
+  const signature = await crypto.subtle.sign('HMAC', key, encoder.encode(`parent-unlock:v2:${userId}:${familyId}:${pinVersion}:${expiresAt}`));
   return Buffer.from(signature).toString('base64url');
 }
 
@@ -36,18 +45,31 @@ function sameText(left: string, right: string): boolean {
   return difference === 0;
 }
 
-export async function hasParentUnlock(request: NextRequest, parent: UnlockSubject, now = Date.now()): Promise<boolean> {
+export async function hasParentUnlock(
+  request: NextRequest,
+  parent: UnlockSubject,
+  pinVersion: string,
+  now = Date.now(),
+): Promise<boolean> {
   const value = request.cookies.get(PARENT_UNLOCK_COOKIE)?.value ?? '';
   const [expiry, signature, ...rest] = value.split('.');
   const expiresAt = Number(expiry);
   if (!signature || rest.length > 0 || !Number.isInteger(expiresAt) || expiresAt * 1000 <= now) return false;
-  return sameText(signature, await sign(parent.user.id, parent.familyId, expiresAt));
+  return sameText(signature, await sign(parent.user.id, parent.familyId, pinVersion, expiresAt));
 }
 
-/** Marks this browser as having entered the parent PIN; the cookie is bound to the parent and the family. */
-export async function issueParentUnlock(response: NextResponse, parent: UnlockSubject, now = Date.now()): Promise<void> {
+/**
+ * Marks this browser as having entered the parent PIN. The cookie is bound to the parent, the family and
+ * the current PIN version, so changing the PIN anywhere ends every earlier unlock.
+ */
+export async function issueParentUnlock(
+  response: NextResponse,
+  parent: UnlockSubject,
+  pinVersion: string,
+  now = Date.now(),
+): Promise<void> {
   const expiresAt = Math.floor(now / 1000) + UNLOCK_SECONDS;
-  response.cookies.set(PARENT_UNLOCK_COOKIE, `${expiresAt}.${await sign(parent.user.id, parent.familyId, expiresAt)}`, {
+  response.cookies.set(PARENT_UNLOCK_COOKIE, `${expiresAt}.${await sign(parent.user.id, parent.familyId, pinVersion, expiresAt)}`, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
@@ -86,6 +108,6 @@ export async function requireParentUnlock(
       ? NextResponse.json({ error: 'Set a parent PIN first.', code: 'parent_pin_not_set' }, { status: 403 })
       : null;
   }
-  if (await hasParentUnlock(request, parent)) return null;
+  if (await hasParentUnlock(request, parent, parentPinVersion(data))) return null;
   return NextResponse.json({ error: 'Parent PIN required.', code: 'parent_pin_required' }, { status: 403 });
 }

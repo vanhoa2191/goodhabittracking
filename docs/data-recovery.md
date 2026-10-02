@@ -2,9 +2,9 @@
 
 ## User backup
 
-Giao diện hiện không có nút export/import toàn bộ dữ liệu. Phụ huynh chỉ tải được nhật ký của bé dưới dạng CSV. Dữ liệu gia đình nằm trong cloud và được khôi phục theo phần Operator backup bên dưới; không dùng client để ghi đè cloud state.
+Phụ huynh tải được bản sao JSON toàn bộ dữ liệu gia đình từ thẻ "Dữ liệu gia đình" (`src/components/FamilyDataCard.tsx`) và nhật ký của bé dưới dạng CSV. Khôi phục từ file JSON chỉ có ở chế độ cục bộ (chưa đăng nhập). Dữ liệu gia đình trên cloud được khôi phục theo phần Operator backup bên dưới; không dùng client để ghi đè cloud state.
 
-Định dạng bản sao JSON và các hàm export/import nằm ở `src/lib/family-backup.ts` và `src/lib/store/family-backup-actions.ts`, chưa được giao diện gọi.
+Định dạng bản sao JSON và các hàm export/import nằm ở `src/lib/family-backup.ts` và `src/lib/store/family-backup-actions.ts`.
 
 ## Operator backup
 

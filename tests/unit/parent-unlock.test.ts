@@ -11,9 +11,11 @@ import {
 const parent = { familyId: 'family-a', user: { id: 'user-a' } };
 const now = Date.parse('2026-09-30T10:00:00.000Z');
 
-async function issuedCookie(subject = parent, at = now): Promise<string> {
+const pinVersion = '1790000000000000';
+
+async function issuedCookie(subject = parent, at = now, version = pinVersion): Promise<string> {
   const response = NextResponse.json({});
-  await issueParentUnlock(response, subject, at);
+  await issueParentUnlock(response, subject, version, at);
   return response.cookies.get(PARENT_UNLOCK_COOKIE)!.value;
 }
 
@@ -26,12 +28,13 @@ function requestWith(cookie?: string) {
 
 describe('parent unlock cookie', () => {
   beforeEach(() => {
+    vi.unstubAllEnvs();
     vi.stubEnv('PAIRING_RATE_LIMIT_SECRET', 'x'.repeat(40));
   });
 
   it('is HttpOnly, strict and expires after two hours', async () => {
     const response = NextResponse.json({});
-    await issueParentUnlock(response, parent, now);
+    await issueParentUnlock(response, parent, pinVersion, now);
     const cookie = response.cookies.get(PARENT_UNLOCK_COOKIE)!;
     expect(cookie.httpOnly).toBe(true);
     expect(cookie.sameSite).toBe('strict');
@@ -39,28 +42,39 @@ describe('parent unlock cookie', () => {
   });
 
   it('is accepted for the same parent and family within its lifetime', async () => {
-    expect(await hasParentUnlock(requestWith(await issuedCookie()), parent, now + 60_000)).toBe(true);
+    expect(await hasParentUnlock(requestWith(await issuedCookie()), parent, pinVersion, now + 60_000)).toBe(true);
   });
 
   it.each([
     ['another parent', { familyId: 'family-a', user: { id: 'user-b' } }],
     ['another family', { familyId: 'family-b', user: { id: 'user-a' } }],
   ])('is refused for %s', async (_label, other) => {
-    expect(await hasParentUnlock(requestWith(await issuedCookie()), other, now + 60_000)).toBe(false);
+    expect(await hasParentUnlock(requestWith(await issuedCookie()), other, pinVersion, now + 60_000)).toBe(false);
+  });
+
+  it('is refused once the PIN has been changed', async () => {
+    expect(await hasParentUnlock(requestWith(await issuedCookie()), parent, '1790000000000001', now + 60_000)).toBe(false);
   });
 
   it('expires', async () => {
-    expect(await hasParentUnlock(requestWith(await issuedCookie()), parent, now + 7_201_000)).toBe(false);
+    expect(await hasParentUnlock(requestWith(await issuedCookie()), parent, pinVersion, now + 7_201_000)).toBe(false);
   });
 
   it.each(['', 'garbage', '9999999999.', '9999999999.forged-signature', '1.2.3'])('rejects %j', async (value) => {
-    expect(await hasParentUnlock(requestWith(value), parent, now)).toBe(false);
+    expect(await hasParentUnlock(requestWith(value), parent, pinVersion, now)).toBe(false);
   });
 
   it('rejects a cookie signed with a different secret', async () => {
     const cookie = await issuedCookie();
     vi.stubEnv('PAIRING_RATE_LIMIT_SECRET', 'y'.repeat(40));
-    expect(await hasParentUnlock(requestWith(cookie), parent, now + 1000)).toBe(false);
+    expect(await hasParentUnlock(requestWith(cookie), parent, pinVersion, now + 1000)).toBe(false);
+  });
+
+  it('prefers the dedicated unlock secret once it is configured', async () => {
+    const cookie = await issuedCookie();
+    vi.stubEnv('PARENT_UNLOCK_SECRET', 'z'.repeat(40));
+    expect(await hasParentUnlock(requestWith(cookie), parent, pinVersion, now + 1000)).toBe(false);
+    expect(await hasParentUnlock(requestWith(await issuedCookie()), parent, pinVersion, now + 1000)).toBe(true);
   });
 
   it('is cleared on lock', () => {
@@ -72,6 +86,7 @@ describe('parent unlock cookie', () => {
 
 describe('requireParentUnlock', () => {
   beforeEach(() => {
+    vi.unstubAllEnvs();
     vi.stubEnv('PAIRING_RATE_LIMIT_SECRET', 'x'.repeat(40));
   });
 
@@ -89,7 +104,7 @@ describe('requireParentUnlock', () => {
 
   it('lets a family with an entered PIN through an action that requires one', async () => {
     const cookie = await issuedCookie(parent, Date.now());
-    expect(await requireParentUnlock(requestWith(cookie), parent, client({ data: { configured: true }, error: null }), { requirePin: true })).toBeNull();
+    expect(await requireParentUnlock(requestWith(cookie), parent, client({ data: { configured: true, version: pinVersion }, error: null }), { requirePin: true })).toBeNull();
   });
 
   it('refuses a family with a PIN when the PIN was not entered in this browser', async () => {
@@ -100,7 +115,13 @@ describe('requireParentUnlock', () => {
 
   it('accepts a family with a PIN when the cookie is valid', async () => {
     const cookie = await issuedCookie(parent, Date.now());
-    expect(await requireParentUnlock(requestWith(cookie), parent, client({ data: { configured: true }, error: null }))).toBeNull();
+    expect(await requireParentUnlock(requestWith(cookie), parent, client({ data: { configured: true, version: pinVersion }, error: null }))).toBeNull();
+  });
+
+  it('refuses a cookie issued before the PIN was changed in another browser', async () => {
+    const cookie = await issuedCookie(parent, Date.now());
+    const response = await requireParentUnlock(requestWith(cookie), parent, client({ data: { configured: true, version: '1790000000000002' }, error: null }));
+    expect(response?.status).toBe(403);
   });
 
   it('fails closed when the PIN state cannot be read', async () => {

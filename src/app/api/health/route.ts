@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { inspectPayOSConfig } from '@/lib/billing/payos-config';
 import { remember } from '@/lib/health-cache';
+import { hasBearerSecret } from '@/lib/security/bearer-secret';
 
 export const runtime = 'nodejs';
 
@@ -20,7 +21,11 @@ async function probeDatabase(url: string, serviceRoleKey: string) {
   }
 }
 
-export async function GET() {
+/**
+ * Anyone may ask whether the app is ready and which build is running. Which dependency is missing (database,
+ * payOS, pairing secret) is shown only to the operations workflows that hold `CRON_SECRET`.
+ */
+export async function GET(request: Request) {
   const databaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() ?? '';
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() ?? '';
   const databaseConfigReady = Boolean(
@@ -39,13 +44,15 @@ export async function GET() {
   return NextResponse.json(
     {
       status: ready ? 'ready' : databaseConfigReady ? 'degraded' : 'unavailable',
-      checks: {
-        app: true,
-        databaseConfig: databaseConfigReady,
-        databaseConnection: databaseConnectionReady,
-        billingConfig: billingReady,
-        pairingConfig: pairingReady,
-      },
+      ...(hasBearerSecret(request, process.env.CRON_SECRET) && {
+        checks: {
+          app: true,
+          databaseConfig: databaseConfigReady,
+          databaseConnection: databaseConnectionReady,
+          billingConfig: billingReady,
+          pairingConfig: pairingReady,
+        },
+      }),
       version: process.env.CF_PAGES_COMMIT_SHA?.slice(0, 12) || process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 12) || 'local',
     },
     { status: ready ? 200 : 503 }

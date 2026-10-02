@@ -57,6 +57,28 @@ describe('cloud family sync', () => {
     });
   });
 
+  it('reads kudos as the table stores them and names the sender from the profiles', async () => {
+    const reader = vi.fn(async () => ({
+      familyId,
+      familyRole: 'owner' as const,
+      profiles: [{
+        id: childId, family_id: familyId, name: 'Bin', show_real_name_on_leaderboard: false,
+        is_public_on_leaderboard: false, avatar: 'mascot:leo', theme_color: 'indigo', points: 0, total_earned: 0,
+        level: 1, streak: 0, created_at: '2026-09-20T00:00:00.000Z',
+      }],
+      activities: [], logs: [], rewards: [], redemptions: [], childBadges: [],
+      kudos: [{
+        id: groupId, family_id: familyId, from_child_id: childId, to_child_id: childId,
+        emoji: '👏', sent_at: '2026-09-21T00:00:00.000Z',
+      }],
+      groups: [], groupMembers: [], subscription: null,
+    }));
+
+    await expect(loadCloudFamilySnapshot(userId, reader)).resolves.toMatchObject({
+      kudos: [{ fromChildId: childId, fromChildName: 'Bin', emoji: '👏' }],
+    });
+  });
+
   it('defaults a missing subscription to the free plan', async () => {
     const reader = vi.fn(async () => ({
       familyId,
