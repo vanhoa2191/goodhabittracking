@@ -27,7 +27,7 @@ async function giveFirstHabitACue(page: Page, title: string, cue: string) {
 }
 
 async function backToChild(page: Page) {
-  await page.getByRole('button', { name: /^Parent/ }).click();
+  await page.getByRole('button', { name: 'Back to child screen' }).click();
   await expect(page.locator('[data-task-card]').first()).toBeVisible();
 }
 
