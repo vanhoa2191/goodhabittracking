@@ -1,8 +1,8 @@
 export const navigation = [
-  { href: '/framework/', label: 'Khung thói quen' },
+  { href: '/framework/', label: 'Khung thói quen', anchor: '#chan-dung' },
   { href: '/science/', label: 'Cơ sở khoa học' },
   { href: '/roadmaps/', label: 'Lộ trình' },
-  { href: '/pricing/', label: 'Bảng giá' },
+  { href: '/pricing/', label: 'Bảng giá', anchor: '#bang-gia' },
   { href: '/blog/', label: 'Blog' },
   { href: '/docs/', label: 'Hướng dẫn' },
 ];
@@ -46,9 +46,8 @@ export const plans = [
     price: '49.000',
     cadence: '/ tháng',
     summary: 'Phù hợp gia đình có nhiều bé hoặc muốn dùng trọn bộ tính năng.',
-    features: ['Nhiều hồ sơ bé', 'Toàn bộ khung thói quen', 'Lộ trình tuần và tháng', 'Theo dõi tiến bộ gia đình'],
+    features: ['Nhiều hồ sơ bé', 'Toàn bộ khung thói quen', 'Lộ trình theo độ tuổi', 'Theo dõi tiến bộ gia đình'],
     cta: 'Chọn gói theo tháng',
-    featured: true,
   },
   {
     id: 'yearly',
@@ -61,6 +60,7 @@ export const plans = [
     summary: 'Duy trì hành trình đủ lâu để những việc nhỏ trở thành nếp sống.',
     features: ['Đầy đủ quyền lợi Cao cấp', 'Nhiều hồ sơ bé', 'Thanh toán một lần cho 12 tháng', 'Không tự động gia hạn'],
     cta: 'Chọn gói theo năm',
+    featured: true,
   },
 ];
 
@@ -75,56 +75,40 @@ export const mascots = [
 
 export const trustPoints = ['7 ngày dùng thử', 'Không cần thẻ', 'Hoàn tiền 30 ngày'];
 
-export const trustBar = [
-  { icon: 'shield', title: 'Ba mẹ nắm quyền', text: 'Khu vực phụ huynh có mã PIN riêng.' },
-  { icon: 'lock', title: 'Dữ liệu của bé được bảo vệ', text: 'Không quảng cáo, không bán dữ liệu của bé.' },
-  { icon: 'clock', title: 'Không ràng buộc', text: 'Không tự động gia hạn, hoàn tiền trong 30 ngày.' },
-  { icon: 'smartphone', title: 'Dùng ngay trên điện thoại', text: 'Không cần tài khoản riêng cho con.' },
-];
-
 export const comparison = {
   beforeTitle: 'Khi chỉ dựa vào nhắc nhở',
   before: [
-    'Sáng giục dậy, tối nhắc đánh răng, dọn đồ, học bài: ngày nào cũng lặp lại.',
-    'Con làm vì bị nhắc chứ chưa hiểu vì sao nên làm.',
-    'Ba mẹ dễ mệt và căng thẳng, còn con dễ chán và né tránh.',
+    '7 giờ sáng: giục dậy, nhắc đánh răng, nhắc soạn cặp, rồi nhắc lại lần nữa.',
+    '9 giờ tối: nhắc dọn đồ, nhắc học bài. Con né tránh, ba mẹ mệt và căng thẳng.',
+    'Con làm vì bị nhắc, chưa hiểu vì sao nên làm.',
   ],
   afterTitle: 'Với KidHabit',
   after: [
-    'Mỗi việc nhỏ được viết rõ để con tự mở ra xem.',
-    'Con nhận sao và huy hiệu khi hoàn thành, ba mẹ duyệt và khen đúng lúc.',
+    '7 giờ sáng: con mở danh sách việc hôm nay, đọc cách làm và tự đánh dấu từng việc.',
+    '9 giờ tối: ba mẹ duyệt những việc con đã làm và khen đúng việc.',
     'Cuối ngày, cả nhà nhìn lại những điều con đã làm tốt.',
   ],
 };
 
 export const steps = [
   {
-    image: 'kid-tasks',
-    alt: 'Danh sách nhiệm vụ buổi sáng của bé trong KidHabit, có việc đã hoàn thành và số sao thưởng',
-    caption: 'Mỗi việc có hướng dẫn rõ ràng và số sao thưởng.',
-    bullets: ['Khung 47 thói quen, chia 5 giai đoạn từ 0 đến 18 tuổi', 'Mỗi thói quen gắn với chân dung con đang hướng tới', 'Ba mẹ chọn, sửa hoặc tự tạo nhiệm vụ'],
+    image: 'parent-roadmap',
+    alt: 'Màn hình phụ huynh chọn lộ trình theo độ tuổi: các giai đoạn 0–3, 3–6, 6–12, 12–15, 15–18 và vai trò của ba mẹ ở từng giai đoạn',
+    caption: 'Chọn giai đoạn tuổi để thấy thói quen phù hợp và vai trò của ba mẹ.',
+    bullets: ['Khung 47 thói quen, chia 5 giai đoạn từ 0 đến 18 tuổi', 'Mỗi thói quen có lời giải thích “vì sao” cho con và hướng dẫn cho ba mẹ', 'Ba mẹ chọn, sửa hoặc tự tạo nhiệm vụ'],
   },
   {
-    image: 'kid-home',
-    alt: 'Màn hình chính của bé với nhân vật Leo, 120 sao, 3 huy hiệu và tiến độ 3/6 việc trong ngày',
-    caption: 'Bé thấy ngay hôm nay cần làm gì và mình đã đi được bao xa.',
-    bullets: ['Giao diện riêng, chỉ có nhiệm vụ, tiến độ và phần thưởng', 'Bé vào bằng mã QR hoặc mã nhập tay, không cần tài khoản', 'Vuốt hoặc chạm để hoàn thành, hoặc để sau'],
+    image: 'kid-tasks',
+    alt: 'Danh sách nhiệm vụ buổi sáng của bé trong KidHabit, có việc đã hoàn thành và số sao thưởng',
+    caption: 'Mỗi việc có hướng dẫn rõ ràng và số sao thưởng. Ảnh là màn hình của bé.',
+    bullets: ['Giao diện riêng cho bé, chỉ có nhiệm vụ, tiến độ và phần thưởng', 'Bé vào bằng mã QR hoặc mã nhập tay, không cần tài khoản riêng', 'Vuốt hoặc chạm để hoàn thành, có đồng hồ đếm giờ khi việc cần thời gian'],
   },
   {
     image: 'parent-approvals',
     alt: 'Màn hình phụ huynh có nhiệm vụ chờ bố mẹ duyệt với nút Duyệt và Từ chối',
     caption: 'Việc quan trọng chờ ba mẹ duyệt trước khi bé nhận sao.',
-    bullets: ['Duyệt hoặc từ chối chỉ với một chạm', 'Xem chuỗi ngày và số sao của từng bé', 'Đổi quà theo danh sách ba mẹ đã thống nhất'],
+    bullets: ['Duyệt hoặc từ chối chỉ với một chạm', 'Xem chuỗi ngày, sao và huy hiệu của từng bé; đổi quà theo danh sách ba mẹ đã thống nhất', 'Gói Cao cấp: nhiều hồ sơ bé và mời người thân cùng theo dõi'],
   },
-];
-
-export const features = [
-  { icon: 'book', title: 'Khung thói quen và chương trình từng bước', text: 'Mỗi thói quen có lời giải thích “vì sao” dành cho con và hướng dẫn dành cho ba mẹ, chia theo 5 giai đoạn từ 0 đến 18 tuổi. Ba mẹ đặt tín hiệu cùng con, ghi nhận nhanh con đã làm thế nào và nhận gợi ý điều chỉnh để chọn nhịp phù hợp với từng bé.' },
-  { icon: 'list-checks', title: 'Nhiệm vụ có hướng dẫn', text: 'Mỗi việc nói rõ cần làm gì và thưởng bao nhiêu sao, có đồng hồ đếm giờ khi việc cần thời gian.' },
-  { icon: 'gift', title: 'Sao, huy hiệu và quà', text: 'Con gom sao, nhận huy hiệu và đổi phần thưởng do chính ba mẹ đặt ra.' },
-  { icon: 'shield', title: 'Ba mẹ duyệt và khen', text: 'Việc quan trọng chờ ba mẹ xác nhận, để lời khen đến đúng lúc đúng việc.' },
-  { icon: 'qr', title: 'Ghép thiết bị bằng mã QR', text: 'Con quét mã hoặc nhập mã để vào đúng hồ sơ của mình. Ba mẹ thu hồi được bất cứ lúc nào.' },
-  { icon: 'users', title: 'Nhiều bé, nhiều người đồng hành', text: 'Gói Cao cấp cho nhiều hồ sơ bé và mời người thân cùng theo dõi.' },
 ];
 
 export const safetyPoints = [
@@ -140,8 +124,20 @@ export const testimonials = [];
 
 export const faqs = [
   {
+    question: 'Con bao nhiêu tuổi thì phù hợp?',
+    answer: 'KidHabit phù hợp nhất với bé 4–12 tuổi tự xem việc và tự đánh dấu xong. Khung thói quen đi từ 0 đến 18 tuổi: với bé nhỏ, ba mẹ làm cùng; với bé lớn hơn, con chủ động hơn.',
+  },
+  {
     question: 'Tôi có cần nhập thẻ để dùng thử không?',
-    answer: 'Không. Gia đình đủ điều kiện có thể trải nghiệm 7 ngày mà không cần thẻ và không bị tự động trừ tiền khi hết hạn.',
+    answer: 'Không. Mỗi gia đình dùng thử 7 ngày một lần, không cần thẻ và không bị tự động trừ tiền khi hết hạn.',
+  },
+  {
+    question: 'Hết 7 ngày dùng thử thì sao?',
+    answer: 'Ba mẹ chọn một gói để tiếp tục ghi nhận việc của con. KidHabit không tự động trừ tiền.',
+  },
+  {
+    question: 'KidHabit có thay thế việc ba mẹ dạy con không?',
+    answer: 'Không. KidHabit là công cụ đồng hành: ba mẹ chọn thói quen, duyệt và khen. Ứng dụng không thay việc dạy con và không cam kết một kết quả phát triển cụ thể.',
   },
   {
     question: 'Trẻ có dùng chung giao diện với phụ huynh không?',

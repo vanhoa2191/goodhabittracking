@@ -2,7 +2,7 @@ import { buildLegalPages, legalUpdatedLabel } from './legal-content.mjs';
 import { sessionHintCookie } from './session-hint.mjs';
 import scienceData from '../../src/data/science-content.json' with { type: 'json' };
 import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
-import { comparison, faqs, features, mascots, navigation, outcomes, plans, publicPages, safetyPoints, steps, testimonials, trustBar, trustPoints } from './site-content.mjs';
+import { comparison, faqs, mascots, navigation, outcomes, plans, publicPages, safetyPoints, steps, testimonials, trustPoints } from './site-content.mjs';
 
 const icons = {
   compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>',
@@ -117,7 +117,9 @@ function renderStructuredData({ marketingOrigin, appOrigin }) {
   return `<script type="application/ld+json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script>`;
 }
 
-function renderHeader(appOrigin) {
+// On the home page a nav item whose section is on the page scrolls to it; the others (and every other page) go
+// to their own page. `anchor` is set in site-content.mjs only where the home page really has that section.
+function renderHeader(appOrigin, { home = false } = {}) {
   return `<header class="site-header">
     <div class="shell nav-shell">
       <a class="brand" href="/" aria-label="KidHabit Hero, trang chủ">
@@ -126,7 +128,7 @@ function renderHeader(appOrigin) {
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Mở trình đơn">${icon('menu')}</button>
       <nav id="primary-navigation" class="primary-nav" aria-label="Điều hướng chính">
-        ${navigation.map((item) => `<a href="${item.href}">${escapeHtml(item.label)}</a>`).join('')}
+        ${navigation.map((item) => `<a href="${home && item.anchor ? item.anchor : item.href}">${escapeHtml(item.label)}</a>`).join('')}
         <a href="${appUrl(appOrigin, '/')}" class="nav-login" data-guest>Đăng nhập</a>
         <a href="${appUrl(appOrigin, '/start')}" class="button button-small" data-guest>Dùng thử 7 ngày</a><a href="${appUrl(appOrigin, '/')}" class="button button-small" data-member>Vào ứng dụng</a>
       </nav>
@@ -187,7 +189,7 @@ export function renderDocument({ title, description, path, marketingOrigin, appO
 </head>
 <body>
   <a class="skip-link" href="#noi-dung">Bỏ qua điều hướng</a>
-  ${renderHeader(appOrigin)}
+  ${renderHeader(appOrigin, { home: path === '/' })}
   ${body}
   ${renderFooter(appOrigin)}
 </body>
@@ -197,7 +199,7 @@ export function renderDocument({ title, description, path, marketingOrigin, appO
 function renderPricing(appOrigin, heading = 'Chọn gói phù hợp với gia đình') {
   const saving = yearlySaving();
   return `<section class="section pricing-section" id="bang-gia" aria-labelledby="pricing-title"><div class="shell">
-    <div class="pricing-heading"><div><p class="eyebrow">7 ngày trải nghiệm đầy đủ</p><h2 id="pricing-title">${heading}</h2><p>Không cần thẻ tín dụng. Không tự động trừ tiền. Hoàn tiền trong 30 ngày nếu chưa hài lòng.</p></div><a class="text-link" href="/terms/">Xem điều khoản ${icon('arrow')}</a></div>
+    <div class="pricing-heading"><div><p class="eyebrow">7 ngày trải nghiệm đầy đủ</p><h2 id="pricing-title">${heading}</h2><p>Không cần thẻ tín dụng. Hoàn tiền trong 30 ngày nếu chưa hài lòng.</p></div><a class="text-link" href="/terms/">Xem điều khoản ${icon('arrow')}</a></div>
     <div class="pricing-grid">${plans.map((plan) => `<article class="price-card${plan.featured ? ' price-card-featured' : ''}" data-plan="${plan.id}" data-spotlight>
       <div class="plan-top"><p class="plan-label">${plan.label}</p><h3>${planTitle(plan)}</h3><p>${plan.summary}</p></div>
       <p class="price"><strong>${plan.price}</strong><span>VNĐ ${plan.cadence}</span></p>${plan.id === 'yearly' && saving ? `
@@ -205,7 +207,7 @@ function renderPricing(appOrigin, heading = 'Chọn gói phù hợp với gia đ
       <ul>${plan.features.map((feature) => `<li>${icon('check')}<span>${feature}</span></li>`).join('')}</ul>
       <a class="button ${plan.featured ? 'button-primary' : 'button-secondary'}" href="${appUrl(appOrigin, `/checkout?plan=${plan.id}`)}">${plan.cta} ${icon('arrow')}</a>
     </article>`).join('')}</div>
-    <p class="pricing-note">Gói đăng ký gắn với gia đình trong tài khoản phụ huynh. Sau khi đăng nhập, bạn có thể tiếp tục thanh toán mà không phải chọn lại gói.</p>
+    <p class="pricing-note">Hết 7 ngày dùng thử, ba mẹ chọn một gói để tiếp tục ghi nhận việc của con. Không có khoản trừ tiền tự động. Gói đăng ký gắn với gia đình trong tài khoản phụ huynh; sau khi đăng nhập, bạn tiếp tục thanh toán mà không phải chọn lại gói.</p>
   </div></section>`;
 }
 
@@ -234,18 +236,24 @@ const growthPoints = [
   ['users', 'Ba mẹ luôn là người quyết định', 'Ba mẹ chọn, điều chỉnh hoặc tự tạo thói quen cho phù hợp với con và nhịp sống của gia đình.'],
 ];
 
-function renderPortraits() {
-  return `<section class="section growth" id="chan-dung" aria-labelledby="growth-title"><div class="shell">
-    <div class="section-heading section-heading-center"><p class="eyebrow">Giáo dục con qua thói quen</p><h2 id="growth-title">Mỗi thói quen là một nét vẽ nên chân dung của con</h2><p><strong>Chân dung</strong> là hình ảnh con lớn lên: tự tin, tử tế và làm chủ cuộc sống của mình. KidHabit không chỉ đếm việc đã làm, mà giúp ba mẹ chọn những thói quen nhỏ phù hợp với từng độ tuổi để dần vẽ nên hình ảnh ấy.</p></div>
-    <ol class="growth-stages" aria-label="Năm giai đoạn từ 0 đến 18 tuổi">${growthStages.map(([age, label]) => `<li><span class="growth-age">${age}<small>tuổi</small></span><span>${label}</span></li>`).join('')}</ol>
-    <ul class="growth-points">${growthPoints.map(([name, title, text]) => `<li><span class="icon-box">${icon(name)}</span><div><h3>${title}</h3><p>${text}</p></div></li>`).join('')}</ul>
-    <p class="growth-cta"><a class="text-link" href="/framework/">Xem khung thói quen ${icon('arrow')}</a></p>
-    <p class="growth-note">Chân dung là hướng trưởng thành, không phải nhãn tính cách hay điểm số cho con. KidHabit là công cụ đồng hành cùng gia đình và không cam kết một kết quả phát triển cụ thể.</p>
-  </div></section>`;
+const shortHabitName = (name) => name.replace(/\s*[(—:].*$/, '').trim();
+const growthExampleIds = ['GD3-HT-01', 'GD3-SK-01'];
+
+function renderGrowthExamples() {
+  const habits = growthExampleIds.map((id) => frameworkData.habits.find((habit) => habit.id === id)).filter(Boolean);
+  if (!habits.length) return '';
+  return `<div class="growth-examples"><p class="fw-examples-label">Ví dụ về những việc con sẽ nghe ở tuổi 6–12:</p><ul class="fw-habits">${habits.map((habit) => `<li class="fw-habit"><h4>${escapeHtml(shortHabitName(habit.name))}</h4><p>${escapeHtml(habit.childMeaning)}</p></li>`).join('')}</ul></div>`;
 }
 
-function renderTrustBar() {
-  return `<section class="trust-bar" aria-label="Vì sao ba mẹ yên tâm"><div class="shell"><ul class="trust-bar-list">${trustBar.map((item) => `<li>${icon(item.icon)}<div><strong>${item.title}</strong><span>${item.text}</span></div></li>`).join('')}</ul></div></section>`;
+function renderPortraits() {
+  return `<section class="section growth" id="chan-dung" aria-labelledby="growth-title"><div class="shell">
+    <div class="section-heading section-heading-center"><p class="eyebrow">Vì sao những việc nhỏ có ý nghĩa</p><h2 id="growth-title">Mỗi thói quen là một nét vẽ nên chân dung của con</h2><p><strong>Chân dung</strong> là hình ảnh con lớn lên: tự tin, tử tế và làm chủ cuộc sống của mình. KidHabit không chỉ đếm việc đã làm, mà giúp ba mẹ chọn những thói quen nhỏ phù hợp với từng độ tuổi để dần vẽ nên hình ảnh ấy.</p></div>
+    <ol class="growth-stages" aria-label="Năm giai đoạn từ 0 đến 18 tuổi">${growthStages.map(([age, label]) => `<li><span class="growth-age">${age}<small>tuổi</small></span><span>${label}</span></li>`).join('')}</ol>
+    ${renderGrowthExamples()}
+    <ul class="growth-points">${growthPoints.map(([name, title, text]) => `<li><span class="icon-box">${icon(name)}</span><div><h3>${title}</h3><p>${text}</p></div></li>`).join('')}</ul>
+    <p class="growth-cta"><a class="text-link" href="/framework/">Xem khung thói quen ${icon('arrow')}</a></p>
+    <p class="growth-note">KidHabit phù hợp nhất với bé 4–12 tuổi tự xem việc và tự đánh dấu xong; khung đi đến 18 tuổi để ba mẹ thấy cả chặng đường phía trước. Chân dung là hướng trưởng thành, không phải nhãn tính cách hay điểm số cho con. KidHabit là công cụ đồng hành cùng gia đình và không cam kết một kết quả phát triển cụ thể.</p>
+  </div></section>`;
 }
 
 function renderComparison() {
@@ -269,16 +277,9 @@ function renderSteps() {
   </div></section>`;
 }
 
-function renderFeatures() {
-  return `<section class="section features" aria-labelledby="features-title"><div class="shell">
-    <div class="section-heading section-heading-center"><p class="eyebrow">Mọi thứ ba mẹ cần</p><h2 id="features-title">Đủ đơn giản để dùng mỗi ngày</h2></div>
-    <ul class="feature-grid">${features.map((feature) => `<li class="feature-card" data-spotlight><span class="icon-box">${icon(feature.icon)}</span><h3>${feature.title}</h3><p>${feature.text}</p></li>`).join('')}</ul>
-  </div></section>`;
-}
-
 function renderSafety() {
   return `<section class="section safety" aria-labelledby="safety-title"><div class="shell safety-layout">
-    <div class="safety-intro"><p class="eyebrow">An tâm cho cả nhà</p><h2 id="safety-title">Ba mẹ nắm quyền, con được bảo vệ</h2><p>KidHabit chỉ lưu những gì cần để vận hành thói quen của gia đình, và luôn để ba mẹ quyết định.</p><a class="text-link" href="/privacy/">Đọc chính sách quyền riêng tư ${icon('arrow')}</a></div>
+    <div class="safety-intro"><p class="eyebrow">An tâm cho cả nhà</p><h2 id="safety-title">Ba mẹ nắm quyền, con được bảo vệ</h2><p>KidHabit chỉ lưu những gì cần để vận hành thói quen của gia đình, không quảng cáo, không bán dữ liệu của bé, và luôn để ba mẹ quyết định.</p><a class="text-link" href="/privacy/">Đọc chính sách quyền riêng tư ${icon('arrow')}</a><a class="text-link" href="/science/">Cơ sở khoa học và giới hạn của nó ${icon('arrow')}</a></div>
     <ul class="safety-list">${safetyPoints.map((point) => `<li>${icon(point.icon)}<div><h3>${point.title}</h3><p>${point.text}</p></div></li>`).join('')}</ul>
   </div></section>`;
 }
@@ -292,30 +293,23 @@ export function selectPublishableTestimonials(list, now = new Date()) {
     && item.reviewBy && new Date(item.reviewBy).getTime() > now.getTime());
 }
 
-function renderEarlyFamilies({ supportEmail, now }) {
+function renderFamilyQuotes({ now }) {
   const proof = selectPublishableTestimonials(testimonials, now);
-  if (proof.length) {
-    return `<section class="section early" aria-labelledby="early-title"><div class="shell">
-      <div class="section-heading section-heading-center"><p class="eyebrow">Gia đình nói gì</p><h2 id="early-title">Những gia đình đang dùng KidHabit</h2></div>
-      <ul class="quote-grid">${proof.map((item) => `<li class="quote-card" data-spotlight><blockquote>${escapeHtml(item.quote)}</blockquote><p><strong>${escapeHtml(item.name)}</strong>${item.role ? `<span>${escapeHtml(item.role)}</span>` : ''}</p></li>`).join('')}</ul>
-    </div></section>`;
-  }
-  const subject = encodeURIComponent('[KidHabit] Gia đình dùng thử đầu tiên');
-  const href = supportEmail ? `mailto:${escapeHtml(supportEmail)}?subject=${subject}` : '/contact/';
-  return `<section class="section early" aria-labelledby="early-title"><div class="shell early-card">
-    <div class="early-copy"><p class="eyebrow">Chương trình gia đình đầu tiên</p><h2 id="early-title">Cùng xây KidHabit với những gia đình đầu tiên</h2><p>KidHabit đang được hoàn thiện cùng một nhóm nhỏ gia đình dùng thật. Chúng tôi lắng nghe góp ý thẳng thắn và chỉ đăng lời nhận xét khi gia đình đồng ý.</p><a class="button button-primary" href="${href}">${icon('mail')} Tham gia chương trình</a></div>
-    <img class="early-mascot" src="/mascots/bunny.webp" alt="" width="400" height="400" loading="lazy" decoding="async">
+  if (!proof.length) return '';
+  return `<section class="section early" aria-labelledby="early-title"><div class="shell">
+    <div class="section-heading section-heading-center"><p class="eyebrow">Gia đình nói gì</p><h2 id="early-title">Những gia đình đang dùng KidHabit</h2></div>
+    <ul class="quote-grid">${proof.map((item) => `<li class="quote-card" data-spotlight><blockquote>${escapeHtml(item.quote)}</blockquote><p><strong>${escapeHtml(item.name)}</strong>${item.role ? `<span>${escapeHtml(item.role)}</span>` : ''}</p></li>`).join('')}</ul>
   </div></section>`;
 }
 
 function renderStickyCta(appOrigin) {
-  return `<div class="sticky-cta" data-sticky-cta data-guest hidden><div class="shell sticky-cta-inner"><p><strong>Dùng thử 7 ngày</strong><span>Không cần thẻ. Hoàn tiền 30 ngày.</span></p><a class="button button-primary" href="${appUrl(appOrigin, '/start')}">Bắt đầu ${icon('arrow')}</a></div></div>`;
+  return `<div class="sticky-cta" data-sticky-cta data-guest hidden><div class="shell sticky-cta-inner"><p><strong>Dùng thử 7 ngày</strong><span>Không cần thẻ.</span></p><a class="button button-primary" href="${appUrl(appOrigin, '/start')}">Bắt đầu ${icon('arrow')}</a></div></div>`;
 }
 
-export function renderHome({ marketingOrigin, appOrigin, supportEmail = '', now = new Date() }) {
+export function renderHome({ marketingOrigin, appOrigin, now = new Date() }) {
   const body = `<main id="noi-dung">
     <section class="hero" data-hero><div class="shell hero-grid">
-      <div class="hero-copy"><p class="hero-kicker">Ứng dụng đồng hành giáo dục con qua thói quen</p><h1>Từng thói quen nhỏ vẽ nên chân dung tốt đẹp của con</h1><p class="hero-lead">Mỗi việc nhỏ con làm hôm nay góp thêm một nét cho chân dung con muốn trở thành, để con trưởng thành tự tin, tử tế và làm chủ cuộc sống. Ba mẹ dẫn đường, con thực hành cùng một người bạn đồng hành.</p><div class="hero-actions"><a class="button button-primary" data-guest data-magnetic href="${appUrl(appOrigin, '/start')}">Dùng thử 7 ngày ${icon('arrow')}</a><a class="button button-quiet" data-guest href="${appUrl(appOrigin, '/?demo=1')}">Xem bản demo</a><a class="button button-primary" data-member data-magnetic href="${appUrl(appOrigin, '/')}">Vào ứng dụng của gia đình ${icon('arrow')}</a></div><ul class="trust-points" aria-label="Cam kết khi bắt đầu">${trustPoints.map((point) => `<li>${icon('check')}<span>${point}</span></li>`).join('')}</ul></div>
+      <div class="hero-copy"><p class="hero-kicker">Ứng dụng thói quen cho bé 4–12 tuổi</p><h1>Bớt nhắc, để con tự làm việc nhỏ mỗi ngày</h1><p class="hero-lead">Con xem việc cần làm và tự đánh dấu xong. Ba mẹ chỉ cần duyệt và khen. Mỗi ngày một việc nhỏ, cùng một người bạn đồng hành.</p><div class="hero-actions"><a class="button button-primary" data-guest data-magnetic href="${appUrl(appOrigin, '/start')}">Dùng thử 7 ngày ${icon('arrow')}</a><a class="button button-quiet" data-guest href="${appUrl(appOrigin, '/?demo=1')}">Xem bản demo</a><a class="button button-primary" data-member data-magnetic href="${appUrl(appOrigin, '/')}">Vào ứng dụng của gia đình ${icon('arrow')}</a></div><ul class="trust-points" aria-label="Cam kết khi bắt đầu">${trustPoints.map((point) => `<li>${icon('check')}<span>${point}</span></li>`).join('')}</ul></div>
       <div class="hero-visual">
         <div class="phone phone-hero" data-tilt><img class="phone-screen" src="/screens/kid-home.webp" alt="Màn hình của bé trong KidHabit: nhân vật Leo, 120 sao, 3 huy hiệu và tiến độ 3 trên 6 việc hôm nay" width="600" height="1298" fetchpriority="high"></div>
         <img class="hero-mascot" src="/mascots/leo.webp" alt="Leo, chú sư tử nhỏ vẫy tay chào bé" width="400" height="400" fetchpriority="high">
@@ -323,20 +317,18 @@ export function renderHome({ marketingOrigin, appOrigin, supportEmail = '', now 
         <span class="float-chip float-chip-review">${icon('shield')} Chờ bố mẹ duyệt</span>
       </div>
     </div></section>
-    ${renderTrustBar()}
-    ${renderPortraits()}
     ${renderComparison()}
     ${renderSteps()}
-    ${renderFeatures()}
+    ${renderPortraits()}
     ${renderCompanions()}
     ${renderSafety()}
-    ${renderEarlyFamilies({ supportEmail, now })}
+    ${renderFamilyQuotes({ now })}
     ${renderPricing(appOrigin)}
     ${renderFaq()}
     <section class="final-cta"><div class="shell final-cta-inner"><div><h2>Bắt đầu với một việc nhỏ hôm nay</h2><p>Thiết lập hồ sơ đầu tiên, chọn thói quen phù hợp và để con tự hoàn thành bước tiếp theo.</p><p class="final-cta-note">7 ngày dùng thử, không cần thẻ, hoàn tiền trong 30 ngày.</p></div><div class="final-cta-actions"><a class="button button-light" data-guest data-magnetic href="${appUrl(appOrigin, '/start')}">Bắt đầu cùng con ${icon('arrow')}</a><a class="text-link text-link-light" data-guest href="${appUrl(appOrigin, '/?demo=1')}">Xem bản demo trước</a><a class="button button-light" data-member data-magnetic href="${appUrl(appOrigin, '/')}">Vào ứng dụng của gia đình ${icon('arrow')}</a></div><img class="final-mascot" src="/mascots/leo.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></div></section>
     ${renderStickyCta(appOrigin)}
   </main>`;
-  return renderDocument({ title: 'KidHabit Hero | Giáo dục con qua thói quen mỗi ngày', description: 'KidHabit giúp ba mẹ chọn thói quen hợp độ tuổi, giao việc rõ ràng và cùng con ghi nhận từng bước nhỏ mỗi ngày. Dùng thử 7 ngày, không cần thẻ.', path: '/', marketingOrigin, appOrigin, body, structuredData: renderStructuredData({ marketingOrigin, appOrigin }) });
+  return renderDocument({ title: 'KidHabit Hero | Bớt nhắc, để con tự làm việc nhỏ mỗi ngày', description: 'KidHabit giúp ba mẹ chọn thói quen hợp độ tuổi, giao việc rõ ràng và cùng con ghi nhận từng bước nhỏ mỗi ngày. Dùng thử 7 ngày, không cần thẻ.', path: '/', marketingOrigin, appOrigin, body, structuredData: renderStructuredData({ marketingOrigin, appOrigin }) });
 }
 
 export function renderPricingPage({ marketingOrigin, appOrigin }) {
