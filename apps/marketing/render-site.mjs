@@ -171,7 +171,7 @@ export function renderDocument({ title, description, path, marketingOrigin, appO
   <meta property="og:image" content="${shareImage}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Từng thói quen nhỏ vẽ nên chân dung tốt đẹp của con, cùng Leo và KidHabit Hero">
+  <meta property="og:image:alt" content="Bớt nhắc, để con tự làm việc nhỏ mỗi ngày. KidHabit Hero cho bé 4–12 tuổi, cùng Leo, 7 ngày dùng thử không cần thẻ">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escapeHtml(title)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
