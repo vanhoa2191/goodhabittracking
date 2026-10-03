@@ -21,7 +21,7 @@ Public terms: the `/gioi-thieu/` page on the [website](11-website-va-trang-cong-
 <a id="tham-gia"></a>
 ## For referrers: join and share
 
-1. Go to `Family → Settings → Account & sync`, then open the **Refer a friend** card. Read the rules, tick to accept the terms, and click **Join the programme**.
+1. Go to `Family → Settings → Offers & referrals`, then open the **Refer a friend** card. Read the rules, tick to accept the terms, and click **Join the programme**.
 2. Copy or **Share** "Your referral link". You can send the referral code as a link or tell your friend the code so they can enter it manually.
 3. Track the numbers for families signed up, families that paid, money **held**, **available**, **withdrawal requested**, and **paid out**, along with recent commissions and their statuses: Held, Available, Withdrawal requested, Paid out, and Reversed.
 

@@ -26,21 +26,19 @@ import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { CaregiverInvitesPanel } from '@/components/CaregiverInvitesPanel';
 import { PwaInstallPanel } from '@/components/PwaInstallPanel';
 import { getMarketingOrigin } from '@/lib/site';
+import { parseSettingsAnchor, SETTINGS_SECTIONS } from '@/lib/parent-section-url';
 import { HelpTip } from '@/components/help/HelpTip';
 
-const SETTINGS_SECTIONS = [
-  { id: 'settings-devices', nav: 'navDevices' },
-  { id: 'settings-account', nav: 'navAccount' },
-  { id: 'settings-privacy', nav: 'navPrivacy' },
-  { id: 'settings-appearance', nav: 'navAppearance' },
-  { id: 'settings-security', nav: 'navSecurity' },
-] as const;
+/** The settings groups on screen: the offers group only exists for a signed-in family. */
+function getVisibleSections(hasAccount: boolean) {
+  return hasAccount ? SETTINGS_SECTIONS : SETTINGS_SECTIONS.filter((section) => section.id !== 'settings-offers');
+}
 
 /** The section whose heading was last scrolled past, so the sticky links can show where the reader is. */
-function useActiveSection(): string {
+function useActiveSection(hasAccount: boolean): string {
   const [active, setActive] = useState<string>(SETTINGS_SECTIONS[0].id);
   useEffect(() => {
-    const headings = SETTINGS_SECTIONS
+    const headings = getVisibleSections(hasAccount)
       .map((section) => document.getElementById(section.id))
       .filter((element): element is HTMLElement => element !== null);
     if (headings.length === 0 || typeof IntersectionObserver === 'undefined') return;
@@ -51,8 +49,35 @@ function useActiveSection(): string {
     }, { rootMargin: '-140px 0px -65% 0px' });
     headings.forEach((heading) => observer.observe(heading));
     return () => observer.disconnect();
-  }, []);
+  }, [hasAccount]);
   return active;
+}
+
+const SCROLL_SETTLE_MS = 2000;
+
+/**
+ * A link such as /?section=settings#settings-security opens straight onto Settings, where the browser has no heading to jump to yet.
+ * Scroll to it on arrival and again while the cards above it load and move it, until the reader scrolls or the page settles.
+ */
+function useScrollToSettingsAnchor(): void {
+  useEffect(() => {
+    const anchor = parseSettingsAnchor(window.location.hash);
+    const panel = document.getElementById('parent-section-panel');
+    if (!anchor || !panel) return;
+    const scrollToAnchor = () => document.getElementById(anchor)?.scrollIntoView();
+    const readerEvents = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const;
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(scrollToAnchor);
+    const stop = () => {
+      observer?.disconnect();
+      window.clearTimeout(timer);
+      readerEvents.forEach((type) => window.removeEventListener(type, stop));
+    };
+    const timer = window.setTimeout(stop, SCROLL_SETTLE_MS);
+    readerEvents.forEach((type) => window.addEventListener(type, stop, { passive: true }));
+    observer?.observe(panel);
+    scrollToAnchor();
+    return stop;
+  }, []);
 }
 
 const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
@@ -75,7 +100,8 @@ export function ParentSettingsTab() {
   const copy = getParentSettingsCopy(language);
   const pinCopy = getPinCopy(language);
   const layout = getSettingsLayoutCopy(language);
-  const activeSection = useActiveSection();
+  const activeSection = useActiveSection(Boolean(currentUser));
+  useScrollToSettingsAnchor();
   const pauseCopy = familyPauseCopy[language];
   const isPaused = Boolean(experience.settings?.paused_at);
   const [newPinInput, setNewPinInput] = useState('');
@@ -168,7 +194,7 @@ export function ParentSettingsTab() {
         aria-label={layout.groupNav}
         className="sticky top-[4.75rem] z-30 flex flex-wrap gap-2 rounded-2xl border border-slate-100 bg-white/90 p-2 text-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/90"
       >
-        {SETTINGS_SECTIONS.map((section) => {
+        {getVisibleSections(Boolean(currentUser)).map((section) => {
           const current = activeSection === section.id;
           return (
             <a
@@ -216,8 +242,6 @@ export function ParentSettingsTab() {
       <h4 id="settings-account" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionAccount}</h4>
       {currentUser && <AccountProfileCard />}
       <FamilyDataCard />
-      {currentUser && <ReferralCodeEntry />}
-      {currentUser && <AffiliateCard />}
       <h4 id="settings-privacy" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionPrivacy}</h4>
       {currentUser && <AnalyticsConsentCard />}
       {currentUser && <LeaderboardSharingCard />}
@@ -292,6 +316,13 @@ export function ParentSettingsTab() {
         </div>
       </div>
 
+      {currentUser && (
+        <>
+          <h4 id="settings-offers" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionOffers}</h4>
+          <ReferralCodeEntry />
+          <AffiliateCard />
+        </>
+      )}
     </div>
   );
 }

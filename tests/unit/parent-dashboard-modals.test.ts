@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { vi as vietnamese } from '@/lib/i18n/locales/vi';
 
-const state = vi.hoisted(() => ({ index: 0, openIndex: 1, editing: false }));
+const state = vi.hoisted(() => ({ index: 0, openIndex: 0, editing: false }));
 vi.mock('react', async (importOriginal) => {
   const react = await importOriginal<typeof import('react')>();
   return {
@@ -11,7 +11,7 @@ vi.mock('react', async (importOriginal) => {
     useState: (initial: unknown) => {
       const index = state.index++;
       if (index === state.openIndex) return [true, vi.fn()];
-      if (index === 2 && state.editing) return [{ id: 'habit-1' }, vi.fn()];
+      if (index === 1 && state.editing) return [{ id: 'habit-1' }, vi.fn()];
       return [typeof initial === 'function' ? initial() : initial, vi.fn()];
     },
     useCallback: (callback: unknown) => callback,
@@ -20,6 +20,7 @@ vi.mock('react', async (importOriginal) => {
 });
 vi.mock('@/lib/store', () => ({ useAppStore: () => ({ profiles: [], logs: [], redemptions: [] }) }));
 vi.mock('@/lib/use-modal-focus', () => ({ useModalFocus: vi.fn() }));
+vi.mock('@/lib/use-parent-section', () => ({ useParentSection: () => ['approvals', vi.fn()] }));
 vi.mock('@/lib/i18n/context', () => ({ useTranslation: () => ({ t: vietnamese, language: 'vi' }) }));
 
 import { ParentDashboard } from '@/components/ParentDashboard';
@@ -36,9 +37,9 @@ function findShell(node: ReactNode): ReactElement<ShellProps> | undefined {
 
 describe('parent dashboard modal integration', () => {
   it.each([
-    { openIndex: 1, editing: false, name: vietnamese.createHabitTitle, fields: 11 },
-    { openIndex: 1, editing: true, name: vietnamese.editHabitTitle, fields: 11 },
-    { openIndex: 10, editing: false, name: vietnamese.adjustPoints, fields: 2 },
+    { openIndex: 0, editing: false, name: vietnamese.createHabitTitle, fields: 11 },
+    { openIndex: 0, editing: true, name: vietnamese.editHabitTitle, fields: 11 },
+    { openIndex: 9, editing: false, name: vietnamese.adjustPoints, fields: 2 },
   ])('uses ModalShell and labels every field in $name', ({ openIndex, editing, name, fields }) => {
     Object.assign(state, { index: 0, openIndex, editing });
     const shell = findShell(ParentDashboard());
