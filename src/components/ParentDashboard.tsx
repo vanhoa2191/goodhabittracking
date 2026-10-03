@@ -33,6 +33,7 @@ const ParentChildrenTab = dynamic(() => import('./ParentChildrenTab').then((modu
 import { ParentNavigation, type ParentSection } from './ParentNavigation';
 import { getParentPrimaryCopy } from '@/lib/i18n/parent-primary-copy';
 import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
+import { getChromeCopy } from '@/lib/i18n/chrome-copy';
 import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 import { getProfileMutationCopy, getProfileMutationError } from '@/lib/i18n/profile-mutation-copy';
 import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
@@ -59,6 +60,7 @@ export function ParentDashboard() {
   const { t, language } = useTranslation();
   const copy = getParentPrimaryCopy(language);
   const kidCopy = getKidDashboardCopy(language);
+  const chromeCopy = getChromeCopy(language);
   const ageThemeCopy = getAgeThemeCopy(language);
   const onboardingCopy = getOnboardingCopy(language);
   const profileCopy = getProfileMutationCopy(language);
@@ -413,14 +415,14 @@ export function ParentDashboard() {
 
               <div>
                 <label htmlFor="habit-instructions" className="block text-xs font-bold text-slate-600 dark:text-slate-300 mb-1">
-                  {language === 'vi' ? 'Cách làm / hướng dẫn cho con' : 'How to do it'}
+                  {chromeCopy.habitInstructionsLabel}
                 </label>
                 <textarea
                   id="habit-instructions"
                   value={habitForm.instructions}
                   onChange={(e) => setHabitForm({ ...habitForm, instructions: e.target.value })}
                   rows={3}
-                  placeholder={language === 'vi' ? 'Viết từng bước ngắn, dễ hiểu…' : 'Add short, clear steps…'}
+                  placeholder={chromeCopy.habitInstructionsPlaceholder}
                   className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800"
                 />
               </div>

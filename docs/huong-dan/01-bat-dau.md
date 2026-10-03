@@ -9,13 +9,13 @@
 <a id="cach-vao"></a>
 ## Ba cách vào ứng dụng
 
-Khi mở `app.kidhabithero.com` lần đầu, màn hình "Bạn muốn vào KidHabit theo cách nào?" đưa ra ba lối. Khu phụ huynh và khu của bé được tách riêng: bé không thấy thanh toán hay cài đặt gia đình.
+Khi mở `app.kidhabithero.com` lần đầu, màn hình "Bạn muốn vào KidHabit theo cách nào?" đưa ra ba lối: hai nút hiện ngay và một khối thu gọn cho bé. Khu phụ huynh và khu của bé được tách riêng: bé không thấy thanh toán hay cài đặt gia đình.
 
 | Lối vào | Dành cho | Điều xảy ra |
 |---|---|---|
-| **Phụ huynh đăng nhập Google** | Ba mẹ, người giám hộ | Vào bảng quản lý gia đình ([3](03-hom-nay-va-duyet-viec.md)). Lần đầu sẽ qua [thiết lập gia đình](#thiet-lap). |
-| **Trẻ quét QR hoặc nhập mã** | Bé | Thiết bị được ghép với đúng một bé và mở thẳng [màn hình của bé](02-man-hinh-be.md). Bé không cần tài khoản. |
-| **Khám phá bản demo** | Ai cũng được | Dùng dữ liệu mẫu, không cần tài khoản ([bản demo](#demo)). |
+| **Tiếp tục với tư cách phụ huynh** (đăng nhập bằng Google) | Ba mẹ, người giám hộ | Vào bảng quản lý gia đình ([3](03-hom-nay-va-duyet-viec.md)). Lần đầu sẽ qua [thiết lập gia đình](#thiet-lap). |
+| **Đây là thiết bị của bé?** (mở ra, chọn "Nhập mã hoặc quét QR") | Bé | Thiết bị được ghép với đúng một bé và mở thẳng [màn hình của bé](02-man-hinh-be.md). Bé không cần tài khoản. |
+| **Khám phá bản demo** (hiện ngay, dưới nút phụ huynh) | Ai cũng được | Dùng dữ liệu mẫu, không cần tài khoản ([bản demo](#demo)). |
 
 Phụ huynh đã đăng nhập vào thẳng bảng quản lý; muốn xem lại trang giới thiệu thì chọn "Trang chủ" hoặc "Xem trang giới thiệu". Thiết bị của bé sau khi đã ghép sẽ luôn mở thẳng giao diện của bé, không hiện bảng phụ huynh hay trang bán hàng.
 
@@ -23,7 +23,7 @@ Phụ huynh đã đăng nhập vào thẳng bảng quản lý; muốn xem lại 
 ## Đăng nhập
 
 - **Google** là cách đăng nhập chính của phụ huynh.
-- **Mã một lần gửi qua email** là cách thứ hai, hiện **đang tắt** cho đến khi được bật<!--op--> (cờ `emailCodeLogin`, [hướng dẫn bật](../deployment.md))<!--/op-->. Khi bật, ô "Hoặc nhận mã đăng nhập qua email" xuất hiện cạnh nút Google. Ba mẹ nhập email, nhận mã vài chữ số, nhập lại để vào. Gửi lại mã được sau vài giây; gửi quá nhiều lần sẽ phải chờ vài phút.
+- **Mã một lần gửi qua email** là cách thứ hai, hiện **đang tắt** cho đến khi được bật<!--op--> (cờ `emailCodeLogin`, [hướng dẫn bật](../deployment.md))<!--/op-->. Khi bật, mục thu gọn "Cách đăng nhập khác" xuất hiện dưới màn hình vào; mở ra sẽ thấy ô "Hoặc nhận mã đăng nhập qua email". Khi cờ tắt thì không có mục này. Ba mẹ nhập email, nhận mã vài chữ số, nhập lại để vào. Gửi lại mã được sau vài giây; gửi quá nhiều lần sẽ phải chờ vài phút.
 - Đăng nhập lỗi sẽ hiện thông báo ngắn và nút thử lại, không có thay đổi nào được lưu.
 
 Phụ huynh đăng nhập từ một liên kết giới thiệu (`?ref=`) được ghi nhận giới thiệu tự động ([8](08-gioi-thieu-ban-be.md#ghi-nhan)). Người được mời làm người chăm sóc đăng nhập Google rồi chấp nhận lời mời ([5](05-gia-dinh-va-cai-dat.md#nguoi-cham-soc)).

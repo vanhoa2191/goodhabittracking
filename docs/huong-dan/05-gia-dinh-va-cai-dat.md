@@ -36,7 +36,7 @@ Từ thẻ hồ sơ, ba mẹ có thể:
 Mỗi bé có **một mã kết nối cố định** (và mã QR tương ứng). Mã chỉ cấp quyền cho đúng bé đó, không chứa PIN hay dữ liệu gia đình, và giữ nguyên cho đến khi ba mẹ làm mới.
 
 1. **Lấy mã riêng của bé**: ở `Gia đình → Hồ sơ các con`, sao chép mã hoặc bấm "Hiện QR cho bé quét". Cần [PIN](#pin) nếu đã đặt.
-2. **Mở máy của bé**: vào ứng dụng, chọn "Trẻ quét QR hoặc nhập mã" (hoặc "Bé nhập mã" trên thanh trên cùng).
+2. **Mở máy của bé**: vào ứng dụng, mở khối "Đây là thiết bị của bé?" rồi chọn "Nhập mã hoặc quét QR" (hoặc "Bé nhập mã" trên thanh trên cùng).
 3. **Quét QR hoặc nhập mã**: máy tự đăng nhập đúng hồ sơ của bé. Hiện "Liên kết thành công!" rồi bé bấm "Bắt đầu nhiệm vụ của bé".
 
 Sau khi ghép, thiết bị luôn mở thẳng [màn hình của bé](02-man-hinh-be.md), không hiện bảng phụ huynh hay trang bán hàng.

@@ -6,9 +6,14 @@ import { NextResponse, type NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const nonce = btoa(crypto.randomUUID());
   const development = process.env.NODE_ENV === 'development';
+  // The offline page is static, so it cannot carry a nonce; it may only load its own same-origin script.
+  const staticOfflinePage = request.nextUrl.pathname === '/offline.html';
+  const scriptSource = staticOfflinePage
+    ? "script-src 'self'"
+    : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${development ? " 'unsafe-eval'" : ''}`;
   const policy = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${development ? " 'unsafe-eval'" : ''}`,
+    scriptSource,
     "worker-src 'self' blob:",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",

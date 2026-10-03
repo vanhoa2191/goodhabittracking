@@ -25,7 +25,12 @@ const quiet = 'min-h-11 rounded-xl px-3 text-sm font-bold text-indigo-700 hover:
  * Sign in with a one-time code sent by email. Shown only when the flag is on, which happens after the
  * auth service has an email provider and a mail sender configured (see docs/deployment.md).
  */
-export function EmailCodeSignIn({ language, onSignedIn }: { readonly language: Language; readonly onSignedIn?: () => void }) {
+export function EmailCodeSignIn({ language, onSignedIn, embedded = false }: {
+  readonly language: Language;
+  readonly onSignedIn?: () => void;
+  /** True when a parent disclosure already frames the form, so it drops its own divider and spacing. */
+  readonly embedded?: boolean;
+}) {
   const copy = getEmailCodeCopy(language);
   const emailId = useId();
   const codeId = useId();
@@ -71,7 +76,10 @@ export function EmailCodeSignIn({ language, onSignedIn }: { readonly language: L
   };
 
   return (
-    <section aria-labelledby={`${emailId}-heading`} className="mt-6 border-t border-slate-200 pt-5 dark:border-zinc-800">
+    <section
+      aria-labelledby={`${emailId}-heading`}
+      className={embedded ? undefined : 'mt-6 border-t border-slate-200 pt-5 dark:border-zinc-800'}
+    >
       <h2 id={`${emailId}-heading`} className="flex items-center gap-2 text-sm font-extrabold text-slate-700 dark:text-slate-200">
         <Mail aria-hidden="true" className="h-4 w-4" />{copy.heading}
       </h2>
