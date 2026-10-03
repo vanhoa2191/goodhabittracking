@@ -4,7 +4,7 @@
 
 <!--op-->## Trong tài liệu này
 
-[Cấu trúc khu phụ huynh](#cau-truc) · [Hôm nay của từng bé](#hom-nay) · [Việc và quà cần duyệt](#duyet) · [Ghi cách bé làm](#muc-ho-tro) · [Nhìn lại tuần](#nhin-lai-tuan) · [Tiến triển thói quen và gợi ý](#tien-trien) · [Thưởng hoặc trừ sao thủ công](#chinh-sao) · [Thống kê, in, chia sẻ](#thong-ke) · [Nhắc việc](#nhac-viec-ngan) · [Liên quan](#lien-quan)<!--/op-->
+[Cấu trúc khu phụ huynh](#cau-truc) · [Hôm nay của từng bé](#hom-nay) · [Việc và quà cần duyệt](#duyet) · [Dải “Cần bạn xử lý” và duyệt nhiều việc](#can-xu-ly) · [Ghi cách bé làm](#muc-ho-tro) · [Nhìn lại tuần](#nhin-lai-tuan) · [Tiến triển thói quen và gợi ý](#tien-trien) · [Thưởng hoặc trừ sao thủ công](#chinh-sao) · [Thống kê, in, chia sẻ](#thong-ke) · [Nhắc việc](#nhac-viec-ngan) · [Liên quan](#lien-quan)<!--/op-->
 
 <a id="cau-truc"></a>
 ## Cấu trúc khu phụ huynh
@@ -41,6 +41,17 @@ Hai danh sách ở mục Duyệt việc:
 2. **Yêu cầu đổi quà từ các con**: món bé xin, số sao đã trừ và thời điểm xin. Luồng: bé xin → ba mẹ **duyệt** → ba mẹ **trao quà** → xong. **Từ chối** sẽ hoàn sao cho bé ([quà của bé](02-man-hinh-be.md#qua)).
 
 Duyệt hoặc từ chối việc, duyệt hoặc trao quà đều cần [mã PIN](05-gia-dinh-va-cai-dat.md#pin) nếu gia đình đã đặt. Việc bé tự chạm hoàn thành trên máy phụ huynh thì không cần PIN. Nếu bật [nhắc việc](#nhac-viec-ngan), trang hiện thêm biểu ngữ "Bạn có N mục đang chờ xử lý".
+
+<a id="can-xu-ly"></a>
+## Dải “Cần bạn xử lý” và duyệt nhiều việc
+
+Đang được bật dần; nếu chưa thấy trong ứng dụng của bạn thì tính năng này chưa đến bản của bạn.
+
+Đầu mục Duyệt việc có một dải **Cần bạn xử lý** gom mọi thứ đang chờ ba mẹ: số việc cần duyệt, số yêu cầu đổi quà và số gợi ý điều chỉnh thói quen. Bấm một mục để nhảy thẳng tới chỗ xử lý. Không có gì chờ thì dải báo "Hiện không có việc nào cần ba mẹ xử lý".
+
+Trong danh sách việc chờ duyệt, mỗi dòng có ô chọn. **Không có ô nào được tick sẵn**: bạn tự chọn từng việc, hoặc bấm **Chọn tất cả** (tối đa 50 việc mỗi lần). Thanh phía dưới ghi rõ bạn đã chọn bao nhiêu việc của bé nào, rồi **Duyệt N việc** hoặc **Từ chối N việc**. Cả lô chỉ cần [mã PIN](05-gia-dinh-va-cai-dat.md#pin) một lần. Việc đã được duyệt hoặc từ chối trước đó (ví dụ bởi người còn lại trong nhà) sẽ được bỏ qua và báo lại, nên bấm hai lần không cộng sao hai lần.
+
+Nếu bạn đã cài ứng dụng lên màn hình chính và bật [nhắc việc](#nhac-viec-ngan), biểu tượng ứng dụng hiện **số việc và quà đang chờ** trên các thiết bị hỗ trợ huy hiệu (không phải thiết bị nào cũng có; chỉ hiện số, không hiện tên bé hay việc). Nhấn giữ biểu tượng còn có lối tắt **Duyệt việc** và **Hướng dẫn sử dụng**. Ứng dụng web không có tiện ích (widget) riêng trên màn hình chính.
 
 <a id="muc-ho-tro"></a>
 ## Ghi cách bé làm

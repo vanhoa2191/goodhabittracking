@@ -57,3 +57,4 @@
 \ir migrations/202610020004_member_read_scope.sql
 \ir migrations/202610030001_caregiver_progress_projection.sql
 \ir migrations/202610030002_caregiver_daily_progress.sql
+\ir migrations/202610040001_review_habits_batch.sql

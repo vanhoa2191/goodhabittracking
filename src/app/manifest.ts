@@ -13,6 +13,10 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#4f46e5',
     lang: 'vi',
     categories: ['education', 'lifestyle', 'family'],
+    shortcuts: [
+      { name: 'Duyệt việc', short_name: 'Duyệt việc', description: 'Việc và quà đang chờ ba mẹ', url: '/?section=approvals', icons: [{ src: '/pwa/icon-192.png', sizes: '192x192', type: 'image/png' }] },
+      { name: 'Hướng dẫn sử dụng', short_name: 'Hướng dẫn', description: 'Cách dùng từng tính năng', url: '/docs', icons: [{ src: '/pwa/icon-192.png', sizes: '192x192', type: 'image/png' }] },
+    ],
     icons: [
       { src: '/pwa/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
       { src: '/pwa/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },

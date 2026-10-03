@@ -1,9 +1,9 @@
 import type { Language } from '@/types';
 import type { HelpText, HelpTopic } from './help-topics';
-import type { HelpTopicId } from './help-topic-id';
+import type { HelpTopicId, HelpTranslationTable } from './help-topic-id';
 
 type Topics = Readonly<Record<HelpTopicId, HelpTopic>>;
-export type HelpTranslation = Readonly<Record<HelpTopicId, HelpText>>;
+export type HelpTranslation = HelpTranslationTable<HelpText>;
 
 let pending: Promise<Topics> | undefined;
 

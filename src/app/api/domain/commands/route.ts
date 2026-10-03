@@ -27,6 +27,11 @@ function rpcFor(command: DomainCommand): { name: string; args: Record<string, un
         name: 'review_habit_command',
         args: { target_log_id: command.logId, decision: command.decision },
       };
+    case 'reviewHabits':
+      return {
+        name: 'review_habits_command',
+        args: { target_log_ids: command.logIds, decision: command.decision },
+      };
     case 'redeemReward':
       return {
         name: 'redeem_reward_command',
@@ -71,7 +76,7 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = await createServerSupabaseClient();
-  if (parsed.data.type === 'reviewHabit' || parsed.data.type === 'transitionRedemption' || parsed.data.type === 'adjustPoints') {
+  if (parsed.data.type === 'reviewHabit' || parsed.data.type === 'reviewHabits' || parsed.data.type === 'transitionRedemption' || parsed.data.type === 'adjustPoints') {
     const locked = await requireParentUnlock(request, parent, supabase);
     if (locked) return locked;
   }

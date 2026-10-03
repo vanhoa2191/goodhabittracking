@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { Check, CheckCircle2, Gift, Inbox } from 'lucide-react';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useAppStore } from '@/lib/store';
@@ -14,6 +15,13 @@ import { ParentTodayCard } from './ParentTodayCard';
 import { WeeklyReviewCard } from './WeeklyReviewCard';
 import { getParentTodayCopy } from '@/lib/i18n/parent-today-copy';
 import { HelpTip } from '@/components/help/HelpTip';
+import { useParentReminderConsent } from '@/lib/parent-reminder-context';
+import { appBadgeCount } from '@/lib/parent-actions';
+import { useAppBadge } from '@/lib/use-app-badge';
+
+// Loaded on demand with the flag, so the first download does not grow for families that do not use them.
+const ParentActionStrip = dynamic(() => import('./ParentActionStrip').then((module) => module.ParentActionStrip), { ssr: false });
+const BulkTaskReview = dynamic(() => import('./BulkTaskReview').then((module) => module.BulkTaskReview), { ssr: false });
 
 export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: () => void } = {}) {
   const {
@@ -37,6 +45,9 @@ export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: (
   const pendingRedemptions = redemptions.filter((redemption) => redemption.status === 'pending');
   const pendingCount = pendingLogs.length + pendingRedemptions.length;
   const familyPaused = Boolean(experience.settings?.paused_at);
+  const dailyEase = defaultExperienceFlags.dailyEase;
+  const { enabled: remindersOn } = useParentReminderConsent();
+  useAppBadge(appBadgeCount({ pendingTasks: pendingLogs.length, pendingRewards: pendingRedemptions.length }), dailyEase && defaultExperienceFlags.parentReengagement && remindersOn && !familyPaused);
 
   return (
     <div className="space-y-6">
@@ -59,10 +70,12 @@ export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: (
 
       {focusChildId && <ParentTodayCard childId={focusChildId} />}
 
-      <h3 className="px-1 text-sm font-extrabold text-slate-600 dark:text-slate-300">{todayCopy.actionsTitle}</h3>
+      {dailyEase
+        ? <ParentActionStrip pendingTasks={pendingLogs.length} pendingRewards={pendingRedemptions.length} />
+        : <h3 className="px-1 text-sm font-extrabold text-slate-600 dark:text-slate-300">{todayCopy.actionsTitle}</h3>}
       {defaultExperienceFlags.habitPrograms && <HabitSupportPrompt />}
 
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
+      {dailyEase ? <BulkTaskReview /> : <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
         <div className="flex items-center gap-1"><h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
           <CheckCircle2 className="w-5 h-5 text-indigo-600" />
           {copy.pendingTasks} ({pendingLogs.length})
@@ -95,9 +108,9 @@ export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: (
             })}
           </div>
         )}
-      </div>
+      </div>}
 
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
+      <div id="pending-rewards" tabIndex={-1} className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800 focus:outline-none">
         <div className="flex items-center gap-1"><h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100 mb-4 flex items-center gap-2">
           <Gift className="w-5 h-5 text-pink-600" />
           {copy.pendingRewards} ({pendingRedemptions.length})

@@ -394,4 +394,84 @@ describe('habit actions', () => {
     }));
     expect(rejectFixture.analyticsSink).toHaveBeenCalledWith({ event: 'habit_reviewed', decision: 'rejected', approvalLag: 'over_1d', mode: 'local' });
   });
+  describe('reviewing several logs at once', () => {
+    const pendingLog = (id: string): ActivityLog => ({
+      id,
+      activityId: activity.id,
+      childId: child.id,
+      date: '2026-09-20',
+      status: 'pending_approval',
+      pointsAwarded: 0,
+      completedAt: '2026-09-20T01:00:00.000Z',
+    });
+
+    it('approves every waiting local log once and credits the stars once each', async () => {
+      const fixture = createState('demo');
+      fixture.read().logs.push(pendingLog('log-1'), pendingLog('log-2'));
+
+      const outcome = await fixture.actions.reviewLogs(['log-1', 'log-2', 'log-1'], 'approve');
+
+      expect(outcome).toEqual({ approved: 2, rejected: 0, skipped: 0 });
+      expect(fixture.read().logs.map((log) => log.status)).toEqual(['approved', 'approved']);
+      expect(fixture.read().profiles[0]?.points).toBe(activity.points * 2);
+    });
+
+    it('skips local logs that are no longer waiting', async () => {
+      const fixture = createState('demo');
+      fixture.read().logs.push({ ...pendingLog('log-1'), status: 'approved', pointsAwarded: activity.points });
+
+      const outcome = await fixture.actions.reviewLogs(['log-1'], 'approve');
+
+      expect(outcome).toEqual({ approved: 0, rejected: 0, skipped: 1 });
+      expect(fixture.read().profiles[0]?.points).toBe(0);
+    });
+
+    it('rejects local logs without awarding stars', async () => {
+      const fixture = createState('demo');
+      fixture.read().logs.push(pendingLog('log-1'));
+
+      const outcome = await fixture.actions.reviewLogs(['log-1'], 'reject');
+
+      expect(outcome).toEqual({ approved: 0, rejected: 1, skipped: 0 });
+      expect(fixture.read().logs[0]).toEqual(expect.objectContaining({ status: 'rejected', pointsAwarded: 0 }));
+    });
+
+    it('sends one batch command in a cloud family and counts each log outcome', async () => {
+      requestDomainCommand.mockResolvedValue({
+        status: 'reviewed',
+        results: [
+          { logId: 'log-1', status: 'approved', pointsAwarded: 20 },
+          { logId: 'log-2', status: 'already_reviewed' },
+          { logId: 'log-3', status: 'not_found' },
+        ],
+      });
+      const fixture = createState('cloud', user, true);
+
+      const outcome = await fixture.actions.reviewLogs(['log-1', 'log-2', 'log-3'], 'approve');
+
+      expect(requestDomainCommand).toHaveBeenCalledTimes(1);
+      expect(requestDomainCommand).toHaveBeenCalledWith({ type: 'reviewHabits', logIds: ['log-1', 'log-2', 'log-3'], decision: 'approve' });
+      expect(outcome).toEqual({ approved: 1, rejected: 0, skipped: 2 });
+      expect(fixture.syncCloudFamily).toHaveBeenCalledTimes(1);
+    });
+
+    it('returns null and reloads nothing when the server refuses the batch', async () => {
+      requestDomainCommand.mockRejectedValue(new Error('locked'));
+      const fixture = createState('cloud', user, true);
+
+      await expect(fixture.actions.reviewLogs(['log-1'], 'approve')).resolves.toBeNull();
+      expect(fixture.syncCloudFamily).not.toHaveBeenCalled();
+    });
+
+    it('never sends more than the batch limit', async () => {
+      requestDomainCommand.mockResolvedValue({ status: 'reviewed', results: [] });
+      const fixture = createState('cloud', user, true);
+      const ids = Array.from({ length: 60 }, (_, index) => `log-${index}`);
+
+      await fixture.actions.reviewLogs(ids, 'approve');
+
+      const sent = requestDomainCommand.mock.calls[0]?.[0] as { logIds: string[] };
+      expect(sent.logIds).toHaveLength(50);
+    });
+  });
 });
