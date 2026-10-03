@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useId, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
@@ -14,7 +14,6 @@ import {
   Globe,
   Database,
   ChevronDown,
-  Check,
   Type,
   LogOut,
   User as UserIcon,
@@ -37,6 +36,10 @@ import { useModalFocus } from '@/lib/use-modal-focus';
 import { BrandMark } from '@/components/BrandMark';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { MascotAvatar } from '@/components/MascotAvatar';
+import { DropdownMenu, DropdownMenuItem } from '@/components/ui/dropdown-menu';
+
+const MENU_GROUP_HEADING = 'mb-2 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300';
+const MENU_ROW = 'flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-xl px-3 text-left text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500';
 
 interface HeaderProps {
   hasAppSession?: boolean;
@@ -83,10 +86,9 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
   const chromeCopy = getChromeCopy(language);
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
   const [isFontModalOpen, setIsFontModalOpen] = useState(false);
-  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
-  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuPanelRef = useRef<HTMLDivElement>(null);
+  const menuId = useId();
   useModalFocus(isMobileMenuOpen, () => setIsMobileMenuOpen(false), menuPanelRef);
   const [soundEnabled, setSoundEnabled] = useState(sounds.enabled);
 
@@ -174,61 +176,39 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
 
           {/* Center: Multi-Child Profile Switcher (Only when logged in and in Dashboard mode) */}
           {hasDashboardAccess && profiles.length > 0 && (
-            <div className="relative shrink-0">
-              <button
-                type="button"
-                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                className="flex items-center gap-1.5 sm:gap-2 min-h-[38px] sm:min-h-[40px] px-2.5 sm:px-3.5 rounded-full bg-slate-50 dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-              >
-                <MascotAvatar avatar={activeChild?.avatar || '🌟'} alt="" className="h-7 w-7 text-lg sm:h-8 sm:w-8 sm:text-xl" />
-                <span className="font-semibold text-xs sm:text-sm text-slate-700 dark:text-slate-200 max-w-[65px] sm:max-w-[130px] truncate">
-                  {activeChild?.name}
-                </span>
-                <span className="hidden md:inline-flex items-center text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full">
-                  ⭐ {activeChild?.points || 0}
-                </span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-              </button>
-
-              {/* Profile Dropdown */}
-              {isProfileMenuOpen && (
+            <DropdownMenu
+              rootClassName="relative shrink-0"
+              menuLabel={t.switchProfile}
+              heading={t.switchProfile}
+              triggerClassName="flex items-center gap-1.5 sm:gap-2 min-h-[38px] sm:min-h-[40px] px-2.5 sm:px-3.5 rounded-full bg-slate-50 dark:bg-zinc-900 border border-slate-200/80 dark:border-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              panelClassName="absolute left-1/2 -translate-x-1/2 mt-2 w-56 max-w-[calc(100vw-1rem)] bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-slate-100 dark:border-zinc-800 p-2 z-20 animate-fade-in"
+              trigger={
                 <>
-                  <div className="fixed inset-0 z-10" onClick={() => setIsProfileMenuOpen(false)} />
-                  <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-56 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-slate-100 dark:border-zinc-800 p-2 z-20 animate-fade-in">
-                    <div className="text-xs font-semibold text-slate-400 px-3 py-1 uppercase tracking-wider">
-                      {t.switchProfile}
-                    </div>
-                    {profiles.map((p) => (
-                      <button
-                        key={p.id}
-                        onClick={() => {
-                          setActiveChildId(p.id);
-                          setIsProfileMenuOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between p-2.5 rounded-xl text-left transition-colors cursor-pointer ${
-                          p.id === activeChildId
-                            ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-semibold'
-                            : 'hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-200'
-                        }`}
-                      >
-                        <div className="flex items-center gap-2.5 truncate">
-                          <MascotAvatar avatar={p.avatar} alt="" className="h-10 w-10 text-2xl" />
-                          <div>
-                            <div className="text-sm font-medium truncate">{p.name}</div>
-                            <div className="text-xs text-slate-400 flex items-center gap-1.5">
-                              <span>⭐ {p.points}</span>
-                              <span>•</span>
-                              <span>{t.levelPrefix} {p.level}</span>
-                            </div>
-                          </div>
-                        </div>
-                        {p.id === activeChildId && <Check className="w-4 h-4 text-indigo-600 shrink-0" />}
-                      </button>
-                    ))}
-                  </div>
+                  <MascotAvatar avatar={activeChild?.avatar || '🌟'} alt="" className="h-7 w-7 text-lg sm:h-8 sm:w-8 sm:text-xl" />
+                  <span className="font-semibold text-xs sm:text-sm text-slate-700 dark:text-slate-200 max-w-[65px] sm:max-w-[130px] truncate">
+                    {activeChild?.name}
+                  </span>
+                  <span className="hidden md:inline-flex items-center text-xs font-bold text-amber-500 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full">
+                    ⭐ {activeChild?.points || 0}
+                  </span>
+                  <ChevronDown aria-hidden="true" className="w-3.5 h-3.5 text-slate-400 shrink-0" />
                 </>
-              )}
-            </div>
+              }
+            >
+              {profiles.map((p) => (
+                <DropdownMenuItem key={p.id} selected={p.id === activeChildId} onSelect={() => setActiveChildId(p.id)}>
+                  <MascotAvatar avatar={p.avatar} alt="" className="h-10 w-10 shrink-0 text-2xl" />
+                  <span className="min-w-0">
+                    <span className="block truncate text-sm font-medium">{p.name}</span>
+                    <span className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300">
+                      <span>⭐ {p.points}</span>
+                      <span aria-hidden="true">•</span>
+                      <span>{t.levelPrefix} {p.level}</span>
+                    </span>
+                  </span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenu>
           )}
 
           {/* Right Action Controls */}
@@ -275,46 +255,26 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
             </button>
 
             {/* Desktop Only: Language Switcher Dropdown (xl:block) */}
-            <div className="relative hidden xl:block">
-              <button
-                onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-                aria-expanded={isLangMenuOpen}
-                aria-haspopup="true"
-                aria-label={currentLang.label}
-                className="min-h-[38px] flex items-center gap-1 py-1.5 px-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-              >
-                <span>{currentLang.flag}</span>
-                <Globe className="w-3.5 h-3.5 text-slate-400 ml-0.5" />
-              </button>
-
-              {isLangMenuOpen && (
+            <DropdownMenu
+              rootClassName="relative hidden xl:block"
+              menuLabel={t.language}
+              triggerLabel={currentLang.label}
+              triggerClassName="min-h-11 min-w-11 flex items-center justify-center gap-1 py-1.5 px-2.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+              panelClassName="absolute right-0 mt-2 w-48 max-w-[calc(100vw-1rem)] bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-slate-100 dark:border-zinc-800 p-1.5 z-20 animate-fade-in max-h-80 overflow-y-auto"
+              trigger={
                 <>
-                  <div className="fixed inset-0 z-10" onClick={() => setIsLangMenuOpen(false)} />
-                  <div className="absolute right-0 mt-2 w-44 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl border border-slate-100 dark:border-zinc-800 p-1.5 z-20 animate-fade-in max-h-80 overflow-y-auto">
-                    {SUPPORTED_LANGUAGES.map((lang: LanguageOption) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => {
-                          setLanguage(lang.code);
-                          setIsLangMenuOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-colors cursor-pointer active:scale-98 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
-                          lang.code === language
-                            ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-bold'
-                            : 'hover:bg-slate-50 dark:hover:bg-zinc-800 text-slate-700 dark:text-slate-200 font-medium'
-                        }`}
-                      >
-                        <span className="flex items-center gap-2">
-                          <span className="text-base">{lang.flag}</span>
-                          <span>{lang.label}</span>
-                        </span>
-                        {lang.code === language && <Check className="w-3.5 h-3.5 text-indigo-600" />}
-                      </button>
-                    ))}
-                  </div>
+                  <span aria-hidden="true">{currentLang.flag}</span>
+                  <Globe aria-hidden="true" className="w-3.5 h-3.5 text-slate-500 ml-0.5" />
                 </>
-              )}
-            </div>
+              }
+            >
+              {SUPPORTED_LANGUAGES.map((lang: LanguageOption) => (
+                <DropdownMenuItem key={lang.code} selected={lang.code === language} onSelect={() => setLanguage(lang.code)} className="text-sm">
+                  <span aria-hidden="true" className="text-base">{lang.flag}</span>
+                  <span>{lang.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenu>
 
             {/* Desktop Only: 16 Portraits Guide (xl:flex) */}
             <button
@@ -373,24 +333,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                 className="hidden xl:flex min-h-[38px] items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-bold bg-white dark:bg-zinc-900 hover:bg-slate-50 border border-slate-200 dark:border-zinc-800 text-slate-700 dark:text-slate-200 transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                 title={t.googleLogin}
               >
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24">
-                  <path
-                    fill="#4285F4"
-                    d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                  />
-                  <path
-                    fill="#34A853"
-                    d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"
-                  />
-                  <path
-                    fill="#FBBC05"
-                    d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.02 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
-                  />
-                  <path
-                    fill="#EA4335"
-                    d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                  />
-                </svg>
+                <GoogleMark className="w-3.5 h-3.5" />
                 <span className="hidden whitespace-nowrap 2xl:inline">{t.googleLogin}</span>
               </button>
             )}
@@ -503,23 +446,24 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                   >
                     {/* Header in Mobile Menu */}
                     <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-zinc-800">
-                      <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+                      <span className="text-sm font-bold text-slate-700 dark:text-slate-200">
                         {t.moreMenu}
                       </span>
                       <button
+                        type="button"
                         onClick={() => setIsMobileMenuOpen(false)}
                         aria-label={t.close}
-                        className="-mr-2 flex min-h-11 min-w-11 items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                        className="-mr-2 flex min-h-11 min-w-11 items-center justify-center rounded-lg text-slate-500 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-300 dark:hover:text-white"
                       >
                         <X className="w-4 h-4" aria-hidden="true" />
                       </button>
                     </div>
 
-                    {/* Google Auth Row */}
-                    <div>
+                    <div role="group" aria-labelledby={`${menuId}-account`}>
+                      <p id={`${menuId}-account`} className={MENU_GROUP_HEADING}>{chromeCopy.menuAccount}</p>
                       {currentUser ? (
-                        <div className="p-2 rounded-xl bg-slate-50 dark:bg-zinc-800/80 flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2 min-w-0">
+                        <div className="flex items-center justify-between gap-2 rounded-xl bg-slate-50 p-2 pl-3 dark:bg-zinc-800/80">
+                          <div className="flex min-w-0 items-center gap-2">
                             {currentUser.user_metadata?.avatar_url ? (
                               <Image
                                 src={currentUser.user_metadata.avatar_url}
@@ -530,187 +474,183 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                                 className="w-6 h-6 rounded-full shrink-0"
                               />
                             ) : (
-                              <UserIcon className="w-4 h-4 text-indigo-600 shrink-0" />
+                              <UserIcon aria-hidden="true" className="w-4 h-4 text-indigo-600 shrink-0" />
                             )}
-                            <span className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">
+                            <span className="truncate text-sm font-semibold text-slate-800 dark:text-slate-200">
                               {currentUser.user_metadata?.full_name || currentUser.email}
                             </span>
                           </div>
                           <button
+                            type="button"
                             onClick={() => {
                               logout();
                               setIsMobileMenuOpen(false);
                             }}
-                            className="flex min-h-11 min-w-11 items-center justify-center text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors shrink-0"
+                            className="flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-lg text-rose-600 transition-colors hover:bg-rose-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 dark:text-rose-300 dark:hover:bg-rose-950/40"
                             title={t.logout}
                             aria-label={t.logout}
                           >
-                            <LogOut className="w-4 h-4" />
+                            <LogOut className="w-4 h-4" aria-hidden="true" />
                           </button>
                         </div>
                       ) : (
                         <button
+                          type="button"
                           onClick={() => {
                             loginWithGoogle();
                             setIsMobileMenuOpen(false);
                           }}
-                          className="w-full py-2.5 px-3 rounded-xl bg-slate-50 dark:bg-zinc-800 hover:bg-slate-100 border border-slate-200 dark:border-zinc-700 text-xs font-bold text-slate-700 dark:text-slate-200 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                          className="flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm font-bold text-slate-700 transition-all hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-200"
                         >
-                          <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                            <path
-                              fill="#4285F4"
-                              d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
-                            />
-                            <path
-                              fill="#34A853"
-                              d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"
-                            />
-                            <path
-                              fill="#FBBC05"
-                              d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.02 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
-                            />
-                            <path
-                              fill="#EA4335"
-                              d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
-                            />
-                          </svg>
+                          <GoogleMark className="w-4 h-4 shrink-0" />
                           <span>{t.googleLogin}</span>
                         </button>
                       )}
                     </div>
 
-                    {/* Language Selection Grid (all 9 languages) */}
-                    <div>
-                      <div className="text-xs font-bold text-slate-400 mb-1.5">
-                        {t.language} ({currentLang.label})
+                    <div role="group" aria-labelledby={`${menuId}-quick`} className="space-y-3 border-t border-slate-100 pt-3 dark:border-zinc-800">
+                      <p id={`${menuId}-quick`} className={MENU_GROUP_HEADING}>{chromeCopy.menuQuickSettings}</p>
+                      <div role="group" aria-labelledby={`${menuId}-language`}>
+                        <p id={`${menuId}-language`} className="mb-2 text-sm font-bold text-slate-700 dark:text-slate-200">
+                          {t.language} ({currentLang.label})
+                        </p>
+                        <div className="grid grid-cols-3 gap-1.5">
+                          {SUPPORTED_LANGUAGES.map((lang: LanguageOption) => (
+                            <button
+                              key={lang.code}
+                              type="button"
+                              title={lang.label}
+                              aria-pressed={lang.code === language}
+                              onClick={() => {
+                                setLanguage(lang.code);
+                              }}
+                              className={`flex min-h-11 cursor-pointer items-center justify-center gap-1 rounded-xl px-2 text-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                                lang.code === language
+                                  ? 'bg-indigo-600 text-white font-bold shadow-xs'
+                                  : 'bg-slate-50 text-slate-700 hover:bg-slate-100 dark:bg-zinc-800 dark:text-slate-300 dark:hover:bg-zinc-700'
+                              }`}
+                            >
+                              <span>{lang.flag}</span>
+                              <span className="font-semibold">{lang.code.toUpperCase()}</span>
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                      <div className="grid grid-cols-3 gap-1.5">
-                        {SUPPORTED_LANGUAGES.map((lang: LanguageOption) => (
-                          <button
-                            key={lang.code}
-                            onClick={() => {
-                              setLanguage(lang.code);
-                            }}
-                            className={`py-1.5 px-2 rounded-xl text-xs flex items-center justify-center gap-1 transition-all ${
-                              lang.code === language
-                                ? 'bg-indigo-600 text-white font-bold shadow-xs'
-                                : 'bg-slate-50 dark:bg-zinc-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100'
-                            }`}
-                          >
-                            <span>{lang.flag}</span>
-                            <span className="text-xs font-semibold">{lang.code.toUpperCase()}</span>
-                          </button>
-                        ))}
+
+                      <ThemeSelector />
+
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsFontModalOpen(true);
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className={`${MENU_ROW} justify-center bg-slate-50 text-slate-700 hover:bg-slate-100 dark:bg-zinc-800 dark:text-slate-300 dark:hover:bg-zinc-700`}
+                        >
+                          <Type className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-300" aria-hidden="true" />
+                          <span>Aa {t.fontSizeLabel}</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={toggleSound}
+                          className={`${MENU_ROW} justify-center bg-slate-50 text-slate-700 hover:bg-slate-100 dark:bg-zinc-800 dark:text-slate-300 dark:hover:bg-zinc-700`}
+                        >
+                          {soundEnabled ? (
+                            <>
+                              <Volume2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-300" aria-hidden="true" />
+                              <span>{t.soundOn}</span>
+                            </>
+                          ) : (
+                            <>
+                              <VolumeX className="w-3.5 h-3.5 text-slate-600 dark:text-slate-300" aria-hidden="true" />
+                              <span>{t.soundOff}</span>
+                            </>
+                          )}
+                        </button>
                       </div>
                     </div>
 
-                    <ThemeSelector />
+                    <Link
+                      href={docsUrl}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`${MENU_ROW} justify-center bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950/40 dark:text-indigo-300 dark:hover:bg-indigo-950/70`}
+                    >
+                      <BookOpen className="h-4 w-4" aria-hidden="true" />
+                      {chromeCopy.userGuide}
+                    </Link>
 
-                    {!isCaregiver && mode === 'parent' && (
-                      <button
-                        type="button"
-                        onClick={openPricingModal}
-                        className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-amber-50 px-3 text-sm font-bold text-amber-900 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300"
-                      >
-                        <Crown className="h-4 w-4" aria-hidden="true" />
-                        {t.pricingModalTitle}
-                      </button>
-                    )}
+                    <MenuDisclosure label={chromeCopy.menuMore}>
+                      {!isCaregiver && mode === 'parent' && (
+                        <button
+                          type="button"
+                          onClick={openPricingModal}
+                          className={`${MENU_ROW} bg-amber-50 text-amber-900 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 dark:hover:bg-amber-950/70`}
+                        >
+                          <Crown className="h-4 w-4" aria-hidden="true" />
+                          {t.pricingModalTitle}
+                        </button>
+                      )}
 
-                    <Link href={docsUrl} onClick={() => setIsMobileMenuOpen(false)} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-indigo-50 px-3 text-sm font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300"><BookOpen className="h-4 w-4" />{chromeCopy.userGuide}</Link>
-
-                    {/* Quick Tools: Font Settings & Sound */}
-                    <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-100 dark:border-zinc-800">
-                      <button
-                        onClick={() => {
-                          setIsFontModalOpen(true);
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className="p-2 rounded-xl bg-slate-50 dark:bg-zinc-800 hover:bg-slate-100 text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1.5"
-                      >
-                        <Type className="w-3.5 h-3.5 text-indigo-600" />
-                        <span>Aa {t.fontSizeLabel}</span>
-                      </button>
-
-                      <button
-                        onClick={toggleSound}
-                        className="p-2 rounded-xl bg-slate-50 dark:bg-zinc-800 hover:bg-slate-100 text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center justify-center gap-1.5"
-                      >
-                        {soundEnabled ? (
-                          <>
-                            <Volume2 className="w-3.5 h-3.5 text-emerald-600" />
-                            <span>{t.soundOn}</span>
-                          </>
-                        ) : (
-                          <>
-                            <VolumeX className="w-3.5 h-3.5 text-slate-400" />
-                            <span>{t.soundOff}</span>
-                          </>
-                        )}
-                      </button>
-                    </div>
-
-                    {/* 16 Portraits & Onboarding in Mobile Menu */}
-                    <div className="space-y-1.5 pt-1 border-t border-slate-100 dark:border-zinc-800">
-                      {/* Kid enter code button in mobile menu if not logged in */}
                       {!hasDashboardAccess && (
                         <button
+                          type="button"
                           onClick={() => {
                             openConnectModal();
                             setIsMobileMenuOpen(false);
                           }}
-                          className="w-full py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 text-xs font-bold text-indigo-700 dark:text-indigo-300 flex items-center justify-center gap-2 transition-colors"
+                          className={`${MENU_ROW} bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950/60 dark:text-indigo-300 dark:hover:bg-indigo-950/80`}
                         >
-                          <Smartphone className="w-3.5 h-3.5 text-indigo-600" />
+                          <Smartphone className="w-4 h-4" aria-hidden="true" />
                           <span>{copy.childConnect}</span>
                         </button>
                       )}
 
                       <button
+                        type="button"
                         onClick={() => {
                           setIsPortraitModalOpen(true);
                           setIsMobileMenuOpen(false);
                         }}
-                        className="w-full py-2 px-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-xs font-bold text-amber-800 dark:text-amber-300 flex items-center justify-center gap-2 transition-colors"
+                        className={`${MENU_ROW} bg-amber-50 text-amber-900 hover:bg-amber-100 dark:bg-amber-950/40 dark:text-amber-300 dark:hover:bg-amber-950/70`}
                       >
-                        <BookOpen className="w-3.5 h-3.5 text-amber-600" />
+                        <BookOpen className="w-4 h-4" aria-hidden="true" />
                         <span>{copy.portraitGuide}</span>
                       </button>
 
                       {!isCaregiver && isAuthenticated && (
                         <button
+                          type="button"
                           onClick={() => {
                             openOnboarding();
                             setIsMobileMenuOpen(false);
                           }}
-                          className="w-full py-2 px-3 rounded-xl bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 text-xs font-bold text-purple-700 dark:text-purple-300 flex items-center justify-center gap-2 transition-colors"
+                          className={`${MENU_ROW} bg-purple-50 text-purple-700 hover:bg-purple-100 dark:bg-purple-950/40 dark:text-purple-300 dark:hover:bg-purple-950/70`}
                         >
-                          <UserPlus className="w-3.5 h-3.5 text-purple-600" />
+                          <UserPlus className="w-4 h-4" aria-hidden="true" />
                           <span>{parentProfile ? copy.parentProfile : copy.familySetup}</span>
                         </button>
                       )}
-                    </div>
 
-                    {mode === 'parent' && (
-                      <Link
-                        href={marketingHomeUrl}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="w-full py-2 px-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 text-xs font-bold text-indigo-700 dark:text-indigo-300 flex items-center justify-center gap-1.5"
-                      >
-                        <House className="w-3.5 h-3.5 text-indigo-600" />
-                        <span>{homeLabel}</span>
-                      </Link>
-                    )}
+                      {mode === 'parent' && (
+                        <Link
+                          href={marketingHomeUrl}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={`${MENU_ROW} bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950/50 dark:text-indigo-300 dark:hover:bg-indigo-950/80`}
+                        >
+                          <House className="w-4 h-4" aria-hidden="true" />
+                          <span>{homeLabel}</span>
+                        </Link>
+                      )}
 
-                    {/* Storage Mode Notice (Only when logged in) */}
-                    {hasDashboardAccess && (
-                      <div className="pt-2 border-t border-slate-100 dark:border-zinc-800 flex items-center justify-between text-xs text-slate-500">
-                        <span className="flex items-center gap-1">
-                          <Database className="w-3 h-3 text-indigo-500" />
+                      {hasDashboardAccess && (
+                        <p className="flex min-h-11 items-center gap-2 px-3 text-sm text-slate-600 dark:text-slate-300">
+                          <Database className="w-4 h-4 shrink-0 text-indigo-600 dark:text-indigo-300" aria-hidden="true" />
                           <span>{cloudSyncActive ? t.storageCloudConnected : t.cloudStorageMode}</span>
-                        </span>
-                      </div>
-                    )}
+                        </p>
+                      )}
+                    </MenuDisclosure>
                   </div>
                 </>,
                 document.body
@@ -744,5 +684,49 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
         onClose={closeConnectModal}
       />
     </>
+  );
+}
+
+function GoogleMark({ className }: { className: string }) {
+  return (
+    <svg aria-hidden="true" className={className} viewBox="0 0 24 24">
+      <path
+        fill="#4285F4"
+        d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.02 0 12s.45 3.82 1.25 5.42l4.03-3.15z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"
+      />
+    </svg>
+  );
+}
+
+function MenuDisclosure({ label, children }: { label: string; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const contentId = useId();
+  return (
+    <div className="border-t border-slate-100 pt-2 dark:border-zinc-800">
+      <button
+        type="button"
+        data-testid="more-menu-more"
+        aria-expanded={open}
+        aria-controls={open ? contentId : undefined}
+        onClick={() => setOpen((current) => !current)}
+        className="flex min-h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-xl px-3 text-left text-sm font-bold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-200 dark:hover:bg-zinc-800"
+      >
+        <span>{label}</span>
+        <ChevronDown aria-hidden="true" className={`h-4 w-4 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && <div id={contentId} className="mt-1 space-y-1.5">{children}</div>}
+    </div>
   );
 }

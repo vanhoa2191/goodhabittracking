@@ -8,7 +8,7 @@ const title = 'Đọc sách';
 describe('chrome copy', () => {
   it.each(languages)('has every label in %s', (language) => {
     const copy = getChromeCopy(language);
-    for (const key of ['home', 'docs', 'userGuide', 'avatarAlt', 'habitInstructionsLabel', 'habitInstructionsPlaceholder', 'viewDetails'] as const) {
+    for (const key of ['home', 'docs', 'userGuide', 'avatarAlt', 'menuQuickSettings', 'menuAccount', 'menuMore', 'habitInstructionsLabel', 'habitInstructionsPlaceholder', 'viewDetails'] as const) {
       expect(copy[key].trim().length, key).toBeGreaterThan(0);
     }
   });
@@ -25,6 +25,8 @@ describe('chrome copy', () => {
     for (const language of languages.filter((code) => code !== 'en')) {
       const copy = getChromeCopy(language);
       expect(copy.userGuide, language).not.toBe(english.userGuide);
+      expect(copy.menuQuickSettings, language).not.toBe(english.menuQuickSettings);
+      expect(copy.menuMore, language).not.toBe(english.menuMore);
       expect(copy.viewDetails, language).not.toBe(english.viewDetails);
       expect(copy.taskMark(title), language).not.toBe(english.taskMark(title));
     }
@@ -35,6 +37,8 @@ describe('chrome copy', () => {
     expect(copy.home).toBe('Trang chủ');
     expect(copy.docs).toBe('Tài liệu');
     expect(copy.viewDetails).toBe('Xem chi tiết');
+    expect(copy.menuQuickSettings).toBe('Cài đặt nhanh');
+    expect(copy.menuMore).toBe('Thêm');
     expect(copy.taskMark('A')).toBe('Đánh dấu nhiệm vụ “A” là hoàn thành');
   });
 });

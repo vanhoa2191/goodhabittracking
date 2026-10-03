@@ -27,6 +27,7 @@ test('pricing dialog stays in the mobile viewport after deep scrolling', async (
   await setupOrUnlockParent(page);
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await page.getByTestId('more-menu').click();
+  await page.getByTestId('more-menu-more').click();
   const opener = page.getByRole('button', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
 
   // When the pricing dialog opens.
