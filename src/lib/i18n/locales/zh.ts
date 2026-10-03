@@ -228,7 +228,6 @@ export const zh = {
   parentSettings: '家长控制台设置',
   parentShort: '家长',
   participateInPublicLeaderboard: '参与全球公共排行榜',
-  paymentHoldTimer: '订单有效剩余时间：',
   paymentSuccessDesc: '感谢您选择 KidHabit Hero，全部 Pro 权益已即刻为您开通！',
   paymentSuccessTitle: '🎉 恭喜升级成功！',
   pendingApproval: '等待审批中',

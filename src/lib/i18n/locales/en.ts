@@ -228,7 +228,6 @@ export const en = {
   parentSettings: 'Parent Settings',
   parentShort: 'Parents',
   participateInPublicLeaderboard: 'Participate in Global Public Leaderboard',
-  paymentHoldTimer: 'Payment expires in:',
   paymentSuccessDesc: 'Thank you for choosing KidHabit Hero. All Pro features are now unlocked!',
   paymentSuccessTitle: '🎉 Upgrade Successful!',
   pendingApproval: 'Pending Approval',

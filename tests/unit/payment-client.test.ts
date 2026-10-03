@@ -20,6 +20,53 @@ const payment = {
 } as const;
 
 describe('payment client', () => {
+  it.each([
+    [401, 'Authentication required.', 'auth_required', 'auth_required'],
+    [400, 'Invalid payment request.', 'invalid_request', 'invalid_request'],
+    [400, 'Invalid status request.', 'invalid_request', 'invalid_request'],
+    [403, 'Parent PIN required.', 'invalid_request', 'invalid_request'],
+    [503, 'Payment service is temporarily unavailable.', 'service_unavailable', 'status_failed'],
+    [503, 'Could not read payment status.', 'status_failed', 'status_failed'],
+    [404, 'Payment order not found.', 'order_not_found', 'order_not_found'],
+    [500, 'Unknown error from provider.', 'create_failed', 'status_failed'],
+    [200, 'Authentication required.', 'auth_required', 'auth_required'],
+    [200, 'Invalid payment request.', 'invalid_request', 'invalid_request'],
+    [200, 'Invalid status request.', 'invalid_request', 'invalid_request'],
+    [200, 'Payment service is temporarily unavailable.', 'service_unavailable', 'status_failed'],
+    [200, 'Could not read payment status.', 'status_failed', 'status_failed'],
+    [200, 'Payment order not found.', 'order_not_found', 'order_not_found'],
+  ])('maps HTTP %s and %s without returning server copy', async (status, error, createCode, statusCode) => {
+    const requester: PaymentRequester = async () => new Response(JSON.stringify({ success: false, error }), { status });
+    await expect(createPaymentOrder('monthly', requester)).resolves.toEqual({ success: false, error: createCode });
+    await expect(readPaymentStatus(123456, requester)).resolves.toEqual({ success: false, error: statusCode });
+  });
+
+  it.each([
+    [401, 'auth_required', 'auth_required'],
+    [400, 'invalid_request', 'invalid_request'],
+    [403, 'invalid_request', 'invalid_request'],
+    [404, 'order_not_found', 'order_not_found'],
+    [503, 'service_unavailable', 'status_failed'],
+    [502, 'create_failed', 'status_failed'],
+    [200, 'create_failed', 'status_failed'],
+  ])('maps HTTP %s even when the body is not JSON', async (status, createCode, statusCode) => {
+    const requester: PaymentRequester = async () => new Response('<html>unavailable</html>', { status });
+    await expect(createPaymentOrder('monthly', requester)).resolves.toEqual({ success: false, error: createCode });
+    await expect(readPaymentStatus(123456, requester)).resolves.toEqual({ success: false, error: statusCode });
+  });
+
+  it('rejects invalid inputs without calling the server', async () => {
+    const requester: PaymentRequester = async () => { throw new Error('Must not request'); };
+    await expect(createPaymentOrder('free', requester)).resolves.toEqual({ success: false, error: 'invalid_plan' });
+    await expect(readPaymentStatus(-1, requester)).resolves.toEqual({ success: false, error: 'invalid_request' });
+  });
+
+  it.each([new TypeError('offline'), new Error('aborted')])('returns a stable network error for %s', async (error) => {
+    const requester: PaymentRequester = async () => { throw error; };
+    await expect(createPaymentOrder('monthly', requester)).resolves.toEqual({ success: false, error: 'network' });
+    await expect(readPaymentStatus(123456, requester)).resolves.toEqual({ success: false, error: 'network' });
+  });
+
   it('creates a payment from a validated server response', async () => {
     const requester: PaymentRequester = async () => new Response(JSON.stringify({
       success: true,
@@ -40,11 +87,11 @@ describe('payment client', () => {
 
     await expect(createPaymentOrder('monthly', requester)).resolves.toEqual({
       success: false,
-      error: 'Failed to create payment.',
+      error: 'create_failed',
     });
   });
 
-  it('preserves a server-declared payment creation error', async () => {
+  it('maps a server-declared payment creation error', async () => {
     const requester: PaymentRequester = async () => new Response(JSON.stringify({
       success: false,
       error: 'Authentication required.',
@@ -52,7 +99,7 @@ describe('payment client', () => {
 
     await expect(createPaymentOrder('monthly', requester)).resolves.toEqual({
       success: false,
-      error: 'Authentication required.',
+      error: 'auth_required',
     });
   });
 
@@ -78,7 +125,7 @@ describe('payment client', () => {
 
     await expect(readPaymentStatus(123456, requester)).resolves.toEqual({
       success: false,
-      error: 'Could not read payment status.',
+      error: 'status_failed',
     });
   });
 });

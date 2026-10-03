@@ -42,20 +42,35 @@ export type PaymentRequester = (
   init?: RequestInit,
 ) => Promise<Response>;
 
+export type PaymentErrorCode = 'invalid_plan' | 'create_failed' | 'network' | 'auth_required'
+  | 'invalid_request' | 'service_unavailable' | 'status_failed' | 'order_not_found';
+
+function paymentError(status: number, input: unknown, step: 'create' | 'status'): PaymentErrorCode {
+  const message = typeof input === 'object' && input !== null && 'error' in input ? input.error : null;
+  if (status === 401 || message === 'Authentication required.') return 'auth_required';
+  if (status === 400 || status === 403 || message === 'Invalid payment request.' || message === 'Invalid status request.') return 'invalid_request';
+  if (status === 404 || message === 'Payment order not found.') return 'order_not_found';
+  if (message === 'Could not read payment status.') return 'status_failed';
+  if (status === 503 || message === 'Payment service is temporarily unavailable.') {
+    return step === 'create' ? 'service_unavailable' : 'status_failed';
+  }
+  return step === 'create' ? 'create_failed' : 'status_failed';
+}
+
 export type CreatePaymentResult =
   | { readonly success: true; readonly payment: PaymentResult }
-  | { readonly success: false; readonly error: string };
+  | { readonly success: false; readonly error: PaymentErrorCode };
 
 export type PaymentStatusResult =
   | { readonly success: true; readonly paid: boolean; readonly status: string }
-  | { readonly success: false; readonly error: string };
+  | { readonly success: false; readonly error: PaymentErrorCode };
 
 export async function createPaymentOrder(
   planId: SubscriptionPlan,
   requester: PaymentRequester = globalThis.fetch,
 ): Promise<CreatePaymentResult> {
   const request = createPaymentRequestSchema.safeParse({ planId });
-  if (!request.success) return { success: false, error: 'Invalid payment plan.' };
+  if (!request.success) return { success: false, error: 'invalid_plan' };
 
   try {
     const response = await requester('/api/payment/create', {
@@ -63,24 +78,17 @@ export async function createPaymentOrder(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request.data),
     });
-    const input: unknown = await response.json();
+    const input: unknown = await response.json().catch(() => null);
     const parsed = createPaymentResponseSchema.safeParse(input);
-    if (!parsed.success) return { success: false, error: 'Failed to create payment.' };
-    if (!response.ok || !parsed.data.success) {
+    if (!response.ok || !parsed.success || !parsed.data.success) {
       return {
         success: false,
-        error: parsed.data.success ? 'Failed to create payment.' : parsed.data.error,
+        error: paymentError(response.status, input, 'create'),
       };
     }
     return { success: true, payment: parsed.data.payment };
-  } catch (error: unknown) {
-    if (error instanceof TypeError) {
-      return { success: false, error: 'Error connecting to payment server.' };
-    }
-    if (error instanceof SyntaxError) {
-      return { success: false, error: 'Failed to create payment.' };
-    }
-    throw error;
+  } catch {
+    return { success: false, error: 'network' };
   }
 }
 
@@ -89,7 +97,7 @@ export async function readPaymentStatus(
   requester: PaymentRequester = globalThis.fetch,
 ): Promise<PaymentStatusResult> {
   const request = paymentStatusRequestSchema.safeParse({ orderCode });
-  if (!request.success) return { success: false, error: 'Invalid status request.' };
+  if (!request.success) return { success: false, error: 'invalid_request' };
 
   try {
     const response = await requester('/api/payment/status', {
@@ -97,20 +105,16 @@ export async function readPaymentStatus(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(request.data),
     });
-    const input: unknown = await response.json();
+    const input: unknown = await response.json().catch(() => null);
     const parsed = paymentStatusResponseSchema.safeParse(input);
-    if (!parsed.success) return { success: false, error: 'Could not read payment status.' };
-    if (!response.ok || !parsed.data.success) {
+    if (!response.ok || !parsed.success || !parsed.data.success) {
       return {
         success: false,
-        error: parsed.data.success ? 'Could not read payment status.' : parsed.data.error,
+        error: paymentError(response.status, input, 'status'),
       };
     }
     return parsed.data;
-  } catch (error: unknown) {
-    if (error instanceof TypeError || error instanceof SyntaxError) {
-      return { success: false, error: 'Could not read payment status.' };
-    }
-    throw error;
+  } catch {
+    return { success: false, error: 'network' };
   }
 }

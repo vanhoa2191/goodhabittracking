@@ -50,10 +50,10 @@ Liên kết gói không hợp lệ (cũ hoặc thiếu thông tin) sẽ hiện "
 
 Thanh toán qua **PayOS (VietQR)**:
 
-1. Chọn gói → đăng nhập Google nếu chưa → "Tiếp tục thanh toán". Nếu bạn nhập [mã giới thiệu](08-gioi-thieu-ban-be.md) thì ngay trong cửa sổ này có ô nhập mã.
-2. Màn hình thanh toán hiện **mã VietQR** và thông tin chuyển khoản: tên người thụ hưởng, ngân hàng, số tài khoản, **số tiền chính xác** và **nội dung chuyển khoản (bắt buộc)**. Có đồng hồ giữ đơn, nút sao chép từng mục, nút **Tải mã QR về máy** (để mở app ngân hàng và chọn quét ảnh trong thư viện), và đường dẫn mở trang thanh toán bảo mật của PayOS.
+1. Chọn gói → đăng nhập Google nếu chưa → "Tiếp tục thanh toán". Nhập và áp dụng [mã giới thiệu](08-gioi-thieu-ban-be.md) nếu có, rồi bấm **"Tiếp tục tạo đơn thanh toán"**. Trong lúc gửi mã, nút tạo đơn bị khóa. Mã chỉ được nhập trước khi tạo QR vì số tiền được máy chủ tính khi tạo đơn; cửa sổ này không tạo lại đơn sau khi áp dụng mã.
+2. Màn hình thanh toán hiện **mã VietQR** và thông tin chuyển khoản: tên người thụ hưởng, ngân hàng, số tài khoản, **số tiền chính xác** và **nội dung chuyển khoản (bắt buộc)**. Có nút sao chép từng mục, nút **Tải mã QR về máy** (để mở app ngân hàng và chọn quét ảnh trong thư viện), và đường dẫn mở trang thanh toán bảo mật của PayOS. Nếu sao chép thất bại, giữ và chọn nội dung để sao chép thủ công. Không có đồng hồ đếm ngược vì máy chủ không cưỡng chế hạn thanh toán 15 phút.
 3. Quét bằng app ngân hàng hoặc MoMo. **Giữ đúng số tiền và nội dung chuyển khoản.**
-4. Bấm **"Tôi đã chuyển khoản"** nếu cần; ứng dụng tự kiểm tra trạng thái. Khi xong hiện "Nâng cấp thành công" và gói được mở ngay.
+4. Bấm **"Tôi đã chuyển khoản"** nếu cần; ứng dụng tự kiểm tra trạng thái. Lỗi kiểm tra được thông báo bằng ngôn ngữ đang chọn và ứng dụng vẫn tiếp tục kiểm tra tự động. Khi xong hiện "Nâng cấp thành công" và gói được mở ngay.
 
 Nếu thanh toán đang chờ, **đừng thanh toán lại ngay**. Giá do máy chủ quyết định, không thể bị sửa từ trình duyệt. Chỉ phụ huynh trong gia đình mới thanh toán được, và tạo thanh toán cần [PIN](05-gia-dinh-va-cai-dat.md#pin) nếu đã đặt. Quay lại ứng dụng từ trang PayOS sẽ thấy thông báo kết quả thanh toán.
 

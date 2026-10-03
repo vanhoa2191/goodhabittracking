@@ -10,7 +10,7 @@ export const HELP_TOPIC_IDS = [
   'children.profiles', 'children.age', 'children.leaderboard', 'children.ageTheme', 'children.pairing', 'children.regenerate', 'children.adjustPoints', 'children.ageBundle',
   'settings.devices', 'settings.pwa', 'settings.caregivers', 'settings.pause', 'settings.account', 'settings.coupon', 'settings.referralCode', 'settings.affiliate',
   'settings.familyData', 'settings.leaderboardSharing', 'settings.analytics', 'settings.reminders', 'settings.theme', 'settings.pin',
-  'payment.plans', 'payment.trial', 'payment.memo', 'payment.timer', 'payment.activation',
+  'payment.plans', 'payment.trial', 'payment.memo', 'payment.activation',
 ] as const;
 
 export type HelpTopicId = (typeof HELP_TOPIC_IDS)[number];
