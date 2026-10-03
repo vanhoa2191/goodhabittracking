@@ -2,19 +2,49 @@ import { NextResponse } from 'next/server';
 import { inspectPayOSConfig } from '@/lib/billing/payos-config';
 import { remember } from '@/lib/health-cache';
 import { hasBearerSecret } from '@/lib/security/bearer-secret';
-import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { EXPECTED_SCHEMA_VERSION } from '@/lib/schema-version';
 
 export const runtime = 'nodejs';
 
-async function probeSchemaVersion() {
+interface SchemaProbeResult {
+  readonly ready: boolean;
+  /** Why the probe failed, reported only to callers holding the operations secret. */
+  readonly failure: string | null;
+}
+
+const schemaReady: SchemaProbeResult = { ready: true, failure: null };
+const schemaFailed = (failure: string): SchemaProbeResult => ({ ready: false, failure });
+
+/**
+ * Asks the database which migration it last applied. A plain request, like `probeDatabase`, so the probe
+ * behaves the same in the Workers runtime as in Node.
+ */
+async function probeSchemaVersion(url: string, serviceRoleKey: string): Promise<SchemaProbeResult> {
   try {
-    const { data, error } = await createAdminSupabaseClient().rpc('schema_version')
-      .abortSignal(AbortSignal.timeout(3_000));
-    return !error && typeof data === 'string' && /^\d+$/.test(data)
-      && BigInt(data) >= BigInt(EXPECTED_SCHEMA_VERSION);
-  } catch {
-    return false;
+    const response = await fetch(`${url.replace(/\/$/, '')}/rest/v1/rpc/schema_version`, {
+      method: 'POST',
+      headers: {
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: '{}',
+      cache: 'no-store',
+      signal: AbortSignal.timeout(3_000),
+    });
+    if (!response.ok) {
+      return schemaFailed(`HTTP ${response.status}`);
+    }
+    const version: unknown = await response.json();
+    if (typeof version !== 'string' || !/^\d+$/.test(version)) {
+      return schemaFailed('unreadable version');
+    }
+    if (BigInt(version) < BigInt(EXPECTED_SCHEMA_VERSION)) {
+      return schemaFailed(`database at ${version}, build expects ${EXPECTED_SCHEMA_VERSION}`);
+    }
+    return schemaReady;
+  } catch (error) {
+    return schemaFailed(error instanceof Error ? error.name : 'request failed');
   }
 }
 
@@ -52,15 +82,19 @@ export async function GET(request: Request) {
   const billingReady = inspectPayOSConfig().ready;
   const pairingSecret = process.env.PAIRING_RATE_LIMIT_SECRET?.trim() ?? '';
   const pairingReady = pairingSecret.length >= 32;
-  const schemaVersionReady = databaseConnectionReady
-    ? await remember(`${databaseUrl}:schema-version:${EXPECTED_SCHEMA_VERSION}`, probeSchemaVersion)
-    : false;
+  const schemaProbe = databaseConnectionReady
+    ? await remember(`${databaseUrl}:schema-version:${EXPECTED_SCHEMA_VERSION}`, () => probeSchemaVersion(databaseUrl, serviceRoleKey))
+    : null;
+  const schemaVersionReady = schemaProbe?.ready ?? false;
   const ready = databaseConnectionReady && billingReady && pairingReady && schemaVersionReady;
+
+  const operator = hasBearerSecret(request, process.env.CRON_SECRET);
 
   return NextResponse.json(
     {
       status: ready ? 'ready' : databaseConfigReady ? 'degraded' : 'unavailable',
-      ...(hasBearerSecret(request, process.env.CRON_SECRET) && {
+      ...(operator && !schemaVersionReady && schemaProbe?.failure && { schemaVersionFailure: schemaProbe.failure }),
+      ...(operator && {
         checks: {
           app: true,
           databaseConfig: databaseConfigReady,

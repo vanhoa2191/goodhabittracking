@@ -3,17 +3,17 @@ import { GET } from '@/app/api/health/route';
 import { resetHealthCacheForTests } from '@/lib/health-cache';
 import { EXPECTED_SCHEMA_VERSION } from '@/lib/schema-version';
 
-const { rpc, abortSignal } = vi.hoisted(() => ({ rpc: vi.fn(), abortSignal: vi.fn() }));
-vi.mock('@/lib/supabase/admin', () => ({
-  createAdminSupabaseClient: () => ({
-    rpc: (name: string) => ({
-      abortSignal: (signal: AbortSignal) => {
-        abortSignal(signal);
-        return rpc(name);
-      },
-    }),
-  }),
-}));
+/** The database answers: the REST root for the connection probe, `rpc/schema_version` for the schema probe. */
+let schemaAnswer: () => Promise<Response>;
+const rpcCalls = () => vi.mocked(fetch).mock.calls.filter(([url]) => String(url).endsWith('/rpc/schema_version'));
+const rootCalls = () => vi.mocked(fetch).mock.calls.filter(([url]) => String(url).endsWith('/rest/v1/'));
+const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status });
+
+function stubDatabase(root: () => Promise<Response> = async () => new Response('{}', { status: 200 })) {
+  vi.stubGlobal('fetch', vi.fn((url: string | URL) => (
+    String(url).endsWith('/rpc/schema_version') ? schemaAnswer() : root()
+  )));
+}
 
 const readyEnvironment = {
   NEXT_PUBLIC_SUPABASE_URL: 'https://project.supabase.co',
@@ -34,8 +34,8 @@ const anonymous = () => new Request('https://app.kidhabithero.com/api/health');
 describe('GET /api/health', () => {
   beforeEach(() => {
     resetHealthCacheForTests();
-    rpc.mockReset().mockResolvedValue({ data: EXPECTED_SCHEMA_VERSION, error: null });
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}', { status: 200 })));
+    schemaAnswer = async () => json(EXPECTED_SCHEMA_VERSION);
+    stubDatabase();
   });
 
   afterEach(() => {
@@ -61,33 +61,82 @@ describe('GET /api/health', () => {
     });
   });
 
-  it.each([null, '202610020004', '9', 'invalid'])('fails readiness for missing or stale schema %s', async (data) => {
+  it('asks the database for its schema version with the service role, bounded in time', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
-    rpc.mockResolvedValue({ data, error: null });
+    await GET(operations());
+    const [url, init] = rpcCalls()[0];
+    expect(String(url)).toBe('https://project.supabase.co/rest/v1/rpc/schema_version');
+    expect(init).toMatchObject({
+      method: 'POST',
+      headers: { apikey: 'service-role-key', Authorization: 'Bearer service-role-key' },
+      signal: expect.any(AbortSignal),
+    });
+  });
+
+  it.each([
+    ['an older version', () => json('202610020004'), 'database at 202610020004'],
+    ['a number', () => json(9), 'unreadable version'],
+    ['a non-numeric text', () => json('invalid'), 'unreadable version'],
+    ['null', () => json(null), 'unreadable version'],
+    ['a missing function', () => json({ code: 'PGRST202' }, 404), 'HTTP 404'],
+    ['a refused request', () => json({ code: '42501' }, 401), 'HTTP 401'],
+  ])('fails readiness for %s and tells the operator why', async (_label, answer, reason) => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    schemaAnswer = async () => answer();
     const response = await GET(operations());
     expect(response.status).toBe(503);
-    await expect(response.json()).resolves.toMatchObject({ status: 'degraded', checks: { schemaVersion: false } });
-    expect(rpc).toHaveBeenCalledWith('schema_version');
+    const body = await response.json();
+    expect(body).toMatchObject({ status: 'degraded', checks: { schemaVersion: false } });
+    expect(body.schemaVersionFailure).toContain(reason);
   });
 
   it('accepts a newer schema version', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
-    rpc.mockResolvedValue({ data: '202610040001', error: null });
-    expect((await GET(operations())).status).toBe(200);
+    schemaAnswer = async () => json('202610040001');
+    const response = await GET(operations());
+    expect(response.status).toBe(200);
+    expect(await response.json()).not.toHaveProperty('schemaVersionFailure');
   });
 
-  it('bounds schema probes and fails readiness on a rejected request', async () => {
+  it('fails readiness when the schema request is rejected', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
-    rpc.mockRejectedValue(new Error('request timed out'));
+    schemaAnswer = async () => { throw new DOMException('timed out', 'TimeoutError'); };
     const response = await GET(operations());
     expect(response.status).toBe(503);
-    expect(abortSignal).toHaveBeenCalledWith(expect.any(AbortSignal));
-    await expect(response.json()).resolves.toMatchObject({ checks: { schemaVersion: false } });
+    await expect(response.json()).resolves.toMatchObject({ checks: { schemaVersion: false }, schemaVersionFailure: 'TimeoutError' });
+  });
+
+  it('reports each concurrent request the reason of the schema probe that produced its result', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    // Concurrent cold requests each run their own probe (no dedupe), so each response carries its own reason.
+    let call = 0;
+    schemaAnswer = async () => (++call === 1 ? json({ code: 'PGRST202' }, 404) : json({ code: '42501' }, 401));
+    const [first, second] = await Promise.all([GET(operations()), GET(operations())]);
+    const reasons = [(await first.json()).schemaVersionFailure, (await second.json()).schemaVersionFailure];
+    expect(rpcCalls()).toHaveLength(2);
+    expect([...reasons].sort()).toEqual(['HTTP 401', 'HTTP 404']);
+  });
+
+  it('shows no schema failure once the database connection fails and the schema probe is skipped', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    schemaAnswer = async () => json({ code: 'PGRST202' }, 404);
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(new Date('2026-10-01T00:00:00Z'));
+      expect(await (await GET(operations())).json()).toMatchObject({ schemaVersionFailure: 'HTTP 404' });
+      stubDatabase(async () => new Response('{}', { status: 503 }));
+      vi.setSystemTime(new Date('2026-10-01T00:00:11Z'));
+      const body = await (await GET(operations())).json();
+      expect(body).toMatchObject({ checks: { databaseConnection: false, schemaVersion: false } });
+      expect(body).not.toHaveProperty('schemaVersionFailure');
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('fails readiness when the schema RPC is unavailable without exposing checks anonymously', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
-    rpc.mockResolvedValue({ data: null, error: { code: 'PGRST202' } });
+    schemaAnswer = async () => json({ code: 'PGRST202' }, 404);
     const response = await GET(anonymous());
     expect(response.status).toBe(503);
     expect(await response.json()).toEqual({ status: 'degraded', version: expect.any(String) });
@@ -137,7 +186,7 @@ describe('GET /api/health', () => {
 
   it('does not report ready when Supabase rejects configured credentials', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
-    vi.mocked(fetch).mockResolvedValue(new Response('{"message":"Invalid API key"}', { status: 401 }));
+    stubDatabase(async () => new Response('{"message":"Invalid API key"}', { status: 401 }));
 
     const response = await GET(operations());
 
@@ -153,21 +202,16 @@ describe('GET /api/health', () => {
 
   it('reuses a recent database answer instead of calling the database on every request', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
-    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
-    vi.stubGlobal('fetch', fetchMock);
-
     await GET(operations());
     await GET(operations());
     await GET(operations());
 
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(rpc).toHaveBeenCalledTimes(1);
+    expect(rootCalls()).toHaveLength(1);
+    expect(rpcCalls()).toHaveLength(1);
   });
 
   it('asks the database again once the answer is stale', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
-    const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
-    vi.stubGlobal('fetch', fetchMock);
     vi.useFakeTimers();
     try {
       vi.setSystemTime(new Date('2026-10-01T00:00:00Z'));
@@ -177,7 +221,7 @@ describe('GET /api/health', () => {
     } finally {
       vi.useRealTimers();
     }
-    expect(fetchMock).toHaveBeenCalledTimes(2);
-    expect(rpc).toHaveBeenCalledTimes(2);
+    expect(rootCalls()).toHaveLength(2);
+    expect(rpcCalls()).toHaveLength(2);
   });
 });
