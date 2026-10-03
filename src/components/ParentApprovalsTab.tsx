@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { Check, CheckCircle2, Gift, Inbox } from 'lucide-react';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useAppStore } from '@/lib/store';
@@ -14,11 +15,13 @@ import { ParentTodayCard } from './ParentTodayCard';
 import { WeeklyReviewCard } from './WeeklyReviewCard';
 import { getParentTodayCopy } from '@/lib/i18n/parent-today-copy';
 import { HelpTip } from '@/components/help/HelpTip';
-import { ParentActionStrip } from './ParentActionStrip';
-import { BulkTaskReview } from './BulkTaskReview';
 import { useParentReminderConsent } from '@/lib/parent-reminder-context';
 import { appBadgeCount } from '@/lib/parent-actions';
 import { useAppBadge } from '@/lib/use-app-badge';
+
+// Loaded on demand with the flag, so the first download does not grow for families that do not use them.
+const ParentActionStrip = dynamic(() => import('./ParentActionStrip').then((module) => module.ParentActionStrip), { ssr: false });
+const BulkTaskReview = dynamic(() => import('./BulkTaskReview').then((module) => module.BulkTaskReview), { ssr: false });
 
 export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: () => void } = {}) {
   const {
