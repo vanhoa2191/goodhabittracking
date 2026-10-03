@@ -25,7 +25,8 @@ test('a demo parent creates and confirms a private PIN before entering parent mo
 test('camera fallback returns focus to the manually entered child code', async ({ page }) => {
   await page.context().clearPermissions();
   await page.goto('/');
-  await page.getByRole('button', { name: 'Trẻ quét QR hoặc nhập mã' }).click();
+  await page.getByTestId('gate-child-block-toggle').click();
+  await page.getByRole('button', { name: 'Nhập mã hoặc quét QR' }).click();
 
   await page.getByRole('button', { name: 'Quét QR', exact: true }).click();
   const scanner = page.getByRole('region', { name: 'Máy quét mã QR kết nối' });

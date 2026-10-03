@@ -66,16 +66,21 @@ test('a signed-out visitor receives only the compact app gateway', async ({ page
 
   await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'gateway');
   await expect(page.getByRole('heading', { name: 'Bạn muốn vào KidHabit theo cách nào?' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Phụ huynh đăng nhập Google' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Trẻ quét QR hoặc nhập mã' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Tiếp tục với tư cách phụ huynh' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Khám phá bản demo' })).toBeVisible();
+  // The child entry is folded away until asked for; the email-code option does not exist while its flag is off.
+  await expect(page.getByTestId('gate-child-block')).not.toHaveJSProperty('open', true);
+  await expect(page.getByRole('button', { name: 'Nhập mã hoặc quét QR' })).toBeHidden();
+  await expect(page.getByTestId('gate-other-ways')).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Xem trang giới thiệu' })).toHaveAttribute('href', `${marketingOrigin}/`);
   await expect(page.getByText('Chọn gói phù hợp với gia đình')).toHaveCount(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
 
-test('the child entry exposes camera scanning and manual code in one action', async ({ page }) => {
+test('the child entry opens from its folded block and exposes camera scanning and manual code', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Trẻ quét QR hoặc nhập mã' }).click();
+  await page.getByTestId('gate-child-block-toggle').click();
+  await page.getByRole('button', { name: 'Nhập mã hoặc quét QR' }).click();
 
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Quét QR', exact: true })).toBeVisible();
