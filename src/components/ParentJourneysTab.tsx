@@ -6,6 +6,7 @@ import { useAppStore } from '@/lib/store';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { useTranslation } from '@/lib/i18n/context';
 import { getJourneysTabCopy } from '@/lib/i18n/journeys-tab-copy';
+import { getJourneyStageCopy } from '@/lib/i18n/journey-stage-copy';
 import { JOURNEY_STAGES, journeyPlansForStage, journeyStageForAge, type JourneyStageId } from '@/lib/journeys/age-journeys';
 import type { HabitActivity, JourneyPlan } from '@/types';
 import { ModalShell } from '@/components/ui/ModalShell';
@@ -36,6 +37,7 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
   const childAge = childProfile?.age ?? (childProfile?.birthYear ? new Date().getFullYear() - childProfile.birthYear : null);
   const stageId = chosenStageId ?? journeyStageForAge(childAge);
   const stage = JOURNEY_STAGES.find((candidate) => candidate.id === stageId) ?? JOURNEY_STAGES[2];
+  const stageCopy = getJourneyStageCopy(language, stage.id);
   const plans = journeyPlansForStage(stage.id);
   const childId = profiles.some((profile) => profile.id === selectedChildId)
     ? selectedChildId : profiles[0]?.id || '';
@@ -121,8 +123,8 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
         ) : <p className="rounded-2xl border border-sand-200 bg-white p-4 text-sm text-sand-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-300">{mapCopy.noChild}</p>}
 
         <div className="rounded-2xl border border-sand-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900" data-testid="journey-stage-summary">
-          <p className="text-sm font-extrabold text-indigo-700 dark:text-indigo-300">{stage.ageRange}{tabCopy.ageSuffix} · {stage.title[language === 'vi' ? 'vi' : 'en']}</p>
-          <p className="mt-1 text-sm text-sand-700 dark:text-slate-300">{stage.adultRole[language === 'vi' ? 'vi' : 'en']}. {tabCopy.stepNote}</p>
+          <p className="text-sm font-extrabold text-indigo-700 dark:text-indigo-300">{stage.ageRange}{tabCopy.ageSuffix} · {stageCopy.title}</p>
+          <p className="mt-1 text-sm text-sand-700 dark:text-slate-300">{stageCopy.adultRole}. {tabCopy.stepNote}</p>
         </div>
 
         {currentPlan && childId && (
