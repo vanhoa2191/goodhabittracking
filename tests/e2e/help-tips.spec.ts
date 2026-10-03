@@ -54,7 +54,8 @@ test('the explanation closes with Escape and a tap elsewhere, and stays inside t
   await expect(popover).toHaveCount(0);
   await tip.click();
   await expect(popover).toBeVisible();
-  await page.getByRole('heading', { name: /Yêu cầu đổi quà/ }).click({ force: true });
+  // The page margin is outside every card and outside the explanation, whatever the layout puts under it.
+  await page.mouse.click(4, 400);
   await expect(popover).toHaveCount(0);
 });
 
