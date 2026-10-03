@@ -288,6 +288,34 @@ describe('habit actions', () => {
     expect(fixture.read().logs).toEqual([log]);
   });
 
+  it.each([
+    ['not_reversible', 'not-reversible'],
+    ['not_found', 'not-found'],
+    ['something_new', 'status-something-new'],
+  ])('restores the card and reports %s when the server refuses an undo', async (status, code) => {
+    const log: ActivityLog = { id: 'log-1', activityId: activity.id, childId: child.id, date: '2026-09-20', status: 'completed', pointsAwarded: 20, completedAt: '2026-09-20T10:00:00.000Z' };
+    requestDomainCommand.mockResolvedValue({ status });
+    const fixture = createState('cloud', user, false, [log]);
+
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20')).toBe(false);
+    expect(getLastToggleFailure()).toBe(code);
+    expect(fixture.read().logs).toEqual([log]);
+    expect(fixture.read().profiles).toEqual([child]);
+    expect(fixture.analyticsSink).not.toHaveBeenCalled();
+    expect(fixture.syncCloudFamily).toHaveBeenCalledWith(user);
+  });
+
+  it('restores the card when the scoped child command refuses an undo', async () => {
+    const log: ActivityLog = { id: 'log-1', activityId: activity.id, childId: child.id, date: '2026-09-20', status: 'completed', pointsAwarded: 20, completedAt: '2026-09-20T10:00:00.000Z' };
+    requestChildDomainCommand.mockResolvedValue({ status: 'not_reversible' });
+    const fixture = createState('cloud', null, true, [log]);
+
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20')).toBe(false);
+    expect(getLastToggleFailure()).toBe('not-reversible');
+    expect(fixture.read().logs).toEqual([log]);
+    expect(fixture.refreshChildSession).toHaveBeenCalledOnce();
+  });
+
   it('gives the optimistic log the id the server created so an immediate undo can find it', async () => {
     const serverId = '33333333-3333-4333-8333-333333333333';
     requestDomainCommand.mockResolvedValue({ status: 'completed', logId: serverId });
