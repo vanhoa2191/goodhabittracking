@@ -5,7 +5,7 @@ test('the child task card keeps to the essentials and the labels are in the task
   await page.getByTestId('landing-primary-action').click();
   // Bé Đậu's first habit carries all three teaching labels (parent role, 7 ways of giving, 16 portraits).
   await page.getByRole('button', { name: /Nguyễn Minh An/ }).click();
-  await page.getByRole('button', { name: /Bé Đậu/ }).first().click();
+  await page.getByRole('menuitemradio', { name: /Bé Đậu/ }).click();
 
   const card = page
     .getByRole('heading', { name: /Nụ cười rạng rỡ đón bé thức dậy/ })
