@@ -228,7 +228,6 @@ export const fr = {
   parentSettings: 'Paramètres parents',
   parentShort: 'Parents',
   participateInPublicLeaderboard: 'Participer au classement mondial public',
-  paymentHoldTimer: 'Temps restant pour le paiement :',
   paymentSuccessDesc: 'Merci de votre confiance. Toutes les fonctionnalités Pro sont débloquées !',
   paymentSuccessTitle: '🎉 Mise à niveau réussie !',
   pendingApproval: 'En attente de validation',

@@ -228,7 +228,6 @@ export const it = {
   parentSettings: 'Impostazioni genitori',
   parentShort: 'Genitori',
   participateInPublicLeaderboard: 'Partecipa alla classifica globale pubblica',
-  paymentHoldTimer: 'Tempo rimanente per il pagamento:',
   paymentSuccessDesc: 'Grazie per aver scelto KidHabit Hero. Tutte le funzioni Pro sono attive!',
   paymentSuccessTitle: '🎉 Aggiornamento riuscito!',
   pendingApproval: 'In attesa di approvazione',

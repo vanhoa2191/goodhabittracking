@@ -32,6 +32,10 @@ test('a parent on a phone can save the payment QR to pay from their banking app'
     .getByRole('button', { name: 'Chọn Gói Gia Đình · Tháng' }).click();
 
   const checkout = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
+  if (process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true') {
+    await checkout.getByRole('checkbox').check();
+    await checkout.getByRole('button', { name: 'Tiếp tục tạo đơn thanh toán' }).click();
+  }
   const button = checkout.getByTestId('download-qr');
   await button.scrollIntoViewIfNeeded();
   await expect(button).toBeInViewport();

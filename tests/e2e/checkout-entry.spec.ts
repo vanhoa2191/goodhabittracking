@@ -85,7 +85,7 @@ test('authenticated checkout waits for family readiness then opens once without 
     await dialog.getByRole('checkbox').check();
     await dialog.getByRole('button', { name: 'Tiếp tục tạo đơn thanh toán' }).click();
   }
-  await expect(dialog).toContainText('Payment provider unavailable in test.');
+  await expect(dialog).toContainText('Hệ thống thanh toán tạm thời chưa sẵn sàng.');
   expect(plans).toEqual([{ planId: 'solo_monthly' }]);
   await dialog.getByRole('button', { name: /Đóng|Close/ }).click();
   await expect(dialog).toHaveCount(0);

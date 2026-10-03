@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import {
   X,
@@ -13,6 +13,10 @@ import { useAppStore } from '@/lib/store';
 import type { PricingPlan } from '@/types';
 import type { PaymentResult } from '@/lib/payos';
 import { createPaymentOrder, readPaymentStatus } from '@/lib/billing/payment-client';
+import type { PaymentErrorCode } from '@/lib/billing/payment-client';
+import { copyPaymentText } from '@/lib/billing/copy-payment-text';
+import { getPaymentErrorCopy } from '@/lib/i18n/payment-error-copy';
+import { PLAN_LOCALIZATION } from '@/lib/i18n/pricing-plan-copy';
 import { useTranslation } from '@/lib/i18n/context';
 import { getCheckoutLegalCopy } from '@/lib/i18n/checkout-legal-copy';
 import { CheckoutPaymentDetails } from '@/components/CheckoutPaymentDetails';
@@ -35,15 +39,23 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   const { syncNow, currentUser, familyId, familyRole } = useAppStore();
   const { t, language } = useTranslation();
   const legal = getCheckoutLegalCopy(language);
+  const errorCopy = getPaymentErrorCopy(language);
+  const planName = plan ? PLAN_LOCALIZATION[plan.id]?.[language]?.name ?? plan.name : '';
 
   const [isLoading, setIsLoading] = useState(true);
   const [paymentData, setPaymentData] = useState<PaymentResult | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
   const [isCheckingStatus, setIsCheckingStatus] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [statusErrorMessage, setStatusErrorMessage] = useState<string | null>(null);
-  const [timeLeftSeconds, setTimeLeftSeconds] = useState(15 * 60); // 15 minutes countdown
+  const [errorCode, setErrorCode] = useState<PaymentErrorCode | null>(null);
+  const [statusErrorCode, setStatusErrorCode] = useState<PaymentErrorCode | null>(null);
+  const [copyFailed, setCopyFailed] = useState(false);
+  const [hasConfirmedReferral, setHasConfirmedReferral] = useState(false);
+  // True once the server says this family can still enter a friend's code; only then is the step shown.
+  const [referralStepNeeded, setReferralStepNeeded] = useState(false);
+  const referralStepNeededRef = useRef(false);
+  useEffect(() => { referralStepNeededRef.current = referralStepNeeded; }, [referralStepNeeded]);
+  const [isClaimingReferral, setIsClaimingReferral] = useState(false);
   const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
   const [hasConfirmedTerms, setHasConfirmedTerms] = useState(false);
   const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
@@ -54,9 +66,19 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
     && familyRole !== 'caregiver',
   );
 
+  // A family with nothing to enter goes straight to the QR; only one that can still enter a code sees the extra step.
+  const handleReferralState = useCallback((state: 'loading' | 'eligible' | 'referred' | 'hidden') => {
+    if (state === 'eligible') setReferralStepNeeded(true);
+    else if (state !== 'loading') setHasConfirmedReferral((confirmed) => confirmed || !referralStepNeededRef.current);
+  }, []);
+
   const handleClose = useCallback(() => {
     setHasAcceptedTerms(false);
     setHasConfirmedTerms(false);
+    setHasConfirmedReferral(false);
+    setReferralStepNeeded(false);
+    setIsClaimingReferral(false);
+    setCopyFailed(false);
     setPaymentData(null);
     onClose();
   }, [onClose]);
@@ -65,8 +87,8 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   const initPayment = useCallback(async () => {
     if (!plan || !canCreatePayment) return;
     setIsLoading(true);
-    setErrorMessage(null);
-    setStatusErrorMessage(null);
+    setErrorCode(null);
+    setStatusErrorCode(null);
     setIsSuccess(false);
 
     try {
@@ -74,51 +96,35 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
       if (result.success) {
         setPaymentData(result.payment);
       } else {
-        setErrorMessage(result.error);
+        setErrorCode(result.error);
       }
     } catch (err: unknown) {
       console.error('Failed to init payment:', err);
-      setErrorMessage('Error connecting to payment server.');
+      setErrorCode('network');
     } finally {
       setIsLoading(false);
     }
   }, [canCreatePayment, plan]);
 
   useEffect(() => {
-    if (!isOpen || !plan || !canCreatePayment || (legalPagesApproved && !hasConfirmedTerms)) return;
+    if (!isOpen || !plan || !canCreatePayment || !hasConfirmedReferral || (legalPagesApproved && !hasConfirmedTerms)) return;
 
     const initializationTimer = window.setTimeout(() => {
       void initPayment();
-      setTimeLeftSeconds(15 * 60);
     }, 0);
 
     return () => window.clearTimeout(initializationTimer);
-  }, [canCreatePayment, hasConfirmedTerms, isOpen, legalPagesApproved, plan, initPayment]);
-
-  // Countdown timer
-  useEffect(() => {
-    if (!isOpen || isSuccess) return;
-    const interval = setInterval(() => {
-      setTimeLeftSeconds((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [isOpen, isSuccess]);
+  }, [canCreatePayment, hasConfirmedReferral, hasConfirmedTerms, isOpen, legalPagesApproved, plan, initPayment]);
 
   // Check payment status with API
   const checkStatus = useCallback(
     async () => {
       if (!paymentData || isSuccess) return;
       setIsCheckingStatus(true);
-      setStatusErrorMessage(null);
 
       try {
         const result = await readPaymentStatus(paymentData.orderCode);
+        if (result.success) setStatusErrorCode(null);
         if (result.success && result.paid) {
           await syncNow();
           setIsSuccess(true);
@@ -130,10 +136,11 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
           setCopiedField('status-pending');
           setTimeout(() => setCopiedField(null), 2500);
         } else {
-          setStatusErrorMessage(result.error);
+          setStatusErrorCode(result.error);
         }
       } catch (err) {
         console.error('Error checking payment status:', err);
+        setStatusErrorCode('status_failed');
       } finally {
         setIsCheckingStatus(false);
       }
@@ -152,28 +159,27 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
 
   if (!isOpen || !plan) return null;
 
-  const copyToClipboard = (text: string, fieldName: string) => {
-    navigator.clipboard.writeText(text);
-    setCopiedField(fieldName);
-    setTimeout(() => {
-      setCopiedField(null);
-    }, 2000);
+  const copyToClipboard = async (text: string, fieldName: string) => {
+    setCopyFailed(false);
+    setCopiedField(null);
+    if (await copyPaymentText(text)) {
+      setCopiedField(fieldName);
+      setTimeout(() => setCopiedField(null), 2000);
+    } else {
+      setCopyFailed(true);
+    }
   };
-
-  const minutes = Math.floor(timeLeftSeconds / 60);
-  const seconds = timeLeftSeconds % 60;
-  const timeFormatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
   return (
     <ModalShell isOpen={isOpen} onClose={handleClose} label={t.checkoutModalTitle} maxWidth="2xl">
         {/* Modal Header */}
         <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 sticky top-0 z-10">
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-md shrink-0">
               <QrCode className="w-5 h-5" />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
                 <h2 className="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 tracking-tight">
                   {t.checkoutModalTitle}
                 </h2>
@@ -182,14 +188,14 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                {plan.name}
+                {planName}
               </p>
             </div>
           </div>
 
           <button
             onClick={handleClose}
-            className="min-w-[40px] min-h-[40px] flex items-center justify-center p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            className="min-w-11 min-h-11 shrink-0 flex items-center justify-center p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             title={t.close}
             aria-label={t.close}
           >
@@ -222,6 +228,19 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
               </label>
               <button type="button" disabled={!hasAcceptedTerms} onClick={() => setHasConfirmedTerms(true)} className="min-h-11 w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-extrabold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">{legal.continueButton}</button>
             </div>
+          ) : !hasConfirmedReferral ? (
+            <div className="space-y-4">
+              {referralStepNeeded && <p className="text-sm leading-6 text-slate-700 dark:text-slate-300">{errorCopy.beforeQr}</p>}
+              <ReferralCodeEntry onBusyChange={setIsClaimingReferral} onStateChange={handleReferralState} />
+              {referralStepNeeded ? (
+                <button type="button" disabled={isClaimingReferral} onClick={() => setHasConfirmedReferral(true)} className="min-h-11 w-full rounded-xl bg-indigo-600 px-5 py-3 text-sm font-extrabold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50">{legal.continueButton}</button>
+              ) : (
+                <div className="py-16 flex flex-col items-center justify-center space-y-3">
+                  <RefreshCw className="w-8 h-8 text-indigo-600 animate-spin" />
+                  <p className="text-xs font-bold text-slate-500">{t.checkingPayment}</p>
+                </div>
+              )}
+            </div>
           ) : isSuccess ? (
             <div className="py-12 flex flex-col items-center justify-center text-center space-y-4 animate-fade-in">
               <div className="w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center shadow-lg animate-bounce">
@@ -236,7 +255,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
                 </p>
               </div>
               <div className="p-3 bg-emerald-50 dark:bg-emerald-950/30 rounded-2xl border border-emerald-200 text-xs font-bold text-emerald-700 dark:text-emerald-300">
-                {plan.name} &bull; {t.planActivated}
+                {planName} &bull; {t.planActivated}
               </div>
             </div>
           ) : isLoading ? (
@@ -244,30 +263,29 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
               <RefreshCw className="w-8 h-8 text-indigo-600 animate-spin" />
               <p className="text-xs font-bold text-slate-500">{t.checkingPayment}</p>
             </div>
-          ) : errorMessage ? (
-            <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs space-y-2">
+          ) : errorCode ? (
+            <div role="alert" className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-sm space-y-2">
               <div className="flex items-center gap-2 font-bold">
                 <AlertTriangle className="w-4 h-4" />
-                <span>Error</span>
+                <span>{errorCopy.title}</span>
               </div>
-              <p>{errorMessage}</p>
+              <p>{errorCopy.create[errorCode]}</p>
               <button
                 onClick={initPayment}
-                className="py-1.5 px-3 rounded-xl bg-rose-600 text-white font-bold cursor-pointer"
+                className="min-h-11 py-2 px-3 rounded-xl bg-rose-600 text-white font-bold cursor-pointer"
               >
-                Retry
+                {errorCopy.retry}
               </button>
             </div>
           ) : paymentData ? (
             <CheckoutPaymentDetails
               payment={paymentData}
-              timeFormatted={timeFormatted}
               copiedField={copiedField}
-              statusErrorMessage={statusErrorMessage}
+              statusErrorMessage={statusErrorCode ? errorCopy.status[statusErrorCode] : null}
               onCopy={copyToClipboard}
             />
           ) : null}
-          {canCreatePayment && !isSuccess && <ReferralCodeEntry />}
+          {copyFailed && <p role="status" className="text-sm font-semibold text-amber-800 dark:text-amber-200">{errorCopy.clipboardFailure}</p>}
         </div>
 
         {/* Modal Footer Actions */}
@@ -275,7 +293,7 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
           <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <button
               onClick={() => checkStatus()}
-              disabled={isLoading || isCheckingStatus || isSuccess}
+              disabled={!paymentData || isLoading || isCheckingStatus || isSuccess}
               className="flex-1 sm:flex-none min-h-[44px] py-2.5 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isCheckingStatus ? 'animate-spin' : ''}`} />

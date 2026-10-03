@@ -228,7 +228,6 @@ export const ja = {
   parentSettings: '保護者向け設定',
   parentShort: '保護者',
   participateInPublicLeaderboard: 'グローバル公開ランキングに参加',
-  paymentHoldTimer: 'お支払い有効期限：',
   paymentSuccessDesc: 'KidHabit Heroをご利用いただきありがとうございます。Pro機能が有効化されました！',
   paymentSuccessTitle: '🎉 アップグレード完了！',
   pendingApproval: 'かくにん待ち',
