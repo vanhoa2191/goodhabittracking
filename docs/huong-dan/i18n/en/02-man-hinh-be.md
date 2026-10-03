@@ -134,7 +134,7 @@ When you tap [Take a break](05-gia-dinh-va-cai-dat.md#tam-nghi), your child's sc
 
 This is being switched on gradually; if you do not see it, it has not reached your version yet.
 
-- **Rhythm**: the top of your child’s screen shows “N/7 days this week” (how many of the last 7 days your child did at least one task; days the family paused do not count). The streak is still there as a smaller line below. If the streak drops to 0, your child sees “A new day, let’s keep going!”, never a reproach.
+- **Rhythm**: the top of your child’s screen shows “N/7 days this week” (how many of the last 7 days your child did at least one task; days the family paused do not count). The streak is still there as a small note beside it (shown on wider screens only). If the streak drops to 0, your child sees “A new day, let’s keep going!”, never a reproach.
 - **What I’m practising**: a short strip naming one or two habits your child is anchoring or building, so they know what to pay attention to. The app picks them; your child does not have to.
 - **Cheers**: when your child does a habit alone for the first time, 3 times, 7 times in a row, or goes two weeks without a reminder (counted only when the way of doing it was recorded), they see one specific cheer, once, with an OK button. No stars are added.
 - **What I can do**: a view-only list of [graduated](03-hom-nay-va-duyet-viec.md#tot-nghiep) habits. When a habit has just graduated, your child also sees a cheer.

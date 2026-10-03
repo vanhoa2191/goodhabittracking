@@ -419,7 +419,7 @@ export function KidDashboard() {
         >
           <Flame aria-hidden="true" className={`h-5 w-5 shrink-0 ${fire.kind === 'active' ? 'fill-orange-500 text-orange-600' : 'text-slate-600'}`} />
           <span className="min-w-0 flex-1">
-            {rhythm ? <>{independenceCopy.rhythm(rhythm.daysDone, rhythm.daysCounted)}<span className="block text-xs font-medium text-slate-700">{fire.kind === 'cold' ? independenceCopy.newDay : fireLabel}</span></> : fireLabel}
+            {rhythm ? <>{independenceCopy.rhythm(rhythm.daysDone, rhythm.daysCounted)} <span className="hidden text-xs font-medium text-slate-700 sm:inline">· {fire.kind === 'cold' ? independenceCopy.newDay : fireLabel}</span></> : fireLabel}
           </span>
           {fire.pendingToday && <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs text-amber-950">{fireCopy.pending}</span>}
         </div>}

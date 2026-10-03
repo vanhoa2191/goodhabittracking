@@ -134,7 +134,7 @@ Khi ba mẹ bấm [Tạm nghỉ](05-gia-dinh-va-cai-dat.md#tam-nghi), màn hình
 
 Đang được bật dần; nếu chưa thấy, tính năng này chưa đến bản của bạn.
 
-- **Nhịp đều**: đầu màn hình bé hiện "N/7 ngày tuần này" (số ngày trong 7 ngày gần nhất bé làm được ít nhất một việc; ngày gia đình tạm nghỉ không tính). Chuỗi ngày vẫn còn nhưng là dòng nhỏ phía dưới. Nếu chuỗi về 0, bé thấy "Ngày mới, mình làm tiếp nhé!", không có lời trách.
+- **Nhịp đều**: đầu màn hình bé hiện "N/7 ngày tuần này" (số ngày trong 7 ngày gần nhất bé làm được ít nhất một việc; ngày gia đình tạm nghỉ không tính). Chuỗi ngày vẫn còn nhưng là ghi chú nhỏ bên cạnh (chỉ hiện trên màn hình rộng). Nếu chuỗi về 0, bé thấy "Ngày mới, mình làm tiếp nhé!", không có lời trách.
 - **Việc con đang tập**: một dải ngắn nêu một hoặc hai thói quen bé đang ở giai đoạn đặt tín hiệu hoặc xây nếp, để bé biết nên chú ý việc nào. Ứng dụng tự chọn, bé không phải chọn.
 - **Lời mừng**: khi bé lần đầu tự làm một thói quen, tự làm 3 lần, 7 lần liền, hoặc hai tuần không cần nhắc (chỉ tính khi cách làm đã được ghi), bé thấy một lời mừng cụ thể, một lần, kèm nút OK. Không thêm sao.
 - **Con đã làm được**: danh sách (chỉ để xem) các thói quen [đã tốt nghiệp](03-hom-nay-va-duyet-viec.md#tot-nghiep). Khi vừa có thói quen tốt nghiệp, bé cũng thấy một lời mừng.
