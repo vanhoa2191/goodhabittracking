@@ -114,6 +114,7 @@ jobs:
           NEXT_PUBLIC_EMAIL_CODE_LOGIN: ${{ vars.NEXT_PUBLIC_EMAIL_CODE_LOGIN }}
           NEXT_PUBLIC_AGE_THEME: ${{ vars.NEXT_PUBLIC_AGE_THEME }}
           NEXT_PUBLIC_DAILY_EASE: ${{ vars.NEXT_PUBLIC_DAILY_EASE }}
+          NEXT_PUBLIC_INDEPENDENCE: ${{ vars.NEXT_PUBLIC_INDEPENDENCE }}
           NEXT_PUBLIC_LEGAL_PAGES_APPROVED: ${{ vars.NEXT_PUBLIC_LEGAL_PAGES_APPROVED }}
           SUPPORT_EMAIL: kidhabithero@gmail.com
       - if: steps.configuration.outputs.ready == 'true'

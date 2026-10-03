@@ -41,3 +41,14 @@ test('the Needs you strip lists what waits and the batch bar stays idle until so
     await expect(page.getByRole('checkbox', { checked: true })).toHaveCount(0);
   }
 });
+
+test('the parent Today card leads with a steady weekly rhythm', async ({ page }) => {
+  test.setTimeout(90_000);
+  await page.goto('/?demo=1');
+  await page.evaluate(() => localStorage.setItem('kidhabit_language', 'vi'));
+  await page.reload();
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  await setupOrUnlockParent(page);
+  await expect(page.getByTestId('week-rhythm')).toHaveText(/^\d\/7 ngày tuần này$/);
+
+});

@@ -4,7 +4,7 @@
 
 <!--op-->## In this guide
 
-[Four tabs](#bon-tab) · [Daily tasks](#nhiem-vu) · [Complete, undo, do later](#hoan-thanh) · [Details, timer, read aloud](#chi-tiet) · [Stars, levels, streaks](#sao-cap-chuoi) · [Badges](#huy-hieu) · [Rewards](#qua) · [Leaderboard](#bang-xep-hang) · [Mascots and colors](#linh-vat) · [Morning letter](#thu-buoi-sang) · [Journal](#nhat-ky) · [Dream City](#thanh-pho) · [Age-based interface](#giao-dien-tuoi) · [Family pause](#tam-nghi-be) · [Related](#lien-quan)<!--/op-->
+[Four tabs](#bon-tab) · [Daily tasks](#nhiem-vu) · [Complete, undo, do later](#hoan-thanh) · [Details, timer, read aloud](#chi-tiet) · [Stars, levels, streaks](#sao-cap-chuoi) · [Badges](#huy-hieu) · [Rewards](#qua) · [Leaderboard](#bang-xep-hang) · [Mascots and colors](#linh-vat) · [Morning letter](#thu-buoi-sang) · [Journal](#nhat-ky) · [Dream City](#thanh-pho) · [Age-based interface](#giao-dien-tuoi) · [Family pause](#tam-nghi-be) · [What I’m practising, rhythm and What I can do](#tu-lap) · [Related](#lien-quan)<!--/op-->
 
 Your child opens this screen with a [code or QR code](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi), or you can select "Back to your child's screen" from the parent account. Your child only sees their own data.
 
@@ -128,6 +128,16 @@ Your child's screen adapts automatically to three age bands: **3–8**, **9–12
 ## Family pause
 
 When you tap [Take a break](05-gia-dinh-va-cai-dat.md#tam-nghi), your child's screen shows "Our family is taking a break today. You can still do a good habit whenever you want." Your child can still do tasks; stars, rewards, and the streak are not deleted. Progress reminders and the leaderboard are hidden.
+
+<a id="tu-lap"></a>
+## What I’m practising, rhythm and What I can do
+
+This is being switched on gradually; if you do not see it, it has not reached your version yet.
+
+- **Rhythm**: the top of your child’s screen shows “N/7 days this week” (how many of the last 7 days your child did at least one task; days the family paused do not count). The streak is still there as a small note beside it (shown on wider screens only). If the streak drops to 0, your child sees “A new day, let’s keep going!”, never a reproach.
+- **What I’m practising**: a short strip naming one or two habits your child is anchoring or building, so they know what to pay attention to. The app picks them; your child does not have to.
+- **Cheers**: when your child does a habit alone for the first time, 3 times, 7 times in a row, or goes two weeks without a reminder (counted only when the way of doing it was recorded), they see one specific cheer, once, with an OK button. No stars are added.
+- **What I can do**: a view-only list of [graduated](03-hom-nay-va-duyet-viec.md#tot-nghiep) habits. When a habit has just graduated, your child also sees a cheer.
 
 <a id="lien-quan"></a>
 ## Related

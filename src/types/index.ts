@@ -85,6 +85,12 @@ export interface HabitActivity {
   frameworkContentVersion?: string;
   legacyTemplateId?: string;
   journeyHabitKey?: string;
+  /** When a parent set the habit aside because the child now does it alone; the habit is then inactive. */
+  graduatedAt?: string | null;
+  /** Day to ask again whether the child still does it alone. */
+  graduationCheckDue?: string | null;
+  /** Stars the task was worth before a parent stepped them down. */
+  basePoints?: number | null;
   createdAt: string;
 }
 

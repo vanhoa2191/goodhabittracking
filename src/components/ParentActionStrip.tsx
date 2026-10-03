@@ -19,6 +19,7 @@ import { visibleSuggestions } from '@/lib/habit-programs/suggestion-display';
 import { useSuggestionDismissals } from '@/lib/habit-programs/use-suggestion-dismissals';
 import { selectParentActions, type ParentActionKind } from '@/lib/parent-actions';
 import { HelpTip } from '@/components/help/HelpTip';
+import { GraduationPrompts, useGraduationItems } from './HabitGraduation';
 
 const HabitProgramStartModal = dynamic(() => import('./HabitProgramStartModal').then((module) => module.HabitProgramStartModal), { ssr: false });
 
@@ -80,6 +81,8 @@ export function ParentActionStrip({ pendingTasks, pendingRewards }: { readonly p
         return [{ ...step, child, ageYears }];
       })
     : [];
+  const graduation = useGraduationItems();
+  const graduationWaiting = defaultExperienceFlags.independence ? graduation.ready.length + graduation.rechecks.length : 0;
   const actions = selectParentActions({ pendingTasks, pendingRewards, suggestions });
   const habitName = (habitId: string) => framework.habits.find((habit) => habit.id === habitId)?.name ?? '';
   const label = { 'review-tasks': copy.reviewTasks, 'review-rewards': copy.reviewRewards, suggestions: copy.suggestions } as const;
@@ -90,7 +93,7 @@ export function ParentActionStrip({ pendingTasks, pendingRewards }: { readonly p
         <h3 id="parent-action-title" className="text-sm font-extrabold text-slate-700 dark:text-slate-100">{copy.title}</h3>
         <HelpTip topic="today.actions" />
       </div>
-      {actions.length === 0 && nextSteps.length === 0 ? (
+      {actions.length === 0 && nextSteps.length === 0 && graduationWaiting === 0 ? (
         <p className="text-sm text-slate-600 dark:text-slate-300">{copy.nothing}</p>
       ) : (
         <ul className="flex flex-wrap gap-2">
@@ -112,6 +115,7 @@ export function ParentActionStrip({ pendingTasks, pendingRewards }: { readonly p
           })}
         </ul>
       )}
+      {defaultExperienceFlags.independence && <GraduationPrompts />}
       {nextSteps.map((step) => (
         <div key={`${step.child.id}:${step.program.id}`} data-testid="next-program-step" className="flex flex-col gap-2 rounded-2xl bg-white p-3 text-sm text-slate-700 dark:bg-zinc-900 dark:text-slate-200">
           <p>{copy.nextStep(step.child.nickname || step.child.name, habitName(step.nextHabitId), step.program.name)}</p>

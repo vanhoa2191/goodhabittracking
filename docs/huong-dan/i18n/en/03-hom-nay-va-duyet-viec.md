@@ -4,7 +4,7 @@
 
 <!--op-->## In this guide
 
-[Parent area structure](#cau-truc) · [Each child’s today](#hom-nay) · [Tasks and rewards to approve](#duyet) · [The “Needs you” strip and approving several tasks](#can-xu-ly) · [Record how your child did it](#muc-ho-tro) · [Look back at the week](#nhin-lai-tuan) · [Habit progress and suggestions](#tien-trien) · [Manually add or deduct stars](#chinh-sao) · [Statistics, printing, and sharing](#thong-ke) · [Reminders](#nhac-viec-ngan) · [Related](#lien-quan)<!--/op-->
+[Parent area structure](#cau-truc) · [Each child’s today](#hom-nay) · [Tasks and rewards to approve](#duyet) · [The “Needs you” strip and approving several tasks](#can-xu-ly) · [Record how your child did it](#muc-ho-tro) · [Look back at the week](#nhin-lai-tuan) · [Habit progress and suggestions](#tien-trien) · [Support by week](#xu-huong-ho-tro) · [Graduating a habit](#tot-nghiep) · [Manually add or deduct stars](#chinh-sao) · [Statistics, printing, and sharing](#thong-ke) · [Reminders](#nhac-viec-ngan) · [Related](#lien-quan)<!--/op-->
 
 <a id="cau-truc"></a>
 ## Parent area structure
@@ -83,6 +83,26 @@ The “Habit progress” section lists each habit with a cue and its current pha
 - Your child is doing it independently → switch to verbal encouragement and gradually reduce the stars.
 
 Choosing “Later” hides the suggestion for 14 days (saved in this browser). Select the habit to open [Habits](04-thiet-ke-thoi-quen.md#quan-ly-viec) and edit its cue. The complete set of suggestion rules is in [6. Habit science](06-khoa-hoc-thoi-quen.md#goi-y).
+
+<a id="xu-huong-ho-tro"></a>
+## Support by week and habit status
+
+This is being switched on gradually; if you do not see it, it has not reached your version yet.
+
+Each habit gets a neutral **status label**, always with a symbol and words: **Not started** (no cue yet), **Taking shape**, **Needs support** (a suggestion such as stuck or leaning on reminders) and **Steady** (easing off or settled, with most recent chances done). The label only describes; it never grades your child.
+
+Open **Support over the last 6 weeks** for week-by-week bars: alone, with a reminder, together, not recorded, not done. The app writes “Support is easing” only when there are **at least three weeks in a row** of data, the latest week has the child doing it alone **at least 20 percentage points** more than the first, and the way of doing it was recorded often enough in both. Otherwise it says “Not enough data to say yet”. This is a design threshold with low confidence, and it is never used to compare children.
+
+<a id="tot-nghiep"></a>
+## Graduating a habit
+
+When a habit has been settled for at least **3 weeks** and your child did it **alone on at least 8 of the last 10 chances**, the [Needs you](#can-xu-ly) strip offers three choices:
+
+- **Graduate**: the habit leaves your child’s daily list and appears under **What I can do** (for you and for your child). Stars, history and badges already earned stay as they are.
+- **Lower stars**: from then on the task gives half, then a fifth, of its first stars (never under 1). Stars already earned do not change, and you can restore the first value at any time.
+- **Keep as is**: hides the suggestion for 14 days.
+
+The app only suggests and never does it by itself. Each month it asks once, in one tap, **“Does your child still do this alone?”** for a graduated habit: **Still alone** or **Bring it back**. You can also tap **Undo** right after graduating, or **Bring it back** under What I can do.
 
 <a id="chinh-sao"></a>
 ## Manually add or deduct stars

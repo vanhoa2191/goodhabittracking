@@ -33,6 +33,7 @@ export default defineConfig({
           NEXT_PUBLIC_PARENT_REENGAGEMENT: 'true',
           NEXT_PUBLIC_HABIT_PROGRAMS: 'true',
           NEXT_PUBLIC_DAILY_EASE: 'true',
+          NEXT_PUBLIC_INDEPENDENCE: 'true',
           KIDHABIT_E2E_ADMIN_BYPASS: 'true',
           NEXT_PUBLIC_ENABLE_PWA_DEV: 'true',
           NEXT_PUBLIC_APP_URL: baseURL,
