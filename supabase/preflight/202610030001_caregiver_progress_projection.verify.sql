@@ -26,11 +26,11 @@ begin
 
   if not exists (
     select 1 from pg_catalog.pg_proc
-    where oid = 'public.caregiver_progress_snapshot()'::regprocedure and prosecdef
+    where oid = 'public.caregiver_progress_snapshot(date)'::regprocedure and prosecdef
       and provolatile = 's' and proconfig @> array['search_path=""']
-  ) or not pg_catalog.has_function_privilege('authenticated', 'public.caregiver_progress_snapshot()', 'EXECUTE')
-    or pg_catalog.has_function_privilege('anon', 'public.caregiver_progress_snapshot()', 'EXECUTE')
-    or pg_catalog.has_function_privilege('service_role', 'public.caregiver_progress_snapshot()', 'EXECUTE') then
+  ) or not pg_catalog.has_function_privilege('authenticated', 'public.caregiver_progress_snapshot(date)', 'EXECUTE')
+    or pg_catalog.has_function_privilege('anon', 'public.caregiver_progress_snapshot(date)', 'EXECUTE')
+    or pg_catalog.has_function_privilege('service_role', 'public.caregiver_progress_snapshot(date)', 'EXECUTE') then
     raise exception 'caregiver_progress_snapshot must be a stable definer with empty search_path and authenticated-only execution';
   end if;
 
@@ -47,7 +47,7 @@ begin
   if exists (
     select 1 from pg_catalog.pg_proc function,
       lateral pg_catalog.aclexplode(coalesce(function.proacl, pg_catalog.acldefault('f', function.proowner))) privilege
-    where function.oid in ('public.caregiver_progress_snapshot()'::regprocedure, 'public.schema_version()'::regprocedure)
+    where function.oid in ('public.caregiver_progress_snapshot(date)'::regprocedure, 'public.schema_version()'::regprocedure)
       and privilege.grantee = 0 and privilege.privilege_type = 'EXECUTE'
   ) then
     raise exception 'projection and schema version must not grant public execution';

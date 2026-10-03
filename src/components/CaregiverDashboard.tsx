@@ -4,6 +4,29 @@ import { CheckCircle2, Eye, Sparkles } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getCaregiverCopy } from '@/lib/i18n/caregiver-copy';
+import { summarizeChildDayProgress, type DayProgress } from '@/lib/caregiver-day-progress';
+
+/** The sentence is the accessible name and also what people read; the bar only repeats it visually. */
+function ProgressRow({ progress, text, noneText }: { readonly progress: DayProgress; readonly text: string; readonly noneText: string }) {
+  if (progress.due === 0) return <p className="text-sm font-semibold text-slate-600 dark:text-slate-300">{noneText}</p>;
+  const percent = Math.round((progress.done / progress.due) * 100);
+  return (
+    <div>
+      <p className="break-words text-sm font-bold text-slate-900 dark:text-white">{text}</p>
+      <div
+        role="progressbar"
+        aria-label={text}
+        aria-valuemin={0}
+        aria-valuemax={progress.due}
+        aria-valuenow={progress.done}
+        aria-valuetext={text}
+        className="mt-1.5 h-2.5 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-zinc-700"
+      >
+        <div className="h-full rounded-full bg-emerald-600" style={{ width: `${percent}%` }} />
+      </div>
+    </div>
+  );
+}
 
 export function CaregiverDashboard() {
   const { caregiverProgress } = useAppStore();
@@ -31,15 +54,20 @@ export function CaregiverDashboard() {
           {profiles.map((profile) => {
             const profileActivities = activities.filter((activity) => activity.child_id === null || activity.child_id === profile.id);
             const approved = caregiverProgress?.completionCounts.find((count) => count.child_id === profile.id)?.count ?? 0;
+            const days = caregiverProgress ? summarizeChildDayProgress(caregiverProgress, profile.id) : null;
             return (
               <article key={profile.id} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
                 <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <h2 className="text-xl font-black text-slate-900 dark:text-white">{profile.name}</h2>
-                    <p className="mt-1 text-sm font-semibold text-slate-600 dark:text-slate-300">{copy.dashApproved(approved)}</p>
-                  </div>
-                  <Sparkles aria-hidden="true" className="h-7 w-7 text-amber-500" />
+                  <h2 className="min-w-0 break-words text-xl font-black text-slate-900 dark:text-white">{profile.name}</h2>
+                  <Sparkles aria-hidden="true" className="h-7 w-7 shrink-0 text-amber-500" />
                 </div>
+                {days && (
+                  <div className="mt-4 space-y-3">
+                    <ProgressRow progress={days.today} text={copy.dashToday(days.today.done, days.today.due)} noneText={copy.dashTodayNone} />
+                    <ProgressRow progress={days.week} text={copy.dashWeek(days.week.done, days.week.due)} noneText={copy.dashWeekNone} />
+                  </div>
+                )}
+                <p className="mt-3 text-xs font-semibold text-slate-600 dark:text-slate-300">{copy.dashAllTime(approved)}</p>
                 <ul className="mt-5 space-y-3" aria-label={copy.dashHabitsOf(profile.name)}>
                   {profileActivities.map((activity) => (
                     <li key={activity.id} className="flex items-start gap-3 rounded-2xl bg-slate-50 p-3 dark:bg-zinc-800">

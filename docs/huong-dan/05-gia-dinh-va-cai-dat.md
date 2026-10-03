@@ -57,7 +57,7 @@ Dành cho ông bà hoặc người thân muốn theo dõi tiến độ mà **kh�
 
 1. Ở `Cài đặt`, bấm **Tạo lời mời người chăm sóc**. Liên kết mời **một lần** chỉ hiện ở lần tạo này và **hết hạn sau 72 giờ**. Sao chép và gửi cho người đó.
 2. Người được mời mở liên kết, đăng nhập Google, bấm chấp nhận. Nếu lời mời hết hạn, đã thu hồi, hoặc tài khoản đã thuộc một gia đình khác thì hiện "Lời mời không hợp lệ…".
-3. Họ vào **Góc người chăm sóc**: xem tiến độ từng bé với quyền chỉ đọc (số lần hoàn thành đã ghi nhận, thói quen của từng bé).
+3. Họ vào **Góc người chăm sóc**: xem tiến độ từng bé với quyền chỉ đọc: "Hôm nay: x / y việc" (y là số việc đến lượt hôm nay theo lịch lặp; hôm nay không có việc thì hiện "Hôm nay không có việc theo lịch"), "7 ngày gần đây: x / y", danh sách thói quen của từng bé, và tổng số lần hoàn thành "Từ trước đến nay" như một con số phụ. Người chăm sóc chỉ thấy số lượng theo ngày, không thấy bé làm việc nào, lúc mấy giờ hay ghi chú.
 4. Ba mẹ **Thu hồi lời mời** bất cứ lúc nào ở danh sách "Lời mời đang hoạt động".
 
 <a id="cai-dat"></a>

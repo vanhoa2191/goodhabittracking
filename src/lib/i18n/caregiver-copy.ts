@@ -24,7 +24,11 @@ export type CaregiverCopy = {
   readonly dashTitle: string;
   readonly dashIntro: string;
   readonly dashEmpty: string;
-  readonly dashApproved: (n: number) => string;
+  readonly dashToday: (done: number, due: number) => string;
+  readonly dashTodayNone: string;
+  readonly dashWeek: (done: number, due: number) => string;
+  readonly dashWeekNone: string;
+  readonly dashAllTime: (n: number) => string;
   readonly dashHabitsOf: (name: string) => string;
 };
 
@@ -53,7 +57,11 @@ const COPY: Record<Language, CaregiverCopy> = {
     dashTitle: 'Góc người chăm sóc',
     dashIntro: 'Bạn đang xem tiến độ với quyền chỉ đọc. Mọi thay đổi vẫn do chủ gia đình hoặc phụ huynh quản lý.',
     dashEmpty: 'Gia đình chưa có hồ sơ để theo dõi.',
-    dashApproved: (n) => `${n} lần hoàn thành đã được ghi nhận`,
+    dashToday: (d, n) => `Hôm nay: ${d} / ${n} việc`,
+    dashTodayNone: 'Hôm nay không có việc theo lịch',
+    dashWeek: (d, n) => `7 ngày gần đây: ${d} / ${n}`,
+    dashWeekNone: '7 ngày gần đây: không có việc theo lịch',
+    dashAllTime: (n) => `Từ trước đến nay: ${n} lượt`,
     dashHabitsOf: (name) => `Thói quen của ${name}`,
   },
   en: {
@@ -80,7 +88,11 @@ const COPY: Record<Language, CaregiverCopy> = {
     dashTitle: 'Caregiver view',
     dashIntro: 'You are seeing progress in read-only mode. Changes are still made by the family owner or a parent.',
     dashEmpty: 'The family has no profiles to follow yet.',
-    dashApproved: (n) => `${n} completions recorded`,
+    dashToday: (d, n) => `Today: ${d} / ${n} tasks`,
+    dashTodayNone: 'No tasks scheduled today',
+    dashWeek: (d, n) => `Last 7 days: ${d} / ${n}`,
+    dashWeekNone: 'Last 7 days: no tasks scheduled',
+    dashAllTime: (n) => `All time: ${n} completions`,
     dashHabitsOf: (name) => `Habits of ${name}`,
   },
   fr: {
@@ -107,7 +119,11 @@ const COPY: Record<Language, CaregiverCopy> = {
     dashTitle: 'Espace accompagnant',
     dashIntro: 'Vous voyez les progrès en lecture seule. Les modifications restent faites par le propriétaire de la famille ou un parent.',
     dashEmpty: 'La famille n’a pas encore de profil à suivre.',
-    dashApproved: (n) => `${n} réalisations enregistrées`,
+    dashToday: (d, n) => `Aujourd’hui : ${d} / ${n} tâches`,
+    dashTodayNone: 'Aucune tâche prévue aujourd’hui',
+    dashWeek: (d, n) => `7 derniers jours : ${d} / ${n}`,
+    dashWeekNone: '7 derniers jours : aucune tâche prévue',
+    dashAllTime: (n) => `Depuis le début : ${n} réalisations`,
     dashHabitsOf: (name) => `Habitudes de ${name}`,
   },
   de: {
@@ -134,7 +150,11 @@ const COPY: Record<Language, CaregiverCopy> = {
     dashTitle: 'Bereich für Betreuungspersonen',
     dashIntro: 'Du siehst die Fortschritte im Lesemodus. Änderungen nehmen weiterhin der Familieninhaber oder ein Elternteil vor.',
     dashEmpty: 'Die Familie hat noch keine Profile zum Verfolgen.',
-    dashApproved: (n) => `${n} Erledigungen erfasst`,
+    dashToday: (d, n) => `Heute: ${d} / ${n} Aufgaben`,
+    dashTodayNone: 'Heute sind keine Aufgaben geplant',
+    dashWeek: (d, n) => `Letzte 7 Tage: ${d} / ${n}`,
+    dashWeekNone: 'Letzte 7 Tage: keine Aufgaben geplant',
+    dashAllTime: (n) => `Insgesamt bisher: ${n} Erledigungen`,
     dashHabitsOf: (name) => `Gewohnheiten von ${name}`,
   },
   it: {
@@ -161,7 +181,11 @@ const COPY: Record<Language, CaregiverCopy> = {
     dashTitle: 'Area per le persone di supporto',
     dashIntro: 'Stai vedendo i progressi in sola lettura. Le modifiche le fa sempre il titolare della famiglia o un genitore.',
     dashEmpty: 'La famiglia non ha ancora profili da seguire.',
-    dashApproved: (n) => `${n} completamenti registrati`,
+    dashToday: (d, n) => `Oggi: ${d} / ${n} attività`,
+    dashTodayNone: 'Oggi non ci sono attività in programma',
+    dashWeek: (d, n) => `Ultimi 7 giorni: ${d} / ${n}`,
+    dashWeekNone: 'Ultimi 7 giorni: nessuna attività in programma',
+    dashAllTime: (n) => `Dall’inizio: ${n} completamenti`,
     dashHabitsOf: (name) => `Abitudini di ${name}`,
   },
   es: {
@@ -188,7 +212,11 @@ const COPY: Record<Language, CaregiverCopy> = {
     dashTitle: 'Vista de cuidador',
     dashIntro: 'Estás viendo el progreso en modo de solo lectura. Los cambios los siguen haciendo el titular de la familia o un padre o madre.',
     dashEmpty: 'La familia aún no tiene perfiles que seguir.',
-    dashApproved: (n) => `${n} logros registrados`,
+    dashToday: (d, n) => `Hoy: ${d} / ${n} tareas`,
+    dashTodayNone: 'Hoy no hay tareas programadas',
+    dashWeek: (d, n) => `Últimos 7 días: ${d} / ${n}`,
+    dashWeekNone: 'Últimos 7 días: ninguna tarea programada',
+    dashAllTime: (n) => `Desde el principio: ${n} logros`,
     dashHabitsOf: (name) => `Hábitos de ${name}`,
   },
   zh: {
@@ -215,7 +243,11 @@ const COPY: Record<Language, CaregiverCopy> = {
     dashTitle: '照护人页面',
     dashIntro: '你正在以只读方式查看进度。修改仍由家庭所有者或家长完成。',
     dashEmpty: '家庭里还没有可跟进的档案。',
-    dashApproved: (n) => `已记录 ${n} 次完成`,
+    dashToday: (d, n) => `今天：${d} / ${n} 项任务`,
+    dashTodayNone: '今天没有安排的任务',
+    dashWeek: (d, n) => `最近 7 天：${d} / ${n}`,
+    dashWeekNone: '最近 7 天：没有安排的任务',
+    dashAllTime: (n) => `累计：${n} 次完成`,
     dashHabitsOf: (name) => `${name} 的习惯`,
   },
   ja: {
@@ -242,7 +274,11 @@ const COPY: Record<Language, CaregiverCopy> = {
     dashTitle: '見守りビュー',
     dashIntro: '読み取り専用で進み具合を見ています。変更は家族のオーナーか保護者が行います。',
     dashEmpty: '見守るプロフィールはまだありません。',
-    dashApproved: (n) => `${n} 回の達成が記録されています`,
+    dashToday: (d, n) => `今日：${d} / ${n} 件`,
+    dashTodayNone: '今日は予定されたタスクがありません',
+    dashWeek: (d, n) => `直近7日間：${d} / ${n}`,
+    dashWeekNone: '直近7日間：予定されたタスクはありません',
+    dashAllTime: (n) => `これまでの合計：${n} 回の達成`,
     dashHabitsOf: (name) => `${name} の習慣`,
   },
   ko: {
@@ -269,7 +305,11 @@ const COPY: Record<Language, CaregiverCopy> = {
     dashTitle: '돌봄 도우미 화면',
     dashIntro: '읽기 전용으로 진행 상황을 보고 있어요. 수정은 가족 소유자나 부모님이 해요.',
     dashEmpty: '아직 지켜볼 프로필이 없어요.',
-    dashApproved: (n) => `${n}번 완료가 기록됐어요`,
+    dashToday: (d, n) => `오늘: ${d} / ${n}개`,
+    dashTodayNone: '오늘 예정된 할 일이 없어요',
+    dashWeek: (d, n) => `최근 7일: ${d} / ${n}`,
+    dashWeekNone: '최근 7일: 예정된 할 일이 없어요',
+    dashAllTime: (n) => `지금까지: ${n}번 완료`,
     dashHabitsOf: (name) => `${name}의 습관`,
   },
 };

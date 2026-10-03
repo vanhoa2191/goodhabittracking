@@ -461,14 +461,22 @@ try {
   });
   assert(Boolean(membershipEscalation.error), 'Cross-family membership escalation succeeded.');
 
-  const progress = await caregiver.client.rpc('caregiver_progress_snapshot');
+  const todayKey = new Date().toISOString().slice(0, 10);
+  const progress = await caregiver.client.rpc('caregiver_progress_snapshot', { local_today: todayKey });
   assert(!progress.error && progress.data?.familyId === familyIds[0] && progress.data.familyRole === 'caregiver', 'Caregiver progress scope failed.');
   assert(progress.data.profiles.length === 1 && progress.data.profiles[0].id === childId, 'Caregiver child progress failed.');
   assert(progress.data.activities.some((activity) => activity.id === programActivityId), 'Caregiver active habits are missing.');
   assert(progress.data.completionCounts.find((count) => count.child_id === childId)?.count === 2, 'Caregiver completion aggregate failed.');
-  assert(Object.keys(progress.data).sort().join(',') === 'activities,completionCounts,familyId,familyRole,profiles', 'Caregiver progress contains extra domains.');
+  assert(Object.keys(progress.data).sort().join(',') === 'activities,completionCounts,daily,familyId,familyRole,profiles', 'Caregiver progress contains extra domains.');
   assert(progress.data.profiles.every((profile) => Object.keys(profile).sort().join(',') === 'avatar,id,name,theme_color'), 'Caregiver profiles contain private fields.');
-  assert(progress.data.activities.every((activity) => Object.keys(activity).sort().join(',') === 'child_id,description,id,title'), 'Caregiver habits contain private fields.');
+  assert(progress.data.activities.every((activity) => Object.keys(activity).sort().join(',') === 'child_id,created_on,description,id,recurrence_days,recurrence_type,title'), 'Caregiver habits contain private fields.');
+  assert(progress.data.daily.to === todayKey && Object.keys(progress.data.daily).sort().join(',') === 'counts,from,to', 'Caregiver daily window is wrong.');
+  assert(progress.data.daily.counts.every((entry) => Object.keys(entry).sort().join(',') === 'child_id,count,day'), 'Caregiver daily counts contain log detail.');
+  assert(progress.data.daily.counts.find((entry) => entry.child_id === childId && entry.day === todayKey)?.count === 2, 'Caregiver daily aggregate failed.');
+  const farDay = await caregiver.client.rpc('caregiver_progress_snapshot', { local_today: '2020-01-01' });
+  assert(!farDay.error && farDay.data.daily.to === todayKey, 'Caregiver daily window followed a far-off client day.');
+  const olderShape = await caregiver.client.rpc('caregiver_progress_snapshot');
+  assert(!olderShape.error && Object.keys(olderShape.data).sort().join(',') === 'activities,completionCounts,familyId,familyRole,profiles', 'Caregiver call without a day changed shape.');
   assert(!JSON.stringify(progress.data).includes(familyIds[1]) && !JSON.stringify(progress.data).includes(secondChildId), 'Caregiver progress leaked family B.');
 
   for (const table of [
