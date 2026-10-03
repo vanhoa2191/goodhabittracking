@@ -65,6 +65,7 @@ const habitActivityRowSchema = z.object({
   graduated_at: z.string().nullable().optional(),
   graduation_check_due: z.string().nullable().optional(),
   base_points: z.number().int().nullable().optional(),
+  offered_for_focus: z.boolean().optional(),
   created_at: z.string(),
 });
 
@@ -123,6 +124,7 @@ export function mapHabitActivityRow(input: unknown): HabitActivity {
     graduatedAt: row.graduated_at ?? null,
     graduationCheckDue: row.graduation_check_due ?? null,
     basePoints: row.base_points ?? null,
+    offeredForFocus: row.offered_for_focus ?? false,
     createdAt: row.created_at,
   };
 }

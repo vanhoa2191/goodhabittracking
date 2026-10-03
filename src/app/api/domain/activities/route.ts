@@ -78,6 +78,7 @@ function updateRow(
     ['graduated_at', updates.graduatedAt],
     ['graduation_check_due', updates.graduationCheckDue],
     ['base_points', updates.basePoints],
+    ['offered_for_focus', updates.offeredForFocus],
   ];
   return Object.fromEntries(candidates.filter(([, value]) => value !== undefined));
 }

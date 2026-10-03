@@ -18,6 +18,7 @@ describe('experience flags', () => {
       ageTheme: false,
       dailyEase: false,
       independence: false,
+      habitCoach: false,
     });
   });
 

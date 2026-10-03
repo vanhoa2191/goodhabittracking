@@ -4,7 +4,7 @@
 
 <!--op-->## Trong tài liệu này
 
-[Cấu trúc khu phụ huynh](#cau-truc) · [Hôm nay của từng bé](#hom-nay) · [Việc và quà cần duyệt](#duyet) · [Dải “Cần bạn xử lý” và duyệt nhiều việc](#can-xu-ly) · [Ghi cách bé làm](#muc-ho-tro) · [Nhìn lại tuần](#nhin-lai-tuan) · [Tiến triển thói quen và gợi ý](#tien-trien) · [Mức hỗ trợ theo tuần](#xu-huong-ho-tro) · [Tốt nghiệp thói quen](#tot-nghiep) · [Thưởng hoặc trừ sao thủ công](#chinh-sao) · [Thống kê, in, chia sẻ](#thong-ke) · [Nhắc việc](#nhac-viec-ngan) · [Liên quan](#lien-quan)<!--/op-->
+[Cấu trúc khu phụ huynh](#cau-truc) · [Hôm nay của từng bé](#hom-nay) · [Việc và quà cần duyệt](#duyet) · [Dải “Cần bạn xử lý” và duyệt nhiều việc](#can-xu-ly) · [Ghi cách bé làm](#muc-ho-tro) · [Nhìn lại tuần](#nhin-lai-tuan) · [Tiến triển thói quen và gợi ý](#tien-trien) · [Mức hỗ trợ theo tuần](#xu-huong-ho-tro) · [Tốt nghiệp thói quen](#tot-nghiep) · [Một thay đổi tuần này](#mot-thay-doi) · [Mục tiêu tuần của bé](#muc-tieu-tuan) · [Thưởng hoặc trừ sao thủ công](#chinh-sao) · [Thống kê, in, chia sẻ](#thong-ke) · [Nhắc việc](#nhac-viec-ngan) · [Liên quan](#lien-quan)<!--/op-->
 
 <a id="cau-truc"></a>
 ## Cấu trúc khu phụ huynh
@@ -103,6 +103,26 @@ Khi một thói quen đã thành nếp ít nhất **3 tuần** và bé **tự l�
 - **Giữ nguyên**: ẩn gợi ý 14 ngày.
 
 Ứng dụng chỉ gợi ý, không tự làm gì. Mỗi tháng ứng dụng hỏi một chạm **"Con vẫn tự làm việc này chứ?"** cho thói quen đã tốt nghiệp: **Vẫn tự làm** hoặc **Cần đưa lại**. Bạn cũng có thể bấm **Hoàn tác** ngay sau khi tốt nghiệp, hoặc **Cần đưa lại** ở mục Con đã làm được.
+
+<a id="mot-thay-doi"></a>
+## Một thay đổi tuần này
+
+Đang được bật dần; nếu chưa thấy, tính năng này chưa đến bản của bạn.
+
+Thẻ **Một thay đổi tuần này** (dưới "Nhìn lại tuần") chỉ gợi ý **một** thay đổi để thử trong **7 ngày**, chọn theo gợi ý đang có của bé:
+
+- **Làm nhỏ hơn**: đổi tên và mô tả thói quen sang bản hai phút (có sẵn cho cả 47 thói quen của khung).
+- **Đổi giờ**: chuyển thói quen sang buổi bé thường làm thật (suy ra từ giờ bé đã hoàn thành, cần ít nhất 6 lần gần đây và phần lớn nằm ở buổi khác).
+- **Làm cùng**: ba mẹ làm cùng bé vài ngày; lần làm cùng không bị tính là lỡ.
+- **Đổi tín hiệu**: mở Quản lý việc để sửa tín hiệu.
+- **Nhắc ít đi**: chờ bé tự bắt đầu trước khi nhắc.
+
+Nút **Thử trong 7 ngày** vừa áp thay đổi (nếu cần) vừa ghi lại lần thử. Khi một lần thử đang chạy hoặc chờ trả lời, ứng dụng không gợi ý thay đổi khác cho bé đó. Sau 7 ngày thẻ hỏi **"Có giúp không?"** (Có giúp / Chưa / Bỏ). Nếu chọn Chưa hoặc Bỏ với bản nhỏ hơn, thói quen trở lại bản đầy đủ, và ứng dụng không gợi ý lại đúng ý đó cho thói quen đó trong 30 ngày. Các gợi ý trong "Tiến triển thói quen" (kẹt, phụ thuộc nhắc, thành nếp) cũng có nút **Thử trong 7 ngày** tương ứng.
+
+<a id="muc-tieu-tuan"></a>
+## Mục tiêu tuần của bé
+
+Ba mẹ đánh dấu **2 đến 4 việc** là "cho bé chọn" (ô chọn cạnh từng việc trong thẻ **Mục tiêu tuần của bé**). Từ 6 tuổi, đầu tuần bé tự chọn **một hoặc hai** việc làm mục tiêu trên màn hình của mình và thấy tiến độ "x/7 ngày"; không cần tài khoản riêng. Bé dưới 6 tuổi thì ba mẹ chọn cùng bé ngay trong thẻ. Bé chỉ chọn được trong các việc ba mẹ đã mở, và chỉ ghi được lựa chọn của chính mình. Nếu bé không chọn, màn hình bé vẫn có dải [Việc con đang tập](02-man-hinh-be.md#tu-lap).
 
 <a id="chinh-sao"></a>
 ## Thưởng hoặc trừ sao thủ công

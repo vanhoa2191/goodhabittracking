@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 
 // Shown only with the independence flag, so the first download carries nothing for it.
 const KidIndependence = dynamic(() => import('./KidIndependence').then((module) => module.KidIndependence), { ssr: false });
+const KidWeeklyFocus = dynamic(() => import('./WeeklyFocus').then((module) => module.KidWeeklyFocus), { ssr: false });
 const KidGraduatedList = dynamic(() => import('./KidIndependence').then((module) => module.KidGraduatedList), { ssr: false });
 import {
   Sparkles,
@@ -460,6 +461,7 @@ export function KidDashboard() {
 
       {defaultExperienceFlags.habitPrograms && visibleTab === 'tasks' && <ChildSelfReportPrompt />}
       {defaultExperienceFlags.independence && visibleTab === 'tasks' && <KidIndependence childId={activeChild.id} />}
+      {defaultExperienceFlags.habitCoach && visibleTab === 'tasks' && <KidWeeklyFocus childId={activeChild.id} />}
 
       {/* Main Tab Navigation */}
       <div data-testid="kid-tabs" className={`hidden sm:grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>

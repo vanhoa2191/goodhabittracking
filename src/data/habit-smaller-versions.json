@@ -1,0 +1,522 @@
+{
+ "contentVersion": "1.0.0",
+ "habits": {
+  "GD1-NT-01": {
+   "vi": {
+    "title": "Đáp lại một âm thanh của bé",
+    "description": "Tôi nhìn bé, nhắc lại một âm bé vừa phát ra rồi chờ bé đáp."
+   },
+   "en": {
+    "title": "Echo one of the baby's sounds",
+    "description": "I look at the baby, repeat one sound they just made, then wait for their response."
+   },
+   "minutes": 1
+  },
+  "GD1-NT-02": {
+   "vi": {
+    "title": "Cùng bé thở ba nhịp",
+    "description": "Tôi đặt tay lên ngực mình và thở chậm ba nhịp để bé quan sát hoặc bắt chước."
+   },
+   "en": {
+    "title": "Breathe slowly with the child",
+    "description": "I place a hand on my chest and take three slow breaths for the child to watch or copy."
+   },
+   "minutes": 1
+  },
+  "GD1-SK-01": {
+   "vi": {
+    "title": "Đọc một trang trước giờ ngủ",
+    "description": "Tôi cùng bé xem một trang sách trong ánh sáng dịu trước giờ ngủ."
+   },
+   "en": {
+    "title": "Read one page before bed",
+    "description": "I look at one book page with the child in soft light before bedtime."
+   },
+   "minutes": 2
+  },
+  "GD1-SK-02": {
+   "vi": {
+    "title": "Lăn bóng qua lại với bé",
+    "description": "Tôi ngồi đối diện và lăn bóng chậm để bé bò, với hoặc đẩy bóng lại."
+   },
+   "en": {
+    "title": "Roll a ball back and forth",
+    "description": "I sit opposite the child and roll a ball slowly for them to crawl to, reach for, or push back."
+   },
+   "minutes": 2
+  },
+  "GD1-MQH-01": {
+   "vi": {
+    "title": "Làm mẫu lời chào cho bé",
+    "description": "Tôi nhìn người quen, mỉm cười và chào; nếu phù hợp, tôi giúp bé vẫy tay."
+   },
+   "en": {
+    "title": "Model a greeting for the child",
+    "description": "I look at someone we know, smile, and say hello; if appropriate, I help the child wave."
+   },
+   "minutes": 1
+  },
+  "GD1-MQH-02": {
+   "vi": {
+    "title": "Lăn bóng theo lượt với bé",
+    "description": "Tôi lăn bóng cho bé rồi nói “lượt của con” và chờ bé đẩy bóng lại."
+   },
+   "en": {
+    "title": "Take turns rolling a ball",
+    "description": "I roll the ball to the child, say “your turn,” and wait for them to push it back."
+   },
+   "minutes": 2
+  },
+  "GD1-HT-01": {
+   "vi": {
+    "title": "Cùng bé xem một trang sách",
+    "description": "Tôi chỉ vào một hình trong sách, gọi tên hình đó rồi chờ bé nhìn hoặc chỉ."
+   },
+   "en": {
+    "title": "Share one page of a book",
+    "description": "I point to a picture, name it, then wait for the child to look or point."
+   },
+   "minutes": 2
+  },
+  "GD1-TC-01": {
+   "vi": {
+    "title": "Cùng bé cất một món đồ",
+    "description": "Tôi làm mẫu đặt một món đồ chơi vào đúng chỗ rồi mời bé làm cùng."
+   },
+   "en": {
+    "title": "Put one toy away together",
+    "description": "I model putting one toy in its place, then invite the child to join me."
+   },
+   "minutes": 1
+  },
+  "GD2-NT-01": {
+   "vi": {
+    "title": "Gọi tên một cảm xúc",
+    "description": "Tôi nêu một cảm xúc có thể đang có và cùng bé thở chậm ba nhịp."
+   },
+   "en": {
+    "title": "Name one feeling",
+    "description": "I name a feeling the child may be having and take three slow breaths with them."
+   },
+   "minutes": 2
+  },
+  "GD2-NT-02": {
+   "vi": {
+    "title": "Kể lại một việc đã xảy ra",
+    "description": "Tôi nói “Mình cùng xem chuyện gì xảy ra nhé” rồi nghe bé kể mà không tra hỏi."
+   },
+   "en": {
+    "title": "Talk through what happened",
+    "description": "I say, “Let's look at what happened,” and listen to the child without interrogating them."
+   },
+   "minutes": 2
+  },
+  "GD2-SK-01": {
+   "vi": {
+    "title": "Đặt màn hình vào trạm sạc",
+    "description": "Tôi cùng bé đặt thiết bị vào trạm sạc rồi chọn một cuốn sách đọc trước giờ ngủ."
+   },
+   "en": {
+    "title": "Put the screen on its charging station",
+    "description": "I put the device on its charging station with the child, then choose a book to read before bed."
+   },
+   "minutes": 2
+  },
+  "GD2-SK-02": {
+   "vi": {
+    "title": "Nhảy cùng bé theo một bài hát",
+    "description": "Tôi bật một bài hát và cùng bé nhảy hoặc làm ba động tác vận động đơn giản."
+   },
+   "en": {
+    "title": "Dance together to one song",
+    "description": "I play one song and dance with the child or do three simple movement actions together."
+   },
+   "minutes": 2
+  },
+  "GD2-MQH-01": {
+   "vi": {
+    "title": "Nói lời cảm ơn cùng bé",
+    "description": "Tôi làm mẫu một lời cảm ơn cụ thể và mời bé nói hoặc vẫy tay cảm ơn."
+   },
+   "en": {
+    "title": "Say thank you together",
+    "description": "I model a specific thank-you and invite the child to say it or wave thanks."
+   },
+   "minutes": 1
+  },
+  "GD2-MQH-02": {
+   "vi": {
+    "title": "Hỏi trước khi mượn đồ chơi",
+    "description": "Tôi làm mẫu câu “Bạn cho mình mượn nhé?” rồi chờ bé thử hỏi."
+   },
+   "en": {
+    "title": "Ask before borrowing a toy",
+    "description": "I model “May I borrow that?” and wait for the child to try asking."
+   },
+   "minutes": 2
+  },
+  "GD2-HT-01": {
+   "vi": {
+    "title": "Kể lại một chi tiết trong sách",
+    "description": "Tôi cùng bé xem một trang sách rồi hỏi nhân vật đang làm gì."
+   },
+   "en": {
+    "title": "Retell one detail from a book",
+    "description": "I look at one book page with the child and ask what the character is doing."
+   },
+   "minutes": 2
+  },
+  "GD2-TC-01": {
+   "vi": {
+    "title": "Chia tiền vào ba lọ",
+    "description": "Tôi cùng bé chia một khoản tiền nhỏ vào lọ cho đi, tiêu và để dành."
+   },
+   "en": {
+    "title": "Sort money into three jars",
+    "description": "I sort a small amount of money with the child into giving, spending, and saving jars."
+   },
+   "minutes": 3
+  },
+  "GD2-HT-02": {
+   "vi": {
+    "title": "Cùng bé cất ba món đồ",
+    "description": "Tôi cùng bé chọn ba món đồ của bé và đặt chúng về đúng chỗ."
+   },
+   "en": {
+    "title": "Put away three things together",
+    "description": "I help the child choose three of their things and put them back in their places."
+   },
+   "minutes": 2
+  },
+  "GD3-NT-01": {
+   "vi": {
+    "title": "Nêu một điều biết ơn",
+    "description": "Tôi kể một điều mình biết ơn hôm nay rồi mời con kể một điều của con."
+   },
+   "en": {
+    "title": "Name one thing to appreciate",
+    "description": "I share one thing I appreciate today, then invite my child to name one of theirs."
+   },
+   "minutes": 2
+  },
+  "GD3-NT-02": {
+   "vi": {
+    "title": "Chọn một bước nhỏ cho mục tiêu",
+    "description": "Tôi cùng con chọn một hành động có thể làm trong hai phút để tiến gần mục tiêu."
+   },
+   "en": {
+    "title": "Choose one small step toward a goal",
+    "description": "I help my child choose an action they can do in two minutes toward their goal."
+   },
+   "minutes": 2
+  },
+  "GD3-SK-01": {
+   "vi": {
+    "title": "Cất thiết bị trước giờ ngủ",
+    "description": "Tôi cùng con đặt thiết bị ngoài phòng ngủ rồi chọn một hoạt động yên tĩnh."
+   },
+   "en": {
+    "title": "Put devices away before bed",
+    "description": "I put devices outside the bedroom with my child, then choose a quiet activity."
+   },
+   "minutes": 2
+  },
+  "GD3-SK-02": {
+   "vi": {
+    "title": "Tập một động tác trong một phút",
+    "description": "Tôi cùng con chọn một động tác của môn thể thao yêu thích và tập trong một phút."
+   },
+   "en": {
+    "title": "Practice one movement for a minute",
+    "description": "I help my child choose one movement from a favorite sport and practice it for a minute."
+   },
+   "minutes": 1
+  },
+  "GD3-MQH-01": {
+   "vi": {
+    "title": "Nghe hết rồi hỏi lại",
+    "description": "Tôi nghe con nói hết một ý rồi hỏi “Ý con là… đúng không?” để con xác nhận."
+   },
+   "en": {
+    "title": "Listen, then check what you heard",
+    "description": "I let my child finish one thought, then ask, “Do you mean…?” for them to confirm."
+   },
+   "minutes": 2
+  },
+  "GD3-MQH-02": {
+   "vi": {
+    "title": "Nêu một cách giúp đỡ của ai đó",
+    "description": "Tôi cùng con nghĩ đến một người đã giúp con và gọi tên việc người ấy đã làm."
+   },
+   "en": {
+    "title": "Name one way someone helped",
+    "description": "I help my child think of someone who helped them and name what that person did."
+   },
+   "minutes": 2
+  },
+  "GD3-HT-01": {
+   "vi": {
+    "title": "Tự trả lời một câu hỏi",
+    "description": "Tôi mời con đọc một đoạn ngắn, gấp sách lại và tự nói một điều con nhớ."
+   },
+   "en": {
+    "title": "Answer one question from memory",
+    "description": "I ask my child to read a short passage, close the book, and say one thing they remember."
+   },
+   "minutes": 3
+  },
+  "GD3-HT-02": {
+   "vi": {
+    "title": "Tập trung học trong năm phút",
+    "description": "Tôi cùng con chọn một việc học nhỏ, đặt hẹn giờ năm phút và để thiết bị sang bên."
+   },
+   "en": {
+    "title": "Focus on one task for five minutes",
+    "description": "I help my child choose one small study task, set a five-minute timer, and put devices aside."
+   },
+   "minutes": 5
+  },
+  "GD3-TC-01": {
+   "vi": {
+    "title": "Chia khoản tiền vào bốn phần",
+    "description": "Tôi cùng con ghi một khoản tiền và chia số đó cho đi, tiêu, để dành và đầu tư."
+   },
+   "en": {
+    "title": "Divide money into four parts",
+    "description": "I record an amount of money with my child and divide it into giving, spending, saving, and investing."
+   },
+   "minutes": 4
+  },
+  "GD3-TC-02": {
+   "vi": {
+    "title": "Nêu giá trị của một việc làm",
+    "description": "Tôi cùng con chọn một việc con có thể làm và nói rõ việc đó giúp ích cho ai."
+   },
+   "en": {
+    "title": "Name the value of one task",
+    "description": "I help my child choose one task they can do and say who it helps."
+   },
+   "minutes": 2
+  },
+  "GD4-NT-01": {
+   "vi": {
+    "title": "Ghi một điều mình có thể chọn",
+    "description": "Tôi cùng con ghi một việc đã xảy ra và một lựa chọn thuộc về con trong tình huống đó."
+   },
+   "en": {
+    "title": "Write one thing you can choose",
+    "description": "I help my child note what happened and one choice they had in that situation."
+   },
+   "minutes": 3
+  },
+  "GD4-NT-02": {
+   "vi": {
+    "title": "Viết một luật mình muốn giữ",
+    "description": "Tôi mời con viết một luật cá nhân ngắn và chọn thời điểm cụ thể để thực hiện."
+   },
+   "en": {
+    "title": "Write one personal rule to keep",
+    "description": "I invite my child to write one short personal rule and choose when to follow it."
+   },
+   "minutes": 3
+  },
+  "GD4-NT-03": {
+   "vi": {
+    "title": "Tạm dừng và thở ba nhịp",
+    "description": "Tôi cùng con dừng lại, thở chậm ba nhịp rồi chọn bước tiếp theo."
+   },
+   "en": {
+    "title": "Pause and take three breaths",
+    "description": "I pause with my child, take three slow breaths, and then choose the next step."
+   },
+   "minutes": 2
+  },
+  "GD4-SK-01": {
+   "vi": {
+    "title": "Đặt giờ ngủ của tối nay",
+    "description": "Tôi cùng con chọn giờ đi ngủ tối nay và đặt nhắc giờ để bắt đầu nghi thức."
+   },
+   "en": {
+    "title": "Set tonight's bedtime",
+    "description": "I help my child choose tonight's bedtime and set a reminder to start the routine."
+   },
+   "minutes": 2
+  },
+  "GD4-SK-02": {
+   "vi": {
+    "title": "Chọn một bữa ăn có đạm",
+    "description": "Tôi cùng con chọn một món ăn có nguồn đạm cho bữa tiếp theo."
+   },
+   "en": {
+    "title": "Choose one meal with protein",
+    "description": "I help my child choose a food with a protein source for their next meal."
+   },
+   "minutes": 2
+  },
+  "GD4-MQH-01": {
+   "vi": {
+    "title": "Giao một việc nhỏ trong nhóm",
+    "description": "Tôi cùng con chọn một việc cụ thể để giao cho một thành viên trong nhóm."
+   },
+   "en": {
+    "title": "Assign one small task in the group",
+    "description": "I help my child choose one specific task to assign to a group member."
+   },
+   "minutes": 2
+  },
+  "GD4-MQH-02": {
+   "vi": {
+    "title": "Nói phản hồi theo ba phần",
+    "description": "Tôi cùng con nói một sự việc, cảm xúc của con và điều con mong muốn."
+   },
+   "en": {
+    "title": "Give feedback in three parts",
+    "description": "I help my child state one fact, how they feel, and what they would like."
+   },
+   "minutes": 3
+  },
+  "GD4-HT-01": {
+   "vi": {
+    "title": "Chọn một việc học cần hoàn thành",
+    "description": "Tôi mời con viết một việc học nhỏ, bước đầu tiên và lúc con sẽ bắt đầu."
+   },
+   "en": {
+    "title": "Choose one study task to complete",
+    "description": "I invite my child to write one small study task, its first step, and when they will start."
+   },
+   "minutes": 3
+  },
+  "GD4-HT-02": {
+   "vi": {
+    "title": "Nêu một nguyên nhân có thể có",
+    "description": "Tôi cùng con chọn một sự việc và liệt kê một nguyên nhân có thể đứng phía sau."
+   },
+   "en": {
+    "title": "Name one possible cause",
+    "description": "I help my child choose an event and list one possible cause behind it."
+   },
+   "minutes": 3
+  },
+  "GD4-TC-01": {
+   "vi": {
+    "title": "Ghi lại một khoản thu hoặc chi",
+    "description": "Tôi cùng con ghi một khoản tiền vừa nhận hoặc đã chi vào sổ theo dõi."
+   },
+   "en": {
+    "title": "Record one income or expense",
+    "description": "I record one amount of money received or spent with my child in their tracker."
+   },
+   "minutes": 2
+  },
+  "GD5-NT-01": {
+   "vi": {
+    "title": "Viết một câu cho tuần này",
+    "description": "Tôi mời con viết một câu về phẩm chất con muốn rèn và một việc để thực hành tuần này."
+   },
+   "en": {
+    "title": "Write one sentence for this week",
+    "description": "I invite my child to write one quality to practice and one action for this week."
+   },
+   "minutes": 3
+  },
+  "GD5-NT-02": {
+   "vi": {
+    "title": "Viết một bước cho ước mơ",
+    "description": "Tôi cùng con ghi một điều con muốn đóng góp và một bước nhỏ có thể thử."
+   },
+   "en": {
+    "title": "Write one step toward a dream",
+    "description": "I help my child note one contribution they want to make and one small step to try."
+   },
+   "minutes": 3
+  },
+  "GD5-NT-03": {
+   "vi": {
+    "title": "Chọn một việc giúp ích cho ai đó",
+    "description": "Tôi cùng con chọn một việc nhỏ có thể làm cho một người và xác định người nhận."
+   },
+   "en": {
+    "title": "Choose one helpful action for someone",
+    "description": "I help my child choose one small action for someone and identify who will receive it."
+   },
+   "minutes": 2
+  },
+  "GD5-SK-01": {
+   "vi": {
+    "title": "Ghi một buổi tập vào lịch",
+    "description": "Tôi cùng con chọn một buổi tập sắp tới và ghi thời gian tập, ăn và nghỉ."
+   },
+   "en": {
+    "title": "Schedule one training session",
+    "description": "I help my child choose an upcoming training session and note when to train, eat, and rest."
+   },
+   "minutes": 3
+  },
+  "GD5-SK-02": {
+   "vi": {
+    "title": "Chuẩn bị một món đồ chăm sóc cá nhân",
+    "description": "Tôi cùng con chọn và chuẩn bị một món cần dùng cho việc chăm sóc cá nhân hôm nay."
+   },
+   "en": {
+    "title": "Prepare one personal-care item",
+    "description": "I help my child choose and prepare one item needed for personal care today."
+   },
+   "minutes": 2
+  },
+  "GD5-MQH-01": {
+   "vi": {
+    "title": "Chọn một cách hỗ trợ người khác",
+    "description": "Tôi cùng con nghĩ đến một người và chọn một hành động cụ thể để hỗ trợ họ."
+   },
+   "en": {
+    "title": "Choose one way to support someone",
+    "description": "I help my child think of someone and choose one specific action to support them."
+   },
+   "minutes": 2
+  },
+  "GD5-MQH-02": {
+   "vi": {
+    "title": "Viết một câu giới thiệu dự án",
+    "description": "Tôi mời con viết một câu đúng sự thật về dự án và điều dự án giúp ích cho ai."
+   },
+   "en": {
+    "title": "Write one sentence about a project",
+    "description": "I invite my child to write one truthful sentence about the project and whom it helps."
+   },
+   "minutes": 3
+  },
+  "GD5-HT-01": {
+   "vi": {
+    "title": "Viết một câu hỏi cho chủ đề đang học",
+    "description": "Tôi cùng con viết một câu hỏi cụ thể về chủ đề con đang tìm hiểu."
+   },
+   "en": {
+    "title": "Write one question about a topic",
+    "description": "I help my child write one specific question about the topic they are studying."
+   },
+   "minutes": 2
+  },
+  "GD5-TC-01": {
+   "vi": {
+    "title": "Ghi một khoản vào ngân sách",
+    "description": "Tôi cùng con ghi một khoản thu hoặc chi vào ngân sách cá nhân."
+   },
+   "en": {
+    "title": "Record one item in a budget",
+    "description": "I record one income or expense item in my child's personal budget with them."
+   },
+   "minutes": 2
+  },
+  "GD5-HT-03": {
+   "vi": {
+    "title": "Chọn một nghề để tìm hiểu",
+    "description": "Tôi cùng con chọn một nghề quan tâm và ghi một câu hỏi để hỏi người đang làm nghề đó."
+   },
+   "en": {
+    "title": "Choose a career to explore",
+    "description": "I help my child choose a career of interest and write one question for someone in that field."
+   },
+   "minutes": 3
+  }
+ }
+}

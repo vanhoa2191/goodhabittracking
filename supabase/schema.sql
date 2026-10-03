@@ -59,3 +59,4 @@
 \ir migrations/202610030002_caregiver_daily_progress.sql
 \ir migrations/202610040001_review_habits_batch.sql
 \ir migrations/202610040002_habit_graduation.sql
+\ir migrations/202610040003_habit_coach.sql

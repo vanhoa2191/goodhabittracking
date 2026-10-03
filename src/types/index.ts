@@ -91,6 +91,8 @@ export interface HabitActivity {
   graduationCheckDue?: string | null;
   /** Stars the task was worth before a parent stepped them down. */
   basePoints?: number | null;
+  /** The parent lets the child pick this task as one of the week's focus. */
+  offeredForFocus?: boolean;
   createdAt: string;
 }
 

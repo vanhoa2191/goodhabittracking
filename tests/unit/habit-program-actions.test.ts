@@ -284,3 +284,59 @@ describe('measuring the feature without measuring the family', () => {
     expect(experience().supportObservations).toHaveLength(1);
   });
 });
+
+describe('tries and the weekly focus', () => {
+  const tryId = '66666666-6666-4666-8666-666666666666';
+  const tryRow = (overrides: Record<string, unknown> = {}) => ({
+    id: tryId, family_id: familyId, child_id: childId, activity_id: activityId, kind: 'smaller',
+    started_on: '2026-09-30', ends_on: '2026-10-07', outcome: null, created_at: '2026-09-30T05:00:00.000Z', resolved_at: null, previous_values: null, ...overrides,
+  });
+  const json = (body: unknown) => () => new Response(JSON.stringify(body), { status: 200, headers: { 'content-type': 'application/json' } });
+
+  it('starts one try in a demo and does not start a second for the same habit while one is open', async () => {
+    const { actions, experience } = harness({ isDemoSession: true, isSignedInParent: false });
+    expect(await actions.startTry(activityId, childId, 'smaller')).toBe(true);
+    expect(await actions.startTry(activityId, childId, 'retime')).toBe(true);
+    expect(experience().habitTries).toHaveLength(1);
+    expect(experience().habitTries[0]).toMatchObject({ kind: 'smaller', outcome: null, started_on: '2026-09-30', ends_on: '2026-10-07' });
+  });
+
+  it('records the answer to a demo try once', async () => {
+    const { actions, experience } = harness({ isDemoSession: true, isSignedInParent: false });
+    await actions.startTry(activityId, childId, 'smaller');
+    const id = experience().habitTries[0]?.id ?? '';
+    expect(await actions.resolveTry(id, 'helped')).toBe(true);
+    expect(await actions.resolveTry(id, 'dropped')).toBe(true);
+    expect(experience().habitTries[0]).toMatchObject({ outcome: 'helped' });
+  });
+
+  it('saves a cloud try from the server answer and ignores a row for another child', async () => {
+    const ok = harness({}, json({ success: true, started: true, habitTry: tryRow() }));
+    expect(await ok.actions.startTry(activityId, childId, 'smaller')).toBe(true);
+    expect(ok.experience().habitTries).toHaveLength(1);
+    expect(ok.request).toHaveBeenCalledWith('/api/domain/experience', expect.objectContaining({ method: 'POST' }));
+
+    const refused = harness({}, () => new Response('{}', { status: 503 }));
+    expect(await refused.actions.startTry(activityId, childId, 'smaller')).toBe(false);
+    expect(refused.experience().habitTries).toHaveLength(0);
+  });
+
+  it('does nothing for a child device, which cannot start a try', async () => {
+    const { actions, request } = harness({ isSignedInParent: false, isPairedChild: true });
+    expect(await actions.startTry(activityId, childId, 'smaller')).toBe(false);
+    expect(await actions.resolveTry(tryId, 'helped')).toBe(false);
+    expect(request).not.toHaveBeenCalled();
+  });
+
+  it('keeps at most two habits as the week focus and posts the child choice to the child route', async () => {
+    const demo = harness({ isDemoSession: true, isSignedInParent: false });
+    await demo.actions.chooseFocus(childId, '2026-09-28', [activityId, 'a2', 'a3']);
+    expect(demo.experience().weeklyFocus[0]?.activity_ids).toHaveLength(2);
+
+    const row = { family_id: familyId, child_id: childId, week_start: '2026-09-28', activity_ids: [activityId], chosen_by: 'child', updated_at: '2026-09-30T05:00:00.000Z' };
+    const child = harness({ isSignedInParent: false, isPairedChild: true }, json({ success: true, weeklyFocus: row }));
+    expect(await child.actions.chooseFocus(childId, '2026-09-28', [activityId])).toBe(true);
+    expect(child.request).toHaveBeenCalledWith('/api/child/focus', expect.objectContaining({ body: JSON.stringify({ weekStart: '2026-09-28', activityIds: [activityId] }) }));
+    expect(child.experience().weeklyFocus).toHaveLength(1);
+  });
+});
