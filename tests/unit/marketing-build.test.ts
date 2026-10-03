@@ -270,6 +270,7 @@ describe('marketing static artifact', () => {
     expect(html).toMatch(/<h1>Bớt nhắc, để con tự làm việc nhỏ mỗi ngày<\/h1>/);
     expect(html).toContain('Ứng dụng thói quen cho bé 4–12 tuổi');
     expect(html).not.toContain('Từng thói quen nhỏ vẽ nên chân dung tốt đẹp của con</h1>');
+    expect(html).toContain('property="og:image:alt" content="Bớt nhắc, để con tự làm việc nhỏ mỗi ngày');
     expect(html.indexOf('Mỗi thói quen là một nét vẽ nên chân dung của con')).toBeGreaterThan(html.indexOf('id="cach-hoat-dong"'));
     expect(html).not.toMatch(/\b(số 1|top 1|#1)\b/i);
   });
