@@ -143,10 +143,13 @@ export function HabitProgressSummary({ childId, onOpenHabits }: { readonly child
                       </>
                     )}
                     {showIndependence && habit.trend.length > 0 && (
-                      <details className="text-xs">
-                        <summary className="flex min-h-11 cursor-pointer items-center gap-1 font-bold text-indigo-700 dark:text-indigo-300">{independence.trendTitle}<HelpTip topic="progress.supportTrend" /></summary>
-                        <HabitSupportTrend buckets={habit.trend} verdict={habit.trendVerdict} copy={independence} />
-                      </details>
+                      <div className="flex items-start gap-1 text-xs">
+                        <details className="min-w-0 flex-1">
+                          <summary className="flex min-h-11 cursor-pointer items-center font-bold text-indigo-700 dark:text-indigo-300">{independence.trendTitle}</summary>
+                          <HabitSupportTrend buckets={habit.trend} verdict={habit.trendVerdict} copy={independence} />
+                        </details>
+                        <HelpTip topic="progress.supportTrend" />
+                      </div>
                     )}
                   </li>
                 );
