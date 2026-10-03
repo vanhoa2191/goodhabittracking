@@ -16,14 +16,14 @@ describe('daily mascot letter', () => {
     expect(localDateKey(new Date(2026, 8, 24, 0, 1))).toBe('2026-09-24');
   });
 
-  it('provides a three-sentence personality letter in Vietnamese with English fallback', () => {
+  it('provides a three-sentence personality letter in Vietnamese and French', () => {
     const date = new Date(2026, 8, 23, 8, 0);
     const vietnamese = dailyLetterFor('mascot:turtle', 'vi', 'An', date);
-    const fallback = dailyLetterFor('mascot:turtle', 'fr', 'An', date);
+    const french = dailyLetterFor('mascot:turtle', 'fr', 'An', date);
     expect(vietnamese?.text).toContain('An');
     expect(vietnamese?.text.split(/[.!?] /).length).toBe(3);
-    expect(fallback?.text).toMatch(/^Hi An,/);
-    expect(fallback?.text.split(/[.!?] /).length).toBe(3);
+    expect(french?.text).toMatch(/^Bonjour An,/);
+    expect(french?.text.split(/[.!?] /).length).toBe(3);
   });
 
   it('keeps the stored personality even after the selected mascot changes', () => {
