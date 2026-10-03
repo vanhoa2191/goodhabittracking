@@ -2,9 +2,9 @@
 
 [← 6. Khoa học thói quen](06-khoa-hoc-thoi-quen.md) · [Mục lục](README.md) · [Tiếp: 8. Giới thiệu bạn bè →](08-gioi-thieu-ban-be.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Dùng thử 7 ngày](#dung-thu) · [Các gói](#cac-goi) · [Nơi mua](#noi-mua) · [Các bước thanh toán](#thanh-toan) · [Kích hoạt và đối soát](#kich-hoat) · [Cộng dồn thời gian](#cong-don) · [Mã tặng (coupon)](#coupon) · [Giảm giá cho gia đình được giới thiệu](#giam-gia) · [Hoàn tiền và hủy](#hoan-tien) · [Email gửi cho bạn](#email) · [Khi hết hạn](#het-han) · [Liên quan](#lien-quan)
+[Dùng thử 7 ngày](#dung-thu) · [Các gói](#cac-goi) · [Nơi mua](#noi-mua) · [Các bước thanh toán](#thanh-toan) · [Kích hoạt và đối soát](#kich-hoat) · [Cộng dồn thời gian](#cong-don) · [Mã tặng (coupon)](#coupon) · [Giảm giá cho gia đình được giới thiệu](#giam-gia) · [Hoàn tiền và hủy](#hoan-tien) · [Email gửi cho bạn](#email) · [Khi hết hạn](#het-han) · [Liên quan](#lien-quan)<!--/op-->
 
 <a id="dung-thu"></a>
 ## Dùng thử 7 ngày

@@ -2,9 +2,9 @@
 
 [← Mục lục](README.md) · [Tiếp: 2. Màn hình của bé →](02-man-hinh-be.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Ba cách vào ứng dụng](#cach-vao) · [Đăng nhập](#dang-nhap) · [Thiết lập gia đình](#thiet-lap) · [Thông tin khách hàng](#thong-tin) · [Vai trò](#vai-tro) · [Bản demo](#demo) · [Ngôn ngữ](#ngon-ngu) · [Tìm trợ giúp ngay trong ứng dụng](#tro-giup) · [Liên quan](#lien-quan)
+[Ba cách vào ứng dụng](#cach-vao) · [Đăng nhập](#dang-nhap) · [Thiết lập gia đình](#thiet-lap) · [Thông tin khách hàng](#thong-tin) · [Vai trò](#vai-tro) · [Bản demo](#demo) · [Ngôn ngữ](#ngon-ngu) · [Tìm trợ giúp ngay trong ứng dụng](#tro-giup) · [Liên quan](#lien-quan)<!--/op-->
 
 <a id="cach-vao"></a>
 ## Ba cách vào ứng dụng
@@ -79,7 +79,7 @@ Bộ hướng dẫn này nằm sẵn trong ứng dụng, ở hai dạng:
 - **Dấu ? cạnh từng mục.** Ở khu phụ huynh, cạnh tiêu đề của mỗi tính năng (duyệt việc, tín hiệu, mã PIN, mã ghép, thanh toán…) có một dấu **?** nhỏ. Rê chuột, chạm hoặc dùng phím Tab tới đó để đọc giải thích ngắn một hai câu. Bấm **Xem chi tiết** để mở đúng phần liên quan của hướng dẫn ngay trên màn hình, không rời khỏi chỗ đang làm; trong cửa sổ đó, bấm vào liên kết tới phần khác để đọc tiếp và nút **Quay lại** để trở về. Nhấn **Esc** hoặc chạm ra ngoài để đóng giải thích.
 - **Trang tài liệu riêng.** Nút **Tài liệu** trên thanh trên cùng (hoặc `Gia đình → Cài đặt → Mở tài liệu hướng dẫn`) mở trang `/docs`: danh sách các chương, ô **tìm kiếm** (gõ có dấu hay không dấu đều được), nhóm lối tắt **"Tôi muốn…"** cho các việc hay làm, và từng chương có mục lục riêng. Nút **Mở hướng dẫn đầy đủ** trong cửa sổ chi tiết cũng dẫn tới đúng vị trí trên trang này.
 
-Hướng dẫn đầy đủ hiện có bằng tiếng Việt; ở ngôn ngữ khác, dấu ? vẫn giải thích bằng tiếng Anh và có bản tóm tắt nhanh, còn phần chi tiết đọc bằng tiếng Việt.
+Hướng dẫn đầy đủ có tiếng Việt và các bản dịch (hiện có tiếng Anh); ngôn ngữ chưa có bản dịch thì dấu ? giải thích bằng tiếng Anh và phần chi tiết đọc bằng tiếng Việt, kèm một bản tóm tắt nhanh ở trang `/docs`.
 
 <a id="lien-quan"></a>
 ## Liên quan

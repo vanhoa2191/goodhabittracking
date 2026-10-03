@@ -2,9 +2,9 @@
 
 [← 8. Giới thiệu bạn bè](08-gioi-thieu-ban-be.md) · [Mục lục](README.md) · [Tiếp: 10. Quản trị và vận hành →](10-quan-tri-va-van-hanh.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Dữ liệu nào được lưu](#du-lieu) · [Ai thấy gì](#ai-thay) · [Mã ghép của bé](#ma-ghep) · [Mã PIN](#pin) · [Đồng thuận](#dong-thuan) · [Bảng xếp hạng công khai](#bxh-cong-khai) · [Chia sẻ cột mốc](#chia-se) · [Chương trình giới thiệu](#gioi-thieu-rieng-tu) · [Đo lường và nhắc việc](#do-luong) · [Tải về, xóa dữ liệu](#xoa-du-lieu) · [Biện pháp kỹ thuật](#ky-thuat) · [Giới hạn pháp lý](#phap-ly) · [Liên quan](#lien-quan)
+[Dữ liệu nào được lưu](#du-lieu) · [Ai thấy gì](#ai-thay) · [Mã ghép của bé](#ma-ghep) · [Mã PIN](#pin) · [Đồng thuận](#dong-thuan) · [Bảng xếp hạng công khai](#bxh-cong-khai) · [Chia sẻ cột mốc](#chia-se) · [Chương trình giới thiệu](#gioi-thieu-rieng-tu) · [Đo lường và nhắc việc](#do-luong) · [Tải về, xóa dữ liệu](#xoa-du-lieu) · [Biện pháp kỹ thuật](#ky-thuat) · [Giới hạn pháp lý](#phap-ly) · [Liên quan](#lien-quan)<!--/op-->
 
 Trang này giải thích bằng lời thường điều KidHabit làm để giữ an toàn cho dữ liệu của bé. Chi tiết kỹ thuật ở [Bảo mật và riêng tư](../security-privacy.md).
 

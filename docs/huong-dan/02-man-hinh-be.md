@@ -2,9 +2,9 @@
 
 [← 1. Bắt đầu](01-bat-dau.md) · [Mục lục](README.md) · [Tiếp: 3. Hôm nay và duyệt việc →](03-hom-nay-va-duyet-viec.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Bốn tab](#bon-tab) · [Nhiệm vụ trong ngày](#nhiem-vu) · [Hoàn thành, hoàn tác, để sau](#hoan-thanh) · [Chi tiết, đếm giờ, đọc to](#chi-tiet) · [Sao, cấp, chuỗi ngày](#sao-cap-chuoi) · [Huy hiệu](#huy-hieu) · [Quà](#qua) · [Bảng xếp hạng](#bang-xep-hang) · [Linh vật và màu](#linh-vat) · [Thư buổi sáng](#thu-buoi-sang) · [Nhật ký](#nhat-ky) · [Thành phố ước mơ](#thanh-pho) · [Giao diện theo tuổi](#giao-dien-tuoi) · [Tạm nghỉ](#tam-nghi-be) · [Liên quan](#lien-quan)
+[Bốn tab](#bon-tab) · [Nhiệm vụ trong ngày](#nhiem-vu) · [Hoàn thành, hoàn tác, để sau](#hoan-thanh) · [Chi tiết, đếm giờ, đọc to](#chi-tiet) · [Sao, cấp, chuỗi ngày](#sao-cap-chuoi) · [Huy hiệu](#huy-hieu) · [Quà](#qua) · [Bảng xếp hạng](#bang-xep-hang) · [Linh vật và màu](#linh-vat) · [Thư buổi sáng](#thu-buoi-sang) · [Nhật ký](#nhat-ky) · [Thành phố ước mơ](#thanh-pho) · [Giao diện theo tuổi](#giao-dien-tuoi) · [Tạm nghỉ](#tam-nghi-be) · [Liên quan](#lien-quan)<!--/op-->
 
 Bé vào màn hình này bằng [mã hoặc QR](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi), hoặc ba mẹ mở "Về màn hình của bé" ngay trong tài khoản phụ huynh. Bé chỉ thấy dữ liệu của chính mình.
 

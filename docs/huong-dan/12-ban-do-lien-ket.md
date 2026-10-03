@@ -2,9 +2,9 @@
 
 [← 11. Website và trang công khai](11-website-va-trang-cong-khai.md) · [Mục lục](README.md) · [Tiếp: 13. Thuật ngữ →](13-thuat-ngu.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Bản đồ liên kết](#ban-do) · [Ma trận phụ thuộc](#phu-thuoc) · [Hành trình xuyên suốt](#hanh-trinh) · [Một ngày điển hình](#mot-ngay) · [Xử lý sự cố](#su-co) · [Liên quan](#lien-quan)
+[Bản đồ liên kết](#ban-do) · [Ma trận phụ thuộc](#phu-thuoc) · [Hành trình xuyên suốt](#hanh-trinh) · [Một ngày điển hình](#mot-ngay) · [Xử lý sự cố](#su-co) · [Liên quan](#lien-quan)<!--/op-->
 
 Tài liệu này cho thấy các tính năng **nối với nhau thế nào**: tính năng nào cần tính năng nào, dữ liệu chảy ra sao, và một người dùng đi qua những tính năng nào trong một tình huống thật.
 

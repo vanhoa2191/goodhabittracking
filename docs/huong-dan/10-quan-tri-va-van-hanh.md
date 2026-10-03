@@ -2,9 +2,9 @@
 
 [← 9. Bảo mật và riêng tư](09-bao-mat-va-rieng-tu.md) · [Mục lục](README.md) · [Tiếp: 11. Website và trang công khai →](11-website-va-trang-cong-khai.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Vào trang quản trị](#admin) · [Vai trò và quyền](#quyen) · [Tổng quan](#tong-quan-admin) · [Khách hàng](#khach-hang) · [Thanh toán và hỗ trợ](#thanh-toan-admin) · [Coupon](#coupon-admin) · [Giới thiệu](#gioi-thieu-admin) · [Phễu kích hoạt](#pheu) · [Cấp quyền quản trị](#cap-quyen) · [Tác vụ chạy nền](#tac-vu-nen) · [Theo dõi sức khỏe](#suc-khoe) · [Cờ phát hành và cấu hình](#co-phat-hanh) · [Phát hành và cơ sở dữ liệu](#phat-hanh) · [Liên quan](#lien-quan)
+[Vào trang quản trị](#admin) · [Vai trò và quyền](#quyen) · [Tổng quan](#tong-quan-admin) · [Khách hàng](#khach-hang) · [Thanh toán và hỗ trợ](#thanh-toan-admin) · [Coupon](#coupon-admin) · [Giới thiệu](#gioi-thieu-admin) · [Phễu kích hoạt](#pheu) · [Cấp quyền quản trị](#cap-quyen) · [Tác vụ chạy nền](#tac-vu-nen) · [Theo dõi sức khỏe](#suc-khoe) · [Cờ phát hành và cấu hình](#co-phat-hanh) · [Phát hành và cơ sở dữ liệu](#phat-hanh) · [Liên quan](#lien-quan)<!--/op-->
 
 Tài liệu này dành cho đội vận hành và hỗ trợ. Trang quản trị khác hoàn toàn với khu phụ huynh: phụ huynh quản lý một gia đình, quản trị viên hỗ trợ nhiều khách hàng.
 

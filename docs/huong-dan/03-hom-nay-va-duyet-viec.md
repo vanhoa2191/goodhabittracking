@@ -2,9 +2,9 @@
 
 [← 2. Màn hình của bé](02-man-hinh-be.md) · [Mục lục](README.md) · [Tiếp: 4. Thiết kế thói quen →](04-thiet-ke-thoi-quen.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Cấu trúc khu phụ huynh](#cau-truc) · [Hôm nay của từng bé](#hom-nay) · [Việc và quà cần duyệt](#duyet) · [Ghi cách bé làm](#muc-ho-tro) · [Nhìn lại tuần](#nhin-lai-tuan) · [Tiến triển thói quen và gợi ý](#tien-trien) · [Thưởng hoặc trừ sao thủ công](#chinh-sao) · [Thống kê, in, chia sẻ](#thong-ke) · [Nhắc việc](#nhac-viec-ngan) · [Liên quan](#lien-quan)
+[Cấu trúc khu phụ huynh](#cau-truc) · [Hôm nay của từng bé](#hom-nay) · [Việc và quà cần duyệt](#duyet) · [Ghi cách bé làm](#muc-ho-tro) · [Nhìn lại tuần](#nhin-lai-tuan) · [Tiến triển thói quen và gợi ý](#tien-trien) · [Thưởng hoặc trừ sao thủ công](#chinh-sao) · [Thống kê, in, chia sẻ](#thong-ke) · [Nhắc việc](#nhac-viec-ngan) · [Liên quan](#lien-quan)<!--/op-->
 
 <a id="cau-truc"></a>
 ## Cấu trúc khu phụ huynh

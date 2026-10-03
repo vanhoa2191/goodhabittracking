@@ -2,9 +2,9 @@
 
 [← 5. Gia đình và cài đặt](05-gia-dinh-va-cai-dat.md) · [Mục lục](README.md) · [Tiếp: 7. Gói và thanh toán →](07-goi-va-thanh-toan.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Nguyên tắc](#nguyen-tac) · [Khung 47 thói quen](#khung) · [16 chân dung và 7 bố thí](#chan-dung) · [Bốn pha của một thói quen](#bon-pha) · [Logic gợi ý trong ứng dụng](#logic) · [Bảng luật gợi ý](#goi-y) · [Điều ứng dụng không tuyên bố](#khong-tuyen-bo) · [Các tính năng dùng những kiến thức này](#ung-dung) · [Liên quan](#lien-quan)
+[Nguyên tắc](#nguyen-tac) · [Khung 47 thói quen](#khung) · [16 chân dung và 7 bố thí](#chan-dung) · [Bốn pha của một thói quen](#bon-pha) · [Logic gợi ý trong ứng dụng](#logic) · [Bảng luật gợi ý](#goi-y) · [Điều ứng dụng không tuyên bố](#khong-tuyen-bo) · [Các tính năng dùng những kiến thức này](#ung-dung) · [Liên quan](#lien-quan)<!--/op-->
 
 Tài liệu này giải thích **vì sao** ứng dụng làm như vậy, để ba mẹ hiểu các gợi ý và biết khi nào nên làm khác. Bản đầy đủ có dẫn nguồn nằm ở [Khoa học thói quen và logic thích ứng](../habit-science-and-adaptive-logic.md); mọi nội dung công khai được đối chiếu ở [sổ kiểm chứng](../claims-ledger.md).
 

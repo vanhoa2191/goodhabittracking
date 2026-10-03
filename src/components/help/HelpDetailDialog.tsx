@@ -6,6 +6,7 @@ import { useEffect, useId, useMemo, useState } from 'react';
 import { GuideContent } from '@/components/guide/GuideContent';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { loadGuideChapter } from '@/lib/guide/guide-client';
+import { guideLocaleFor } from '@/lib/guide/guide-locale';
 import { guideHref, sectionWithChildren, type GuideTarget } from '@/lib/guide/guide-sections';
 import type { GuideChapter } from '@/lib/guide/guide-types';
 import { useTranslation } from '@/lib/i18n/context';
@@ -23,6 +24,7 @@ type Load = { readonly kind: 'loading' } | { readonly kind: 'failed' } | { reado
 export function HelpDetailDialog({ title, start, onClose }: Props) {
   const { language } = useTranslation();
   const copy = getGuideCopy(language);
+  const locale = guideLocaleFor(language);
   const titleId = useId();
   const [history, setHistory] = useState<readonly GuideTarget[]>([start]);
   const target = history[history.length - 1] as GuideTarget;
@@ -30,11 +32,11 @@ export function HelpDetailDialog({ title, start, onClose }: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    void loadGuideChapter(target.slug)
+    void loadGuideChapter(target.slug, locale)
       .then((chapter) => { if (!cancelled) setLoaded({ slug: target.slug, result: chapter }); })
       .catch(() => { if (!cancelled) setLoaded({ slug: target.slug, result: 'failed' }); });
     return () => { cancelled = true; };
-  }, [target.slug]);
+  }, [target.slug, locale]);
 
   // Until the chapter named by the current target has arrived, show "loading" (this also covers moving to another chapter).
   const state = useMemo<Load>(() => (

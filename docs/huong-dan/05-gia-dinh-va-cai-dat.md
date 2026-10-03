@@ -2,9 +2,9 @@
 
 [← 4. Thiết kế thói quen](04-thiet-ke-thoi-quen.md) · [Mục lục](README.md) · [Tiếp: 6. Khoa học thói quen →](06-khoa-hoc-thoi-quen.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Hồ sơ các con](#ho-so) · [Ghép thiết bị cho bé](#ghep-thiet-bi) · [Quản lý thiết bị](#thiet-bi) · [Mời người chăm sóc](#nguoi-cham-soc) · [Cài đặt: các nhóm](#cai-dat) · [Tài khoản và đồng bộ](#tai-khoan) · [Riêng tư và thông báo](#rieng-tu) · [Nhắc việc](#nhac-viec) · [Giao diện](#giao-dien) · [Mã PIN](#pin) · [Tạm nghỉ](#tam-nghi) · [Cài ứng dụng](#pwa) · [Dữ liệu gia đình](#du-lieu) · [Liên quan](#lien-quan)
+[Hồ sơ các con](#ho-so) · [Ghép thiết bị cho bé](#ghep-thiet-bi) · [Quản lý thiết bị](#thiet-bi) · [Mời người chăm sóc](#nguoi-cham-soc) · [Cài đặt: các nhóm](#cai-dat) · [Tài khoản và đồng bộ](#tai-khoan) · [Riêng tư và thông báo](#rieng-tu) · [Nhắc việc](#nhac-viec) · [Giao diện](#giao-dien) · [Mã PIN](#pin) · [Tạm nghỉ](#tam-nghi) · [Cài ứng dụng](#pwa) · [Dữ liệu gia đình](#du-lieu) · [Liên quan](#lien-quan)<!--/op-->
 
 Khu **Gia đình** có hai mục: `Gia đình → Hồ sơ các con` và `Gia đình → Cài đặt`.
 
