@@ -126,7 +126,8 @@ jobs:
           fi
           expected="${GITHUB_SHA:0:12}"
           for attempt in $(seq 1 18); do
-            body="$(curl --fail --silent --show-error --max-time 15 \
+            # No --fail: a 503 body names the failing check, and the last attempt prints it.
+            body="$(curl --silent --show-error --max-time 15 \
               --header "Authorization: Bearer $OPERATIONS_CRON_SECRET" \
               https://app.kidhabithero.com/api/health || true)"
             if printf '%s' "$body" | jq -e --arg version "$expected" \
