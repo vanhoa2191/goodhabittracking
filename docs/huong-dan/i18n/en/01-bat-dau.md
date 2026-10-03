@@ -9,13 +9,13 @@
 <a id="cach-vao"></a>
 ## Three ways to enter the app
 
-When you open `app.kidhabithero.com` for the first time, the screen “How would you like to enter KidHabit?” offers three options. The parent and child areas are separate: children never see payments or family settings.
+When you open `app.kidhabithero.com` for the first time, the screen “How would you like to enter KidHabit?” offers three options: two buttons in view and one folded block for children. The parent and child areas are separate: children never see payments or family settings.
 
 | Entry option | For | What happens |
 |---|---|---|
-| **Parent sign in with Google** | Parents and guardians | Opens the family dashboard ([3](03-hom-nay-va-duyet-viec.md)). The first time, you will go through [family setup](#thiet-lap). |
-| **Child scans QR or enters code** | Children | The device is paired with exactly one child and opens the [child screen](02-man-hinh-be.md) directly. The child does not need an account. |
-| **Explore the demo** | Everyone | Uses sample data and does not require an account ([demo](#demo)). |
+| **Continue as a parent** (signs in with Google) | Parents and guardians | Opens the family dashboard ([3](03-hom-nay-va-duyet-viec.md)). The first time, you will go through [family setup](#thiet-lap). |
+| **Is this a child’s device?** (open it, then choose “Enter code or scan QR”) | Children | The device is paired with exactly one child and opens the [child screen](02-man-hinh-be.md) directly. The child does not need an account. |
+| **Explore the demo** (in view, below the parent button) | Everyone | Uses sample data and does not require an account ([demo](#demo)). |
 
 Parents who are already signed in go straight to the dashboard. To view the landing page again, choose “Home” or “View the Landing Page”. Once a child’s device has been paired, it always opens the child interface directly and does not show the parent dashboard or pricing page.
 
@@ -23,7 +23,7 @@ Parents who are already signed in go straight to the dashboard. To view the land
 ## Sign in
 
 - **Google** is the main sign-in method for parents.
-- **A one-time code sent by email** is the second option and is currently **turned off** until enabled<!--op--> (the `emailCodeLogin` flag, [how to enable it](../deployment.md))<!--/op-->. When enabled, the “Or get a sign-in code by email” field appears next to the Google button. Parents enter their email, receive a short numeric code, and enter it to sign in. They can request another code after a few seconds; too many requests will require waiting a few minutes.
+- **A one-time code sent by email** is the second option and is currently **turned off** until enabled<!--op--> (the `emailCodeLogin` flag, [how to enable it](../deployment.md))<!--/op-->. When enabled, a folded “Other ways to sign in” block appears on the entry screen; opening it shows the “Or get a sign-in code by email” field. With the flag off, the block does not exist. Parents enter their email, receive a short numeric code, and enter it to sign in. They can request another code after a few seconds; too many requests will require waiting a few minutes.
 - If sign-in fails, the app shows a brief message and a retry button. Nothing is saved.
 
 Parents who sign in through a referral link (`?ref=`) are automatically recorded as referrals ([8](08-gioi-thieu-ban-be.md#ghi-nhan)). People invited as caregivers sign in with Google and then accept the invitation ([5](05-gia-dinh-va-cai-dat.md#nguoi-cham-soc)).

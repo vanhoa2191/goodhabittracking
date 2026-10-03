@@ -68,6 +68,7 @@ export default function Home() {
     setIsPortraitModalOpen,
     startDemoSession,
     openConnectModal,
+    isConnectModalOpen,
   } = useAppStore();
   const { t, language } = useTranslation();
   const demoCopy = demoSessionCopy[language];
@@ -135,6 +136,7 @@ export default function Home() {
           {renderGateway ? (
             <AppEntryGate
               isLoading={!isEntryReady}
+              isPairingOpen={isConnectModalOpen}
               language={language}
               marketingHomeUrl={marketingOrigin.href}
               onOpenPairing={openConnectModal}
