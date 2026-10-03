@@ -4,7 +4,7 @@
 
 <!--op-->## In this guide
 
-[Parent area structure](#cau-truc) · [Each child’s today](#hom-nay) · [Tasks and rewards to approve](#duyet) · [Record how your child did it](#muc-ho-tro) · [Look back at the week](#nhin-lai-tuan) · [Habit progress and suggestions](#tien-trien) · [Manually add or deduct stars](#chinh-sao) · [Statistics, printing, and sharing](#thong-ke) · [Reminders](#nhac-viec-ngan) · [Related](#lien-quan)<!--/op-->
+[Parent area structure](#cau-truc) · [Each child’s today](#hom-nay) · [Tasks and rewards to approve](#duyet) · [The “Needs you” strip and approving several tasks](#can-xu-ly) · [Record how your child did it](#muc-ho-tro) · [Look back at the week](#nhin-lai-tuan) · [Habit progress and suggestions](#tien-trien) · [Manually add or deduct stars](#chinh-sao) · [Statistics, printing, and sharing](#thong-ke) · [Reminders](#nhac-viec-ngan) · [Related](#lien-quan)<!--/op-->
 
 <a id="cau-truc"></a>
 ## Parent area structure
@@ -41,6 +41,17 @@ The Approvals section has two lists:
 2. **Reward requests from children**: what your child requested, the stars already deducted, and when the request was made. Flow: child requests → parent **approves** → parent **gives the reward** → done. **Rejecting** returns the stars to your child ([your child’s rewards](02-man-hinh-be.md#qua)).
 
 Approving or rejecting a task, and approving or giving a reward, requires the [PIN](05-gia-dinh-va-cai-dat.md#pin) if your family has set one. If your child marks a task complete directly on the parent device, no PIN is needed. If [reminders](#nhac-viec-ngan) are enabled, the page also shows a “You have N items waiting for review” banner.
+
+<a id="can-xu-ly"></a>
+## The “Needs you” strip and approving several tasks
+
+This is being switched on gradually; if you do not see it in the app yet, it has not reached your version.
+
+The top of the Approvals section has a **Needs you** strip that gathers everything waiting for you: tasks to approve, reward requests and habit adjustment suggestions, each with a count. Tap an item to jump straight to where you act on it. When nothing is waiting, the strip says “Nothing needs you right now”.
+
+In the list of tasks waiting for approval, every row has a tick box. **Nothing is ticked for you**: choose tasks one by one, or tap **Select all** (up to 50 tasks at a time). The bar at the bottom says how many tasks of which child you have chosen, then **Approve N tasks** or **Reject N tasks**. The whole batch needs the [PIN](05-gia-dinh-va-cai-dat.md#pin) only once. A task that was already approved or rejected (for example by the other parent) is skipped and reported, so tapping twice never gives the stars twice.
+
+If you installed the app to your home screen and turned on [reminders](#nhac-viec-ngan), the app icon shows **the number of tasks and rewards waiting** on devices that support icon badges (not every device does; it shows only a number, never a child’s name or a task). Pressing and holding the icon also offers the shortcuts **Approvals** and **User guide**. The web app has no home-screen widget of its own.
 
 <a id="muc-ho-tro"></a>
 ## Record how your child did it

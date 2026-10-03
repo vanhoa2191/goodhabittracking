@@ -1,6 +1,6 @@
 // The ids of every help topic. Kept apart from the texts so a screen can name a topic without loading them.
 export const HELP_TOPIC_IDS = [
-  'today.card',
+  'today.card', 'today.actions',
   'approvals.tasks', 'approvals.rewards', 'support.prompt', 'progress.summary', 'weekly.review',
   'stats.weekly', 'stats.print', 'stats.journal', 'stats.share', 'stats.deleteFamily',
   'habits.inUse', 'habits.library', 'habits.programs', 'habits.framework', 'habits.handbook', 'habits.cue', 'habits.programStart',
@@ -14,3 +14,11 @@ export const HELP_TOPIC_IDS = [
 ] as const;
 
 export type HelpTopicId = (typeof HELP_TOPIC_IDS)[number];
+
+// Topics added since the last translation pass. A language without them reads the English text until the pass is done;
+// the ones listed here are the only ones a translation table may leave out.
+export const HELP_TOPICS_AWAITING_TRANSLATION = ['today.actions'] as const satisfies readonly HelpTopicId[];
+type AwaitingTranslation = (typeof HELP_TOPICS_AWAITING_TRANSLATION)[number];
+
+export type HelpTranslationTable<Text> = Readonly<Record<Exclude<HelpTopicId, AwaitingTranslation>, Text>>
+  & Readonly<Partial<Record<AwaitingTranslation, Text>>>;

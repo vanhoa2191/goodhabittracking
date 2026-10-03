@@ -1,7 +1,7 @@
-import type { HelpTopicId } from './help-topic-id';
+import type { HelpTranslationTable } from './help-topic-id';
 import type { HelpText } from './help-topics';
 
-export const HELP_TOPICS_KO: Readonly<Record<HelpTopicId, HelpText>> = {
+export const HELP_TOPICS_KO: HelpTranslationTable<HelpText> = {
   'today.card': { title: '자녀의 오늘', text: '오늘 예정된 미션 중 완료한 수, 연속 달성 기록, 부모님이 해야 할 일을 요약합니다. 자녀가 여러 명이면 위의 행에서 자녀를 선택하세요.' },
   'approvals.tasks': { title: '승인 대기 중인 미션', text: '자녀가 완료로 표시했고 부모 승인이 필요하도록 설정한 미션입니다. 승인하면 별을 주고, 반려하면 별을 주지 않습니다. 설정했다면 PIN이 필요합니다.' },
   'approvals.rewards': { title: '선물 요청', text: '자녀가 요청한 선물입니다. 요청할 때 별이 차감됩니다. 승인한 뒤 선물을 주세요. 반려하면 별이 자녀에게 돌아갑니다.' },

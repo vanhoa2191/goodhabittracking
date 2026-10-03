@@ -1,7 +1,7 @@
-import type { HelpTopicId } from './help-topic-id';
+import type { HelpTranslationTable } from './help-topic-id';
 import type { HelpText } from './help-topics';
 
-export const HELP_TOPICS_FR: Readonly<Record<HelpTopicId, HelpText>> = {
+export const HELP_TOPICS_FR: HelpTranslationTable<HelpText> = {
   'today.card': { title: 'Aujourd’hui de votre enfant', text: 'Résumé de la journée : missions terminées sur celles prévues, série en cours et actions nécessaires de votre part. Avec plusieurs enfants, choisissez-en un dans la rangée ci-dessus.' },
   'approvals.tasks': { title: 'Missions en attente de validation', text: 'Missions que votre enfant a marquées comme terminées et que vous avez définies comme « nécessitant une validation ». Appuyez sur Valider pour donner les étoiles ; Refuser n’en donne aucune. Votre code PIN est demandé si vous en avez défini un.' },
   'approvals.rewards': { title: 'Demandes de cadeaux', text: 'Cadeaux demandés par votre enfant ; les étoiles ont été déduites au moment de la demande. Validez, puis remettez le cadeau. En cas de refus, les étoiles lui sont rendues.' },

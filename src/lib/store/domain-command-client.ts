@@ -6,8 +6,15 @@ import {
   type DomainCommand,
 } from '@/lib/domain/commands';
 
+const reviewedLogSchema = z.object({
+  logId: z.string().uuid(),
+  status: z.enum(['approved', 'rejected', 'already_reviewed', 'not_found']),
+  pointsAwarded: z.number().int().optional(),
+});
+
 const domainCommandResultSchema = z.object({
   status: z.enum([
+    'reviewed',
     'completed',
     'pending_approval',
     'duplicate',
@@ -28,6 +35,7 @@ const domainCommandResultSchema = z.object({
   logId: z.string().uuid().optional(),
   redemptionId: z.string().uuid().optional(),
   pointsAwarded: z.number().int().optional(),
+  results: z.array(reviewedLogSchema).optional(),
 });
 
 const domainCommandResponseSchema = z.discriminatedUnion('success', [

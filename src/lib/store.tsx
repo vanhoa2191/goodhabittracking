@@ -33,7 +33,7 @@ import type { ExperienceState, FamilyPausePeriod } from './experience-state';
 import { generateAgeAdaptedHabits } from './wit-framework';
 import type { User } from '@supabase/supabase-js';
 import { createActivityActions } from './store/activity-actions';
-import { createHabitActions } from './store/habit-actions';
+import { createHabitActions, type BatchReviewOutcome } from './store/habit-actions';
 import { resolveActiveChildId } from './store/active-child';
 import { createProfileActions } from './store/profile-actions';
 import type { ProfileCreateResult } from './store/profile-actions';
@@ -175,6 +175,7 @@ interface AppStoreContextType {
   toggleActivity: (activityId: string, dateStr: string) => Promise<boolean>;
   approveLog: (logId: string) => void;
   rejectLog: (logId: string) => void;
+  reviewLogs: (logIds: readonly string[], decision: 'approve' | 'reject') => Promise<BatchReviewOutcome | null>;
 
   rewards: Reward[];
   createReward: (reward: Omit<Reward, 'id' | 'createdAt'>) => Promise<boolean>;
@@ -999,7 +1000,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     syncCloudFamily: syncFromSupabase,
   });
 
-  const { approveLog, rejectLog, toggleActivity } = createHabitActions({
+  const { approveLog, rejectLog, reviewLogs, toggleActivity } = createHabitActions({
     cloud: {
       currentUser,
       familyId,
@@ -1313,6 +1314,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         toggleActivity,
         approveLog,
         rejectLog,
+        reviewLogs,
 
         rewards,
         createReward,

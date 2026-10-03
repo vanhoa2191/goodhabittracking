@@ -13,6 +13,7 @@ import { approvalLagBucket, trackProductEvent } from '@/lib/product-analytics';
 import type { ProductEventSink } from '@/lib/product-analytics';
 import { setDeferredTask } from '@/lib/experience-state';
 import type { ExperienceState } from '@/lib/experience-state';
+import { MAX_BATCH_REVIEW } from '@/lib/domain/commands';
 import { requestChildDomainCommand, requestDomainCommand } from './domain-command-client';
 import { approvePendingLog, rejectPendingLog } from './local-domain-actions';
 import { toggleLocalHabit } from './local-habit-actions';
@@ -51,6 +52,14 @@ type HabitActions = {
   readonly toggleActivity: (activityId: string, date: string) => Promise<boolean>;
   readonly approveLog: (logId: string) => void;
   readonly rejectLog: (logId: string) => void;
+  readonly reviewLogs: (logIds: readonly string[], decision: 'approve' | 'reject') => Promise<BatchReviewOutcome | null>;
+};
+
+/** What a batch review did, counted per log so the screen can say how many were taken and how many were already handled. */
+export type BatchReviewOutcome = {
+  readonly approved: number;
+  readonly rejected: number;
+  readonly skipped: number;
 };
 
 // Why the last tick could not be saved, as a short code the child screen shows next to its message, so a report
@@ -284,6 +293,49 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
       dependencies.state.setProfiles(approved.profiles);
       trackProductEvent({ event: 'habit_reviewed', decision: 'approved', approvalLag: approvalLagBucket(log.completedAt), mode: 'local' }, dependencies.analyticsSink);
       sounds.playTaskComplete();
+    },
+    reviewLogs: async (logIds, decision) => {
+      const ids = [...new Set(logIds)].slice(0, MAX_BATCH_REVIEW);
+      if (ids.length === 0) return { approved: 0, rejected: 0, skipped: 0 };
+      if (dependencies.isDemoSession) {
+        const pending = ids.filter((id) => dependencies.state.logs.some((log) => log.id === id && log.status === 'pending_approval'));
+        if (decision === 'approve') {
+          let logs = [...dependencies.state.logs];
+          let profiles = [...dependencies.state.profiles];
+          for (const id of pending) {
+            const approved = approvePendingLog(logs, profiles, dependencies.state.activities, id);
+            logs = approved.logs;
+            profiles = approved.profiles;
+          }
+          dependencies.state.setLogs(logs);
+          dependencies.state.setProfiles(profiles);
+          sounds.playTaskComplete();
+        } else {
+          dependencies.state.setLogs((previous) => pending.reduce((current, id) => rejectPendingLog(current, id), previous));
+          sounds.playClick();
+        }
+        trackProductEvent({ event: 'habit_reviewed', decision: decision === 'approve' ? 'approved' : 'rejected', approvalLag: 'unknown', mode: 'local' }, dependencies.analyticsSink);
+        return { approved: decision === 'approve' ? pending.length : 0, rejected: decision === 'reject' ? pending.length : 0, skipped: ids.length - pending.length };
+      }
+      const user = cloudUser();
+      if (!user) return null;
+      try {
+        const result = await requestDomainCommand({ type: 'reviewHabits', logIds: ids, decision });
+        const rows = result.results ?? [];
+        const outcome: BatchReviewOutcome = {
+          approved: rows.filter((row) => row.status === 'approved').length,
+          rejected: rows.filter((row) => row.status === 'rejected').length,
+          skipped: rows.filter((row) => row.status === 'already_reviewed' || row.status === 'not_found').length,
+        };
+        await dependencies.cloud.syncCloudFamily(user);
+        if (outcome.approved + outcome.rejected > 0) {
+          trackProductEvent({ event: 'habit_reviewed', decision: outcome.approved > 0 ? 'approved' : 'rejected', approvalLag: 'unknown', mode: 'cloud' }, dependencies.analyticsSink);
+        }
+        return outcome;
+      } catch (error) {
+        console.error('Reviewing habits failed:', error instanceof Error ? error.message : 'unknown');
+        return null;
+      }
     },
     rejectLog: (logId) => {
       if (!dependencies.isDemoSession) {

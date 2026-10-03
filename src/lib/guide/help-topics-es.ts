@@ -1,7 +1,7 @@
-import type { HelpTopicId } from './help-topic-id';
+import type { HelpTranslationTable } from './help-topic-id';
 import type { HelpText } from './help-topics';
 
-export const HELP_TOPICS_ES: Readonly<Record<HelpTopicId, HelpText>> = {
+export const HELP_TOPICS_ES: HelpTranslationTable<HelpText> = {
   'today.card': { title: 'El día de tu hijo', text: 'Resumen de hoy: tareas completadas de las programadas, racha y lo que necesita tu ayuda. Si tienes varios niños, elige uno en la fila superior.' },
   'approvals.tasks': { title: 'Tareas pendientes de aprobación', text: 'Tareas que tu hijo marcó como hechas y configuraste como «requieren aprobación». Pulsa Aprobar para darle las estrellas; Rechazar no le da ninguna. Requiere tu PIN si lo configuraste.' },
   'approvals.rewards': { title: 'Solicitudes de recompensas', text: 'Recompensas que tu hijo pidió; las estrellas se descontaron al solicitarlas. Aprueba y entrégala. Si rechazas, las estrellas vuelven a su cuenta.' },
