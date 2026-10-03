@@ -51,6 +51,8 @@ Duyệt hoặc từ chối việc, duyệt hoặc trao quà đều cần [mã PI
 
 Trong danh sách việc chờ duyệt, mỗi dòng có ô chọn. **Không có ô nào được tick sẵn**: bạn tự chọn từng việc, hoặc bấm **Chọn tất cả** (tối đa 50 việc mỗi lần). Thanh phía dưới ghi rõ bạn đã chọn bao nhiêu việc của bé nào, rồi **Duyệt N việc** hoặc **Từ chối N việc**. Cả lô chỉ cần [mã PIN](05-gia-dinh-va-cai-dat.md#pin) một lần. Việc đã được duyệt hoặc từ chối trước đó (ví dụ bởi người còn lại trong nhà) sẽ được bỏ qua và báo lại, nên bấm hai lần không cộng sao hai lần.
 
+Khi bé đã quen các thói quen đầu của một [bộ thói quen](04-thiet-ke-thoi-quen.md#chuong-trinh) (đang giảm nhắc hoặc đã thành nếp) và còn chỗ dưới giới hạn thói quen mới theo tuổi, dải này gợi ý **thêm thói quen tiếp theo** của bộ đó. Bạn chọn **Thêm bước tiếp theo** để mở lại ba bước của bộ, hoặc **Để sau** (ẩn 14 ngày). Ứng dụng không tự thêm gì.
+
 Nếu bạn đã cài ứng dụng lên màn hình chính và bật [nhắc việc](#nhac-viec-ngan), biểu tượng ứng dụng hiện **số việc và quà đang chờ** trên các thiết bị hỗ trợ huy hiệu (không phải thiết bị nào cũng có; chỉ hiện số, không hiện tên bé hay việc). Nhấn giữ biểu tượng còn có lối tắt **Duyệt việc** và **Hướng dẫn sử dụng**. Ứng dụng web không có tiện ích (widget) riêng trên màn hình chính.
 
 <a id="muc-ho-tro"></a>
