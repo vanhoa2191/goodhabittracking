@@ -50,7 +50,7 @@ Liên kết gói không hợp lệ (cũ hoặc thiếu thông tin) sẽ hiện "
 
 Thanh toán qua **PayOS (VietQR)**:
 
-1. Chọn gói → đăng nhập Google nếu chưa → "Tiếp tục thanh toán". Nhập và áp dụng [mã giới thiệu](08-gioi-thieu-ban-be.md) nếu có, rồi bấm **"Tiếp tục tạo đơn thanh toán"**. Trong lúc gửi mã, nút tạo đơn bị khóa. Mã chỉ được nhập trước khi tạo QR vì số tiền được máy chủ tính khi tạo đơn; cửa sổ này không tạo lại đơn sau khi áp dụng mã.
+1. Chọn gói → đăng nhập Google nếu chưa → "Tiếp tục thanh toán". Nhập họ tên và số điện thoại nếu hồ sơ chưa đủ; thông tin được nhớ cho các lần sau. Nhận ưu đãi là tùy chọn, mặc định tắt. Tiếp theo xác nhận điều khoản nếu được yêu cầu, rồi nhập mã giới thiệu chỉ khi gia đình đủ điều kiện. Trong lúc gửi mã, nút tạo đơn bị khóa. Mã chỉ được nhập trước khi tạo QR vì số tiền được máy chủ tính khi tạo đơn; cửa sổ này không tạo lại đơn sau khi áp dụng mã.
 2. Màn hình thanh toán hiện **mã VietQR** và thông tin chuyển khoản: tên người thụ hưởng, ngân hàng, số tài khoản, **số tiền chính xác** và **nội dung chuyển khoản (bắt buộc)**. Có nút sao chép từng mục, nút **Tải mã QR về máy** (để mở app ngân hàng và chọn quét ảnh trong thư viện), và đường dẫn mở trang thanh toán bảo mật của PayOS. Nếu sao chép thất bại, giữ và chọn nội dung để sao chép thủ công. Không có đồng hồ đếm ngược vì máy chủ không cưỡng chế hạn thanh toán 15 phút.
 3. Quét bằng app ngân hàng hoặc MoMo. **Giữ đúng số tiền và nội dung chuyển khoản.**
 4. Bấm **"Tôi đã chuyển khoản"** nếu cần; ứng dụng tự kiểm tra trạng thái. Lỗi kiểm tra được thông báo bằng ngôn ngữ đang chọn và ứng dụng vẫn tiếp tục kiểm tra tự động. Khi xong hiện "Nâng cấp thành công" và gói được mở ngay.

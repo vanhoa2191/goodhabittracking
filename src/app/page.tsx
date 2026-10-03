@@ -21,9 +21,6 @@ const CheckoutModal = dynamic(() => import('@/components/CheckoutModal').then((m
 const OnboardingModal = dynamic(() => import('@/components/OnboardingModal').then((module) => module.OnboardingModal));
 const Portrait16Modal = dynamic(() => import('@/components/Portrait16Modal').then((module) => module.Portrait16Modal));
 
-// The profile prompt is shown once, right after a first sign-in, so its text and code load only when it is needed.
-const CustomerProfilePrompt = dynamic(() => import('@/components/CustomerProfilePrompt').then((module) => module.CustomerProfilePrompt));
-
 const IN_APP_SESSION_KEY = 'kidhabit_in_app';
 const DEMO_SESSION_KEY = 'kidhabit_demo_session';
 const IN_APP_SESSION_EVENT = 'kidhabit-in-app-change';
@@ -198,7 +195,6 @@ export default function Home() {
         isOpen={isPortraitModalOpen}
         onClose={() => setIsPortraitModalOpen(false)}
       />
-      <CustomerProfilePrompt key={currentUserId ?? 'signed-out'} userId={currentUserId} suppressed={!isEntryReady || familyRole === 'caregiver' || isOnboardingOpen} />
     </div>
   );
 }

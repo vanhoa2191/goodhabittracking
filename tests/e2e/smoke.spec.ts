@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { installCloudFamilyFixture } from './cloud-family-fixture';
+import { completeCheckoutProfile, installCustomerProfileFixture } from './customer-profile-fixture';
 import { getVisiblePricingOpener } from './open-pricing';
 import { setupOrUnlockParent } from './pin-helper';
 
@@ -163,6 +164,8 @@ test('demo reward request can be delivered by a parent in one visible action', a
 });
 
 test('payment status failures are shown instead of reported as pending', async ({ page, baseURL }) => {
+  await installCustomerProfileFixture(page);
+  await page.route('**/api/referral/claim', (route) => route.fulfill({ status: 200, json: { state: 'hidden' } }));
   await installCloudFamilyFixture(page, baseURL);
   await page.route('**/api/payment/create', async (route) => {
     await route.fulfill({
@@ -200,6 +203,7 @@ test('payment status failures are shown instead of reported as pending', async (
   await pricingDialog.getByRole('button', { name: 'Chọn Gói Gia Đình · Tháng' }).click();
 
   const checkoutDialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
+  await completeCheckoutProfile(checkoutDialog);
   if (process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true') {
     await checkoutDialog.getByRole('checkbox').check();
     await checkoutDialog.getByRole('button', { name: 'Tiếp tục tạo đơn thanh toán' }).click();
@@ -212,6 +216,8 @@ test('payment status failures are shown instead of reported as pending', async (
 });
 
 test('payment checkout shows the exact provider response and secure fallback', async ({ page, baseURL }) => {
+  await installCustomerProfileFixture(page);
+  await page.route('**/api/referral/claim', (route) => route.fulfill({ status: 200, json: { state: 'hidden' } }));
   await installCloudFamilyFixture(page, baseURL);
   // Given
   await page.route('**/api/payment/create', async (route) => {
@@ -243,6 +249,7 @@ test('payment checkout shows the exact provider response and secure fallback', a
   const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
   await pricingDialog.getByRole('button', { name: 'Chọn Gói Gia Đình · Năm' }).click();
   const checkoutDialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
+  await completeCheckoutProfile(checkoutDialog);
 
   if (process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true') {
     await checkoutDialog.getByRole('checkbox').check();
