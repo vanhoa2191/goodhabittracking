@@ -57,10 +57,15 @@ begin
   into offending_names
   from pg_catalog.pg_proc function
   join pg_catalog.pg_namespace namespace on namespace.oid = function.pronamespace
+  -- An empty search_path, or one naming only pg_catalog, cannot be redirected to objects a user created.
+  -- Supabase's own RLS event trigger function (rls_auto_enable) uses the pg_catalog form.
   where namespace.nspname = 'public' and function.prosecdef
-    and not coalesce(function.proconfig @> array['search_path=""'], false);
+    and not coalesce(
+      function.proconfig @> array['search_path=""'] or function.proconfig @> array['search_path=pg_catalog'],
+      false
+    );
   if offending_names is not null then
-    raise exception 'SECURITY DEFINER functions require empty search_path: %', offending_names;
+    raise exception 'SECURITY DEFINER functions require an empty or pg_catalog-only search_path: %', offending_names;
   end if;
 end
 $$;
