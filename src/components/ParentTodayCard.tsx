@@ -6,11 +6,14 @@ import { localDayKey } from '@/lib/habit-fire';
 import { isActivityDueOn } from '@/lib/habit-programs/opportunities';
 import { getParentTodayCopy } from '@/lib/i18n/parent-today-copy';
 import { MascotAvatar } from './MascotAvatar';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
+import { getIndependenceCopy } from '@/lib/i18n/independence-copy';
+import { weekRhythm } from '@/lib/habit-programs/rhythm';
 import { HelpTip } from '@/components/help/HelpTip';
 
 /** How the chosen child's day is going: tasks done of the tasks scheduled, and a streak that never scolds. */
 export function ParentTodayCard({ childId }: { readonly childId: string }) {
-  const { profiles, activities, logs } = useAppStore();
+  const { profiles, activities, logs, familyPausePeriods } = useAppStore();
   const { language } = useTranslation();
   const copy = getParentTodayCopy(language);
   const child = profiles.find((profile) => profile.id === childId);
@@ -24,6 +27,8 @@ export function ParentTodayCard({ childId }: { readonly childId: string }) {
     log.childId === child.id && log.activityId === activity.id && log.date === today
     && (log.status === 'completed' || log.status === 'approved' || log.status === 'pending_approval')
   ))).length;
+  const independence = getIndependenceCopy(language);
+  const rhythm = defaultExperienceFlags.independence ? weekRhythm(logs, child.id, today, familyPausePeriods) : null;
   const percent = scheduled.length === 0 ? 0 : Math.round((100 * done) / scheduled.length);
 
   return (
@@ -37,8 +42,17 @@ export function ParentTodayCard({ childId }: { readonly childId: string }) {
           </div>
         </div>
         <div className="text-right text-xs text-slate-500 dark:text-slate-300">
-          <p className="font-bold text-slate-700 dark:text-slate-100">{copy.streak(child.streak)}</p>
-          <p>{copy.streakNote}</p>
+          {rhythm ? (
+            <>
+              <p data-testid="week-rhythm" className="font-bold text-slate-700 dark:text-slate-100">{independence.rhythm(rhythm.daysDone, rhythm.daysCounted)}</p>
+              <p>{independence.rhythmNote}</p>
+            </>
+          ) : (
+            <>
+              <p className="font-bold text-slate-700 dark:text-slate-100">{copy.streak(child.streak)}</p>
+              <p>{copy.streakNote}</p>
+            </>
+          )}
         </div>
       </div>
       {scheduled.length > 0 && (

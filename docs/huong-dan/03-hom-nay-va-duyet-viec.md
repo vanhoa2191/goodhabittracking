@@ -4,7 +4,7 @@
 
 <!--op-->## Trong tài liệu này
 
-[Cấu trúc khu phụ huynh](#cau-truc) · [Hôm nay của từng bé](#hom-nay) · [Việc và quà cần duyệt](#duyet) · [Dải “Cần bạn xử lý” và duyệt nhiều việc](#can-xu-ly) · [Ghi cách bé làm](#muc-ho-tro) · [Nhìn lại tuần](#nhin-lai-tuan) · [Tiến triển thói quen và gợi ý](#tien-trien) · [Thưởng hoặc trừ sao thủ công](#chinh-sao) · [Thống kê, in, chia sẻ](#thong-ke) · [Nhắc việc](#nhac-viec-ngan) · [Liên quan](#lien-quan)<!--/op-->
+[Cấu trúc khu phụ huynh](#cau-truc) · [Hôm nay của từng bé](#hom-nay) · [Việc và quà cần duyệt](#duyet) · [Dải “Cần bạn xử lý” và duyệt nhiều việc](#can-xu-ly) · [Ghi cách bé làm](#muc-ho-tro) · [Nhìn lại tuần](#nhin-lai-tuan) · [Tiến triển thói quen và gợi ý](#tien-trien) · [Mức hỗ trợ theo tuần](#xu-huong-ho-tro) · [Tốt nghiệp thói quen](#tot-nghiep) · [Thưởng hoặc trừ sao thủ công](#chinh-sao) · [Thống kê, in, chia sẻ](#thong-ke) · [Nhắc việc](#nhac-viec-ngan) · [Liên quan](#lien-quan)<!--/op-->
 
 <a id="cau-truc"></a>
 ## Cấu trúc khu phụ huynh
@@ -83,6 +83,26 @@ Phần "Tiến triển thói quen" liệt kê từng thói quen đã có tín hi
 - Bé tự làm đều → chuyển sang ghi nhận bằng lời, giảm dần sao.
 
 Chọn "Để sau" thì gợi ý ẩn 14 ngày (ghi nhớ trên trình duyệt này). Bấm vào thói quen để mở [Quản lý việc](04-thiet-ke-thoi-quen.md#quan-ly-viec) và sửa tín hiệu. Bảng đầy đủ các luật gợi ý ở [6. Khoa học thói quen](06-khoa-hoc-thoi-quen.md#goi-y).
+
+<a id="xu-huong-ho-tro"></a>
+## Mức hỗ trợ theo tuần và trạng thái thói quen
+
+Đang được bật dần; nếu chưa thấy, tính năng này chưa đến bản của bạn.
+
+Mỗi thói quen có thêm một **nhãn trạng thái** trung tính, luôn kèm ký hiệu và chữ: **Chưa bắt đầu** (chưa có tín hiệu), **Đang hình thành**, **Cần hỗ trợ** (có gợi ý như kẹt hoặc phụ thuộc nhắc) và **Đang ổn định** (đang giảm nhắc hoặc đã thành nếp và phần lớn lần gần đây đã làm). Nhãn chỉ mô tả, không chấm điểm bé.
+
+Mở **Mức hỗ trợ 6 tuần gần đây** để xem biểu đồ cột theo tuần: bé tự làm, cần nhắc, làm cùng, chưa ghi cách làm, chưa làm. Ứng dụng chỉ viết "Mức hỗ trợ đang giảm" khi có **ít nhất ba tuần liền** có dữ liệu, tuần gần nhất bé tự làm hơn tuần đầu **ít nhất 20 điểm phần trăm**, và cách làm được ghi đủ ở hai tuần đó. Ngược lại ứng dụng ghi "Chưa đủ dữ liệu để nói". Đây là một ngưỡng thiết kế với độ tin cậy thấp, không dùng để so sánh các bé.
+
+<a id="tot-nghiep"></a>
+## Tốt nghiệp thói quen
+
+Khi một thói quen đã thành nếp ít nhất **3 tuần** và bé **tự làm ít nhất 8 trong 10 lần gần nhất**, dải [Cần bạn xử lý](#can-xu-ly) gợi ý ba lựa chọn:
+
+- **Tốt nghiệp**: thói quen rời danh sách hằng ngày của bé và nằm ở mục **Con đã làm được** (cả bên ba mẹ lẫn bên bé). Sao, nhật ký và huy hiệu đã có được giữ nguyên.
+- **Giảm sao**: giảm sao cho các lần sau xuống một nửa, rồi một phần năm số sao ban đầu (không dưới 1 sao). Sao đã nhận không đổi; có thể trả lại số sao ban đầu bất cứ lúc nào.
+- **Giữ nguyên**: ẩn gợi ý 14 ngày.
+
+Ứng dụng chỉ gợi ý, không tự làm gì. Mỗi tháng ứng dụng hỏi một chạm **"Con vẫn tự làm việc này chứ?"** cho thói quen đã tốt nghiệp: **Vẫn tự làm** hoặc **Cần đưa lại**. Bạn cũng có thể bấm **Hoàn tác** ngay sau khi tốt nghiệp, hoặc **Cần đưa lại** ở mục Con đã làm được.
 
 <a id="chinh-sao"></a>
 ## Thưởng hoặc trừ sao thủ công

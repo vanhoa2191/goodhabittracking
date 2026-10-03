@@ -4,6 +4,10 @@ import { getRewardStockCopy } from '@/lib/i18n/reward-mutation-copy';
 
 import React, { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+
+// Shown only with the independence flag, so the first download carries nothing for it.
+const KidIndependence = dynamic(() => import('./KidIndependence').then((module) => module.KidIndependence), { ssr: false });
+const KidGraduatedList = dynamic(() => import('./KidIndependence').then((module) => module.KidGraduatedList), { ssr: false });
 import {
   Sparkles,
   Flame,
@@ -44,6 +48,8 @@ import { getMascot } from '@/lib/mascots';
 import { MorningMascotLetter } from './MorningMascotLetter';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { habitFireForChild, localDayKey } from '@/lib/habit-fire';
+import { weekRhythm } from '@/lib/habit-programs/rhythm';
+import { getIndependenceCopy } from '@/lib/i18n/independence-copy';
 import { getHabitFireCopy } from '@/lib/i18n/habit-fire-copy';
 import { familyPauseCopy } from '@/lib/i18n/family-pause-copy';
 import { getWishlistSaveError } from '@/lib/i18n/wishlist-copy';
@@ -189,6 +195,9 @@ export function KidDashboard() {
   const fire = habitFireForChild(logs, activeChild.id, localDayKey(new Date()), familyPausePeriods);
   const fireCopy = getHabitFireCopy(language);
   const fireLabel = fire.kind === 'cold' ? fireCopy.cold : fireCopy[fire.kind](fire.days);
+  // With the independence flag the hero leads with a steady rhythm; the streak stays as a smaller note.
+  const independenceCopy = getIndependenceCopy(language);
+  const rhythm = defaultExperienceFlags.independence ? weekRhythm(logs, activeChild.id, localDayKey(new Date()), familyPausePeriods) : null;
 
   // The hero and the bottom bar always speak about today; the day being looked at has its own block.
   const todayStr = localDayKey(new Date());
@@ -409,7 +418,9 @@ export function KidDashboard() {
           className="mt-3 flex w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-white/60 bg-white/90 px-3 py-2 text-sm font-bold text-slate-900"
         >
           <Flame aria-hidden="true" className={`h-5 w-5 shrink-0 ${fire.kind === 'active' ? 'fill-orange-500 text-orange-600' : 'text-slate-600'}`} />
-          <span className="min-w-0 flex-1">{fireLabel}</span>
+          <span className="min-w-0 flex-1">
+            {rhythm ? <>{independenceCopy.rhythm(rhythm.daysDone, rhythm.daysCounted)}<span className="block text-xs font-medium text-slate-700">{fire.kind === 'cold' ? independenceCopy.newDay : fireLabel}</span></> : fireLabel}
+          </span>
           {fire.pendingToday && <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs text-amber-950">{fireCopy.pending}</span>}
         </div>}
 
@@ -448,6 +459,7 @@ export function KidDashboard() {
       )}
 
       {defaultExperienceFlags.habitPrograms && visibleTab === 'tasks' && <ChildSelfReportPrompt />}
+      {defaultExperienceFlags.independence && visibleTab === 'tasks' && <KidIndependence childId={activeChild.id} />}
 
       {/* Main Tab Navigation */}
       <div data-testid="kid-tabs" className={`hidden sm:grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>
@@ -818,6 +830,7 @@ export function KidDashboard() {
               );
             })
           )}
+          {defaultExperienceFlags.independence && <KidGraduatedList childId={activeChild.id} />}
         </div>
       )}
 

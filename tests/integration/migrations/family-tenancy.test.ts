@@ -271,6 +271,7 @@ describe('family tenancy migration', () => {
       '202610030001_caregiver_progress_projection.sql',
       '202610030002_caregiver_daily_progress.sql',
       '202610040001_review_habits_batch.sql',
+      '202610040002_habit_graduation.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(

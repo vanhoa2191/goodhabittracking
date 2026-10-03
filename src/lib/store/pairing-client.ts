@@ -75,6 +75,7 @@ const activitySchema = z.object({
   frameworkHabitId: optionalString,
   frameworkContentVersion: optionalString,
   legacyTemplateId: optionalString,
+  graduatedAt: z.string().nullish().transform((value) => value ?? null),
   createdAt: z.string(),
 });
 

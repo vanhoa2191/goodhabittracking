@@ -17,6 +17,7 @@ describe('experience flags', () => {
       emailCodeLogin: false,
       ageTheme: false,
       dailyEase: false,
+      independence: false,
     });
   });
 

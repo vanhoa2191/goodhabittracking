@@ -62,6 +62,9 @@ const habitActivityRowSchema = z.object({
   framework_content_version: z.string().nullable().optional(),
   legacy_template_id: z.string().nullable().optional(),
   journey_habit_key: z.string().nullable().optional(),
+  graduated_at: z.string().nullable().optional(),
+  graduation_check_due: z.string().nullable().optional(),
+  base_points: z.number().int().nullable().optional(),
   created_at: z.string(),
 });
 
@@ -117,6 +120,9 @@ export function mapHabitActivityRow(input: unknown): HabitActivity {
     frameworkContentVersion: row.framework_content_version ?? undefined,
     legacyTemplateId: row.legacy_template_id ?? undefined,
     journeyHabitKey: row.journey_habit_key ?? undefined,
+    graduatedAt: row.graduated_at ?? null,
+    graduationCheckDue: row.graduation_check_due ?? null,
+    basePoints: row.base_points ?? null,
     createdAt: row.created_at,
   };
 }

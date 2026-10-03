@@ -16,6 +16,20 @@ export const HABIT_PROGRAM_CONFIG = {
   consecutiveMissesForCheckIn: 3,
   missingSupportShare: 0.5,
   suggestionLimit: 3,
+  /** Design hypotheses with low confidence: the app only suggests graduating and the parent decides. */
+  graduation: {
+    minWeeksSettled: 3,
+    aloneRatio: 0.8,
+    recheckDays: 30,
+    postponeDays: 14,
+  },
+  /** "Support is easing": the alone share of the last full week beats the first by this many points, over enough weeks. */
+  supportTrend: {
+    weeks: 6,
+    minWeeksOfData: 3,
+    minRiseInAloneShare: 0.2,
+    minRecordedPerWeek: 2,
+  },
 } as const;
 
 /** Smallest count that reaches `ratio` of `windowSize`, e.g. 0.7 of 10 is 7 and 0.7 of 6 is 5. */

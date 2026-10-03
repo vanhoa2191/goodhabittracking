@@ -10,6 +10,10 @@ import type { PhaseEvaluation } from './phase';
 import { overloadSuggestion, rankChildSuggestions, suggestAdjustments } from './suggestions';
 import type { HabitSuggestion, Suggestion } from './suggestions';
 import type { Cadence, ComplexityClass } from './types';
+import { habitStatus, type HabitStatus } from './status';
+import { supportTrend, supportTrendVerdict, type SupportTrendVerdict, type WeekBucket } from './support-trend';
+import { isReadyToGraduate } from './graduation';
+import { competenceMilestones, freshMilestone, type ReachedMilestone } from './competence';
 
 export type HabitSummary = {
   readonly activityId: string;
@@ -24,6 +28,14 @@ export type HabitSummary = {
   readonly recent: readonly DayDot[];
   /** How the child mostly did it over those days, when it was recorded. */
   readonly lean: SupportLean;
+  readonly status: HabitStatus;
+  /** The last weeks, oldest first, for the support chart. */
+  readonly trend: readonly WeekBucket[];
+  readonly trendVerdict: SupportTrendVerdict;
+  /** Settled long enough, and done alone on nearly every recent chance: worth suggesting graduation. */
+  readonly readyToGraduate: boolean;
+  /** A first the child reached today or yesterday, if any. */
+  readonly milestone: ReachedMilestone | null;
 };
 
 export type ChildHabitSummary = {
@@ -100,6 +112,8 @@ export function summarizeChildHabits(input: SummaryInput): ChildHabitSummary {
 
     const evaluation = evaluateHabitPhase({ opportunities, hasCuePlan: true, cadence: traits.cadence });
     const recent = traits.cadence === 'weekly' ? [] : lastSevenDays(opportunities, today);
+    const suggestions = suggestAdjustments({ evaluation, complexity: traits.complexity, ageYears, today });
+    const trend = supportTrend(opportunities, today);
     habits.push({
       activityId: activity.id,
       title: activity.title,
@@ -107,9 +121,14 @@ export function summarizeChildHabits(input: SummaryInput): ChildHabitSummary {
       cadence: traits.cadence,
       since,
       evaluation,
-      suggestions: suggestAdjustments({ evaluation, complexity: traits.complexity, ageYears, today }),
+      suggestions,
       recent,
       lean: supportLean(recent),
+      status: habitStatus({ hasCuePlan: true, evaluation, suggestionCodes: suggestions.map((suggestion) => suggestion.code) }),
+      trend,
+      trendVerdict: supportTrendVerdict(trend, today),
+      readyToGraduate: isReadyToGraduate({ evaluation, opportunities, today, alreadyGraduated: Boolean(activity.graduatedAt) }),
+      milestone: freshMilestone(competenceMilestones(opportunities), today),
     });
   }
 
