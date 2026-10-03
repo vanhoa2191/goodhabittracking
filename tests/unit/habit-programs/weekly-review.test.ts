@@ -12,6 +12,7 @@ const dots = (pattern: string): DayDot[] => [...pattern].map((symbol, index) => 
 const habit = (id: string, pattern: string): HabitSummary => ({
   activityId: id, title: `Habit ${id}`, complexity: 'simple', cadence: 'due-day', since: '2026-09-01',
   evaluation: { phase: 'build' } as HabitSummary['evaluation'], suggestions: [], recent: dots(pattern), lean: null,
+  status: 'forming', trend: [], trendVerdict: 'not-enough-data', readyToGraduate: false, milestone: null,
 });
 
 describe('buildWeeklyReview', () => {

@@ -34,7 +34,7 @@ type Dependencies = {
   readonly isFamilyConnected: boolean;
   readonly isIdentityReady: boolean;
   readonly mode: 'kid' | 'parent';
-  readonly onHydrateChildSession?: () => void;
+  readonly onHydrateChildSession?: (session: ChildSession) => void;
   readonly onPairingReady: () => void;
   readonly profiles: readonly ChildProfile[];
   readonly resetFamilyScope: () => void;
@@ -79,7 +79,7 @@ export function usePairingLifecycle(dependencies: Dependencies) {
     setMode('kid');
     setPairedFamilyPausedAt(session.familyPausedAt);
     setPairedFamilyPausePeriods(session.familyPausePeriods);
-    onHydrateChildSession?.();
+    onHydrateChildSession?.(session);
     localStorage.setItem(`${LOCAL_STORAGE_PREFIX}child_paired`, 'true');
   }, [
     resetFamilyScope,

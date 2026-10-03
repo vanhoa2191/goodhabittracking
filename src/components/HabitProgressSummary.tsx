@@ -15,6 +15,13 @@ import type { SuggestionCode } from '@/lib/habit-programs/suggestions';
 import type { HabitPhase } from '@/lib/habit-programs/types';
 import { useSuggestionDismissals } from '@/lib/habit-programs/use-suggestion-dismissals';
 import { HelpTip } from '@/components/help/HelpTip';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
+import { getIndependenceCopy } from '@/lib/i18n/independence-copy';
+import { HabitSupportTrend } from './HabitSupportTrend';
+import { GraduatedHabitsList } from './HabitGraduation';
+import { getCoachCopy } from '@/lib/i18n/coach-copy';
+import { kindForSuggestion } from '@/lib/habit-programs/coach';
+import { useStartChange } from './use-start-change';
 
 const PHASE_KEY: Record<HabitPhase, 'phaseAnchor' | 'phaseBuild' | 'phaseFade' | 'phaseMaintain'> = {
   anchor: 'phaseAnchor',
@@ -33,12 +40,25 @@ const REASON_KEY: Record<SuggestionCode, keyof HabitProgramsCopy> = {
   'record-support': 'reasonRecordSupport',
 };
 
+const STATUS_STYLE = {
+  'not-started': 'bg-slate-100 text-slate-700 dark:bg-zinc-800 dark:text-slate-200',
+  forming: 'bg-sky-50 text-sky-800 dark:bg-sky-950/40 dark:text-sky-200',
+  'needs-help': 'bg-amber-50 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200',
+  steady: 'bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200',
+} as const;
+// A mark besides the colour, so the status never depends on colour alone.
+const STATUS_MARK = { 'not-started': '○', forming: '◔', 'needs-help': '△', steady: '●' } as const;
+
 /** Where each planned habit stands for each child, with a few plainly worded suggestions. Guidance, never a score. */
 export function HabitProgressSummary({ childId, onOpenHabits }: { readonly childId?: string; readonly onOpenHabits?: () => void } = {}) {
   const { profiles, activities, logs, experience, familyPausePeriods } = useAppStore();
   const { language } = useTranslation();
   const copy = getHabitProgramsCopy(language);
   const today_ = getParentTodayCopy(language);
+  const independence = getIndependenceCopy(language);
+  const showIndependence = defaultExperienceFlags.independence;
+  const coachCopy = getCoachCopy(language);
+  const startChange = useStartChange();
   const { dismissed, dismiss } = useSuggestionDismissals();
   const now = new Date();
   const today = localDayKey(now);
@@ -92,8 +112,15 @@ export function HabitProgressSummary({ childId, onOpenHabits }: { readonly child
                   <li key={habit.activityId} data-activity-id={habit.activityId} data-phase={habit.evaluation.phase} className="space-y-2 rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3 dark:border-zinc-700 dark:bg-zinc-800/60">
                     <div className="flex flex-wrap items-start justify-between gap-2">
                       <span className="text-sm font-bold text-slate-800 dark:text-slate-100">{titleOf(habit.activityId)}</span>
-                      <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">
-                        {copy[PHASE_KEY[habit.evaluation.phase]]}
+                      <span className="flex flex-wrap items-center gap-1.5">
+                        {showIndependence && (
+                          <span data-testid="habit-status" data-status={habit.status} className={`rounded-full px-2.5 py-1 text-xs font-bold ${STATUS_STYLE[habit.status]}`}>
+                            {STATUS_MARK[habit.status]} {independence.status[habit.status]}
+                          </span>
+                        )}
+                        <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-bold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">
+                          {copy[PHASE_KEY[habit.evaluation.phase]]}
+                        </span>
                       </span>
                     </div>
                     {habit.recent.length > 0 && (
@@ -115,10 +142,20 @@ export function HabitProgressSummary({ childId, onOpenHabits }: { readonly child
                         </p>
                       </>
                     )}
+                    {showIndependence && habit.trend.length > 0 && (
+                      <div className="flex items-start gap-1 text-xs">
+                        <details className="min-w-0 flex-1">
+                          <summary className="flex min-h-11 cursor-pointer items-center font-bold text-indigo-700 dark:text-indigo-300">{independence.trendTitle}</summary>
+                          <HabitSupportTrend buckets={habit.trend} verdict={habit.trendVerdict} copy={independence} />
+                        </details>
+                        <HelpTip topic="progress.supportTrend" />
+                      </div>
+                    )}
                   </li>
                 );
               })}
             </ul>
+            {showIndependence && <GraduatedHabitsList childId={child.id} />}
             <p className="text-xs text-slate-500 dark:text-slate-300">{copy.typicalTime}</p>
             {suggestions.length > 0 && (
               <ul className="space-y-2">
@@ -130,9 +167,21 @@ export function HabitProgressSummary({ childId, onOpenHabits }: { readonly child
                         {entry.habitId && <strong className="mr-1">{titleOf(entry.habitId)}:</strong>}
                         {fillTemplate(copy[REASON_KEY[entry.suggestion.code]], entry.suggestion.facts)}
                       </span>
-                      <button type="button" onClick={() => dismiss(key)} className="min-h-9 shrink-0 rounded-lg border border-amber-300 px-3 text-xs font-bold hover:bg-amber-100 dark:border-amber-800 dark:hover:bg-amber-950/60">
-                        {copy.later}
-                      </button>
+                      <span className="flex shrink-0 flex-col gap-1">
+                        {defaultExperienceFlags.habitCoach && entry.habitId && kindForSuggestion(entry.suggestion.code) && !experience.habitTries.some((row) => row.child_id === child.id && row.outcome === null) && (
+                          <button
+                            type="button"
+                            data-testid="suggestion-try"
+                            onClick={() => { const kind = kindForSuggestion(entry.suggestion.code); if (kind && entry.habitId) void startChange(entry.habitId, child.id, kind); }}
+                            className="min-h-9 rounded-lg bg-amber-700 px-3 text-xs font-bold text-white hover:bg-amber-800"
+                          >
+                            {coachCopy.tryIt}
+                          </button>
+                        )}
+                        <button type="button" onClick={() => dismiss(key)} className="min-h-9 rounded-lg border border-amber-300 px-3 text-xs font-bold hover:bg-amber-100 dark:border-amber-800 dark:hover:bg-amber-950/60">
+                          {copy.later}
+                        </button>
+                      </span>
                     </li>
                   );
                 })}

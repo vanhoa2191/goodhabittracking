@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { cuePlanFields, timeMatchesKind } from '@/lib/habit-programs/cue-plan-input';
-import { experienceColumns, parseCuePlan, parseDeferredTask, parseExperienceState, parseSupportObservation } from '@/lib/experience-state';
+import { experienceColumns, parseCuePlan, parseDeferredTask, parseExperienceState, parseHabitTry, parseSupportObservation, parseWeeklyFocus } from '@/lib/experience-state';
 import { isMissingTable } from '@/lib/supabase/missing-table';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
@@ -30,6 +30,26 @@ const commandSchema = z.discriminatedUnion('type', [
     activityId: z.string().uuid(),
     ...cuePlanFields,
   }).strict().refine(timeMatchesKind),
+  z.object({
+    type: z.literal('startHabitTry'),
+    childId: z.string().uuid(),
+    activityId: z.string().uuid(),
+    kind: z.enum(['smaller', 'retime', 'together', 'cue_change', 'reduce_support']),
+    days: z.number().int().min(3).max(14).default(7),
+    startedOn: z.iso.date(),
+    previous: z.record(z.string(), z.unknown()).nullable().default(null),
+  }).strict(),
+  z.object({
+    type: z.literal('resolveHabitTry'),
+    tryId: z.string().uuid(),
+    outcome: z.enum(['helped', 'not_yet', 'dropped']),
+  }).strict(),
+  z.object({
+    type: z.literal('setWeeklyFocus'),
+    childId: z.string().uuid(),
+    weekStart: z.iso.date(),
+    activityIds: z.array(z.string().uuid()).max(2),
+  }).strict(),
   z.object({ type: z.literal('pauseFamily') }),
   z.object({ type: z.literal('resumeFamily') }),
 ]);
@@ -40,7 +60,7 @@ export async function GET() {
 
   const supabase = await createServerSupabaseClient();
   const [
-    children, settings, letters, quests, wishlists, deferredTasks, supportObservations, cuePlans, journalEntries, cityPurchases,
+    children, settings, letters, quests, wishlists, deferredTasks, supportObservations, cuePlans, habitTries, weeklyFocus, journalEntries, cityPurchases,
   ] = await Promise.all([
     supabase.from('child_engagement_profiles').select(experienceColumns.child_engagement_profiles.join(',')).eq('family_id', parent.familyId),
     supabase.from('family_engagement_settings').select(experienceColumns.family_engagement_settings.join(',')).eq('family_id', parent.familyId).maybeSingle(),
@@ -50,6 +70,8 @@ export async function GET() {
     supabase.from('child_task_deferrals').select(experienceColumns.child_task_deferrals.join(',')).eq('family_id', parent.familyId),
     supabase.from('habit_support_observations').select(experienceColumns.habit_support_observations.join(',')).eq('family_id', parent.familyId),
     supabase.from('habit_cue_plans').select(experienceColumns.habit_cue_plans.join(',')).eq('family_id', parent.familyId),
+    supabase.from('habit_tries').select(experienceColumns.habit_tries.join(',')).eq('family_id', parent.familyId),
+    supabase.from('child_weekly_focus').select(experienceColumns.child_weekly_focus.join(',')).eq('family_id', parent.familyId),
     defaultExperienceFlags.dailyJournal
       ? supabase.from('child_journal_entries').select(experienceColumns.child_journal_entries.join(',')).eq('family_id', parent.familyId)
       : Promise.resolve({ data: [], error: null }),
@@ -59,7 +81,7 @@ export async function GET() {
   ]);
   // Until the habit program migration is applied, its tables do not exist; that must not break the rest of the family.
   const results = [children, settings, letters, quests, wishlists, deferredTasks, journalEntries, cityPurchases];
-  const habitProgramResults = [supportObservations, cuePlans];
+  const habitProgramResults = [supportObservations, cuePlans, habitTries, weeklyFocus];
   if (results.some((result) => result.error) || habitProgramResults.some((result) => result.error && !isMissingTable(result.error))) {
     return NextResponse.json({ error: 'Experience state could not be loaded.' }, { status: 503 });
   }
@@ -73,6 +95,8 @@ export async function GET() {
     deferredTasks: deferredTasks.data ?? [],
     supportObservations: supportObservations.error ? [] : supportObservations.data ?? [],
     cuePlans: cuePlans.error ? [] : cuePlans.data ?? [],
+    habitTries: habitTries.error ? [] : habitTries.data ?? [],
+    weeklyFocus: weeklyFocus.error ? [] : weeklyFocus.data ?? [],
     journalEntries: journalEntries.data ?? [],
     cityPurchases: cityPurchases.data ?? [],
   }, parent.familyId);
@@ -191,6 +215,62 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true, cuePlan });
       } catch {
         return NextResponse.json({ error: 'Cue plan could not be saved.' }, { status: 503 });
+      }
+    }
+    case 'startHabitTry': {
+      const { data, error } = await supabase.rpc('start_habit_try', {
+        target_activity_id: command.activityId,
+        target_child_id: command.childId,
+        try_kind: command.kind,
+        try_days: command.days,
+        try_started_on: command.startedOn,
+        try_previous: command.previous,
+      });
+      if (error) return NextResponse.json({ error: 'The change could not be saved.' }, { status: 503 });
+      const saved = z.object({ status: z.enum(['started', 'already_open']), habitTry: z.unknown() }).safeParse(data);
+      if (!saved.success) return NextResponse.json({ error: 'The change could not be saved.' }, { status: 503 });
+      try {
+        const habitTry = parseHabitTry(saved.data.habitTry);
+        if (habitTry.family_id !== parent.familyId || habitTry.child_id !== command.childId || habitTry.activity_id !== command.activityId) {
+          return NextResponse.json({ error: 'The change could not be saved.' }, { status: 503 });
+        }
+        return NextResponse.json({ success: true, started: saved.data.status === 'started', habitTry });
+      } catch {
+        return NextResponse.json({ error: 'The change could not be saved.' }, { status: 503 });
+      }
+    }
+    case 'resolveHabitTry': {
+      const { data, error } = await supabase.rpc('resolve_habit_try', { target_try_id: command.tryId, try_outcome: command.outcome });
+      if (error) return NextResponse.json({ error: 'The answer could not be saved.' }, { status: 503 });
+      const saved = z.object({ status: z.enum(['resolved', 'already_resolved']), habitTry: z.unknown() }).safeParse(data);
+      if (!saved.success) return NextResponse.json({ error: 'The answer could not be saved.' }, { status: 503 });
+      try {
+        const habitTry = parseHabitTry(saved.data.habitTry);
+        if (habitTry.family_id !== parent.familyId || habitTry.id !== command.tryId) {
+          return NextResponse.json({ error: 'The answer could not be saved.' }, { status: 503 });
+        }
+        return NextResponse.json({ success: true, habitTry });
+      } catch {
+        return NextResponse.json({ error: 'The answer could not be saved.' }, { status: 503 });
+      }
+    }
+    case 'setWeeklyFocus': {
+      const { data, error } = await supabase.rpc('set_weekly_focus_for_child', {
+        target_child_id: command.childId,
+        focus_week: command.weekStart,
+        focus_activity_ids: command.activityIds,
+      });
+      if (error) return NextResponse.json({ error: 'The weekly focus could not be saved.' }, { status: 409 });
+      const saved = z.object({ status: z.literal('saved'), weeklyFocus: z.unknown() }).safeParse(data);
+      if (!saved.success) return NextResponse.json({ error: 'The weekly focus could not be saved.' }, { status: 503 });
+      try {
+        const weeklyFocus = parseWeeklyFocus(saved.data.weeklyFocus);
+        if (weeklyFocus.family_id !== parent.familyId || weeklyFocus.child_id !== command.childId || weeklyFocus.week_start !== command.weekStart) {
+          return NextResponse.json({ error: 'The weekly focus could not be saved.' }, { status: 503 });
+        }
+        return NextResponse.json({ success: true, weeklyFocus });
+      } catch {
+        return NextResponse.json({ error: 'The weekly focus could not be saved.' }, { status: 503 });
       }
     }
     case 'pauseFamily':

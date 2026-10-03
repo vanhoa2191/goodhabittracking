@@ -1,7 +1,7 @@
-import type { HelpTopicId } from './help-topic-id';
+import type { HelpTranslationTable } from './help-topic-id';
 import type { HelpText } from './help-topics';
 
-export const HELP_TOPICS_ZH: Readonly<Record<HelpTopicId, HelpText>> = {
+export const HELP_TOPICS_ZH: HelpTranslationTable<HelpText> = {
   'today.card': { title: '孩子的今日概览', text: '今天的摘要：已完成的任务数、连续天数，以及需要你处理的事项。孩子较多时，请在上方一行选择孩子。' },
   'approvals.tasks': { title: '待审批任务', text: '孩子标记为完成、且你设置为“需家长审批”的任务。点击“批准”即可发放星星；拒绝则不发放。如果设置了PIN码，还需要输入PIN码。' },
   'approvals.rewards': { title: '奖励兑换请求', text: '孩子申请兑换的奖励；申请时星星已扣除。你批准后再发放奖励。若拒绝，星星会退还给孩子。' },

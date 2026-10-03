@@ -1,7 +1,7 @@
-import type { HelpTopicId } from './help-topic-id';
+import type { HelpTranslationTable } from './help-topic-id';
 import type { HelpText } from './help-topics';
 
-export const HELP_TOPICS_IT: Readonly<Record<HelpTopicId, HelpText>> = {
+export const HELP_TOPICS_IT: HelpTranslationTable<HelpText> = {
   'today.card': { title: 'La giornata del bambino', text: 'Un riepilogo di oggi: attività completate rispetto a quelle in programma, serie attiva e ciò che richiede il tuo intervento. Con più bambini, scegline uno nella riga qui sopra.' },
   'approvals.tasks': { title: 'Attività in attesa di approvazione', text: 'Attività segnate come completate dal bambino e impostate come "richiedono approvazione". Tocca Approva per assegnare le stelle; Rifiuta non ne assegna. Serve il PIN, se impostato.' },
   'approvals.rewards': { title: 'Richieste di premio', text: 'Premi richiesti dal bambino: le stelle sono state detratte al momento della richiesta. Approva e poi consegna il premio. Se rifiuti, le stelle vengono restituite.' },

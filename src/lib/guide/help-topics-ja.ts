@@ -1,7 +1,7 @@
-import type { HelpTopicId } from './help-topic-id';
+import type { HelpTranslationTable } from './help-topic-id';
 import type { HelpText } from './help-topics';
 
-export const HELP_TOPICS_JA: Readonly<Record<HelpTopicId, HelpText>> = {
+export const HELP_TOPICS_JA: HelpTranslationTable<HelpText> = {
   'today.card': { title: 'お子さまのきょう', text: 'きょうのまとめです。予定したミッションのうち完了した数、連続日数、保護者に必要な対応を確認できます。お子さまが複数いる場合は、上の列から選びます。' },
   'approvals.tasks': { title: '承認待ちのミッション', text: 'お子さまが完了にした、保護者の承認が必要なミッションです。「承認する」でスターを付与し、「見送り」では付与しません。設定している場合はPINが必要です。' },
   'approvals.rewards': { title: 'ごほうび交換リクエスト', text: 'お子さまが交換を希望したごほうびです。スターはリクエスト時に差し引かれます。承認してごほうびを渡してください。見送るとスターはお子さまに戻ります。' },

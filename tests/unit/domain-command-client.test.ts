@@ -60,6 +60,29 @@ describe('domain command client', () => {
     await expect(request).rejects.toBeInstanceOf(DomainCommandRequestError);
   });
 
+  it('returns the outcome of every log in a batch review', async () => {
+    const first = '11111111-1111-4111-8111-111111111111';
+    const second = '22222222-2222-4222-8222-222222222222';
+    const requester: DomainCommandRequester = vi.fn(async () => new Response(JSON.stringify({
+      success: true,
+      result: {
+        status: 'reviewed',
+        results: [
+          { logId: first, status: 'approved', pointsAwarded: 10 },
+          { logId: second, status: 'already_reviewed' },
+        ],
+      },
+    }), { status: 200, headers: { 'content-type': 'application/json' } }));
+
+    const result = await requestDomainCommand({ type: 'reviewHabits', logIds: [first, second], decision: 'approve' }, requester);
+
+    expect(result.status).toBe('reviewed');
+    expect(result.results).toEqual([
+      { logId: first, status: 'approved', pointsAwarded: 10 },
+      { logId: second, status: 'already_reviewed' },
+    ]);
+  });
+
   it('posts a child command without accepting a caller-supplied child id', async () => {
     const requester: DomainCommandRequester = vi.fn(async () => new Response(JSON.stringify({
       success: true,

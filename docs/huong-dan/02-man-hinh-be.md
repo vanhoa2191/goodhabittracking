@@ -4,7 +4,7 @@
 
 <!--op-->## Trong tài liệu này
 
-[Bốn tab](#bon-tab) · [Nhiệm vụ trong ngày](#nhiem-vu) · [Hoàn thành, hoàn tác, để sau](#hoan-thanh) · [Chi tiết, đếm giờ, đọc to](#chi-tiet) · [Sao, cấp, chuỗi ngày](#sao-cap-chuoi) · [Huy hiệu](#huy-hieu) · [Quà](#qua) · [Bảng xếp hạng](#bang-xep-hang) · [Linh vật và màu](#linh-vat) · [Thư buổi sáng](#thu-buoi-sang) · [Nhật ký](#nhat-ky) · [Thành phố ước mơ](#thanh-pho) · [Giao diện theo tuổi](#giao-dien-tuoi) · [Tạm nghỉ](#tam-nghi-be) · [Liên quan](#lien-quan)<!--/op-->
+[Bốn tab](#bon-tab) · [Nhiệm vụ trong ngày](#nhiem-vu) · [Hoàn thành, hoàn tác, để sau](#hoan-thanh) · [Chi tiết, đếm giờ, đọc to](#chi-tiet) · [Sao, cấp, chuỗi ngày](#sao-cap-chuoi) · [Huy hiệu](#huy-hieu) · [Quà](#qua) · [Bảng xếp hạng](#bang-xep-hang) · [Linh vật và màu](#linh-vat) · [Thư buổi sáng](#thu-buoi-sang) · [Nhật ký](#nhat-ky) · [Thành phố ước mơ](#thanh-pho) · [Giao diện theo tuổi](#giao-dien-tuoi) · [Tạm nghỉ](#tam-nghi-be) · [Việc con đang tập và Con đã làm được](#tu-lap) · [Liên quan](#lien-quan)<!--/op-->
 
 Bé vào màn hình này bằng [mã hoặc QR](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi), hoặc ba mẹ mở "Về màn hình của bé" ngay trong tài khoản phụ huynh. Bé chỉ thấy dữ liệu của chính mình.
 
@@ -128,6 +128,17 @@ Màn hình của bé tự chỉnh theo ba dải tuổi: **3–8**, **9–12**, *
 ## Tạm nghỉ cùng gia đình
 
 Khi ba mẹ bấm [Tạm nghỉ](05-gia-dinh-va-cai-dat.md#tam-nghi), màn hình bé hiện "Hôm nay gia đình mình nghỉ ngơi. Con có thể làm việc tốt khi muốn." Bé vẫn làm được việc; sao, quà và chuỗi không bị xóa; phần nhắc tiến độ và bảng xếp hạng được ẩn.
+
+<a id="tu-lap"></a>
+## Việc con đang tập, nhịp đều và Con đã làm được
+
+Đang được bật dần; nếu chưa thấy, tính năng này chưa đến bản của bạn.
+
+- **Nhịp đều**: đầu màn hình bé hiện "N/7 ngày tuần này" (số ngày trong 7 ngày gần nhất bé làm được ít nhất một việc; ngày gia đình tạm nghỉ không tính). Chuỗi ngày vẫn còn nhưng là ghi chú nhỏ bên cạnh (chỉ hiện trên màn hình rộng). Nếu chuỗi về 0, bé thấy "Ngày mới, mình làm tiếp nhé!", không có lời trách.
+- **Việc con đang tập**: một dải ngắn nêu một hoặc hai thói quen bé đang ở giai đoạn đặt tín hiệu hoặc xây nếp, để bé biết nên chú ý việc nào. Ứng dụng tự chọn, bé không phải chọn.
+- **Mục tiêu tuần này** (từ 6 tuổi): nếu ba mẹ đã [mở vài việc cho bé chọn](03-hom-nay-va-duyet-viec.md#muc-tieu-tuan), đầu tuần bé chọn một hoặc hai việc làm mục tiêu và thấy tiến độ x/7 ngày.
+- **Lời mừng**: khi bé lần đầu tự làm một thói quen, tự làm 3 lần, 7 lần liền, hoặc hai tuần không cần nhắc (chỉ tính khi cách làm đã được ghi), bé thấy một lời mừng cụ thể, một lần, kèm nút OK. Không thêm sao.
+- **Con đã làm được**: danh sách (chỉ để xem) các thói quen [đã tốt nghiệp](03-hom-nay-va-duyet-viec.md#tot-nghiep). Khi vừa có thói quen tốt nghiệp, bé cũng thấy một lời mừng.
 
 <a id="lien-quan"></a>
 ## Liên quan

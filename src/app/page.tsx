@@ -3,7 +3,6 @@
 import React, { useEffect, useRef, useSyncExternalStore } from 'react';
 import { Header } from '@/components/Header';
 import { KidDashboard } from '@/components/KidDashboard';
-import { ParentDashboard } from '@/components/ParentDashboard';
 import { AppEntryGate } from '@/components/AppEntryGate';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
@@ -14,6 +13,11 @@ import { CaregiverDashboard } from '@/components/CaregiverDashboard';
 import { PaymentReturnNotice } from '@/components/PaymentReturnNotice';
 import { getMarketingOrigin } from '@/lib/site';
 import dynamic from 'next/dynamic';
+
+// The parent area is only needed once a parent opens it, so a child's device does not download it.
+const ParentDashboard = dynamic(() => import('@/components/ParentDashboard').then((module) => module.ParentDashboard), {
+  loading: () => <div aria-busy="true" className="mx-auto min-h-[60vh] max-w-5xl" />,
+});
 
 // Dialogs that open on a tap load their code and text when the page is idle, not in the first download.
 const PricingModal = dynamic(() => import('@/components/PricingModal').then((module) => module.PricingModal));

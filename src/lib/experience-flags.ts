@@ -13,6 +13,9 @@ export const defaultExperienceFlags = {
   habitPrograms: process.env.NEXT_PUBLIC_HABIT_PROGRAMS === 'true',
   emailCodeLogin: process.env.NEXT_PUBLIC_EMAIL_CODE_LOGIN === 'true',
   ageTheme: process.env.NEXT_PUBLIC_AGE_THEME === 'true',
+  dailyEase: process.env.NEXT_PUBLIC_DAILY_EASE === 'true',
+  independence: process.env.NEXT_PUBLIC_INDEPENDENCE === 'true',
+  habitCoach: process.env.NEXT_PUBLIC_HABIT_COACH === 'true',
 } as const;
 
 export type ExperienceFlag = keyof typeof defaultExperienceFlags;
@@ -31,6 +34,9 @@ const experienceFlagOverridesSchema = z.object({
   habitPrograms: z.boolean().optional(),
   emailCodeLogin: z.boolean().optional(),
   ageTheme: z.boolean().optional(),
+  dailyEase: z.boolean().optional(),
+  independence: z.boolean().optional(),
+  habitCoach: z.boolean().optional(),
 });
 
 export function resolveExperienceFlags(input: unknown): ExperienceFlags {

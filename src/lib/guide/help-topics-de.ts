@@ -1,7 +1,7 @@
-import type { HelpTopicId } from './help-topic-id';
+import type { HelpTranslationTable } from './help-topic-id';
 import type { HelpText } from './help-topics';
 
-export const HELP_TOPICS_DE: Readonly<Record<HelpTopicId, HelpText>> = {
+export const HELP_TOPICS_DE: HelpTranslationTable<HelpText> = {
   'today.card': { title: 'Heute für Ihr Kind', text: 'Zusammenfassung des Tages: erledigte und geplante Aufgaben, die Serie und was Sie tun müssen. Bei mehreren Kindern wählen Sie eines oben aus.' },
   'approvals.tasks': { title: 'Aufgaben zur Freigabe', text: 'Erledigte Aufgaben mit „Freigabe erforderlich“. Genehmigen für Sterne; bei Ablehnung gibt es keine. PIN nötig, falls festgelegt.' },
   'approvals.rewards': { title: 'Belohnungsanfragen', text: 'Von Ihrem Kind angefragte Belohnungen; die Sterne wurden bei der Anfrage abgezogen. Genehmigen und aushändigen. Bei Ablehnung werden die Sterne zurückgegeben.' },

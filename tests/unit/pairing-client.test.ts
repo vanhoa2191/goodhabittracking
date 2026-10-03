@@ -113,6 +113,7 @@ describe('pairing client', () => {
 
     expect(result).toEqual({ success: true, session: {
       ...childSession,
+      weeklyFocus: [],
       child: {
         ...childSession.child,
         nickname: undefined,
