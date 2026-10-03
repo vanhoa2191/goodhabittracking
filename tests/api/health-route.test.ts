@@ -106,6 +106,34 @@ describe('GET /api/health', () => {
     await expect(response.json()).resolves.toMatchObject({ checks: { schemaVersion: false }, schemaVersionFailure: 'TimeoutError' });
   });
 
+  it('reports each concurrent request the reason of the schema probe that produced its result', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    // Concurrent cold requests each run their own probe (no dedupe), so each response carries its own reason.
+    let call = 0;
+    schemaAnswer = async () => (++call === 1 ? json({ code: 'PGRST202' }, 404) : json({ code: '42501' }, 401));
+    const [first, second] = await Promise.all([GET(operations()), GET(operations())]);
+    const reasons = [(await first.json()).schemaVersionFailure, (await second.json()).schemaVersionFailure];
+    expect(rpcCalls()).toHaveLength(2);
+    expect([...reasons].sort()).toEqual(['HTTP 401', 'HTTP 404']);
+  });
+
+  it('shows no schema failure once the database connection fails and the schema probe is skipped', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    schemaAnswer = async () => json({ code: 'PGRST202' }, 404);
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(new Date('2026-10-01T00:00:00Z'));
+      expect(await (await GET(operations())).json()).toMatchObject({ schemaVersionFailure: 'HTTP 404' });
+      stubDatabase(async () => new Response('{}', { status: 503 }));
+      vi.setSystemTime(new Date('2026-10-01T00:00:11Z'));
+      const body = await (await GET(operations())).json();
+      expect(body).toMatchObject({ checks: { databaseConnection: false, schemaVersion: false } });
+      expect(body).not.toHaveProperty('schemaVersionFailure');
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('fails readiness when the schema RPC is unavailable without exposing checks anonymously', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
     schemaAnswer = async () => json({ code: 'PGRST202' }, 404);

@@ -6,14 +6,20 @@ import { EXPECTED_SCHEMA_VERSION } from '@/lib/schema-version';
 
 export const runtime = 'nodejs';
 
-/** Why the last schema probe failed, reported only to callers holding the operations secret. */
-let schemaProbeFailure: string | null = null;
+interface SchemaProbeResult {
+  readonly ready: boolean;
+  /** Why the probe failed, reported only to callers holding the operations secret. */
+  readonly failure: string | null;
+}
+
+const schemaReady: SchemaProbeResult = { ready: true, failure: null };
+const schemaFailed = (failure: string): SchemaProbeResult => ({ ready: false, failure });
 
 /**
  * Asks the database which migration it last applied. A plain request, like `probeDatabase`, so the probe
  * behaves the same in the Workers runtime as in Node.
  */
-async function probeSchemaVersion(url: string, serviceRoleKey: string) {
+async function probeSchemaVersion(url: string, serviceRoleKey: string): Promise<SchemaProbeResult> {
   try {
     const response = await fetch(`${url.replace(/\/$/, '')}/rest/v1/rpc/schema_version`, {
       method: 'POST',
@@ -27,23 +33,18 @@ async function probeSchemaVersion(url: string, serviceRoleKey: string) {
       signal: AbortSignal.timeout(3_000),
     });
     if (!response.ok) {
-      schemaProbeFailure = `HTTP ${response.status}`;
-      return false;
+      return schemaFailed(`HTTP ${response.status}`);
     }
     const version: unknown = await response.json();
     if (typeof version !== 'string' || !/^\d+$/.test(version)) {
-      schemaProbeFailure = 'unreadable version';
-      return false;
+      return schemaFailed('unreadable version');
     }
     if (BigInt(version) < BigInt(EXPECTED_SCHEMA_VERSION)) {
-      schemaProbeFailure = `database at ${version}, build expects ${EXPECTED_SCHEMA_VERSION}`;
-      return false;
+      return schemaFailed(`database at ${version}, build expects ${EXPECTED_SCHEMA_VERSION}`);
     }
-    schemaProbeFailure = null;
-    return true;
+    return schemaReady;
   } catch (error) {
-    schemaProbeFailure = error instanceof Error ? error.name : 'request failed';
-    return false;
+    return schemaFailed(error instanceof Error ? error.name : 'request failed');
   }
 }
 
@@ -81,9 +82,10 @@ export async function GET(request: Request) {
   const billingReady = inspectPayOSConfig().ready;
   const pairingSecret = process.env.PAIRING_RATE_LIMIT_SECRET?.trim() ?? '';
   const pairingReady = pairingSecret.length >= 32;
-  const schemaVersionReady = databaseConnectionReady
+  const schemaProbe = databaseConnectionReady
     ? await remember(`${databaseUrl}:schema-version:${EXPECTED_SCHEMA_VERSION}`, () => probeSchemaVersion(databaseUrl, serviceRoleKey))
-    : false;
+    : null;
+  const schemaVersionReady = schemaProbe?.ready ?? false;
   const ready = databaseConnectionReady && billingReady && pairingReady && schemaVersionReady;
 
   const operator = hasBearerSecret(request, process.env.CRON_SECRET);
@@ -91,7 +93,7 @@ export async function GET(request: Request) {
   return NextResponse.json(
     {
       status: ready ? 'ready' : databaseConfigReady ? 'degraded' : 'unavailable',
-      ...(operator && !schemaVersionReady && schemaProbeFailure && { schemaVersionFailure: schemaProbeFailure }),
+      ...(operator && !schemaVersionReady && schemaProbe?.failure && { schemaVersionFailure: schemaProbe.failure }),
       ...(operator && {
         checks: {
           app: true,
