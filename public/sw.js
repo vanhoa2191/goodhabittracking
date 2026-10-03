@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'kidhabit-public-';
-const CACHE_NAME = `${CACHE_PREFIX}v2`;
+const CACHE_NAME = `${CACHE_PREFIX}v3`;
 const PUBLIC_CACHE_URLS = [
   '/offline.html',
   '/offline.js',
@@ -31,8 +31,19 @@ function isCacheablePublicRequest(request, url) {
     || request.destination === 'font';
 }
 
+// The host may answer /offline.html with a redirect to /offline. A response that came through a redirect cannot
+// answer a page navigation, so the offline page is kept as a plain copy of what the redirect led to.
+async function cachePublicUrl(cache, path) {
+  const response = await fetch(path, { cache: 'reload' });
+  if (!response.ok) throw new Error(`Could not cache ${path}: ${response.status}`);
+  const stored = response.redirected
+    ? new Response(await response.blob(), { status: 200, headers: response.headers })
+    : response;
+  await cache.put(path, stored);
+}
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(PUBLIC_CACHE_URLS)));
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => Promise.all(PUBLIC_CACHE_URLS.map((path) => cachePublicUrl(cache, path)))));
 });
 
 self.addEventListener('activate', (event) => {
