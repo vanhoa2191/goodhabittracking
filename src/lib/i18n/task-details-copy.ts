@@ -16,7 +16,7 @@ export const COPY: Record<Language, TaskDetailsCopy> = {
   it: { title: 'Dettagli dell’attività', meaning: 'Perché è importante', description: 'Questa piccola abitudine aiuta tuo figlio a diventare autonomo e a progredire ogni giorno.', instructions: 'Come fare', duration: (minutes) => `${minutes} min` },
   es: { title: 'Detalles de la tarea', meaning: 'Por qué importa', description: 'Este pequeño hábito ayuda a tu hijo a ganar autonomía y a progresar cada día.', instructions: 'Cómo hacerlo', duration: (minutes) => `${minutes} min` },
   zh: { title: '任务详情', meaning: '为什么重要', description: '这个小习惯帮助孩子更加独立，每天进步。', instructions: '怎么做', duration: (minutes) => `${minutes} 分钟` },
-  ja: { title: 'タスクの詳細', meaning: '大切な理由', description: 'この小さな習慣が子どもの自立と日々の成長を支えます。', instructions: 'やり方', duration: (minutes) => `${minutes} 分` },
+  ja: { title: 'ミッションの詳細', meaning: '大切な理由', description: 'この小さな習慣が子どもの自立と日々の成長を支えます。', instructions: 'やり方', duration: (minutes) => `${minutes} 分` },
   ko: { title: '할 일 상세', meaning: '중요한 이유', description: '이 작은 습관은 아이가 자립하고 매일 성장하도록 도와줘요.', instructions: '실천 방법', duration: (minutes) => `${minutes}분` },
 };
 

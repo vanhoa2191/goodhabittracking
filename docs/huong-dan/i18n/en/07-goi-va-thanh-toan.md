@@ -79,7 +79,7 @@ If you buy while your current plan is still active, the time is **added to the e
 Gift codes are created by the operations team. Enter one in `Settings → Account → Coupon code → Apply code`.
 
 - A gift code adds **extra days** of access; discount-only codes cannot be used here. If the family does not yet have a paid plan, it switches to the Family Plan · Monthly for the corresponding number of days; if it already has a plan, the days are added to the end of the current term and the plan stays the same. Gift codes cannot be applied to the Lifetime plan.
-- Each family can use **a code once**. An expired, fully used, or disabled code shows: “Code not found, already used, or expired.”
+- Each code can be used **once per family**; a family can use different codes. An expired, fully used, or disabled code shows: “Code not found, already used, or expired.”
 - After **more than 10 failed attempts within 15 minutes**, access is temporarily locked for a few minutes.
 
 <a id="giam-gia"></a>

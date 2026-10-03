@@ -89,7 +89,7 @@ export const appEntryCopy: Record<Language, AppEntryCopy> = {
     otherWays: 'Altri modi per accedere',
     parentLogin: 'Continua come genitore',
     parentLoginHint: 'Accedi con Google',
-    safety: 'Le aree genitore e bambino sono separate. I bambini non vedono pagamenti o impostazioni familiari.',
+    safety: 'Le aree per genitori e bambini sono separate. I bambini non vedono pagamenti o impostazioni familiari.',
     title: 'Come vuoi accedere a KidHabit?',
   },
   es: {

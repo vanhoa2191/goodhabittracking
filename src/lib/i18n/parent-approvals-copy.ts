@@ -64,14 +64,14 @@ export const parentApprovalsCopy: Record<Language, ApprovalsCopy> = {
   },
   ja: {
     stars: 'スター', days: '日', todayDone: (count) => `今日：${count}件完了`,
-    pendingTasks: '保護者の承認待ちタスク', noPendingTasks: '現在、承認が必要なタスクはありません。',
+    pendingTasks: '保護者の承認待ちミッション', noPendingTasks: '現在、承認が必要なミッションはありません。',
     rewardCompleted: (points, date) => `ごほうび：+${points} ⭐ • ${date}に完了`,
     pendingRewards: '子どもからのごほうび申請', noPendingRewards: '承認待ちのごほうび申請はありません。',
     redemptionRequested: (points, time) => `${points} ⭐を使用 • ${time}に申請`,
   },
   ko: {
     stars: '별', days: '일', todayDone: (count) => `오늘: ${count}개 완료`,
-    pendingTasks: '부모 승인 대기 과제', noPendingTasks: '현재 승인할 과제가 없습니다.',
+    pendingTasks: '부모 승인 대기 미션', noPendingTasks: '현재 승인할 미션이 없습니다.',
     rewardCompleted: (points, date) => `보상: +${points} ⭐ • ${date} 완료`,
     pendingRewards: '아이의 보상 교환 요청', noPendingRewards: '대기 중인 보상 요청이 없습니다.',
     redemptionRequested: (points, time) => `${points} ⭐ 차감 • ${time} 요청`,

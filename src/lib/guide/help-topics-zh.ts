@@ -44,7 +44,7 @@ export const HELP_TOPICS_ZH: Readonly<Record<HelpTopicId, HelpText>> = {
 
   'settings.devices': { title: '孩子的设备', text: '查看已配对的设备、所属孩子和最近访问时间。设备丢失或不再使用时，请立即撤销访问权限（需要PIN码）。' },
   'settings.pwa': { title: '安装应用', text: '将KidHabit添加到主屏幕，像应用一样快速打开。在iPhone上：Safari → 分享 → 添加到主屏幕。' },
-  'settings.caregivers': { title: '照护者', text: '通过一次性链接邀请祖父母或亲属查看进度，链接72小时后过期。他们只能查看，不能修改任何内容。可随时撤销邀请。' },
+  'settings.caregivers': { title: '照护人', text: '通过一次性链接邀请祖父母或亲属查看进度，链接72小时后过期。他们只能查看，不能修改任何内容。可随时撤销邀请。' },
   'settings.pause': { title: '家庭休息', text: '全家需要休息时，选择“暂时休息”：隐藏进度提醒和连续记录，不会中断连续记录，也不会丢失星星或奖励。准备好后点击“继续”。' },
   'settings.account': { title: '客户信息', text: '姓名和电话号码用于账户及支付支持。你可以随时开启或关闭接收优惠。' },
   'settings.coupon': { title: '赠送码', text: '输入赠送码以增加使用天数。每个赠送码每个家庭只能使用一次；错误尝试过多会锁定几分钟。' },
@@ -59,6 +59,6 @@ export const HELP_TOPICS_ZH: Readonly<Record<HelpTopicId, HelpText>> = {
 
   'payment.plans': { title: '方案', text: '单孩方案29,000越南盾/月（1个孩子）、家庭月度方案49,000越南盾、家庭年度方案399,000越南盾。一次性付款，不自动续费。' },
   'payment.trial': { title: '7天免费试用', text: '免费，无需信用卡，不会自动扣费。每个家庭只能试用一次。' },
-  'payment.memo': { title: '转账备注', text: '请保持金额和转账备注完全准确，以便系统识别付款。你可以逐项复制，或下载二维码。' },
+  'payment.memo': { title: '转账附言', text: '请保持金额和转账附言完全准确，以便系统识别付款。你可以逐项复制，或下载二维码。' },
   'payment.activation': { title: '方案何时开通', text: '系统确认付款后立即开通，通常只需几秒。如果还没看到，请等待几分钟后重新打开；联系支持时请附上订单码。' },
 };

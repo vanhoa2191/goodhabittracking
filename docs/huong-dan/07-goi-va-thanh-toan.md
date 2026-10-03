@@ -79,7 +79,7 @@ Mua khi vẫn còn hạn thì thời gian được **cộng nối vào cuối h�
 Mã tặng do đội vận hành tạo. Nhập ở `Cài đặt → Tài khoản → Mã coupon → Áp dụng mã`.
 
 - Mã tặng cộng **thêm số ngày** sử dụng (mã chỉ giảm giá không dùng được ở đây). Nếu gia đình chưa có gói trả phí thì chuyển sang Gói Gia Đình · Tháng với số ngày tương ứng; đang có gói thì cộng vào cuối hạn, giữ nguyên gói. Gói Trọn đời không áp mã.
-- Mỗi gia đình dùng **một mã một lần**. Mã hết hạn, hết lượt hoặc bị tắt thì báo "Mã không tồn tại, đã dùng hoặc đã hết hạn."
+- Mỗi mã chỉ được **một gia đình dùng một lần**; một gia đình có thể dùng các mã khác nhau. Mã hết hạn, hết lượt hoặc bị tắt thì báo "Mã không tồn tại, đã dùng hoặc đã hết hạn."
 - Thử sai quá **10 lần trong 15 phút** sẽ bị tạm khóa vài phút.
 
 <a id="giam-gia"></a>
