@@ -5,9 +5,10 @@ import { CircleHelp } from 'lucide-react';
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import type { HelpTopic } from '@/lib/guide/help-topics';
 import type { HelpTopicId } from '@/lib/guide/help-topic-id';
-import { loadHelpTopics } from '@/lib/guide/help-topics-loader';
+import { helpTextFor, loadHelpTopics, loadHelpTranslation, type HelpTranslation } from '@/lib/guide/help-topics-loader';
 import { useTranslation } from '@/lib/i18n/context';
 import { getGuideCopy } from '@/lib/i18n/guide-copy';
+import type { Language } from '@/types';
 
 const HelpDetailDialog = dynamic(() => import('./HelpDetailDialog').then((module) => module.HelpDetailDialog));
 
@@ -32,6 +33,7 @@ export function HelpTip({ topic, className = '' }: Props) {
   const [open, setOpen] = useState(false);
   const [pinned, setPinned] = useState(false);
   const [content, setContent] = useState<HelpTopic | null>(null);
+  const [loadedTranslation, setLoadedTranslation] = useState<{ readonly language: Language; readonly translation: HelpTranslation | null } | null>(null);
   const [detail, setDetail] = useState(false);
   const [above, setAbove] = useState(false);
 
@@ -76,7 +78,21 @@ export function HelpTip({ topic, className = '' }: Props) {
 
   useEffect(() => () => window.clearTimeout(closeTimer.current), []);
 
-  const text = content ? content[language === 'vi' ? 'vi' : 'en'] : null;
+  // The translation of the current language loads only once a "?" is really used (the explanation or its details are
+  // open). Until it arrives, and when it cannot load, the English text is shown; a result for a language that is no
+  // longer current is dropped.
+  const needed = open || detail;
+  useEffect(() => {
+    if (!needed) return;
+    let cancelled = false;
+    void loadHelpTranslation(language).then((translation) => {
+      if (!cancelled) setLoadedTranslation({ language, translation });
+    });
+    return () => { cancelled = true; };
+  }, [needed, language]);
+
+  const translation = loadedTranslation?.language === language ? loadedTranslation.translation : null;
+  const text = content ? helpTextFor(topic, content, translation, language) : null;
 
   const onPointerEnter = (event: ReactPointerEvent) => {
     if (event.pointerType === 'mouse') show();
@@ -148,7 +164,7 @@ export function HelpTip({ topic, className = '' }: Props) {
       </span>
       {detail && content && (
         <HelpDetailDialog
-          title={content[language === 'vi' ? 'vi' : 'en'].title}
+          title={text?.title ?? ''}
           start={{ slug: content.chapter, anchor: content.anchor }}
           onClose={() => { setDetail(false); button.current?.focus(); }}
         />
