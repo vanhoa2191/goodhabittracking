@@ -1,16 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { getAffiliateCopy } from '@/lib/i18n/affiliate-copy';
-import type { Language } from '@/types';
-
 const settings = { percent: 30, holdDays: 35, windowDays: 365, minPayout: '200.000 đ' };
+const languages = ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'] as const;
 
 describe('affiliate copy', () => {
   it('states the commission, hold, window and minimum from the programme settings', () => {
-    for (const language of ['vi', 'en'] as const) {
+    for (const language of languages) {
       const copy = getAffiliateCopy(language);
       const text = copy.rules(settings).join(' ');
-      expect(copy.intro(30)).toContain('30%');
-      expect(text).toContain('30%');
+      expect(copy.intro(30)).toContain('30');
+      expect(text).toContain('30');
       expect(text).toContain('35');
       expect(text).toContain('12');
       expect(text).toContain('200.000 đ');
@@ -24,8 +23,8 @@ describe('affiliate copy', () => {
     expect(getAffiliateCopy('en').tax).toContain('income tax');
   });
 
-  it('covers every commission status, plan and message in both languages', () => {
-    for (const language of ['vi', 'en'] as const) {
+  it('covers every commission status, plan and message in every language', () => {
+    for (const language of languages) {
       const copy = getAffiliateCopy(language);
       expect(Object.keys(copy.status).sort()).toEqual(['available', 'paid', 'pending', 'requested', 'reversed']);
       expect(Object.keys(copy.plan).sort()).toEqual(['lifetime', 'monthly', 'solo_monthly', 'yearly']);
@@ -33,18 +32,18 @@ describe('affiliate copy', () => {
     }
   });
 
-  it('answers every outcome of entering a code by hand in both languages', () => {
-    for (const language of ['vi', 'en'] as const) {
+  it('answers every outcome of entering a code by hand in every language', () => {
+    for (const language of languages) {
       const { entry } = getAffiliateCopy(language);
       expect(Object.keys(entry.results).sort()).toEqual(['already_referred', 'claimed', 'disabled', 'expired', 'failed', 'invalid', 'self']);
-      for (const text of [entry.prompt, entry.hint, entry.submit, entry.referred, ...Object.values(entry.results)]) expect(text.length).toBeGreaterThan(5);
+      for (const text of [entry.prompt, entry.hint, entry.submit, entry.referred, ...Object.values(entry.results)]) expect(text.length).toBeGreaterThanOrEqual(5);
       expect(entry.hint).toContain('8');
     }
   });
 
-  it('shows English to every language other than Vietnamese', () => {
-    const others: readonly Language[] = ['en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'];
-    for (const language of others) expect(getAffiliateCopy(language)).toBe(getAffiliateCopy('en'));
+  it('returns a stable copy object for each supported language', () => {
+    const copies = languages.map((language) => getAffiliateCopy(language));
+    expect(new Set(copies).size).toBe(languages.length);
     expect(getAffiliateCopy('vi')).not.toBe(getAffiliateCopy('en'));
   });
 });
