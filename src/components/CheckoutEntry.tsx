@@ -12,13 +12,13 @@ import { useAppStore } from '@/lib/store';
 import { EmailCodeSignIn } from '@/components/EmailCodeSignIn';
 import { useTranslation } from '@/lib/i18n/context';
 import { getCheckoutEntryCopy } from '@/lib/i18n/checkout-entry-copy';
+import { PLAN_LOCALIZATION, getCheckoutPlanFeatures } from '@/lib/i18n/pricing-plan-copy';
+import { formatCurrency } from '@/lib/i18n/formatters';
 
 interface CheckoutEntryProps {
   readonly planValues: readonly string[];
   readonly paymentReturnKind?: string | null;
 }
-
-const currency = new Intl.NumberFormat('vi-VN');
 
 export function CheckoutEntry({ planValues, paymentReturnKind = null }: CheckoutEntryProps) {
   const { language } = useTranslation();
@@ -86,6 +86,7 @@ export function CheckoutEntry({ planValues, paymentReturnKind = null }: Checkout
 
   const waitingForFamily = Boolean(currentUser && (!isEntryReady || !familyId || familyRole === null));
   const caregiver = Boolean(currentUser && isEntryReady && familyRole === 'caregiver');
+  const localizedPlan = PLAN_LOCALIZATION[plan.id][language];
 
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,_#eef2ff,_transparent_42%),linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] px-4 py-8 dark:bg-[radial-gradient(circle_at_top_left,_#312e81,_transparent_36%),linear-gradient(180deg,#09090b_0%,#18181b_100%)] sm:py-14">
@@ -97,18 +98,18 @@ export function CheckoutEntry({ planValues, paymentReturnKind = null }: Checkout
         <div data-testid="checkout-summary" className="mt-4 overflow-hidden rounded-[2rem] border border-indigo-100 bg-white shadow-2xl shadow-indigo-100/70 dark:border-indigo-900/70 dark:bg-zinc-900 dark:shadow-none">
           <div className="bg-gradient-to-r from-indigo-700 to-violet-600 px-6 py-6 text-white sm:px-10 sm:py-8">
             <p className="text-sm font-extrabold uppercase tracking-[0.18em] text-indigo-100">{copy.selectedPlan}</p>
-            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">{plan.name}</h1>
-            <p className="mt-3 max-w-2xl text-base leading-7 text-indigo-50">{plan.description}</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">{localizedPlan.name}</h1>
+            <p className="mt-3 max-w-2xl text-base leading-7 text-indigo-50">{localizedPlan.desc}</p>
           </div>
 
           <div className="grid gap-7 p-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:p-10">
             <div>
-              <div className="flex items-baseline gap-2">
-                <strong className="text-4xl font-black tracking-tight text-slate-950 dark:text-white">{currency.format(plan.price)}₫</strong>
-                <span className="font-semibold text-slate-600 dark:text-slate-300">{plan.periodLabel}</span>
+              <div className="flex flex-wrap items-baseline gap-2">
+                <strong className="text-4xl font-black tracking-tight text-slate-950 dark:text-white">{formatCurrency(plan.price, language)}</strong>
+                <span className="font-semibold text-slate-600 dark:text-slate-300">{localizedPlan.period}</span>
               </div>
               <ul className="mt-6 space-y-3">
-                {plan.features.slice(0, 4).map((feature) => (
+                {getCheckoutPlanFeatures(plan.id, language).map((feature) => (
                   <li key={feature} className="flex gap-3 text-sm font-semibold leading-6 text-slate-700 dark:text-slate-200">
                     <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
                     <span>{feature}</span>
@@ -123,7 +124,7 @@ export function CheckoutEntry({ planValues, paymentReturnKind = null }: Checkout
                   <button type="button" onClick={() => void handleLogin()} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 px-5 py-3 text-base font-extrabold text-white shadow-lg shadow-indigo-200 hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:shadow-none">
                     <LogIn className="h-5 w-5" /> {copy.signIn}
                   </button>
-                  <EmailCodeSignIn language="vi" />
+                  <EmailCodeSignIn language={language} />
                 </>
               ) : caregiver ? (
                 <p role="alert" className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-bold leading-6 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">{copy.parentOnly}</p>

@@ -223,7 +223,6 @@ export const ko = {
   parentSettings: '부모 설정',
   parentShort: '부모',
   participateInPublicLeaderboard: '글로벌 공개 랭킹 참가',
-  paymentHoldTimer: '결제 유효 시간:',
   paymentSuccessDesc: 'KidHabit Hero와 함께해 주셔서 감사합니다. 모든 Pro 기능이 즉시 활성화되었습니다!',
   paymentSuccessTitle: '🎉 업그레이드 완료!',
   pendingApproval: '승인 대기 중',

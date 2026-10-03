@@ -228,7 +228,6 @@ export const de = {
   parentSettings: 'Elterneinstellungen',
   parentShort: 'Eltern',
   participateInPublicLeaderboard: 'An der weltweiten Rangliste teilnehmen',
-  paymentHoldTimer: 'Zahlungsfrist läuft ab in:',
   paymentSuccessDesc: 'Vielen Dank für Ihre Unterstützung. Alle Pro-Funktionen sind freigeschaltet!',
   paymentSuccessTitle: '🎉 Upgrade erfolgreich!',
   pendingApproval: 'Wartet auf Freigabe',

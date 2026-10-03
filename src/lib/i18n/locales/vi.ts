@@ -228,7 +228,6 @@ export const vi = {
   parentSettings: 'Cài đặt phụ huynh',
   parentShort: 'Phụ huynh',
   participateInPublicLeaderboard: 'Tham gia Bảng xếp hạng công khai toàn cầu',
-  paymentHoldTimer: 'Thời gian giữ đơn thanh toán:',
   paymentSuccessDesc: 'Cảm ơn bạn đã đồng hành cùng KidHabit Hero. Toàn bộ tính năng Pro đã được mở khóa ngay lập tức!',
   paymentSuccessTitle: '🎉 Nâng Cấp Thành Công!',
   pendingApproval: 'Đang chờ duyệt',

@@ -200,10 +200,14 @@ test('payment status failures are shown instead of reported as pending', async (
   await pricingDialog.getByRole('button', { name: 'Chọn Gói Gia Đình · Tháng' }).click();
 
   const checkoutDialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
+  if (process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true') {
+    await checkoutDialog.getByRole('checkbox').check();
+    await checkoutDialog.getByRole('button', { name: 'Tiếp tục tạo đơn thanh toán' }).click();
+  }
   await expect(checkoutDialog.getByText('0123456789')).toBeVisible();
   await checkoutDialog.getByRole('button', { name: 'Tôi Đã Chuyển Khoản' }).click();
 
-  await expect(checkoutDialog.getByRole('alert')).toHaveText('Could not read payment status.');
+  await expect(checkoutDialog.getByRole('alert')).toHaveText('Chưa kiểm tra được trạng thái thanh toán. Bạn vui lòng chờ; hệ thống vẫn tiếp tục kiểm tra.');
   await expect(checkoutDialog.getByText('Đang kiểm tra...')).toHaveCount(0);
 });
 
@@ -239,6 +243,11 @@ test('payment checkout shows the exact provider response and secure fallback', a
   const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
   await pricingDialog.getByRole('button', { name: 'Chọn Gói Gia Đình · Năm' }).click();
   const checkoutDialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
+
+  if (process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true') {
+    await checkoutDialog.getByRole('checkbox').check();
+    await checkoutDialog.getByRole('button', { name: 'Tiếp tục tạo đơn thanh toán' }).click();
+  }
 
   // Then
   await expect(checkoutDialog.getByText('CONG TY KIDHABIT')).toBeVisible();

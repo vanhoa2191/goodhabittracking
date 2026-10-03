@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { Gift } from 'lucide-react';
 import { HelpTip } from '@/components/help/HelpTip';
 import { useTranslation } from '@/lib/i18n/context';
@@ -17,17 +17,25 @@ const RESULT_KEYS: readonly ResultKey[] = ['claimed', 'invalid', 'self', 'alread
  * Lets a new family type in the code a friend gave them. It shows only while the server says the family
  * can still be attributed (new, unpaid, not yet referred), so nothing appears for everyone else.
  */
-export function ReferralCodeEntry() {
+type ReferralEntryState = 'loading' | 'eligible' | 'referred' | 'hidden';
+
+export function ReferralCodeEntry({ onBusyChange, onStateChange }: {
+  readonly onBusyChange?: (busy: boolean) => void;
+  /** Lets a parent screen wait for the answer, and show this form only to a family that can still be attributed. */
+  readonly onStateChange?: (state: ReferralEntryState) => void;
+}) {
   const { language } = useTranslation();
   const copy = getAffiliateCopy(language);
   const inputId = useId();
   const hintId = useId();
-  const [state, setState] = useState<'loading' | 'eligible' | 'referred' | 'hidden'>('loading');
+  const [state, setState] = useState<ReferralEntryState>('loading');
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<Notice>(null);
+  const mounted = useRef(true);
 
   useEffect(() => {
+    mounted.current = true;
     let active = true;
     void (async () => {
       try {
@@ -39,8 +47,13 @@ export function ReferralCodeEntry() {
         if (active) setState('hidden');
       }
     })();
-    return () => { active = false; };
+    return () => { active = false; mounted.current = false; };
   }, []);
+
+  useEffect(() => {
+    onStateChange?.(state);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- report changes of the state only
+  }, [state]);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -51,6 +64,7 @@ export function ReferralCodeEntry() {
       return;
     }
     setBusy(true);
+    onBusyChange?.(true);
     setNotice(null);
     try {
       const response = await fetch('/api/referral/claim', {
@@ -74,6 +88,7 @@ export function ReferralCodeEntry() {
       setNotice({ kind: 'error', text: copy.entry.results.failed });
     } finally {
       setBusy(false);
+      if (mounted.current) onBusyChange?.(false);
     }
   };
 

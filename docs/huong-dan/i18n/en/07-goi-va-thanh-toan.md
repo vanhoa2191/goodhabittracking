@@ -50,10 +50,10 @@ An invalid plan link (outdated or missing information) displays “Invalid payme
 
 Payments are processed through **PayOS (VietQR)**:
 
-1. Choose a plan → sign in with Google if needed → “Continue to payment.” If you entered a [referral code](08-gioi-thieu-ban-be.md), this window also includes a field for entering the code.
-2. The payment screen shows a **VietQR code** and transfer details: beneficiary name, bank, account number, **exact amount**, and **transfer memo (required)**. It includes an order-hold timer, buttons to copy each item, a **Download QR code** button (so you can open your banking app and choose to scan an image from your gallery), and a link to open PayOS’s secure payment page.
+1. Choose a plan → sign in with Google if needed → “Continue to payment.” Enter and apply your [referral code](08-gioi-thieu-ban-be.md), if you have one, then tap **“Continue to create the payment order.”** Creating the order is disabled while the code is being submitted. Codes can only be entered before creating the QR because the server calculates the amount when creating the order; this window does not replace an existing order after applying a code.
+2. The payment screen shows a **VietQR code** and transfer details: beneficiary name, bank, account number, **exact amount**, and **transfer memo (required)**. It includes buttons to copy each item, a **Download QR code** button (so you can open your banking app and choose to scan an image from your gallery), and a link to open PayOS’s secure payment page. If copying fails, press and hold to select the text and copy it manually. There is no countdown because the server does not enforce a 15-minute payment deadline.
 3. Scan with your banking app or MoMo. **Keep the exact amount and transfer memo.**
-4. Tap **“I Have Transferred”** if needed; the app checks the status automatically. When complete, it shows “🎉 Upgrade Successful!” and the plan is unlocked immediately.
+4. Tap **“I Have Transferred”** if needed; the app checks the status automatically. Status errors are shown in your selected language and automatic checks continue. When complete, it shows “🎉 Upgrade Successful!” and the plan is unlocked immediately.
 
 If the payment is pending, **do not pay again right away**. The price is set by the server and cannot be changed in the browser. Only a parent in the family can pay, and creating a payment requires the [PIN](05-gia-dinh-va-cai-dat.md#pin) if one has been set. Returning to the app from the PayOS page will show the payment result.
 
