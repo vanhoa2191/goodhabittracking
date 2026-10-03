@@ -33,6 +33,8 @@ import type { ExperienceState, FamilyPausePeriod } from './experience-state';
 import { generateAgeAdaptedHabits } from './wit-framework';
 import type { User } from '@supabase/supabase-js';
 import { createActivityActions } from './store/activity-actions';
+import type { TryKind, TryOutcome } from '@/lib/habit-programs/coach';
+import type { ChildSession } from './store/pairing-client';
 import { createHabitActions, type BatchReviewOutcome } from './store/habit-actions';
 import { resolveActiveChildId } from './store/active-child';
 import { createProfileActions } from './store/profile-actions';
@@ -146,6 +148,9 @@ interface AppStoreContextType {
   setTaskDeferred: (activityId: string, date: string, deferred: boolean) => Promise<boolean>;
   recordHabitSupport: (logId: string, level: SupportLevel) => Promise<boolean>;
   saveHabitCuePlan: (activityId: string, input: CuePlanInput, childId?: string) => Promise<boolean>;
+  startHabitTry: (activityId: string, childId: string, kind: TryKind, previous?: Readonly<Record<string, unknown>> | null) => Promise<boolean>;
+  resolveHabitTry: (tryId: string, outcome: TryOutcome) => Promise<boolean>;
+  chooseWeeklyFocus: (childId: string, weekStart: string, activityIds: readonly string[]) => Promise<boolean>;
   saveJournalEntry: (date: string, text: string) => Promise<boolean>;
   buildCityItem: (itemId: CityItemId) => Promise<'built' | 'already_built' | 'insufficient_points' | 'error'>;
   ensureLocalDailyLetter: (childId: string, date: string, templateKey: string) => void;
@@ -317,7 +322,17 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const [pairedFamilyPausedAt, setPairedFamilyPausedAt] = useState<string | null>(null);
   const [pairedFamilyPausePeriods, setPairedFamilyPausePeriods] = useState<FamilyPausePeriod[]>([]);
   const [childSessionRevision, setChildSessionRevision] = useState(0);
-  const noteChildSessionHydrated = useCallback(() => setChildSessionRevision((revision) => revision + 1), []);
+  const noteChildSessionHydrated = useCallback((session: ChildSession) => {
+    setChildSessionRevision((revision) => revision + 1);
+    // The paired child sees its own weekly focus; the rows carry no family id because the device never needs one.
+    setExperience((previous) => ({
+      ...previous,
+      weeklyFocus: session.weeklyFocus.map((row) => ({
+        family_id: '', child_id: session.child.id, week_start: row.weekStart, activity_ids: row.activityIds,
+        chosen_by: row.chosenBy, updated_at: new Date(0).toISOString(),
+      })),
+    }));
+  }, []);
   const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
   const sessionTracker = useMemo(() => createSessionTracker(guardedAnalyticsSink), [guardedAnalyticsSink]);
   const wishlistRequestVersion = useRef(0);
@@ -824,6 +839,16 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     habitProgramActions().saveCuePlan(activityId, input, childId)
   );
 
+  const startHabitTry = (activityId: string, childId: string, kind: TryKind, previous?: Readonly<Record<string, unknown>> | null): Promise<boolean> => (
+    habitProgramActions().startTry(activityId, childId, kind, previous ?? null)
+  );
+  const resolveHabitTry = (tryId: string, outcome: TryOutcome): Promise<boolean> => (
+    habitProgramActions().resolveTry(tryId, outcome)
+  );
+  const chooseWeeklyFocus = (childId: string, weekStart: string, activityIds: readonly string[]): Promise<boolean> => (
+    habitProgramActions().chooseFocus(childId, weekStart, activityIds)
+  );
+
   const setFamilyPaused = createFamilyPauseAction({
     currentUser,
     familyId: isDemoSession ? '00000000-0000-4000-8000-000000000000' : familyId,
@@ -1290,6 +1315,9 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         setTaskDeferred,
         recordHabitSupport,
         saveHabitCuePlan,
+        startHabitTry,
+        resolveHabitTry,
+        chooseWeeklyFocus,
         saveJournalEntry,
         buildCityItem,
         ensureLocalDailyLetter,

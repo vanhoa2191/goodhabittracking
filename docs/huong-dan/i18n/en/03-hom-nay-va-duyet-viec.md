@@ -4,7 +4,7 @@
 
 <!--op-->## In this guide
 
-[Parent area structure](#cau-truc) · [Each child’s today](#hom-nay) · [Tasks and rewards to approve](#duyet) · [The “Needs you” strip and approving several tasks](#can-xu-ly) · [Record how your child did it](#muc-ho-tro) · [Look back at the week](#nhin-lai-tuan) · [Habit progress and suggestions](#tien-trien) · [Support by week](#xu-huong-ho-tro) · [Graduating a habit](#tot-nghiep) · [Manually add or deduct stars](#chinh-sao) · [Statistics, printing, and sharing](#thong-ke) · [Reminders](#nhac-viec-ngan) · [Related](#lien-quan)<!--/op-->
+[Parent area structure](#cau-truc) · [Each child’s today](#hom-nay) · [Tasks and rewards to approve](#duyet) · [The “Needs you” strip and approving several tasks](#can-xu-ly) · [Record how your child did it](#muc-ho-tro) · [Look back at the week](#nhin-lai-tuan) · [Habit progress and suggestions](#tien-trien) · [Support by week](#xu-huong-ho-tro) · [Graduating a habit](#tot-nghiep) · [One change this week](#mot-thay-doi) · [Your child’s weekly focus](#muc-tieu-tuan) · [Manually add or deduct stars](#chinh-sao) · [Statistics, printing, and sharing](#thong-ke) · [Reminders](#nhac-viec-ngan) · [Related](#lien-quan)<!--/op-->
 
 <a id="cau-truc"></a>
 ## Parent area structure
@@ -103,6 +103,26 @@ When a habit has been settled for at least **3 weeks** and your child did it **a
 - **Keep as is**: hides the suggestion for 14 days.
 
 The app only suggests and never does it by itself. Each month it asks once, in one tap, **“Does your child still do this alone?”** for a graduated habit: **Still alone** or **Bring it back**. You can also tap **Undo** right after graduating, or **Bring it back** under What I can do.
+
+<a id="mot-thay-doi"></a>
+## One change this week
+
+This is being switched on gradually; if you do not see it, it has not reached your version yet.
+
+The **One change this week** card (under “Look back at the week”) suggests only **one** change to try for **7 days**, chosen from the suggestions your child already has:
+
+- **Smaller**: renames the habit and describes it as a two-minute version (available for all 47 habits of the framework).
+- **New time**: moves the habit to the part of the day your child really does it (worked out from when it was completed; it needs at least 6 recent times, most in another part of the day).
+- **Together**: you do it with your child for a few days; doing it together is not counted as a miss.
+- **New cue**: opens Manage tasks to edit the cue.
+- **Fewer reminders**: wait for your child to start before reminding.
+
+**Try it for 7 days** both applies the change (if one is needed) and records the try. While a try is running or waiting for an answer, the app suggests no other change for that child. After 7 days the card asks **“Did it help?”** (It helped / Not yet / Drop it). If you answer Not yet or Drop it for a smaller version, the habit goes back to its full version, and the app does not suggest the same idea for the same habit for 30 days. The suggestions under “Habit progress” (stuck, leaning on reminders, settled) also have a matching **Try it for 7 days** button.
+
+<a id="muc-tieu-tuan"></a>
+## Your child’s weekly focus
+
+You mark **2 to 4 tasks** as “your child may choose” (tick boxes next to each task in the **Your child’s weekly focus** card). From age 6, at the start of the week your child picks **one or two** of them as the focus on their own screen and sees progress as “x/7 days”; no account is needed. For a child under 6 you choose together in the card. A child can only choose among the tasks you opened, and can only save their own choice. If your child does not pick, the screen still shows the [What I’m practising](02-man-hinh-be.md#tu-lap) strip.
 
 <a id="chinh-sao"></a>
 ## Manually add or deduct stars

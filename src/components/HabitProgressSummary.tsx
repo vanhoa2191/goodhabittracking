@@ -19,6 +19,9 @@ import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { getIndependenceCopy } from '@/lib/i18n/independence-copy';
 import { HabitSupportTrend } from './HabitSupportTrend';
 import { GraduatedHabitsList } from './HabitGraduation';
+import { getCoachCopy } from '@/lib/i18n/coach-copy';
+import { kindForSuggestion } from '@/lib/habit-programs/coach';
+import { useStartChange } from './use-start-change';
 
 const PHASE_KEY: Record<HabitPhase, 'phaseAnchor' | 'phaseBuild' | 'phaseFade' | 'phaseMaintain'> = {
   anchor: 'phaseAnchor',
@@ -54,6 +57,8 @@ export function HabitProgressSummary({ childId, onOpenHabits }: { readonly child
   const today_ = getParentTodayCopy(language);
   const independence = getIndependenceCopy(language);
   const showIndependence = defaultExperienceFlags.independence;
+  const coachCopy = getCoachCopy(language);
+  const startChange = useStartChange();
   const { dismissed, dismiss } = useSuggestionDismissals();
   const now = new Date();
   const today = localDayKey(now);
@@ -159,9 +164,21 @@ export function HabitProgressSummary({ childId, onOpenHabits }: { readonly child
                         {entry.habitId && <strong className="mr-1">{titleOf(entry.habitId)}:</strong>}
                         {fillTemplate(copy[REASON_KEY[entry.suggestion.code]], entry.suggestion.facts)}
                       </span>
-                      <button type="button" onClick={() => dismiss(key)} className="min-h-9 shrink-0 rounded-lg border border-amber-300 px-3 text-xs font-bold hover:bg-amber-100 dark:border-amber-800 dark:hover:bg-amber-950/60">
-                        {copy.later}
-                      </button>
+                      <span className="flex shrink-0 flex-col gap-1">
+                        {defaultExperienceFlags.habitCoach && entry.habitId && kindForSuggestion(entry.suggestion.code) && !experience.habitTries.some((row) => row.child_id === child.id && row.outcome === null) && (
+                          <button
+                            type="button"
+                            data-testid="suggestion-try"
+                            onClick={() => { const kind = kindForSuggestion(entry.suggestion.code); if (kind && entry.habitId) void startChange(entry.habitId, child.id, kind); }}
+                            className="min-h-9 rounded-lg bg-amber-700 px-3 text-xs font-bold text-white hover:bg-amber-800"
+                          >
+                            {coachCopy.tryIt}
+                          </button>
+                        )}
+                        <button type="button" onClick={() => dismiss(key)} className="min-h-9 rounded-lg border border-amber-300 px-3 text-xs font-bold hover:bg-amber-100 dark:border-amber-800 dark:hover:bg-amber-950/60">
+                          {copy.later}
+                        </button>
+                      </span>
                     </li>
                   );
                 })}

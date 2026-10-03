@@ -21,6 +21,8 @@ import { useAppBadge } from '@/lib/use-app-badge';
 
 // Loaded on demand with the flag, so the first download does not grow for families that do not use them.
 const ParentActionStrip = dynamic(() => import('./ParentActionStrip').then((module) => module.ParentActionStrip), { ssr: false });
+const WeeklyCoachCard = dynamic(() => import('./WeeklyCoachCard').then((module) => module.WeeklyCoachCard), { ssr: false });
+const WeeklyFocusParent = dynamic(() => import('./WeeklyFocus').then((module) => module.WeeklyFocusParent), { ssr: false });
 const BulkTaskReview = dynamic(() => import('./BulkTaskReview').then((module) => module.BulkTaskReview), { ssr: false });
 
 export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: () => void } = {}) {
@@ -149,6 +151,8 @@ export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: (
         <>
           <HabitProgressSummary childId={focusChildId || undefined} onOpenHabits={onOpenHabits} />
           {focusChildId && <WeeklyReviewCard childId={focusChildId} />}
+          {focusChildId && defaultExperienceFlags.habitCoach && <WeeklyCoachCard childId={focusChildId} onOpenHabits={onOpenHabits} />}
+          {focusChildId && defaultExperienceFlags.habitCoach && <WeeklyFocusParent childId={focusChildId} />}
         </>
       )}
     </div>

@@ -1,7 +1,11 @@
 begin;
 
--- Put back the definitions from before this migration (family_snapshot from 202610020004, get_child_session from
--- 202610020003), then drop the columns.
+drop function if exists public.set_child_weekly_focus(text, date, uuid[]);
+drop function if exists public.set_weekly_focus_for_child(uuid, date, uuid[]);
+drop function if exists public.resolve_habit_try(uuid, text);
+drop function if exists public.start_habit_try(uuid, uuid, text, integer, date, jsonb);
+
+-- Put back the definitions from before this migration (202610040002).
 create or replace function public.family_snapshot(
   include_experience boolean default true,
   include_journal boolean default true,
@@ -50,6 +54,7 @@ begin
         'portrait16_key', t.portrait16_key, 'bo_thi7_key', t.bo_thi7_key,
         'framework_habit_id', t.framework_habit_id, 'framework_content_version', t.framework_content_version,
         'legacy_template_id', t.legacy_template_id, 'journey_habit_key', t.journey_habit_key,
+        'graduated_at', t.graduated_at, 'graduation_check_due', t.graduation_check_due, 'base_points', t.base_points,
         'created_at', t.created_at
       ))
       from public.habit_activities t where t.family_id = fid
@@ -251,12 +256,13 @@ begin
         'frameworkHabitId', activity.framework_habit_id,
         'frameworkContentVersion', activity.framework_content_version,
         'legacyTemplateId', activity.legacy_template_id,
+        'graduatedAt', activity.graduated_at,
         'createdAt', activity.created_at
       ) order by activity.created_at)
       from public.habit_activities activity
       where activity.family_id = child_session.family_id
         and (activity.child_id is null or activity.child_id = child_session.child_id)
-        and activity.is_active
+        and (activity.is_active or activity.graduated_at is not null)
     ), '[]'::jsonb),
     'logs', coalesce((
       select jsonb_agg(jsonb_build_object(
@@ -315,11 +321,8 @@ grant execute on function public.family_snapshot(boolean, boolean, boolean) to a
 revoke all on function public.get_child_session(text) from public, anon, service_role;
 grant execute on function public.get_child_session(text) to anon, authenticated;
 
-alter table public.habit_activities
-  drop constraint if exists habit_activities_graduation_check_needs_graduation,
-  drop constraint if exists habit_activities_base_points_range,
-  drop column if exists base_points,
-  drop column if exists graduation_check_due,
-  drop column if exists graduated_at;
+drop table if exists public.child_weekly_focus;
+drop table if exists public.habit_tries;
+alter table public.habit_activities drop column if exists offered_for_focus;
 
 commit;

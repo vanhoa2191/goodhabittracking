@@ -34,7 +34,10 @@ describe('habit graduation migration contract', () => {
     expect(migration).toContain('graduation_check_due is null or graduated_at is not null');
   });
 
-  it('is undone by dropping exactly the three columns', () => {
+  it('is undone by putting the earlier snapshot and child session back, then dropping exactly the three columns', () => {
+    expect(rollback).toContain('create or replace function public.family_snapshot(');
+    expect(rollback).toContain('create or replace function public.get_child_session(');
+    expect(rollback).not.toContain("'graduated_at', t.graduated_at");
     for (const column of ['base_points', 'graduation_check_due', 'graduated_at']) expect(rollback).toContain(`drop column if exists ${column}`);
   });
 });
