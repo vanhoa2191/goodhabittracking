@@ -53,7 +53,7 @@ export const appEntryCopy: Record<Language, AppEntryCopy> = {
     childOpen: 'Saisir le code ou scanner le QR',
     childToggle: 'C’est l’appareil de l’enfant ?',
     demo: 'Découvrir la démo',
-    description: 'Les parents se connectent pour gérer la famille. Les enfants utilisent un code ou la caméra pour ouvrir le profil associé par leur parent.',
+    description: 'Les parents se connectent pour gérer la famille. Les enfants utilisent un code ou la caméra pour ouvrir le profil que leur parent a associé.',
     loading: 'Vérification de votre session…',
     marketingHome: 'Voir la page d’accueil',
     otherWays: 'Autres façons de se connecter',

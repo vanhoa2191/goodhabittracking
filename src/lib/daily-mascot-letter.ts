@@ -134,9 +134,9 @@ const COPY: Record<Language, DailyLetterCopy> = {
   },
   ja: {
     introductions: {
-      'mascot:leo': 'ぼくはLeo。小さなことから、一緒に勇気を練習しよう。',
+      'mascot:leo': 'ぼくはLeo。小さなことから、一緒に勇気を出してみよう。',
       'mascot:bunny': 'ぼくはBunny。みんなを思いやるあなたが大好きだよ。',
-      'mascot:panda': 'ぼくはPanda。落ち着く時間があると、もっとよく見えると思うよ。',
+      'mascot:panda': 'ぼくはPanda。少し落ち着くと、ものごとがもっとはっきり見えると思うよ。',
       'mascot:fox': 'ぼくはFox。新しいことにはいつもわくわくするんだ。',
       'mascot:turtle': 'ぼくはTurtle。ゆっくりでも、一緒に進んでいこうね。',
       'mascot:bee': 'ぼくはBee。おたがいに助け合えると、とってもうれしいよ。',
