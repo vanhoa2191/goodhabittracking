@@ -56,7 +56,7 @@ The “Status” column shows whether a feature is enabled for all users (**On**
 | Google sign-in | Parents | Entry screen | None | On | [1](01-bat-dau.md#dang-nhap) |
 | Sign in with a code sent by email | Parents | Entry screen | Not available<!--op--> (`emailCodeLogin` flag)<!--/op--> | **Off** | [1](01-bat-dau.md#dang-nhap) |
 | Demo (sample data) | Everyone | Entry screen | None | On | [1](01-bat-dau.md#demo) |
-| Two-step family setup | Parents | First time | Consent to data management | On | [1](01-bat-dau.md#thiet-lap) |
+| Create the first child profile | Parents | First time | Consent to data management | On | [1](01-bat-dau.md#thiet-lap) |
 | Nine languages with automatic detection | Everyone | Everywhere | None | On | [1](01-bat-dau.md#ngon-ngu) |
 | Child enters with a family code or QR code | Children | Entry screen | A parent has created the child’s profile | On | [5](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi), [9](09-bao-mat-va-rieng-tu.md#ma-ghep) |
 | Daily tasks by time of day | Children | Child screen | Assigned tasks | On | [2](02-man-hinh-be.md#nhiem-vu) |

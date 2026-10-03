@@ -29,12 +29,12 @@ Phụ huynh đã đăng nhập vào thẳng bảng quản lý; muốn xem lại 
 Phụ huynh đăng nhập từ một liên kết giới thiệu (`?ref=`) được ghi nhận giới thiệu tự động ([8](08-gioi-thieu-ban-be.md#ghi-nhan)). Người được mời làm người chăm sóc đăng nhập Google rồi chấp nhận lời mời ([5](05-gia-dinh-va-cai-dat.md#nguoi-cham-soc)).
 
 <a id="thiet-lap"></a>
-## Thiết lập gia đình (hai bước)
+## Tạo hồ sơ bé đầu tiên
 
-Lần đầu vào, cửa sổ "Đăng ký và cá nhân hóa theo lứa tuổi" dẫn đi hai bước:
+Lần đầu vào, cửa sổ "Đăng ký và cá nhân hóa theo lứa tuổi" chỉ tạo hồ sơ bé:
 
-1. **Thông tin người nuôi dưỡng**: tên ba mẹ (để ứng dụng xưng hô), vai trò (Mẹ, Bố, Ông/Bà, Người giám hộ), số điện thoại (9 đến 15 chữ số, dùng để hỗ trợ tài khoản và thanh toán, chỉ nhập một lần) và tùy chọn nhận hướng dẫn, ưu đãi.
-2. **Thông tin bé và lộ trình theo tuổi**: họ tên bé, biệt danh, độ tuổi, linh vật may mắn. Ứng dụng đề xuất sáu thói quen khởi đầu theo bốn nhóm tuổi (0–3, 3–6, 6–12, 12–18) để nạp ngay; ba mẹ sửa lại sau cũng được.
+- Nhập **họ tên bé** (bắt buộc), biệt danh (tùy chọn) và chọn độ tuổi (mặc định 5 tuổi).
+- Mở **Tùy chỉnh thêm** nếu muốn xem giải thích giai đoạn tuổi, đổi linh vật (mặc định Leo), xem trước sáu thói quen khởi đầu hoặc tắt tự động nạp mẫu (mặc định bật). Ba mẹ sửa lại sau cũng được.
 
 Bắt buộc **xác nhận là cha mẹ hoặc người giám hộ hợp pháp** và đồng ý để KidHabit lưu hồ sơ, thói quen, tiến độ của bé. Việc đồng ý được ghi theo phiên bản chính sách ([9](09-bao-mat-va-rieng-tu.md#dong-thuan)). Bảng xếp hạng công khai mặc định tắt.
 
@@ -45,7 +45,7 @@ Có thể vào thẳng trang `/start` ("Bắt đầu 7 ngày dùng thử") từ 
 <a id="thong-tin"></a>
 ## Thông tin khách hàng
 
-Sau đăng nhập, nếu hồ sơ còn thiếu họ tên hoặc số điện thoại, hộp thoại "Hoàn thiện thông tin của bạn" hiện ra một lần. Ba mẹ sửa lại sau ở `Gia đình → Cài đặt → Tài khoản` ([5](05-gia-dinh-va-cai-dat.md#tai-khoan)). Có thể bật hoặc tắt nhận ưu đãi bất cứ lúc nào; tắt thì thư quảng bá dừng ngay ([7](07-goi-va-thanh-toan.md#email)).
+Ba mẹ chỉ cần nhập **họ tên và số điện thoại khi thanh toán**, trước bước đồng ý điều khoản và mã giới thiệu. Số điện thoại cần 9 đến 15 chữ số. Thông tin được lưu trên máy chủ cho các lần thanh toán sau; hồ sơ đã đủ sẽ được bỏ qua. Đăng nhập và tạo hồ sơ bé không bị chặn bởi yêu cầu này. Nhận hướng dẫn, ưu đãi là tùy chọn, mặc định tắt. Ba mẹ sửa lại sau ở `Gia đình → Cài đặt → Tài khoản` ([5](05-gia-dinh-va-cai-dat.md#tai-khoan)); tắt nhận ưu đãi thì thư quảng bá dừng ngay ([7](07-goi-va-thanh-toan.md#email)). Nếu tải hoặc lưu lỗi, bấm **Thử lại**.
 
 <a id="vai-tro"></a>
 ## Vai trò trong gia đình

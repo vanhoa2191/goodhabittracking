@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { installCloudFamilyFixture } from './cloud-family-fixture';
 import { getVisiblePricingOpener } from './open-pricing';
+import { completeCheckoutProfile, installCustomerProfileFixture } from './customer-profile-fixture';
 
 for (const entry of [
   { path: '/privacy', heading: 'Chính sách quyền riêng tư' },
@@ -31,6 +32,8 @@ test('draft policy routes stay noindex while the app footer points to the market
 test('approved checkout waits for explicit policy acceptance before creating an order', async ({ page, baseURL }) => {
   test.skip(process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED !== 'true', 'Publication gate is disabled in this run.');
   await installCloudFamilyFixture(page, baseURL);
+  await installCustomerProfileFixture(page);
+  await page.route('**/api/referral/claim', (route) => route.fulfill({ status: 200, json: { state: 'hidden' } }));
   let createRequests = 0;
   await page.route('**/api/payment/create', (route) => {
     createRequests += 1;
@@ -61,6 +64,9 @@ test('approved checkout waits for explicit policy acceptance before creating an 
   const pricing = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
   await pricing.getByRole('button', { name: 'Chọn Gói Gia Đình · Tháng' }).click();
   const checkout = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
+  await expect(checkout.getByLabel('Số điện thoại', { exact: true })).toBeVisible();
+  expect(createRequests).toBe(0);
+  await completeCheckoutProfile(checkout);
   await expect(checkout.getByRole('heading', { name: 'Xác nhận trước khi tạo đơn' })).toBeVisible();
   expect(createRequests).toBe(0);
   await checkout.getByRole('checkbox', { name: /Tôi đã đọc và đồng ý/ }).check();

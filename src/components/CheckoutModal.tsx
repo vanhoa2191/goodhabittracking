@@ -20,6 +20,7 @@ import { PLAN_LOCALIZATION } from '@/lib/i18n/pricing-plan-copy';
 import { useTranslation } from '@/lib/i18n/context';
 import { getCheckoutLegalCopy } from '@/lib/i18n/checkout-legal-copy';
 import { CheckoutPaymentDetails } from '@/components/CheckoutPaymentDetails';
+import { CheckoutCustomerProfileStep } from '@/components/CheckoutCustomerProfileStep';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { getMarketingOrigin } from '@/lib/site';
 import dynamic from 'next/dynamic';
@@ -36,6 +37,12 @@ interface CheckoutModalProps {
 const marketingOrigin = getMarketingOrigin();
 
 export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
+  const { currentUser, familyId } = useAppStore();
+  if (!isOpen || !plan) return null;
+  return <CheckoutSession key={`${currentUser?.id}:${familyId}:${plan.id}`} isOpen={isOpen} onClose={onClose} plan={plan} />;
+}
+
+function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
   const { syncNow, currentUser, familyId, familyRole } = useAppStore();
   const { t, language } = useTranslation();
   const legal = getCheckoutLegalCopy(language);
@@ -58,6 +65,8 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   const [isClaimingReferral, setIsClaimingReferral] = useState(false);
   const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false);
   const [hasConfirmedTerms, setHasConfirmedTerms] = useState(false);
+  const [hasConfirmedProfile, setHasConfirmedProfile] = useState(false);
+  const confirmProfile = useCallback(() => setHasConfirmedProfile(true), []);
   const legalPagesApproved = process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true';
   const canCreatePayment = Boolean(
     currentUser
@@ -107,14 +116,14 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
   }, [canCreatePayment, plan]);
 
   useEffect(() => {
-    if (!isOpen || !plan || !canCreatePayment || !hasConfirmedReferral || (legalPagesApproved && !hasConfirmedTerms)) return;
+    if (!isOpen || !plan || !canCreatePayment || !hasConfirmedProfile || !hasConfirmedReferral || (legalPagesApproved && !hasConfirmedTerms)) return;
 
     const initializationTimer = window.setTimeout(() => {
       void initPayment();
     }, 0);
 
     return () => window.clearTimeout(initializationTimer);
-  }, [canCreatePayment, hasConfirmedReferral, hasConfirmedTerms, isOpen, legalPagesApproved, plan, initPayment]);
+  }, [canCreatePayment, hasConfirmedProfile, hasConfirmedReferral, hasConfirmedTerms, isOpen, legalPagesApproved, plan, initPayment]);
 
   // Check payment status with API
   const checkStatus = useCallback(
@@ -210,6 +219,8 @@ export function CheckoutModal({ isOpen, onClose, plan }: CheckoutModalProps) {
             <div role="alert" className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm font-semibold leading-6 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
               {legal.signInRequired}
             </div>
+          ) : !hasConfirmedProfile ? (
+            <CheckoutCustomerProfileStep onComplete={confirmProfile} />
           ) : legalPagesApproved && !hasConfirmedTerms ? (
             <div className="space-y-5 rounded-2xl border border-indigo-200 bg-indigo-50 p-5 dark:border-indigo-800 dark:bg-indigo-950/30">
               <div>

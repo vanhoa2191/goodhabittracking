@@ -56,7 +56,7 @@ Cột "Trạng thái" cho biết tính năng đang bật cho mọi người dùn
 | Đăng nhập Google | Phụ huynh | Màn hình vào | Không | Bật | [1](01-bat-dau.md#dang-nhap) |
 | Đăng nhập bằng mã gửi qua email | Phụ huynh | Màn hình vào | Chưa mở<!--op--> (cờ `emailCodeLogin`)<!--/op--> | **Tắt** | [1](01-bat-dau.md#dang-nhap) |
 | Bản demo (dữ liệu mẫu) | Mọi người | Màn hình vào | Không | Bật | [1](01-bat-dau.md#demo) |
-| Thiết lập gia đình hai bước | Phụ huynh | Lần đầu | Đồng ý quyền quản lý dữ liệu | Bật | [1](01-bat-dau.md#thiet-lap) |
+| Tạo hồ sơ bé đầu tiên | Phụ huynh | Lần đầu | Đồng ý quyền quản lý dữ liệu | Bật | [1](01-bat-dau.md#thiet-lap) |
 | Chín ngôn ngữ, tự nhận diện | Mọi người | Mọi nơi | Không | Bật | [1](01-bat-dau.md#ngon-ngu) |
 | Bé vào bằng mã gia đình hoặc QR | Bé | Màn hình vào | Ba mẹ đã tạo hồ sơ bé | Bật | [5](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi), [9](09-bao-mat-va-rieng-tu.md#ma-ghep) |
 | Nhiệm vụ trong ngày theo buổi | Bé | Màn hình bé | Có việc được giao | Bật | [2](02-man-hinh-be.md#nhiem-vu) |
