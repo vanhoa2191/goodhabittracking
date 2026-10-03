@@ -19,7 +19,7 @@ The app stores your child’s profile (name, nickname, age), habits, progress, p
 | Person | Can see | Cannot see |
 |---|---|---|
 | Parent | All data belonging to their own family | Data from other families |
-| Caregiver | Child names, active habits, and each child's total completed or approved attempts, in read-only mode | Cannot make changes; cannot see individual attempts, notes, age, nicknames, rewards, groups, subscriptions, payments, settings, or other members |
+| Caregiver | Child names, active habits (with their repeat schedule), each child's total completed or approved attempts, and the count per day for the last 7 days, in read-only mode | Cannot make changes; cannot see individual attempts, times of day, notes, age, nicknames, rewards, groups, subscriptions, payments, settings, or other members |
 | Child (paired device) | Their own data | Other children’s profiles, payments, settings, or PIN |
 | Operator | Parent profiles (name, email, phone), subscription plans, orders; every action is logged | Child profiles, tasks, or the child’s journal |
 

@@ -57,7 +57,7 @@ For grandparents or relatives who want to follow progress but **cannot change an
 
 1. In `Settings`, tap **Create caregiver invitation**. The **one-time** invitation link appears only when it is created and **expires after 72 hours**. Copy and send it to the person.
 2. The invited person opens the link, signs in with Google, and taps accept. If the invitation has expired, was revoked, or the account already belongs to another family, they see "Invalid invitation…".
-3. They open the **Caregiver corner**: view each child's progress with read-only access (recorded completions and each child's habits).
+3. They open the **Caregiver corner**: view each child's progress with read-only access: "Today: x / y tasks" (y is the number of tasks scheduled for today by their repeat rule; with none, "No tasks scheduled today"), "Last 7 days: x / y", each child's habits, and the "All time" completion total as a secondary figure. Caregivers see only counts per day, not which task was done, at what time, or any notes.
 4. Parents can **Revoke invitation** at any time from the "Active invitations" list.
 
 <a id="cai-dat"></a>

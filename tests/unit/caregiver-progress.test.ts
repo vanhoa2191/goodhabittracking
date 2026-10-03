@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { localDayKey } from '@/lib/habit-fire';
 import { getSupabase } from '@/lib/supabase';
 import { loadCaregiverProgress, loadCloudIdentitySnapshot } from '@/lib/store/caregiver-progress';
 
@@ -18,6 +19,20 @@ function progress() {
     completionCounts: [{ child_id: childId, count: 7 }],
   };
 }
+
+/** What a database with the daily-progress migration answers: recurrence on every habit and seven days of counts. */
+function dailyProgress() {
+  const base = progress();
+  return {
+    ...base,
+    activities: [{
+      ...base.activities[0], recurrence_type: 'custom' as const, recurrence_days: [1, 3], created_at: '2026-09-20T00:00:00+00:00',
+    }],
+    daily: { from: '2026-09-27', to: '2026-10-03', counts: [{ child_id: childId, day: '2026-10-02', count: 1 }] },
+  };
+}
+
+const todayCall = () => ['caregiver_progress_snapshot', { local_today: localDayKey() }];
 
 type Result = { data: unknown; error: { code: string; message?: string } | null };
 
@@ -43,8 +58,52 @@ describe('caregiver progress projection', () => {
   it('loads the minimal projection and aggregate counts using only its dedicated RPC', async () => {
     const { client, rpc, from } = transport();
     await expect(loadCaregiverProgress(client)).resolves.toEqual(progress());
-    expect(rpc.mock.calls).toEqual([['caregiver_progress_snapshot']]);
+    expect(rpc.mock.calls).toEqual([todayCall()]);
     expect(from).not.toHaveBeenCalled();
+  });
+
+  it('accepts the daily window with recurrence fields and per-day counts', async () => {
+    const { client } = transport({ snapshot: { data: dailyProgress(), error: null } });
+    await expect(loadCaregiverProgress(client)).resolves.toEqual(dailyProgress());
+  });
+
+  it('accepts an empty daily window and a habit without stored recurrence days', async () => {
+    const data = dailyProgress();
+    data.daily.counts = [];
+    const { client } = transport({ snapshot: { data: { ...data, activities: [{ ...data.activities[0], recurrence_days: null }] }, error: null } });
+    await expect(loadCaregiverProgress(client)).resolves.toMatchObject({ daily: { counts: [] } });
+  });
+
+  it('accepts daily progress without the optional creation timestamp', async () => {
+    const data = dailyProgress();
+    const { created_at: omitted, ...activity } = data.activities[0];
+    expect(omitted).toBeDefined();
+    const payload = { ...data, activities: [activity] };
+    const { client } = transport({ snapshot: { data: payload, error: null } });
+    await expect(loadCaregiverProgress(client)).resolves.toEqual(payload);
+  });
+
+  it.each(['2026-09-20T00:00:00Z', '2026-09-20T07:00:00+07:00', '2026-09-19T17:00:00-07:00'])('accepts ISO creation timestamp %s', async (created_at) => {
+    const data = dailyProgress();
+    data.activities[0].created_at = created_at;
+    const { client } = transport({ snapshot: { data, error: null } });
+    await expect(loadCaregiverProgress(client)).resolves.toEqual(data);
+  });
+
+  it.each(['PGRST202', '42883'])('falls back to the earlier call without the day when the database answers %s', async (code) => {
+    const { client, rpc, from } = transport();
+    rpc.mockResolvedValueOnce({ data: null, error: { code, message: 'no function takes local_today' } });
+    await expect(loadCaregiverProgress(client)).resolves.toEqual(progress());
+    expect(rpc.mock.calls).toEqual([todayCall(), ['caregiver_progress_snapshot']]);
+    expect(from).not.toHaveBeenCalled();
+  });
+
+  it('does not retry other failures', async () => {
+    const error = { code: '42501', message: 'denied' };
+    const { client, rpc } = transport();
+    rpc.mockResolvedValueOnce({ data: null, error });
+    await expect(loadCaregiverProgress(client)).rejects.toBe(error);
+    expect(rpc).toHaveBeenCalledOnce();
   });
 
   it('accepts a family with no children or progress', async () => {
@@ -70,10 +129,30 @@ describe('caregiver progress projection', () => {
     ['missing counts', () => ({ familyId, familyRole: 'caregiver', profiles: [], activities: [] })],
     ['null response', () => null],
     ['array response', () => []],
+    ['log rows inside the daily window', () => ({ ...dailyProgress(), daily: { ...dailyProgress().daily, logs: [] } })],
+    ['log detail in a daily count', () => ({
+      ...dailyProgress(), daily: { ...dailyProgress().daily, counts: [{ child_id: childId, day: '2026-10-02', count: 1, note: 'private' }] },
+    })],
+    ['a habit id in a daily count', () => ({
+      ...dailyProgress(), daily: { ...dailyProgress().daily, counts: [{ child_id: childId, day: '2026-10-02', count: 1, activity_id: activityId }] },
+    })],
+    ['a timestamp instead of a day', () => ({
+      ...dailyProgress(), daily: { ...dailyProgress().daily, counts: [{ child_id: childId, day: '2026-10-02T10:00:00Z', count: 1 }] },
+    })],
+    ['a negative daily count', () => ({
+      ...dailyProgress(), daily: { ...dailyProgress().daily, counts: [{ child_id: childId, day: '2026-10-02', count: -1 }] },
+    })],
+    ['an unknown recurrence type', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], recurrence_type: 'hourly' }] })],
+    ['a UTC creation day instead of a timestamp', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], created_on: '2026-10-04' }] })],
+    ['a malformed creation timestamp', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], created_at: 'not-a-date' }] })],
+    ['a creation date without time zone', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], created_at: '2026-10-04T03:00:00' }] })],
+    ['a weekday outside 0 to 6', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], recurrence_days: [7] }] })],
+    ['a habit field beyond recurrence', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], points: 10 }] })],
+    ['a daily window without habit recurrence', () => ({ ...dailyProgress(), activities: progress().activities })],
   ])('rejects %s instead of hydrating a wider or malformed snapshot', async (_name, payload) => {
     const { client, rpc, from } = transport({ snapshot: { data: payload(), error: null } });
     await expect(loadCaregiverProgress(client)).rejects.toThrow();
-    expect(rpc.mock.calls).toEqual([['caregiver_progress_snapshot']]);
+    expect(rpc.mock.calls).toEqual([todayCall()]);
     expect(from).not.toHaveBeenCalled();
   });
 
@@ -88,7 +167,7 @@ describe('caregiver progress projection', () => {
     const error = { code, message: 'Projection unavailable' };
     const { client, rpc, from } = transport({ snapshot: { data: progress(), error } });
     await expect(loadCaregiverProgress(client)).rejects.toBe(error);
-    expect(rpc.mock.calls).toEqual([['caregiver_progress_snapshot']]);
+    expect((rpc.mock.calls as unknown[][]).every(([name]) => name === 'caregiver_progress_snapshot')).toBe(true);
     expect(from).not.toHaveBeenCalled();
   });
 

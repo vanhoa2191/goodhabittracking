@@ -20,6 +20,16 @@ type CloudFamilyFixtureOptions = {
 
 const createdAt = '2026-09-20T00:00:00.000Z';
 
+function localDay(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
+function addLocalDays(day: string, days: number) {
+  const value = new Date(`${day}T12:00:00`);
+  value.setDate(value.getDate() + days);
+  return localDay(value);
+}
+
 export const defaultCloudProfile = {
   id: cloudFamilyIds.child,
   family_id: cloudFamilyIds.family,
@@ -111,6 +121,7 @@ export async function installCloudFamilyFixture(
     if (path.endsWith('/rpc/caregiver_progress_snapshot')) {
       // The database answers only caregivers, with display fields and per-child counts.
       const profiles = options.profiles ?? [defaultCloudProfile];
+      const today = (route.request().postDataJSON() as { local_today?: string } | null)?.local_today ?? localDay(new Date());
       const projection = options.familyRole === 'caregiver' ? {
         familyId: cloudFamilyIds.family,
         familyRole: 'caregiver',
@@ -119,8 +130,12 @@ export async function installCloudFamilyFixture(
         })),
         activities: (options.activities ?? []).map((activity) => ({
           id: activity.id, child_id: activity.child_id ?? null, title: activity.title, description: activity.description ?? null,
+          recurrence_type: activity.recurrence_type ?? 'daily', recurrence_days: activity.recurrence_days ?? [],
+          created_at: activity.created_at ?? createdAt,
         })),
         completionCounts: profiles.map((profile) => ({ child_id: profile.id, count: 0 })),
+        // A database with the daily-progress migration: the seven days ending on the caller's day, nothing done yet.
+        daily: { from: addLocalDays(today, -6), to: today, counts: [] },
       } : null;
       return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(projection) });
     }
