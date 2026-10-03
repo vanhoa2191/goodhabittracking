@@ -8,16 +8,17 @@ const encoder = new TextEncoder();
 
 type UnlockSubject = { readonly familyId: string; readonly user: { readonly id: string } };
 
-/** `PARENT_UNLOCK_SECRET` keeps this cookie apart from pairing; until it is configured the pairing secret signs it. */
+/**
+ * `PARENT_UNLOCK_SECRET` keeps this cookie apart from pairing and is required in production. Elsewhere
+ * the pairing secret signs it when no dedicated secret is set.
+ */
 function signingSecret(): string {
   const dedicated = process.env.PARENT_UNLOCK_SECRET?.trim() ?? '';
   if (dedicated.length >= 32) return dedicated;
-  const configured = getPairingSecret();
-  if (configured) return configured;
   if (process.env.NODE_ENV === 'production') {
-    throw new Error('PARENT_UNLOCK_SECRET or PAIRING_RATE_LIMIT_SECRET must be at least 32 characters in production.');
+    throw new Error('PARENT_UNLOCK_SECRET must be at least 32 characters in production.');
   }
-  return 'local-development-parent-unlock-secret';
+  return getPairingSecret() ?? 'local-development-parent-unlock-secret';
 }
 
 /** The PIN version from `get_parent_pin_status`; it changes whenever the PIN is set or changed. */
