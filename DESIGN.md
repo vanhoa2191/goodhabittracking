@@ -67,7 +67,7 @@ The root font scale is `1.125`. Light-mode supporting text uses at least the `sl
 Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 4px (`1`), 8px (`2`), 12px (`3`), 16px (`4`), 20px (`5`), 24px (`6`), 32px (`8`), and 40px (`10`).
 
 - Main app content is centered and responsive; cards collapse to one column below `sm` (640px).
-- The first-visit landing uses one primary sign-in action and one secondary demo path. Local setup, child code, and backup import remain available under a compact disclosure; the framework and roadmap remain collapsed until requested. The child-world mascot scene reserves its space so image loading does not shift the actions.
+- The app entry gate shows two actions in view: one primary parent sign-in (Google) and one secondary demo path. The child code or QR entry and any additional sign-in method (email code, only while its flag is on) sit in closed native `details` blocks that open by default only while a child device is being paired. The first-visit landing uses one primary sign-in action and one secondary demo path. Local setup, child code, and backup import remain available under a compact disclosure; the framework and roadmap remain collapsed until requested. The child-world mascot scene reserves its space so image loading does not shift the actions.
 - Parent tab content uses vertical stacks with 24px section gaps.
 - Cards use 20-24px padding and `rounded-2xl` or `rounded-3xl` radii.
 - Controls must reflow without horizontal scrolling at 375px. Intrinsic mechanics such as `min-width`, `minmax()`, percentages, and wrapping remain local to the component.

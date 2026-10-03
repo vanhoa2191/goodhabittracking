@@ -11,9 +11,12 @@
   </head>
   <body>
     <main class="card">
-      <h1>Bạn đang ngoại tuyến</h1>
-      <p>Hãy kết nối Internet rồi thử tải lại để nhận dữ liệu mới nhất của gia đình.</p>
-      <button type="button" onclick="location.reload()">Thử lại</button>
+      <h1 id="offline-heading">Bạn đang ngoại tuyến</h1>
+      <p id="offline-body">Hãy kết nối Internet rồi thử tải lại để nhận dữ liệu mới nhất của gia đình.</p>
+      <form id="offline-form" action="/" method="get">
+        <button id="offline-retry" type="submit">Thử lại</button>
+      </form>
     </main>
+    <script src="/offline.js"></script>
   </body>
 </html>

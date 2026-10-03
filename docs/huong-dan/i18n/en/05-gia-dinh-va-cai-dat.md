@@ -36,7 +36,7 @@ From the profile card, parents can:
 Each child has **one persistent connection code** (and a matching QR code). The code grants access only to that child, contains no PIN or family data, and stays the same until a parent refreshes it.
 
 1. **Get the child's code**: in `Family → Child profiles`, copy the code or tap "Show QR code". You need the [PIN](#pin) if one has been set.
-2. **Open the child's device**: open the app and choose "Scan QR or enter code" (or "Child code" in the top bar).
+2. **Open the child's device**: open the app and open "Is this a child’s device?" and choose "Enter code or scan QR" (or "Child code" in the top bar).
 3. **Scan the QR code or enter the code**: the device automatically signs in to the correct child profile. It shows "Connected successfully!" and the child taps "Start the child's tasks".
 
 After pairing, the device always opens directly to the [child screen](02-man-hinh-be.md), without showing the parent dashboard or sales pages.

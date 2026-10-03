@@ -35,6 +35,7 @@ import { MascotPickerController } from './MascotPickerController';
 // Only opened from its own tab, so it loads on demand instead of weighing on the first screen.
 const LeaderboardSection = dynamic(() => import('./LeaderboardSection').then((module) => module.LeaderboardSection));
 import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
+import { getChromeCopy } from '@/lib/i18n/chrome-copy';
 import { localizeDemoActivity, localizeDemoReward } from '@/lib/i18n/demo-content-copy';
 import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
 import { TaskDetailsModal } from './TaskDetailsModal';
@@ -88,6 +89,7 @@ export function KidDashboard() {
 
   const { t, language } = useTranslation();
   const copy = getKidDashboardCopy(language);
+  const chromeCopy = getChromeCopy(language);
   const questCopy = getKidQuestCopy(language);
   const historyCopy = getKidHistoryCopy(language);
 
@@ -653,7 +655,7 @@ export function KidDashboard() {
                         >
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex min-w-0 flex-1 flex-col">
-                              <button type="button" onClick={() => setSelectedTask(act)} aria-label={`${language === 'vi' ? 'Xem chi tiết' : 'View details'}: ${act.title}`} className="flex w-full items-start gap-3 text-left rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+                              <button type="button" onClick={() => setSelectedTask(act)} aria-label={`${chromeCopy.viewDetails}: ${act.title}`} className="flex w-full items-start gap-3 text-left rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
                                 <span className="text-3xl shrink-0 select-none">{act.icon}</span>
                                 <div className="min-w-0">
                                 <h4
@@ -746,21 +748,13 @@ export function KidDashboard() {
                                   ? 'bg-amber-400 border-amber-500 text-white shadow-amber-200 dark:shadow-none'
                                   : 'bg-slate-50 dark:bg-zinc-800/90 border-slate-200 dark:border-zinc-700 text-slate-400 hover:text-indigo-600 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50/50'
                               }`}
-                              aria-label={language === 'vi'
-                                ? isSaving
-                                  ? `Đang lưu nhiệm vụ “${act.title}”`
-                                  : isPending
-                                    ? `Nhiệm vụ “${act.title}” đang chờ phụ huynh duyệt`
-                                    : isDone
-                                      ? `Bỏ đánh dấu nhiệm vụ “${act.title}” là hoàn thành`
-                                      : `Đánh dấu nhiệm vụ “${act.title}” là hoàn thành`
-                                : isSaving
-                                  ? `Saving task “${act.title}”`
-                                  : isPending
-                                    ? `Task “${act.title}” is waiting for parent approval`
-                                    : isDone
-                                      ? `Mark task “${act.title}” as incomplete`
-                                      : `Mark task “${act.title}” as complete`}
+                              aria-label={isSaving
+                                ? chromeCopy.taskSaving(act.title)
+                                : isPending
+                                  ? chromeCopy.taskWaitingApproval(act.title)
+                                  : isDone
+                                    ? chromeCopy.taskUnmark(act.title)
+                                    : chromeCopy.taskMark(act.title)}
                               aria-pressed={isDone}
                               aria-busy={isSaving}
                               title={isDone ? t.tickDone : t.tasks}
@@ -797,7 +791,7 @@ export function KidDashboard() {
                                 : 'sr-only'}
                             >
                               {praise?.activityId === act.id ? praise.text : null}
-                              <span className="sr-only">{language === 'vi' ? ` Đã cập nhật nhiệm vụ “${act.title}”` : ` Updated task “${act.title}”`}</span>
+                              <span className="sr-only">{` ${chromeCopy.taskUpdated(act.title)}`}</span>
                             </p>
                           )}
                           {completionError === act.id && <p role="alert" className="mt-3 text-sm font-bold text-rose-600">{questCopy.saveError}{failureCode ? <span className="ml-2 text-xs font-semibold text-rose-400">({failureCode})</span> : null}</p>}
