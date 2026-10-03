@@ -15,7 +15,7 @@ export const HELP_TOPICS_FR: HelpTranslationTable<HelpText> = {
   'stats.deleteFamily': { title: 'Supprimer les données familiales', text: 'Seul le propriétaire de la famille peut le faire. Cette action supprime définitivement les profils enfants, habitudes, progrès, cadeaux et appareils associés ; elle est irréversible. Vous devez saisir DELETE FAMILY.' },
 
   'habits.inUse': { title: 'Missions utilisées', text: 'Les missions actuellement attribuées. Filtrez par enfant, consultez les réalisations des sept derniers jours, modifiez, supprimez ou définissez un signal.' },
-  'habits.library': { title: 'Bibliothèque', text: 'Des habitudes prêtes à l’emploi à ajouter au planning. Le français utilise des packs de modèles.' },
+  'habits.library': { title: 'Bibliothèque', text: 'Des habitudes prêtes à l’emploi à ajouter au planning. Le vietnamien utilise le cadre des 47 habitudes par étape d’âge ; les autres langues utilisent des packs de modèles.' },
   'habits.programs': { title: 'Programmes', text: 'Construisez les habitudes étape par étape pour un enfant : choisissez-en quelques-unes, définissez les signaux, puis suivez l’étape. Disponible uniquement en vietnamien.' },
   'habits.framework': { title: 'Cadre des 47 habitudes', text: 'Choisissez une étape et un domaine, puis lisez la signification et la manière d’accompagner avant d’ajouter. Les habitudes ajoutées ici concernent toute la famille ; modifiez « Assigner à » pour en donner une à un seul enfant.' },
   'habits.handbook': { title: 'Guide des 16 portraits', text: 'Un guide sur 16 portraits, 7 façons de donner et l’art de montrer l’exemple. Vous pouvez appliquer à un enfant un ensemble d’actions adapté à son âge.' },
@@ -39,7 +39,7 @@ export const HELP_TOPICS_FR: HelpTranslationTable<HelpText> = {
   'children.ageTheme': { title: 'Apparence selon l’âge', text: 'L’écran de votre enfant s’adapte à son âge. Vous pouvez fixer une tranche d’âge ou conserver l’ancienne apparence ; votre choix est prioritaire sur celui de votre enfant.' },
   'children.pairing': { title: 'Code de connexion', text: 'Chaque enfant possède un code fixe qui ouvre uniquement son profil. Scannez le QR code ou saisissez le code sur l’appareil de votre enfant. Votre code PIN est demandé si vous en avez défini un.' },
   'children.regenerate': { title: 'Nouveau code', text: 'Un nouveau code rend l’ancien inutilisable. Faites-le uniquement si vous pensez que le code a été divulgué. Le code PIN est demandé.' },
-  'children.adjustPoints': { title: 'Ajouter ou retirer des étoiles', text: 'Ajoutez une récompense (nombre positif) ou retirez des étoiles (nombre négatif), avec une courte raison. Le code PIN est demandé. À utiliser pour reconnaître ce qui ne fait pas partie des missions attribuées.' },
+  'children.adjustPoints': { title: 'Ajouter ou retirer des étoiles', text: 'Ajoutez des étoiles (nombre positif) ou retirez-en (nombre négatif), avec une courte raison. Le code PIN est demandé. À utiliser pour reconnaître ce qui ne fait pas partie des missions attribuées.' },
   'children.ageBundle': { title: 'Pack de démarrage par âge', text: 'Chargez en un geste six missions de départ adaptées à l’âge de votre enfant. Vous pourrez ensuite les modifier ou les supprimer.' },
 
   'settings.devices': { title: 'Appareils des enfants', text: 'La liste des appareils associés : à quel enfant ils appartiennent et leur dernier accès. Révoquez l’accès dès qu’un appareil est perdu ou n’est plus utilisé ; le code PIN est demandé.' },

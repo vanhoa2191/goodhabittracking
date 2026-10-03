@@ -19,8 +19,8 @@ const COPY: Record<Language, Record<JourneyStageId, JourneyStageCopy>> = {
     GD5: { title: 'Direction and responsibility', adultRole: 'You advise and back them up' },
   },
   fr: {
-    GD1: { title: 'Sécurité et sens', adultRole: 'Vous montrez l’exemple et décrivez' },
-    GD2: { title: 'Exploration et volonté', adultRole: 'Vous le faites ensemble et rappelez doucement' },
+    GD1: { title: 'Sécurité et éveil des sens', adultRole: 'Vous montrez l’exemple et décrivez' },
+    GD2: { title: 'Exploration et volonté', adultRole: 'Vous faites l’activité ensemble et vous lui rappelez les choses avec douceur' },
     GD3: { title: 'Effort et compétences', adultRole: 'Vous supervisez et participez' },
     GD4: { title: 'Identité et émotions', adultRole: 'Vous accompagnez votre enfant et suivez aussi les règles communes' },
     GD5: { title: 'Orientation et responsabilité', adultRole: 'Vous conseillez et soutenez votre enfant' },
@@ -35,13 +35,13 @@ const COPY: Record<Language, Record<JourneyStageId, JourneyStageCopy>> = {
   it: {
     GD1: { title: 'Sicurezza e sensi', adultRole: 'Dai il buon esempio e descrivi' },
     GD2: { title: 'Esplorazione e volontà', adultRole: 'Lo fai insieme a tuo figlio e ricordi con gentilezza' },
-    GD3: { title: 'Impegno e competenze', adultRole: 'Segui e partecipi' },
+    GD3: { title: 'Impegno e competenze', adultRole: 'Supervisioni e partecipi' },
     GD4: { title: 'Identità ed emozioni', adultRole: 'Affianchi tuo figlio e segui anche tu le regole comuni' },
     GD5: { title: 'Direzione e responsabilità', adultRole: 'Consigli e sostieni tuo figlio' },
   },
   es: {
     GD1: { title: 'Seguridad y sentidos', adultRole: 'Das el ejemplo y describes' },
-    GD2: { title: 'Exploración y voluntad', adultRole: 'Lo haces junto a tu hijo y recuerdas con suavidad' },
+    GD2: { title: 'Exploración y voluntad', adultRole: 'Lo haces junto a tu hijo y le recuerdas la tarea con suavidad' },
     GD3: { title: 'Esfuerzo y habilidades', adultRole: 'Supervisas y participas' },
     GD4: { title: 'Identidad y emociones', adultRole: 'Acompañas a tu hijo y también sigues las reglas comunes' },
     GD5: { title: 'Dirección y responsabilidad', adultRole: 'Aconsejas y respaldas a tu hijo' },

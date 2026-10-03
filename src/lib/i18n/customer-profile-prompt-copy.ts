@@ -58,10 +58,10 @@ export const COPY: Record<Language, CustomerProfilePromptCopy> = {
   fr: {
     invalidName: 'Saisissez un nom complet d’au moins 2 caractères.', loading: 'Chargement des informations client…', loadFailed: 'Impossible de charger les informations client. Réessayez.', retry: 'Réessayer',
     modalLabel: 'Compléter les informations client', title: 'Complétez vos informations',
-    description: 'Saisissez votre nom complet et votre téléphone pour l’assistance au paiement. Ces informations sont conservées pour les prochains paiements ; une seule saisie suffit.',
+    description: 'Saisissez votre nom complet et votre numéro de téléphone pour l’assistance au paiement. Ces informations sont conservées pour les prochains paiements ; une seule saisie suffit.',
     fullName: 'Nom complet', phone: 'Numéro de téléphone', phonePlaceholder: 'Exemple : 0912 345 678',
     invalidPhone: 'Numéro de téléphone invalide. Saisissez entre 9 et 15 chiffres.', email: 'E-mail',
-    marketingConsent: 'J’accepte de recevoir des conseils et des offres adaptés de KidHabit. Je peux me désinscrire à tout moment.',
+    marketingConsent: 'J’accepte de recevoir de la part de KidHabit des conseils et des offres pertinents. Je peux me désinscrire à tout moment.',
     signOut: 'Se déconnecter', saving: 'Enregistrement…', save: 'Enregistrer et continuer',
     errors: {
       network_error: 'Connexion interrompue. Vérifiez votre réseau et réessayez.',

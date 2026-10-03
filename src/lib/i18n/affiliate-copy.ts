@@ -224,7 +224,7 @@ const fr: AffiliateCopy = {
   tax: 'Les commissions peuvent être soumises à l’impôt sur le revenu ; vous êtes responsable de les déclarer selon les règles en vigueur.',
   entry: {
     prompt: 'Vous avez un code de parrainage d’un ami ?',
-    hint: 'Saisissez le code de 8 caractères pour que votre ami soit crédité et obtenir 10 % de réduction sur votre premier forfait annuel. Il ne peut être saisi qu’une fois, tant que votre famille est nouvelle et n’a pas payé.',
+    hint: 'Saisissez le code de 8 caractères pour que votre ami soit crédité et que vous obteniez 10 % de réduction sur votre premier forfait annuel. Il ne peut être saisi qu’une fois, tant que votre famille est nouvelle et n’a pas payé.',
     label: 'Code de parrainage',
     placeholder: 'Exemple K7M2QX9P',
     submit: 'Appliquer le code',
@@ -250,14 +250,14 @@ const fr: AffiliateCopy = {
     suspended: 'Votre compte de parrainage est suspendu. Veuillez contacter l’assistance.',
     failed: 'Une erreur s’est produite. Veuillez réessayer.',
     loadFailed: 'Impossible de charger le programme de parrainage. Veuillez réessayer plus tard.',
-    pinRequired: 'Saisissez le PIN parent et réessayez.',
-    pinNotSet: 'Définissez un PIN parent dans les Paramètres avant d’enregistrer vos informations de versement ou de demander un retrait.',
+    pinRequired: 'Saisissez le code PIN parent et réessayez.',
+    pinNotSet: 'Définissez un code PIN parent dans les Paramètres avant d’enregistrer vos informations de versement ou de demander un retrait.',
   },
 };
 
 const de: AffiliateCopy = {
   title: 'Freund empfehlen',
-  intro: (percent) => `Teile deinen Link. Wenn sich eine neue Familie darüber anmeldet und bezahlt, erhältst du ${percent} % jeder ihrer Zahlungen, und dein Freund bekommt 10 % Rabatt auf sein erstes Jahresabo.`,
+  intro: (percent) => `Teile deinen Link. Wenn sich eine neue Familie darüber anmeldet und bezahlt, erhältst du ${percent} % von jeder Zahlung der Familie, und dein Freund bekommt 10 % Rabatt auf sein erstes Jahresabo.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `${percent} % von dem Betrag, den die geworbene Familie tatsächlich bezahlt, für jede Zahlung in den ersten ${Math.round(windowDays / 30)} Monaten nach der Anmeldung.`,
     `Jede Provision wird ${holdDays} Tage lang zurückgehalten (über die Erstattungsfrist hinaus), bevor du sie auszahlen lassen kannst. Bei einer erstatteten Bestellung wird die Provision zurückgenommen.`,
@@ -294,7 +294,7 @@ const de: AffiliateCopy = {
   tax: 'Provisionen können der persönlichen Einkommensteuer unterliegen; du bist selbst für die vorschriftsmäßige Erklärung verantwortlich.',
   entry: {
     prompt: 'Hast du einen Empfehlungscode von einem Freund?',
-    hint: 'Gib den 8-stelligen Code ein, damit dein Freund gutgeschrieben wird und du 10 % Rabatt auf dein erstes Jahresabo erhältst. Er kann einmal eingegeben werden, solange deine Familie neu ist und noch nicht bezahlt hat.',
+    hint: 'Gib den Code mit 8 Zeichen ein, damit dein Freund gutgeschrieben wird und du 10 % Rabatt auf dein erstes Jahresabo erhältst. Er kann einmal eingegeben werden, solange deine Familie neu ist und noch nicht bezahlt hat.',
     label: 'Empfehlungscode',
     placeholder: 'Beispiel K7M2QX9P',
     submit: 'Code anwenden',
@@ -361,7 +361,7 @@ const it: AffiliateCopy = {
   noCommissions: 'Nessuna commissione ancora.',
   status: { pending: 'In attesa', available: 'Disponibile', requested: 'Prelievo richiesto', paid: 'Pagato', reversed: 'Stornato' },
   plan: { solo_monthly: 'Piano Un bambino', monthly: 'Piano Famiglia · Mensile', yearly: 'Piano annuale', lifetime: 'A vita' },
-  tax: 'Le commissioni possono essere soggette all’imposta sul reddito; sei responsabile della dichiarazione secondo le norme vigenti.',
+  tax: 'Le commissioni possono essere soggette all’imposta sul reddito delle persone fisiche; sei responsabile della dichiarazione secondo le norme vigenti.',
   entry: {
     prompt: 'Hai un codice invito da un amico?',
     hint: 'Inserisci il codice di 8 caratteri per dare il merito al tuo amico e ricevere il 10% di sconto sul primo piano annuale. Può essere inserito una sola volta, finché la tua famiglia è nuova e non ha pagato.',
@@ -381,17 +381,17 @@ const it: AffiliateCopy = {
     },
   },
   messages: {
-    saved: 'Dati di pagamento salvati.',
+    saved: 'Dati per l’accredito salvati.',
     invalidDetails: 'Questi dati non sembrano corretti. Controlla banca, numero di conto e nome del titolare.',
     requested: 'Prelievo richiesto. KidHabit trasferirà il denaro e ti avviserà.',
     belowMinimum: 'L’importo disponibile è inferiore al minimo.',
-    missingDetails: 'Salva prima i dati di pagamento.',
-    detailsRecent: 'I dati di pagamento sono stati appena modificati. Per sicurezza puoi richiedere un prelievo dopo 24 ore.',
+    missingDetails: 'Salva prima i dati per l’accredito.',
+    detailsRecent: 'I dati per l’accredito sono stati appena modificati. Per sicurezza puoi richiedere un prelievo dopo 24 ore.',
     suspended: 'Il tuo account inviti è sospeso. Contatta l’assistenza.',
     failed: 'Qualcosa è andato storto. Riprova.',
     loadFailed: 'Non è stato possibile caricare il programma di inviti. Riprova più tardi.',
     pinRequired: 'Inserisci il PIN genitore e riprova.',
-    pinNotSet: 'Imposta un PIN genitore nelle Impostazioni prima di salvare i dati di pagamento o richiedere un prelievo.',
+    pinNotSet: 'Imposta un PIN genitore nelle Impostazioni prima di salvare i dati per l’accredito o richiedere un prelievo.',
   },
 };
 
@@ -434,7 +434,7 @@ const es: AffiliateCopy = {
   tax: 'Las comisiones pueden estar sujetas al impuesto sobre la renta; tú eres responsable de declararlas según corresponda.',
   entry: {
     prompt: '¿Tienes un código de recomendación de un amigo?',
-    hint: 'Introduce el código de 8 caracteres para que tu amigo reciba el crédito y tú obtengas un 10% de descuento en tu primer plan anual. Solo puede introducirse una vez, mientras tu familia sea nueva y no haya pagado.',
+    hint: 'Introduce el código de 8 caracteres para que la recomendación se atribuya a tu amigo y tú obtengas un 10 % de descuento en tu primer plan anual. Solo puede introducirse una vez, mientras tu familia sea nueva y no haya pagado.',
     label: 'Código de recomendación',
     placeholder: 'Ejemplo K7M2QX9P',
     submit: 'Aplicar código',
@@ -451,17 +451,17 @@ const es: AffiliateCopy = {
     },
   },
   messages: {
-    saved: 'Datos de pago guardados.',
+    saved: 'Datos para recibir el pago guardados.',
     invalidDetails: 'Estos datos no parecen correctos. Comprueba el banco, el número de cuenta y el nombre del titular.',
     requested: 'Retiro solicitado. KidHabit transferirá el dinero y te avisará.',
     belowMinimum: 'El importe disponible está por debajo del mínimo.',
-    missingDetails: 'Guarda primero tus datos de pago.',
-    detailsRecent: 'Tus datos de pago se acaban de cambiar. Por seguridad, podrás solicitar un retiro después de 24 horas.',
+    missingDetails: 'Guarda primero tus datos para recibir el pago.',
+    detailsRecent: 'Tus datos para recibir el pago se acaban de cambiar. Por seguridad, podrás solicitar un retiro después de 24 horas.',
     suspended: 'Tu cuenta de recomendaciones está suspendida. Contacta con soporte.',
     failed: 'Algo salió mal. Inténtalo de nuevo.',
     loadFailed: 'No se pudo cargar el programa de recomendaciones. Inténtalo más tarde.',
     pinRequired: 'Introduce el PIN parental e inténtalo de nuevo.',
-    pinNotSet: 'Configura un PIN parental en Ajustes antes de guardar los datos de pago o solicitar un retiro.',
+    pinNotSet: 'Configura un PIN parental en Ajustes antes de guardar los datos para recibir el pago o solicitar un retiro.',
   },
 };
 
@@ -547,7 +547,7 @@ const ja: AffiliateCopy = {
   terms: '紹介プログラムの規約を読み、同意します。',
   termsLink: '規約を読む',
   join: 'プログラムに参加',
-  joining: '参加しています…',
+  joining: '参加登録中…',
   yourLink: 'あなたの紹介リンク',
   copy: 'コピー',
   copied: 'コピーしました',
@@ -582,7 +582,7 @@ const ja: AffiliateCopy = {
     referred: 'あなたのご家族は友だちから紹介されています。初回の年間プランが 10% 引きになります。ありがとうございます！',
     results: {
       claimed: '紹介コードを記録しました。初回の年間プランが 10% 引きになります。ありがとうございます！',
-      invalid: 'コードが正しくないか、期限切れです。受け取った8文字を確認してください。',
+      invalid: 'コードが正しくないか、無効になっています。受け取った8文字を確認してください。',
       self: '自分の紹介コードは使えません。',
       already_referred: 'あなたのご家族には、すでに紹介コードが記録されています。',
       expired: '申し訳ありません。紹介コードは未払いの新しいご家族にのみ適用できるため、記録できません。',
@@ -607,7 +607,7 @@ const ja: AffiliateCopy = {
 
 const ko: AffiliateCopy = {
   title: '친구 추천하기',
-  intro: (percent) => `링크를 공유하세요. 새 가족이 링크로 가입하고 결제하면 결제 금액마다 ${percent}%의 커미션을 받고, 친구는 첫 연간 플랜을 10% 할인받습니다.`,
+  intro: (percent) => `링크를 공유하세요. 새로운 가족이 이 링크로 가입하고 결제하면, 해당 가족의 각 결제 금액에 대해 ${percent}%의 커미션을 받습니다. 친구는 첫 연간 플랜을 10% 할인받습니다.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `추천받은 가족이 실제로 결제한 금액의 ${percent}%를 가입 후 첫 ${Math.round(windowDays / 30)}개월 동안의 모든 결제에 대해 받습니다.`,
     `각 커미션은 환불 기간이 지난 뒤 출금할 수 있도록 ${holdDays}일 동안 보류됩니다. 환불된 주문의 커미션은 회수됩니다.`,
