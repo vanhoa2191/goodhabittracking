@@ -21,14 +21,19 @@ begin
   );
   if missing is not null then raise exception 'habit coach columns are missing: %', missing; end if;
 
+  -- Check constraints get generated names, so they are matched by what they say, not by name.
   if not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.habit_tries'::regclass and conname = 'habit_tries_child_family_fk')
     or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.habit_tries'::regclass and conname = 'habit_tries_activity_family_fk')
-    or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.habit_tries'::regclass and conname = 'habit_tries_kind_check')
-    or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.habit_tries'::regclass and conname = 'habit_tries_ends_on_check')
-    or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.habit_tries'::regclass and conname = 'habit_tries_outcome_check')
+    or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.habit_tries'::regclass and contype = 'c'
+      and pg_catalog.pg_get_constraintdef(oid) like '%smaller%' and pg_catalog.pg_get_constraintdef(oid) like '%reduce_support%')
+    or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.habit_tries'::regclass and contype = 'c'
+      and pg_catalog.pg_get_constraintdef(oid) like '%ends_on >= started_on%')
+    or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.habit_tries'::regclass and contype = 'c'
+      and pg_catalog.pg_get_constraintdef(oid) like '%helped%' and pg_catalog.pg_get_constraintdef(oid) like '%not_yet%')
     or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.child_weekly_focus'::regclass and conname = 'child_weekly_focus_child_family_fk')
     or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.child_weekly_focus'::regclass and conname = 'child_weekly_focus_activity_ids_limit')
-    or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.child_weekly_focus'::regclass and conname = 'child_weekly_focus_chosen_by_check') then
+    or not exists (select 1 from pg_catalog.pg_constraint where conrelid = 'public.child_weekly_focus'::regclass and contype = 'c'
+      and pg_catalog.pg_get_constraintdef(oid) like '%child%' and pg_catalog.pg_get_constraintdef(oid) like '%parent%') then
     raise exception 'habit coach constraints are missing';
   end if;
 
@@ -58,8 +63,10 @@ begin
         'set_child_weekly_focus', 'family_snapshot', 'get_child_session'
       )
   loop
-    if not function_row.prosecdef or not coalesce(function_row.proconfig, '{}'::text[]) @> array['search_path=""'] then
-      raise exception 'function % must be security definer with an empty search_path', function_row.signature;
+    -- The snapshot runs as the caller so row policies decide what a member receives; the others are definers.
+    if function_row.prosecdef = (function_row.signature::text like 'family_snapshot(%')
+      or not coalesce(function_row.proconfig, '{}'::text[]) @> array['search_path=""'] then
+      raise exception 'function % has the wrong security mode or search_path', function_row.signature;
     end if;
   end loop;
 
