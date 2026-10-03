@@ -1,6 +1,10 @@
 do $$
 declare
   offending_names text;
+  signature regprocedure := coalesce(
+    pg_catalog.to_regprocedure('public.caregiver_progress_snapshot(date)'),
+    pg_catalog.to_regprocedure('public.caregiver_progress_snapshot()')
+  );
 begin
   select string_agg(policy.tablename || '.' || policy.policyname, ', ' order by policy.tablename, policy.policyname)
   into offending_names
@@ -24,13 +28,13 @@ begin
     raise exception 'membership reads must be self or family manager';
   end if;
 
-  if not exists (
+  if signature is null or not exists (
     select 1 from pg_catalog.pg_proc
-    where oid = 'public.caregiver_progress_snapshot(date)'::regprocedure and prosecdef
+    where oid = signature and prosecdef
       and provolatile = 's' and proconfig @> array['search_path=""']
-  ) or not pg_catalog.has_function_privilege('authenticated', 'public.caregiver_progress_snapshot(date)', 'EXECUTE')
-    or pg_catalog.has_function_privilege('anon', 'public.caregiver_progress_snapshot(date)', 'EXECUTE')
-    or pg_catalog.has_function_privilege('service_role', 'public.caregiver_progress_snapshot(date)', 'EXECUTE') then
+  ) or not pg_catalog.has_function_privilege('authenticated', signature, 'EXECUTE')
+    or pg_catalog.has_function_privilege('anon', signature, 'EXECUTE')
+    or pg_catalog.has_function_privilege('service_role', signature, 'EXECUTE') then
     raise exception 'caregiver_progress_snapshot must be a stable definer with empty search_path and authenticated-only execution';
   end if;
 
@@ -47,7 +51,7 @@ begin
   if exists (
     select 1 from pg_catalog.pg_proc function,
       lateral pg_catalog.aclexplode(coalesce(function.proacl, pg_catalog.acldefault('f', function.proowner))) privilege
-    where function.oid in ('public.caregiver_progress_snapshot(date)'::regprocedure, 'public.schema_version()'::regprocedure)
+    where function.oid in (signature, 'public.schema_version()'::regprocedure)
       and privilege.grantee = 0 and privilege.privilege_type = 'EXECUTE'
   ) then
     raise exception 'projection and schema version must not grant public execution';

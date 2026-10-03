@@ -131,6 +131,7 @@ export async function installCloudFamilyFixture(
         activities: (options.activities ?? []).map((activity) => ({
           id: activity.id, child_id: activity.child_id ?? null, title: activity.title, description: activity.description ?? null,
           recurrence_type: activity.recurrence_type ?? 'daily', recurrence_days: activity.recurrence_days ?? [],
+          created_at: activity.created_at ?? createdAt,
         })),
         completionCounts: profiles.map((profile) => ({ child_id: profile.id, count: 0 })),
         // A database with the daily-progress migration: the seven days ending on the caller's day, nothing done yet.

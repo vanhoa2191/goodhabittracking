@@ -1,4 +1,5 @@
 import { addDays, isActivityDueOn } from '@/lib/habit-programs/opportunities';
+import { localDayKey } from '@/lib/habit-fire';
 import type { CaregiverProgress } from '@/lib/store/caregiver-progress';
 
 /** How many chances a child had on a day, and how many of them were done. `done` never exceeds `due`. */
@@ -16,12 +17,16 @@ export const CAREGIVER_WINDOW_DAYS = 7;
  * Today and the last seven days for one child, from the caregiver projection alone.
  *
  * "Due" follows the habit's recurrence with the same rule as the rest of the app and counts a habit only from
- * the day it was created. "Done" is the child's completed-or-approved logs of the day, clamped to what was due,
- * so a log of a habit that was not due that day (or whose schedule changed) never shows more than 100%.
+ * the local day it was created. "Done" is the server's count of completed-or-approved logs of habits due
+ * for this child on that day. Clamping is a final safeguard against counts exceeding the current due total.
  *
  * Returns null when the database did not send daily counts, so the screen can hide what it cannot compute.
  */
-export function summarizeChildDayProgress(progress: CaregiverProgress, childId: string): ChildDayProgress | null {
+export function summarizeChildDayProgress(
+  progress: CaregiverProgress,
+  childId: string,
+  creationDay: (date: Date) => string = localDayKey,
+): ChildDayProgress | null {
   const daily = progress.daily;
   if (!daily) return null;
   const habits = progress.activities.filter((activity) => activity.child_id === null || activity.child_id === childId);
@@ -31,7 +36,7 @@ export function summarizeChildDayProgress(progress: CaregiverProgress, childId: 
   }
 
   const dayProgress = (day: string): DayProgress => {
-    const due = habits.filter((habit) => (habit.created_on === undefined || habit.created_on <= day)
+    const due = habits.filter((habit) => (habit.created_at === undefined || creationDay(new Date(habit.created_at)) <= day)
       && isActivityDueOn({ recurrenceType: habit.recurrence_type ?? 'daily', recurrenceDays: habit.recurrence_days }, day)).length;
     return { due, done: Math.min(doneByDay.get(day) ?? 0, due) };
   };

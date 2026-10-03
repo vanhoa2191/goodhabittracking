@@ -47,7 +47,7 @@ begin
         ) || case when local_today is null then '{}'::jsonb else jsonb_build_object(
           'recurrence_type', activity.recurrence_type,
           'recurrence_days', activity.recurrence_days,
-          'created_on', (activity.created_at at time zone 'UTC')::date
+          'created_at', activity.created_at
         ) end
         order by activity.created_at, activity.id
       )
@@ -90,9 +90,19 @@ begin
         from public.activity_logs log
         join public.habit_activities activity
           on activity.id = log.activity_id and activity.family_id = membership.family_id and activity.is_active
+          and (activity.child_id is null or activity.child_id = log.child_id)
         where log.family_id = membership.family_id
           and log.status in ('completed', 'approved')
           and log.log_date between window_start and window_end
+          -- DOW of a date is the UTC weekday of the same YYYY-MM-DD string in isActivityDueOn (Sunday = 0).
+          and case activity.recurrence_type
+            when 'weekdays' then extract(dow from log.log_date) between 1 and 5
+            when 'weekends' then extract(dow from log.log_date) in (0, 6)
+            when 'custom' then coalesce(to_jsonb(activity.recurrence_days), '[]'::jsonb)
+              @> jsonb_build_array(extract(dow from log.log_date)::integer)
+            when 'daily' then true
+            else true
+          end
         group by log.child_id, log.log_date
       ) day_count
     ), '[]'::jsonb)

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { summarizeChildDayProgress } from '@/lib/caregiver-day-progress';
 import type { CaregiverProgress } from '@/lib/store/caregiver-progress';
+import { addDays, isActivityDueOn } from '@/lib/habit-programs/opportunities';
 
 const familyId = '11111111-1111-4111-8111-111111111111';
 const child = '22222222-2222-4222-8222-222222222222';
@@ -30,6 +31,30 @@ function progress(to: string, activities: Habit[], counts: Count[] = []): Caregi
 
 // 2026-10-03 is a Saturday, so the window runs from Sunday 2026-09-27.
 const SATURDAY = '2026-10-03';
+
+// A copy of the SQL daily-count rules, coupled to static SQL tests to catch drift when either side changes.
+function sqlDailyCounts(activities: Habit[], logs: { activity_id: string; child_id: string; day: string; status: string }[]): Count[] {
+  const counts = new Map<string, Count>();
+  for (const log of logs) {
+    const activity = activities.find((item) => item.id === log.activity_id);
+    if (!activity || (activity.child_id !== null && activity.child_id !== log.child_id)
+      || !['completed', 'approved'].includes(log.status)) continue;
+    const weekday = new Date(`${log.day}T12:00:00Z`).getUTCDay();
+    let due: boolean;
+    switch (activity.recurrence_type) {
+      case 'weekdays': due = weekday >= 1 && weekday <= 5; break;
+      case 'weekends': due = weekday === 0 || weekday === 6; break;
+      case 'custom': due = (activity.recurrence_days ?? []).includes(weekday); break;
+      default: due = true;
+    }
+    if (!due) continue;
+    const key = `${log.child_id}/${log.day}`;
+    counts.set(key, { child_id: log.child_id, day: log.day, count: (counts.get(key)?.count ?? 0) + 1 });
+  }
+  return [...counts.values()];
+}
+
+const dayAtOffset = (hours: number) => (date: Date) => new Date(date.getTime() + hours * 60 * 60 * 1000).toISOString().slice(0, 10);
 
 describe('caregiver day progress', () => {
   it('has nothing to show when the database sent no daily counts', () => {
@@ -93,8 +118,50 @@ describe('caregiver day progress', () => {
   });
 
   it('does not count days before a habit existed as missed', () => {
-    const data = progress(SATURDAY, [habit({ created_on: '2026-10-01' }), habit()]);
-    expect(summarizeChildDayProgress(data, child)?.week).toEqual({ done: 0, due: 3 + 7 });
+    const data = progress(SATURDAY, [habit({ created_at: '2026-10-01T12:00:00Z' }), habit()]);
+    expect(summarizeChildDayProgress(data, child, dayAtOffset(7))?.week).toEqual({ done: 0, due: 3 + 7 });
+  });
+
+  it.each([
+    [-7, '2026-10-04T03:00:00Z', '2026-10-03', '2026-10-02'],
+    [7, '2026-10-03T20:00:00Z', '2026-10-04', '2026-10-03'],
+  ] as const)('uses the local creation day in UTC%+i', (offset, created_at, today, previous) => {
+    const activities = [habit({ created_at })];
+    const counts = [{ child_id: child, day: today, count: 1 }];
+    expect(summarizeChildDayProgress(progress(today, activities, counts), child, dayAtOffset(offset))).toEqual({
+      today: { done: 1, due: 1 }, week: { done: 1, due: 1 },
+    });
+    expect(summarizeChildDayProgress(progress(previous, activities), child, dayAtOffset(offset))?.today).toEqual({ done: 0, due: 0 });
+  });
+
+  it('does not let a Saturday log of a weekday habit stand in for the unfinished daily habit', () => {
+    const activities = [habit(), habit({ recurrence_type: 'weekdays' })];
+    const counts = sqlDailyCounts(activities, [{ activity_id: activities[1].id, child_id: child, day: SATURDAY, status: 'completed' }]);
+    expect(counts).toEqual([]);
+    expect(summarizeChildDayProgress(progress(SATURDAY, activities, counts), child)?.today).toEqual({ done: 0, due: 1 });
+  });
+
+  it('does not count a moved habit for its former child, but counts shared habits', () => {
+    const activities = [habit({ child_id: child }), habit({ child_id: sibling }), habit()];
+    const counts = sqlDailyCounts(activities, [
+      { activity_id: activities[1].id, child_id: child, day: SATURDAY, status: 'approved' },
+      { activity_id: activities[1].id, child_id: sibling, day: SATURDAY, status: 'completed' },
+      { activity_id: activities[2].id, child_id: sibling, day: SATURDAY, status: 'approved' },
+    ]);
+    const data = progress(SATURDAY, activities, counts);
+    expect(summarizeChildDayProgress(data, child)?.today).toEqual({ done: 0, due: 2 });
+    expect(summarizeChildDayProgress(data, sibling)?.today).toEqual({ done: 2, due: 2 });
+  });
+
+  it.each(['daily', 'weekdays', 'weekends', 'custom'] as const)('matches the SQL recurrence copy to isActivityDueOn for %s across all weekdays', (recurrence_type) => {
+    for (const recurrence_days of [null, [], [0, 1, 3, 6]]) {
+      const activity = habit({ recurrence_type, recurrence_days });
+      for (let weekday = 0; weekday < 7; weekday += 1) {
+        const date = addDays('2026-09-27', weekday);
+        const counts = sqlDailyCounts([activity], [{ activity_id: activity.id, child_id: child, day: date, status: 'completed' }]);
+        expect(counts.length > 0).toBe(isActivityDueOn({ recurrenceType: recurrence_type, recurrenceDays: recurrence_days }, date));
+      }
+    }
   });
 
   it('never lets done exceed due, even for logs of a habit that was not due that day', () => {

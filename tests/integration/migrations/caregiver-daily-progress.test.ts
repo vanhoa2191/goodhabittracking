@@ -7,7 +7,9 @@ const read = (path: string) => readFileSync(resolve(path), 'utf8');
 const migration = read('supabase/migrations/202610030002_caregiver_daily_progress.sql');
 const previous = read('supabase/migrations/202610030001_caregiver_progress_projection.sql');
 const preflight = read('supabase/preflight/202610030002_caregiver_daily_progress.verify.sql');
+const previousPreflight = read('supabase/preflight/202610030001_caregiver_progress_projection.verify.sql');
 const rollback = read('supabase/rollbacks/202610030002_caregiver_daily_progress.rollback.sql');
+const dailyQuery = migration.slice(migration.indexOf('select log.child_id'), migration.indexOf(') day_count')).trim();
 
 /** The whole create statement of the projection, from its signature to the closing dollar quote. */
 function projectionFunction(sql: string, signature: string) {
@@ -22,6 +24,8 @@ describe('caregiver daily progress migration', () => {
     await expect(parse(migration)).resolves.toBeDefined();
     await expect(parse(preflight)).resolves.toBeDefined();
     await expect(parse(rollback)).resolves.toBeDefined();
+    await expect(parse(previousPreflight)).resolves.toBeDefined();
+    await expect(parse(dailyQuery)).resolves.toBeDefined();
   });
 
   it('replaces the zero-argument function so a call without arguments is never ambiguous', () => {
@@ -61,9 +65,11 @@ describe('caregiver daily progress migration', () => {
 
   it('exposes recurrence only to compute due days, and no log detail', () => {
     const body = projectionFunction(migration, 'local_today date default null');
-    for (const field of ["'recurrence_type', activity.recurrence_type", "'recurrence_days', activity.recurrence_days", "'created_on'"]) {
+    for (const field of ["'recurrence_type', activity.recurrence_type", "'recurrence_days', activity.recurrence_days", "'created_at', activity.created_at"]) {
       expect(body).toContain(field);
     }
+    expect(body).not.toContain('created_on');
+    expect(body).not.toContain("at time zone 'UTC'");
     for (const forbidden of ['proof_note', 'completed_at', 'points_awarded', 'log.id', 'instructions', 'points,', 'requires_approval']) {
       expect(body).not.toContain(forbidden);
     }
@@ -77,6 +83,41 @@ describe('caregiver daily progress migration', () => {
     const body = projectionFunction(migration, 'local_today date default null');
     expect(body).toContain('where log.family_id = membership.family_id');
     expect(body).toContain('activity.family_id = membership.family_id and activity.is_active');
+    expect(dailyQuery).toContain('and (activity.child_id is null or activity.child_id = log.child_id)');
+    const lifetimeQuery = body.slice(body.indexOf("'completionCounts'"), body.indexOf('if local_today is null then'));
+    expect(lifetimeQuery).not.toContain('activity.child_id');
+    expect(lifetimeQuery).not.toContain('recurrence_type');
+    expect(lifetimeQuery).toContain("log.status in ('completed', 'approved')");
+  });
+
+  it('filters logs by every RecurrenceType before grouping, with the UTC weekday convention', () => {
+    const recurrence = read('src/types/index.ts').match(/export type RecurrenceType\s*=\s*([^;]+);/);
+    expect(recurrence).not.toBeNull();
+    const values = [...recurrence![1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
+    expect(values.length).toBeGreaterThan(0);
+    const filter = dailyQuery.slice(dailyQuery.indexOf('and case activity.recurrence_type'), dailyQuery.indexOf('group by'));
+    for (const value of values) expect(filter).toContain(`when '${value}' then`);
+    expect(filter).toContain("when 'weekdays' then extract(dow from log.log_date) between 1 and 5");
+    expect(filter).toContain("when 'weekends' then extract(dow from log.log_date) in (0, 6)");
+    expect(filter).toContain("when 'custom' then coalesce(to_jsonb(activity.recurrence_days), '[]'::jsonb)");
+    expect(filter).toContain('@> jsonb_build_array(extract(dow from log.log_date)::integer)');
+    expect(filter).toContain("when 'daily' then true");
+    expect(filter).toContain('else true');
+  });
+
+  it('lets the earlier preflight verify either signature after rollback, while the daily preflight requires date', () => {
+    expect(previousPreflight).toContain("pg_catalog.to_regprocedure('public.caregiver_progress_snapshot(date)')");
+    expect(previousPreflight).toContain("pg_catalog.to_regprocedure('public.caregiver_progress_snapshot()')");
+    expect(previousPreflight).toContain('signature regprocedure := coalesce(');
+    expect(previousPreflight).toContain('if signature is null or not exists');
+    expect(previousPreflight).toContain('where oid = signature and prosecdef');
+    for (const role of ['authenticated', 'anon', 'service_role']) {
+      expect(previousPreflight).toContain(`has_function_privilege('${role}', signature, 'EXECUTE')`);
+    }
+    expect(previousPreflight).toContain("where function.oid in (signature, 'public.schema_version()'::regprocedure)");
+    expect(previousPreflight).not.toContain("'public.caregiver_progress_snapshot(date)'::regprocedure");
+    expect(preflight).toContain("signature regprocedure := 'public.caregiver_progress_snapshot(date)'::regprocedure");
+    expect(preflight).not.toContain('to_regprocedure');
   });
 
   it('is verified after applying by checking the signature, privileges and the day clamp', () => {

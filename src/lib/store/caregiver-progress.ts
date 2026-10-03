@@ -26,7 +26,7 @@ const caregiverProgressSchema = z.strictObject({
     description: z.string().nullable(),
     recurrence_type: z.enum(['daily', 'weekdays', 'weekends', 'custom']).optional(),
     recurrence_days: z.array(z.number().int().min(0).max(6)).nullable().optional(),
-    created_on: dayKey.optional(),
+    created_at: z.iso.datetime({ offset: true }).optional(),
   })),
   completionCounts: z.array(z.strictObject({
     child_id: z.string().uuid(),

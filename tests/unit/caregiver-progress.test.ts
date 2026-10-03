@@ -26,7 +26,7 @@ function dailyProgress() {
   return {
     ...base,
     activities: [{
-      ...base.activities[0], recurrence_type: 'custom' as const, recurrence_days: [1, 3], created_on: '2026-09-20',
+      ...base.activities[0], recurrence_type: 'custom' as const, recurrence_days: [1, 3], created_at: '2026-09-20T00:00:00+00:00',
     }],
     daily: { from: '2026-09-27', to: '2026-10-03', counts: [{ child_id: childId, day: '2026-10-02', count: 1 }] },
   };
@@ -72,6 +72,22 @@ describe('caregiver progress projection', () => {
     data.daily.counts = [];
     const { client } = transport({ snapshot: { data: { ...data, activities: [{ ...data.activities[0], recurrence_days: null }] }, error: null } });
     await expect(loadCaregiverProgress(client)).resolves.toMatchObject({ daily: { counts: [] } });
+  });
+
+  it('accepts daily progress without the optional creation timestamp', async () => {
+    const data = dailyProgress();
+    const { created_at: omitted, ...activity } = data.activities[0];
+    expect(omitted).toBeDefined();
+    const payload = { ...data, activities: [activity] };
+    const { client } = transport({ snapshot: { data: payload, error: null } });
+    await expect(loadCaregiverProgress(client)).resolves.toEqual(payload);
+  });
+
+  it.each(['2026-09-20T00:00:00Z', '2026-09-20T07:00:00+07:00', '2026-09-19T17:00:00-07:00'])('accepts ISO creation timestamp %s', async (created_at) => {
+    const data = dailyProgress();
+    data.activities[0].created_at = created_at;
+    const { client } = transport({ snapshot: { data, error: null } });
+    await expect(loadCaregiverProgress(client)).resolves.toEqual(data);
   });
 
   it.each(['PGRST202', '42883'])('falls back to the earlier call without the day when the database answers %s', async (code) => {
@@ -127,6 +143,9 @@ describe('caregiver progress projection', () => {
       ...dailyProgress(), daily: { ...dailyProgress().daily, counts: [{ child_id: childId, day: '2026-10-02', count: -1 }] },
     })],
     ['an unknown recurrence type', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], recurrence_type: 'hourly' }] })],
+    ['a UTC creation day instead of a timestamp', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], created_on: '2026-10-04' }] })],
+    ['a malformed creation timestamp', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], created_at: 'not-a-date' }] })],
+    ['a creation date without time zone', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], created_at: '2026-10-04T03:00:00' }] })],
     ['a weekday outside 0 to 6', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], recurrence_days: [7] }] })],
     ['a habit field beyond recurrence', () => ({ ...dailyProgress(), activities: [{ ...dailyProgress().activities[0], points: 10 }] })],
     ['a daily window without habit recurrence', () => ({ ...dailyProgress(), activities: progress().activities })],
