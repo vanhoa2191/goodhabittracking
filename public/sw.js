@@ -1,7 +1,8 @@
 const CACHE_PREFIX = 'kidhabit-public-';
-const CACHE_NAME = `${CACHE_PREFIX}v1`;
+const CACHE_NAME = `${CACHE_PREFIX}v2`;
 const PUBLIC_CACHE_URLS = [
   '/offline.html',
+  '/offline.js',
   '/favicon.svg',
   '/logo.svg',
   '/pwa/icon-192.png',
