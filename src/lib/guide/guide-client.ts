@@ -1,4 +1,5 @@
 import { guideChapterSchema, guideIndexSchema, type GuideChapter, type GuideIndex } from './guide-types';
+import { guideFilePath, type GuideLocale } from './guide-locale';
 
 // The guide is a set of static files under /guide (built from docs/huong-dan). Each one is fetched once per page
 // load and kept; a failed download is forgotten so the next attempt tries again.
@@ -19,12 +20,13 @@ function load<T>(path: string, parse: (value: unknown) => T): Promise<T> {
   return pending;
 }
 
-export const loadGuideIndex = (): Promise<GuideIndex> => load('/guide/index.json', (value) => guideIndexSchema.parse(value));
+export const loadGuideIndex = (locale: GuideLocale = 'vi'): Promise<GuideIndex> =>
+  load(guideFilePath(locale, 'index'), (value) => guideIndexSchema.parse(value));
 
-export const loadGuideChapter = (slug: string): Promise<GuideChapter> =>
-  load(`/guide/${encodeURIComponent(slug)}.json`, (value) => guideChapterSchema.parse(value));
+export const loadGuideChapter = (slug: string, locale: GuideLocale = 'vi'): Promise<GuideChapter> =>
+  load(guideFilePath(locale, encodeURIComponent(slug)), (value) => guideChapterSchema.parse(value));
 
-export async function loadAllGuideChapters(): Promise<GuideChapter[]> {
-  const index = await loadGuideIndex();
-  return Promise.all(index.map((entry) => loadGuideChapter(entry.slug)));
+export async function loadAllGuideChapters(locale: GuideLocale = 'vi'): Promise<GuideChapter[]> {
+  const index = await loadGuideIndex(locale);
+  return Promise.all(index.map((entry) => loadGuideChapter(entry.slug, locale)));
 }

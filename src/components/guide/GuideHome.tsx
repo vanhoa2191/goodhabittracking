@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { BookOpen } from 'lucide-react';
 import { GuideSearch } from '@/components/guide/GuideSearch';
 import { GuideShell } from '@/components/guide/GuideShell';
+import { useLocalizedGuideIndex } from '@/components/guide/use-guide-index';
 import { DocsSection } from '@/components/docs/DocsSection';
 import { useTranslation } from '@/lib/i18n/context';
 import { getDocsCopy } from '@/lib/i18n/docs-copy';
@@ -11,8 +12,9 @@ import { getGuideCopy } from '@/lib/i18n/guide-copy';
 import { guideHref } from '@/lib/guide/guide-sections';
 import type { GuideIndex } from '@/lib/guide/guide-types';
 
-export function GuideHome({ index }: { readonly index: GuideIndex }) {
+export function GuideHome({ index: vietnameseIndex }: { readonly index: GuideIndex }) {
   const { language } = useTranslation();
+  const { index, locale } = useLocalizedGuideIndex(vietnameseIndex);
   const copy = getGuideCopy(language);
   const quick = getDocsCopy(language);
   return (
@@ -22,7 +24,7 @@ export function GuideHome({ index }: { readonly index: GuideIndex }) {
         <p className="mt-3 text-base leading-7 text-slate-700 dark:text-slate-300">{copy.intro}</p>
       </div>
 
-      {language !== 'vi' && (
+      {language !== 'vi' && locale === 'vi' && (
         <p role="note" className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">{copy.vietnameseOnly}</p>
       )}
 
@@ -57,7 +59,7 @@ export function GuideHome({ index }: { readonly index: GuideIndex }) {
         </ol>
       </section>
 
-      {language !== 'vi' && (
+      {language !== 'vi' && locale === 'vi' && (
         <section aria-labelledby="guide-quick" className="space-y-4">
           <h2 id="guide-quick" className="text-xl font-black">{copy.quickGuide}</h2>
           <div className="grid gap-4">

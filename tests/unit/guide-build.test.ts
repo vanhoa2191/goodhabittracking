@@ -6,6 +6,12 @@ import { guideChapterSchema, guideIndexSchema } from '@/lib/guide/guide-types';
 
 const outputDir = 'public/guide';
 
+function listJson(directory: string, prefix = ''): string[] {
+  return readdirSync(join(directory, prefix), { withFileTypes: true }).flatMap((entry) => (
+    entry.isDirectory() ? listJson(directory, `${prefix}${entry.name}/`) : entry.name.endsWith('.json') ? [`${prefix}${entry.name}`] : []
+  ));
+}
+
 async function generated(): Promise<Map<string, string>> {
   return buildGuide() as Promise<Map<string, string>>;
 }
@@ -13,7 +19,7 @@ async function generated(): Promise<Map<string, string>> {
 describe('in-app guide files', () => {
   it('are exactly what the Markdown guide builds (run `npm run guide:build` after editing docs/huong-dan)', async () => {
     const built = await generated();
-    const committed = new Map(readdirSync(outputDir).filter((name) => name.endsWith('.json')).map((name) => [name, readFileSync(join(outputDir, name), 'utf8')] as const));
+    const committed = new Map(listJson(outputDir).map((name) => [name, readFileSync(join(outputDir, name), 'utf8')] as const));
     expect([...committed.keys()].sort()).toEqual([...built.keys()].sort());
     for (const [name, content] of built) expect(committed.get(name), name).toBe(content);
   });
@@ -52,17 +58,19 @@ describe('in-app guide files', () => {
     const built = await generated();
     const sections = new Map<string, Set<string>>();
     for (const [name, content] of built) {
-      if (name === 'index.json') continue;
+      if (name.endsWith('index.json')) continue;
       const chapter = guideChapterSchema.parse(JSON.parse(content));
-      sections.set(chapter.slug, new Set(chapter.sections.map((section) => section.id)));
+      sections.set(name, new Set(chapter.sections.map((section) => section.id)));
     }
     const broken: string[] = [];
     for (const [name, content] of built) {
-      if (name === 'index.json') continue;
+      if (name.endsWith('index.json')) continue;
+      const prefix = name.includes('/') ? name.slice(0, name.indexOf('/') + 1) : '';
       for (const match of content.matchAll(/href=\\"\/docs\/([a-z0-9-]+)(?:#([a-z0-9-]+))?\\"/g)) {
         const [, slug, anchor] = match as unknown as [string, string, string | undefined];
-        if (!sections.has(slug)) broken.push(`${name}: /docs/${slug}`);
-        else if (anchor && !sections.get(slug)?.has(anchor)) broken.push(`${name}: /docs/${slug}#${anchor}`);
+        const target = sections.get(`${prefix}${slug}.json`);
+        if (!target) broken.push(`${name}: /docs/${slug}`);
+        else if (anchor && !target.has(anchor)) broken.push(`${name}: /docs/${slug}#${anchor}`);
       }
     }
     expect(broken).toEqual([]);
@@ -71,7 +79,7 @@ describe('in-app guide files', () => {
   it('escape text before adding markup', async () => {
     const built = await generated();
     for (const [name, content] of built) {
-      if (name === 'index.json') continue;
+      if (name.endsWith('index.json')) continue;
       const chapter = guideChapterSchema.parse(JSON.parse(content));
       for (const section of chapter.sections) {
         expect(section.html, `${name}#${section.id}`).not.toMatch(/<script|<iframe|\son[a-z]+=|javascript:/i);

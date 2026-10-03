@@ -7,7 +7,7 @@
 // chapters meant for parents are published; operator chapters and repository-only links are dropped here.
 // Text is always escaped before any markup is added, so the HTML in the output is safe to inject.
 
-import { readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, readdir, writeFile, mkdir, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { renderInline } from '../apps/marketing/blog.mjs';
@@ -18,9 +18,6 @@ export const OUTPUT_DIR = join(root, 'public/guide');
 
 /** Chapters written for the operator or about the public website; they stay in the repository docs only. */
 const REPOSITORY_ONLY = new Set(['10', '11']);
-/** Sections of the overview that describe how the docs are kept, not how the app is used. */
-const SKIPPED_OVERVIEW_SECTIONS = new Set(['Hai bề mặt và ba nhóm người dùng', 'Giữ tài liệu đúng', 'Tài liệu kỹ thuật đi kèm']);
-
 export class GuideError extends Error {}
 
 const slugOf = (fileName) => (fileName === 'README.md' ? 'tong-quan' : fileName.replace(/^\d+-/, '').replace(/\.md$/, ''));
@@ -68,13 +65,12 @@ function renderTable(rows) {
 const plain = (html) => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/\s+/g, ' ').trim();
 
 /** Splits one chapter into sections that start at each `<a id="…"></a>` anchor, with the heading that follows it. */
-function parseChapter(markdown, { overview }) {
+function parseChapter(markdown) {
   const lines = markdown.replace(/\r\n/g, '\n').split('\n');
   const sections = [];
   let title = '';
   let current = { id: 'dau-trang', level: 0, title: '', blocks: [] };
   let skipping = false;
-  let skipParagraph = false;
   let index = 0;
 
   const flush = () => {
@@ -100,15 +96,6 @@ function parseChapter(markdown, { overview }) {
       const text = heading[2];
       if (level === 1) {
         title = text.replace(/^\d+\.\s*/, '');
-      } else if (overview && SKIPPED_OVERVIEW_SECTIONS.has(text)) {
-        flush();
-        current = { id: `bo-qua-${sections.length}`, level: 0, title: '', blocks: [] };
-        skipping = true;
-      } else if (text === 'Trong tài liệu này') {
-        // The one-line table of contents under this heading is replaced by the app's own.
-        flush();
-        current = { id: 'dau-trang', level: 0, title: '', blocks: [] };
-        skipParagraph = true;
       } else {
         if (current.title || current.level > 0 || current.blocks.length > 0 || current.id.startsWith('bo-qua-')) {
           flush();
@@ -167,7 +154,6 @@ function parseChapter(markdown, { overview }) {
     }
     const paragraph = [];
     while (index < lines.length && lines[index].trim() && !/^(#{1,3}\s|>|\||```|<a id=|[-*]\s|\d+\.\s)/.test(lines[index])) { paragraph.push(lines[index].trim()); index += 1; }
-    if (skipParagraph) { skipParagraph = false; continue; }
     current.blocks.push(`<p>${renderInline(paragraph.join(' '))}</p>`);
   }
   flush();
@@ -191,7 +177,20 @@ function parseChapter(markdown, { overview }) {
   };
 }
 
-export async function buildGuide(sourceDir = SOURCE_DIR) {
+const OVERVIEW_TITLES = {
+  vi: 'Tổng quan và danh mục tính năng',
+  en: 'Overview and feature catalogue',
+  fr: 'Vue d’ensemble et catalogue des fonctions',
+  de: 'Überblick und Funktionsverzeichnis',
+  it: 'Panoramica e catalogo delle funzioni',
+  es: 'Resumen y catálogo de funciones',
+  zh: '概览与功能目录',
+  ja: '概要と機能一覧',
+  ko: '개요 및 기능 목록',
+};
+
+/** Builds one language: `docs/huong-dan` for Vietnamese, `docs/huong-dan/i18n/<code>` for a translation (same file names and anchors). */
+async function buildLocale(sourceDir, locale, prefix) {
   const names = chapterFiles(await readdir(sourceDir));
   const publishedNames = names.filter((name) => {
     const number = numberOf(name);
@@ -210,16 +209,16 @@ export async function buildGuide(sourceDir = SOURCE_DIR) {
     const source = await readFile(join(sourceDir, name), 'utf8');
     const overview = name === 'README.md';
     // The line that links a chapter to its neighbours is replaced by the app's own navigation.
-    const parsed = parseChapter(rewriteLinks(withoutOperatorText(source).replace(/^\[←.*$/m, ''), published), { overview });
-    if (!parsed.title || parsed.sections.length === 0) throw new GuideError(`${name} has no title or no sections`);
+    const parsed = parseChapter(rewriteLinks(withoutOperatorText(source).replace(/^\[←.*$/m, ''), published));
+    if (!parsed.title || parsed.sections.length === 0) throw new GuideError(`${locale}/${name} has no title or no sections`);
     const ids = new Set();
     for (const section of parsed.sections) {
-      if (ids.has(section.id)) throw new GuideError(`${name} repeats the section id ${section.id}`);
+      if (ids.has(section.id)) throw new GuideError(`${locale}/${name} repeats the section id ${section.id}`);
       ids.add(section.id);
     }
     const slug = slugOf(name);
-    const chapter = { slug, number: numberOf(name), title: overview ? 'Tổng quan và danh mục tính năng' : parsed.title, summary: summaries.get(name) ?? '', sections: parsed.sections };
-    files.set(`${slug}.json`, `${JSON.stringify(chapter)}\n`);
+    const chapter = { slug, number: numberOf(name), title: overview ? (OVERVIEW_TITLES[locale] ?? parsed.title) : parsed.title, summary: summaries.get(name) ?? '', sections: parsed.sections };
+    files.set(`${prefix}${slug}.json`, `${JSON.stringify(chapter)}\n`);
     index.push({
       slug,
       number: chapter.number,
@@ -229,20 +228,39 @@ export async function buildGuide(sourceDir = SOURCE_DIR) {
     });
   }
   index.sort((a, b) => Number(a.number ?? 0) - Number(b.number ?? 0));
-  files.set('index.json', `${JSON.stringify(index)}\n`);
+  files.set(`${prefix}index.json`, `${JSON.stringify(index)}\n`);
   return files;
+}
+
+export async function buildGuide(sourceDir = SOURCE_DIR) {
+  const files = await buildLocale(sourceDir, 'vi', '');
+  const translations = await readdir(join(sourceDir, 'i18n')).catch(() => []);
+  for (const code of translations.filter((name) => /^[a-z]{2}$/.test(name)).sort()) {
+    for (const [name, content] of await buildLocale(join(sourceDir, 'i18n', code), code, `${code}/`)) files.set(name, content);
+  }
+  return files;
+}
+
+async function listJson(directory, prefix = '') {
+  const entries = await readdir(directory, { withFileTypes: true }).catch(() => []);
+  const found = [];
+  for (const entry of entries) {
+    if (entry.isDirectory()) found.push(...await listJson(join(directory, entry.name), `${prefix}${entry.name}/`));
+    else if (entry.name.endsWith('.json')) found.push(`${prefix}${entry.name}`);
+  }
+  return found;
 }
 
 async function main() {
   const check = process.argv.includes('--check');
   const files = await buildGuide();
+  const present = await listJson(OUTPUT_DIR);
   if (check) {
     const stale = [];
     for (const [name, content] of files) {
       const existing = await readFile(join(OUTPUT_DIR, name), 'utf8').catch(() => null);
       if (existing !== content) stale.push(name);
     }
-    const present = (await readdir(OUTPUT_DIR).catch(() => [])).filter((name) => name.endsWith('.json'));
     for (const name of present) if (!files.has(name)) stale.push(name);
     if (stale.length > 0) {
       console.error(`The in-app guide is out of date (${stale.join(', ')}). Run: npm run guide:build`);
@@ -252,9 +270,11 @@ async function main() {
     return;
   }
   await mkdir(OUTPUT_DIR, { recursive: true });
-  const present = (await readdir(OUTPUT_DIR)).filter((name) => name.endsWith('.json'));
-  await Promise.all(present.filter((name) => !files.has(name)).map((name) => import('node:fs/promises').then(({ rm }) => rm(join(OUTPUT_DIR, name)))));
-  for (const [name, content] of files) await writeFile(join(OUTPUT_DIR, name), content);
+  for (const name of present) if (!files.has(name)) await rm(join(OUTPUT_DIR, name));
+  for (const [name, content] of files) {
+    await mkdir(join(OUTPUT_DIR, name, '..'), { recursive: true });
+    await writeFile(join(OUTPUT_DIR, name), content);
+  }
   console.log(`Wrote ${files.size} guide files to public/guide.`);
 }
 

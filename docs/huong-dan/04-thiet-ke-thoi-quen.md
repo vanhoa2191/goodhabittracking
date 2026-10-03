@@ -2,9 +2,9 @@
 
 [← 3. Hôm nay và duyệt việc](03-hom-nay-va-duyet-viec.md) · [Mục lục](README.md) · [Tiếp: 5. Gia đình và cài đặt →](05-gia-dinh-va-cai-dat.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Quản lý việc](#quan-ly-viec) · [Tạo hoặc sửa một việc](#tao-viec) · [Thư viện](#thu-vien) · [Khung 47 thói quen](#khung-47) · [Chương trình và tín hiệu](#chuong-trinh) · [Lộ trình theo tuổi](#lo-trinh) · [Kho quà](#kho-qua) · [Cách các phần ghép lại](#ghep-lai) · [Liên quan](#lien-quan)
+[Quản lý việc](#quan-ly-viec) · [Tạo hoặc sửa một việc](#tao-viec) · [Thư viện](#thu-vien) · [Khung 47 thói quen](#khung-47) · [Chương trình và tín hiệu](#chuong-trinh) · [Lộ trình theo tuổi](#lo-trinh) · [Kho quà](#kho-qua) · [Cách các phần ghép lại](#ghep-lai) · [Liên quan](#lien-quan)<!--/op-->
 
 Khu **Thiết kế** (`Thiết kế`) có ba mục: Quản lý việc, Lộ trình theo tuổi, Đổi quà. Cần có gói hoặc đang dùng thử ([7](07-goi-va-thanh-toan.md)).
 

@@ -2,9 +2,9 @@
 
 [← 7. Gói và thanh toán](07-goi-va-thanh-toan.md) · [Mục lục](README.md) · [Tiếp: 9. Bảo mật và riêng tư →](09-bao-mat-va-rieng-tu.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Tổng quan](#tong-quan) · [Cho người giới thiệu: tham gia và chia sẻ](#tham-gia) · [Cho gia đình được giới thiệu](#giam-10) · [Ghi nhận](#ghi-nhan) · [Hoa hồng](#hoa-hong) · [Rút tiền](#rut-tien) · [Hoàn tiền và hoa hồng](#hoan-tien-hoa-hong) · [Quy tắc và giới hạn](#quy-tac) · [Liên quan](#lien-quan)
+[Tổng quan](#tong-quan) · [Cho người giới thiệu: tham gia và chia sẻ](#tham-gia) · [Cho gia đình được giới thiệu](#giam-10) · [Ghi nhận](#ghi-nhan) · [Hoa hồng](#hoa-hong) · [Rút tiền](#rut-tien) · [Hoàn tiền và hoa hồng](#hoan-tien-hoa-hong) · [Quy tắc và giới hạn](#quy-tac) · [Liên quan](#lien-quan)<!--/op-->
 
 <a id="tong-quan"></a>
 ## Tổng quan

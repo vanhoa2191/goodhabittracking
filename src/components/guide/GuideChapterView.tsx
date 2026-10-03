@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { GuideContent } from '@/components/guide/GuideContent';
 import { GuideSearch } from '@/components/guide/GuideSearch';
 import { GuideShell } from '@/components/guide/GuideShell';
+import { useLocalizedGuideIndex } from '@/components/guide/use-guide-index';
 import { loadGuideChapter } from '@/lib/guide/guide-client';
 import { guideHref } from '@/lib/guide/guide-sections';
 import type { GuideChapter, GuideIndex, GuideIndexEntry } from '@/lib/guide/guide-types';
@@ -20,8 +21,10 @@ function scrollToHash(): void {
   document.getElementById(id)?.scrollIntoView({ block: 'start' });
 }
 
-export function GuideChapterView({ index, entry }: { readonly index: GuideIndex; readonly entry: GuideIndexEntry }) {
+export function GuideChapterView({ index: vietnameseIndex, entry: vietnameseEntry }: { readonly index: GuideIndex; readonly entry: GuideIndexEntry }) {
   const { language } = useTranslation();
+  const { index, locale } = useLocalizedGuideIndex(vietnameseIndex);
+  const entry = index.find((candidate) => candidate.slug === vietnameseEntry.slug) ?? vietnameseEntry;
   const copy = getGuideCopy(language);
   const [state, setState] = useState<Load>({ kind: 'loading' });
   const [attempt, setAttempt] = useState(0);
@@ -31,11 +34,11 @@ export function GuideChapterView({ index, entry }: { readonly index: GuideIndex;
 
   useEffect(() => {
     let cancelled = false;
-    void loadGuideChapter(entry.slug)
+    void loadGuideChapter(entry.slug, locale)
       .then((chapter) => { if (!cancelled) setState({ kind: 'ready', chapter }); })
       .catch(() => { if (!cancelled) setState({ kind: 'failed' }); });
     return () => { cancelled = true; };
-  }, [entry.slug, attempt]);
+  }, [entry.slug, locale, attempt]);
 
   // The text arrives after the page, so the browser cannot jump to a #section by itself.
   useEffect(() => {

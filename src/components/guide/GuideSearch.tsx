@@ -6,6 +6,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { useTranslation } from '@/lib/i18n/context';
 import { getGuideCopy } from '@/lib/i18n/guide-copy';
 import { loadAllGuideChapters } from '@/lib/guide/guide-client';
+import { guideLocaleFor } from '@/lib/guide/guide-locale';
 import { guideHref } from '@/lib/guide/guide-sections';
 import { searchGuide, type GuideSearchHit } from '@/lib/guide/guide-search';
 import type { GuideChapter } from '@/lib/guide/guide-types';
@@ -22,7 +23,8 @@ export function GuideSearch() {
   const inputId = useId();
   const [query, setQuery] = useState('');
   const [state, setState] = useState<State>({ kind: 'idle' });
-  const chapters = useRef<GuideChapter[] | null>(null);
+  const locale = guideLocaleFor(language);
+  const chapters = useRef<{ readonly locale: string; readonly list: GuideChapter[] } | null>(null);
   const request = useRef(0);
 
   useEffect(() => {
@@ -33,17 +35,17 @@ export function GuideSearch() {
       const run = (loaded: GuideChapter[]) => {
         if (current === request.current) setState({ kind: 'ready', hits: searchGuide(loaded, trimmed) });
       };
-      if (chapters.current) {
-        run(chapters.current);
+      if (chapters.current?.locale === locale) {
+        run(chapters.current.list);
         return;
       }
       setState({ kind: 'loading' });
-      void loadAllGuideChapters()
-        .then((loaded) => { chapters.current = loaded; run(loaded); })
+      void loadAllGuideChapters(locale)
+        .then((loaded) => { chapters.current = { locale, list: loaded }; run(loaded); })
         .catch(() => { if (current === request.current) setState({ kind: 'failed' }); });
     }, 200);
     return () => window.clearTimeout(timer);
-  }, [query]);
+  }, [query, locale]);
 
   const trimmed = query.trim();
   const showHint = trimmed.length > 0 && trimmed.length < 2;

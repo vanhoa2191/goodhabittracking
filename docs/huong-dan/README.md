@@ -32,7 +32,7 @@ KidHabit Hero là ứng dụng giúp ba mẹ cùng con xây thói quen tốt t�
 12. [Bản đồ liên kết và tình huống](12-ban-do-lien-ket.md): sơ đồ phụ thuộc, các hành trình xuyên suốt, xử lý sự cố.
 13. [Thuật ngữ](13-thuat-ngu.md).
 
-## Hai bề mặt và ba nhóm người dùng
+<!--op-->## Hai bề mặt và ba nhóm người dùng
 
 KidHabit Hero có hai nơi tách biệt, mỗi nơi một địa chỉ:
 
@@ -45,7 +45,7 @@ Ba nhóm người dùng của ứng dụng, mỗi nhóm thấy phần riêng:
 
 - **Phụ huynh** (chủ gia đình, ba mẹ, người giám hộ): đăng nhập bằng Google, thấy khu Hôm nay, Thiết kế, Gia đình.
 - **Bé**: vào bằng mã hoặc QR do ba mẹ cấp (không cần tài khoản), chỉ thấy phần của chính bé.
-- **Người chăm sóc** (ông bà, người thân): được ba mẹ mời, chỉ xem tiến độ, không sửa gì.
+- **Người chăm sóc** (ông bà, người thân): được ba mẹ mời, chỉ xem tiến độ, không sửa gì.<!--/op-->
 
 ## Danh mục tính năng
 
@@ -107,15 +107,16 @@ Cột "Trạng thái" cho biết tính năng đang bật cho mọi người dùn
 - "PIN nếu đã đặt": thao tác chỉ chạy khi trình duyệt này đã nhập đúng mã PIN phụ huynh còn hiệu lực ([5](05-gia-dinh-va-cai-dat.md#pin)).
 - Các con số (giá, ngưỡng, thời hạn) là giá trị tại thời điểm viết; nguồn chính xác nằm ở tài liệu kỹ thuật được dẫn ở cuối mỗi tệp.
 
-## Giữ tài liệu đúng
+<!--op-->## Giữ tài liệu đúng
 
 - Khi thêm hoặc đổi tính năng, cập nhật **bảng danh mục ở trên** và tệp mô tả nó; thêm liên kết tới các tính năng liên quan ở cuối tệp ("Liên quan").
 - Mỗi mục có neo `<a id="…"></a>` để liên kết; không đổi tên neo đã dùng. Bài kiểm tra `tests/unit/user-guide-links.test.ts` báo lỗi nếu một liên kết nội bộ hoặc neo bị gãy.
 - Giá, ngưỡng và cờ phát hành lấy từ mã nguồn; khi khác nhau thì mã nguồn đúng, sửa tài liệu cho khớp.
 - Cập nhật lần cuối: 03/10/2026.
-- Các chương 1 đến 9, 12 và 13 cũng hiển thị trong ứng dụng (`/docs` và dấu ? ở khu phụ huynh). Sau khi sửa Markdown, chạy `npm run guide:build` để dựng lại `public/guide`; bài kiểm tra `tests/unit/guide-build.test.ts` báo lỗi nếu quên. Phần chỉ dành cho người vận hành đặt giữa `<!--op-->` và `<!--/op-->` thì không hiện trong ứng dụng.
+- Các chương 1 đến 9, 12 và 13 cũng hiển thị trong ứng dụng (`/docs` và dấu ? ở khu phụ huynh). Sau khi sửa Markdown, chạy `npm run guide:build` để dựng lại `public/guide`; bài kiểm tra `tests/unit/guide-build.test.ts` báo lỗi nếu quên. Phần chỉ dành cho người vận hành đặt giữa cặp chú thích HTML `<!-- op -->` và `<!-- /op -->` (viết liền, không có dấu cách; ở đây thêm dấu cách để ví dụ không có tác dụng) thì không hiện trong ứng dụng.
+- **Bản dịch:** đặt bản dịch của từng chương (cùng tên tệp, giữ nguyên mọi dòng `<a id="…"></a>`, đích liên kết và số dòng bảng, mục danh sách) trong `docs/huong-dan/i18n/<mã ngôn ngữ>/`, thêm mã vào `GUIDE_TRANSLATIONS` ở `src/lib/guide/guide-locale.ts`, rồi chạy `npm run guide:build`. Bài kiểm tra `tests/unit/guide-translations.test.ts` so cấu trúc từng bản dịch với bản tiếng Việt. Khi sửa chương tiếng Việt, cập nhật các bản dịch tương ứng.
 - Thêm dấu ? cho một tính năng mới: thêm mã vào `src/lib/guide/help-topic-id.ts`, viết giải thích (tiếng Việt và tiếng Anh) trong `src/lib/guide/help-topics.ts` trỏ tới một mục có sẵn của hướng dẫn, rồi đặt `<HelpTip topic="…" />` cạnh tiêu đề trên màn hình.
 
 ## Tài liệu kỹ thuật đi kèm
 
-[Kiến trúc](../architecture.md) · [Bảo mật và riêng tư](../security-privacy.md) · [Khoa học thói quen và logic thích ứng](../habit-science-and-adaptive-logic.md) · [Hợp đồng dữ liệu khung thói quen](../habit-framework-data-contract.md) · [Chương trình giới thiệu](../affiliate-program.md) · [Phân tích sản phẩm](../product-analytics.md) · [Triển khai](../deployment.md) · [Khôi phục dữ liệu](../data-recovery.md) · [Sổ kiểm chứng nội dung](../claims-ledger.md) · [Hướng dẫn đăng blog](../blog-guide.md) · [Vận hành email và hoàn tiền](../runbooks/lifecycle-and-refunds.md)
+[Kiến trúc](../architecture.md) · [Bảo mật và riêng tư](../security-privacy.md) · [Khoa học thói quen và logic thích ứng](../habit-science-and-adaptive-logic.md) · [Hợp đồng dữ liệu khung thói quen](../habit-framework-data-contract.md) · [Chương trình giới thiệu](../affiliate-program.md) · [Phân tích sản phẩm](../product-analytics.md) · [Triển khai](../deployment.md) · [Khôi phục dữ liệu](../data-recovery.md) · [Sổ kiểm chứng nội dung](../claims-ledger.md) · [Hướng dẫn đăng blog](../blog-guide.md) · [Vận hành email và hoàn tiền](../runbooks/lifecycle-and-refunds.md)<!--/op-->

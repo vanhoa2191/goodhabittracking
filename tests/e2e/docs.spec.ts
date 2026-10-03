@@ -31,3 +31,16 @@ test('an unknown chapter is a 404, not an empty page', async ({ page }) => {
   const response = await page.goto('/docs/khong-co-chuong-nay');
   expect(response?.status()).toBe(404);
 });
+
+test('a reader whose language is English gets the English guide, and a language without one gets English too', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.setItem('kidhabit_language', 'en'));
+  await page.goto('/docs/goi-va-thanh-toan');
+  await expect(page.getByRole('heading', { level: 1, name: 'Plans and payment' })).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByRole('heading', { level: 2, name: /Gift codes/ })).toBeVisible();
+  await expect(page.getByText('The full guide is currently in Vietnamese')).toHaveCount(0);
+
+  await page.evaluate(() => localStorage.setItem('kidhabit_language', 'ja'));
+  await page.goto('/docs/goi-va-thanh-toan');
+  await expect(page.getByRole('heading', { level: 1, name: 'Plans and payment' })).toBeVisible({ timeout: 20_000 });
+});

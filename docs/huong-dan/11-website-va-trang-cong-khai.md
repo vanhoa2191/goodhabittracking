@@ -2,9 +2,9 @@
 
 [← 10. Quản trị và vận hành](10-quan-tri-va-van-hanh.md) · [Mục lục](README.md) · [Tiếp: 12. Bản đồ liên kết và tình huống →](12-ban-do-lien-ket.md)
 
-## Trong tài liệu này
+<!--op-->## Trong tài liệu này
 
-[Hai nơi, hai việc](#hai-noi) · [Các trang chính](#trang-chinh) · [Trang Khung thói quen](#trang-khung) · [Blog](#blog) · [Nút mua hàng nối sang ứng dụng](#cta) · [Pháp lý và hỗ trợ](#phap-ly-web) · [Chính xác của nội dung](#chinh-xac) · [Trang công khai trên ứng dụng](#tren-ung-dung) · [Liên quan](#lien-quan)
+[Hai nơi, hai việc](#hai-noi) · [Các trang chính](#trang-chinh) · [Trang Khung thói quen](#trang-khung) · [Blog](#blog) · [Nút mua hàng nối sang ứng dụng](#cta) · [Pháp lý và hỗ trợ](#phap-ly-web) · [Chính xác của nội dung](#chinh-xac) · [Trang công khai trên ứng dụng](#tren-ung-dung) · [Liên quan](#lien-quan)<!--/op-->
 
 <a id="hai-noi"></a>
 ## Hai nơi, hai việc
