@@ -10,6 +10,9 @@ const {
   update,
   updateEq,
   updateSelect,
+  select,
+  selectEq,
+  readProfile,
 } = vi.hoisted(() => ({
   getUser: vi.fn(),
   insert: vi.fn(),
@@ -19,16 +22,19 @@ const {
   update: vi.fn(),
   updateEq: vi.fn(),
   updateSelect: vi.fn(),
+  select: vi.fn(),
+  selectEq: vi.fn(),
+  readProfile: vi.fn(),
 }));
 
 vi.mock('@/lib/supabase/server', () => ({
   createServerSupabaseClient: vi.fn(async () => ({
     auth: { getUser },
-    from: vi.fn(() => ({ insert, update })),
+    from: vi.fn(() => ({ insert, update, select })),
   })),
 }));
 
-import { PATCH } from '@/app/api/account/profile/route';
+import { GET, PATCH } from '@/app/api/account/profile/route';
 
 const savedProfile = {
   display_name: 'Nguyễn Văn An',
@@ -62,6 +68,8 @@ describe('PATCH /api/account/profile', () => {
     insert.mockReturnValue({ select: insertSelect });
     insertSelect.mockReturnValue({ single });
     single.mockResolvedValue({ data: savedProfile, error: null });
+    select.mockReturnValue({ eq: selectEq });
+    selectEq.mockReturnValue({ maybeSingle: readProfile });
   });
 
   it('updates an existing profile without upserting its immutable user id', async () => {
@@ -77,6 +85,23 @@ describe('PATCH /api/account/profile', () => {
     expect(insert).not.toHaveBeenCalled();
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({ success: true, profile: savedProfile });
+  });
+
+  it('reads a signed-in account before customer details have been entered', async () => {
+    readProfile.mockResolvedValue({ data: null, error: null });
+    const result = await GET();
+    expect(result.status).toBe(200);
+    await expect(result.json()).resolves.toEqual({ profile: { display_name: '', email: savedProfile.email, phone: '', marketing_consent: false } });
+    expect(update).not.toHaveBeenCalled();
+    expect(insert).not.toHaveBeenCalled();
+  });
+
+  it('returns an incomplete stored profile without forcing completion at login', async () => {
+    const incomplete = { ...savedProfile, display_name: '', phone: null, marketing_consent: false };
+    readProfile.mockResolvedValue({ data: incomplete, error: null });
+    const result = await GET();
+    expect(result.status).toBe(200);
+    await expect(result.json()).resolves.toEqual({ profile: incomplete });
   });
 
   it.each([undefined, '', '   ', '12345', 'không có số', 'a@b.co'])('refuses to save a profile whose phone is %s', async (phone) => {

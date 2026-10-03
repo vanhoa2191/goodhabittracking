@@ -1,11 +1,14 @@
 import { expect, test } from '@playwright/test';
 import { installCloudFamilyFixture } from './cloud-family-fixture';
+import { completeCheckoutProfile, installCustomerProfileFixture } from './customer-profile-fixture';
 
 test.afterEach(async ({ page }, testInfo) => {
   await page.screenshot({ path: testInfo.outputPath('checkout.png'), fullPage: true });
 });
 
 test.beforeEach(async ({ page }) => {
+  await installCustomerProfileFixture(page);
+  await page.route('**/api/referral/claim', (route) => route.fulfill({ status: 200, json: { state: 'hidden' } }));
   await page.route('**/api/child/session', (route) => route.fulfill({ status: 401, json: {} }));
 });
 
@@ -80,6 +83,7 @@ test('authenticated checkout waits for family readiness then opens once without 
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText('Gói Một Bé');
+  await completeCheckoutProfile(dialog);
   if (process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true') {
     expect(plans).toEqual([]);
     await dialog.getByRole('checkbox').check();

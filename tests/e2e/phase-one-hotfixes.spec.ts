@@ -52,14 +52,14 @@ test('profile save recovers from a service failure without losing entered data',
     });
   });
 
-  await page.goto('/');
-  const dialog = page.getByRole('dialog', { name: 'Hoàn thiện thông tin khách hàng' });
+  await page.goto('/checkout?plan=monthly');
+  const dialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
   await dialog.getByLabel('Số điện thoại').fill('0912345678');
   await dialog.getByRole('button', { name: 'Lưu và tiếp tục' }).click();
 
   await expect(dialog.getByRole('alert')).toContainText('Mã hỗ trợ: 11111111-1111-4111-8111-111111111111');
   await expect(dialog.getByLabel('Số điện thoại')).toHaveValue('0912345678');
-  await expect(dialog.getByRole('button', { name: 'Lưu và tiếp tục' })).toBeEnabled();
+await expect(dialog.getByRole('button', { name: 'Thử lại' })).toBeEnabled();
 });
 
 test('signed-in PIN settings stay read-only until authoritative status is loaded', async ({ page, baseURL }) => {

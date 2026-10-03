@@ -1,9 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { installCloudFamilyFixture } from './cloud-family-fixture';
 import { getVisiblePricingOpener } from './open-pricing';
+import { completeCheckoutProfile, installCustomerProfileFixture } from './customer-profile-fixture';
 
 test('a parent on a phone can save the payment QR to pay from their banking app', async ({ page, baseURL }) => {
   await installCloudFamilyFixture(page, baseURL);
+  await installCustomerProfileFixture(page);
+  await page.route('**/api/referral/claim', (route) => route.fulfill({ status: 200, json: { state: 'hidden' } }));
   await page.route('**/api/payment/create', (route) => route.fulfill({
     status: 200,
     contentType: 'application/json',
@@ -32,6 +35,7 @@ test('a parent on a phone can save the payment QR to pay from their banking app'
     .getByRole('button', { name: 'Chọn Gói Gia Đình · Tháng' }).click();
 
   const checkout = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
+  await completeCheckoutProfile(checkout);
   if (process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true') {
     await checkout.getByRole('checkbox').check();
     await checkout.getByRole('button', { name: 'Tiếp tục tạo đơn thanh toán' }).click();

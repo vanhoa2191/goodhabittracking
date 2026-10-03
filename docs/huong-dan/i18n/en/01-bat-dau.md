@@ -29,12 +29,12 @@ Parents who are already signed in go straight to the dashboard. To view the land
 Parents who sign in through a referral link (`?ref=`) are automatically recorded as referrals ([8](08-gioi-thieu-ban-be.md#ghi-nhan)). People invited as caregivers sign in with Google and then accept the invitation ([5](05-gia-dinh-va-cai-dat.md#nguoi-cham-soc)).
 
 <a id="thiet-lap"></a>
-## Set up your family (two steps)
+## Create your first child profile
 
-The first time you enter, the “Create Your Family’s Age-Based Plan” window guides you through two steps:
+The first time you enter, the “Create Your Family’s Age-Based Plan” window only creates a child profile:
 
-1. **Caregiver details**: the parent’s name (so the app knows how to address you), role (Mother, Father, Grandparent, Guardian), phone number (9 to 15 digits, used for account and payment support, entered only once), and the option to receive guidance and offers.
-2. **Child details and age-based journey**: the child’s full name, nickname, age, and lucky mascot. The app suggests six starter habits across four age groups (0–3, 3–6, 6–12, 12–18) to add immediately. Parents can edit them later.
+- Enter the **child’s full name** (required), nickname (optional), and age (5 by default).
+- Open **More customization** to read about the age stage, change the mascot (Leo by default), preview six starter habits, or turn off adding starter habits (on by default). Parents can edit these later.
 
 You must **confirm that you are the child’s parent or legal guardian** and agree that KidHabit may store the child’s profile, habits, and progress. Consent is recorded under the policy version ([9](09-bao-mat-va-rieng-tu.md#dong-thuan)). Public leaderboards are off by default.
 
@@ -45,7 +45,7 @@ You can open `/start` (“Start your 7-day trial”) directly from the website: 
 <a id="thong-tin"></a>
 ## Customer information
 
-After signing in, if the profile is missing a full name or phone number, the “Complete your details” dialog appears once. Parents can edit these details later under `Family → Settings → Account` ([5](05-gia-dinh-va-cai-dat.md#tai-khoan)). You can turn offer messages on or off at any time. Turning them off stops promotional emails immediately ([7](07-goi-va-thanh-toan.md#email)).
+Parents only need to enter their **full name and phone number at checkout**, before the terms and referral steps. Phone numbers must have 9 to 15 digits. Details are saved on the server for future payments; complete profiles skip this step. Signing in and creating a child profile are not blocked by this requirement. Receiving guidance and offers is optional and off by default. Parents can edit their details later under `Family → Settings → Account` ([5](05-gia-dinh-va-cai-dat.md#tai-khoan)); opting out stops promotional emails immediately ([7](07-goi-va-thanh-toan.md#email)). If loading or saving fails, tap **Try again**.
 
 <a id="vai-tro"></a>
 ## Family roles

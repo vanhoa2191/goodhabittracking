@@ -78,7 +78,7 @@ describe('parent secondary screens localization', () => {
     for (const language of languages) {
       const copy = getOnboardingCopy(language);
       expect(copy.title).toBeTruthy();
-      expect(Object.values(copy.roles).every(Boolean)).toBe(true);
+      expect(copy.customizeMore).toBeTruthy();
       expect(Object.values(copy.stageLabels).every(Boolean)).toBe(true);
       for (const stage of Object.values(copy.stages)) {
         expect(stage.title).toBeTruthy();
