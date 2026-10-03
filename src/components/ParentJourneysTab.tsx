@@ -105,7 +105,7 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
                 aria-pressed={stage.id === item.id}
                 className={`min-h-11 rounded-xl px-3 text-sm font-bold ${stage.id === item.id ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300' : 'text-sand-700 hover:text-sand-900 dark:text-slate-300'}`}
               >
-                {item.ageRange}{tabCopy.ageSuffix}
+                {item.ageRange}{language === 'vi' ? tabCopy.ageSuffix : ''}
               </button>
             ))}
           </div>
