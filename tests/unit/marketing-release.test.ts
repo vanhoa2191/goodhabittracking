@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { buildMarketingSite } from '../../scripts/build-marketing.mjs';
 import { verifyMarketingRelease, waitForMarketingRelease } from '../../scripts/verify-marketing-release.mjs';
-import { isReadyHealth } from '../../scripts/verify-release-candidate.mjs';
+import { fetchHealth, isReadyHealth } from '../../scripts/verify-release-candidate.mjs';
 
 const temporaryDirectories: string[] = [];
 
@@ -164,5 +164,31 @@ describe('waiting for the matching marketing release', () => {
       origin: 'https://www.example', release: 'abc123', fetchImpl: fetchImpl as unknown as typeof fetch,
       attempts: 5, delayMs: 1, sleep: async () => undefined,
     })).resolves.toEqual({ attempts: 3 });
+  });
+});
+
+describe('release candidate health gate', () => {
+  const health = (body: unknown) => vi.fn(async () => ({ ok: true, json: async () => body }) as unknown as Response);
+
+  it('asks for health with the operations secret', async () => {
+    const fetchImpl = health({ status: 'ready', version: 'x', checks: { app: true } });
+    await fetchHealth('http://127.0.0.1:3420', 'secret-value', fetchImpl);
+    expect(fetchImpl).toHaveBeenCalledWith('http://127.0.0.1:3420/api/health', {
+      headers: { authorization: 'Bearer secret-value' },
+    });
+  });
+
+  it('can never be satisfied by the anonymous health body', async () => {
+    const { body } = await fetchHealth('http://x', 's', health({ status: 'ready', version: 'x' }));
+    expect(isReadyHealth(body)).toBe(false);
+  });
+
+  it('is satisfied by an authorized body with every check passing', async () => {
+    const { ok, body } = await fetchHealth('http://x', 's', health({
+      status: 'ready',
+      version: 'x',
+      checks: { app: true, databaseConnection: true, billingConfig: true },
+    }));
+    expect(ok && isReadyHealth(body)).toBe(true);
   });
 });

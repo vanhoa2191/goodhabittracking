@@ -77,6 +77,28 @@ describe('parent unlock cookie', () => {
     expect(await hasParentUnlock(requestWith(await issuedCookie()), parent, pinVersion, now + 1000)).toBe(true);
   });
 
+  it('refuses to sign in production without a dedicated unlock secret', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    await expect(issuedCookie()).rejects.toThrow('PARENT_UNLOCK_SECRET');
+    vi.stubEnv('PARENT_UNLOCK_SECRET', 'short');
+    await expect(issuedCookie()).rejects.toThrow('PARENT_UNLOCK_SECRET');
+  });
+
+  it('signs in production with the dedicated unlock secret', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    vi.stubEnv('PARENT_UNLOCK_SECRET', 'z'.repeat(40));
+    expect(await hasParentUnlock(requestWith(await issuedCookie()), parent, pinVersion, now + 1000)).toBe(true);
+  });
+
+  it('falls back to the pairing secret outside production', async () => {
+    vi.stubEnv('NODE_ENV', 'development');
+    const cookie = await issuedCookie();
+    vi.stubEnv('PAIRING_RATE_LIMIT_SECRET', 'y'.repeat(40));
+    expect(await hasParentUnlock(requestWith(cookie), parent, pinVersion, now + 1000)).toBe(false);
+    vi.stubEnv('PAIRING_RATE_LIMIT_SECRET', 'x'.repeat(40));
+    expect(await hasParentUnlock(requestWith(cookie), parent, pinVersion, now + 1000)).toBe(true);
+  });
+
   it('is cleared on lock', () => {
     const response = NextResponse.json({});
     clearParentUnlock(response);
