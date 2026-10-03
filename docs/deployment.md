@@ -59,7 +59,7 @@ Site marketing gửi tiêu đề bảo mật qua tệp `_headers` do bản dựn
 
 Các lệnh Cloudflare luôn loại server secret khỏi môi trường build để chúng chỉ tồn tại dưới dạng Worker secrets lúc chạy. Không đặt `PAYOS_*`, `SUPABASE_SERVICE_ROLE_KEY` hoặc `PAIRING_RATE_LIMIT_SECRET` trong `.env.local`; wrapper sẽ chặn build nếu phát hiện giá trị.
 4. Khai báo public variables `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_MARKETING_URL` và `NEXT_PUBLIC_DEPLOY_TARGET=app` trong **môi trường build app**. Marketing build chỉ nhận `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_MARKETING_URL` và `NEXT_PUBLIC_DEPLOY_TARGET=marketing`.
-5. Khai báo encrypted secrets: `SUPABASE_SERVICE_ROLE_KEY`, `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`, `PAIRING_RATE_LIMIT_SECRET`, và khi bật lifecycle email: `RESEND_API_KEY`, `LIFECYCLE_EMAIL_FROM`, `CRON_SECRET`.
+5. Khai báo encrypted secrets: `SUPABASE_SERVICE_ROLE_KEY`, `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`, `PAIRING_RATE_LIMIT_SECRET`, `PARENT_UNLOCK_SECRET`, và khi bật lifecycle email: `RESEND_API_KEY`, `LIFECYCLE_EMAIL_FROM`, `CRON_SECRET`.
 
 Trang `/admin` và mọi API quản trị lấy quyền từ `admin_memberships`, áp dụng vai trò, ngày hết hạn, thu hồi tức thời và AAL2. Thao tác ghi bắt buộc có lý do và tạo audit bất biến đã tối thiểu dữ liệu. `ADMIN_EMAILS` không cấp quyền vận hành thông thường: chỉ dùng khôi phục khẩn cấp cùng `ADMIN_BOOTSTRAP_EXPIRES_AT`, tối đa 24 giờ, cho email đã xác minh và chỉ để tài khoản đó tự tạo DB membership có hạn qua `/admin/security`. Sau đó phải xóa hai biến bootstrap. Không dùng parent PIN thay MFA.
 
@@ -73,7 +73,7 @@ Trang quản trị có workflow hỗ trợ, hủy và hoàn tiền. Chỉ link P
 Các trang `/privacy`, `/terms`, `/contact` luôn build được ở trạng thái bản nháp nhưng mặc định `noindex` và không xuất hiện trong footer/checkout. Chỉ đặt `NEXT_PUBLIC_LEGAL_PAGES_APPROVED=true` sau khi chủ sản phẩm hoặc tư vấn pháp lý duyệt đúng phiên bản nội dung đang commit; đồng thời cấu hình `SUPPORT_EMAIL` bằng hộp thư hỗ trợ chính thức. Khi cờ bật, checkout yêu cầu phụ huynh mở và đồng ý điều khoản/quyền riêng tư trước khi tạo đơn PayOS. Bản deploy lấy cờ từ biến repo cùng tên (`gh variable set NEXT_PUBLIC_LEGAL_PAGES_APPROVED --body true`) và email hỗ trợ từ `ci.yml`; cờ được nhúng lúc build nên đổi biến xong phải deploy lại.
 
 Không đưa secret vào `wrangler.jsonc`, GitHub Actions log hoặc `NEXT_PUBLIC_*`.
-`PAIRING_RATE_LIMIT_SECRET` phải là giá trị ngẫu nhiên tối thiểu 32 ký tự. Không xoay vòng secret này tùy tiện: mã ghép tay và QR của từng bé được suy ra từ nó, nên đổi secret làm mọi mã đã in/đã chia sẻ mất hiệu lực. `PARENT_UNLOCK_SECRET` (tùy chọn, tối thiểu 32 ký tự) tách việc ký cookie mở khóa PIN khỏi secret ghép đôi; đặt hoặc đổi nó chỉ khiến phụ huynh nhập lại PIN một lần.
+`PAIRING_RATE_LIMIT_SECRET` phải là giá trị ngẫu nhiên tối thiểu 32 ký tự. Không xoay vòng secret này tùy tiện: mã ghép tay và QR của từng bé được suy ra từ nó, nên đổi secret làm mọi mã đã in/đã chia sẻ mất hiệu lực. `PARENT_UNLOCK_SECRET` (bắt buộc ở production, tối thiểu 32 ký tự; thiếu thì cookie mở khóa không được ký và kiểm tra phát hành sẽ chặn) tách việc ký cookie mở khóa PIN khỏi secret ghép đôi; đặt hoặc đổi nó chỉ khiến phụ huynh nhập lại PIN một lần. Môi trường không phải production vẫn dùng `PAIRING_RATE_LIMIT_SECRET` khi chưa đặt.
 
 ## Tự động phát hành từ `main`
 

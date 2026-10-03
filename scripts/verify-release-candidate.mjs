@@ -46,14 +46,21 @@ async function assertPortAvailable() {
   });
 }
 
-async function waitForReady(serverProcess) {
+/** The component checks are only returned to callers that present the operations secret. */
+export async function fetchHealth(baseUrl, cronSecret, fetchImpl = fetch) {
+  const response = await fetchImpl(`${baseUrl}/api/health`, {
+    headers: { authorization: `Bearer ${cronSecret}` },
+  });
+  return { ok: response.ok, body: await response.json() };
+}
+
+async function waitForReady(serverProcess, cronSecret) {
   const deadline = Date.now() + 60_000;
   while (Date.now() < deadline) {
     if (serverProcess.exitCode !== null) throw new Error('Production server exited before readiness.');
     try {
-      const response = await fetch(`${BASE_URL}/api/health`);
-      const body = await response.json();
-      if (response.ok && isReadyHealth(body)) return body;
+      const { ok, body } = await fetchHealth(BASE_URL, cronSecret);
+      if (ok && isReadyHealth(body)) return body;
       if (allowDirty && body.checks?.app === true) return body;
     } catch {
       // The server may still be starting.
@@ -66,7 +73,7 @@ async function waitForReady(serverProcess) {
 export function isReadyHealth(body) {
   const checks = body?.checks;
   return body?.status === 'ready'
-    && checks
+    && Boolean(checks)
     && Object.keys(checks).length > 0
     && Object.values(checks).every((value) => value === true);
 }
@@ -106,6 +113,8 @@ function runPreflight() {
   ]) requireValue(name);
   const pairingSecret = requireValue('PAIRING_RATE_LIMIT_SECRET');
   if (pairingSecret.length < 32) fail('PAIRING_RATE_LIMIT_SECRET must contain at least 32 characters.');
+  const unlockSecret = requireValue('PARENT_UNLOCK_SECRET');
+  if (unlockSecret.length < 32) fail('PARENT_UNLOCK_SECRET must contain at least 32 characters.');
   if (process.env.ENABLE_PAYMENT_SIMULATION !== 'false') fail('ENABLE_PAYMENT_SIMULATION must be false.');
   if (process.env.ENABLE_LEGACY_PAIRING !== 'false') fail('ENABLE_LEGACY_PAIRING must be false.');
 
@@ -125,6 +134,8 @@ async function main() {
       : `Release candidate ${releaseSha}`;
     process.stdout.write(`${candidateLabel} passed preflight.\n`);
     if (preflightOnly) return;
+    // Health reports component checks only to the operations secret, so readiness cannot be judged without it.
+    const cronSecret = requireValue('CRON_SECRET');
 
     await run('npm', ['run', 'ci']);
     await assertPortAvailable();
@@ -133,7 +144,7 @@ async function main() {
       detached: true,
       stdio: ['ignore', 'inherit', 'inherit'],
     });
-    const health = await waitForReady(serverProcess);
+    const health = await waitForReady(serverProcess, cronSecret);
     if (allowDirty && health.status !== 'ready') {
       process.stdout.write('Local working-tree verification is using configuration-only health; strict release candidates require live dependency readiness.\n');
     }
