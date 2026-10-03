@@ -58,7 +58,7 @@ describe('/api/domain/experience', () => {
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toEqual({
       children: [], settings: null, letters: [], quests: [], wishlists: [], deferredTasks: [],
-      supportObservations: [], cuePlans: [], journalEntries: [], cityPurchases: [],
+      supportObservations: [], cuePlans: [], habitTries: [], weeklyFocus: [], journalEntries: [], cityPurchases: [],
     });
   });
 
@@ -267,6 +267,51 @@ describe('/api/domain/experience', () => {
       expect((await POST(request(savePlan))).status).toBe(409);
       rpc.mockResolvedValue({ data: { status: 'saved', cuePlan: { ...cuePlan, activity_id: '33333333-3333-4333-8333-333333333333' } }, error: null });
       expect((await POST(request(savePlan))).status).toBe(503);
+    });
+  });
+
+  describe('habit tries and weekly focus', () => {
+    const activityId = '44444444-4444-4444-8444-444444444444';
+    const habitTry = {
+      id: '55555555-5555-4555-8555-555555555555', family_id: familyId, child_id: childId, activity_id: activityId, kind: 'smaller',
+      started_on: '2026-10-04', ends_on: '2026-10-11', outcome: null, created_at: '2026-10-04T08:00:00.000Z', resolved_at: null, previous_values: null,
+    };
+    const weeklyFocus = {
+      family_id: familyId, child_id: childId, week_start: '2026-09-28', activity_ids: [activityId], chosen_by: 'parent',
+      updated_at: '2026-10-04T08:00:00.000Z',
+    };
+
+    it('starts a try through the family function and returns the saved row', async () => {
+      rpc.mockResolvedValue({ data: { status: 'started', habitTry }, error: null });
+      const response = await POST(request({ type: 'startHabitTry', childId, activityId, kind: 'smaller', startedOn: '2026-10-04' }));
+      expect(response.status).toBe(200);
+      await expect(response.json()).resolves.toEqual({ success: true, started: true, habitTry });
+      expect(rpc).toHaveBeenCalledWith('start_habit_try', { target_activity_id: activityId, target_child_id: childId, try_kind: 'smaller', try_days: 7, try_started_on: '2026-10-04', try_previous: null });
+    });
+
+    it('refuses an unknown kind, a day count out of range and a row of another family', async () => {
+      expect((await POST(request({ type: 'startHabitTry', childId, activityId, kind: 'punish', startedOn: '2026-10-04' }))).status).toBe(400);
+      expect((await POST(request({ type: 'startHabitTry', childId, activityId, kind: 'smaller', days: 40, startedOn: '2026-10-04' }))).status).toBe(400);
+      expect(rpc).not.toHaveBeenCalled();
+      rpc.mockResolvedValue({ data: { status: 'started', habitTry: { ...habitTry, family_id: '99999999-9999-4999-8999-999999999999' } }, error: null });
+      expect((await POST(request({ type: 'startHabitTry', childId, activityId, kind: 'smaller', startedOn: '2026-10-04' }))).status).toBe(503);
+    });
+
+    it('records the answer to a try', async () => {
+      rpc.mockResolvedValue({ data: { status: 'resolved', habitTry: { ...habitTry, outcome: 'helped', resolved_at: '2026-10-11T08:00:00.000Z' } }, error: null });
+      const response = await POST(request({ type: 'resolveHabitTry', tryId: habitTry.id, outcome: 'helped' }));
+      expect(response.status).toBe(200);
+      expect(rpc).toHaveBeenCalledWith('resolve_habit_try', { target_try_id: habitTry.id, try_outcome: 'helped' });
+      expect((await POST(request({ type: 'resolveHabitTry', tryId: habitTry.id, outcome: 'great' }))).status).toBe(400);
+    });
+
+    it('saves a weekly focus of at most two habits chosen with a young child', async () => {
+      rpc.mockResolvedValue({ data: { status: 'saved', weeklyFocus }, error: null });
+      const response = await POST(request({ type: 'setWeeklyFocus', childId, weekStart: '2026-09-28', activityIds: [activityId] }));
+      expect(response.status).toBe(200);
+      await expect(response.json()).resolves.toEqual({ success: true, weeklyFocus });
+      const three = [activityId, activityId, activityId];
+      expect((await POST(request({ type: 'setWeeklyFocus', childId, weekStart: '2026-09-28', activityIds: three }))).status).toBe(400);
     });
   });
 });

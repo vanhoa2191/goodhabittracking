@@ -46,6 +46,7 @@ describe('sensitive parent actions need the PIN entered in this browser', () => 
     ['rotating a child pairing code', () => rotateCredential(call('POST', '/api/pairing/credentials/rotate', { childId: uuid }))],
     ['starting a payment', () => createPayment(call('POST', '/api/payment/create', { planId: 'monthly' }))],
     ['approving a task', () => runCommand(call('POST', '/api/domain/commands', { type: 'reviewHabit', logId: uuid, decision: 'approve' }))],
+    ['approving several tasks at once', () => runCommand(call('POST', '/api/domain/commands', { type: 'reviewHabits', logIds: [uuid], decision: 'approve' }))],
     ['adjusting points by hand', () => runCommand(call('POST', '/api/domain/commands', { type: 'adjustPoints', childId: uuid, amount: 10, reason: 'Extra help', commandId: uuid }))],
     ['saving referral payout details', () => affiliateAction(call('POST', '/api/affiliate', { action: 'savePayout', bank: 'Vietcombank', accountNumber: '0123456789', accountName: 'Nguyen Van A' }))],
     ['requesting a referral payout', () => affiliateAction(call('POST', '/api/affiliate', { action: 'requestPayout' }))],

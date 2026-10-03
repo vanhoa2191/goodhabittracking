@@ -23,6 +23,7 @@ export interface ChildSession {
   logs: ActivityLog[];
   rewards: Reward[];
   redemptions: Redemption[];
+  weeklyFocus: { weekStart: string; activityIds: string[]; chosenBy: 'child' | 'parent' }[];
 }
 
 type ChildSessionResult =
@@ -75,6 +76,8 @@ const activitySchema = z.object({
   frameworkHabitId: optionalString,
   frameworkContentVersion: optionalString,
   legacyTemplateId: optionalString,
+  graduatedAt: z.string().nullish().transform((value) => value ?? null),
+  offeredForFocus: z.boolean().nullish().transform((value) => value ?? false),
   createdAt: z.string(),
 });
 
@@ -121,6 +124,11 @@ const childSessionSchema = z.object({
   logs: z.array(activityLogSchema),
   rewards: z.array(rewardSchema),
   redemptions: z.array(redemptionSchema),
+  weeklyFocus: z.array(z.object({
+    weekStart: z.iso.date(),
+    activityIds: z.array(z.string()).max(2),
+    chosenBy: z.enum(['child', 'parent']),
+  })).default([]),
 });
 
 const errorSchema = z.object({ error: z.string() });

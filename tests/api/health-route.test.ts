@@ -92,7 +92,7 @@ describe('GET /api/health', () => {
 
   it('accepts a newer schema version', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
-    schemaAnswer = async () => json('202610040001');
+    schemaAnswer = async () => json('209912310001');
     const response = await GET(operations());
     expect(response.status).toBe(200);
     expect(await response.json()).not.toHaveProperty('schemaVersionFailure');

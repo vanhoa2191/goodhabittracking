@@ -72,6 +72,29 @@ const cuePlanShape = {
   created_at: timestamp,
   updated_at: timestamp,
 };
+const habitTryShape = {
+  id: uuid,
+  family_id: uuid,
+  child_id: uuid,
+  activity_id: uuid,
+  kind: z.enum(['smaller', 'retime', 'together', 'cue_change', 'reduce_support']),
+  started_on: z.iso.date(),
+  ends_on: z.iso.date(),
+  outcome: z.enum(['helped', 'not_yet', 'dropped']).nullable(),
+  created_at: timestamp,
+  resolved_at: timestamp.nullable(),
+  previous_values: z.record(z.string(), z.unknown()).nullable(),
+};
+const habitTryRow = z.object(habitTryShape);
+const weeklyFocusShape = {
+  family_id: uuid,
+  child_id: uuid,
+  week_start: z.iso.date(),
+  activity_ids: z.array(uuid).max(2),
+  chosen_by: z.enum(['child', 'parent']),
+  updated_at: timestamp,
+};
+const weeklyFocusRow = z.object(weeklyFocusShape);
 const timeMatchesKind = (plan: { cue_kind: string; cue_time: string | null }) => (
   (plan.cue_kind === 'time') === (plan.cue_time !== null)
 );
@@ -88,6 +111,8 @@ export const experienceColumns = {
   child_task_deferrals: Object.keys(deferredTaskRow.shape),
   habit_support_observations: Object.keys(supportObservationRow.shape),
   habit_cue_plans: Object.keys(cuePlanShape),
+  habit_tries: Object.keys(habitTryShape),
+  child_weekly_focus: Object.keys(weeklyFocusShape),
   child_journal_entries: Object.keys(journalEntrySchema.shape),
   child_city_purchases: Object.keys(cityPurchaseSchema.shape),
 } as const;
@@ -101,6 +126,8 @@ export type ChildWishlist = z.infer<typeof wishlistRow>;
 export type DeferredTask = z.infer<typeof deferredTaskRow>;
 export type SupportObservation = z.infer<typeof supportObservationRow>;
 export type CuePlan = z.infer<typeof cuePlanRow>;
+export type HabitTry = z.infer<typeof habitTryRow>;
+export type WeeklyFocus = z.infer<typeof weeklyFocusRow>;
 
 export function parseChildWishlist(input: unknown): ChildWishlist {
   return wishlistRow.parse(input);
@@ -126,6 +153,14 @@ export function parseCuePlan(input: unknown): CuePlan {
   return cuePlanRow.parse(input);
 }
 
+export function parseHabitTry(input: unknown): HabitTry {
+  return habitTryRow.parse(input);
+}
+
+export function parseWeeklyFocus(input: unknown): WeeklyFocus {
+  return weeklyFocusRow.parse(input);
+}
+
 export function parseCuePlans(input: unknown): CuePlan[] {
   return z.array(cuePlanRow).parse(input);
 }
@@ -139,6 +174,8 @@ export type ExperienceState = {
   readonly deferredTasks: readonly DeferredTask[];
   readonly supportObservations: readonly SupportObservation[];
   readonly cuePlans: readonly CuePlan[];
+  readonly habitTries: readonly HabitTry[];
+  readonly weeklyFocus: readonly WeeklyFocus[];
   readonly journalEntries: readonly JournalEntry[];
   readonly cityPurchases: readonly CityPurchase[];
 };
@@ -152,6 +189,8 @@ export const emptyExperienceState: ExperienceState = {
   deferredTasks: [],
   supportObservations: [],
   cuePlans: [],
+  habitTries: [],
+  weeklyFocus: [],
   journalEntries: [],
   cityPurchases: [],
 };
@@ -165,6 +204,8 @@ const experienceRows = z.object({
   deferredTasks: z.array(deferredTaskRow).default([]),
   supportObservations: z.array(supportObservationRow).default([]),
   cuePlans: z.array(cuePlanRow).default([]),
+  habitTries: z.array(habitTryRow).default([]),
+  weeklyFocus: z.array(weeklyFocusRow).default([]),
   journalEntries: z.array(journalEntrySchema).default([]),
   cityPurchases: z.array(cityPurchaseSchema).default([]),
 });
@@ -181,6 +222,8 @@ const demoExperienceRows = experienceRows.extend({
   })).default([]),
   cuePlans: z.array(z.object({ ...cuePlanShape, child_id: demoChildId, activity_id: z.string().min(1) })
     .refine(timeMatchesKind, timeMatchesKindMessage)).default([]),
+  habitTries: z.array(habitTryRow.extend({ id: z.string().min(1), child_id: demoChildId, activity_id: z.string().min(1) })).default([]),
+  weeklyFocus: z.array(weeklyFocusRow.extend({ child_id: demoChildId, activity_ids: z.array(z.string().min(1)).max(2) })).default([]),
   journalEntries: z.array(journalEntrySchema.extend({ child_id: demoChildId })).default([]),
   cityPurchases: z.array(cityPurchaseSchema.extend({ child_id: demoChildId })).default([]),
 });
@@ -195,6 +238,8 @@ export function parseExperienceState(input: unknown, familyId: string, isDemo = 
     ...state.deferredTasks,
     ...state.supportObservations,
     ...state.cuePlans,
+    ...state.habitTries,
+    ...state.weeklyFocus,
     ...state.journalEntries,
     ...state.cityPurchases,
     ...(state.settings ? [state.settings] : []),
@@ -219,6 +264,8 @@ export function rebindExperienceFamily(state: ExperienceState, familyId: string)
     deferredTasks: rebind(state.deferredTasks),
     supportObservations: rebind(state.supportObservations),
     cuePlans: rebind(state.cuePlans),
+    habitTries: rebind(state.habitTries),
+    weeklyFocus: rebind(state.weeklyFocus),
     journalEntries: rebind(state.journalEntries),
     cityPurchases: rebind(state.cityPurchases),
   };
@@ -321,4 +368,17 @@ export function mergeHabitPrograms(
     && supportObservations.every((row) => state.supportObservations.includes(row))
     && cuePlans.every((row) => state.cuePlans.includes(row));
   return unchanged ? state : { ...state, supportObservations, cuePlans };
+}
+
+/** Starts or replaces a try, keyed by its id. */
+export function setHabitTry(state: ExperienceState, row: HabitTry): ExperienceState {
+  return { ...state, habitTries: [...state.habitTries.filter((existing) => existing.id !== row.id), row] };
+}
+
+/** The week's focus of one child, replacing an earlier choice for the same week. */
+export function setWeeklyFocus(state: ExperienceState, row: WeeklyFocus): ExperienceState {
+  return {
+    ...state,
+    weeklyFocus: [...state.weeklyFocus.filter((existing) => existing.child_id !== row.child_id || existing.week_start !== row.week_start), row],
+  };
 }

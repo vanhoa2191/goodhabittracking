@@ -75,6 +75,10 @@ function updateRow(
     ['framework_habit_id', updates.frameworkHabitId],
     ['framework_content_version', updates.frameworkContentVersion],
     ['legacy_template_id', updates.legacyTemplateId],
+    ['graduated_at', updates.graduatedAt],
+    ['graduation_check_due', updates.graduationCheckDue],
+    ['base_points', updates.basePoints],
+    ['offered_for_focus', updates.offeredForFocus],
   ];
   return Object.fromEntries(candidates.filter(([, value]) => value !== undefined));
 }

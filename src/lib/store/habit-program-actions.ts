@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { cuePlanInputSchema } from '@/lib/habit-programs/cue-plan-input';
 import type { CuePlanInput } from '@/lib/habit-programs/cue-plan-input';
 import type { SupportLevel } from '@/lib/habit-programs/types';
-import { mergeHabitPrograms, parseCuePlan, parseSupportObservation, setCuePlan, setSupportObservation } from '@/lib/experience-state';
+import { mergeHabitPrograms, parseCuePlan, parseHabitTry, parseSupportObservation, parseWeeklyFocus, setCuePlan, setHabitTry, setSupportObservation, setWeeklyFocus } from '@/lib/experience-state';
+import type { TryKind, TryOutcome } from '@/lib/habit-programs/coach';
 import type { ExperienceState } from '@/lib/experience-state';
 import type { ProductEvent } from '@/lib/product-analytics';
 import type { ActivityLog, HabitActivity } from '@/types';
@@ -36,6 +37,12 @@ export type HabitProgramActions = {
   readonly recordSupport: (logId: string, level: SupportLevel) => Promise<boolean>;
   /** The "if this, then that" plan for a habit of the named child (default: the active child). Only signed-in parents and demos can save one. */
   readonly saveCuePlan: (activityId: string, input: CuePlanInput, childId?: string) => Promise<boolean>;
+  /** A parent starts one change to try for a habit, for about a week. */
+  readonly startTry: (activityId: string, childId: string, kind: TryKind, previous?: Readonly<Record<string, unknown>> | null) => Promise<boolean>;
+  /** The parent's answer to "did the change help?". */
+  readonly resolveTry: (tryId: string, outcome: TryOutcome) => Promise<boolean>;
+  /** The habits a child puts first this week: a parent for a young child, the child itself on a paired device. */
+  readonly chooseFocus: (childId: string, weekStart: string, activityIds: readonly string[]) => Promise<boolean>;
 };
 
 export function createHabitProgramActions(dependencies: HabitProgramActionDependencies): HabitProgramActions {
@@ -143,5 +150,99 @@ export function createHabitProgramActions(dependencies: HabitProgramActionDepend
     }
   };
 
-  return { recordSupport, saveCuePlan };
+  const postParent = async (body: Record<string, unknown>): Promise<unknown | null> => {
+    try {
+      const response = await request('/api/domain/experience', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      return response.ok ? await response.json() : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const startTry = async (activityId: string, childId: string, kind: TryKind, previous: Readonly<Record<string, unknown>> | null = null): Promise<boolean> => {
+    const today = now();
+    const startedOn = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    if (dependencies.isDemoSession) {
+      const end = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 7);
+      const endsOn = `${end.getFullYear()}-${String(end.getMonth() + 1).padStart(2, '0')}-${String(end.getDate()).padStart(2, '0')}`;
+      dependencies.setExperience((previous) => (
+        previous.habitTries.some((row) => row.child_id === childId && row.activity_id === activityId && row.outcome === null)
+          ? previous
+          : setHabitTry(previous, {
+              id: crypto.randomUUID(), family_id: DEMO_FAMILY_ID, child_id: childId, activity_id: activityId, kind,
+              started_on: startedOn, ends_on: endsOn, outcome: null, created_at: now().toISOString(), resolved_at: null, previous_values: previous ? { ...previous } : null,
+            })
+      ));
+      return true;
+    }
+    if (!dependencies.isSignedInParent) return false;
+    const scopeAtStart = dependencies.getScope?.();
+    const answer = await postParent({ type: 'startHabitTry', childId, activityId, kind, days: 7, startedOn, previous });
+    const parsed = z.object({ habitTry: z.unknown() }).safeParse(answer);
+    if (!parsed.success) return false;
+    try {
+      const habitTry = parseHabitTry(parsed.data.habitTry);
+      if (dependencies.getScope && dependencies.getScope() !== scopeAtStart) return false;
+      dependencies.setExperience((previous) => setHabitTry(previous, habitTry));
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const resolveTry = async (tryId: string, outcome: TryOutcome): Promise<boolean> => {
+    if (dependencies.isDemoSession) {
+      dependencies.setExperience((previous) => {
+        const current = previous.habitTries.find((row) => row.id === tryId);
+        return current && current.outcome === null ? setHabitTry(previous, { ...current, outcome, resolved_at: now().toISOString() }) : previous;
+      });
+      return true;
+    }
+    if (!dependencies.isSignedInParent) return false;
+    const scopeAtStart = dependencies.getScope?.();
+    const answer = await postParent({ type: 'resolveHabitTry', tryId, outcome });
+    const parsed = z.object({ habitTry: z.unknown() }).safeParse(answer);
+    if (!parsed.success) return false;
+    try {
+      const habitTry = parseHabitTry(parsed.data.habitTry);
+      if (dependencies.getScope && dependencies.getScope() !== scopeAtStart) return false;
+      dependencies.setExperience((previous) => setHabitTry(previous, habitTry));
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const chooseFocus = async (childId: string, weekStart: string, activityIds: readonly string[]): Promise<boolean> => {
+    const ids = [...new Set(activityIds)].slice(0, 2);
+    if (dependencies.isDemoSession) {
+      dependencies.setExperience((previous) => setWeeklyFocus(previous, {
+        family_id: DEMO_FAMILY_ID, child_id: childId, week_start: weekStart, activity_ids: ids, chosen_by: 'parent', updated_at: now().toISOString(),
+      }));
+      return true;
+    }
+    if (!dependencies.isSignedInParent && !dependencies.isPairedChild) return false;
+    const scopeAtStart = dependencies.getScope?.();
+    try {
+      const response = await request(
+        dependencies.isSignedInParent ? '/api/domain/experience' : '/api/child/focus',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dependencies.isSignedInParent ? { type: 'setWeeklyFocus', childId, weekStart, activityIds: ids } : { weekStart, activityIds: ids }),
+        },
+      );
+      if (!response.ok) return false;
+      const saved = z.object({ weeklyFocus: z.unknown() }).parse(await response.json());
+      const weeklyFocus = parseWeeklyFocus(saved.weeklyFocus);
+      if (weeklyFocus.child_id !== childId || weeklyFocus.week_start !== weekStart) return false;
+      if (dependencies.getScope && dependencies.getScope() !== scopeAtStart) return false;
+      dependencies.setExperience((previous) => setWeeklyFocus(previous, weeklyFocus));
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  return { recordSupport, saveCuePlan, startTry, resolveTry, chooseFocus };
 }

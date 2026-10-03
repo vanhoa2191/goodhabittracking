@@ -2,6 +2,8 @@ import { z } from 'zod';
 
 const uuid = z.string().uuid();
 
+export const MAX_BATCH_REVIEW = 50;
+
 export const domainCommandSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('completeHabit'),
@@ -12,6 +14,11 @@ export const domainCommandSchema = z.discriminatedUnion('type', [
   }).strict(),
   z.object({ type: z.literal('undoHabit'), logId: uuid }).strict(),
   z.object({ type: z.literal('reviewHabit'), logId: uuid, decision: z.enum(['approve', 'reject']) }).strict(),
+  z.object({
+    type: z.literal('reviewHabits'),
+    logIds: z.array(uuid).min(1).max(MAX_BATCH_REVIEW),
+    decision: z.enum(['approve', 'reject']),
+  }).strict(),
   z.object({
     type: z.literal('redeemReward'),
     rewardId: uuid,

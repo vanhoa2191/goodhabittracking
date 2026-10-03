@@ -54,7 +54,12 @@ const activitySchema = mutableActivityFieldsSchema.extend({
   createdAt: z.string().datetime(),
 }).strict();
 
-const activityUpdatesSchema = mutableActivityFieldsSchema.omit({ journeyHabitKey: true }).partial().refine(
+const activityUpdatesSchema = mutableActivityFieldsSchema.omit({ journeyHabitKey: true }).extend({
+  graduatedAt: z.string().datetime().nullable(),
+  graduationCheckDue: z.iso.date().nullable(),
+  basePoints: z.number().int().min(1).max(10000).nullable(),
+  offeredForFocus: z.boolean(),
+}).partial().refine(
   (updates) => Object.keys(updates).length > 0,
   { message: 'At least one activity field is required.' },
 );

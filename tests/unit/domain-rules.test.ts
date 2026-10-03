@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { activityMutationSchema } from '@/lib/domain/activity-mutations';
-import { domainCommandSchema, ACTIVITY_LOG_TRANSITIONS, REDEMPTION_TRANSITIONS } from '@/lib/domain/commands';
+import { domainCommandSchema, ACTIVITY_LOG_TRANSITIONS, MAX_BATCH_REVIEW, REDEMPTION_TRANSITIONS } from '@/lib/domain/commands';
 import { getLocalDateKey, isConsecutiveDate } from '@/lib/domain/local-date';
 import { mapHabitActivityRow } from '@/lib/supabase/mappers';
 
@@ -26,6 +26,17 @@ describe('authoritative domain rules', () => {
       points: 999999,
     }).success).toBe(false);
     expect(domainCommandSchema.safeParse({ type: 'reviewHabit', logId: 'bad', decision: 'approve' }).success).toBe(false);
+  });
+
+  it('accepts one to fifty logs in a batch review and nothing else', () => {
+    const ids = (count: number) => Array.from({ length: count }, () => crypto.randomUUID());
+    const batch = (logIds: string[], extra: object = {}) => domainCommandSchema.safeParse({ type: 'reviewHabits', logIds, decision: 'approve', ...extra }).success;
+    expect(batch(ids(1))).toBe(true);
+    expect(batch(ids(MAX_BATCH_REVIEW))).toBe(true);
+    expect(batch([])).toBe(false);
+    expect(batch(ids(MAX_BATCH_REVIEW + 1))).toBe(false);
+    expect(batch(['bad'])).toBe(false);
+    expect(batch(ids(2), { points: 99 })).toBe(false);
   });
 
   it('allows only the documented terminal transitions', () => {
