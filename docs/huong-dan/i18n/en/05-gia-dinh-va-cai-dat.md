@@ -4,7 +4,7 @@
 
 <!--op-->## In this guide
 
-[Child profiles](#ho-so) · [Pair a child's device](#ghep-thiet-bi) · [Manage devices](#thiet-bi) · [Invite a caregiver](#nguoi-cham-soc) · [Settings groups](#cai-dat) · [Account and sync](#tai-khoan) · [Privacy and notifications](#rieng-tu) · [Reminders](#nhac-viec) · [Appearance](#giao-dien) · [PIN](#pin) · [Take a break](#tam-nghi) · [Install the app](#pwa) · [Family data](#du-lieu) · [Related](#lien-quan)<!--/op-->
+[Child profiles](#ho-so) · [Pair a child's device](#ghep-thiet-bi) · [Manage devices](#thiet-bi) · [Invite a caregiver](#nguoi-cham-soc) · [Settings groups](#cai-dat) · [Account and sync](#tai-khoan) · [Privacy and notifications](#rieng-tu) · [Reminders](#nhac-viec) · [Appearance](#giao-dien) · [PIN](#pin) · [Take a break](#tam-nghi) · [Install the app](#pwa) · [Family data](#du-lieu) · [Offers and referrals](#uu-dai) · [Related](#lien-quan)<!--/op-->
 
 The **Family** area has two sections: `Family → Child profiles` and `Family → Settings`.
 
@@ -68,11 +68,13 @@ For grandparents or relatives who want to follow progress but **cannot change an
 | Group | Contents |
 |---|---|
 | **Devices & family rhythm** | Children's devices, app installation, caregivers, [family break](#tam-nghi) |
-| **Account & sync** | Customer information, gift codes, referral codes, Refer a friend, family data |
+| **Account & sync** | Customer information, gift codes, family data |
 | **Privacy & notifications** | Public leaderboard, anonymous measurement, reminders |
 | **Appearance** | Light, dark, device settings |
 | **Protect the parent area** | PIN |
+| **Offers & referrals** | Referral code field, Refer a friend card (at the bottom of the page, shown only when signed in) |
 
+The address bar remembers the open section (for example `?section=settings#settings-security`): reloading keeps you on the same section, and the browser's Back button returns to the previous one. The link only picks a section inside the parent area and unlocks nothing: in child mode, the `section` part is ignored.
 At the bottom of the page, you will find "Open user guide" (the `/docs` page in the app; see [find help in the app](01-bat-dau.md#tro-giup)) and links to Privacy, Terms, and Contact support ([11](11-website-va-trang-cong-khai.md)).
 
 <a id="tai-khoan"></a>
@@ -81,7 +83,6 @@ At the bottom of the page, you will find "Open user guide" (the `/docs` page in 
 - **Status**: "Family account", verified, "Cloud ready". Family data syncs automatically across phones, tablets, and computers, with no technical setup required.
 - **Customer information**: full name, phone number (9 to 15 digits), email (read-only), and the option to receive guides and offers. Used to support your account and payments.
 - **Coupon code**: enter a gift code to add extra days to your access ([7](07-goi-va-thanh-toan.md#coupon)).
-- **Referral code**: the "Have a referral code from a friend?" field (shown only while the family is eligible) and the **Refer a friend** card for getting a link, tracking commissions, and withdrawing money ([8](08-gioi-thieu-ban-be.md)).
 
 <a id="rieng-tu"></a>
 ## Privacy and notifications
@@ -136,6 +137,14 @@ The "Install KidHabit Hero" card lets you open the app quickly like an app while
 ## Family data
 
 The "Family data" card lets you **download a JSON copy** containing child profiles, habits, completion history, rewards, groups, journals, signals, and records of how the child worked. The file **does not contain the PIN or payment information**, but it contains your child's data, so keep it private. "Restore from JSON file" is only for data stored on this device (it replaces all local data); for Google accounts, data is stored on the family's server. Export a child's journal separately from [Statistics](03-hom-nay-va-duyet-viec.md#thong-ke). Permanent deletion: [9](09-bao-mat-va-rieng-tu.md#xoa-du-lieu).
+
+<a id="uu-dai"></a>
+## Offers and referrals
+
+The last group on `Settings`, shown only when signed in:
+
+- **Referral code**: the "Have a referral code from a friend?" field (shown only while the family is eligible).
+- **Refer a friend**: the card for getting a link, tracking commissions, and withdrawing money ([8](08-gioi-thieu-ban-be.md)).
 
 <a id="lien-quan"></a>
 ## Related

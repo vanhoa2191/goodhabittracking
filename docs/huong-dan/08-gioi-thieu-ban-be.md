@@ -21,7 +21,7 @@ Chương trình có hai phía, kết nối với nhau qua một **mã giới thi
 <a id="tham-gia"></a>
 ## Cho người giới thiệu: tham gia và chia sẻ
 
-1. Vào `Gia đình → Cài đặt → Tài khoản và đồng bộ`, thẻ **Giới thiệu bạn bè**. Đọc các quy tắc, tick đồng ý điều khoản và bấm **Tham gia chương trình**.
+1. Vào `Gia đình → Cài đặt → Ưu đãi và giới thiệu`, thẻ **Giới thiệu bạn bè**. Đọc các quy tắc, tick đồng ý điều khoản và bấm **Tham gia chương trình**.
 2. Sao chép hoặc **Chia sẻ** "Liên kết giới thiệu của bạn". Mã giới thiệu có thể được gửi dưới dạng liên kết hoặc nói miệng để bạn bè nhập tay.
 3. Theo dõi các số: gia đình đã đăng ký, gia đình đã trả tiền, tiền **đang giữ**, **có thể rút**, **đã yêu cầu rút**, **đã chuyển**, và danh sách hoa hồng gần đây với trạng thái Đang giữ, Có thể rút, Đã yêu cầu rút, Đã chuyển, Đã thu hồi.
 

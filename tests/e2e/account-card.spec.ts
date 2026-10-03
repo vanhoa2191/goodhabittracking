@@ -60,3 +60,17 @@ test('redeeming needs a code, and a failed request reports instead of staying si
   await redeem.click();
   await expect(card.getByRole('alert')).toBeVisible();
 });
+
+test('referral and affiliate cards sit in their own offers group after the PIN group', async ({ page, baseURL }) => {
+  await installCloudFamilyFixture(page, baseURL);
+  await page.route('**/api/account/profile', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ profile: completeProfile }) }));
+
+  await openAccountSection(page);
+  const nav = page.getByRole('navigation', { name: 'Nhóm cài đặt' });
+  await expect(nav.getByRole('link', { name: 'Ưu đãi & giới thiệu' })).toHaveAttribute('href', '#settings-offers');
+  const order = await page.evaluate(() => {
+    const top = (id: string) => document.getElementById(id)?.getBoundingClientRect().top ?? Number.NaN;
+    return { security: top('settings-security'), offers: top('settings-offers') };
+  });
+  expect(order.offers).toBeGreaterThan(order.security);
+});

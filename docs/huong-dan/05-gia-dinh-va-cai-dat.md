@@ -4,7 +4,7 @@
 
 <!--op-->## Trong tài liệu này
 
-[Hồ sơ các con](#ho-so) · [Ghép thiết bị cho bé](#ghep-thiet-bi) · [Quản lý thiết bị](#thiet-bi) · [Mời người chăm sóc](#nguoi-cham-soc) · [Cài đặt: các nhóm](#cai-dat) · [Tài khoản và đồng bộ](#tai-khoan) · [Riêng tư và thông báo](#rieng-tu) · [Nhắc việc](#nhac-viec) · [Giao diện](#giao-dien) · [Mã PIN](#pin) · [Tạm nghỉ](#tam-nghi) · [Cài ứng dụng](#pwa) · [Dữ liệu gia đình](#du-lieu) · [Liên quan](#lien-quan)<!--/op-->
+[Hồ sơ các con](#ho-so) · [Ghép thiết bị cho bé](#ghep-thiet-bi) · [Quản lý thiết bị](#thiet-bi) · [Mời người chăm sóc](#nguoi-cham-soc) · [Cài đặt: các nhóm](#cai-dat) · [Tài khoản và đồng bộ](#tai-khoan) · [Riêng tư và thông báo](#rieng-tu) · [Nhắc việc](#nhac-viec) · [Giao diện](#giao-dien) · [Mã PIN](#pin) · [Tạm nghỉ](#tam-nghi) · [Cài ứng dụng](#pwa) · [Dữ liệu gia đình](#du-lieu) · [Ưu đãi và giới thiệu](#uu-dai) · [Liên quan](#lien-quan)<!--/op-->
 
 Khu **Gia đình** có hai mục: `Gia đình → Hồ sơ các con` và `Gia đình → Cài đặt`.
 
@@ -68,11 +68,13 @@ Dành cho ông bà hoặc người thân muốn theo dõi tiến độ mà **kh�
 | Nhóm | Nội dung |
 |---|---|
 | **Thiết bị và nhịp gia đình** | Thiết bị của các bé, cài ứng dụng, người chăm sóc, [tạm nghỉ](#tam-nghi) |
-| **Tài khoản và đồng bộ** | Thông tin khách hàng, mã tặng, mã giới thiệu, Giới thiệu bạn bè, dữ liệu gia đình |
+| **Tài khoản và đồng bộ** | Thông tin khách hàng, mã tặng, dữ liệu gia đình |
 | **Riêng tư và thông báo** | Bảng xếp hạng công khai, đo lường ẩn danh, nhắc việc |
 | **Giao diện** | Sáng, tối, theo thiết bị |
 | **Bảo vệ khu vực phụ huynh** | Mã PIN |
+| **Ưu đãi và giới thiệu** | Ô nhập mã giới thiệu, thẻ Giới thiệu bạn bè (cuối trang, chỉ hiện khi đã đăng nhập) |
 
+Địa chỉ trang nhớ mục đang mở (ví dụ `?section=settings#settings-security`): tải lại trang vẫn ở đúng mục, nút Quay lại của trình duyệt về mục trước đó. Liên kết này chỉ chọn mục bên trong khu vực phụ huynh và không mở khóa gì: ở chế độ bé, phần `section` bị bỏ qua.
 Cuối trang có "Mở tài liệu hướng dẫn" (trang `/docs` trong ứng dụng; xem [tìm trợ giúp ngay trong ứng dụng](01-bat-dau.md#tro-giup)) và liên kết Quyền riêng tư, Điều khoản, Liên hệ hỗ trợ ([11](11-website-va-trang-cong-khai.md)).
 
 <a id="tai-khoan"></a>
@@ -81,7 +83,6 @@ Cuối trang có "Mở tài liệu hướng dẫn" (trang `/docs` trong ứng d�
 - **Trạng thái**: "Tài khoản gia đình", đã xác thực, "Đồng bộ đã sẵn sàng". Dữ liệu gia đình tự đồng bộ giữa điện thoại, máy tính bảng và máy tính, không cần thiết lập kỹ thuật.
 - **Thông tin khách hàng**: họ tên, số điện thoại (9 đến 15 chữ số), email (chỉ đọc), tùy chọn nhận hướng dẫn và ưu đãi. Dùng để hỗ trợ tài khoản và thanh toán.
 - **Mã coupon**: nhập mã tặng để cộng thêm ngày dùng ([7](07-goi-va-thanh-toan.md#coupon)).
-- **Mã giới thiệu**: ô "Có mã giới thiệu từ bạn bè?" (chỉ hiện khi gia đình còn đủ điều kiện) và thẻ **Giới thiệu bạn bè** để lấy liên kết, theo dõi hoa hồng và rút tiền ([8](08-gioi-thieu-ban-be.md)).
 
 <a id="rieng-tu"></a>
 ## Riêng tư và thông báo
@@ -136,6 +137,14 @@ Thẻ "Cài KidHabit Hero" cho mở nhanh như một ứng dụng và vẫn nh�
 ## Dữ liệu gia đình
 
 Thẻ "Dữ liệu gia đình" cho **tải về một bản sao JSON** gồm hồ sơ các bé, thói quen, lịch sử hoàn thành, phần thưởng, nhóm, nhật ký, tín hiệu và ghi nhận cách bé làm. Tệp **không chứa PIN và không chứa thông tin thanh toán**, nhưng chứa dữ liệu của bé nên hãy giữ riêng tư. "Khôi phục từ tệp JSON" chỉ dùng khi dữ liệu nằm trên chính thiết bị này (thay thế toàn bộ dữ liệu cục bộ); với tài khoản Google, dữ liệu đã lưu trên máy chủ của gia đình. Xuất nhật ký của bé riêng ở [Thống kê](03-hom-nay-va-duyet-viec.md#thong-ke). Xóa vĩnh viễn: [9](09-bao-mat-va-rieng-tu.md#xoa-du-lieu).
+
+<a id="uu-dai"></a>
+## Ưu đãi và giới thiệu
+
+Nhóm cuối trang `Cài đặt`, chỉ hiện khi đã đăng nhập:
+
+- **Mã giới thiệu**: ô "Có mã giới thiệu từ bạn bè?" (chỉ hiện khi gia đình còn đủ điều kiện).
+- **Giới thiệu bạn bè**: thẻ để lấy liên kết, theo dõi hoa hồng và rút tiền ([8](08-gioi-thieu-ban-be.md)).
 
 <a id="lien-quan"></a>
 ## Liên quan
