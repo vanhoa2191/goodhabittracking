@@ -21,6 +21,7 @@
     "test:a11y": "playwright test --grep @a11y",
     "check:performance": "node scripts/check-performance-budget.mjs",
     "check:secrets": "node scripts/check-secrets.mjs",
+    "check:audit": "node scripts/check-audit.mjs",
     "release:verify": "node scripts/verify-release-candidate.mjs",
     "verify:live-boundaries": "node scripts/verify-live-family-boundaries.mjs",
     "verify:live-lifecycle": "node scripts/verify-live-family-lifecycle.mjs",
@@ -34,7 +35,7 @@
     "preview:cloudflare": "node scripts/run-cloudflare.mjs preview",
     "deploy:cloudflare": "node scripts/run-cloudflare.mjs deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "ci": "npm run lint && npm run typecheck && npm run test && npm run verify:habit-framework && npm run verify:habit-framework-translation && npm run check:secrets && npm audit --audit-level=high && npm run build:cloudflare && npm run check:performance"
+    "ci": "npm run lint && npm run typecheck && npm run test && npm run verify:habit-framework && npm run verify:habit-framework-translation && npm run check:secrets && npm run check:audit && npm run build:cloudflare && npm run check:performance"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.20.7",
