@@ -26,7 +26,12 @@ test('caregiver enters a clearly read-only family view', async ({ page, baseURL 
   await expect(page.getByText('Bạn đang xem tiến độ với quyền chỉ đọc.')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Bé Cloud' })).toBeVisible();
   await expect(page.getByText('Thói quen buổi sáng')).toBeVisible();
+  await expect(page.getByRole('progressbar', { name: 'Hôm nay: 0 / 1 việc' })).toBeVisible();
+  await expect(page.getByRole('progressbar', { name: '7 ngày gần đây: 0 / 7' })).toBeVisible();
+  await expect(page.getByText('Từ trước đến nay: 0 lượt')).toBeVisible();
   await expect(page.getByRole('button', { name: /Tạo|Sửa|Xóa|Duyệt/ })).toHaveCount(0);
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(0);
   await page.screenshot({ path: testInfo.outputPath(`caregiver-${testInfo.project.name}.png`), fullPage: true });
 });
 

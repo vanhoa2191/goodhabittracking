@@ -56,3 +56,4 @@
 \ir migrations/202610020003_age_band_override.sql
 \ir migrations/202610020004_member_read_scope.sql
 \ir migrations/202610030001_caregiver_progress_projection.sql
+\ir migrations/202610030002_caregiver_daily_progress.sql

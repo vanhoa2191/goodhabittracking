@@ -59,7 +59,11 @@ describe('onboarding legal sentence', () => {
 describe('caregiver counted messages', () => {
   it.each(LANGUAGES)('puts the count and the name in %s', (language) => {
     const copy = getCaregiverCopy(language);
-    expect(copy.dashApproved(12)).toContain('12');
+    expect(copy.dashAllTime(12)).toContain('12');
+    expect(copy.dashToday(3, 5)).toMatch(/3\D+5/);
+    expect(copy.dashWeek(9, 21)).toMatch(/9\D+21/);
+    expect(copy.dashTodayNone.length).toBeGreaterThan(0);
+    expect(copy.dashWeekNone.length).toBeGreaterThan(0);
     expect(copy.dashHabitsOf('An')).toContain('An');
     expect(copy.panelExpires('1 Jan')).toContain('1 Jan');
   });
