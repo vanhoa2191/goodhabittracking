@@ -34,11 +34,11 @@
           if (fromCookie) return fromCookie;
         }
       }
-    } catch (error) { /* cookies unavailable */ }
+    } catch { /* cookies unavailable */ }
     try {
       var fromStorage = supported(localStorage.getItem(LANGUAGE_KEY));
       if (fromStorage) return fromStorage;
-    } catch (error) { /* storage unavailable */ }
+    } catch { /* storage unavailable */ }
     return null;
   }
 
@@ -64,7 +64,7 @@
     setText('offline-heading', text.heading);
     setText('offline-body', text.body);
     setText('offline-retry', text.retry);
-  } catch (error) { /* keep the Vietnamese text */ }
+  } catch { /* keep the Vietnamese text */ }
 
   var form = document.getElementById('offline-form');
   if (form) {
