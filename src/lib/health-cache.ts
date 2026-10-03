@@ -1,8 +1,8 @@
 const TTL_MS = 10_000;
-let last: { readonly key: string; readonly at: number; readonly value: boolean } | null = null;
+const answers = new Map<string, { readonly at: number; readonly value: boolean }>();
 
 export function resetHealthCacheForTests() {
-  last = null;
+  answers.clear();
 }
 
 /**
@@ -10,8 +10,9 @@ export function resetHealthCacheForTests() {
  * calls: the answer is reused for a few seconds inside the same worker.
  */
 export async function remember(key: string, probe: () => Promise<boolean>, now = Date.now()): Promise<boolean> {
-  if (last && last.key === key && now - last.at < TTL_MS) return last.value;
+  const last = answers.get(key);
+  if (last && now - last.at < TTL_MS) return last.value;
   const value = await probe();
-  last = { key, at: now, value };
+  answers.set(key, { at: now, value });
   return value;
 }

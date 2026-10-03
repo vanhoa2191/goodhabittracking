@@ -2,8 +2,21 @@ import { NextResponse } from 'next/server';
 import { inspectPayOSConfig } from '@/lib/billing/payos-config';
 import { remember } from '@/lib/health-cache';
 import { hasBearerSecret } from '@/lib/security/bearer-secret';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { EXPECTED_SCHEMA_VERSION } from '@/lib/schema-version';
 
 export const runtime = 'nodejs';
+
+async function probeSchemaVersion() {
+  try {
+    const { data, error } = await createAdminSupabaseClient().rpc('schema_version')
+      .abortSignal(AbortSignal.timeout(3_000));
+    return !error && typeof data === 'string' && /^\d+$/.test(data)
+      && BigInt(data) >= BigInt(EXPECTED_SCHEMA_VERSION);
+  } catch {
+    return false;
+  }
+}
 
 async function probeDatabase(url: string, serviceRoleKey: string) {
   try {
@@ -39,7 +52,10 @@ export async function GET(request: Request) {
   const billingReady = inspectPayOSConfig().ready;
   const pairingSecret = process.env.PAIRING_RATE_LIMIT_SECRET?.trim() ?? '';
   const pairingReady = pairingSecret.length >= 32;
-  const ready = databaseConnectionReady && billingReady && pairingReady;
+  const schemaVersionReady = databaseConnectionReady
+    ? await remember(`${databaseUrl}:schema-version:${EXPECTED_SCHEMA_VERSION}`, probeSchemaVersion)
+    : false;
+  const ready = databaseConnectionReady && billingReady && pairingReady && schemaVersionReady;
 
   return NextResponse.json(
     {
@@ -51,6 +67,7 @@ export async function GET(request: Request) {
           databaseConnection: databaseConnectionReady,
           billingConfig: billingReady,
           pairingConfig: pairingReady,
+          schemaVersion: schemaVersionReady,
         },
       }),
       // The deploy workflow builds with NEXT_PUBLIC_COMMIT_SHA, so this names the commit that is live.

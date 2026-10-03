@@ -52,6 +52,7 @@ const accounts = [
   { email: `rls-a-${runId}@example.invalid`, client: createBrowserClient(legacyAnon) },
   { email: `rls-b-${runId}@example.invalid`, client: createBrowserClient(legacyAnon) },
 ];
+const caregiver = { email: `rls-caregiver-${runId}@example.invalid`, client: createBrowserClient(legacyAnon) };
 const userIds = [];
 const familyIds = [];
 
@@ -118,6 +119,21 @@ try {
     subscription_ends_at: new Date(Date.now() + 86_400_000).toISOString(),
   }, { onConflict: 'family_id' })));
   assert(entitlementFixtures.every(({ error }) => !error), 'Synthetic entitlement fixture failed.');
+
+  const caregiverUser = await admin.auth.admin.createUser({
+    email: caregiver.email,
+    email_confirm: true,
+    user_metadata: { full_name: 'Automated caregiver verification' },
+  });
+  assert(!caregiverUser.error && caregiverUser.data.user, 'Synthetic caregiver creation failed.');
+  const caregiverId = caregiverUser.data.user.id;
+  userIds.push(caregiverId);
+  const caregiverSignIn = await signInSyntheticUser(caregiver.client, caregiver.email);
+  assert(!caregiverSignIn.error, 'Synthetic caregiver sign-in failed.');
+  const invite = await accounts[0].client.rpc('create_caregiver_invite', { ttl_hours: 1 });
+  assert(!invite.error && invite.data?.[0]?.token, 'Caregiver invitation failed.');
+  const accepted = await caregiver.client.rpc('accept_caregiver_invite', { raw_token: invite.data[0].token });
+  assert(!accepted.error && accepted.data === familyIds[0], 'Caregiver invitation acceptance failed.');
 
   const anonymousRead = await anonymous.from('families').select('id').limit(1);
   assert(
@@ -445,7 +461,47 @@ try {
   });
   assert(Boolean(membershipEscalation.error), 'Cross-family membership escalation succeeded.');
 
-  successMessage = 'Live family boundary verification passed: anonymous access denied, same-family access allowed, cross-family access denied, including habit programs.\n';
+  const progress = await caregiver.client.rpc('caregiver_progress_snapshot');
+  assert(!progress.error && progress.data?.familyId === familyIds[0] && progress.data.familyRole === 'caregiver', 'Caregiver progress scope failed.');
+  assert(progress.data.profiles.length === 1 && progress.data.profiles[0].id === childId, 'Caregiver child progress failed.');
+  assert(progress.data.activities.some((activity) => activity.id === programActivityId), 'Caregiver active habits are missing.');
+  assert(progress.data.completionCounts.find((count) => count.child_id === childId)?.count === 2, 'Caregiver completion aggregate failed.');
+  assert(Object.keys(progress.data).sort().join(',') === 'activities,completionCounts,familyId,familyRole,profiles', 'Caregiver progress contains extra domains.');
+  assert(progress.data.profiles.every((profile) => Object.keys(profile).sort().join(',') === 'avatar,id,name,theme_color'), 'Caregiver profiles contain private fields.');
+  assert(progress.data.activities.every((activity) => Object.keys(activity).sort().join(',') === 'child_id,description,id,title'), 'Caregiver habits contain private fields.');
+  assert(!JSON.stringify(progress.data).includes(familyIds[1]) && !JSON.stringify(progress.data).includes(secondChildId), 'Caregiver progress leaked family B.');
+
+  for (const table of [
+    'child_profiles', 'habit_activities', 'activity_logs', 'rewards', 'redemptions', 'child_badges',
+    'kudos', 'group_teams', 'group_members', 'parent_settings', 'user_subscriptions',
+    'payment_orders', 'child_journal_entries',
+  ]) {
+    const directRead = await caregiver.client.from(table).select('family_id');
+    assert(!directRead.error && directRead.data?.length === 0, `Caregiver direct ${table} read returned rows or failed.`);
+  }
+  const ownMembership = await caregiver.client.from('family_memberships').select('user_id,family_id,role');
+  assert(!ownMembership.error && ownMembership.data?.length === 1
+    && ownMembership.data[0].user_id === caregiverId && ownMembership.data[0].family_id === familyIds[0]
+    && ownMembership.data[0].role === 'caregiver', 'Caregiver membership scope failed.');
+  const otherMemberships = await caregiver.client.from('family_memberships').select('user_id').neq('user_id', caregiverId);
+  assert(!otherMemberships.error && otherMemberships.data?.length === 0, 'Caregiver read other memberships.');
+  const caregiverFamilies = await caregiver.client.from('families').select('id,name');
+  assert(!caregiverFamilies.error && caregiverFamilies.data?.length === 1
+    && caregiverFamilies.data[0].id === familyIds[0], 'Caregiver family-name scope failed.');
+  const caregiverInsert = await caregiver.client.from('rewards').insert({
+    family_id: familyIds[0], user_id: caregiverId, title: 'Unauthorized reward', cost_points: 10,
+  });
+  assert(Boolean(caregiverInsert.error), 'Caregiver direct write succeeded.');
+  const caregiverUpdate = await caregiver.client.from('child_profiles').update({ name: 'Unauthorized rename' }).eq('id', childId).select('id');
+  assert(Boolean(caregiverUpdate.error) || caregiverUpdate.data?.length === 0, 'Caregiver update succeeded.');
+  const caregiverDelete = await caregiver.client.from('rewards').delete().eq('id', rewardId).select('id');
+  assert(Boolean(caregiverDelete.error) || caregiverDelete.data?.length === 0, 'Caregiver delete succeeded.');
+  const caregiverCommand = await caregiver.client.rpc('adjust_child_points_command', {
+    ...adjustmentArguments, command_id: randomUUID(),
+  });
+  assert(Boolean(caregiverCommand.error), 'Caregiver manager command succeeded.');
+
+  successMessage = 'Live family boundary verification passed: anonymous access denied, same-family access allowed, cross-family access denied, caregiver aggregate-only progress and read-only boundaries enforced, including habit programs.\n';
 } finally {
   await cleanup();
 }

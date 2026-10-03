@@ -7,7 +7,7 @@
 ## Kiểm soát chính
 
 - Family tenancy và strict RLS; không có anonymous ownership bypass.
-- Vai trò trong gia đình: `owner`/`parent`/`guardian` quản lý và đọc mọi dữ liệu gia đình. `caregiver` chỉ đọc tiến độ: hồ sơ bé, thói quen, lượt hoàn thành, điểm, huy hiệu, quà và lượt đổi quà, lời khen, nhóm, trạng thái gói. Nhật ký, danh sách ước, ghi nhận mức hỗ trợ, kế hoạch tín hiệu, thư linh vật, nhiệm vụ bí mật, việc hoãn, thành phố mơ ước, cài đặt tạm dừng, đơn thanh toán, thiết bị và nhật ký ghép đôi chỉ người quản lý đọc được (RLS dùng `can_manage_family`); `caregiver` chỉ thấy consent do chính mình ghi. Mỗi tài khoản thuộc đúng một gia đình (unique index trên `family_memberships.user_id`).
+- Vai trò trong gia đình: `owner`/`parent`/`guardian` quản lý và đọc mọi dữ liệu gia đình. `caregiver` chỉ đọc tiến độ qua `caregiver_progress_snapshot`: tên bé (kèm mã hồ sơ, hình đại diện, màu giao diện), tiêu đề và mô tả thói quen đang hoạt động, tổng số lượt hoàn thành hoặc đã duyệt của từng bé. Hàm không trả từng lượt làm, ghi chú minh chứng, tuổi, biệt danh, mã người dùng, điểm, huy hiệu, quà, lượt đổi quà, lời khen, nhóm, mã mời, trạng thái gói hay cài đặt. RLS yêu cầu `can_manage_family` khi đọc trực tiếp các bảng dữ liệu gia đình; người chăm sóc chỉ đọc được tên gia đình và membership của chính mình, cùng consent do chính mình ghi. Mỗi tài khoản thuộc đúng một gia đình (unique index trên `family_memberships.user_id`).
 - Trình duyệt chỉ nhận các cột mà ứng dụng thực sự đọc: `family_snapshot` và các truy vấn dự phòng liệt kê cột tường minh (cùng danh sách với schema trong `src/lib/supabase/mappers.ts` và `src/lib/experience-state.ts`, có test đối chiếu), nên cột mới thêm vào bảng không tự lộ ra.
 - UUID canonical, foreign key cùng family và transaction row locks.
 - Mã ghép nối cố định theo từng bé, lưu dưới dạng digest; phụ huynh có thể chủ động làm mới mã, thu hồi từng thiết bị và hệ thống vẫn áp dụng rate limit: mỗi nguồn gọi 10 lần/10 phút (kiểm tra trước), và ngân sách chung 120 lần/phút chỉ tính các lần nhập mã tay. Quét QR (token 32 byte ngẫu nhiên) không bị ngân sách chung chặn, nên một nguồn spam không khóa được việc ghép đôi của gia đình khác.
@@ -18,7 +18,7 @@
 - Mọi API ghi bằng cookie từ chối yêu cầu khác nguồn gốc (`Origin`/`Sec-Fetch-Site`).
 - Vai trò `anon` chỉ gọi được các hàm nhận mã thiết bị của bé, đổi mã ghép đôi và bảng xếp hạng công khai; hàm thanh toán, hàng đợi email và ghép đôi chỉ dành cho service role. Hàm mới mặc định đóng.
 - CSP, deny framing, restrictive permissions policy và referrer policy.
-- `/api/health` công khai chỉ trả `status` và `version`; chi tiết từng thành phần (database, payOS, secret ghép đôi) chỉ hiện khi gửi `Authorization: Bearer $CRON_SECRET`.
+- `/api/health` công khai chỉ trả `status` và `version`; chi tiết từng thành phần (database, phiên bản schema, payOS, secret ghép đôi) chỉ hiện khi gửi `Authorization: Bearer $CRON_SECRET`. Chỉ báo `ready` khi database đã áp dụng ít nhất migration mới nhất của bản build; `schema_version` chỉ cho service role thực thi.
 - GitHub Actions ghim theo commit SHA; Dependabot (`.github/dependabot.yml`) cập nhật action và gói npm hằng tuần.
 
 ## Đồng thuận và vòng đời

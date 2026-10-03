@@ -1,6 +1,19 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { GET } from '@/app/api/health/route';
 import { resetHealthCacheForTests } from '@/lib/health-cache';
+import { EXPECTED_SCHEMA_VERSION } from '@/lib/schema-version';
+
+const { rpc, abortSignal } = vi.hoisted(() => ({ rpc: vi.fn(), abortSignal: vi.fn() }));
+vi.mock('@/lib/supabase/admin', () => ({
+  createAdminSupabaseClient: () => ({
+    rpc: (name: string) => ({
+      abortSignal: (signal: AbortSignal) => {
+        abortSignal(signal);
+        return rpc(name);
+      },
+    }),
+  }),
+}));
 
 const readyEnvironment = {
   NEXT_PUBLIC_SUPABASE_URL: 'https://project.supabase.co',
@@ -21,6 +34,7 @@ const anonymous = () => new Request('https://app.kidhabithero.com/api/health');
 describe('GET /api/health', () => {
   beforeEach(() => {
     resetHealthCacheForTests();
+    rpc.mockReset().mockResolvedValue({ data: EXPECTED_SCHEMA_VERSION, error: null });
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('{}', { status: 200 })));
   });
 
@@ -42,8 +56,41 @@ describe('GET /api/health', () => {
         databaseConfig: true,
         billingConfig: true,
         pairingConfig: true,
+        schemaVersion: true,
       },
     });
+  });
+
+  it.each([null, '202610020004', '9', 'invalid'])('fails readiness for missing or stale schema %s', async (data) => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    rpc.mockResolvedValue({ data, error: null });
+    const response = await GET(operations());
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toMatchObject({ status: 'degraded', checks: { schemaVersion: false } });
+    expect(rpc).toHaveBeenCalledWith('schema_version');
+  });
+
+  it('accepts a newer schema version', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    rpc.mockResolvedValue({ data: '202610040001', error: null });
+    expect((await GET(operations())).status).toBe(200);
+  });
+
+  it('bounds schema probes and fails readiness on a rejected request', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    rpc.mockRejectedValue(new Error('request timed out'));
+    const response = await GET(operations());
+    expect(response.status).toBe(503);
+    expect(abortSignal).toHaveBeenCalledWith(expect.any(AbortSignal));
+    await expect(response.json()).resolves.toMatchObject({ checks: { schemaVersion: false } });
+  });
+
+  it('fails readiness when the schema RPC is unavailable without exposing checks anonymously', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    rpc.mockResolvedValue({ data: null, error: { code: 'PGRST202' } });
+    const response = await GET(anonymous());
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual({ status: 'degraded', version: expect.any(String) });
   });
 
   it('shows anonymous callers only the overall status and the build', async () => {
@@ -114,6 +161,7 @@ describe('GET /api/health', () => {
     await GET(operations());
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(rpc).toHaveBeenCalledTimes(1);
   });
 
   it('asks the database again once the answer is stale', async () => {
@@ -130,5 +178,6 @@ describe('GET /api/health', () => {
       vi.useRealTimers();
     }
     expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(rpc).toHaveBeenCalledTimes(2);
   });
 });

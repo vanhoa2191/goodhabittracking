@@ -179,18 +179,18 @@ export default function Home() {
 
       {/* Global Modals */}
       <PricingModal
-        isOpen={isPricingModalOpen}
+        isOpen={familyRole !== 'caregiver' && isPricingModalOpen}
         onClose={() => setIsPricingModalOpen(false)}
       />
 
       <CheckoutModal
-        isOpen={isCheckoutModalOpen}
+        isOpen={familyRole !== 'caregiver' && isCheckoutModalOpen}
         onClose={closeCheckoutModal}
         plan={checkoutPlan}
       />
 
       <OnboardingModal
-        isOpen={isOnboardingOpen}
+        isOpen={familyRole !== 'caregiver' && isOnboardingOpen}
         onClose={closeOnboarding}
       />
 
@@ -198,7 +198,7 @@ export default function Home() {
         isOpen={isPortraitModalOpen}
         onClose={() => setIsPortraitModalOpen(false)}
       />
-      <CustomerProfilePrompt key={currentUserId ?? 'signed-out'} userId={currentUserId} suppressed={isOnboardingOpen} />
+      <CustomerProfilePrompt key={currentUserId ?? 'signed-out'} userId={currentUserId} suppressed={!isEntryReady || familyRole === 'caregiver' || isOnboardingOpen} />
     </div>
   );
 }

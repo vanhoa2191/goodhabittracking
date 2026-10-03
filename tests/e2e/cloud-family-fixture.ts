@@ -108,6 +108,22 @@ export async function installCloudFamilyFixture(
   await page.route('**/rest/v1/**', (route) => {
     const path = new URL(route.request().url()).pathname;
     if (path.endsWith('/rpc/family_snapshot')) return route.fulfill({ status: 404, contentType: 'application/json', body: JSON.stringify({ code: 'PGRST202', message: 'function not found' }) });
+    if (path.endsWith('/rpc/caregiver_progress_snapshot')) {
+      // The database answers only caregivers, with display fields and per-child counts.
+      const profiles = options.profiles ?? [defaultCloudProfile];
+      const projection = options.familyRole === 'caregiver' ? {
+        familyId: cloudFamilyIds.family,
+        familyRole: 'caregiver',
+        profiles: profiles.map((profile) => ({
+          id: profile.id, name: profile.name, avatar: profile.avatar, theme_color: profile.theme_color,
+        })),
+        activities: (options.activities ?? []).map((activity) => ({
+          id: activity.id, child_id: activity.child_id ?? null, title: activity.title, description: activity.description ?? null,
+        })),
+        completionCounts: profiles.map((profile) => ({ child_id: profile.id, count: 0 })),
+      } : null;
+      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(projection) });
+    }
     let payload: unknown = [];
     if (path.endsWith('/family_memberships')) payload = {
       family_id: cloudFamilyIds.family,

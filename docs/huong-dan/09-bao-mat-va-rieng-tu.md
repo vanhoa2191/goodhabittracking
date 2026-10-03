@@ -19,7 +19,7 @@ Trang này giải thích bằng lời thường điều KidHabit làm để gi�
 | Người | Thấy | Không thấy |
 |---|---|---|
 | Phụ huynh | Toàn bộ dữ liệu của gia đình mình | Dữ liệu gia đình khác |
-| Người chăm sóc | Tiến độ ở chế độ chỉ đọc | Không sửa được; không thấy thanh toán, cài đặt |
+| Người chăm sóc | Tên bé, thói quen đang hoạt động và tổng số lượt hoàn thành hoặc đã duyệt, ở chế độ chỉ đọc | Không sửa được; không thấy từng lượt làm, ghi chú, tuổi, biệt danh, phần thưởng, nhóm, gói đăng ký, thanh toán, cài đặt hay thành viên khác |
 | Bé (thiết bị đã ghép) | Dữ liệu của chính bé | Hồ sơ bé khác, thanh toán, cài đặt, mã PIN |
 | Người vận hành | Hồ sơ phụ huynh (tên, email, điện thoại), gói đăng ký, đơn hàng; mọi thao tác đều ghi nhật ký | Hồ sơ bé, nhiệm vụ, nhật ký của bé |
 
