@@ -6,7 +6,9 @@ import { useTranslation } from '@/lib/i18n/context';
 import { getCaregiverCopy } from '@/lib/i18n/caregiver-copy';
 
 export function CaregiverDashboard() {
-  const { activities, logs, profiles } = useAppStore();
+  const { caregiverProgress } = useAppStore();
+  const profiles = caregiverProgress?.profiles ?? [];
+  const activities = caregiverProgress?.activities ?? [];
   const { language } = useTranslation();
   const copy = getCaregiverCopy(language);
 
@@ -27,8 +29,8 @@ export function CaregiverDashboard() {
       ) : (
         <div className="grid gap-5 lg:grid-cols-2">
           {profiles.map((profile) => {
-            const profileActivities = activities.filter((activity) => activity.childId === null || activity.childId === profile.id);
-            const approved = logs.filter((log) => log.childId === profile.id && (log.status === 'completed' || log.status === 'approved')).length;
+            const profileActivities = activities.filter((activity) => activity.child_id === null || activity.child_id === profile.id);
+            const approved = caregiverProgress?.completionCounts.find((count) => count.child_id === profile.id)?.count ?? 0;
             return (
               <article key={profile.id} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-zinc-700 dark:bg-zinc-900">
                 <div className="flex items-center justify-between gap-4">

@@ -14,13 +14,15 @@ import type {
 } from '@/types';
 import { sounds } from '@/lib/sound';
 import { getSupabase, signInWithGoogle, signOutUser } from '@/lib/supabase';
-import { loadCloudFamilySnapshot } from './cloud-family-sync';
+import { loadCloudIdentitySnapshot } from './caregiver-progress';
+import type { CaregiverProgress } from './caregiver-progress';
 import type { FamilyRole } from './cloud-family-sync';
 import { startCloudIdentitySession } from './cloud-identity-session';
 import { LOCAL_STORAGE_PREFIX } from './local-family-persistence';
 import type { ExperienceState } from '@/lib/experience-state';
 
 type Setters = {
+  readonly setCaregiverProgress: Dispatch<SetStateAction<CaregiverProgress | null>>;
   readonly setActivities: Dispatch<SetStateAction<HabitActivity[]>>;
   readonly setChildBadges: Dispatch<SetStateAction<ChildBadge[]>>;
   readonly setCloudSyncActive: Dispatch<SetStateAction<boolean>>;
@@ -88,6 +90,7 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
     familyIdRef.current = familyId;
   }, [familyId]);
   const {
+    setCaregiverProgress,
     setActivities,
     setChildBadges,
     setCloudSyncActive,
@@ -113,8 +116,19 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
       return false;
     }
     try {
-      const snapshot = await loadCloudFamilySnapshot(user.id);
+      const result = await loadCloudIdentitySnapshot(user.id);
       if (!shouldApplyCloudSnapshot(user.id, currentUserRef.current?.id ?? null)) return false;
+      if (result.familyRole === 'caregiver') {
+        resetFamilyScope();
+        setFamilyId(result.progress.familyId);
+        setFamilyRole('caregiver');
+        setCaregiverProgress(result.progress);
+        setCloudSyncActive(true);
+        setLastSyncTime(new Date().toLocaleTimeString());
+        return true;
+      }
+      const snapshot = result.snapshot;
+      setCaregiverProgress(null);
       if (familyIdRef.current && familyIdRef.current !== snapshot.familyId) resetFamilyScope();
       setFamilyId(snapshot.familyId);
       setFamilyRole(snapshot.familyRole);
@@ -135,12 +149,16 @@ export function useCloudFamilyIdentity(dependencies: Dependencies) {
       setLastSyncTime(new Date().toLocaleTimeString());
       return true;
     } catch (error: unknown) {
-      setCloudSyncActive(false);
+      if (shouldApplyCloudSnapshot(user.id, currentUserRef.current?.id ?? null)) {
+        setCaregiverProgress(null);
+        setCloudSyncActive(false);
+      }
       console.error('Supabase sync failed:', error);
       return false;
     }
   }, [
     resetFamilyScope,
+    setCaregiverProgress,
     setActivities,
     setChildBadges,
     setCloudSyncActive,

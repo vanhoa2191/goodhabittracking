@@ -57,6 +57,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
     activeChild,
     cloudSyncActive,
     currentUser,
+    familyRole,
     loginWithGoogle,
     logout,
     isPro,
@@ -73,6 +74,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
   } = useAppStore();
 
   const isAuthenticated = Boolean(currentUser || isFamilyConnected);
+  const isCaregiver = familyRole === 'caregiver';
   const hasDashboardAccess = isAuthenticated || hasAppSession;
 
   const { language, setLanguage, t } = useTranslation();
@@ -392,7 +394,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
             )}
 
             {/* Pro Subscription Badge / Upgrade Button */}
-            {mode === 'parent' && <button
+            {!isCaregiver && mode === 'parent' && <button
               type="button"
               onClick={openPricingModal}
               className={`max-[429px]:hidden min-h-[38px] sm:min-h-[40px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-black transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
@@ -427,7 +429,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
             </button>}
 
             {/* Mode Switcher (Parent Mode) - Only when logged in */}
-            {hasDashboardAccess && (!currentUser || mode === 'kid') && (
+            {!isCaregiver && hasDashboardAccess && (!currentUser || mode === 'kid') && (
               <button
                 onClick={handleParentModeClick}
                 aria-label={mode === 'parent' ? copy.backToChild : undefined}
@@ -602,7 +604,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
 
                     <ThemeSelector />
 
-                    {mode === 'parent' && (
+                    {!isCaregiver && mode === 'parent' && (
                       <button
                         type="button"
                         onClick={openPricingModal}
@@ -673,7 +675,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                         <span>{copy.portraitGuide}</span>
                       </button>
 
-                      {isAuthenticated && (
+                      {!isCaregiver && isAuthenticated && (
                         <button
                           onClick={() => {
                             openOnboarding();

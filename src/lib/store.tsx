@@ -72,6 +72,7 @@ import { buildLeaderboard } from './store/leaderboard';
 import { localDayKey } from '@/lib/habit-fire';
 import { exportFamilyData, importFamilyData } from './store/family-backup-actions';
 import { buildSubscriptionDetails, checkIsPro } from './store/subscription';
+import type { CaregiverProgress } from './store/caregiver-progress';
 import { adjustProfilePoints } from './store/local-domain-actions';
 import { requestDomainCommand } from './store/domain-command-client';
 import { getMascot } from './mascots';
@@ -210,6 +211,7 @@ interface AppStoreContextType {
   // Family Device Pairing Code (Per-Child)
   familyId: string | null;
   familyRole: FamilyRole | null;
+  caregiverProgress: CaregiverProgress | null;
   childCodes: Record<string, string>; // childId -> code
   isFamilyConnected: boolean;
   isConnectModalOpen: boolean;
@@ -308,6 +310,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   // Family Device Pairing Code (Per-Child)
   const [familyId, setFamilyId] = useState<string | null>(null);
   const [familyRole, setFamilyRole] = useState<FamilyRole | null>(null);
+  const [caregiverProgress, setCaregiverProgress] = useState<CaregiverProgress | null>(null);
   const [childCodes, setChildCodes] = useState<Record<string, string>>({});
   const [isFamilyConnected, setIsFamilyConnected] = useState(false);
   const [pairedFamilyPausedAt, setPairedFamilyPausedAt] = useState<string | null>(null);
@@ -384,6 +387,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     setParentProfile(null);
     setFamilyId(null);
     setFamilyRole(null);
+    setCaregiverProgress(null);
     setChildCodes({});
     setIsFamilyConnected(false);
     setPairedFamilyPausedAt(null);
@@ -415,6 +419,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     familyId,
     resetFamilyScope,
     setters: {
+      setCaregiverProgress,
       setActivities,
       setChildBadges,
       setCloudSyncActive,
@@ -1341,6 +1346,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         // Family Device Pairing Code
         familyId,
         familyRole,
+        caregiverProgress,
         childCodes,
         isFamilyConnected,
         isConnectModalOpen,
