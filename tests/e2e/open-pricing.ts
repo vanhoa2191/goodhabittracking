@@ -5,5 +5,6 @@ export async function getVisiblePricingOpener(page: Page): Promise<Locator> {
   if (await badge.isVisible()) return badge;
 
   await page.getByTestId('more-menu').click();
+  await page.getByTestId('more-menu-more').click();
   return page.getByRole('button', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
 }
