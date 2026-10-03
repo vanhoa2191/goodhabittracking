@@ -64,6 +64,8 @@ import { ReadAloudButton } from './ReadAloudButton';
 import { AgeThemeNotice } from './AgeThemeNotice';
 import { useAgeTheme } from './useAgeTheme';
 import { getAgeThemeCopy } from '@/lib/i18n/age-theme-copy';
+import { getKidHistoryCopy } from '@/lib/i18n/kid-history-copy';
+import { canStepKidDay, clampKidDay, isEditableDay, parseDayKey, shiftDayKey } from '@/lib/kid-day-window';
 
 export function KidDashboard() {
   const {
@@ -87,10 +89,12 @@ export function KidDashboard() {
   const { t, language } = useTranslation();
   const copy = getKidDashboardCopy(language);
   const questCopy = getKidQuestCopy(language);
+  const historyCopy = getKidHistoryCopy(language);
 
   const [failureCode, setFailureCode] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'tasks' | 'leaderboard' | 'rewards' | 'badges'>('tasks');
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  // null follows today, so a screen left open past midnight moves on to the new day by itself.
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedTimerActivity, setSelectedTimerActivity] = useState<HabitActivity | null>(null);
   const [wishlistError, setWishlistError] = useState(false);
   const [savingWishlistId, setSavingWishlistId] = useState<string | null>(null);
@@ -125,7 +129,7 @@ export function KidDashboard() {
   const badgeAwards = useBadgeAwards({ child: activeChild ?? null, badges, logs, activities, childBadges });
 
   const completeTask = async (activity: HabitActivity, date: string, isCompleting: boolean) => {
-    if (savingTaskId === activity.id) return;
+    if (savingTaskId === activity.id || !isEditableDay(date, localDayKey(new Date()))) return;
     setCompletionError(null);
     setSavingTaskId(activity.id);
     // The reward and the praise show on the tap and are taken back if the server then refuses the tick; the
@@ -163,7 +167,7 @@ export function KidDashboard() {
   };
 
   const changeTaskDeferral = async (activity: HabitActivity, date: string, deferred: boolean) => {
-    if (savingTaskId === activity.id) return;
+    if (savingTaskId === activity.id || !isEditableDay(date, localDayKey(new Date()))) return;
     setCompletionError(null);
     setSavingTaskId(activity.id);
     const saved = await setTaskDeferred(activity.id, date, deferred);
@@ -174,7 +178,7 @@ export function KidDashboard() {
   if (!activeChild) {
     return (
       <div className="text-center py-20 text-slate-500">
-        <p>{t.noTasksToday}</p>
+        <p>{historyCopy.noChild}</p>
       </div>
     );
   }
@@ -184,55 +188,61 @@ export function KidDashboard() {
   const fireCopy = getHabitFireCopy(language);
   const fireLabel = fire.kind === 'cold' ? fireCopy.cold : fireCopy[fire.kind](fire.days);
 
-  // Date formatting helpers
-  const dateStr = localDayKey(selectedDate);
+  // The hero and the bottom bar always speak about today; the day being looked at has its own block.
   const todayStr = localDayKey(new Date());
+  const dateStr = selectedDay ? clampKidDay(selectedDay, todayStr) : todayStr;
   const isToday = dateStr === todayStr;
+  const canEdit = isEditableDay(dateStr, todayStr);
+  const canGoBack = canStepKidDay(dateStr, todayStr, -1);
+  const canGoForward = canStepKidDay(dateStr, todayStr, 1);
 
+  const showDay = (dayKey: string) => {
+    setSelectedDay(dayKey === todayStr ? null : dayKey);
+    setPraise(null);
+    setPointBurstId(null);
+    setCompletionStatusId(null);
+    setCompletionError(null);
+    setFailureCode(null);
+  };
   const handlePrevDay = () => {
-    const prev = new Date(selectedDate);
-    prev.setDate(prev.getDate() - 1);
-    setSelectedDate(prev);
+    if (canGoBack) showDay(shiftDayKey(dateStr, -1));
   };
-
   const handleNextDay = () => {
-    const next = new Date(selectedDate);
-    next.setDate(next.getDate() + 1);
-    setSelectedDate(next);
+    if (canGoForward) showDay(shiftDayKey(dateStr, 1));
   };
 
-  // Filter activities for active child & day
-  const dueActivities = activities.filter((act) => {
-    if (!act.isActive) return false;
-    if (act.childId !== null && act.childId !== activeChild.id) return false;
-    return isActivityDueOn(act, dateStr);
-  }).map((activity) => localizeAgeAdaptedHabit(localizeDemoActivity(activity, language), language));
+  const dayOverview = (dayKey: string) => {
+    const dueActivities = activities.filter((act) => {
+      if (!act.isActive) return false;
+      if (act.childId !== null && act.childId !== activeChild.id) return false;
+      return isActivityDueOn(act, dayKey);
+    }).map((activity) => localizeAgeAdaptedHabit(localizeDemoActivity(activity, language), language));
 
-  // Calculate completion
-  const childLogsForDate = logs.filter(
-    (l) => l.childId === activeChild.id && l.date === dateStr
-  );
-
-  const completedActivityIds = new Set(
-    childLogsForDate
-      .filter((l) => l.status === 'completed' || l.status === 'approved')
-      .map((l) => l.activityId)
-  );
-
-  const pendingApprovalIds = new Set(
-    childLogsForDate
-      .filter((l) => l.status === 'pending_approval')
-      .map((l) => l.activityId)
-  );
-  const deferredActivityIds = new Set(
-    experience.deferredTasks
-      .filter((row) => row.child_id === activeChild.id && row.local_date === dateStr)
-      .map((row) => row.activity_id),
-  );
-
-  const completedCount = dueActivities.filter((a) => completedActivityIds.has(a.id)).length;
-  const totalDue = dueActivities.length;
-  const progressPercent = totalDue > 0 ? Math.round((completedCount / totalDue) * 100) : 100;
+    const childLogsForDate = logs.filter((l) => l.childId === activeChild.id && l.date === dayKey);
+    const completedActivityIds = new Set(
+      childLogsForDate
+        .filter((l) => l.status === 'completed' || l.status === 'approved')
+        .map((l) => l.activityId)
+    );
+    const pendingApprovalIds = new Set(
+      childLogsForDate
+        .filter((l) => l.status === 'pending_approval')
+        .map((l) => l.activityId)
+    );
+    const deferredActivityIds = new Set(
+      experience.deferredTasks
+        .filter((row) => row.child_id === activeChild.id && row.local_date === dayKey)
+        .map((row) => row.activity_id),
+    );
+    const completedCount = dueActivities.filter((a) => completedActivityIds.has(a.id)).length;
+    const totalDue = dueActivities.length;
+    const progressPercent = totalDue > 0 ? Math.round((completedCount / totalDue) * 100) : 0;
+    return { dueActivities, completedActivityIds, pendingApprovalIds, deferredActivityIds, completedCount, totalDue, progressPercent };
+  };
+  const today = dayOverview(todayStr);
+  const viewed = isToday ? today : dayOverview(dateStr);
+  const { dueActivities, completedActivityIds, pendingApprovalIds, deferredActivityIds } = viewed;
+  const { completedCount, totalDue, progressPercent } = today;
 
   const bottomTabs: { id: 'tasks' | 'leaderboard' | 'rewards' | 'badges'; Icon: typeof CheckCheck; label: string; tone: string }[] = [
     { id: 'tasks', Icon: CheckCheck, label: t.tasks, tone: 'text-indigo-600 dark:text-indigo-400' },
@@ -409,15 +419,15 @@ export function KidDashboard() {
               <span className="truncate">{t.todayProgress}</span>
             </span>
             <span className="shrink-0 whitespace-nowrap">
-              {completedCount}/{totalDue} {t.completedTasks} ({progressPercent}%)
+              {totalDue > 0 ? `${completedCount}/${totalDue} ${t.completedTasks} (${progressPercent}%)` : historyCopy.noTasksToday}
             </span>
           </div>
-          <div className="h-2.5 w-full bg-black/20 rounded-full overflow-hidden p-0.5 backdrop-blur-sm">
+          {totalDue > 0 && <div className="h-2.5 w-full bg-black/20 rounded-full overflow-hidden p-0.5 backdrop-blur-sm">
             <div
               className="h-full bg-gradient-to-r from-amber-300 to-emerald-400 rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progressPercent}%` }}
             />
-          </div>
+          </div>}
           {progressPercent === 100 && totalDue > 0 && (
             <div className="mt-1.5 text-xs text-amber-200 font-bold text-center animate-bounce">
               🎉 {t.congratsAllDone}
@@ -498,31 +508,52 @@ export function KidDashboard() {
       {visibleTab === 'tasks' && (
         <div className="space-y-6">
           {/* Day Selector */}
-          <div className="flex items-center justify-between bg-white dark:bg-zinc-900 rounded-2xl p-2.5 shadow-xs border border-slate-100 dark:border-zinc-800">
-            <button
-              onClick={handlePrevDay}
-              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-              aria-label={copy.previousDay}
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <div className="text-center">
-              <span className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 block">
-                {isToday ? `${t.today} - ` : ''}
-                {new Intl.DateTimeFormat(language, {
-                  weekday: 'short',
-                  day: 'numeric',
-                  month: 'numeric',
-                }).format(selectedDate)}
-              </span>
+          <div className="bg-white dark:bg-zinc-900 rounded-2xl p-2.5 shadow-xs border border-slate-100 dark:border-zinc-800">
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                onClick={handlePrevDay}
+                disabled={!canGoBack}
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:active:scale-100"
+                aria-label={copy.previousDay}
+              >
+                <ChevronLeft aria-hidden="true" className="w-5 h-5" />
+              </button>
+              <div className="text-center">
+                <span data-testid="kid-day-label" className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 block">
+                  {isToday ? `${t.today} - ` : ''}
+                  {new Intl.DateTimeFormat(language, {
+                    weekday: 'short',
+                    day: 'numeric',
+                    month: 'numeric',
+                  }).format(parseDayKey(dateStr))}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={handleNextDay}
+                disabled={!canGoForward}
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent disabled:active:scale-100"
+                aria-label={copy.nextDay}
+              >
+                <ChevronRight aria-hidden="true" className="w-5 h-5" />
+              </button>
             </div>
-            <button
-              onClick={handleNextDay}
-              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-all cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-              aria-label={copy.nextDay}
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+            {!isToday && (
+              <div data-testid="kid-history-note" className="mt-2 space-y-2 border-t border-slate-100 px-1 pt-2.5 dark:border-zinc-800">
+                <p role="status" className="text-sm font-semibold text-slate-700 dark:text-slate-200">{historyCopy.historyNote}</p>
+                {viewed.totalDue > 0 ? (
+                  <>
+                    <p className="text-sm font-bold text-slate-600 dark:text-slate-300">{historyCopy.dayProgress(viewed.completedCount, viewed.totalDue)}</p>
+                    <div aria-hidden="true" className="h-1.5 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-zinc-700">
+                      <div className="h-full rounded-full bg-emerald-500" style={{ width: `${viewed.progressPercent}%` }} />
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-sm font-bold text-slate-600 dark:text-slate-300">{historyCopy.noTasksThatDay}</p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Special Banner for Age 0-3 (Thân Giáo Ba Mẹ) */}
@@ -577,7 +608,7 @@ export function KidDashboard() {
           {dueActivities.length === 0 ? (
             <div className="text-center py-16 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-slate-200 dark:border-zinc-800">
               <span className="text-4xl mb-3 block">🎈</span>
-              <p className="font-semibold text-slate-600 dark:text-slate-300">{t.noTasksToday}</p>
+              <p className="font-semibold text-slate-600 dark:text-slate-300">{isToday ? historyCopy.noTasksToday : historyCopy.noTasksThatDay}</p>
             </div>
           ) : (
             taskSections.map((sec) => {
@@ -604,16 +635,7 @@ export function KidDashboard() {
                       const isDeferred = deferredActivityIds.has(act.id) && !isDone && !isPending;
                       const isSaving = savingTaskId === act.id;
 
-                      return (
-                        <QuestSwipeSurface
-                          key={act.id}
-                          completeLabel={t.tickDone}
-                          deferLabel={questCopy.defer}
-                          canComplete={!isDone && !isPending && !isSaving}
-                          canDefer={!isDeferred && !isDone && !isPending && !isSaving}
-                          onComplete={() => { void completeTask(act, dateStr, true); }}
-                          onDefer={() => { void changeTaskDeferral(act, dateStr, true); }}
-                        >
+                      const card = (
                         <div
                           data-task-card
                           data-activity-id={act.id}
@@ -662,7 +684,7 @@ export function KidDashboard() {
                                   </span>
 
                                   {/* Timer button if configured */}
-                                  {act.durationMinutes != null && act.durationMinutes > 0 && (
+                                  {canEdit && act.durationMinutes != null && act.durationMinutes > 0 && (
                                     <button
                                       type="button"
                                       onClick={(event) => {
@@ -688,7 +710,28 @@ export function KidDashboard() {
                             </div>
 
                             {/* Action Checkbox Button with Claymorphic Feel & Haptic Feedback */}
-                            <button
+                            {!canEdit ? (
+                              <span
+                                role="img"
+                                aria-label={`${act.title}: ${isDone ? historyCopy.statusDone : isPending ? historyCopy.statusPending : historyCopy.statusNotDone}`}
+                                data-task-status={isDone ? 'done' : isPending ? 'pending' : 'open'}
+                                className={`shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center border-2 ${
+                                  isDone
+                                    ? 'bg-emerald-500 border-emerald-600 text-white'
+                                    : isPending
+                                    ? 'bg-amber-400 border-amber-500 text-white'
+                                    : 'bg-slate-50 dark:bg-zinc-800/90 border-slate-200 dark:border-zinc-700 text-slate-400'
+                                }`}
+                              >
+                                {isDone ? (
+                                  <CheckCircle aria-hidden="true" className="w-6 h-6 fill-current" />
+                                ) : isPending ? (
+                                  <Hourglass aria-hidden="true" className="w-5 h-5" />
+                                ) : (
+                                  <Circle aria-hidden="true" className="w-6 h-6 stroke-[2.5]" />
+                                )}
+                              </span>
+                            ) : <button
                               type="button"
                               disabled={isSaving || isPending}
                               onClick={(event) => {
@@ -729,10 +772,10 @@ export function KidDashboard() {
                               ) : (
                                 <Circle aria-hidden="true" className="w-6 h-6 stroke-[2.5]" />
                               )}
-                            </button>
+                            </button>}
                             {pointBurstId === act.id && <span data-testid="point-burst" className="pointer-events-none absolute right-3 top-0 -translate-y-1/2 rounded-full bg-amber-400 px-2 py-1 text-xs font-black text-slate-900 animate-burst-pop">+{act.points} ⭐</span>}
                           </div>
-                          {!isDone && !isPending && (
+                          {canEdit && !isDone && !isPending && (
                             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3 dark:border-zinc-700/70">
                               <span data-testid="swipe-hint" className="touch-swipe-hint text-sm text-slate-600 dark:text-slate-300">{questCopy.swipeHint}</span>
                               <button
@@ -759,8 +802,22 @@ export function KidDashboard() {
                           )}
                           {completionError === act.id && <p role="alert" className="mt-3 text-sm font-bold text-rose-600">{questCopy.saveError}{failureCode ? <span className="ml-2 text-xs font-semibold text-rose-400">({failureCode})</span> : null}</p>}
                         </div>
-                        </QuestSwipeSurface>
                       );
+
+                      // Only today can be changed; an earlier day shows its cards without swipe, tick or put-off.
+                      return canEdit ? (
+                        <QuestSwipeSurface
+                          key={act.id}
+                          completeLabel={t.tickDone}
+                          deferLabel={questCopy.defer}
+                          canComplete={!isDone && !isPending && !isSaving}
+                          canDefer={!isDeferred && !isDone && !isPending && !isSaving}
+                          onComplete={() => { void completeTask(act, dateStr, true); }}
+                          onDefer={() => { void changeTaskDeferral(act, dateStr, true); }}
+                        >
+                          {card}
+                        </QuestSwipeSurface>
+                      ) : <React.Fragment key={act.id}>{card}</React.Fragment>;
                     })}
                   </div>
                 </div>
@@ -1024,7 +1081,7 @@ export function KidDashboard() {
         isOpen={Boolean(selectedTimerActivity)}
         onClose={() => setSelectedTimerActivity(null)}
         onComplete={() => {
-          if (selectedTimerActivity) {
+          if (selectedTimerActivity && canEdit) {
             toggleActivity(selectedTimerActivity.id, dateStr);
           }
         }}

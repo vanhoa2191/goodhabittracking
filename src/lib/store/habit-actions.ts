@@ -69,6 +69,13 @@ const failedWith = (code: string): false => {
   return false;
 };
 
+const UNDO_ACCEPTED_STATUSES: ReadonlySet<string> = new Set(['undone', 'pending_approval', 'completed']);
+function undoRefusalCode(status: string): string {
+  if (status === 'not_reversible') return 'not-reversible';
+  if (status === 'not_found') return 'not-found';
+  return `status-${status.replace(/_/g, '-')}`;
+}
+
 export function createHabitActions(dependencies: Dependencies): HabitActions {
   const cloudUser = (): User | null => {
     const user = dependencies.cloud.currentUser;
@@ -196,6 +203,13 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
           if (commandStatus === 'points_already_spent') {
             restore();
             return failedWith('points-spent');
+          }
+          // An undo the server did not carry out leaves its log in place, so the card goes back to showing it.
+          // The family reload then brings whatever the server really holds.
+          if (existingLog && !UNDO_ACCEPTED_STATUSES.has(commandStatus)) {
+            restore();
+            reloadInBackground(user);
+            return failedWith(undoRefusalCode(commandStatus));
           }
           // Until the reload brings the real row, the new log carries the server's id so an immediate undo finds it.
           if (guess.kind !== 'undone' && result.logId) {

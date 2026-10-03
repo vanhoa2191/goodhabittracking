@@ -13,13 +13,10 @@ test('a child is congratulated automatically the moment a badge milestone is rea
   // Nothing is celebrated just for opening the app: progress that already exists is recorded silently.
   await expect(celebration).toHaveCount(0);
 
-  // A demo day holds six quests; walk back through earlier days until a milestone is crossed.
-  for (let day = 0; day < 4 && await celebration.count() === 0; day += 1) {
-    for (let attempts = 0; attempts < 8 && await celebration.count() === 0 && await openTasks.count() > 0; attempts += 1) {
-      await openTasks.first().click();
-      await page.waitForTimeout(150);
-    }
-    if (await celebration.count() === 0) await page.getByRole('button', { name: 'Previous day' }).click();
+  // Only today can be ticked, and a demo day holds six quests: tick them until a milestone is crossed.
+  for (let attempts = 0; attempts < 8 && await celebration.count() === 0 && await openTasks.count() > 0; attempts += 1) {
+    await openTasks.first().click();
+    await page.waitForTimeout(150);
   }
   await expect(celebration).toBeVisible();
   const title = await celebration.getByRole('heading').textContent();
