@@ -69,6 +69,8 @@ Chỉ phụ huynh trong gia đình mới bắt đầu dùng thử hoặc thanh t
 
 Ứng dụng có chín ngôn ngữ: Việt, Anh, Pháp, Đức, Ý, Tây Ban Nha, Trung, Nhật, Hàn. Ngôn ngữ ban đầu được chọn theo thứ tự: lựa chọn đã lưu của bạn, quốc gia (từ Cloudflare), ngôn ngữ trình duyệt, rồi tiếng Anh. Đổi bằng nút chọn ngôn ngữ trên thanh trên cùng; lựa chọn lưu lại để trang, tiêu đề và giao diện luôn cùng một ngôn ngữ.
 
+Trên màn hình hẹp, các nút ở thanh trên cùng gom vào **Menu tiện ích** (nút ⋮). Menu có nhóm **Tài khoản**, nhóm **Cài đặt nhanh** (ngôn ngữ, giao diện sáng hoặc tối, cỡ chữ, âm thanh) và liên kết **Tài liệu sử dụng**; các mục ít dùng hơn (Bảng giá, nhập mã ghép máy của bé, cẩm nang 16 chân dung, thiết lập gia đình, Trang chủ, trạng thái lưu trữ) nằm trong mục **Thêm**, đóng sẵn cho đến khi bạn mở.
+
 Một số nội dung chi tiết (lộ trình theo tuổi, màn hình Hôm nay) chưa dịch đủ chín thứ tiếng và sẽ hiện tiếng Anh ở ngôn ngữ chưa có bản dịch.
 
 <a id="tro-giup"></a>

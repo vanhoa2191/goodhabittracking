@@ -30,7 +30,8 @@ const ParentJourneysTab = dynamic(() => import('./ParentJourneysTab').then((modu
 import { ParentHabitsTab } from './ParentHabitsTab';
 // The children tab draws pairing QR codes in the browser only, so its code (and the PNG encoder behind it) stays out of the server worker.
 const ParentChildrenTab = dynamic(() => import('./ParentChildrenTab').then((module) => module.ParentChildrenTab), { ssr: false });
-import { ParentNavigation, type ParentSection } from './ParentNavigation';
+import { ParentNavigation } from './ParentNavigation';
+import { useParentSection } from '@/lib/use-parent-section';
 import { getParentPrimaryCopy } from '@/lib/i18n/parent-primary-copy';
 import { getKidDashboardCopy } from '@/lib/i18n/kid-dashboard-copy';
 import { getChromeCopy } from '@/lib/i18n/chrome-copy';
@@ -65,7 +66,7 @@ export function ParentDashboard() {
   const onboardingCopy = getOnboardingCopy(language);
   const profileCopy = getProfileMutationCopy(language);
 
-  const [activeTab, setActiveTab] = useState<ParentSection>('approvals');
+  const [activeTab, setActiveTab] = useParentSection();
 
   // Modal states
   const [isHabitModalOpen, setIsHabitModalOpen] = useState(false);

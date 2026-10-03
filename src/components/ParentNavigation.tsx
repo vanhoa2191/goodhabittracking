@@ -4,8 +4,8 @@ import type { KeyboardEvent, ReactNode } from 'react';
 import { BarChart3, Calendar, CheckCircle2, Compass, Gift, Settings, Users } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
 import { getParentNavigationCopy } from '@/lib/i18n/parent-navigation-copy';
+import type { ParentSection } from '@/lib/parent-section-url';
 
-export type ParentSection = 'approvals' | 'habits' | 'journeys' | 'rewards' | 'children' | 'analytics' | 'settings';
 type ParentArea = 'today' | 'design' | 'family';
 
 const SECTION_BY_AREA: Record<ParentArea, readonly ParentSection[]> = {

@@ -36,6 +36,7 @@ test('kid and parent modes use distinct readable shells', async ({ page }) => {
     await expect(proBadge).toBeVisible();
   } else {
     await page.getByTestId('more-menu').click();
+    await page.getByTestId('more-menu-more').click();
     await expect(page.getByRole('button', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' })).toBeVisible();
   }
 });

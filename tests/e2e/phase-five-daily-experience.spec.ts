@@ -74,6 +74,7 @@ test('parent settings expose task-oriented groups with stable deep links', async
   for (const label of ['Thiết bị & nhịp gia đình', 'Tài khoản', 'Riêng tư & thông báo', 'Giao diện', 'Bảo vệ bằng PIN']) {
     await expect(nav.getByRole('link', { name: label })).toBeVisible();
   }
+  await expect(nav.getByRole('link', { name: 'Ưu đãi & giới thiệu' })).toHaveCount(0);
   await nav.getByRole('link', { name: 'Bảo vệ bằng PIN' }).click();
   await expect(page).toHaveURL(/#settings-security$/);
   await expect(page.getByRole('heading', { name: 'Bảo vệ khu vực phụ huynh' })).toBeVisible();

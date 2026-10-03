@@ -69,6 +69,8 @@ Only parents in the family can start a trial or make payments. Sensitive actions
 
 The app supports nine languages: Vietnamese, English, French, German, Italian, Spanish, Chinese, Japanese, and Korean. The initial language is selected in this order: your saved choice, country (from Cloudflare), browser language, then English. Change it with the language selector in the top bar. Your choice is saved so the page, titles, and interface stay in the same language.
 
+On a narrow screen, the controls in the top bar move into the **Menu** (the ⋮ button). It has an **Account** group, a **Quick settings** group (language, light or dark appearance, text size, sound), and a **User guide** link. Less frequent items (pricing, entering a child's pairing code, the 16-strengths guide, family setup, Home, and the storage status) sit under **More**, which stays closed until you open it.
+
 Some detailed content, including age-based journeys and the Today screen, has not yet been translated into all nine languages and will appear in English when a translation is unavailable.
 
 <a id="tro-giup"></a>
