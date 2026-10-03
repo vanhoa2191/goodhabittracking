@@ -51,6 +51,8 @@ The top of the Approvals section has a **Needs you** strip that gathers everythi
 
 In the list of tasks waiting for approval, every row has a tick box. **Nothing is ticked for you**: choose tasks one by one, or tap **Select all** (up to 50 tasks at a time). The bar at the bottom says how many tasks of which child you have chosen, then **Approve N tasks** or **Reject N tasks**. The whole batch needs the [PIN](05-gia-dinh-va-cai-dat.md#pin) only once. A task that was already approved or rejected (for example by the other parent) is skipped and reported, so tapping twice never gives the stars twice.
 
+Once your child is comfortable with the first habits of a [habit set](04-thiet-ke-thoi-quen.md#chuong-trinh) (reminders easing off, or settled) and there is room under the age limit for new habits, the strip suggests **adding the next habit** of that set. Choose **Add the next step** to reopen the set’s three steps, or **Later** (hidden for 14 days). The app never adds anything by itself.
+
 If you installed the app to your home screen and turned on [reminders](#nhac-viec-ngan), the app icon shows **the number of tasks and rewards waiting** on devices that support icon badges (not every device does; it shows only a number, never a child’s name or a task). Pressing and holding the icon also offers the shortcuts **Approvals** and **User guide**. The web app has no home-screen widget of its own.
 
 <a id="muc-ho-tro"></a>

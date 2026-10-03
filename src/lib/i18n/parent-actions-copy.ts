@@ -18,6 +18,11 @@ export type ParentActionsCopy = {
   readonly reviewedSkipped: (count: number) => string;
   readonly reviewFailed: string;
   readonly limitNote: (limit: number) => string;
+  readonly nextStep: (child: string, habit: string, program: string) => string;
+  readonly addNextStep: string;
+  readonly later: string;
+  readonly nextStepStarted: string;
+  readonly nextStepUnconfirmed: string;
 };
 
 const vi: ParentActionsCopy = {
@@ -38,6 +43,11 @@ const vi: ParentActionsCopy = {
   reviewedSkipped: (count) => `${count} việc đã được xử lý trước đó nên được bỏ qua.`,
   reviewFailed: 'Chưa lưu được. Bạn thử lại nhé.',
   limitNote: (limit) => `Mỗi lần chọn tối đa ${limit} việc.`,
+  nextStep: (child, habit, program) => `${child} đã quen các thói quen đầu của bộ “${program}”. Có thể thêm “${habit}” khi ba mẹ thấy sẵn sàng.`,
+  addNextStep: 'Thêm bước tiếp theo',
+  later: 'Để sau',
+  nextStepStarted: 'Đã thêm bước tiếp theo.',
+  nextStepUnconfirmed: 'Chưa xác nhận được việc thêm. Kiểm tra mục Quản lý việc trước khi thử lại.',
 };
 
 const en: ParentActionsCopy = {
@@ -58,6 +68,11 @@ const en: ParentActionsCopy = {
   reviewedSkipped: (count) => `${count} already handled earlier, so skipped.`,
   reviewFailed: 'Could not save. Please try again.',
   limitNote: (limit) => `Up to ${limit} tasks at a time.`,
+  nextStep: (child, habit, program) => `${child} is comfortable with the first habits of “${program}”. You can add “${habit}” when you feel ready.`,
+  addNextStep: 'Add the next step',
+  later: 'Later',
+  nextStepStarted: 'Added the next step.',
+  nextStepUnconfirmed: 'Could not confirm the addition. Check Manage tasks before trying again.',
 };
 
 const COPY: Partial<Record<Language, ParentActionsCopy>> = { vi, en };
