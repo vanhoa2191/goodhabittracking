@@ -14,8 +14,6 @@ const TERNARY = new RegExp(
 
 // Files still allowed to carry such a ternary, each with the reason it is not a copy bug here.
 const ALLOWED: Readonly<Record<string, string>> = {
-  'help/HelpTip.tsx': 'picks the vi or en help content; translating the help content is separate work',
-  'ParentJourneysTab.tsx': 'picks the vi or en stage data; translating the stage content is separate work',
   'AffiliateCard.tsx': 'chooses a number and date locale and a currency symbol, not a sentence',
   'public/PricingContent.tsx': 'chooses a price market code, not text',
 };
