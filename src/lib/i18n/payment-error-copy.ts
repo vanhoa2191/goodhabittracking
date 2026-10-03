@@ -62,7 +62,7 @@ const COPY: Record<Language, PaymentErrorCopy> = {
     'Non è stato possibile verificare il pagamento. Attendi; i controlli automatici continuano.',
     'Ordine di pagamento non trovato. Se hai effettuato il bonifico, contatta l’assistenza con il codice ordine.',
   ], 'Connessione al servizio di pagamento non riuscita. Questa azione non ha addebitato nulla. Riprova.'),
-  es: copy('Ha ocurrido un error', 'Reintentar', 'No se pudo copiar. Mantén pulsado para seleccionar el texto.', 'Si tienes un código de recomendación, aplícalo antes de crear el QR. El importe se calcula al crear el pedido.', [
+  es: copy('Ha ocurrido un error', 'Reintentar', 'No se pudo copiar. Mantén pulsado para seleccionar el texto.', 'Si tienes un código de referido, aplícalo antes de crear el QR. El importe se calcula al crear el pedido.', [
     'Este plan no es válido. Elige de nuevo.', 'No pudimos crear el pedido de pago. Inténtalo de nuevo.',
     'No pudimos conectar para comprobar el pago. Reintenta; las comprobaciones automáticas continúan.',
     'Vuelve a iniciar sesión con una cuenta de padre o madre.', 'No pudimos procesar la solicitud. Revisa los datos y reintenta.',
