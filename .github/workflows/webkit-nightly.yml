@@ -9,6 +9,15 @@ on:
   schedule:
     - cron: '17 19 * * *'
   workflow_dispatch:
+    inputs:
+      specs:
+        description: 'Spec name filters to run (space separated); empty runs the Safari-sensitive set'
+        required: false
+        default: ''
+      projects:
+        description: 'Projects as a JSON list, for example ["webkit"]'
+        required: false
+        default: '["webkit","mobile-safari"]'
 
 permissions:
   contents: read
@@ -24,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [webkit, mobile-safari]
+        project: ${{ fromJSON(inputs.projects || '["webkit","mobile-safari"]') }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -34,10 +43,9 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps webkit
       - name: Run the Safari-sensitive specs
-        run: >-
-          npm run test:e2e -- --project=${{ matrix.project }}
-          pair-link activity-mutation kid-hero-compact mobile-menu mobile-dialogs header-narrow appearance
-          habit-fire child-journal entry-journey accessibility family-data-export
+        env:
+          SPECS: ${{ inputs.specs || 'pair-link activity-mutation kid-hero-compact mobile-menu mobile-dialogs header-narrow appearance habit-fire child-journal entry-journey accessibility family-data-export' }}
+        run: npm run test:e2e -- --project=${{ matrix.project }} $SPECS
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: failure()
         with:

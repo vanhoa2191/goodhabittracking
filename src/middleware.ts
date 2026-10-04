@@ -22,7 +22,10 @@ export function middleware(request: NextRequest) {
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",
-    'upgrade-insecure-requests',
+    // Browsers treat localhost as secure but WebKit does not exempt 127.0.0.1 from this directive, so upgrading
+    // the plain-http development server (used by the browser tests) would break every script load there. Production
+    // is always https, where the directive stays.
+    ...(development ? [] : ['upgrade-insecure-requests']),
   ].join('; ');
 
   const requestHeaders = new Headers(request.headers);
