@@ -153,7 +153,8 @@ export function DropdownMenuItem({
       type="button"
       role="menuitemradio"
       aria-checked={selected}
-      tabIndex={-1}
+      // The chosen item is the menu's one tab stop (roving tabindex), so a scrolling panel always holds focusable content.
+      tabIndex={selected ? 0 : -1}
       onClick={() => {
         onSelect();
         menu?.close();

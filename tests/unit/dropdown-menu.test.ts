@@ -41,9 +41,11 @@ describe('dropdown menu markup', () => {
     expect(html.match(/aria-checked="false"/g)).toHaveLength(1);
   });
 
-  it('keeps every item at least 44px high and out of the Tab order', () => {
+  it('keeps every item at least 44px high and only the chosen one in the Tab order', () => {
     const html = render(true);
     expect(html.match(/min-h-11/g)).toHaveLength(2);
-    expect(html.match(/tabindex="-1"/g)).toHaveLength(2);
+    // The chosen item is the one tab stop; the others are reached with the arrow keys.
+    expect(html.match(/tabindex="-1"/g)).toHaveLength(1);
+    expect(html.match(/tabindex="0"/g)).toHaveLength(1);
   });
 });
