@@ -4,7 +4,7 @@
 
 <!--op-->## In this guide
 
-[What data is stored](#du-lieu) · [Who can see what](#ai-thay) · [Your child’s pairing code](#ma-ghep) · [PIN](#pin) · [Consent](#dong-thuan) · [Public leaderboard](#bxh-cong-khai) · [Milestone sharing](#chia-se) · [Referral program](#gioi-thieu-rieng-tu) · [Analytics and reminders](#do-luong) · [Download and delete data](#xoa-du-lieu) · [Technical safeguards](#ky-thuat) · [Legal limitations](#phap-ly) · [Related topics](#lien-quan)<!--/op-->
+[What data is stored](#du-lieu) · [Who can see what](#ai-thay) · [Your child’s pairing code](#ma-ghep) · [PIN](#pin) · [Consent](#dong-thuan) · [Public leaderboard](#bxh-cong-khai) · [Milestone sharing](#chia-se) · [Referral program](#gioi-thieu-rieng-tu) · [AI suggestions](#goi-y-ai) · [Analytics and reminders](#do-luong) · [Download and delete data](#xoa-du-lieu) · [Technical safeguards](#ky-thuat) · [Legal limitations](#phap-ly) · [Related topics](#lien-quan)<!--/op-->
 
 This page explains in plain language what KidHabit does to keep your child’s data safe. For technical details, see [Security and Privacy](../security-privacy.md).
 
@@ -59,6 +59,16 @@ A child appears on the public leaderboard only when **both** of these conditions
 ## Referral program
 
 The referral code is stored in the `kidhabit_ref` cookie for 60 days (and deleted after it has been recorded). Only authorized administrators can view the referrer’s banking information; the referrer can see only the last 4 digits. Referrers **never** see information about the referred family ([8](08-gioi-thieu-ban-be.md)).
+
+<a id="goi-y-ai"></a>
+## AI suggestions
+
+This is being switched on gradually and is **off by default**; it only appears once you agree under Settings → Privacy (the **AI suggestions** card). When you tap a suggestion button, the app asks an AI model (Cloudflare Workers AI) to draft something:
+
+- **Suggest small steps with AI** (in the habit form): only **the habit name you just typed** (with links, emails and phone numbers removed) and an age band are sent.
+- **Summarise the week with AI**: only **the week’s counts** (done alone, with a reminder, together, not done) are sent, with no habit names and no child’s name.
+
+**Never sent**: your child’s name or nickname, the journal, anything your child wrote, photos, your email. What is sent and what comes back is **not written to the system logs**. The result is only a suggestion labelled “drafted by AI”: you read it and choose **Use** or **Dismiss**; the app applies nothing by itself. Each family has a limited number of suggestions a day, and the feature pauses when the shared allowance runs out. It needs your PIN like other sensitive actions. Turning the switch off stops it at once.
 
 <a id="do-luong"></a>
 ## Analytics and reminders

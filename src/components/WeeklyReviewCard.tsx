@@ -10,6 +10,10 @@ import { getParentTodayCopy } from '@/lib/i18n/parent-today-copy';
 import { localizeAgeAdaptedHabit } from '@/lib/i18n/age-habit-copy';
 import { localizeDemoActivity } from '@/lib/i18n/demo-content-copy';
 import { HelpTip } from '@/components/help/HelpTip';
+import dynamic from 'next/dynamic';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
+
+const WeeklySummaryButton = dynamic(() => import('./ai/WeeklySummaryButton').then((module) => module.WeeklySummaryButton), { ssr: false });
 
 /** A five-minute weekly look back for one child: one thing to praise, one to adjust, and whether to wait before adding a habit. */
 export function WeeklyReviewCard({ childId }: { readonly childId: string }) {
@@ -23,6 +27,21 @@ export function WeeklyReviewCard({ childId }: { readonly childId: string }) {
   const summary = summarizeChildHabits({ child, activities, logs, experience, pausePeriods: familyPausePeriods, today });
   if (summary.habits.length === 0) return null;
   const review = buildWeeklyReview(summary.habits, newHabitLimit(childAgeYears(child, today)));
+  // Counts only, added up over the habits by week: no habit name and no child name can reach the AI.
+  const byWeek = new Map<string, { alone: number; prompted: number; together: number; unknown: number; missed: number }>();
+  for (const habit of summary.habits) {
+    for (const week of habit.trend) {
+      const total = byWeek.get(week.weekStart) ?? { alone: 0, prompted: 0, together: 0, unknown: 0, missed: 0 };
+      total.alone += week.alone; total.prompted += week.prompted; total.together += week.together; total.unknown += week.unknown; total.missed += week.missed;
+      byWeek.set(week.weekStart, total);
+    }
+  }
+  const summaryCounts = {
+    weeks: [...byWeek.entries()].sort(([a], [b]) => a.localeCompare(b)).slice(-6).map(([, counts]) => counts),
+    habitsBuilding: summary.habits.filter((habit) => habit.status === 'forming').length,
+    habitsNeedingHelp: summary.habits.filter((habit) => habit.status === 'needs-help').length,
+    habitsSteady: summary.habits.filter((habit) => habit.status === 'steady').length,
+  };
   const titleOf = (activityId: string) => {
     const activity = activities.find((candidate) => candidate.id === activityId);
     return activity ? localizeAgeAdaptedHabit(localizeDemoActivity(activity, language), language).title : '';
@@ -43,6 +62,7 @@ export function WeeklyReviewCard({ childId }: { readonly childId: string }) {
             <li>{review.next === 'add' ? copy.weeklyAdd : copy.weeklyHold}</li>
           </ul>
         )}
+        {defaultExperienceFlags.parentAi && <WeeklySummaryButton counts={summaryCounts} />}
       </div>
     </details>
   );

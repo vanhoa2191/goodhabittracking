@@ -1,7 +1,7 @@
 // The ids of every help topic. Kept apart from the texts so a screen can name a topic without loading them.
 export const HELP_TOPIC_IDS = [
   'today.card', 'today.actions',
-  'approvals.tasks', 'approvals.rewards', 'support.prompt', 'progress.summary', 'progress.graduation', 'progress.supportTrend', 'coach.weeklyChange', 'coach.weeklyFocus', 'weekly.review',
+  'approvals.tasks', 'approvals.rewards', 'support.prompt', 'progress.summary', 'progress.graduation', 'progress.supportTrend', 'coach.weeklyChange', 'coach.weeklyFocus', 'ai.consent', 'weekly.review',
   'stats.weekly', 'stats.print', 'stats.journal', 'stats.share', 'stats.deleteFamily',
   'habits.inUse', 'habits.library', 'habits.programs', 'habits.framework', 'habits.handbook', 'habits.cue', 'habits.programStart',
   'habits.form.points', 'habits.form.recurrence', 'habits.form.time', 'habits.form.duration', 'habits.form.approval', 'habits.form.assign',

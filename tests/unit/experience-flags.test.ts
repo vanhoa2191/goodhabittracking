@@ -19,6 +19,7 @@ describe('experience flags', () => {
       dailyEase: false,
       independence: false,
       habitCoach: false,
+      parentAi: false,
     });
   });
 

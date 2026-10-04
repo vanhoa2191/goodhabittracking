@@ -16,6 +16,7 @@ export const defaultExperienceFlags = {
   dailyEase: process.env.NEXT_PUBLIC_DAILY_EASE === 'true',
   independence: process.env.NEXT_PUBLIC_INDEPENDENCE === 'true',
   habitCoach: process.env.NEXT_PUBLIC_HABIT_COACH === 'true',
+  parentAi: process.env.NEXT_PUBLIC_PARENT_AI === 'true',
 } as const;
 
 export type ExperienceFlag = keyof typeof defaultExperienceFlags;
@@ -37,6 +38,7 @@ const experienceFlagOverridesSchema = z.object({
   dailyEase: z.boolean().optional(),
   independence: z.boolean().optional(),
   habitCoach: z.boolean().optional(),
+  parentAi: z.boolean().optional(),
 });
 
 export function resolveExperienceFlags(input: unknown): ExperienceFlags {

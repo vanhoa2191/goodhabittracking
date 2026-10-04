@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { getAiCopy } from '@/lib/i18n/ai-copy';
 import { getCoachCopy } from '@/lib/i18n/coach-copy';
 import { getIndependenceCopy } from '@/lib/i18n/independence-copy';
 import { getParentActionsCopy } from '@/lib/i18n/parent-actions-copy';
@@ -20,6 +21,7 @@ const MODULES = {
   parentActions: getParentActionsCopy,
   independence: getIndependenceCopy,
   coach: getCoachCopy,
+  ai: getAiCopy,
 } as const;
 
 describe.each(Object.entries(MODULES))('%s copy', (_name, getter) => {

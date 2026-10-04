@@ -4,7 +4,7 @@
 
 <!--op-->## Trong tài liệu này
 
-[Dữ liệu nào được lưu](#du-lieu) · [Ai thấy gì](#ai-thay) · [Mã ghép của bé](#ma-ghep) · [Mã PIN](#pin) · [Đồng thuận](#dong-thuan) · [Bảng xếp hạng công khai](#bxh-cong-khai) · [Chia sẻ cột mốc](#chia-se) · [Chương trình giới thiệu](#gioi-thieu-rieng-tu) · [Đo lường và nhắc việc](#do-luong) · [Tải về, xóa dữ liệu](#xoa-du-lieu) · [Biện pháp kỹ thuật](#ky-thuat) · [Giới hạn pháp lý](#phap-ly) · [Liên quan](#lien-quan)<!--/op-->
+[Dữ liệu nào được lưu](#du-lieu) · [Ai thấy gì](#ai-thay) · [Mã ghép của bé](#ma-ghep) · [Mã PIN](#pin) · [Đồng thuận](#dong-thuan) · [Bảng xếp hạng công khai](#bxh-cong-khai) · [Chia sẻ cột mốc](#chia-se) · [Chương trình giới thiệu](#gioi-thieu-rieng-tu) · [Gợi ý bằng AI](#goi-y-ai) · [Đo lường và nhắc việc](#do-luong) · [Tải về, xóa dữ liệu](#xoa-du-lieu) · [Biện pháp kỹ thuật](#ky-thuat) · [Giới hạn pháp lý](#phap-ly) · [Liên quan](#lien-quan)<!--/op-->
 
 Trang này giải thích bằng lời thường điều KidHabit làm để giữ an toàn cho dữ liệu của bé. Chi tiết kỹ thuật ở [Bảo mật và riêng tư](../security-privacy.md).
 
@@ -59,6 +59,16 @@ Một bé chỉ xuất hiện trên bảng công khai khi **cả hai** điều s
 ## Chương trình giới thiệu
 
 Mã giới thiệu được lưu trong cookie `kidhabit_ref` 60 ngày (xóa khi đã ghi nhận). Thông tin ngân hàng của người giới thiệu chỉ quản trị viên được phân quyền xem; chính chủ chỉ thấy 4 số cuối. Người giới thiệu **không bao giờ** thấy thông tin của gia đình được giới thiệu ([8](08-gioi-thieu-ban-be.md)).
+
+<a id="goi-y-ai"></a>
+## Gợi ý bằng AI
+
+Đang được bật dần và **mặc định tắt**; chỉ hiện khi bạn đồng ý ở Cài đặt → Quyền riêng tư (thẻ **Gợi ý bằng AI**). Khi bạn bấm một nút gợi ý, ứng dụng nhờ một mô hình AI (Cloudflare Workers AI) soạn nháp:
+
+- **Gợi ý bước nhỏ bằng AI** (trong form thói quen): chỉ gửi **tên thói quen bạn vừa gõ** (đã bỏ đường liên kết, email, số điện thoại) và nhóm tuổi.
+- **Tóm tắt tuần bằng AI**: chỉ gửi **các con số của tuần** (số lần tự làm, cần nhắc, làm cùng, chưa làm), không có tên thói quen hay tên bé.
+
+**Không bao giờ gửi**: tên hay biệt danh của bé, nhật ký, văn bản bé viết, ảnh, email của bạn. Nội dung gửi và kết quả **không được ghi vào nhật ký hệ thống**. Kết quả chỉ là gợi ý có nhãn "do AI soạn": bạn đọc và chọn **Dùng** hoặc **Bỏ qua**; ứng dụng không tự áp gì. Mỗi gia đình có số lượt giới hạn mỗi ngày, và tính năng tạm ngừng khi hết hạn mức chung. Cần mã PIN như các thao tác nhạy cảm. Tắt công tắc là dừng ngay.
 
 <a id="do-luong"></a>
 ## Đo lường và nhắc việc
