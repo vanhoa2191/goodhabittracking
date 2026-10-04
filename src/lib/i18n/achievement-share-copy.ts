@@ -47,7 +47,7 @@ export const COPY: Record<Language, AchievementShareCopy> = {
   },
   ja: {
     shareTitle: 'KidHabit Hero と迎える家族の節目', shareText: '私たち家族は KidHabit Hero とまた一週間、前向きに過ごせました。小さな一歩にも価値があります！',
-    title: 'うれしい節目を共有', privacy: '初期の内容には子どもの名前、年齢、写真、タスクは含まれません。KidHabit は個人追跡コードを追加しません。', share: '家族の節目を共有', previewLabel: '共有内容のプレビュー', preview: 'プレビュー', close: '閉じる', confirmation: '確認してから端末の共有メニューが開きます。', confirm: '確認して共有', cancel: 'キャンセル', copied: '内容をコピーしました。お好きな方法で共有できます。', failed: '共有メニューを開けませんでした。もう一度お試しください。',
+    title: 'うれしい節目を共有', privacy: '初期の内容には子どもの名前、年齢、写真、ミッションは含まれません。KidHabit は個人追跡コードを追加しません。', share: '家族の節目を共有', previewLabel: '共有内容のプレビュー', preview: 'プレビュー', close: '閉じる', confirmation: '確認してから端末の共有メニューが開きます。', confirm: '確認して共有', cancel: 'キャンセル', copied: '内容をコピーしました。お好きな方法で共有できます。', failed: '共有メニューを開けませんでした。もう一度お試しください。',
   },
   ko: {
     shareTitle: 'KidHabit Hero와 함께한 가족의 성취', shareText: '우리 가족은 KidHabit Hero와 함께 또 한 주를 긍정적으로 보냈어요. 작은 한 걸음도 소중해요!',

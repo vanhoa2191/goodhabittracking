@@ -44,7 +44,7 @@ const fr: readonly DocsSection[] = [
   ['help', 'Dépannage et FAQ', 'Si le scan ne fonctionne pas, autorisez la caméra, utilisez une connexion sécurisée ou saisissez le code. Si le paiement est en attente, ne payez pas tout de suite une seconde fois.'],
 ];
 const de: readonly DocsSection[] = [
-  ['quick-start', 'Schnellstart', 'Neue Besucher sehen die Einführung und wählen den Start. Angemeldete Eltern gelangen direkt zum Eltern-Dashboard; mit Startseite öffnest du die Einführung erneut. Erstelle ein Kinderprofil und wähle einige passende Aufgaben. Fang klein an und bleib dran.'],
+  ['quick-start', 'Schnellstart', 'Neue Besucher sehen die Einführung und wählen, wie sie beginnen möchten. Angemeldete Eltern gelangen direkt zum Eltern-Dashboard; mit Startseite öffnest du die Einführung erneut. Erstelle ein Kinderprofil und wähle einige passende Aufgaben. Fang klein an und bleib dran.'],
   ['profiles', 'Profile und Gewohnheiten', 'Unter Design > Gewohnheiten siehst du verwendete Aufgaben oder wählst weitere aus der Bibliothek. Weise Aufgaben allen Kindern oder einem Kind zu und lege Sterne, Dauer und Freigabe fest. Kinderprofile findest du unter Familie > Kinder.'],
   ['connect', 'Kindergerät verbinden', 'Öffne den QR-Code unter Familie > Kinder. Scanne ihn auf dem Kindergerät oder gib den Code ein. Nach der Kopplung öffnet das Gerät direkt die Kinderansicht, ohne Eltern- oder Verkaufsnavigation. Aktualisiere den Code nur, wenn er möglicherweise bekannt geworden ist.'],
   ['mascot', 'Maskottchen und Farbe', 'Kinder können auf ihrem Bildschirm ein Maskottchen wählen. Warte danach sieben volle Tage, bevor du ein anderes wählst; der Bildschirm zeigt den nächsten Zeitpunkt. Farben lassen sich jederzeit ändern. Die Tontaste schaltet Effekte stumm; von 20:00 bis 07:00 Ortszeit ist die Lautstärke halbiert.'],
@@ -57,7 +57,7 @@ const de: readonly DocsSection[] = [
   ['help', 'Fehlerbehebung und FAQ', 'Wenn der Kamerascan nicht funktioniert, erlaube den Kamerazugriff, nutze eine sichere Verbindung oder gib den Code ein. Wenn die Zahlung aussteht, zahle nicht sofort erneut.'],
 ];
 const it: readonly DocsSection[] = [
-  ['quick-start', 'Avvio rapido', 'I nuovi visitatori vedono la presentazione e scelgono come iniziare. I genitori con accesso entrano nel pannello genitori; scegli Home per rivedere la presentazione. Crea un profilo bambino e scegli alcune attività alla sua portata. Inizia con poco e continua con costanza.'],
+  ['quick-start', 'Avvio rapido', 'I nuovi visitatori vedono la presentazione e scelgono come iniziare. I genitori che hanno effettuato l’accesso entrano nel pannello genitori; scegli Home per rivedere la presentazione. Crea un profilo bambino e scegli alcune attività alla sua portata. Inizia con poco e continua con costanza.'],
   ['profiles', 'Profili e abitudini', 'In Progetta > Gestisci abitudini, guarda le attività In uso o scegline altre dalla Libreria. Assegna attività a tutti i bambini o a uno solo, poi imposta stelle, durata e richiesta di approvazione. I profili sono in Famiglia > Profili bambini.'],
   ['connect', 'Collega il dispositivo di un bambino', 'Apri il QR in Famiglia > Profili bambini. Sul dispositivo del bambino, scansionalo o inserisci il codice. Dopo l’associazione, il dispositivo apre direttamente la vista bambino, senza navigazione genitori o commerciale. Aggiorna il codice solo se potrebbe essere stato esposto.'],
   ['mascot', 'Mascotte e colore', 'I bambini possono scegliere una mascotte sul proprio schermo. Dopo la scelta, attendi sette giorni interi prima di cambiarla; lo schermo mostra il prossimo momento disponibile. I colori si possono cambiare quando vuoi. Il pulsante audio silenzia gli effetti; il volume si dimezza dalle 20:00 alle 07:00, ora locale.'],
@@ -67,7 +67,7 @@ const it: readonly DocsSection[] = [
   ['family-break', 'Fare una pausa in famiglia', 'In Famiglia > Impostazioni, scegli Fai una pausa e conferma. Durante la pausa, la vista bambino nasconde gli avvisi su progresso e serie; le attività restano disponibili e stelle e ricompense non vengono eliminate. Scegli Riprendi quando la famiglia è pronta.'],
   ['payment', 'Pagamento e attivazione', 'Controlla intestatario, numero di conto, importo e causale. Scansiona il QR o apri il pagamento sicuro. L’attivazione avviene dopo la verifica.'],
   ['sync', 'Sincronizzazione e dispositivi', 'Accedi per usare i dati della famiglia su più dispositivi. Puoi revocare i dispositivi che non usi più.'],
-  ['help', 'Risoluzione dei problemi e FAQ', 'Se la scansione non funziona, concedi il permesso, usa una connessione sicura o inserisci il codice. Se il pagamento è in sospeso, non pagare subito una seconda volta.'],
+  ['help', 'Risoluzione dei problemi e FAQ', 'Se la scansione con la fotocamera non è disponibile, consenti l’accesso alla fotocamera, usa una connessione sicura o inserisci il codice. Se il pagamento è in sospeso, non pagare subito una seconda volta.'],
 ];
 const es: readonly DocsSection[] = [
   ['quick-start', 'Inicio rápido', 'Los visitantes nuevos ven la presentación y eligen cómo empezar. Los padres con sesión iniciada van al panel de padres; elige Inicio para volver a verla. Crea un perfil infantil y elige algunas tareas adecuadas. Empieza poco a poco y mantén la constancia.'],
@@ -80,30 +80,30 @@ const es: readonly DocsSection[] = [
   ['family-break', 'Tomarse un descanso en familia', 'En Familia > Ajustes, elige Tomarse un descanso y confirma. Durante la pausa, la vista infantil oculta los avisos de progreso y racha; las tareas siguen disponibles y no se borran estrellas ni recompensas. Elige Reanudar cuando la familia esté lista.'],
   ['payment', 'Pago y activación', 'Comprueba el titular, el número de cuenta, el importe y el concepto. Escanea el QR o abre el pago seguro. La activación llega después de la verificación.'],
   ['sync', 'Sincronización y dispositivos', 'Inicia sesión para usar los datos familiares en varios dispositivos. Puedes revocar los dispositivos que ya no uses.'],
-  ['help', 'Solución de problemas y FAQ', 'Si no funciona el escaneo, concede permiso, usa una conexión segura o introduce el código. Si el pago está pendiente, no vuelvas a pagar de inmediato.'],
+  ['help', 'Solución de problemas y FAQ', 'Si el escaneo con la cámara no está disponible, permite el acceso a la cámara, usa una conexión segura o introduce el código. Si el pago está pendiente, no vuelvas a pagar de inmediato.'],
 ];
 const zh: readonly DocsSection[] = [
   ['quick-start', '快速开始', '新访客会看到介绍并选择开始方式。已登录的家长会直接进入家长面板；选择首页即可再次查看介绍。创建孩子档案，再选择几项适合的任务。从少量开始，坚持下去。'],
   ['profiles', '档案与习惯', '在规划 > 习惯管理中查看“使用中”的任务，或从“习惯库”选择更多任务。可以把任务分配给所有孩子或某个孩子，并设置奖励星星数、时长和审批要求。孩子档案位于家庭 > 孩子档案。'],
-  ['connect', '连接孩子的设备', '在家庭 > 孩子中打开 QR。在孩子设备上扫描，或手动输入代码。配对后，该设备会直接打开孩子界面，不显示家长或销售导航。只有在代码可能泄露时才刷新代码。'],
+  ['connect', '连接孩子的设备', '在家庭 > 孩子档案中打开二维码。在孩子设备上扫描，或手动输入代码。配对后，该设备会直接打开孩子界面，不显示家长或销售导航。只有在代码可能泄露时才刷新代码。'],
   ['mascot', '吉祥物与颜色', '孩子可以在自己的界面选择吉祥物。每次选择后，需要等待完整七天才能更换；界面会显示下次可更换的时间。颜色可以随时更改。声音按钮可以静音效果音；当地时间 20:00 到 07:00 音量会减半。'],
   ['morning-letter', '晨间信件', '从设备时间 07:00 起，每个孩子每天会收到吉祥物的一封新信。点击“我读完了”记录阅读状态；当天仍可再次查看。已同步的家庭可以在另一台设备上看到阅读状态。'],
   ['complete', '完成与批准', '打开任务查看目的和步骤，然后将其标记为完成。需要批准的任务会等待家长处理。'],
   ['rewards', '星星与奖励', '完成任务可以获得星星。在奖励兑换中，孩子可以选择礼物作为储蓄目标，并查看所需星星。目标会为孩子保存；申请兑换奖励是独立操作，由家长确认。'],
   ['family-break', '全家休息一下', '在家庭 > 系统设置中选择“暂时休息”并确认。暂停期间，孩子界面会隐藏进度和连续记录提示；任务仍可使用，星星和奖励不会被删除。全家准备好后选择继续。'],
-  ['payment', '付款与开通', '检查账户持有人、账号、金额和备注。扫描 QR 或打开安全付款页面。验证后即可开通。'],
+  ['payment', '付款与开通', '检查账户持有人、账号、金额和备注。扫描二维码或打开安全付款页面。验证后即可开通。'],
   ['sync', '同步与设备', '登录后即可在多台设备上使用家庭数据。也可以撤销不再使用的设备。'],
   ['help', '故障排查与 FAQ', '如果无法使用摄像头扫码，请允许访问摄像头、使用安全连接，或手动输入连接码。如果付款仍在处理中，请不要立即再次付款。'],
 ];
 const ja: readonly DocsSection[] = [
-  ['quick-start', 'すぐに始める', '初めての方には紹介画面が表示され、始め方を選べます。ログイン中の保護者は保護者ダッシュボードに直接進みます。紹介画面をもう一度見るときはホームを選んでください。お子さまのプロフィールを作り、無理のないタスクをいくつか選びます。少しずつ、続けていきましょう。'],
+  ['quick-start', 'すぐに始める', '初めての方には紹介画面が表示され、始め方を選べます。ログイン中の保護者は保護者ダッシュボードに直接進みます。紹介画面をもう一度見るときはホームを選んでください。お子さまのプロフィールを作り、無理のないミッションをいくつか選びます。少しずつ、続けていきましょう。'],
   ['profiles', 'プロフィールと習慣', '設計 > 習慣の管理で使用中のミッションを確認するか、ライブラリから追加します。すべてのお子さま、または1人のお子さまにミッションを割り当て、スター、時間、承認の要否を設定できます。プロフィールは家族 > 子ども一覧にあります。'],
   ['connect', 'お子さまの端末をつなぐ', '家族 > 子ども一覧で QR を開きます。お子さまの端末で読み取るか、コードを手入力してください。連携後は、その端末で子ども画面が直接開き、保護者向けのメニューや購入案内は表示されません。コードが知られた可能性があるときだけ更新してください。'],
   ['mascot', 'マスコットと色', 'お子さまは自分の画面でマスコットを選べます。選んだ後は、別のマスコットに変えるまで7日間待ちます。次の時刻は画面に表示されます。色はいつでも変更できます。音ボタンで効果音を消せます。20:00から07:00までは音量が半分になります。'],
   ['morning-letter', '朝の手紙', '端末時刻の07:00から、お子さまは毎日マスコットから新しい手紙を1通受け取ります。「読んだよ」をタップすると読んだことが記録され、その日のうちは読み返せます。家族のデータを同期している場合は、お子さまの別の端末でも読んだことを確認できます。'],
-  ['complete', '完了して承認する', 'タスクを開いて目的と手順を読み、終わったら完了にします。承認が必要なタスクは保護者の確認を待ちます。'],
-  ['rewards', 'スターとごほうび', '完了したタスクでスターを獲得できます。ごほうびでは、欲しいごほうびを選び、交換に必要なスターを貯める目標にできます。目標は保存され、申請は別の操作として保護者が確認します。'],
-  ['family-break', '家族でひと休み', '家族 > 設定で「お休みする」を選び、確認します。休止中は進捗と連続記録の案内が隠れます。タスクは使え、スターやごほうびも削除されません。準備ができたら再開を選びます。'],
+  ['complete', '完了して承認する', 'ミッションを開いて目的と手順を読み、終わったら完了にします。承認が必要なミッションは保護者の確認を待ちます。'],
+  ['rewards', 'スターとごほうび', '完了したミッションでスターを獲得できます。ごほうびでは、欲しいごほうびを選び、交換に必要なスターを貯める目標にできます。目標は保存され、申請は別の操作として保護者が確認します。'],
+  ['family-break', '家族でひと休み', '家族 > 設定で「お休みする」を選び、確認します。休止中は進捗と連続記録の案内が隠れます。ミッションは使え、スターやごほうびも削除されません。準備ができたら再開を選びます。'],
   ['payment', '支払いと有効化', '口座名義、口座番号、金額、振込内容を確認します。QR を読み取るか、安全な支払いページを開いてください。確認後に有効になります。'],
   ['sync', '同期と端末', 'ログインすると、複数の端末で家族データを使えます。使わなくなった端末の連携を解除できます。'],
   ['help', 'トラブル解決と FAQ', 'カメラで読み取れないときは、許可、安全な接続、コードの手入力をお試しください。支払いが保留中なら、すぐにもう一度支払わないでください。'],

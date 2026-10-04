@@ -11,7 +11,7 @@ export const HELP_TOPICS_DE: HelpTranslationTable<HelpText> = {
   'stats.weekly': { title: 'Trend der letzten 7 Tage', text: 'Jeder Balken zeigt die erledigten Aufgaben der Familie an diesem Tag. Ohne Erledigungen bleibt er leer.' },
   'stats.print': { title: 'Woche drucken', text: 'Drucken Sie eine Gewohnheitentafel für den Kühlschrank oder einen Wochenbericht mit Anzahl und Punkten über den Druckdialog Ihres Browsers.' },
   'stats.journal': { title: 'Einzeiliges Tagebuch', text: 'Zeilen, die Ihr Kind zu Dingen schreibt, an die es sich erinnern möchte. Nur Sie und Ihr Kind können sie lesen; sie werden nicht gemessen. Als CSV exportierbar. Bewahren Sie die Datei privat auf.' },
-  'stats.share': { title: 'Meilenstein teilen', text: 'Vorschau ansehen und selbst bestätigen. Die Standardnachricht enthält keinen Namen, kein Alter, Foto oder Kinderaufgaben.' },
+  'stats.share': { title: 'Meilenstein teilen', text: 'Vorschau ansehen und selbst bestätigen. Die Standardnachricht enthält keinen Namen, kein Alter, kein Foto und keine Aufgaben der Kinder.' },
   'stats.deleteFamily': { title: 'Familiendaten löschen', text: 'Nur der Familieninhaber kann dies tun. Profile, Gewohnheiten, Fortschritt, Belohnungen und gekoppelte Geräte werden dauerhaft gelöscht. Nicht rückgängig. DELETE FAMILY eingeben.' },
 
   'habits.inUse': { title: 'Verwendete Aufgaben', text: 'Derzeit zugewiesene Aufgaben. Nach Kind filtern, Erledigungen der letzten 7 Tage ansehen, bearbeiten, löschen oder Auslöser festlegen.' },
@@ -47,7 +47,7 @@ export const HELP_TOPICS_DE: HelpTranslationTable<HelpText> = {
   'settings.caregivers': { title: 'Betreuungspersonen', text: 'Großeltern oder Verwandte mit einem einmaligen, nach 72 Stunden ablaufenden Link zum Ansehen einladen. Sie können nur ansehen. Einladung jederzeit widerrufbar.' },
   'settings.pause': { title: 'Familienpause', text: '„Pause machen“ blendet Fortschrittsimpulse und Serien aus, unterbricht die Serie aber nicht. Sterne und Belohnungen bleiben erhalten. Bei Bedarf fortsetzen.' },
   'settings.account': { title: 'Kundendaten', text: 'Name und Telefonnummer für Konto- und Zahlungshilfe. Angebote jederzeit ein- oder ausschalten.' },
-  'settings.coupon': { title: 'Geschenkcode', text: 'Geschenkcode eingeben, um Nutzungstage hinzuzufügen. Einmal pro Familie; zu viele falsche Versuche sperren ihn einige Minuten.' },
+  'settings.coupon': { title: 'Geschenkcode', text: 'Geschenkcode eingeben, um Nutzungstage hinzuzufügen. Jeder Code kann pro Familie nur einmal eingelöst werden; zu viele falsche Versuche sperren ihn einige Minuten.' },
   'settings.referralCode': { title: 'Empfehlungscode', text: '8-stelligen Code eines Freundes eingeben für 10 % Rabatt auf den ersten Jahrestarif. Nur für neue, noch nicht zahlende Familien.' },
   'settings.affiliate': { title: 'Freunde empfehlen', text: 'Link teilen und 30 % Provision erhalten, wenn eine neue Familie bezahlt. Die Provision wird 35 Tage zurückgehalten; die Mindestauszahlung beträgt 200.000 VND und erfordert Ihre PIN.' },
   'settings.familyData': { title: 'Familiendaten', text: 'Laden Sie eine JSON-Kopie der Familiendaten herunter. Sie enthält weder PIN noch Zahlungsdaten, aber Daten Ihrer Kinder. Bewahren Sie die Datei daher privat auf.' },
