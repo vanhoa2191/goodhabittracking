@@ -54,5 +54,14 @@ export default defineConfig({
       name: 'mobile-chromium',
       use: { ...devices['Pixel 7'], channel: localBrowserChannel },
     },
+    // Safari engines: run nightly on a focused set of specs (see .github/workflows/webkit-nightly.yml), not on every PR.
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
+    {
+      name: 'mobile-safari',
+      use: { ...devices['iPhone 15'] },
+    },
   ],
 });
