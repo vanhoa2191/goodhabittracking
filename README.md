@@ -44,7 +44,7 @@ Các cờ legacy/simulation trong `.env.example` bị khóa ở production và k
 | `apps/marketing` | Site marketing tĩnh (trang chủ, bảng giá, blog…) dựng bằng `scripts/build-marketing.mjs`, không chứa mã ứng dụng. |
 | `supabase/migrations`, `supabase/preflight` | Thay đổi schema theo thứ tự và SQL kiểm tra sau mỗi migration. |
 | `scripts` | Dựng marketing, kiểm tra phát hành, kiểm tra live trên production (`verify-live-*`), quét bí mật, ngân sách hiệu năng. |
-| `tests` | `unit`, `api`, `integration` (hợp đồng migration), `e2e` (Playwright). |
+| `tests` | `unit`, `api`, `integration` (hợp đồng migration), `e2e` (Playwright). Mỗi pull request chạy Chromium; workflow `webkit-nightly` chạy mỗi đêm (và theo yêu cầu) các spec nhạy với Safari trên WebKit desktop và iPhone, không phải kiểm tra bắt buộc. |
 | `docs` | Tài liệu kiến trúc, bảo mật, triển khai, sổ kiểm chứng nội dung và hướng dẫn đăng blog. Bộ [hướng dẫn sử dụng toàn bộ tính năng](docs/huong-dan/README.md) nằm ở `docs/huong-dan`. |
 
 Bắt đầu đọc từ [`docs/architecture.md`](docs/architecture.md). Muốn đóng góp, xem [`CONTRIBUTING.md`](CONTRIBUTING.md).
