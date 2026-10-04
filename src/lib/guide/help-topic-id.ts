@@ -17,7 +17,7 @@ export type HelpTopicId = (typeof HELP_TOPIC_IDS)[number];
 
 // Topics added since the last translation pass. A language without them reads the English text until the pass is done;
 // the ones listed here are the only ones a translation table may leave out.
-export const HELP_TOPICS_AWAITING_TRANSLATION = ['today.actions', 'progress.graduation', 'progress.supportTrend', 'coach.weeklyChange', 'coach.weeklyFocus'] as const satisfies readonly HelpTopicId[];
+export const HELP_TOPICS_AWAITING_TRANSLATION = [] as const satisfies readonly HelpTopicId[];
 type AwaitingTranslation = (typeof HELP_TOPICS_AWAITING_TRANSLATION)[number];
 
 export type HelpTranslationTable<Text> = Readonly<Record<Exclude<HelpTopicId, AwaitingTranslation>, Text>>
