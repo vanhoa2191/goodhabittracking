@@ -1,16 +1,19 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getParentContext, from, rpc } = vi.hoisted(() => ({
+const { getParentContext, from, rpc, adminRpc } = vi.hoisted(() => ({
   getParentContext: vi.fn(),
   from: vi.fn(),
   rpc: vi.fn(),
+  adminRpc: vi.fn(),
 }));
 
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/supabase/server', () => ({
   createServerSupabaseClient: vi.fn(async () => ({ from, rpc })),
 }));
+
+vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ rpc: adminRpc })) }));
 
 vi.mock('@/lib/security/parent-unlock', () => ({
   requireParentUnlock: vi.fn(async () => null),
@@ -69,7 +72,7 @@ describe('persistent pairing credential API', () => {
 
   it('returns the same public material for repeated reads without exposing hashes', async () => {
     // Given
-    rpc.mockResolvedValue({
+    adminRpc.mockResolvedValue({
       data: [{ rotation_nonce: '44444444-4444-4444-8444-444444444444', rotated_at: '2026-09-21T12:00:00.000Z' }],
       error: null,
     });
@@ -97,7 +100,7 @@ describe('persistent pairing credential API', () => {
 
   it('rotates through the family-scoped database boundary and returns new material', async () => {
     // Given
-    rpc.mockResolvedValue({
+    adminRpc.mockResolvedValue({
       data: [{ rotation_nonce: '55555555-5555-4555-8555-555555555555', rotated_at: '2026-09-21T12:05:00.000Z' }],
       error: null,
     });
@@ -108,7 +111,7 @@ describe('persistent pairing credential API', () => {
 
     // Then
     expect(response.status).toBe(200);
-    expect(rpc).toHaveBeenCalledWith('rotate_pairing_credential', expect.objectContaining({
+    expect(adminRpc).toHaveBeenCalledWith('rotate_pairing_credential_as', expect.objectContaining({
       target_child_id: CHILD_ID,
     }));
     expect(body).toMatchObject({ childId: CHILD_ID, rotatedAt: '2026-09-21T12:05:00.000Z' });

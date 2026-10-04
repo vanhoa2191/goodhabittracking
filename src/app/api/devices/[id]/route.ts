@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
+import { callParentRpc } from '@/lib/security/parent-rpc';
 import { requireParentUnlock } from '@/lib/security/parent-unlock';
 
 export const runtime = 'nodejs';
@@ -28,7 +29,7 @@ export async function DELETE(
   const supabase = await createServerSupabaseClient();
   const locked = await requireParentUnlock(request, parent, supabase);
   if (locked) return locked;
-  const { data, error } = await supabase.rpc('revoke_device_session', {
+  const { data, error } = await callParentRpc(parent.user.id, 'revoke_device_session', {
     target_device_session_id: parsed.data.id,
   });
 

@@ -13,6 +13,7 @@ const { getParentContext, rpc, from, requireParentUnlock, run, flags, logOperati
 
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/supabase/server', () => ({ createServerSupabaseClient: vi.fn(async () => ({ rpc, from })) }));
+vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ rpc })) }));
 vi.mock('@/lib/security/parent-unlock', () => ({ requireParentUnlock }));
 vi.mock('@/lib/ai/binding', () => ({ getAiBinding: () => ({ run }) }));
 vi.mock('@/lib/experience-flags', () => ({ defaultExperienceFlags: flags }));
@@ -71,7 +72,7 @@ describe('AI suggestion routes', () => {
     expect(sent).toContain('6-12');
     expect(sent).not.toContain('x.example');
     expect(sent).not.toContain('0912345678');
-    expect(rpc).toHaveBeenCalledWith('consume_ai_quota', { per_day: 5, system_per_day: 150, min_gap_seconds: 20 });
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', { actor_user_id: 'parent-1', per_day: 5, system_per_day: 150, min_gap_seconds: 20 });
   });
 
   it('refuses a request that comes from another site before anything else', async () => {

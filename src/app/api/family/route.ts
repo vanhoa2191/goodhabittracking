@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
+import { callParentRpc } from '@/lib/security/parent-rpc';
 import { requireParentUnlock } from '@/lib/security/parent-unlock';
 
 export const runtime = 'nodejs';
@@ -22,7 +23,7 @@ export async function DELETE(request: NextRequest) {
   const supabase = await createServerSupabaseClient();
   const locked = await requireParentUnlock(request, parent, supabase);
   if (locked) return locked;
-  const { error } = await supabase.rpc('delete_owned_family', { confirmation: parsed.data.confirmation });
+  const { error } = await callParentRpc(parent.user.id, 'delete_owned_family', { confirmation: parsed.data.confirmation });
   if (error) return NextResponse.json({ success: false, error: 'Family deletion failed.' }, { status: 409 });
   return NextResponse.json({ success: true });
 }

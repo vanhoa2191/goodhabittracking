@@ -274,6 +274,7 @@ describe('family tenancy migration', () => {
       '202610040002_habit_graduation.sql',
       '202610040003_habit_coach.sql',
       '202610040004_parent_ai.sql',
+      '202610050001_pin_gated_server_wrappers.sql',
     ];
 
     expect(schemaManifest.trim().split('\n')).toEqual(
