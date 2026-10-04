@@ -169,3 +169,11 @@ Production migration là gate thủ công vì thay đổi RLS và dữ liệu tr
 ## Rotation
 
 PayOS credentials từng xuất hiện trong hội thoại đã được thay bằng channel production mới ngày 2026-09-21. Runtime và release preflight tiếp tục từ chối fingerprint của bộ khóa đã lộ. Với lần rotation tiếp theo, cập nhật Worker secrets và webhook verification, deploy, smoke test, rồi revoke key cũ.
+
+## Gợi ý bằng AI (Cloudflare Workers AI)
+
+Cờ build `NEXT_PUBLIC_PARENT_AI=true` (mặc định tắt; biến repository cùng tên, đặt rồi chạy lại CI trên `main`). Cần: binding `AI` trong `wrangler.jsonc` (đã có), migration `202610040004_parent_ai.sql` đã áp (chạy `supabase/preflight/202610040004_parent_ai.verify.sql` sau khi áp; hoàn tác ở `supabase/rollbacks/`). Tên mô hình ở `src/lib/ai/config.ts` (`AI_MODEL`); hạn mức theo gia đình và toàn hệ thống ở `AI_LIMITS` (gói miễn phí chỉ có 10.000 Neurons/ngày cho cả tài khoản, nên `systemPerDay` là giới hạn thật).
+
+- **Tắt khẩn cấp không cần build**: đặt biến Worker `AI_KILL_SWITCH=true` (dashboard Cloudflare hoặc `wrangler secret put AI_KILL_SWITCH`); mọi route AI trả 503 `ai_disabled`. Gỡ biến để bật lại.
+- **Trước khi bật cho người dùng thật** phải xong: xác minh điều khoản Cloudflare về dữ liệu gửi qua Workers AI (ghi ngày và đường dẫn vào `docs/security-privacy.md`), cập nhật chính sách riêng tư và danh sách bên xử lý, duyệt văn bản đồng ý (đổi `AI_POLICY_VERSION` khi đổi văn bản để mọi người đồng ý lại). Thử chọn mô hình với bảng 20 thói quen mẫu vi/en.
+- Theo dõi: Workers AI dashboard (Neurons); log của ứng dụng chỉ có mã (`model_timeout`, `quota_system_day`, `model_invalid_output`…), không có nội dung.

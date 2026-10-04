@@ -116,6 +116,7 @@ jobs:
           NEXT_PUBLIC_DAILY_EASE: ${{ vars.NEXT_PUBLIC_DAILY_EASE }}
           NEXT_PUBLIC_INDEPENDENCE: ${{ vars.NEXT_PUBLIC_INDEPENDENCE }}
           NEXT_PUBLIC_HABIT_COACH: ${{ vars.NEXT_PUBLIC_HABIT_COACH }}
+          NEXT_PUBLIC_PARENT_AI: ${{ vars.NEXT_PUBLIC_PARENT_AI }}
           NEXT_PUBLIC_LEGAL_PAGES_APPROVED: ${{ vars.NEXT_PUBLIC_LEGAL_PAGES_APPROVED }}
           SUPPORT_EMAIL: kidhabithero@gmail.com
       - if: steps.configuration.outputs.ready == 'true'

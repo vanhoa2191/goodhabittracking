@@ -29,6 +29,7 @@ import { ParentRewardsTab } from './ParentRewardsTab';
 const ParentJourneysTab = dynamic(() => import('./ParentJourneysTab').then((module) => module.ParentJourneysTab));
 import { ParentHabitsTab } from './ParentHabitsTab';
 // The children tab draws pairing QR codes in the browser only, so its code (and the PNG encoder behind it) stays out of the server worker.
+const BreakdownButton = dynamic(() => import('./ai/BreakdownButton').then((module) => module.BreakdownButton), { ssr: false });
 const ParentChildrenTab = dynamic(() => import('./ParentChildrenTab').then((module) => module.ParentChildrenTab), { ssr: false });
 import { ParentNavigation } from './ParentNavigation';
 import { useParentSection } from '@/lib/use-parent-section';
@@ -43,6 +44,8 @@ import { MascotAvatar } from './MascotAvatar';
 import { ModalShell } from './ui/ModalShell';
 import { getPointsAdjustCopy } from '@/lib/i18n/points-adjust-copy';
 import { HelpTip } from '@/components/help/HelpTip';
+import { childAgeYears } from '@/lib/habit-programs/summary';
+import { localDayKey } from '@/lib/habit-fire';
 
 export function ParentDashboard() {
   const {
@@ -56,6 +59,7 @@ export function ParentDashboard() {
     logs,
     redemptions,
     setIsPortraitModalOpen,
+    currentUser,
   } = useAppStore();
 
   const { t, language } = useTranslation();
@@ -67,6 +71,12 @@ export function ParentDashboard() {
   const profileCopy = getProfileMutationCopy(language);
 
   const [activeTab, setActiveTab] = useParentSection();
+  // A task for one child uses that child's age; a task for everyone uses the youngest, the safest reading for a suggestion.
+  const youngestAge = (childId: string | null): number => {
+    const today = localDayKey(new Date());
+    const ages = profiles.filter((profile) => childId === null || profile.id === childId).map((profile) => childAgeYears(profile, today));
+    return ages.length > 0 ? Math.min(...ages) : 8;
+  };
 
   // Modal states
   const [isHabitModalOpen, setIsHabitModalOpen] = useState(false);
@@ -426,6 +436,15 @@ export function ParentDashboard() {
                   placeholder={chromeCopy.habitInstructionsPlaceholder}
                   className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800"
                 />
+                {currentUser && defaultExperienceFlags.parentAi && (
+                  <div className="mt-2">
+                    <BreakdownButton
+                      title={habitForm.title}
+                      ageYears={youngestAge(habitForm.childId)}
+                      onUse={(steps) => setHabitForm({ ...habitForm, instructions: [habitForm.instructions.trim(), ...steps].filter(Boolean).join('\n') })}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-3">
