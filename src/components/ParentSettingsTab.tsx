@@ -29,6 +29,7 @@ import { getMarketingOrigin } from '@/lib/site';
 import { parseSettingsAnchor, SETTINGS_SECTIONS } from '@/lib/parent-section-url';
 import { HelpTip } from '@/components/help/HelpTip';
 
+const AiComingSoonCard = dynamic(() => import('./ai/AiComingSoon').then((module) => module.AiComingSoonCard), { ssr: false });
 const AiConsentCard = dynamic(() => import('./ai/AiConsentCard').then((module) => module.AiConsentCard), { ssr: false });
 
 /** The settings groups on screen: the offers group only exists for a signed-in family. */
@@ -249,6 +250,7 @@ export function ParentSettingsTab() {
       {currentUser && <LeaderboardSharingCard />}
       {currentUser && defaultExperienceFlags.parentReengagement && <ParentReminderConsentCard />}
       {currentUser && defaultExperienceFlags.parentAi && <AiConsentCard />}
+      {!defaultExperienceFlags.parentAi && <AiComingSoonCard />}
 
       <Link href="/docs" className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{layout.openGuide}</Link>
       {legalPagesApproved && <nav aria-label={layout.legalNav} className="grid gap-2 sm:grid-cols-3">

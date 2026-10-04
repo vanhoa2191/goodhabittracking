@@ -13,6 +13,7 @@ import { HelpTip } from '@/components/help/HelpTip';
 import dynamic from 'next/dynamic';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 
+const AiComingSoonButton = dynamic(() => import('./ai/AiComingSoon').then((module) => module.AiComingSoonButton), { ssr: false });
 const WeeklySummaryButton = dynamic(() => import('./ai/WeeklySummaryButton').then((module) => module.WeeklySummaryButton), { ssr: false });
 
 /** A five-minute weekly look back for one child: one thing to praise, one to adjust, and whether to wait before adding a habit. */
@@ -62,7 +63,7 @@ export function WeeklyReviewCard({ childId }: { readonly childId: string }) {
             <li>{review.next === 'add' ? copy.weeklyAdd : copy.weeklyHold}</li>
           </ul>
         )}
-        {defaultExperienceFlags.parentAi && <WeeklySummaryButton counts={summaryCounts} />}
+        {defaultExperienceFlags.parentAi ? <WeeklySummaryButton counts={summaryCounts} /> : <AiComingSoonButton kind="summary" />}
       </div>
     </details>
   );

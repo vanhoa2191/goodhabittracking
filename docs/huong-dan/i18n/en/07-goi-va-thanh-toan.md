@@ -33,6 +33,8 @@ All payments are **one-time payments** with no automatic renewal. The pricing sc
 
 **The number of children per plan** is checked by the database: the One-Child Plan allows up to 1 child; the trial, family, and lifetime plans are unlimited; without an active plan, you cannot add a new child profile.
 
+**Advanced plans with AI (coming soon).** The pricing dialog and the pricing page also show **Advanced plans with AI**: Family Plus monthly and yearly, with everything in the Family plan plus AI small-step suggestions and a weekly summary with more suggestions per day. These plans are **in development**: they have no price yet, cannot be bought, and their buttons are locked; prices and launch dates will be announced later, and the current plans do not change. See [AI suggestions](09-bao-mat-va-rieng-tu.md#goi-y-ai) for what data is sent.
+
 <a id="noi-mua"></a>
 ## Where to buy
 

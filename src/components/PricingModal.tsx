@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { PLAN_LOCALIZATION } from '@/lib/i18n/pricing-plan-copy';
+import { UpcomingPlans } from '@/components/public/UpcomingPlans';
 import { PRICING_PLANS } from '@/lib/payos';
 import { SubscriptionPlan } from '@/types';
 import { useTranslation } from '@/lib/i18n/context';
@@ -260,6 +261,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
             })}
           </div>
 
+          <UpcomingPlans />
         </div>
 
         <div className="flex justify-end px-4 py-3 sm:px-6 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/80">
