@@ -71,7 +71,7 @@ const COPY: Record<Language, PaymentErrorCopy> = {
     'No encontramos el pedido de pago. Si ya transferiste, contacta con soporte indicando el código del pedido.',
   ], 'No pudimos conectar con el servicio de pago. Esta acción no ha realizado ningún cobro. Inténtalo de nuevo.'),
   zh: copy('出现了问题', '重试', '无法复制，请长按并选择内容。', '如有推荐码，请在生成二维码前输入并应用。金额在创建订单时计算。', [
-    '所选套餐无效，请重新选择。', '暂时无法创建支付订单，请重试。', '暂时无法连接以检查付款，请重试；系统会继续自动检查。',
+    '所选方案无效，请重新选择。', '暂时无法创建支付订单，请重试。', '暂时无法连接以检查付款，请重试；系统会继续自动检查。',
     '请使用家长账户重新登录。', '暂时无法处理请求，请检查信息后重试。', '支付服务暂时不可用，请稍后重试。',
     '暂时无法检查付款状态，请稍等；系统会继续自动检查。', '未找到支付订单。如果已转账，请提供订单号联系支持。',
   ], '暂时无法连接支付系统。此操作没有扣款，请重试。'),

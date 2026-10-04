@@ -104,7 +104,7 @@ const COPY: Record<Language, AgeThemeCopy> = {
     styleCompanion: 'Con un compagno',
     switchStyle: 'Cambia stile',
     parentLabel: 'Schermo del bambino per età',
-    parentHelp: 'L’automatico in base all’età funziona meglio. Fissa una fascia per questo bambino oppure mantieni l’aspetto precedente. La scelta del genitore ha la precedenza su quella sul dispositivo del bambino.',
+    parentHelp: 'L’impostazione automatica in base all’età funziona meglio. Fissa una fascia per questo bambino oppure mantieni l’aspetto precedente. La scelta del genitore ha la precedenza su quella sul dispositivo del bambino.',
     optionAuto: 'Automatico per età',
     optionYoung: '3–8 anni',
     optionTween: '9–12 anni',

@@ -364,7 +364,7 @@ const it: AffiliateCopy = {
   tax: 'Le commissioni possono essere soggette all’imposta sul reddito delle persone fisiche; sei responsabile della dichiarazione secondo le norme vigenti.',
   entry: {
     prompt: 'Hai un codice invito da un amico?',
-    hint: 'Inserisci il codice di 8 caratteri per dare il merito al tuo amico e ricevere il 10% di sconto sul primo piano annuale. Può essere inserito una sola volta, finché la tua famiglia è nuova e non ha pagato.',
+    hint: 'Inserisci il codice di 8 caratteri per attribuire l’invito al tuo amico e ricevere il 10% di sconto sul primo piano annuale. Può essere inserito una sola volta, finché la tua famiglia è nuova e non ha pagato.',
     label: 'Codice invito',
     placeholder: 'Esempio K7M2QX9P',
     submit: 'Applica codice',
@@ -530,8 +530,8 @@ const zh: AffiliateCopy = {
     suspended: '推荐账户已暂停，请联系支持。',
     failed: '操作失败，请重试。',
     loadFailed: '无法加载推荐计划，请稍后重试。',
-    pinRequired: '请输入家长 PIN 后重试。',
-    pinNotSet: '请先在设置中设置家长 PIN，再保存收款信息或申请提现。',
+    pinRequired: '请输入家长PIN码后重试。',
+    pinNotSet: '请先在“系统设置”中设置家长PIN码，再保存收款信息或申请提现。',
   },
 };
 

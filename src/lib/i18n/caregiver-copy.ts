@@ -255,7 +255,7 @@ const COPY: Record<Language, CaregiverCopy> = {
     panelRevokeFailed: '招待を取り消せませんでした。',
     panelRevoked: '招待を取り消しました。',
     panelTitle: '見守り役を招待',
-    panelIntro: '招待された人は家族の進み具合を見るだけです。プロフィール、タスク、ポイント、プランは変更できません。',
+    panelIntro: '招待された人は家族の進み具合を見るだけです。プロフィール、ミッション、ポイント、プランは変更できません。',
     panelCreate: '見守り役の招待を作成',
     panelLinkLabel: '1回限りの招待リンク',
     panelLinkNote: 'リンクは今回だけ表示され、72時間後に無効になります。',

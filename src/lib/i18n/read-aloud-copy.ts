@@ -10,7 +10,7 @@ const COPY: Readonly<Record<Language, ReadAloudCopy>> = {
   it: { read: 'Ascolta questo compito', stop: 'Ferma la lettura' },
   es: { read: 'Escuchar esta tarea', stop: 'Detener la lectura' },
   zh: { read: '朗读这个任务', stop: '停止朗读' },
-  ja: { read: 'このタスクを読み上げる', stop: '読み上げを止める' },
+  ja: { read: 'このミッションを読み上げる', stop: '読み上げを止める' },
   ko: { read: '이 할 일 소리 내어 읽기', stop: '읽기 멈추기' },
 };
 

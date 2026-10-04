@@ -2,7 +2,7 @@ import type { HelpTranslationTable } from './help-topic-id';
 import type { HelpText } from './help-topics';
 
 export const HELP_TOPICS_IT: HelpTranslationTable<HelpText> = {
-  'today.card': { title: 'Oggi del bambino', text: 'Un riepilogo di oggi: attività completate rispetto a quelle in programma, serie attiva e ciò che richiede il tuo intervento. Con più bambini, scegline uno nella riga qui sopra.' },
+  'today.card': { title: 'La giornata del bambino', text: 'Un riepilogo di oggi: attività completate rispetto a quelle in programma, serie attiva e ciò che richiede il tuo intervento. Con più bambini, scegline uno nella riga qui sopra.' },
   'approvals.tasks': { title: 'Attività in attesa di approvazione', text: 'Attività segnate come completate dal bambino e impostate come "richiedono approvazione". Tocca Approva per assegnare le stelle; Rifiuta non ne assegna. Serve il PIN, se impostato.' },
   'approvals.rewards': { title: 'Richieste di premio', text: 'Premi richiesti dal bambino: le stelle sono state detratte al momento della richiesta. Approva e poi consegna il premio. Se rifiuti, le stelle vengono restituite.' },
   'support.prompt': { title: 'Com’è andata oggi?', text: 'Facoltativo. Indica se il bambino ha svolto un’abitudine da solo, con un promemoria o insieme a te, così l’app sa quando ridurre il supporto. Non viene usato per confrontare i bambini.' },
@@ -44,15 +44,15 @@ export const HELP_TOPICS_IT: HelpTranslationTable<HelpText> = {
   'children.ageTheme': { title: 'Aspetto in base all’età', text: 'La schermata del bambino si adatta all’età. Puoi fissare una fascia o mantenere l’aspetto precedente; la tua scelta prevale su quella del bambino.' },
   'children.pairing': { title: 'Codice di connessione', text: 'Ogni bambino ha un codice fisso che apre solo il suo profilo. Scansiona il QR o inserisci il codice sul suo dispositivo. Serve il PIN, se impostato.' },
   'children.regenerate': { title: 'Nuovo codice', text: 'Un nuovo codice rende inutilizzabile quello precedente. Fallo solo se pensi che il codice sia stato divulgato. Serve il PIN.' },
-  'children.adjustPoints': { title: 'Aggiungi o togli stelle', text: 'Assegna o detrai stelle (numero positivo o negativo), con una breve motivazione. Serve il PIN. Per riconoscere ciò che esula dalle attività assegnate.' },
+  'children.adjustPoints': { title: 'Aggiungi o togli stelle', text: 'Assegna o detrai stelle (numero positivo o negativo), con una breve motivazione. Serve il PIN. Usalo per riconoscere ciò che va oltre le attività assegnate.' },
   'children.ageBundle': { title: 'Pacchetto iniziale per età', text: 'Carica con un tocco sei attività iniziali adatte all’età del bambino. In seguito puoi modificarle o eliminarle.' },
 
   'settings.devices': { title: 'Dispositivi dei bambini', text: 'I dispositivi associati, il proprietario e l’ultimo accesso. Revoca subito l’accesso se un dispositivo viene perso o non viene più usato (serve il PIN).' },
   'settings.pwa': { title: 'Installa l’app', text: 'Aggiungi KidHabit alla schermata Home per aprirlo come un’app. Su iPhone: Safari → Condividi → Aggiungi a Home.' },
-  'settings.caregivers': { title: 'Persone che si prendono cura dei bambini', text: 'Invita nonni o familiari a vedere i progressi con un link monouso che scade dopo 72 ore. Possono solo visualizzare. Revoca l’invito in qualsiasi momento.' },
+  'settings.caregivers': { title: 'Persone di supporto', text: 'Invita nonni o familiari a vedere i progressi con un link monouso che scade dopo 72 ore. Possono solo visualizzare. Revoca l’invito in qualsiasi momento.' },
   'settings.pause': { title: 'Pausa della famiglia', text: 'Quando la famiglia ha bisogno di riposare, scegli Fai una pausa: i promemoria sui progressi e le serie vengono nascosti, la serie non si interrompe e non perdi stelle o premi. Riprendi quando siete pronti.' },
   'settings.account': { title: 'Dati del cliente', text: 'Nome e telefono per l’assistenza su account e pagamenti. Puoi attivare o disattivare le offerte in qualsiasi momento.' },
-  'settings.coupon': { title: 'Codice regalo', text: 'Inserisci un codice regalo per aggiungere giorni di utilizzo. Ogni famiglia lo usa una volta; troppi tentativi errati lo bloccano per alcuni minuti.' },
+  'settings.coupon': { title: 'Codice regalo', text: 'Inserisci un codice regalo per aggiungere giorni di utilizzo. Ogni codice può essere usato una sola volta per famiglia; troppi tentativi errati lo bloccano per alcuni minuti.' },
   'settings.referralCode': { title: 'Codice di invito', text: 'Se ti ha invitato un amico, inserisci il codice di 8 caratteri per ottenere il 10% di sconto sul primo piano annuale. Solo mentre la famiglia è nuova e non ha ancora pagato.' },
   'settings.affiliate': { title: 'Invita amici', text: 'Condividi il tuo link per guadagnare una commissione del 30% quando una nuova famiglia paga. La commissione resta bloccata per 35 giorni; il pagamento minimo è di 200.000 VND e serve il PIN.' },
   'settings.familyData': { title: 'Dati della famiglia', text: 'Scarica una copia JSON dei dati della famiglia. Non contiene il PIN né i dati di pagamento, ma contiene i dati dei tuoi bambini: conservala in privato.' },
