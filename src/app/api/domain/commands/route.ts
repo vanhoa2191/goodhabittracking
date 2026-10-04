@@ -5,6 +5,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 import { requireParentUnlock } from '@/lib/security/parent-unlock';
+import { callParentRpc } from '@/lib/security/parent-rpc';
 
 export const runtime = 'nodejs';
 
@@ -76,12 +77,16 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = await createServerSupabaseClient();
-  if (parsed.data.type === 'reviewHabit' || parsed.data.type === 'reviewHabits' || parsed.data.type === 'transitionRedemption' || parsed.data.type === 'adjustPoints') {
+  const needsPin = parsed.data.type === 'reviewHabit' || parsed.data.type === 'reviewHabits' || parsed.data.type === 'transitionRedemption' || parsed.data.type === 'adjustPoints';
+  if (needsPin) {
     const locked = await requireParentUnlock(request, parent, supabase);
     if (locked) return locked;
   }
   const rpc = rpcFor(parsed.data);
-  const { data, error } = await supabase.rpc(rpc.name, rpc.args);
+  // The four PIN-protected commands are callable by the server only; the rest stay with the signed-in user.
+  const { data, error } = needsPin
+    ? await callParentRpc(parent.user.id, rpc.name, rpc.args)
+    : await supabase.rpc(rpc.name, rpc.args);
   if (error) {
     logOperationalEvent('error', { operation: parsed.data.type, reasonCode: error.code || 'command_failed', correlationId, route: request.nextUrl.pathname, status: 409 });
     return NextResponse.json({ success: false, error: 'The change could not be saved.', correlationId }, { status: 409 });

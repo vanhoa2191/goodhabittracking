@@ -1,9 +1,10 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getParentContext, rpc, upsert, from } = vi.hoisted(() => ({
+const { getParentContext, rpc, adminRpc, upsert, from } = vi.hoisted(() => ({
   getParentContext: vi.fn(),
   rpc: vi.fn(),
+  adminRpc: vi.fn(),
   upsert: vi.fn(),
   from: vi.fn(),
 }));
@@ -12,6 +13,8 @@ vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/supabase/server', () => ({
   createServerSupabaseClient: vi.fn(async () => ({ rpc, from })),
 }));
+
+vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ rpc: adminRpc })) }));
 
 vi.mock('@/lib/security/parent-unlock', () => ({
   requireParentUnlock: vi.fn(async () => null),
@@ -33,6 +36,7 @@ describe('privacy lifecycle APIs', () => {
     vi.clearAllMocks();
     getParentContext.mockResolvedValue({ familyId: 'family-a', user: { id: 'user-a' }, role: 'owner' });
     rpc.mockResolvedValue({ error: null });
+    adminRpc.mockResolvedValue({ error: null });
     upsert.mockResolvedValue({ error: null });
     from.mockReturnValue({ upsert });
   });
@@ -41,17 +45,20 @@ describe('privacy lifecycle APIs', () => {
     const invalid = await DELETE(request('/api/family', 'DELETE', { confirmation: 'DELETE' }));
     expect(invalid.status).toBe(400);
     expect(rpc).not.toHaveBeenCalled();
+    expect(adminRpc).not.toHaveBeenCalled();
 
     getParentContext.mockResolvedValue({ familyId: 'family-a', user: { id: 'user-a' }, role: 'member' });
     const member = await DELETE(request('/api/family', 'DELETE', { confirmation: 'DELETE FAMILY' }));
     expect(member.status).toBe(403);
     expect(rpc).not.toHaveBeenCalled();
+    expect(adminRpc).not.toHaveBeenCalled();
   });
 
   it('uses the owner-only database function for confirmed deletion', async () => {
     const response = await DELETE(request('/api/family', 'DELETE', { confirmation: 'DELETE FAMILY' }));
     expect(response.status).toBe(200);
-    expect(rpc).toHaveBeenCalledWith('delete_owned_family', { confirmation: 'DELETE FAMILY' });
+    expect(adminRpc).toHaveBeenCalledWith('delete_owned_family_as', { actor_user_id: 'user-a', confirmation: 'DELETE FAMILY' });
+    expect(rpc).not.toHaveBeenCalledWith('delete_owned_family', expect.anything());
   });
 
   it('records both required consent scopes for the authenticated family', async () => {

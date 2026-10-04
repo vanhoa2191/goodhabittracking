@@ -4,6 +4,7 @@ import { getParentContext } from '@/lib/auth/parent-context';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { requireParentUnlock } from '@/lib/security/parent-unlock';
+import { callParentRpc } from '@/lib/security/parent-rpc';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { AI_LIMITS, AI_POLICY_VERSION, type AiKind } from './config';
 import type { ChatMessage } from './prompts';
@@ -68,7 +69,7 @@ export async function handleAiRequest<Input, Output>(request: NextRequest, spec:
   const messages = spec.buildMessages(prepared);
   if (!messages) return code(400, 'Invalid request.');
 
-  const quota = await supabase.rpc('consume_ai_quota', {
+  const quota = await callParentRpc(parent.user.id, 'consume_ai_quota', {
     per_day: AI_LIMITS.perFamilyPerDay,
     system_per_day: AI_LIMITS.systemPerDay,
     min_gap_seconds: AI_LIMITS.minSecondsBetweenCalls,
