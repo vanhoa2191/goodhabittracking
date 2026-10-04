@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { CheckCircle2, CreditCard, ShieldCheck } from 'lucide-react';
 import { PublicMarketingPage } from '@/components/PublicMarketingPage';
 import { PRICING_PLANS } from '@/lib/payos';
+import { UpcomingPlans } from './UpcomingPlans';
 import { formatCurrency } from '@/lib/i18n/formatters';
 import { useTranslation } from '@/lib/i18n/context';
 import { getPublicPricingCopy } from '@/lib/i18n/public-pricing-copy';
@@ -45,6 +46,8 @@ export function PricingContent({ isVietnam }: { readonly isVietnam: boolean }) {
           </article>
         ))}
       </div>
+
+      <UpcomingPlans />
 
       <section className="mt-6 grid gap-4 rounded-3xl border border-slate-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900 sm:grid-cols-2">
         <div className="flex gap-3"><ShieldCheck aria-hidden="true" className="h-7 w-7 shrink-0 text-emerald-600" /><div><h2 className="font-black">{copy.renewalTitle}</h2><p className="mt-1 text-sm leading-6 text-slate-700 dark:text-slate-300">{copy.renewal}</p></div></div>

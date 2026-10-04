@@ -33,6 +33,8 @@ Tất cả là **thanh toán một lần**, không tự động gia hạn. Màn 
 
 **Số bé theo gói** do cơ sở dữ liệu kiểm tra: Gói Một Bé tối đa 1 bé; dùng thử, gói gia đình và trọn đời không giới hạn; không có gói hiệu lực thì không thêm được hồ sơ bé mới.
 
+**Gói nâng cao với AI (sắp ra mắt).** Trong Bảng giá và trang giá có thêm mục **Gói nâng cao với AI**: Gia Đình Plus theo tháng và theo năm, gồm mọi thứ của Gói Gia Đình cộng gợi ý bước nhỏ và tóm tắt tuần bằng AI với nhiều lượt gợi ý mỗi ngày hơn. Các gói này **đang phát triển**: chưa có giá, chưa mua được, nút bấm bị khóa; giá và ngày ra mắt sẽ công bố sau, và các gói hiện tại không thay đổi. Xem [Gợi ý bằng AI](09-bao-mat-va-rieng-tu.md#goi-y-ai) để biết dữ liệu nào được gửi.
+
 <a id="noi-mua"></a>
 ## Nơi mua
 

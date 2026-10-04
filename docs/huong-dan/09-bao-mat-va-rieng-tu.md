@@ -63,7 +63,7 @@ Mã giới thiệu được lưu trong cookie `kidhabit_ref` 60 ngày (xóa khi 
 <a id="goi-y-ai"></a>
 ## Gợi ý bằng AI
 
-Đang được bật dần và **mặc định tắt**; chỉ hiện khi bạn đồng ý ở Cài đặt → Quyền riêng tư (thẻ **Gợi ý bằng AI**). Khi bạn bấm một nút gợi ý, ứng dụng nhờ một mô hình AI (Cloudflare Workers AI) soạn nháp:
+Tính năng này **đang phát triển**: hiện ứng dụng chỉ cho thấy nhãn **Sắp ra mắt** (ở Cài đặt → Quyền riêng tư, trong form thói quen và trong thẻ nhìn lại tuần) và chưa gửi gì tới AI. Khi ra mắt, nó **mặc định tắt** và chỉ hiện khi bạn đồng ý ở Cài đặt → Quyền riêng tư (thẻ **Gợi ý bằng AI**). Khi bạn bấm một nút gợi ý, ứng dụng nhờ một mô hình AI (Cloudflare Workers AI) soạn nháp:
 
 - **Gợi ý bước nhỏ bằng AI** (trong form thói quen): chỉ gửi **tên thói quen bạn vừa gõ** (đã bỏ đường liên kết, email, số điện thoại) và nhóm tuổi.
 - **Tóm tắt tuần bằng AI**: chỉ gửi **các con số của tuần** (số lần tự làm, cần nhắc, làm cùng, chưa làm), không có tên thói quen hay tên bé.

@@ -63,7 +63,7 @@ The referral code is stored in the `kidhabit_ref` cookie for 60 days (and delete
 <a id="goi-y-ai"></a>
 ## AI suggestions
 
-This is being switched on gradually and is **off by default**; it only appears once you agree under Settings → Privacy (the **AI suggestions** card). When you tap a suggestion button, the app asks an AI model (Cloudflare Workers AI) to draft something:
+This feature is **in development**: for now the app only shows a **Coming soon** label (under Settings → Privacy, in the habit form and in the weekly look-back card) and sends nothing to any AI. When it launches it will be **off by default** and only appear once you agree under Settings → Privacy (the **AI suggestions** card). When you tap a suggestion button, the app asks an AI model (Cloudflare Workers AI) to draft something:
 
 - **Suggest small steps with AI** (in the habit form): only **the habit name you just typed** (with links, emails and phone numbers removed) and an age band are sent.
 - **Summarise the week with AI**: only **the week’s counts** (done alone, with a reminder, together, not done) are sent, with no habit names and no child’s name.

@@ -20,10 +20,20 @@ export type AiCopy = {
   readonly summaryWorking: string;
   readonly summaryTitle: string;
   readonly needConsent: string;
+  readonly soonBadge: string;
+  readonly soonTitle: string;
+  readonly soonBody: string;
+  readonly soonBreakdown: string;
+  readonly soonSummary: string;
   readonly errors: Readonly<Record<AiFailureCode, string>>;
 };
 
 const vi: AiCopy = {
+  soonBadge: 'Sắp ra mắt',
+  soonTitle: 'Gợi ý bằng AI',
+  soonBody: 'Đang phát triển: chia nhỏ một thói quen thành các bước dễ làm và tóm tắt tuần. Sẽ mặc định tắt, chỉ chạy khi bạn đồng ý, và không bao giờ gửi tên hay nhật ký của bé.',
+  soonBreakdown: 'Gợi ý bước nhỏ bằng AI',
+  soonSummary: 'Tóm tắt tuần bằng AI',
   consentTitle: 'Gợi ý bằng AI',
   consentIntro: 'Khi bạn bấm, ứng dụng nhờ một mô hình AI (Cloudflare Workers AI) soạn gợi ý. Mặc định tắt, bạn rút lại được bất cứ lúc nào.',
   consentSends: 'Chỉ gửi: tên một thói quen bạn vừa gõ (để chia nhỏ việc; ứng dụng tự xóa tên các bé nếu bạn lỡ gõ vào, nhưng bạn đừng gõ tên bé) hoặc các con số của tuần (để tóm tắt tuần).',
@@ -55,6 +65,11 @@ const vi: AiCopy = {
 };
 
 const en: AiCopy = {
+  soonBadge: 'Coming soon',
+  soonTitle: 'AI suggestions',
+  soonBody: 'In development: splitting a habit into easy steps and summarising the week. It will be off by default, run only when you agree, and never send your child’s name or journal.',
+  soonBreakdown: 'Suggest small steps with AI',
+  soonSummary: 'Summarise the week with AI',
   consentTitle: 'AI suggestions',
   consentIntro: 'When you tap a button, the app asks an AI model (Cloudflare Workers AI) to draft a suggestion. Off by default, and you can withdraw at any time.',
   consentSends: 'Only sent: the name of a habit you just typed (to split it into steps; the app removes your children’s names if you type them, but please do not) or the week’s counts (to summarise the week).',
@@ -86,6 +101,11 @@ const en: AiCopy = {
 };
 
 const fr: AiCopy = {
+  soonBadge: 'Bientôt disponible',
+  soonTitle: 'Suggestions par IA',
+  soonBody: 'En développement : découper une habitude en petites étapes et résumer la semaine. Désactivé par défaut, uniquement avec votre accord, sans jamais envoyer le nom ni le journal de votre enfant.',
+  soonBreakdown: 'Suggérer de petites étapes par IA',
+  soonSummary: 'Résumer la semaine par IA',
   consentTitle: 'Suggestions par IA', consentIntro: 'Lorsque vous appuyez sur un bouton, l’application demande à un modèle d’IA (Cloudflare Workers AI) de rédiger une suggestion. Désactivé par défaut, vous pouvez retirer votre accord à tout moment.',
   consentSends: 'Seuls sont envoyés : le nom d’une habitude que vous venez de saisir (pour la découper en étapes ; l’application supprime les noms de vos enfants si vous en saisissez, mais merci de ne pas le faire) ou les nombres de la semaine (pour la résumer).',
   consentNever: 'Ne sont jamais envoyés : le nom ou le surnom de votre enfant, son journal, ses écrits, des photos ou votre adresse e-mail.',
@@ -95,6 +115,11 @@ const fr: AiCopy = {
 };
 
 const de: AiCopy = {
+  soonBadge: 'Demnächst verfügbar',
+  soonTitle: 'KI-Vorschläge',
+  soonBody: 'In Entwicklung: eine Gewohnheit in leichte Schritte aufteilen und die Woche zusammenfassen. Standardmäßig aus, nur mit Ihrer Zustimmung, und Name oder Tagebuch Ihres Kindes werden nie gesendet.',
+  soonBreakdown: 'Kleine Schritte per KI vorschlagen',
+  soonSummary: 'Woche per KI zusammenfassen',
   consentTitle: 'KI-Vorschläge', consentIntro: 'Wenn Sie auf eine Schaltfläche tippen, bittet die App ein KI-Modell (Cloudflare Workers AI), einen Vorschlag zu formulieren. Standardmäßig ausgeschaltet; Sie können Ihre Zustimmung jederzeit widerrufen.',
   consentSends: 'Gesendet werden nur: der Name einer Gewohnheit, den Sie gerade eingegeben haben (um sie in Schritte aufzuteilen; die App entfernt Namen Ihrer Kinder, falls Sie sie eingeben, bitte tun Sie das dennoch nicht) oder die Wochenzahlen (für eine Wochenzusammenfassung).',
   consentNever: 'Niemals gesendet werden: Name oder Spitzname Ihres Kindes, Tagebuch, Texte Ihres Kindes, Fotos oder Ihre E-Mail-Adresse.',
@@ -104,6 +129,11 @@ const de: AiCopy = {
 };
 
 const it: AiCopy = {
+  soonBadge: 'In arrivo',
+  soonTitle: 'Suggerimenti con IA',
+  soonBody: 'In sviluppo: dividere un’abitudine in passi facili e riassumere la settimana. Sarà disattivato per impostazione predefinita, attivo solo con il Suo consenso, e non invierà mai il nome né il diario del bambino.',
+  soonBreakdown: 'Suggerisci piccoli passi con l’IA',
+  soonSummary: 'Riassumi la settimana con l’IA',
   consentTitle: 'Suggerimenti con IA', consentIntro: 'Quando tocca un pulsante, l’app chiede a un modello di IA (Cloudflare Workers AI) di formulare un suggerimento. È disattivato per impostazione predefinita e può revocare il consenso in qualsiasi momento.',
   consentSends: 'Vengono inviati solo: il nome di un’abitudine appena digitato (per suddividerla in passaggi; l’app rimuove i nomi dei figli se li inserisce, ma la preghiamo di non farlo) oppure i numeri della settimana (per riassumerla).',
   consentNever: 'Non vengono mai inviati: nome o soprannome del figlio, diario, testi scritti dal figlio, foto o il suo indirizzo e-mail.',
@@ -113,6 +143,11 @@ const it: AiCopy = {
 };
 
 const es: AiCopy = {
+  soonBadge: 'Próximamente',
+  soonTitle: 'Sugerencias con IA',
+  soonBody: 'En desarrollo: dividir un hábito en pasos fáciles y resumir la semana. Estará desactivado por defecto, solo con su consentimiento, y nunca enviará el nombre ni el diario de su hijo o hija.',
+  soonBreakdown: 'Sugerir pasos pequeños con IA',
+  soonSummary: 'Resumir la semana con IA',
   consentTitle: 'Sugerencias con IA', consentIntro: 'Al pulsar un botón, la aplicación pide a un modelo de IA (Cloudflare Workers AI) que redacte una sugerencia. Está desactivado de forma predeterminada y puede retirar su consentimiento en cualquier momento.',
   consentSends: 'Solo se envían: el nombre de un hábito que acaba de escribir (para dividirlo en pasos; la aplicación elimina los nombres de sus hijos si los escribe, pero le rogamos que no lo haga) o los recuentos de la semana (para resumirla).',
   consentNever: 'Nunca se envían: el nombre o apodo de su hijo, su diario, textos escritos por su hijo, fotos ni su correo electrónico.',
@@ -122,6 +157,11 @@ const es: AiCopy = {
 };
 
 const zh: AiCopy = {
+  soonBadge: '即将推出',
+  soonTitle: 'AI 建议',
+  soonBody: '开发中：把一个习惯拆成容易完成的小步骤，并总结一周情况。默认关闭，只有在您同意后才会运行，绝不会发送孩子的姓名或日记。',
+  soonBreakdown: '用 AI 建议小步骤',
+  soonSummary: '用 AI 总结本周',
   consentTitle: 'AI 建议', consentIntro: '点击按钮时，应用会请 AI 模型（Cloudflare Workers AI）拟写建议。默认关闭，您可以随时撤回同意。',
   consentSends: '仅发送：您刚输入的习惯名称（用于拆分步骤；如果您输入了孩子的姓名，应用会将其删除，但请不要输入）或本周的计数（用于总结本周）。',
   consentNever: '绝不会发送：孩子的姓名或昵称、日记、孩子写的内容、照片或您的电子邮箱。',
@@ -131,6 +171,11 @@ const zh: AiCopy = {
 };
 
 const ja: AiCopy = {
+  soonBadge: '近日公開',
+  soonTitle: 'AI による提案',
+  soonBody: '開発中：習慣を取り組みやすい小さなステップに分けたり、1週間をまとめたりします。初期設定はオフで、同意した場合にのみ動作し、お子さまの名前や日記は送信しません。',
+  soonBreakdown: 'AI で小さなステップを提案',
+  soonSummary: 'AI で今週をまとめる',
   consentTitle: 'AI の提案', consentIntro: 'ボタンを押すと、アプリが AI モデル（Cloudflare Workers AI）に提案文の作成を依頼します。初期設定ではオフです。同意はいつでも撤回できます。',
   consentSends: '送信されるのは、入力したばかりの習慣名（手順に分けるため。お子さまの名前を入力した場合はアプリが削除しますが、入力しないでください）または今週の回数（週のまとめ用）のみです。',
   consentNever: 'お子さまの名前やニックネーム、日記、お子さまが書いた文章、写真、保護者のメールアドレスは送信されません。',
@@ -140,6 +185,11 @@ const ja: AiCopy = {
 };
 
 const ko: AiCopy = {
+  soonBadge: '곧 출시',
+  soonTitle: 'AI 제안',
+  soonBody: '개발 중: 습관을 쉬운 단계로 나누고 한 주를 요약합니다. 기본값은 꺼짐이며, 동의하신 경우에만 작동하고 자녀의 이름이나 일기는 절대 보내지 않습니다.',
+  soonBreakdown: 'AI로 작은 단계 제안',
+  soonSummary: 'AI로 주간 요약',
   consentTitle: 'AI 제안', consentIntro: '버튼을 누르면 앱이 AI 모델(Cloudflare Workers AI)에 제안 작성을 요청합니다. 기본 설정은 꺼짐이며 언제든 동의를 철회할 수 있습니다.',
   consentSends: '전송되는 정보는 방금 입력한 습관 이름(단계로 나누기 위한 용도이며, 자녀 이름을 입력하면 앱이 삭제하지만 입력하지 말아 주세요) 또는 이번 주 횟수(주간 요약용)뿐입니다.',
   consentNever: '자녀의 이름이나 별명, 일기, 자녀가 쓴 글, 사진, 보호자 이메일은 절대 전송되지 않습니다.',
