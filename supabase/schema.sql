@@ -62,3 +62,4 @@
 \ir migrations/202610040003_habit_coach.sql
 \ir migrations/202610040004_parent_ai.sql
 \ir migrations/202610050001_pin_gated_server_wrappers.sql
+\ir migrations/202610050002_close_pin_gated_originals.sql
