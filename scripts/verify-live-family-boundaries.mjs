@@ -382,11 +382,19 @@ try {
   assert(Boolean(anonymousAdjustment.error), 'Anonymous point adjustment unexpectedly succeeded.');
   const crossAdjustment = await accounts[1].client.rpc('adjust_child_points_command', adjustmentArguments);
   assert(Boolean(crossAdjustment.error), 'Cross-family point adjustment was not denied.');
-  const ownAdjustment = await accounts[0].client.rpc('adjust_child_points_command', adjustmentArguments);
+  // The PIN is checked by the API route, so the function is closed to every signed-in user and only the server can
+  // run it, naming the parent it acts for.
+  const ownDirect = await accounts[0].client.rpc('adjust_child_points_command', adjustmentArguments);
+  assert(Boolean(ownDirect.error), 'A signed-in user could call the point adjustment directly, skipping the PIN.');
+  const ownDirectWrapper = await accounts[0].client.rpc('adjust_child_points_command_as', { actor_user_id: userIds[0], ...adjustmentArguments });
+  assert(Boolean(ownDirectWrapper.error), 'A signed-in user could call the server-only point adjustment.');
+  const crossAdjustmentAsServer = await admin.rpc('adjust_child_points_command_as', { actor_user_id: userIds[1], ...adjustmentArguments });
+  assert(Boolean(crossAdjustmentAsServer.error), 'The server acting for another family was not denied.');
+  const ownAdjustment = await admin.rpc('adjust_child_points_command_as', { actor_user_id: userIds[0], ...adjustmentArguments });
   assert(!ownAdjustment.error && ownAdjustment.data?.status === 'adjusted', 'Same-family point adjustment failed.');
-  const repeatedAdjustment = await accounts[0].client.rpc('adjust_child_points_command', adjustmentArguments);
+  const repeatedAdjustment = await admin.rpc('adjust_child_points_command_as', { actor_user_id: userIds[0], ...adjustmentArguments });
   assert(repeatedAdjustment.data?.status === 'duplicate', 'A repeated adjustment command was applied twice.');
-  const tooMuch = await accounts[0].client.rpc('adjust_child_points_command', { ...adjustmentArguments, amount: 5000, command_id: randomUUID() });
+  const tooMuch = await admin.rpc('adjust_child_points_command_as', { actor_user_id: userIds[0], ...adjustmentArguments, amount: 5000, command_id: randomUUID() });
   assert(Boolean(tooMuch.error), 'An out-of-range point adjustment was accepted.');
 
   const supportArguments = { target_family_id: familyIds[0], target_log_id: programLogId, target_level: 'alone' };
@@ -508,6 +516,10 @@ try {
     ...adjustmentArguments, command_id: randomUUID(),
   });
   assert(Boolean(caregiverCommand.error), 'Caregiver manager command succeeded.');
+  const caregiverAsServer = await admin.rpc('adjust_child_points_command_as', {
+    actor_user_id: caregiverId, ...adjustmentArguments, command_id: randomUUID(),
+  });
+  assert(Boolean(caregiverAsServer.error), 'The server acting for a caregiver was allowed to adjust points.');
 
   successMessage = 'Live family boundary verification passed: anonymous access denied, same-family access allowed, cross-family access denied, caregiver aggregate-only progress and read-only boundaries enforced, including habit programs.\n';
 } finally {
