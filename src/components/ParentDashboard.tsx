@@ -29,6 +29,7 @@ import { ParentRewardsTab } from './ParentRewardsTab';
 const ParentJourneysTab = dynamic(() => import('./ParentJourneysTab').then((module) => module.ParentJourneysTab));
 import { ParentHabitsTab } from './ParentHabitsTab';
 // The children tab draws pairing QR codes in the browser only, so its code (and the PNG encoder behind it) stays out of the server worker.
+const AiComingSoonButton = dynamic(() => import('./ai/AiComingSoon').then((module) => module.AiComingSoonButton), { ssr: false });
 const BreakdownButton = dynamic(() => import('./ai/BreakdownButton').then((module) => module.BreakdownButton), { ssr: false });
 const ParentChildrenTab = dynamic(() => import('./ParentChildrenTab').then((module) => module.ParentChildrenTab), { ssr: false });
 import { ParentNavigation } from './ParentNavigation';
@@ -436,6 +437,7 @@ export function ParentDashboard() {
                   placeholder={chromeCopy.habitInstructionsPlaceholder}
                   className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800"
                 />
+                {!defaultExperienceFlags.parentAi && <div className="mt-2"><AiComingSoonButton kind="breakdown" /></div>}
                 {currentUser && defaultExperienceFlags.parentAi && (
                   <div className="mt-2">
                     <BreakdownButton
