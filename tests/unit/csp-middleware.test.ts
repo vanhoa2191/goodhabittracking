@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { config, middleware } from '@/middleware';
 
 function policyFor(path = '/') {
@@ -15,6 +15,8 @@ function nonceOf(policy: string): string {
 }
 
 describe('content security policy middleware', () => {
+  afterEach(() => vi.unstubAllEnvs());
+
   it('allows scripts only by a per-request nonce, never by unsafe-inline', () => {
     const { policy } = policyFor();
     const scriptSources = policy.split('; ').find((directive) => directive.startsWith('script-src')) ?? '';
@@ -45,6 +47,17 @@ describe('content security policy middleware', () => {
       'upgrade-insecure-requests',
     ]) {
       expect(policy).toContain(directive);
+    }
+  });
+
+  it('keeps upgrading insecure requests in production, and only the plain-http development server skips it', () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    expect(policyFor().policy).toContain('upgrade-insecure-requests');
+    vi.stubEnv('NODE_ENV', 'development');
+    const development = policyFor().policy;
+    expect(development).not.toContain('upgrade-insecure-requests');
+    for (const directive of ["default-src 'self'", "frame-ancestors 'none'", "object-src 'none'", "form-action 'self'"]) {
+      expect(development).toContain(directive);
     }
   });
 
