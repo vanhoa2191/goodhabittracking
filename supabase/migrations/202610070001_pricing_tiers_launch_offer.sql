@@ -277,7 +277,11 @@ begin
         updated_at = now();
 
   if target_order.plan_id = 'yearly' then
-    perform public.claim_launch_offer(target_order.family_id, target_order.order_code);
+    begin
+      perform public.claim_launch_offer(target_order.family_id, target_order.order_code);
+    exception when others then
+      raise warning 'launch offer claim skipped for order %: %', target_order.order_code, sqlerrm;
+    end;
   end if;
 
   perform public.accrue_referral_commission(target_order.order_code);
@@ -430,4 +434,3 @@ revoke all on function public.admin_retention_snapshot() from public, anon, auth
 grant execute on function public.admin_retention_snapshot() to service_role;
 
 commit;
-

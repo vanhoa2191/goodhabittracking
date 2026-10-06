@@ -71,6 +71,12 @@ describe('pricing tiers and launch offer migration', () => {
     expect(migration).toContain('order_code bigint not null unique');
   });
 
+  it('guards launch offer claim failures so payment settlement can continue', () => {
+    expect(definition('process_payos_webhook')).toMatch(
+      /if target_order\.plan_id = 'yearly' then\s+begin\s+perform public\.claim_launch_offer\(target_order\.family_id, target_order\.order_code\);\s+exception when others then\s+raise warning 'launch offer claim skipped for order %: %', target_order\.order_code, sqlerrm;\s+end;\s+end if;/,
+    );
+  });
+
   it('exposes only the remaining count publicly', () => {
     const remaining = definition('launch_offer_remaining');
     expect(remaining).toContain('returns integer');

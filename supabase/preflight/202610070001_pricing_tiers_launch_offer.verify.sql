@@ -168,8 +168,8 @@ begin
   if claim_count <> 10 or public.launch_offer_remaining('pro_plus_founding') is distinct from 0
     or exists (
       select 1 from public.launch_offer_claims claim
-      join pricing_verification_families fixture on fixture.family_id = claim.family_id
-      where fixture.ordinal = 13
+      join pricing_verification_families verification_family on verification_family.family_id = claim.family_id
+      where verification_family.ordinal = 13
     ) then raise exception 'Eleven paying families must receive only the first ten claims'; end if;
   raise notice 'Eleven yearly-paying families: active_claims=%, remaining=0', claim_count;
 
@@ -196,8 +196,8 @@ begin
   perform pg_temp.verify_pricing_payment(15, 'yearly');
   if exists (
     select 1 from public.launch_offer_claims claim
-    join pricing_verification_families fixture on fixture.family_id = claim.family_id
-    where fixture.ordinal in (14, 15)
+    join pricing_verification_families verification_family on verification_family.family_id = claim.family_id
+    where verification_family.ordinal in (14, 15)
   ) or public.launch_offer_remaining('pro_plus_founding') is distinct from 0
     or public.launch_offer_remaining('unknown_offer') is distinct from 0 then
     raise exception 'Closed, unopened and unknown offers must not grant or expose slots';
