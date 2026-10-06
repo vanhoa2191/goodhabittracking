@@ -25,7 +25,7 @@ export function UpcomingPlans() {
             <p className="mt-3 rounded-2xl bg-white px-3 py-2 text-sm font-bold text-slate-700 dark:bg-zinc-900 dark:text-slate-200">{copy.priceSoon}</p>
             <p className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">{copy.includes}</p>
             <ul className="mt-2 flex-1 space-y-2">
-              {copy.features.map((feature) => (
+              {[copy.coachFeature, ...copy.features].map((feature) => (
                 <li key={feature} className="flex gap-2 text-sm font-medium text-slate-700 dark:text-slate-200"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-indigo-500" />{feature}</li>
               ))}
             </ul>

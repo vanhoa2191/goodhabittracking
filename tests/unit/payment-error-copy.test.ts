@@ -17,7 +17,7 @@ describe('payment translations', () => {
       expect(copy[field].trim().length).toBeGreaterThan(0);
     }
     expect(copy.status.network).not.toBe(copy.create.network);
-    for (const planId of ['solo_monthly', 'monthly', 'yearly'] as const) {
+    for (const planId of ['solo_monthly', 'solo_yearly', 'monthly', 'yearly'] as const) {
       const plan = PLAN_LOCALIZATION[planId][language];
       for (const value of [plan.name, plan.desc, plan.period, ...getCheckoutPlanFeatures(planId, language)]) {
         expect(value.trim().length).toBeGreaterThan(0);

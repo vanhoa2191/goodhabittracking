@@ -62,7 +62,7 @@ test('approved checkout waits for explicit policy acceptance before creating an 
   await page.goto('/');
   await (await getVisiblePricingOpener(page)).click();
   const pricing = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
-  await pricing.getByRole('button', { name: 'Chọn Gói Gia Đình · Tháng' }).click();
+  await pricing.getByRole('button', { name: 'Chọn Gói Pro · Tháng' }).click();
   const checkout = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
   await expect(checkout.getByLabel('Số điện thoại', { exact: true })).toBeVisible();
   expect(createRequests).toBe(0);

@@ -63,7 +63,7 @@ export const HELP_TOPICS_ZH: HelpTranslationTable<HelpText> = {
   'settings.theme': { title: '显示模式', text: '浅色、深色或跟随设备。' },
   'settings.pin': { title: 'PIN码', text: '用于保护家长管理区域的4位数字。正确输入后，此浏览器会保持解锁2小时。审批任务、撤销设备、支付、删除数据和提现推荐佣金都需要PIN码。绝不要告诉孩子。' },
 
-  'payment.plans': { title: '方案', text: '单孩方案29,000越南盾/月（1个孩子）、家庭月度方案49,000越南盾、家庭年度方案399,000越南盾。一次性付款，不自动续费。' },
+  'payment.plans': { title: '方案', text: 'One-child plan: 39,000 VND/month or 399,000 VND/year (1 child). Pro plan: 59,000 VND/month or 590,000 VND/year (up to 5 children). Pro Plus plan: coming soon. One-off payment, no auto-renewal.' },
   'payment.trial': { title: '7天免费试用', text: '免费，无需信用卡，不会自动扣费。每个家庭只能试用一次。' },
   'payment.memo': { title: '转账附言', text: '请保持金额和转账附言完全准确，以便系统识别付款。你可以逐项复制，或下载二维码。' },
   'payment.activation': { title: '方案何时开通', text: '系统确认付款后立即开通，通常只需几秒。如果还没看到，请等待几分钟后重新打开；联系支持时请附上订单码。' },

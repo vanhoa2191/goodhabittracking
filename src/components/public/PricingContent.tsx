@@ -14,12 +14,17 @@ const paidPlans = PRICING_PLANS.filter((plan) => plan.price > 0);
 export function PricingContent({ isVietnam }: { readonly isVietnam: boolean }) {
   const { language } = useTranslation();
   const copy = getPublicPricingCopy(language);
-  const planText = { solo_monthly: { name: copy.soloName, badge: copy.soloBadge, description: copy.soloDescription, periodLabel: copy.month }, solo_yearly: { name: copy.soloName, badge: copy.soloBadge, description: copy.soloDescription, periodLabel: copy.year }, monthly: { name: copy.monthlyName, badge: copy.monthlyBadge, description: copy.monthlyDescription, periodLabel: copy.month }, yearly: { name: copy.yearlyName, badge: copy.yearlyBadge, description: copy.yearlyDescription, periodLabel: copy.year } };
+  const planText = {
+    solo_monthly: { name: copy.soloName, badge: copy.soloBadge, description: copy.soloDescription, periodLabel: copy.month, savings: null },
+    solo_yearly: { name: copy.soloYearlyName, badge: copy.soloYearlyBadge, description: copy.soloYearlyDescription, periodLabel: copy.year, savings: copy.soloSavings },
+    monthly: { name: copy.monthlyName, badge: copy.monthlyBadge, description: copy.monthlyDescription, periodLabel: copy.month, savings: null },
+    yearly: { name: copy.yearlyName, badge: copy.yearlyBadge, description: copy.yearlyDescription, periodLabel: copy.year, savings: copy.savings },
+  };
   const publicBenefits: Record<string, readonly string[]> = {
     solo_monthly: [copy.oneChild, copy.sync, copy.library],
-    solo_yearly: [copy.oneChild, copy.sync, copy.library],
-    monthly: [copy.unlimited, copy.sync, copy.fullLibrary],
-    yearly: [copy.familyBenefits, copy.unlimited, copy.annualPayment],
+    solo_yearly: [copy.oneChild, copy.sync, copy.library, copy.annualPayment],
+    monthly: [copy.upToFive, copy.sync, copy.fullLibrary],
+    yearly: [copy.upToFive, copy.sync, copy.fullLibrary, copy.annualPayment],
   };
   return (
     <PublicMarketingPage
@@ -27,14 +32,14 @@ export function PricingContent({ isVietnam }: { readonly isVietnam: boolean }) {
       title={copy.title}
       description={copy.description}
     >
-      <div className="grid gap-5 lg:grid-cols-3">
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
         {paidPlans.map((plan) => (
           <article key={plan.id} className={`relative flex flex-col rounded-3xl border bg-white p-6 shadow-sm dark:bg-zinc-900 ${plan.popular ? 'border-indigo-500 ring-2 ring-indigo-100 dark:ring-indigo-950' : 'border-slate-200 dark:border-zinc-800'}`}>
             {plan.popular && <span className="absolute right-5 top-5 rounded-full bg-indigo-100 px-3 py-1 text-xs font-black text-indigo-800 dark:bg-indigo-950 dark:text-indigo-200">{copy.popular}</span>}
             <p className="text-sm font-extrabold text-indigo-700 dark:text-indigo-300">{planText[plan.id as keyof typeof planText].badge}</p>
             <h2 className="mt-3 pr-20 text-2xl font-black">{planText[plan.id as keyof typeof planText].name}</h2>
             <p className="mt-5 flex items-end gap-2"><strong className="text-4xl font-black tracking-tight">{formatCurrency(plan.price, language, language === 'vi' ? 'VN' : 'UNAVAILABLE')}</strong><span className="pb-1 text-sm font-semibold text-slate-600 dark:text-slate-300">{planText[plan.id as keyof typeof planText].periodLabel}</span></p>
-            {plan.originalPrice && <p className="mt-2 text-sm font-semibold text-slate-500"><span className="line-through">{formatCurrency(plan.originalPrice, language, language === 'vi' ? 'VN' : 'UNAVAILABLE')}</span> · {copy.savings}</p>}
+            {plan.originalPrice && <p className="mt-2 text-sm font-semibold text-slate-500"><span className="line-through">{formatCurrency(plan.originalPrice, language, language === 'vi' ? 'VN' : 'UNAVAILABLE')}</span> · {planText[plan.id as keyof typeof planText].savings}</p>}
             <p className="mt-4 text-sm font-medium leading-6 text-slate-700 dark:text-slate-300">{planText[plan.id as keyof typeof planText].description}</p>
             <ul className="mt-5 flex-1 space-y-3">
               {(publicBenefits[plan.id] ?? []).map((benefit) => (

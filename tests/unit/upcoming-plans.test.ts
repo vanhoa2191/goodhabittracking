@@ -20,9 +20,9 @@ describe('upcoming plans', () => {
   it('are announced without a price in every language', () => {
     for (const language of LANGUAGES) {
       const copy = getUpcomingPlansCopy(language);
-      const text = [copy.heading, copy.note, copy.badge, copy.priceSoon, copy.button, copy.includes, ...Object.values(copy.names), ...Object.values(copy.periods), ...copy.features].join(' ');
+      const text = [copy.heading, copy.note, copy.badge, copy.priceSoon, copy.button, copy.includes, ...Object.values(copy.names), ...Object.values(copy.periods), copy.coachFeature, ...copy.features].join(' ');
       expect(text, language).not.toMatch(/\d{2,}|₫|VN[DĐ]|\$|€|¥/);
-      expect(copy.features.length, language).toBe(4);
+      expect(copy.features.length, language).toBe(2);
       for (const part of [copy.heading, copy.note, copy.badge, copy.priceSoon, copy.button, copy.includes]) expect(part.trim().length, language).toBeGreaterThan(0);
       if (language !== 'vi') expect(VIETNAMESE_ONLY.test(text.normalize('NFC')), language).toBe(false);
     }

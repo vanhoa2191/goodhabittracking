@@ -32,7 +32,7 @@ test('a parent on a phone can save the payment QR to pay from their banking app'
   await page.goto('/');
   await (await getVisiblePricingOpener(page)).click();
   await page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' })
-    .getByRole('button', { name: 'Chọn Gói Gia Đình · Tháng' }).click();
+    .getByRole('button', { name: 'Chọn Gói Pro · Tháng' }).click();
 
   const checkout = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
   await completeCheckoutProfile(checkout);

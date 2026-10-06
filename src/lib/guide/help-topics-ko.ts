@@ -63,7 +63,7 @@ export const HELP_TOPICS_KO: HelpTranslationTable<HelpText> = {
   'settings.theme': { title: '화면 설정', text: '밝은 화면, 어두운 화면 또는 기기 설정에 따르기를 선택합니다.' },
   'settings.pin': { title: 'PIN', text: '부모 영역을 보호하는 4자리 숫자입니다. 올바르게 입력하면 이 브라우저가 2시간 동안 잠금 해제됩니다. 미션 승인, 기기 권한 취소, 결제, 데이터 삭제, 추천 수수료 출금에 필요합니다. 자녀와 공유하지 마세요.' },
 
-  'payment.plans': { title: '플랜', text: '1자녀 플랜 월 29,000 VND(자녀 1명), 가족 월간 플랜 49,000 VND, 가족 연간 플랜 399,000 VND입니다. 한 번 결제하며 자동 갱신되지 않습니다.' },
+  'payment.plans': { title: '플랜', text: 'One-child plan: 39,000 VND/month or 399,000 VND/year (1 child). Pro plan: 59,000 VND/month or 590,000 VND/year (up to 5 children). Pro Plus plan: coming soon. One-off payment, no auto-renewal.' },
   'payment.trial': { title: '7일 무료 체험', text: '무료이며 카드가 필요 없고 자동 결제가 없습니다. 가족마다 한 번만 사용할 수 있습니다.' },
   'payment.memo': { title: '이체 메모', text: '시스템이 결제를 인식할 수 있도록 정확한 금액과 이체 메모를 유지하세요. 항목별로 복사하거나 QR을 다운로드할 수 있습니다.' },
   'payment.activation': { title: '플랜이 활성화되는 시점', text: '결제가 확인되면 즉시, 보통 몇 초 안에 활성화됩니다. 보이지 않으면 몇 분 기다렸다가 다시 여세요. 주문 코드를 함께 적어 고객 지원에 문의하세요.' },
