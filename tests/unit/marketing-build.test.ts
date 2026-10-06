@@ -141,7 +141,7 @@ describe('marketing static artifact', () => {
       const { outputDir } = await buildFixture();
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
       expect(openingTag(html, 'data-pricing-cycle')).toContain('data-pricing-cycle="year"');
-      for (const text of ['Tiết kiệm 69.000đ (15%)', 'Tiết kiệm 118.000đ (17%)', '468.000đ', '399.000đ', '590.000đ', '≈ 33.300đ mỗi tháng', '≈ 49.200đ mỗi tháng', 'Chỉ hơn Gói 1 bé 191.000đ mỗi năm', 'Chỉ hơn Gói 1 bé 20.000đ mỗi tháng', '-17%']) {
+      for (const text of ['Tiết kiệm 69.000đ (15%)', 'Tiết kiệm 118.000đ (17%)', '468.000đ', '399.000đ', '590.000đ', '≈ 33.300đ mỗi tháng', '≈ 49.200đ mỗi tháng', 'Chỉ hơn Gói 1 bé 191.000đ mỗi năm', 'Chỉ hơn Gói 1 bé 20.000đ mỗi tháng', '<span class="save">đến -17%</span>']) {
         expect(html).toContain(text);
       }
       const checkout = new Set(html.match(/href="https:\/\/app\.example\/checkout\?plan=[a-z_]+"/g) ?? []);
@@ -245,10 +245,36 @@ describe('marketing static artifact', () => {
   );
 
   it('describes the public board as opt-in with nicknames only', async () => {
-    const { outputDir } = await buildFixture();
+    const { outputDir, html } = await buildFixture();
     const privacy = await readFile(join(outputDir, 'privacy', 'index.html'), 'utf8');
     expect(privacy).toContain('không bao giờ được hiển thị');
-    expect(privacy).not.toContain('Bảng xếp hạng mặc định tắt');
+    expect(html).toContain('Chia sẻ công khai mặc định tắt');
+    expect(html).not.toContain('Bảng xếp hạng mặc định tắt');
+  });
+
+  it('reassures parents about their data at the top of the questions chapter, with a link to the privacy policy', async () => {
+    const { outputDir, html } = await buildFixture();
+    for (const page of [html, await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8')]) {
+      const faqChapter = page.slice(page.indexOf('id="hoi-dap"'), page.indexOf('class="faq'));
+      expect(faqChapter).toContain('An tâm cho cả nhà');
+      expect(faqChapter.match(/<li class="safety-item">/g)).toHaveLength(4);
+      for (const title of ['Khu vực phụ huynh có mã PIN', 'Mỗi gia đình một không gian riêng', 'Chia sẻ công khai mặc định tắt', 'Ba mẹ quyết định giữ hay xóa']) expect(faqChapter).toContain(title);
+      expect(faqChapter).toContain('href="/privacy/"');
+      expect(faqChapter).toContain('không quảng cáo, không bán dữ liệu của bé');
+    }
+  });
+
+  it('links the map chapter to the science page and its limits', async () => {
+    const { html } = await buildFixture();
+    const map = html.slice(html.indexOf('id="ban-do"'), html.indexOf('id="thu-lam-con"'));
+    expect(map).toMatch(/<a class="story-link" href="\/science\/">Cơ sở khoa học và giới hạn của nó <span aria-hidden="true">→<\/span><\/a>/);
+  });
+
+  it('keeps focus visible on the dark sticky bar and hides the unrecommended badge from screen readers', async () => {
+    const css = await readFile(join(process.cwd(), 'apps', 'marketing', 'styles.css'), 'utf8');
+    expect(css).toContain('.dock :focus-visible { outline-color: var(--sun); }');
+    expect(css).toMatch(/\.badge \{[^}]*visibility: hidden;[^}]*transition: opacity \.25s, transform \.25s, visibility \.25s;/);
+    expect(css).toMatch(/\.plan\.recommended \.badge, \.plan-soon \.badge \{[^}]*visibility: visible;/);
   });
 
   it('publishes the referral programme with its real numbers and rules', async () => {
@@ -404,6 +430,13 @@ describe('marketing static artifact', () => {
     expect([...chapters.matchAll(/href="#([^"]+)"/g)].map((match) => match[1])).toEqual(chapterIds);
     const menu = html.match(/<ol class="chapter-menu"[\s\S]*?<\/ol>/)?.[0] ?? '';
     expect([...menu.matchAll(/href="#([^"]+)"/g)].map((match) => match[1])).toEqual(chapterIds);
+    // The opening is not a numbered chapter; the rest match their "Chương N" eyebrows.
+    expect([...menu.matchAll(/<span>(\d+)<\/span>/g)].map((match) => Number(match[1]))).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    expect(menu).toMatch(/<a href="#mo-dau" data-chapter-link>Mở đầu<\/a>/);
+    expect(menu).toMatch(/<a href="#buoi-sang" data-chapter-link><span>1<\/span>Buổi sáng<\/a>/);
+    // The pill can only open the menu once the page script has run; without it the pill stays hidden.
+    const css = await readFile(join(process.cwd(), 'apps', 'marketing', 'styles.css'), 'utf8');
+    expect(css).toContain('[data-js] .chapter-pill { display: inline-flex; }');
     expect(html).not.toContain('id="primary-navigation"');
     const nav = (page: string) => page.match(/<nav id="primary-navigation"[\s\S]*?<\/nav>/)?.[0] ?? '';
     const pricing = nav(await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8'));
@@ -424,8 +457,11 @@ describe('marketing static artifact', () => {
     for (const link of memberLinks) expect(link).toContain('href="https://app.example/"');
 
     const guestLinks = html.match(/<a[^>]*data-guest[^>]*>/g) ?? [];
-    expect(guestLinks).toHaveLength(3);
-    for (const link of guestLinks) expect(link).toContain('href="https://app.example/start"');
+    expect(guestLinks).toHaveLength(4);
+    for (const link of guestLinks.filter((item) => !item.includes('nav-login'))) expect(link).toContain('href="https://app.example/start"');
+    // A parent on a new device has no hint cookie yet: the home header still lets a guest sign in.
+    const header = html.match(/<header class="story-top"[\s\S]*?<\/header>/)?.[0] ?? '';
+    expect(header).toContain('<a class="nav-login" data-guest href="https://app.example/">Đăng nhập</a>');
     expect(html).toContain('class="dock" data-dock data-guest');
 
     const css = await readFile(join(process.cwd(), 'apps', 'marketing', 'styles.css'), 'utf8');

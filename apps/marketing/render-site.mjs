@@ -3,7 +3,7 @@ import { sessionHintCookie } from './session-hint.mjs';
 import scienceData from '../../src/data/science-content.json' with { type: 'json' };
 import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
 import { maxSavingPercent, priceView, pricingTiers, upgradeDifference } from './pricing.mjs';
-import { faqs, launchOffer, navigation, publicPages, story, storyStages, testimonials } from './site-content.mjs';
+import { faqs, launchOffer, navigation, publicPages, safety, story, storyStages, testimonials } from './site-content.mjs';
 
 const icons = {
   compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>',
@@ -248,13 +248,15 @@ function renderNext(id) {
 }
 
 function renderStoryHeader(appOrigin) {
-  const links = (numbered) => story.chapters.map((item, index) => `<li><a href="#${item.id}" data-chapter-link>${numbered ? `<span>${index + 1}</span>` : ''}${escapeHtml(item.label)}</a></li>`).join('');
+  // The opening is not numbered; the rest match their "Chương N" eyebrows.
+  const links = (numbered) => story.chapters.map((item, index) => `<li><a href="#${item.id}" data-chapter-link>${numbered && index > 0 ? `<span>${index}</span>` : ''}${escapeHtml(item.label)}</a></li>`).join('');
   return `<header class="story-top" data-story-top>
     <div class="wrap top-inner">
       <a class="logo" href="#mo-dau" aria-label="KidHabit Hero, về đầu trang"><img src="/mascots/leo.webp" alt="" width="400" height="400">KidHabit</a>
       <nav class="chapter-nav" aria-label="Các chương"><ol class="chapters">${links(false)}</ol></nav>
       <button class="chapter-pill" type="button" data-chapter-pill aria-expanded="false" aria-controls="chapter-menu"><b data-pill-num></b> <span data-pill-name>${escapeHtml(story.chapters[0].label)}</span> <span aria-hidden="true">▾</span></button>
       <ol class="chapter-menu" id="chapter-menu" data-chapter-menu hidden>${links(true)}</ol>
+      <a class="nav-login" data-guest href="${appUrl(appOrigin, '/')}">Đăng nhập</a>
       <a class="btn btn-primary top-cta" data-guest href="${appUrl(appOrigin, '/start')}">Dùng thử 7 ngày</a><a class="btn btn-primary top-cta" data-member href="${appUrl(appOrigin, '/')}">Vào ứng dụng</a>
     </div>
     <div class="progress" data-progress></div>
@@ -362,6 +364,7 @@ function renderMap(appOrigin) {
         ${panels}
         <p class="muted stage-note">${escapeHtml(explorer.note)}</p>
       </div>
+      <p class="map-more"><a class="story-link" href="/science/">Cơ sở khoa học và giới hạn của nó <span aria-hidden="true">→</span></a></p>
     </div>
     ${renderNext('ban-do')}
   </section>`;
@@ -482,7 +485,7 @@ function renderPlans(appOrigin, { home = false } = {}) {
           <div class="seg" role="radiogroup" aria-labelledby="kids-l" data-kids>${copy.kidsOptions.map((option, index) => `${radio(option, index === 0, ` data-tier="${option.tier}"`)}${escapeHtml(option.label)}</button>`).join('')}</div>
         </div>
         <div class="control"><span id="cycle-l">${escapeHtml(copy.cycleLabel)}</span>
-          <div class="seg" role="radiogroup" aria-labelledby="cycle-l" data-cycle-toggle>${copy.cycleOptions.map((option) => `${radio(option, option.value === copy.defaultCycle, '')}${escapeHtml(option.label)}${option.value === 'year' ? ` <span class="save">-${maxSavingPercent}%</span>` : ''}</button>`).join('')}</div>
+          <div class="seg" role="radiogroup" aria-labelledby="cycle-l" data-cycle-toggle>${copy.cycleOptions.map((option) => `${radio(option, option.value === copy.defaultCycle, '')}${escapeHtml(option.label)}${option.value === 'year' ? ` <span class="save">đến -${maxSavingPercent}%</span>` : ''}</button>`).join('')}</div>
         </div>
       </div>
       <div class="offer reveal">
@@ -501,6 +504,7 @@ function renderPlans(appOrigin, { home = false } = {}) {
 function renderStoryFaq(appOrigin, { home = false } = {}) {
   const opening = home ? `<section class="tone-soft" ${chapterAttributes('hoi-dap', appOrigin)} aria-labelledby="faq-title">` : '<section class="tone-soft" id="hoi-dap" aria-labelledby="faq-title">';
   return `${opening}
+    ${renderSafety()}
     <div class="wrap faq-grid">
       <div class="reveal">
         <p class="eyebrow">${home ? escapeHtml(story.faq.eyebrow) : 'Hỏi đáp'}</p>
@@ -509,6 +513,13 @@ function renderStoryFaq(appOrigin, { home = false } = {}) {
       <div class="faq reveal">${faqs.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join('')}</div>
     </div>
   </section>`;
+}
+
+function renderSafety() {
+  return `<div class="wrap"><div class="safety reveal" aria-labelledby="safety-title">
+      <div class="safety-head"><h3 id="safety-title">${escapeHtml(safety.title)}</h3><p>${escapeHtml(safety.text)}</p><a class="story-link" href="/privacy/">${escapeHtml(safety.link)} <span aria-hidden="true">→</span></a></div>
+      <ul class="safety-grid">${safety.points.map((point) => `<li class="safety-item"><span class="safety-icon">${icon(point.icon)}</span><div><b>${escapeHtml(point.title)}</b><p>${escapeHtml(point.text)}</p></div></li>`).join('')}</ul>
+    </div></div>`;
 }
 
 function renderFinal(appOrigin) {

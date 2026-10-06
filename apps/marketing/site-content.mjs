@@ -275,6 +275,19 @@ export const story = {
   },
 };
 
+/** "An tâm cho cả nhà": what the product does with a family's data, stated as controls, not guarantees. */
+export const safety = {
+  title: 'An tâm cho cả nhà',
+  text: 'KidHabit chỉ lưu những gì cần để vận hành thói quen của gia đình, không quảng cáo, không bán dữ liệu của bé, và luôn để ba mẹ quyết định.',
+  link: 'Đọc chính sách quyền riêng tư',
+  points: [
+    { icon: 'lock', title: 'Khu vực phụ huynh có mã PIN', text: 'Thanh toán và cài đặt gia đình nằm ngoài tầm với của bé.' },
+    { icon: 'shield', title: 'Mỗi gia đình một không gian riêng', text: 'Dữ liệu được tách biệt, gia đình này không xem được gia đình khác.' },
+    { icon: 'eye-off', title: 'Chia sẻ công khai mặc định tắt', text: 'Bảng xếp hạng công khai chỉ hiện bé khi ba mẹ bật và bé tham gia, bằng biệt danh. Tên thật và tuổi không bao giờ hiện.' },
+    { icon: 'trash', title: 'Ba mẹ quyết định giữ hay xóa', text: 'Chủ gia đình có thể xóa toàn bộ dữ liệu gia đình trong ứng dụng.' },
+  ],
+};
+
 // Only real, consented quotes belong here. An entry is shown when it has a
 // quote, a name, recorded consent, a source and a review date still in the future.
 export const testimonials = [];
