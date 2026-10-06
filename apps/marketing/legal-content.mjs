@@ -7,14 +7,15 @@ export const legalVersion = '2026-09-29';
 export const legalUpdatedLabel = '29/09/2026';
 
 const planDescriptors = {
-  solo_monthly: 'tối đa một hồ sơ bé',
-  monthly: 'nhiều hồ sơ bé',
-  yearly: 'nhiều hồ sơ bé, thanh toán một lần cho 12 tháng',
+  solo_monthly: 'tối đa 1 hồ sơ bé',
+  solo_yearly: 'tối đa 1 hồ sơ bé, thanh toán một lần cho 12 tháng',
+  monthly: 'tối đa 5 hồ sơ bé',
+  yearly: 'tối đa 5 hồ sơ bé, thanh toán một lần cho 12 tháng',
 };
 
 function priceLine(plan) {
   const period = plan.cadence.includes('năm') ? 'một năm' : 'một tháng';
-  return `${plan.price} VNĐ cho ${period}, ${planDescriptors[plan.id]}.`;
+  return `${plan.name} (${plan.period.toLowerCase()}): ${plan.price} VNĐ cho ${period}, ${planDescriptors[plan.id]}.`;
 }
 
 function contactBlock(supportEmail, topic) {
@@ -190,6 +191,9 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         blocks: [
           'Các gói trả phí hiện có:',
           plans.map(priceLine),
+          'Dùng thử 7 ngày có quyền lợi của Gói Pro, tối đa 5 hồ sơ bé. Giới hạn số bé chỉ chặn khi thêm hồ sơ mới; gia đình đang có nhiều hồ sơ hơn mức của gói vẫn giữ nguyên các hồ sơ hiện có.',
+          'Gói Pro Plus (gồm Gói Pro và Huấn luyện viên thói quen) đang phát triển, chưa mở bán và chưa có ngày ra mắt.',
+          'Ưu đãi ra mắt: 10 gia đình đầu tiên thanh toán Gói Pro theo năm trước khi Pro Plus ra mắt được nâng cấp miễn phí lên Pro Plus cho phần còn lại của năm đã trả. Mỗi gia đình tối đa một suất, tính theo thứ tự thanh toán thành công. Suất bị thu hồi nếu đơn thanh toán đó được hoàn tiền.',
           'Giá, thời hạn và quyền lợi áp dụng cho đơn được hiển thị trước khi bạn tạo mã thanh toán. Thanh toán bằng VNĐ qua chuyển khoản do PayOS xử lý, hiện phục vụ người dùng tại Việt Nam.',
           'Mỗi khoản thanh toán chỉ áp dụng cho kỳ đã chọn. KidHabit không tự động gia hạn hoặc tự động ghi nợ kỳ tiếp theo; khi hết hạn, bạn chủ động chọn và thanh toán lại nếu muốn tiếp tục.',
           'Gói được kích hoạt sau khi PayOS xác nhận giao dịch. Nếu đã chuyển khoản mà gói chưa được kích hoạt, hãy gửi mã đơn và thời điểm giao dịch tới email hỗ trợ.',
@@ -266,7 +270,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         title: '2. Hoa hồng bao nhiêu và tính thế nào',
         blocks: [
           'Hoa hồng là 30% số tiền gia đình được giới thiệu thực trả cho mỗi khoản thanh toán, làm tròn xuống đồng gần nhất, cho mọi thanh toán trong 12 tháng đầu kể từ ngày họ tạo tài khoản. Dùng thử miễn phí không phát sinh hoa hồng.',
-          'Gia đình được giới thiệu (bằng liên kết hoặc nhập mã trong ứng dụng) được giảm 10% khi mua gói năm lần đầu. Hoa hồng của bạn tính trên số tiền họ thực trả sau khi giảm.',
+          'Gia đình được giới thiệu (bằng liên kết hoặc nhập mã trong ứng dụng) được giảm 10% khi mua một trong hai gói năm (Gói 1 bé hoặc Gói Pro) lần đầu. Hoa hồng của bạn tính trên số tiền họ thực trả sau khi giảm.',
           'Gia đình được ghi nhận khi họ đăng nhập lần đầu trong vòng 60 ngày kể từ khi bấm vào liên kết của bạn và chưa trả tiền trước đó. Mỗi gia đình chỉ gắn với một người giới thiệu; nếu có nhiều liên kết, liên kết được dùng sau cùng trước khi đăng ký được tính.',
           'Tỉ lệ, thời hạn ghi nhận, thời hạn hưởng và mức rút tối thiểu có thể thay đổi cho các gia đình đăng ký sau thời điểm thay đổi; thay đổi được thông báo trên trang này.',
         ],

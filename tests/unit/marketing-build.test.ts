@@ -43,12 +43,17 @@ describe('marketing static artifact', () => {
     expect(html).not.toContain('Xem đúng phần bạn cần, không phải đọc một trang thật dài');
   });
 
-  it('renders the three paid plans with exact checkout links and no removed sales card', async () => {
+  it('renders the four paid plans with exact checkout links and no removed sales card', async () => {
     const { html } = await buildFixture();
-    expect(html).toContain('29.000');
-    expect(html).toContain('49.000');
-    expect(html).toContain('399.000');
-    for (const plan of ['solo_monthly', 'monthly', 'yearly']) {
+    for (const price of ['39.000', '399.000', '59.000', '590.000']) expect(html).toContain(price);
+    expect(html).not.toContain('29.000');
+    expect(html).not.toContain('49.000');
+    expect(html).not.toContain('Gói Cao cấp');
+    expect(html).toContain('tối đa 5 hồ sơ bé');
+    expect(html).toContain('Gói Pro Plus (gồm Gói Pro và Huấn luyện viên thói quen) đang phát triển, chưa mở bán.');
+    expect(html).toContain('10 gia đình đầu tiên thanh toán Gói Pro theo năm');
+    expect(html).not.toContain('plan=family_plus');
+    for (const plan of ['solo_monthly', 'solo_yearly', 'monthly', 'yearly']) {
       expect(html).toContain(`https://app.example/checkout?plan=${plan}`);
     }
     expect(html).not.toMatch(/data-plan=["']trial["']/);
@@ -237,7 +242,7 @@ describe('marketing static artifact', () => {
     expect(finalCta).toContain('https://app.example/start');
     expect(finalCta).toContain('https://app.example/?demo=1');
     const trialLinks = html.match(/href="https:\/\/app\.example\/checkout\?plan=[a-z_]+"/g) ?? [];
-    expect(new Set(trialLinks).size).toBe(3);
+    expect(new Set(trialLinks).size).toBe(4);
   });
 
   it('shows no early-families invitation and no mailto link on the home page, and publishes only consented quotes', async () => {
@@ -421,7 +426,7 @@ describe('marketing static artifact', () => {
     expect(match).not.toBeNull();
     const data = JSON.parse(match![1]);
     expect(data['@type']).toBe('SoftwareApplication');
-    expect(data.offers.map((offer: { price: string }) => offer.price)).toEqual(['29000', '49000', '399000']);
+    expect(data.offers.map((offer: { price: string }) => offer.price)).toEqual(['39000', '399000', '59000', '590000']);
     for (const offer of data.offers) expect(offer.priceCurrency).toBe('VND');
     expect(JSON.stringify(data)).not.toMatch(/aggregateRating|review/i);
   });
@@ -429,11 +434,14 @@ describe('marketing static artifact', () => {
   it('makes the two premium cards distinguishable and shows what the yearly plan saves', async () => {
     const { outputDir } = await buildFixture();
     const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
-    expect(pricing).toContain('Gói Cao cấp · Tháng');
-    expect(pricing).toContain('Gói Cao cấp · Năm');
-    expect(pricing).not.toMatch(/<h3>Gói Cao cấp<\/h3>/);
-    expect(pricing).toContain('33.250 VNĐ/tháng');
-    expect(pricing).toContain('Tiết kiệm 189.000 VNĐ so với trả theo tháng');
+    expect(pricing).toContain('Gói Pro · Tháng');
+    expect(pricing).toContain('Gói Pro · Năm');
+    expect(pricing).toContain('Gói 1 bé · Năm');
+    expect(pricing).not.toMatch(/<h3>Gói Pro<\/h3>/);
+    expect(pricing).toContain('khoảng 33.300 VNĐ/tháng');
+    expect(pricing).toContain('Tiết kiệm 69.000 VNĐ so với trả theo tháng');
+    expect(pricing).toContain('khoảng 49.200 VNĐ/tháng');
+    expect(pricing).toContain('Tiết kiệm 118.000 VNĐ so với trả theo tháng');
   });
 
   it('surfaces the refund guarantee next to the purchase decision', async () => {
@@ -472,8 +480,12 @@ describe('marketing static artifact', () => {
     expect(privacy).toContain('<a href="mailto:support@example.com">support@example.com</a>');
     const terms = await readFile(join(outputDir, 'terms', 'index.html'), 'utf8');
     expect(terms).toContain('<h1>Điều khoản sử dụng</h1>');
-    expect(terms).toContain('29.000 VNĐ');
-    expect(terms).toContain('399.000 VNĐ');
+    for (const price of ['39.000 VNĐ', '399.000 VNĐ', '59.000 VNĐ', '590.000 VNĐ']) expect(terms).toContain(price);
+    expect(terms).not.toContain('29.000 VNĐ');
+    expect(terms).toContain('tối đa 5 hồ sơ bé');
+    expect(terms).toContain('10 gia đình đầu tiên thanh toán Gói Pro theo năm');
+    expect(terms).toContain('Pro Plus');
+    expect(terms).toContain('chưa mở bán');
   });
 
   it('shows the configured support mailbox on the contact page and keeps the notice without one', async () => {

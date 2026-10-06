@@ -1,4 +1,5 @@
 // Pure helpers behind the admin screen, so the grouping and the labels it shows can be tested.
+import { PAID_PLAN_IDS, planDurationDays, type PaidPlanId } from '@/lib/billing/plan-catalog';
 
 export const ADMIN_TABS = [
   { id: 'tong-quan', label: 'Tổng quan' },
@@ -20,7 +21,7 @@ export function parseAdminTab(hash: string): AdminTabId {
 }
 
 export type SubscriptionView = {
-  readonly plan: 'free' | 'trial' | 'solo_monthly' | 'monthly' | 'yearly' | 'lifetime';
+  readonly plan: 'free' | 'trial' | PaidPlanId | 'lifetime';
   readonly status: 'active' | 'inactive' | 'cancelled';
   readonly subscription_ends_at: string | null;
   readonly trial_ends_at: string | null;
@@ -29,9 +30,10 @@ export type SubscriptionView = {
 export const PLAN_LABELS: Readonly<Record<SubscriptionView['plan'], string>> = {
   free: 'Chưa có gói',
   trial: 'Dùng thử',
-  solo_monthly: 'Gói Một Bé',
-  monthly: 'Gia Đình · Tháng',
-  yearly: 'Gia Đình · Năm',
+  solo_monthly: 'Gói 1 bé · Tháng',
+  solo_yearly: 'Gói 1 bé · Năm',
+  monthly: 'Gói Pro · Tháng',
+  yearly: 'Gói Pro · Năm',
   lifetime: 'Trọn đời',
 };
 
@@ -77,7 +79,7 @@ export type CustomerView = {
   readonly subscription: SubscriptionView | null;
 };
 
-const PAID_PLANS = new Set<SubscriptionView['plan']>(['solo_monthly', 'monthly', 'yearly', 'lifetime']);
+const PAID_PLANS = new Set<SubscriptionView['plan']>([...PAID_PLAN_IDS, 'lifetime']);
 
 export function matchesFilter(customer: CustomerView, filter: CustomerFilterId, now: Date): boolean {
   const subscription = customer.subscription;
@@ -121,7 +123,10 @@ export function pageOf<T>(items: readonly T[], limit: number): { readonly shown:
   return { shown: items.slice(0, limit), hidden: Math.max(0, items.length - limit) };
 }
 
-const PLAN_DAYS: Readonly<Partial<Record<SubscriptionView['plan'], number>>> = { solo_monthly: 31, monthly: 31, yearly: 366, trial: 7 };
+const PLAN_DAYS: Readonly<Partial<Record<SubscriptionView['plan'], number>>> = {
+  ...Object.fromEntries(PAID_PLAN_IDS.map((id) => [id, planDurationDays(id)])),
+  trial: 7,
+};
 
 /**
  * What choosing a plan in the admin screen should set. A plan only takes effect while its status is active, so

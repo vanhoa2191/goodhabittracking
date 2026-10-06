@@ -44,7 +44,7 @@ Mở đầu bằng khối **Cần xử lý**, mỗi mục là một liên kết 
 ## Tab Khách hàng
 
 - Danh sách khách hàng có ô tìm kiếm và **bộ lọc**: Tất cả, Trả phí, Dùng thử, Sắp hết hạn, Chưa có gói (kèm số lượng); mỗi dòng cho biết còn bao lâu hết hạn. Chọn một khách hàng để xem và chỉnh gói, hồ sơ chăm sóc.
-- **Gói đăng ký**: chọn Chưa có gói, Dùng thử, Gói Một Bé, Gói Gia Đình · Tháng, Gói Gia Đình · Năm hoặc Trọn đời; trạng thái Đang hoạt động hoặc Chưa hoạt động; ngày hết hạn. Chọn gói mà để trạng thái cũ sẽ được tự bật và khởi tạo một kỳ đầy đủ. Lưu bằng "Lưu gói đăng ký" kèm lý do. Hệ thống phát hiện chỉnh sửa trùng (người khác vừa đổi) và yêu cầu tải lại.
+- **Gói đăng ký**: chọn Chưa có gói, Dùng thử, Gói 1 bé, Gói Pro · Tháng, Gói Pro · Năm hoặc Trọn đời; trạng thái Đang hoạt động hoặc Chưa hoạt động; ngày hết hạn. Chọn gói mà để trạng thái cũ sẽ được tự bật và khởi tạo một kỳ đầy đủ. Lưu bằng "Lưu gói đăng ký" kèm lý do. Hệ thống phát hiện chỉnh sửa trùng (người khác vừa đổi) và yêu cầu tải lại.
 - **Hồ sơ khách hàng**: tên hiển thị, điện thoại, thẻ khách hàng, ghi chú nội bộ, đồng ý nhận ưu đãi.
 - Gói **Trọn đời** chỉ cấp được ở đây (không có nút mua) và ảnh hưởng tới [số bé](07-goi-va-thanh-toan.md#cac-goi).
 

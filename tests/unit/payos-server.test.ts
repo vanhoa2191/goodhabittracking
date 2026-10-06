@@ -8,7 +8,7 @@ const providerPayment = {
   bin: '970422',
   accountNumber: '113366668888',
   accountName: 'KIDHABIT HERO',
-  amount: 49000,
+  amount: 59000,
   description: 'KIDHABIT 123456',
   orderCode: 123456,
   currency: 'VND',

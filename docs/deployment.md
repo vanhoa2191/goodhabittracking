@@ -159,6 +159,31 @@ Production migration là gate thủ công vì thay đổi RLS và dữ liệu tr
 6. chạy pairing/payment/domain smoke tests;
 7. chỉ sau đó promote Worker.
 
+### Bảng giá theo bậc và ưu đãi ra mắt (`202610070001`)
+
+Migration `supabase/migrations/202610070001_pricing_tiers_launch_offer.sql` thêm gói `solo_yearly`, giới hạn 5 bé cho Gói Pro và dùng thử (trigger `enforce_family_child_limit`, hàm `family_child_limit`), bảng `launch_offer_claims` và RPC `launch_offer_remaining`, và áp giảm giá giới thiệu cho cả hai gói năm. Phiên bản schema là `202610070001`.
+
+1. Trước `db push`, chạy truy vấn chỉ đọc sau để biết trước các gia đình đang ở Gói Pro (tháng/năm) hoặc dùng thử còn hạn mà có hơn 5 bé. Những gia đình này giữ nguyên hồ sơ (giới hạn chỉ chặn việc thêm mới):
+
+   ```sql
+   select subscription.family_id, subscription.plan, count(child.*) as children
+   from public.user_subscriptions subscription
+   join public.child_profiles child on child.family_id = subscription.family_id
+   where subscription.status = 'active'
+     and (
+       (subscription.plan in ('monthly', 'yearly') and subscription.subscription_ends_at > now())
+       or (subscription.plan = 'trial' and subscription.trial_ends_at > now())
+     )
+   group by subscription.family_id, subscription.plan
+   having count(child.*) > 5;
+   ```
+
+2. Kiểm tra project ref là `evkwelozdcmsmwdzhlxz`, rồi áp migration (`db push`).
+3. Sau khi áp, chạy `supabase/preflight/202610070001_pricing_tiers_launch_offer.verify.sql` bằng vai trò `postgres` qua `psql` hoặc Supabase CLI, trong khung giờ ít người dùng: tệp khóa dòng ưu đãi trong lúc chạy và hoàn tác toàn bộ (rollback) khi xong. Tệp dùng `launch_offers` và các hàm mới nên chỉ chạy được sau migration.
+4. Sau đó deploy ứng dụng; trang marketing chỉ deploy sau khi app đã có migration, để giá công khai không đi trước dữ liệu.
+5. Ứng dụng cần biến `NEXT_PUBLIC_MARKETING_URL` (origin của trang marketing, ví dụ `https://kidhabithero.com`): endpoint công khai trả số suất ưu đãi còn lại dùng nó cho CORS. Thiếu biến thì trang marketing không đọc được số suất thật.
+6. Hoàn tiền một đơn Gói Pro năm đang giữ suất ưu đãi do quản trị viên xử lý thủ công trong admin; suất bị thu hồi cùng đơn.
+
 ## Staged rollout
 
 - Preview: health endpoint phải `ready`; chạy E2E desktop/mobile và webhook test mode.

@@ -24,7 +24,7 @@ Each child has a separate profile with:
 
 From the profile card, parents can:
 
-- **Add, edit, or delete** a child profile. The number of children depends on the [plan](07-goi-va-thanh-toan.md#cac-goi): the Single Child plan allows up to 1 child; the trial and family plans have no limit. After a plan expires, you cannot add a new profile without a plan.
+- **Add, edit, or delete** a child profile. The number of children depends on the [plan](07-goi-va-thanh-toan.md#cac-goi): the 1-Child plan allows up to 1 child; the Pro plan and the trial allow up to 5; the lifetime plan has no limit. The limit only blocks adding new profiles. After a plan expires, you cannot add a new profile without a plan.
 - **Load the age-based pack** ("Automatically add 6 age-appropriate habits…") to get six starter tasks right away.
 - **[Manually reward or deduct stars](03-hom-nay-va-duyet-viec.md#chinh-sao)**.
 - View stars, level, streak, and whether the child is hidden from the leaderboard.

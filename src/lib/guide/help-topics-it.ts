@@ -63,7 +63,7 @@ export const HELP_TOPICS_IT: HelpTranslationTable<HelpText> = {
   'settings.theme': { title: 'Aspetto', text: 'Chiaro, scuro o come il dispositivo.' },
   'settings.pin': { title: 'PIN', text: 'Quattro cifre che proteggono l’area genitori. Dopo averlo inserito correttamente, questo browser resta sbloccato per 2 ore. Serve per approvare, revocare dispositivi, pagare, eliminare dati e richiedere il prelievo delle commissioni. Non condividerlo con il bambino.' },
 
-  'payment.plans': { title: 'Piani', text: 'Piano Un Bambino: 29.000 VND al mese (1 bambino), Piano Famiglia · Mensile: 49.000 VND, Piano Famiglia · Annuale: 399.000 VND. Pagamento una tantum, senza rinnovo automatico.' },
+  'payment.plans': { title: 'Piani', text: 'Piano un bambino: 39.000 VND/mese o 399.000 VND/anno (1 bambino). Piano Pro: 59.000 VND/mese o 590.000 VND/anno (fino a 5 profili bambino). Piano Pro Plus: in arrivo. Pagamento una tantum, senza rinnovo automatico.' },
   'payment.trial': { title: 'Prova di 7 giorni', text: 'Gratis, senza carta né addebito automatico. Una volta per famiglia.' },
   'payment.memo': { title: 'Causale del bonifico', text: 'Mantieni esattamente l’importo e la causale perché il sistema riconosca il pagamento. Puoi copiare ogni voce oppure scaricare il codice QR.' },
   'payment.activation': { title: 'Quando si attiva il piano', text: 'Non appena il pagamento viene confermato, di solito entro pochi secondi. Se non succede, aspetta qualche minuto e riapri; contatta l’assistenza indicando il codice dell’ordine.' },

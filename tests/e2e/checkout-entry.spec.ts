@@ -13,9 +13,10 @@ test.beforeEach(async ({ page }) => {
 });
 
 for (const [plan, name, price] of [
-  ['solo_monthly', 'Gói Một Bé', '29.000'],
-  ['monthly', 'Gói Gia Đình · Tháng', '49.000'],
-  ['yearly', 'Gói Gia Đình · Năm', '399.000'],
+  ['solo_monthly', 'Gói 1 bé · Tháng', '39.000'],
+  ['solo_yearly', 'Gói 1 bé · Năm', '399.000'],
+  ['monthly', 'Gói Pro · Tháng', '59.000'],
+  ['yearly', 'Gói Pro · Năm', '590.000'],
 ]) {
   test(`signed-out ${plan} shows the selected summary and one login action`, async ({ page }) => {
     const payments: string[] = [];
@@ -58,7 +59,7 @@ test('Google login preserves only the selected plan and resumes after auth', asy
   await page.route('**/api/payment/create', (route) => route.fulfill({ status: 503, json: { success: false, error: 'Payment provider unavailable in test.' } }));
   await page.goto(returnUrl);
   await expect(page.getByRole('dialog')).toBeVisible();
-  await expect(page.getByRole('dialog')).toContainText('Gói Gia Đình · Năm');
+  await expect(page.getByRole('dialog')).toContainText('Gói Pro · Năm');
 });
 
 test('authenticated checkout waits for family readiness then opens once without reselection', async ({ page, baseURL }) => {
@@ -75,14 +76,14 @@ test('authenticated checkout waits for family readiness then opens once without 
     await route.fulfill({ status: 503, json: { success: false, error: 'Payment provider unavailable in test.' } });
   });
   await page.goto('/checkout?plan=solo_monthly');
-  await expect(page.getByRole('heading', { name: 'Gói Một Bé', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Gói 1 bé · Tháng', exact: true })).toBeVisible();
   await expect(page.getByRole('status')).toContainText('gia đình');
   expect(plans).toEqual([]);
   await expect(page.getByRole('dialog')).toHaveCount(0);
   releaseFamily();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText('Gói Một Bé');
+  await expect(dialog).toContainText('Gói 1 bé · Tháng');
   await completeCheckoutProfile(dialog);
   if (process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true') {
     expect(plans).toEqual([]);
@@ -110,10 +111,30 @@ test('a caregiver cannot open checkout or create a payment', async ({ page, base
 test('mobile checkout keeps the selected summary and login action in view', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto('/checkout?plan=monthly');
-  await expect(page.getByRole('heading', { name: 'Gói Gia Đình · Tháng', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Gói Pro · Tháng', exact: true })).toBeVisible();
   const login = page.getByRole('button', { name: 'Đăng nhập để thanh toán' });
   await expect(login).toBeInViewport();
   const box = await login.boundingBox();
   expect(box?.height).toBeGreaterThanOrEqual(44);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('the pricing dialog defaults to yearly, and choosing Tháng sends the Pro button to the monthly plan', async ({ page, baseURL }) => {
+  await installCloudFamilyFixture(page, baseURL);
+  await page.route('**/api/offers/launch', (route) => route.fulfill({ status: 200, json: { code: 'pro_plus_founding', slots: 10, remaining: 10 } }));
+  await page.route('**/api/payment/create', (route) => route.fulfill({ status: 503, json: { success: false, error: 'Payment provider unavailable in test.' } }));
+  await page.goto('/?pricing=1');
+  const pricing = page.getByRole('dialog', { name: /Bảng Giá/ });
+  const year = pricing.getByRole('radio', { name: 'Năm' });
+  const month = pricing.getByRole('radio', { name: 'Tháng' });
+  await expect(year).toBeChecked({ timeout: 30_000 });
+  await expect(pricing.getByRole('button', { name: 'Chọn Gói Pro · Năm' })).toBeVisible();
+  await expect(pricing).toContainText('49.200');
+  await year.focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(month).toBeChecked();
+  await expect(month).toBeFocused();
+  await expect(pricing.getByRole('button', { name: 'Chọn Gói Pro · Năm' })).toHaveCount(0);
+  await pricing.getByRole('button', { name: 'Chọn Gói Pro · Tháng' }).click();
+  await expect(page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' })).toContainText('Gói Pro · Tháng');
 });

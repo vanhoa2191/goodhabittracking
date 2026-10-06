@@ -27,7 +27,7 @@ describe('affiliate copy', () => {
     for (const language of languages) {
       const copy = getAffiliateCopy(language);
       expect(Object.keys(copy.status).sort()).toEqual(['available', 'paid', 'pending', 'requested', 'reversed']);
-      expect(Object.keys(copy.plan).sort()).toEqual(['lifetime', 'monthly', 'solo_monthly', 'yearly']);
+      expect(Object.keys(copy.plan).sort()).toEqual(['lifetime', 'monthly', 'solo_monthly', 'solo_yearly', 'yearly']);
       for (const message of Object.values(copy.messages)) expect(message.length).toBeGreaterThan(5);
     }
   });

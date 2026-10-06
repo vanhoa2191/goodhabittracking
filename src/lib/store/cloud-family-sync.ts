@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { PAID_PLAN_IDS } from '@/lib/billing/plan-catalog';
 import type {
   ActivityLog,
   ChildBadge,
@@ -87,7 +88,7 @@ const groupMemberRowSchema = z.object({
 });
 
 const subscriptionRowSchema = z.object({
-  plan: z.enum(['free', 'trial', 'solo_monthly', 'monthly', 'yearly', 'lifetime']),
+  plan: z.enum(['free', 'trial', ...PAID_PLAN_IDS, 'lifetime']),
   status: z.string(),
   trial_ends_at: z.string().nullable().optional(),
   subscription_ends_at: z.string().nullable().optional(),

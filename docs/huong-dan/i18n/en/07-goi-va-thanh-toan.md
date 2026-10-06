@@ -21,19 +21,22 @@
 
 | Plan | Price | Children | Best for |
 |---|---|---|---|
-| **7-Day Free Trial** | 0 VND | Unlimited | Trying everything before you decide |
-| **One-Child Plan** | 29,000 VND / month | 1 child | Families starting with one child |
-| **Family Plan · Monthly** | 49,000 VND / month | Unlimited | Multiple children or full access to all features |
-| **Family Plan · Yearly** | 399,000 VND / year (regular price 588,000 VND, save 189,000 VND, 32%) | Unlimited | Staying with it long enough for small steps to become habits |
+| **7-Day Free Trial** | 0 VND | Up to 5 (same as Pro) | Trying everything before you decide |
+| **1-Child Plan · Monthly** | 39,000 VND / month | 1 child | Families starting with one child |
+| **1-Child Plan · Yearly** | 399,000 VND / year (saves 69,000 VND, 15% compared with paying monthly) | 1 child | One child, paid once for 12 months |
+| **Pro Plan · Monthly** | 59,000 VND / month | Up to 5 children | Families with several children, flexible by the month |
+| **Pro Plan · Yearly** | 590,000 VND / year (saves 118,000 VND, 17% compared with paying monthly) | Up to 5 children | Staying with it long enough for small steps to become habits |
 | **Lifetime** | Not sold | Unlimited | Granted manually by an administrator only<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
-All payments are **one-time payments** with no automatic renewal. The pricing screen also lists extra benefits for the family plan (weekly tracking reports, family competitions, and faster technical support) and for the yearly plan (priority support and a parenting guide ebook); the ebook is **not yet available**.
+The monthly and yearly versions of the same plan include exactly the same benefits and differ only in price and term. All payments are **one-time payments** with no automatic renewal. The pricing screen also lists extra benefits for the paid plans (weekly tracking reports, family competitions, and faster technical support); the ebook is **not yet available**.
 
-**Names vary by location:** the marketing website calls the *One-Child Plan* the “Basic Plan” and the two family plans the “Premium Plan” (monthly and yearly). They are the same products at the same prices.
+**Names on the website** are the same as in the app: *1-Child Plan* and *Pro Plan* (monthly and yearly), at the same prices.
 
-**The number of children per plan** is checked by the database: the One-Child Plan allows up to 1 child; the trial, family, and lifetime plans are unlimited; without an active plan, you cannot add a new child profile.
+**The number of children per plan** is checked by the database when you **add** a new child profile: the 1-Child Plan allows up to 1 child; the Pro Plan and the trial allow up to 5; the lifetime plan is unlimited; without an active plan, you cannot add a new child profile. A family that already has more profiles than its plan allows **keeps its existing profiles**; the limit only blocks adding new ones.
 
-**Advanced plans with AI (coming soon).** The pricing dialog and the pricing page also show **Advanced plans with AI**: Family Plus monthly and yearly, with everything in the Family plan plus AI small-step suggestions and a weekly summary with more suggestions per day. These plans are **in development**: they have no price yet, cannot be bought, and their buttons are locked; prices and launch dates will be announced later, and the current plans do not change. See [AI suggestions](09-bao-mat-va-rieng-tu.md#goi-y-ai) for what data is sent.
+**Pro Plus Plan and the Habit Coach (in development).** The Pro Plus Plan (79,000 VND / month or 790,000 VND / year) includes everything in the Pro Plan plus the **Habit Coach** (AI small-step suggestions and a weekly summary), for up to 5 children. This plan is **in development**: it cannot be bought, has no buy button and has no launch date; the current plans do not change. See [AI suggestions](09-bao-mat-va-rieng-tu.md#goi-y-ai) for what data is sent.
+
+**Launch offer.** The first 10 families to successfully pay for the **Pro Plan yearly** before Pro Plus launches are upgraded to Pro Plus for free for the rest of the year they paid for. Each family gets at most 1 slot, counted in the order of successful payment; when all 10 are taken, the page says “No slots left”. A slot is withdrawn if that order is refunded.
 
 <a id="noi-mua"></a>
 ## Where to buy
@@ -73,21 +76,21 @@ If you have transferred the money but do not see the plan: wait a few minutes, r
 <a id="cong-don"></a>
 ## Time extensions
 
-If you buy while your current plan is still active, the time is **added to the end of the current term**, including any trial time remaining: the monthly plan adds 1 month, and the yearly plan adds 1 year. Buying a lower plan than the one you already have **keeps the higher plan**. A lifetime plan is not replaced by another plan.
+If you buy while your current plan is still active, the time is **added to the end of the current term**, including any trial time remaining: the monthly version adds 1 month, and the yearly version adds 1 year. Buying a lower plan than the one you already have **keeps the higher plan**. A lifetime plan is not replaced by another plan.
 
 <a id="coupon"></a>
 ## Gift codes (coupons)
 
 Gift codes are created by the operations team. Enter one in `Settings → Account → Coupon code → Apply code`.
 
-- A gift code adds **extra days** of access; discount-only codes cannot be used here. If the family does not yet have a paid plan, it switches to the Family Plan · Monthly for the corresponding number of days; if it already has a plan, the days are added to the end of the current term and the plan stays the same. Gift codes cannot be applied to the Lifetime plan.
+- A gift code adds **extra days** of access; discount-only codes cannot be used here. If the family does not yet have a paid plan, it switches to the Pro Plan · Monthly for the corresponding number of days; if it already has a plan, the days are added to the end of the current term and the plan stays the same. Gift codes cannot be applied to the Lifetime plan.
 - Each code can be used **once per family**; a family can use different codes. An expired, fully used, or disabled code shows: “Code not found, already used, or expired.”
 - After **more than 10 failed attempts within 15 minutes**, access is temporarily locked for a few minutes.
 
 <a id="giam-gia"></a>
 ## Discount for referred families
 
-A family that enters a referral code (through a `?ref=` link or by entering it manually) gets **10% off its first yearly plan** (399,000 VND becomes 359,100 VND), only if the family has no previously paid order. The payment screen shows “10% off thanks to the referral code.” Details: [8. Referrals](08-gioi-thieu-ban-be.md#giam-10).
+A family that enters a referral code (through a `?ref=` link or by entering it manually) gets **10% off its first order of either yearly plan**: Pro Plan · Yearly 590,000 VND becomes 531,000 VND, and 1-Child Plan · Yearly 399,000 VND becomes 359,100 VND; only if the family has no previously paid order. The payment screen shows “10% off thanks to the referral code.” Details: [8. Referrals](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Refunds and cancellation

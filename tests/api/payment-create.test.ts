@@ -74,15 +74,37 @@ describe('POST /api/payment/create referral discount', () => {
     const response = await post('yearly');
     const body = await response.json();
     expect(rpc).toHaveBeenCalledWith('referral_discount_bps', { target_family: 'family-a' });
-    expect(insert).toHaveBeenCalledWith(expect.objectContaining({ plan_id: 'yearly', amount: 359100 }));
-    expect(createPayOSPayment).toHaveBeenCalledWith(expect.objectContaining({ planId: 'yearly', amount: 359100 }));
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({ plan_id: 'yearly', amount: 531000 }));
+    expect(createPayOSPayment).toHaveBeenCalledWith(expect.objectContaining({ planId: 'yearly', amount: 531000 }));
+    expect(body.payment).toMatchObject({ amount: 531000, listPrice: 590000, discountPercent: 10 });
+  });
+
+  it('discounts the yearly Gói 1 bé plan of a referred family too', async () => {
+    rpc.mockResolvedValue({ data: 1000, error: null });
+    const body = await (await post('solo_yearly')).json();
+    expect(rpc).toHaveBeenCalledWith('referral_discount_bps', { target_family: 'family-a' });
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({ plan_id: 'solo_yearly', amount: 359100 }));
     expect(body.payment).toMatchObject({ amount: 359100, listPrice: 399000, discountPercent: 10 });
+  });
+
+  it.each([
+    ['solo_monthly', 39000], ['solo_yearly', 399000], ['monthly', 59000], ['yearly', 590000],
+  ])('charges the catalog price for %s', async (planId, price) => {
+    rpc.mockResolvedValue({ data: 0, error: null });
+    await post(planId);
+    expect(createPayOSPayment).toHaveBeenCalledWith(expect.objectContaining({ planId, amount: price }));
+  });
+
+  it('does not sell the Pro Plus plan', async () => {
+    const response = await post('family_plus_yearly');
+    expect(response.status).toBe(400);
+    expect(createPayOSPayment).not.toHaveBeenCalled();
   });
 
   it('charges the list price when the family was not referred or has paid before', async () => {
     rpc.mockResolvedValue({ data: 0, error: null });
     const body = await (await post('yearly')).json();
-    expect(insert).toHaveBeenCalledWith(expect.objectContaining({ amount: 399000 }));
+    expect(insert).toHaveBeenCalledWith(expect.objectContaining({ amount: 590000 }));
     expect(body.payment.listPrice).toBeUndefined();
     expect(body.payment.discountPercent).toBeUndefined();
   });

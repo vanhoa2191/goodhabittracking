@@ -24,7 +24,7 @@ Mỗi bé có một hồ sơ riêng gồm:
 
 Từ thẻ hồ sơ, ba mẹ có thể:
 
-- **Thêm, sửa, xóa** hồ sơ bé. Số bé tùy [gói](07-goi-va-thanh-toan.md#cac-goi): Gói Một Bé tối đa 1 bé; dùng thử và các gói gia đình không giới hạn. Hết hạn mà không có gói thì không thêm được hồ sơ mới.
+- **Thêm, sửa, xóa** hồ sơ bé. Số bé tùy [gói](07-goi-va-thanh-toan.md#cac-goi): Gói 1 bé tối đa 1 bé; Gói Pro và dùng thử tối đa 5 bé; trọn đời không giới hạn. Giới hạn chỉ chặn khi thêm hồ sơ mới. Hết hạn mà không có gói thì không thêm được hồ sơ mới.
 - **Nạp gói theo tuổi** ("Tự động nạp 6 thói quen phù hợp lứa tuổi…") để có ngay sáu việc khởi đầu.
 - **[Thưởng hoặc trừ sao thủ công](03-hom-nay-va-duyet-viec.md#chinh-sao)**.
 - Xem sao, cấp, chuỗi ngày, và biết bé có đang ẩn khỏi bảng xếp hạng hay không.

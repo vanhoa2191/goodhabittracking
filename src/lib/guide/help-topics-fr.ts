@@ -63,7 +63,7 @@ export const HELP_TOPICS_FR: HelpTranslationTable<HelpText> = {
   'settings.theme': { title: 'Apparence', text: 'Clair, sombre ou selon l’appareil.' },
   'settings.pin': { title: 'Code PIN', text: 'Quatre chiffres qui protègent l’espace Parents. Après une saisie correcte, ce navigateur reste déverrouillé pendant 2 heures. Nécessaire pour valider, révoquer des appareils, payer, supprimer des données et retirer l’argent du parrainage. Ne le partagez jamais avec votre enfant.' },
 
-  'payment.plans': { title: 'Forfaits', text: 'Un enfant : 29 000 VND/mois (1 enfant), Famille mensuel : 49 000 VND, Famille annuel : 399 000 VND. Paiement unique, sans renouvellement automatique.' },
+  'payment.plans': { title: 'Forfaits', text: 'Forfait un enfant : 39 000 VND/mois ou 399 000 VND/an (1 enfant). Forfait Pro : 59 000 VND/mois ou 590 000 VND/an (jusqu’à 5 profils enfant). Forfait Pro Plus : bientôt disponible. Paiement unique, sans renouvellement automatique.' },
   'payment.trial': { title: 'Essai de 7 jours', text: 'Gratuit, sans carte bancaire et sans prélèvement automatique. Une fois par famille.' },
   'payment.memo': { title: 'Motif du virement', text: 'Conservez le montant et le motif exacts pour que le système reconnaisse votre paiement. Vous pouvez copier chaque élément ou télécharger le QR code.' },
   'payment.activation': { title: 'Activation du forfait', text: 'Dès que le paiement est confirmé, généralement en quelques secondes. Si rien ne s’affiche, attendez quelques minutes et rouvrez l’application ; contactez le support avec le code de commande.' },

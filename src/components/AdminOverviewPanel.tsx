@@ -1,3 +1,5 @@
+import { PAID_PLAN_IDS } from '@/lib/billing/plan-catalog';
+import { AdminLaunchOfferPanel } from '@/components/AdminLaunchOfferPanel';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
 type Counts = {
@@ -27,7 +29,7 @@ async function load(): Promise<Counts | null> {
     const dayAgo = new Date(now.getTime() - 86_400_000).toISOString();
     const weekAhead = new Date(now.getTime() + 7 * 86_400_000).toISOString();
     const head = { count: 'exact', head: true } as const;
-    const paidPlans = ['solo_monthly', 'monthly', 'yearly'];
+    const paidPlans = [...PAID_PLAN_IDS];
     const [affiliate, casesOpen, ordersPending, lifetime, paidInTerm, trialing, expiring] = await Promise.all([
       admin.rpc('admin_affiliate_overview'),
       count(admin.from('billing_support_cases').select('id', head).in('status', ['requested', 'reviewing', 'approved'])),
@@ -71,10 +73,15 @@ function Task({ href, count: value, title, detail }: { readonly href: string; re
 }
 
 /** What needs a person today, then the few numbers that say how the business is doing. */
-export async function AdminOverviewPanel() {
+export async function AdminOverviewPanel({ canSeeLaunchOffer }: { readonly canSeeLaunchOffer: boolean }) {
   const counts = await load();
   if (!counts) {
-    return <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-bold text-rose-700">Chưa tải được số liệu tổng quan. Các tab khác vẫn dùng được.</p>;
+    return (
+      <div className="space-y-6">
+        <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-bold text-rose-700">Chưa tải được số liệu tổng quan. Các tab khác vẫn dùng được.</p>
+        {canSeeLaunchOffer && <AdminLaunchOfferPanel />}
+      </div>
+    );
   }
   const kpis: ReadonlyArray<readonly [string, number | null, string]> = [
     ['Gia đình trả phí', counts.paying, 'Đang hoạt động'],
@@ -104,6 +111,7 @@ export async function AdminOverviewPanel() {
           ))}
         </dl>
       </div>
+      {canSeeLaunchOffer && <AdminLaunchOfferPanel />}
     </section>
   );
 }

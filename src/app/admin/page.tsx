@@ -36,7 +36,7 @@ export default async function AdminPage() {
           </div>
         </header>
         <AdminShell
-          overview={<AdminOverviewPanel />}
+          overview={<AdminOverviewPanel canSeeLaunchOffer={access.role !== 'support'} />}
           referral={<AdminAffiliatePanel canSeeFullAccounts={access.role !== 'support'} adminId={access.user.id} />}
           funnel={<AdminFunnelPanel />}
           workspace={<AdminCustomerManager />}

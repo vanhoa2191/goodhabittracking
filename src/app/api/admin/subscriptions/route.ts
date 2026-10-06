@@ -7,13 +7,14 @@ import {
 } from '@/lib/auth/admin-access';
 import { recordAdminAudit } from '@/lib/auth/admin-audit-server';
 import { createCorrelationId } from '@/lib/observability/logger';
+import { PAID_PLAN_IDS, isPaidPlanId, planDurationDays } from '@/lib/billing/plan-catalog';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 const roles = ['finance', 'super_admin'] as const;
 const schema = z.object({
   familyId: z.string().uuid(),
-  plan: z.enum(['free', 'trial', 'solo_monthly', 'monthly', 'yearly', 'lifetime']),
+  plan: z.enum(['free', 'trial', ...PAID_PLAN_IDS, 'lifetime']),
   status: z.enum(['active', 'inactive', 'cancelled']),
   endsAt: z.string().datetime().nullable(),
   /** The `updated_at` the admin screen loaded; a different value means the subscription changed since (a payment, another admin). */
@@ -47,13 +48,11 @@ export async function PATCH(request: NextRequest) {
   if ((current?.updated_at ?? null) !== parsed.data.expectedUpdatedAt) {
     return adminJsonResponse({ error: 'The subscription changed since you opened it. Reload and review it before saving.', code: 'subscription_changed', correlationId }, correlationId, 409);
   }
-  const days = parsed.data.plan === 'solo_monthly' || parsed.data.plan === 'monthly'
-    ? 31
-    : parsed.data.plan === 'yearly'
-      ? 366
-      : parsed.data.plan === 'trial'
-        ? 7
-        : 0;
+  const days = isPaidPlanId(parsed.data.plan)
+    ? planDurationDays(parsed.data.plan)
+    : parsed.data.plan === 'trial'
+      ? 7
+      : 0;
   const endsAt = parsed.data.endsAt
     ?? (days ? new Date(Date.now() + days * 86_400_000).toISOString() : null);
   const before = current
@@ -67,7 +66,7 @@ export async function PATCH(request: NextRequest) {
   const after = {
     plan: parsed.data.plan,
     status: parsed.data.status,
-    subscriptionEndsAt: ['solo_monthly', 'monthly', 'yearly'].includes(parsed.data.plan) ? endsAt : null,
+    subscriptionEndsAt: isPaidPlanId(parsed.data.plan) ? endsAt : null,
     trialEndsAt: parsed.data.plan === 'trial' ? endsAt : null,
   };
   const audit = {
@@ -89,7 +88,7 @@ export async function PATCH(request: NextRequest) {
     user_id: membership.user_id,
     plan: parsed.data.plan,
     status: parsed.data.status,
-    subscription_ends_at: ['solo_monthly', 'monthly', 'yearly'].includes(parsed.data.plan) ? endsAt : null,
+    subscription_ends_at: isPaidPlanId(parsed.data.plan) ? endsAt : null,
     trial_ends_at: parsed.data.plan === 'trial' ? endsAt : null,
     // A trial granted here is a trial used: it must count as consumed so the family cannot start another later.
     trial_consumed_at: current?.trial_consumed_at ?? (parsed.data.plan === 'trial' ? new Date().toISOString() : null),

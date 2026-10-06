@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const publicRoutes = ['/', '/pricing/', '/framework/', '/science/', '/roadmaps/', '/docs/', '/blog/', '/privacy/', '/terms/', '/gioi-thieu/', '/contact/'];
-const paidPlans = ['solo_monthly', 'monthly', 'yearly'];
+const paidPlans = ['solo_monthly', 'solo_yearly', 'monthly', 'yearly'];
 const forbiddenMarkers = ['/api/', 'supabase_service_role_key', 'payos_api_key', 'serviceworker.register', 'manifest.webmanifest'];
 
 function parseOrigin(value, label) {
