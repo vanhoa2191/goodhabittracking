@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { createOrderCode, isUniqueViolation } from '@/lib/billing/order-code';
 import { createPayOSPayment } from '@/lib/billing/payos-server';
+import { planCycle } from '@/lib/billing/plan-catalog';
 import { createPaymentRequestSchema } from '@/lib/billing/schemas';
 import { getPricingPlan } from '@/lib/payos';
 import { discountedPrice } from '@/lib/billing/referral-discount';
@@ -33,7 +34,7 @@ export async function POST(request: NextRequest) {
     const plan = getPricingPlan(parsed.data.planId);
     // A family that entered a friend's code pays less for its first yearly plan; the server decides the price.
     let discountBps = 0;
-    if (parsed.data.planId === 'yearly') {
+    if (planCycle(parsed.data.planId) === 'year') {
       const { data, error: discountError } = await admin.rpc('referral_discount_bps', { target_family: parent.familyId });
       if (discountError) throw discountError;
       discountBps = typeof data === 'number' ? data : 0;

@@ -14,9 +14,10 @@ const paidPlans = PRICING_PLANS.filter((plan) => plan.price > 0);
 export function PricingContent({ isVietnam }: { readonly isVietnam: boolean }) {
   const { language } = useTranslation();
   const copy = getPublicPricingCopy(language);
-  const planText = { solo_monthly: { name: copy.soloName, badge: copy.soloBadge, description: copy.soloDescription, periodLabel: copy.month }, monthly: { name: copy.monthlyName, badge: copy.monthlyBadge, description: copy.monthlyDescription, periodLabel: copy.month }, yearly: { name: copy.yearlyName, badge: copy.yearlyBadge, description: copy.yearlyDescription, periodLabel: copy.year } };
+  const planText = { solo_monthly: { name: copy.soloName, badge: copy.soloBadge, description: copy.soloDescription, periodLabel: copy.month }, solo_yearly: { name: copy.soloName, badge: copy.soloBadge, description: copy.soloDescription, periodLabel: copy.year }, monthly: { name: copy.monthlyName, badge: copy.monthlyBadge, description: copy.monthlyDescription, periodLabel: copy.month }, yearly: { name: copy.yearlyName, badge: copy.yearlyBadge, description: copy.yearlyDescription, periodLabel: copy.year } };
   const publicBenefits: Record<string, readonly string[]> = {
     solo_monthly: [copy.oneChild, copy.sync, copy.library],
+    solo_yearly: [copy.oneChild, copy.sync, copy.library],
     monthly: [copy.unlimited, copy.sync, copy.fullLibrary],
     yearly: [copy.familyBenefits, copy.unlimited, copy.annualPayment],
   };

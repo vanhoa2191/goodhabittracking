@@ -86,9 +86,33 @@ test('admin can update customer care data, subscription and a gift coupon', asyn
     });
   });
 
+  await page.route('**/api/admin/launch-offer', async (route) => {
+    if (route.request().method() === 'POST') {
+      requests.push({ path: 'launch-offer-revoke', body: route.request().postDataJSON() });
+      await route.fulfill({ status: 200, contentType: 'application/json', body: '{"success":true}' });
+      return;
+    }
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        slots: 10,
+        claims: [{ orderCode: 777001, familyShort: '22222222', claimedAt: '2026-10-08T00:00:00.000Z', revoked: false }],
+      }),
+    });
+  });
+
   await page.goto('/admin');
   await expect(page.getByRole('heading', { name: 'Quản trị khách hàng' })).toBeVisible();
   await expect(page.getByRole('tab', { name: 'Tổng quan' })).toHaveAttribute('aria-selected', 'true');
+
+  await expect(page.getByRole('heading', { name: 'Ưu đãi ra mắt' })).toBeVisible();
+  await expect(page.getByText('Đã dùng 1/10 suất.')).toBeVisible();
+  await page.getByRole('button', { name: 'Thu hồi suất đơn 777001' }).click();
+  await page.getByLabel(/Lý do thu hồi đơn 777001/).fill('Đơn đã hoàn tiền');
+  await page.getByRole('button', { name: 'Xác nhận thu hồi' }).click();
+  await expect.poll(() => requests.some((request) => request.path === 'launch-offer-revoke')).toBe(true);
+  expect(requests.find((request) => request.path === 'launch-offer-revoke')?.body).toEqual({ orderCode: 777001, reason: 'Đơn đã hoàn tiền' });
 
   await page.getByRole('tab', { name: 'Khách hàng' }).click();
   await expect(page).toHaveURL(/#khach-hang$/);

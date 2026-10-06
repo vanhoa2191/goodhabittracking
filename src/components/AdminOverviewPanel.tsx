@@ -1,4 +1,5 @@
 import { PAID_PLAN_IDS } from '@/lib/billing/plan-catalog';
+import { AdminLaunchOfferPanel } from '@/components/AdminLaunchOfferPanel';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
 type Counts = {
@@ -75,7 +76,12 @@ function Task({ href, count: value, title, detail }: { readonly href: string; re
 export async function AdminOverviewPanel() {
   const counts = await load();
   if (!counts) {
-    return <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-bold text-rose-700">Chưa tải được số liệu tổng quan. Các tab khác vẫn dùng được.</p>;
+    return (
+      <div className="space-y-6">
+        <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-bold text-rose-700">Chưa tải được số liệu tổng quan. Các tab khác vẫn dùng được.</p>
+        <AdminLaunchOfferPanel />
+      </div>
+    );
   }
   const kpis: ReadonlyArray<readonly [string, number | null, string]> = [
     ['Gia đình trả phí', counts.paying, 'Đang hoạt động'],
@@ -105,6 +111,7 @@ export async function AdminOverviewPanel() {
           ))}
         </dl>
       </div>
+      <AdminLaunchOfferPanel />
     </section>
   );
 }

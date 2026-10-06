@@ -139,16 +139,16 @@ describe('public content contracts', () => {
 
   it.each(languages)('keeps prices, trial, renewal and country payment routing in %s', (language) => {
     const html = render(createElement(PricingContent, { isVietnam: true }), language);
-    expect(html.match(/<article\b/g)).toHaveLength(3);
-    expect(html.match(/href="\/\?pricing=1"/g)).toHaveLength(3);
+    expect(html.match(/<article\b/g)).toHaveLength(4);
+    expect(html.match(/href="\/\?pricing=1"/g)).toHaveLength(4);
     expect(html).toContain(escaped(pricing.COPY[language].renewalTitle));
     expect(pricing.COPY[language].description).toContain('7');
     for (const plan of PRICING_PLANS.filter((p) => p.price > 0)) {
       expect(html).toContain(escaped(formatCurrency(plan.price, language, language === 'vi' ? 'VN' : 'UNAVAILABLE')));
     }
-    expect(html).toContain(escaped(formatCurrency(588000, language, language === 'vi' ? 'VN' : 'UNAVAILABLE')));
+    expect(html).toContain(escaped(formatCurrency(708000, language, language === 'vi' ? 'VN' : 'UNAVAILABLE')));
     const international = render(createElement(PricingContent, { isVietnam: false }), language);
-    expect(international.match(/href="\/\?demo=1"/g)).toHaveLength(3);
+    expect(international.match(/href="\/\?demo=1"/g)).toHaveLength(4);
     expect(international).not.toContain('href="/?pricing=1"');
   });
 
