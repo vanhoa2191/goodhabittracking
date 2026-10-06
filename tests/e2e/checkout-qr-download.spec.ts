@@ -31,8 +31,9 @@ test('a parent on a phone can save the payment QR to pay from their banking app'
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
   await (await getVisiblePricingOpener(page)).click();
-  await page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' })
-    .getByRole('button', { name: 'Chọn Gói Pro · Tháng' }).click();
+  const pricing = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
+  await pricing.getByRole('radio', { name: 'Tháng' }).click();
+  await pricing.getByRole('button', { name: 'Chọn Gói Pro · Tháng' }).click();
 
   const checkout = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });
   await completeCheckoutProfile(checkout);

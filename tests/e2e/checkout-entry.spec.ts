@@ -14,6 +14,7 @@ test.beforeEach(async ({ page }) => {
 
 for (const [plan, name, price] of [
   ['solo_monthly', 'Gói 1 bé · Tháng', '39.000'],
+  ['solo_yearly', 'Gói 1 bé · Năm', '399.000'],
   ['monthly', 'Gói Pro · Tháng', '59.000'],
   ['yearly', 'Gói Pro · Năm', '590.000'],
 ]) {
@@ -116,4 +117,24 @@ test('mobile checkout keeps the selected summary and login action in view', asyn
   const box = await login.boundingBox();
   expect(box?.height).toBeGreaterThanOrEqual(44);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('the pricing dialog defaults to yearly, and choosing Tháng sends the Pro button to the monthly plan', async ({ page, baseURL }) => {
+  await installCloudFamilyFixture(page, baseURL);
+  await page.route('**/api/offers/launch', (route) => route.fulfill({ status: 200, json: { code: 'pro_plus_founding', slots: 10, remaining: 10 } }));
+  await page.route('**/api/payment/create', (route) => route.fulfill({ status: 503, json: { success: false, error: 'Payment provider unavailable in test.' } }));
+  await page.goto('/?pricing=1');
+  const pricing = page.getByRole('dialog', { name: /Bảng Giá/ });
+  const year = pricing.getByRole('radio', { name: 'Năm' });
+  const month = pricing.getByRole('radio', { name: 'Tháng' });
+  await expect(year).toBeChecked({ timeout: 30_000 });
+  await expect(pricing.getByRole('button', { name: 'Chọn Gói Pro · Năm' })).toBeVisible();
+  await expect(pricing).toContainText('49.200');
+  await year.focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(month).toBeChecked();
+  await expect(month).toBeFocused();
+  await expect(pricing.getByRole('button', { name: 'Chọn Gói Pro · Năm' })).toHaveCount(0);
+  await pricing.getByRole('button', { name: 'Chọn Gói Pro · Tháng' }).click();
+  await expect(page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' })).toContainText('Gói Pro · Tháng');
 });

@@ -200,6 +200,7 @@ test('payment status failures are shown instead of reported as pending', async (
   await page.goto('/');
   await (await getVisiblePricingOpener(page)).click();
   const pricingDialog = page.getByRole('dialog', { name: 'Bảng Giá Nâng Cấp KidHabit Hero Pro' });
+  await pricingDialog.getByRole('radio', { name: 'Tháng' }).click();
   await pricingDialog.getByRole('button', { name: 'Chọn Gói Pro · Tháng' }).click();
 
   const checkoutDialog = page.getByRole('dialog', { name: 'Thanh Toán VietQR Tự Động' });

@@ -33,6 +33,14 @@ export type PublicPricingCopy = {
   readonly renewal: string;
   readonly paymentTitle: string;
   readonly payment: string;
+  readonly cycleLabel: string;
+  readonly cycleMonth: string;
+  readonly cycleYear: string;
+  readonly saveAmount: string;
+  readonly yearlyNudge: string;
+  readonly perMonthApprox: string;
+  readonly perDayApprox: string;
+  readonly saveUpTo: string;
 };
 
 export const COPY: Record<Language, PublicPricingCopy> = {
@@ -68,7 +76,15 @@ export const COPY: Record<Language, PublicPricingCopy> = {
     "renewalTitle": "Không tự động gia hạn",
     "renewal": "Bạn chủ động chọn và thanh toán lại khi muốn tiếp tục sử dụng.",
     "paymentTitle": "Thanh toán tại Việt Nam",
-    "payment": "PayOS hiện phục vụ thanh toán VND tại Việt Nam. Ngoài Việt Nam, bạn vẫn có thể trải nghiệm demo nhưng chưa thể mua gói trực tuyến."
+    "payment": "PayOS hiện phục vụ thanh toán VND tại Việt Nam. Ngoài Việt Nam, bạn vẫn có thể trải nghiệm demo nhưng chưa thể mua gói trực tuyến.",
+    "cycleLabel": "Chu kỳ thanh toán",
+    "cycleMonth": "Tháng",
+    "cycleYear": "Năm",
+    "saveAmount": "Tiết kiệm [amount]",
+    "yearlyNudge": "Trả theo năm tiết kiệm [amount]",
+    "perMonthApprox": "≈ [amount] / tháng",
+    "perDayApprox": "≈ [amount] / ngày",
+    "saveUpTo": "Tiết kiệm đến [percent]%"
   },
   "en": {
     "eyebrow": "Transparent pricing",
@@ -102,7 +118,15 @@ export const COPY: Record<Language, PublicPricingCopy> = {
     "renewalTitle": "No automatic renewal",
     "renewal": "You choose and pay again yourself when you want to continue.",
     "paymentTitle": "Payments in Vietnam",
-    "payment": "PayOS currently supports VND payments in Vietnam. Outside Vietnam, you can still try the demo but cannot yet buy plans online."
+    "payment": "PayOS currently supports VND payments in Vietnam. Outside Vietnam, you can still try the demo but cannot yet buy plans online.",
+    "cycleLabel": "Billing cycle",
+    "cycleMonth": "Monthly",
+    "cycleYear": "Yearly",
+    "saveAmount": "Save [amount]",
+    "yearlyNudge": "Pay yearly and save [amount]",
+    "perMonthApprox": "≈ [amount] / month",
+    "perDayApprox": "≈ [amount] / day",
+    "saveUpTo": "Save up to [percent]%"
   },
   "fr": {
     "eyebrow": "Tarifs transparents",
@@ -136,7 +160,15 @@ export const COPY: Record<Language, PublicPricingCopy> = {
     "renewalTitle": "Aucun renouvellement automatique",
     "renewal": "Vous choisissez et payez de nouveau lorsque vous souhaitez continuer.",
     "paymentTitle": "Paiements au Vietnam",
-    "payment": "PayOS prend actuellement en charge les paiements en VND au Vietnam. Ailleurs, vous pouvez essayer la démo, mais pas encore acheter un forfait en ligne."
+    "payment": "PayOS prend actuellement en charge les paiements en VND au Vietnam. Ailleurs, vous pouvez essayer la démo, mais pas encore acheter un forfait en ligne.",
+    "cycleLabel": "Cycle de facturation",
+    "cycleMonth": "Mensuel",
+    "cycleYear": "Annuel",
+    "saveAmount": "Économisez [amount]",
+    "yearlyNudge": "Payez à l’année et économisez [amount]",
+    "perMonthApprox": "≈ [amount] / mois",
+    "perDayApprox": "≈ [amount] / jour",
+    "saveUpTo": "Économisez jusqu’à [percent]%"
   },
   "de": {
     "eyebrow": "Transparente Preise",
@@ -170,7 +202,15 @@ export const COPY: Record<Language, PublicPricingCopy> = {
     "renewalTitle": "Keine automatische Verlängerung",
     "renewal": "Sie wählen und bezahlen selbst erneut, wenn Sie fortfahren möchten.",
     "paymentTitle": "Zahlungen in Vietnam",
-    "payment": "PayOS unterstützt derzeit Zahlungen in VND in Vietnam. Außerhalb Vietnams können Sie die Demo testen, aber noch keine Tarife online kaufen."
+    "payment": "PayOS unterstützt derzeit Zahlungen in VND in Vietnam. Außerhalb Vietnams können Sie die Demo testen, aber noch keine Tarife online kaufen.",
+    "cycleLabel": "Abrechnungszeitraum",
+    "cycleMonth": "Monatlich",
+    "cycleYear": "Jährlich",
+    "saveAmount": "Sparen Sie [amount]",
+    "yearlyNudge": "Jährlich zahlen und [amount] sparen",
+    "perMonthApprox": "≈ [amount] / Monat",
+    "perDayApprox": "≈ [amount] / Tag",
+    "saveUpTo": "Bis zu [percent]% sparen"
   },
   "it": {
     "eyebrow": "Prezzi trasparenti",
@@ -204,7 +244,15 @@ export const COPY: Record<Language, PublicPricingCopy> = {
     "renewalTitle": "Nessun rinnovo automatico",
     "renewal": "Scegli e paghi di nuovo quando vuoi continuare.",
     "paymentTitle": "Pagamenti in Vietnam",
-    "payment": "PayOS supporta attualmente i pagamenti in VND in Vietnam. Fuori dal Vietnam puoi provare la demo, ma non ancora acquistare piani online."
+    "payment": "PayOS supporta attualmente i pagamenti in VND in Vietnam. Fuori dal Vietnam puoi provare la demo, ma non ancora acquistare piani online.",
+    "cycleLabel": "Ciclo di fatturazione",
+    "cycleMonth": "Mensile",
+    "cycleYear": "Annuale",
+    "saveAmount": "Risparmi [amount]",
+    "yearlyNudge": "Paga all’anno e risparmi [amount]",
+    "perMonthApprox": "≈ [amount] / mese",
+    "perDayApprox": "≈ [amount] / giorno",
+    "saveUpTo": "Risparmi fino al [percent]%"
   },
   "es": {
     "eyebrow": "Precios transparentes",
@@ -238,7 +286,15 @@ export const COPY: Record<Language, PublicPricingCopy> = {
     "renewalTitle": "Sin renovación automática",
     "renewal": "Tú eliges y vuelves a pagar cuando quieres continuar.",
     "paymentTitle": "Pagos en Vietnam",
-    "payment": "PayOS actualmente admite pagos en VND en Vietnam. Fuera de Vietnam puedes probar la demo, pero aún no comprar planes en línea."
+    "payment": "PayOS actualmente admite pagos en VND en Vietnam. Fuera de Vietnam puedes probar la demo, pero aún no comprar planes en línea.",
+    "cycleLabel": "Ciclo de facturación",
+    "cycleMonth": "Mensual",
+    "cycleYear": "Anual",
+    "saveAmount": "Ahorre [amount]",
+    "yearlyNudge": "Pague al año y ahorre [amount]",
+    "perMonthApprox": "≈ [amount] / mes",
+    "perDayApprox": "≈ [amount] / día",
+    "saveUpTo": "Ahorre hasta un [percent]%"
   },
   "zh": {
     "eyebrow": "透明定价",
@@ -272,7 +328,15 @@ export const COPY: Record<Language, PublicPricingCopy> = {
     "renewalTitle": "不会自动续费",
     "renewal": "需要继续使用时，由你主动选择并再次付款。",
     "paymentTitle": "越南境内付款",
-    "payment": "PayOS 目前支持越南境内的 VND 付款。在越南以外仍可体验演示版，但暂时无法在线购买套餐。"
+    "payment": "PayOS 目前支持越南境内的 VND 付款。在越南以外仍可体验演示版，但暂时无法在线购买套餐。",
+    "cycleLabel": "计费周期",
+    "cycleMonth": "月付",
+    "cycleYear": "年付",
+    "saveAmount": "节省 [amount]",
+    "yearlyNudge": "按年付款可节省 [amount]",
+    "perMonthApprox": "约 [amount] / 月",
+    "perDayApprox": "约 [amount] / 天",
+    "saveUpTo": "最高可节省 [percent]%"
   },
   "ja": {
     "eyebrow": "わかりやすい料金",
@@ -306,7 +370,15 @@ export const COPY: Record<Language, PublicPricingCopy> = {
     "renewalTitle": "自動更新なし",
     "renewal": "継続したいときに、ご自身で選んで再度お支払いください。",
     "paymentTitle": "ベトナムでの支払い",
-    "payment": "PayOS は現在、ベトナムでの VND 決済に対応しています。ベトナム国外でもデモを体験できますが、オンラインでのプラン購入はまだできません。"
+    "payment": "PayOS は現在、ベトナムでの VND 決済に対応しています。ベトナム国外でもデモを体験できますが、オンラインでのプラン購入はまだできません。",
+    "cycleLabel": "お支払いサイクル",
+    "cycleMonth": "月額",
+    "cycleYear": "年額",
+    "saveAmount": "[amount]お得",
+    "yearlyNudge": "年払いなら[amount]お得",
+    "perMonthApprox": "約[amount] / 月",
+    "perDayApprox": "約[amount] / 日",
+    "saveUpTo": "最大[percent]%お得"
   },
   "ko": {
     "eyebrow": "투명한 요금",
@@ -340,7 +412,15 @@ export const COPY: Record<Language, PublicPricingCopy> = {
     "renewalTitle": "자동 갱신 없음",
     "renewal": "계속 이용하고 싶을 때 직접 선택하여 다시 결제합니다.",
     "paymentTitle": "베트남 내 결제",
-    "payment": "PayOS는 현재 베트남 내 VND 결제를 지원합니다. 베트남 밖에서도 데모를 체험할 수 있지만, 아직 온라인 요금제 구매는 할 수 없습니다."
+    "payment": "PayOS는 현재 베트남 내 VND 결제를 지원합니다. 베트남 밖에서도 데모를 체험할 수 있지만, 아직 온라인 요금제 구매는 할 수 없습니다.",
+    "cycleLabel": "결제 주기",
+    "cycleMonth": "월간",
+    "cycleYear": "연간",
+    "saveAmount": "[amount] 절약",
+    "yearlyNudge": "연간 결제로 [amount] 절약",
+    "perMonthApprox": "약 [amount] / 월",
+    "perDayApprox": "약 [amount] / 일",
+    "saveUpTo": "최대 [percent]% 절약"
   }
 };
 

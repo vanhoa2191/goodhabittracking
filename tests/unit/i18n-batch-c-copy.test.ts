@@ -19,7 +19,6 @@ import { LegalDocument } from '@/components/LegalDocument';
 import { PORTRAITS_16, SEVEN_GIVINGS } from '@/lib/wit-framework';
 import { SCIENCE_PRINCIPLES, SCIENCE_SOURCES, SCIENCE_UNKNOWNS } from '@/lib/science-content';
 import { AGE_JOURNEY_PLANS, JOURNEY_STAGES } from '@/lib/journeys/age-journeys';
-import { PRICING_PLANS } from '@/lib/payos';
 import { formatCurrency } from '@/lib/i18n/formatters';
 
 const locale = vi.hoisted(() => ({ language: 'vi' as Language }));
@@ -139,16 +138,16 @@ describe('public content contracts', () => {
 
   it.each(languages)('keeps prices, trial, renewal and country payment routing in %s', (language) => {
     const html = render(createElement(PricingContent, { isVietnam: true }), language);
-    expect(html.match(/<article\b/g)).toHaveLength(4);
-    expect(html.match(/href="\/\?pricing=1"/g)).toHaveLength(4);
+    // One child and Pro can be chosen; Pro Plus is previewed with no link.
+    expect(html.match(/href="\/\?pricing=1"/g)).toHaveLength(2);
     expect(html).toContain(escaped(pricing.COPY[language].renewalTitle));
     expect(pricing.COPY[language].description).toContain('7');
-    for (const plan of PRICING_PLANS.filter((p) => p.price > 0)) {
-      expect(html).toContain(escaped(formatCurrency(plan.price, language, language === 'vi' ? 'VN' : 'UNAVAILABLE')));
+    const market = language === 'vi' ? 'VN' : 'UNAVAILABLE';
+    for (const price of [399000, 468000, 590000, 708000, 790000]) {
+      expect(html).toContain(escaped(formatCurrency(price, language, market)));
     }
-    expect(html).toContain(escaped(formatCurrency(708000, language, language === 'vi' ? 'VN' : 'UNAVAILABLE')));
     const international = render(createElement(PricingContent, { isVietnam: false }), language);
-    expect(international.match(/href="\/\?demo=1"/g)).toHaveLength(4);
+    expect(international.match(/href="\/\?demo=1"/g)).toHaveLength(2);
     expect(international).not.toContain('href="/?pricing=1"');
   });
 
