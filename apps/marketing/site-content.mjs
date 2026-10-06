@@ -281,7 +281,7 @@ export const safety = {
   text: 'KidHabit chỉ lưu những gì cần để vận hành thói quen của gia đình, không quảng cáo, không bán dữ liệu của bé, và luôn để ba mẹ quyết định.',
   link: 'Đọc chính sách quyền riêng tư',
   points: [
-    { icon: 'lock', title: 'Khu vực phụ huynh được bảo vệ bằng mã PIN', text: 'Thanh toán và cài đặt gia đình nằm ngoài tầm với của bé.' },
+    { icon: 'lock', title: 'Khu vực phụ huynh có thể khoá bằng mã PIN', text: 'Khi ba mẹ đặt mã PIN, thanh toán và cài đặt gia đình chỉ mở được bằng mã đó. Bé dùng màn hình riêng của mình.' },
     { icon: 'shield', title: 'Mỗi gia đình một không gian riêng', text: 'Dữ liệu mỗi gia đình được tách biệt bằng kiểm soát truy cập, gia đình này không xem được gia đình khác.' },
     { icon: 'eye-off', title: 'Chia sẻ công khai mặc định tắt', text: 'Bảng xếp hạng công khai chỉ hiện bé khi ba mẹ bật và bé tham gia, bằng biệt danh. Tên thật và tuổi không bao giờ hiện.' },
     { icon: 'trash', title: 'Ba mẹ quyết định giữ hay xóa', text: 'Chủ gia đình có thể xóa toàn bộ dữ liệu gia đình trong ứng dụng.' },
@@ -300,7 +300,7 @@ export const faqs = [
   },
   {
     question: 'Có thêm giờ màn hình cho con không?',
-    answer: 'Con chỉ mở ứng dụng để xem việc và đánh dấu xong. Phần lớn thời gian con làm việc thật, ngoài đời thật.',
+    answer: 'Ứng dụng được thiết kế để con mở nhanh, xem việc và đánh dấu xong; việc thật diễn ra ngoài đời. Ba mẹ có thể thống nhất với con lúc nào mở ứng dụng.',
   },
   {
     question: 'Bé chưa biết đọc thì sao?',

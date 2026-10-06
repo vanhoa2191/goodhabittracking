@@ -75,11 +75,16 @@ export default defineConfig({
       testIgnore: marketingSpec,
       use: { ...devices['Pixel 7'], channel: localBrowserChannel },
     },
-    {
-      name: 'marketing',
-      testMatch: marketingSpec,
-      use: { ...devices['Desktop Chrome'], channel: localBrowserChannel, baseURL: marketingURL },
-    },
+    // Its server only exists for `npm run test:e2e:marketing` (PLAYWRIGHT_MARKETING=1), so the project is gated the same way.
+    ...(process.env.PLAYWRIGHT_MARKETING === '1'
+      ? [
+          {
+            name: 'marketing',
+            testMatch: marketingSpec,
+            use: { ...devices['Desktop Chrome'], channel: localBrowserChannel, baseURL: marketingURL },
+          },
+        ]
+      : []),
     // Safari engines: run nightly on a focused set of specs (see .github/workflows/webkit-nightly.yml), not on every PR.
     {
       name: 'webkit',

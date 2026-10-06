@@ -258,7 +258,7 @@ describe('marketing static artifact', () => {
       const faqChapter = page.slice(page.indexOf('id="hoi-dap"'), page.indexOf('class="faq'));
       expect(faqChapter).toContain('An tâm cho cả nhà');
       expect(faqChapter.match(/<li class="safety-item">/g)).toHaveLength(4);
-      for (const title of ['Khu vực phụ huynh được bảo vệ bằng mã PIN', 'Mỗi gia đình một không gian riêng', 'Chia sẻ công khai mặc định tắt', 'Ba mẹ quyết định giữ hay xóa']) expect(faqChapter).toContain(title);
+      for (const title of ['Khu vực phụ huynh có thể khoá bằng mã PIN', 'Mỗi gia đình một không gian riêng', 'Chia sẻ công khai mặc định tắt', 'Ba mẹ quyết định giữ hay xóa']) expect(faqChapter).toContain(title);
       expect(faqChapter).toContain('href="/privacy/"');
       expect(faqChapter).toContain('không quảng cáo, không bán dữ liệu của bé');
     }
@@ -313,7 +313,7 @@ describe('marketing static artifact', () => {
     }
     expect(headers).toContain("frame-ancestors 'none'");
     expect(headers).not.toMatch(/script-src[^;]*unsafe-inline/);
-    expect(headers).toContain("connect-src 'self' https://app.example;");
+    expect(headers).toContain("connect-src https://app.example;");
     expect(headers).toContain("default-src 'self'; ");
     expect(headers).toContain("font-src https://fonts.gstatic.com; img-src 'self' data: https:;");
     const inline = html.match(/<script>([\s\S]*?)<\/script>/);

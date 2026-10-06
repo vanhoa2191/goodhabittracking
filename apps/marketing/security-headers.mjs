@@ -24,7 +24,7 @@ export function renderHeadersFile(documents, { appOrigin } = {}) {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     'font-src https://fonts.gstatic.com',
     "img-src 'self' data: https:",
-    appOrigin ? `connect-src 'self' ${appOrigin}` : "connect-src 'self'",
+    appOrigin ? `connect-src ${appOrigin}` : "connect-src 'self'",
     "object-src 'none'",
     "frame-ancestors 'none'",
     "base-uri 'self'",

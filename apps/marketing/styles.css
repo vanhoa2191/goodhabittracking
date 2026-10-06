@@ -682,8 +682,9 @@ body { overflow-x: clip; }
 .seg button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px; border: 0; border-radius: 999px; background: transparent; font-weight: 700; cursor: pointer; transition: background .2s, color .2s; }
 .seg button[aria-checked="true"] { background: var(--ink); color: #fff; }
 .seg .save { padding: 3px 8px; border-radius: 999px; background: var(--red); color: #fff; font-size: .74rem; font-weight: 800; }
-/* Both billing cycles are in every card; the section shows the chosen one (yearly when the script has not run). */
-[data-pricing-cycle="year"] [data-cycle="month"], [data-pricing-cycle="month"] [data-cycle="year"] { display: none !important; }
+/* Both billing cycles are in every card; with the script the section shows the chosen one. Without it the reader sees both prices, but only the yearly button (the monthly link stays) and no dead nudge. */
+html[data-js] [data-pricing-cycle="year"] [data-cycle="month"], html[data-js] [data-pricing-cycle="month"] [data-cycle="year"] { display: none !important; }
+html:not([data-js]) .plan a.btn[data-cycle="month"], html:not([data-js]) .nudge { display: none; }
 .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1080px; margin: 40px auto 0; }
 .plan { position: relative; display: flex; flex-direction: column; padding: 30px 26px; background: var(--card); border: 1.5px solid var(--line); border-radius: 28px; transition: border-color .25s, box-shadow .25s; }
 .plan.recommended { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-soft), var(--shadow); }

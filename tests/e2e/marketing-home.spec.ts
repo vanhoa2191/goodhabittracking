@@ -124,6 +124,9 @@ test.describe('without JavaScript', () => {
       await expect(page.locator(`a[href$="/checkout?plan=${plan}"]`).first()).toBeAttached();
     }
     await expect(page.getByText('399.000đ').first()).toBeVisible();
+    const proPlus = page.locator('[data-plan="pro_plus"]');
+    await expect(proPlus.getByText('790.000đ').first()).toBeVisible();
+    await expect(proPlus.getByText('79.000đ').first()).toBeVisible();
   });
 });
 
