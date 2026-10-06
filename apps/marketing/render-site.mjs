@@ -2,7 +2,7 @@ import { buildLegalPages, legalUpdatedLabel } from './legal-content.mjs';
 import { sessionHintCookie } from './session-hint.mjs';
 import scienceData from '../../src/data/science-content.json' with { type: 'json' };
 import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
-import { comparison, faqs, mascots, navigation, outcomes, plans, publicPages, safetyPoints, steps, testimonials, trustPoints } from './site-content.mjs';
+import { comparison, faqs, launchOfferNote, mascots, navigation, outcomes, plans, upcomingPlanNote, publicPages, safetyPoints, steps, testimonials, trustPoints } from './site-content.mjs';
 
 const icons = {
   compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>',
@@ -58,11 +58,10 @@ function planTitle(plan) {
   return plan.period ? `${plan.name} · ${plan.period}` : plan.name;
 }
 
-function yearlySaving() {
-  const monthly = plans.find((plan) => plan.id === 'monthly');
-  const yearly = plans.find((plan) => plan.id === 'yearly');
-  if (!monthly || !yearly) return null;
-  return { perMonth: Math.round(yearly.amount / 12), saved: monthly.amount * 12 - yearly.amount };
+function yearlySaving(plan) {
+  const monthly = plans.find((candidate) => candidate.id === plan.monthlyId);
+  if (!monthly) return null;
+  return { perMonth: Math.round(plan.amount / 12 / 100) * 100, saved: monthly.amount * 12 - plan.amount };
 }
 
 
@@ -197,16 +196,16 @@ export function renderDocument({ title, description, path, marketingOrigin, appO
 }
 
 function renderPricing(appOrigin, heading = 'Chọn gói phù hợp với gia đình') {
-  const saving = yearlySaving();
   return `<section class="section pricing-section" id="bang-gia" aria-labelledby="pricing-title"><div class="shell">
     <div class="pricing-heading"><div><p class="eyebrow">7 ngày trải nghiệm đầy đủ</p><h2 id="pricing-title">${heading}</h2><p>Không cần thẻ tín dụng. Hoàn tiền trong 30 ngày nếu chưa hài lòng.</p></div><a class="text-link" href="/terms/">Xem điều khoản ${icon('arrow')}</a></div>
     <div class="pricing-grid">${plans.map((plan) => `<article class="price-card${plan.featured ? ' price-card-featured' : ''}" data-plan="${plan.id}" data-spotlight>
       <div class="plan-top"><p class="plan-label">${plan.label}</p><h3>${planTitle(plan)}</h3><p>${plan.summary}</p></div>
-      <p class="price"><strong>${plan.price}</strong><span>VNĐ ${plan.cadence}</span></p>${plan.id === 'yearly' && saving ? `
-      <p class="price-saving">Tương đương ${formatVnd(saving.perMonth)} VNĐ/tháng. Tiết kiệm ${formatVnd(saving.saved)} VNĐ so với trả theo tháng.</p>` : ''}
+      <p class="price"><strong>${plan.price}</strong><span>VNĐ ${plan.cadence}</span></p>${plan.monthlyId ? (() => { const saving = yearlySaving(plan); return saving ? `
+      <p class="price-saving">Tương đương khoảng ${formatVnd(saving.perMonth)} VNĐ/tháng. Tiết kiệm ${formatVnd(saving.saved)} VNĐ so với trả theo tháng.</p>` : ''; })() : ''}
       <ul>${plan.features.map((feature) => `<li>${icon('check')}<span>${feature}</span></li>`).join('')}</ul>
       <a class="button ${plan.featured ? 'button-primary' : 'button-secondary'}" href="${appUrl(appOrigin, `/checkout?plan=${plan.id}`)}">${plan.cta} ${icon('arrow')}</a>
     </article>`).join('')}</div>
+    <p class="pricing-note">${upcomingPlanNote} ${launchOfferNote}</p>
     <p class="pricing-note">Hết 7 ngày dùng thử, ba mẹ chọn một gói để tiếp tục ghi nhận việc của con. Không có khoản trừ tiền tự động. Gói đăng ký gắn với gia đình trong tài khoản phụ huynh; sau khi đăng nhập, bạn tiếp tục thanh toán mà không phải chọn lại gói.</p>
   </div></section>`;
 }

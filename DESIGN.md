@@ -57,7 +57,7 @@ The root font scale is `1.125`. Light-mode supporting text uses at least the `sl
 ### Pricing hierarchy
 
 - Trial state is a compact guidance/status row, not a paid-plan card.
-- Gói Một Bé, Gói Gia Đình · Tháng, and Gói Gia Đình · Năm form a balanced three-column comparison at desktop widths and a single-column stack on mobile.
+- Gói 1 bé and Gói Pro, each monthly and yearly, form a four-card comparison at desktop widths (Gói Pro · Năm featured) and a single-column stack on mobile.
 - The labels are Khởi đầu nhẹ nhàng, Phổ biến nhất, and Tiết kiệm nhất; the monthly family plan receives the strongest visual emphasis while the yearly plan shows the exact 189.000đ saving.
 - Price, billing period, primary benefit, and CTA must be visible in that order without decorative badges competing with the plan name.
 - Payment instructions show the full account number, beneficiary name, resolved bank name, and BIN as separate untruncated values.

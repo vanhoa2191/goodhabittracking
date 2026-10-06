@@ -14,7 +14,7 @@ The programme has two sides, connected by an **8-character referral code** attac
 | Side | What they get |
 |---|---|
 | **Referrer** (a parent using KidHabit) | **30% commission** on the amount the referred family actually pays |
-| **Referred family** | **10% off** their first Yearly plan purchase (399,000 VND becomes 359,100 VND) |
+| **Referred family** | **10% off** their first order of either yearly plan (Pro Plan · Yearly 590,000 VND becomes 531,000 VND; 1-Child Plan · Yearly 399,000 VND becomes 359,100 VND) |
 
 Public terms: the `/gioi-thieu/` page on the [website](11-website-va-trang-cong-khai.md#trang-chinh). <!--op-->Technical and operational rules: [Referral programme](../affiliate-program.md).<!--/op-->
 
@@ -32,7 +32,7 @@ You **cannot** see the referred family's name, email, or family code; you only s
 
 - Open your friend's `?ref=` link, then sign in and set up your family as usual, or **enter the code manually** in the "Have a referral code from a friend?" field (in `Settings` or directly in the checkout window).
 - The referral is recorded, and you see "You get 10% off your first yearly plan".
-- When you pay for the **Yearly plan** for the first time, the checkout shows the discounted price and the line "10% off with your referral code". The Family plan · Monthly and Lifetime plans are not discounted.
+- When you pay for a **yearly plan** (1-Child or Pro) for the first time, the checkout shows the discounted price and the line "10% off with your referral code". The monthly and Lifetime plans are not discounted.
 - Conditions: the family is new (within 60 days of creation), has no paid orders, has not already been referred, and this is not your own code.
 
 <a id="ghi-nhan"></a>
@@ -48,7 +48,7 @@ The result appears immediately: recorded; code is invalid; you cannot use your o
 <a id="hoa-hong"></a>
 ## Commissions
 
-- **30%** of the amount actually paid (after discounts), on every payment during the **first 12 months** after the referred family was created. For example, a discounted Yearly plan payment of 359,100 VND earns 107,730 VND in commission.
+- **30%** of the amount actually paid (after discounts), on every payment during the **first 12 months** after the referred family was created. For example, a discounted Pro Plan · Yearly payment of 531,000 VND earns 159,300 VND in commission.
 - Each amount is **held for 35 days** (past the 30-day refund window) before becoming "Available".
 - The system creates the commission automatically when an order succeeds ([plan activation](07-goi-va-thanh-toan.md#kich-hoat)); an error at this step never prevents the customer's plan from being activated.
 

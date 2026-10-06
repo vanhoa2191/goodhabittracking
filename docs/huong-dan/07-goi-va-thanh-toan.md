@@ -10,7 +10,7 @@
 ## Dùng thử 7 ngày
 
 - **Miễn phí 0đ**, không cần thẻ tín dụng, **không tự động trừ tiền** khi hết hạn.
-- Mở khóa trọn bộ tính năng của gói gia đình, **không giới hạn số bé**.
+- Mở khóa quyền lợi của Gói Pro, **tối đa 5 bé**.
 - **Chỉ một lần cho mỗi gia đình.** Nếu đã dùng thử, nút bắt đầu sẽ báo "Gia đình này đã dùng thử trước đó. Hãy chọn một gói để tiếp tục."
 - Cách bắt đầu: (a) tự động ở bước cuối [thiết lập gia đình](01-bat-dau.md#thiet-lap) nếu chưa có gói; (b) trang `/start` ("Bắt đầu 7 ngày dùng thử"): đăng nhập Google, thiết lập gia đình, bấm bắt đầu; (c) khung báo dùng thử trong cửa sổ bảng giá. Chỉ phụ huynh trong gia đình mới bắt đầu được.
 - Khung dùng thử **không hiện lại** khi gia đình đã trả tiền.
@@ -21,19 +21,22 @@
 
 | Gói | Giá | Số bé | Dành cho |
 |---|---|---|---|
-| **Dùng thử 7 ngày** | 0đ | Không giới hạn | Trải nghiệm đầy đủ trước khi quyết định |
-| **Gói Một Bé** | 29.000đ / tháng | 1 bé | Gia đình bắt đầu cùng một bé |
-| **Gói Gia Đình · Tháng** | 49.000đ / tháng | Không giới hạn | Nhiều bé hoặc muốn dùng trọn bộ tính năng |
-| **Gói Gia Đình · Năm** | 399.000đ / năm (giá gốc 588.000đ, tiết kiệm 189.000đ, 32%) | Không giới hạn | Duy trì đủ lâu để việc nhỏ thành nếp |
+| **Dùng thử 7 ngày** | 0đ | Tối đa 5 bé (như Gói Pro) | Trải nghiệm đầy đủ trước khi quyết định |
+| **Gói 1 bé · Tháng** | 39.000đ / tháng | 1 bé | Gia đình bắt đầu cùng một bé |
+| **Gói 1 bé · Năm** | 399.000đ / năm (tiết kiệm 69.000đ, 15% so với trả theo tháng) | 1 bé | Một bé, thanh toán một lần cho 12 tháng |
+| **Gói Pro · Tháng** | 59.000đ / tháng | Tối đa 5 bé | Gia đình có nhiều bé, linh hoạt theo tháng |
+| **Gói Pro · Năm** | 590.000đ / năm (tiết kiệm 118.000đ, 17% so với trả theo tháng) | Tối đa 5 bé | Duy trì đủ lâu để việc nhỏ thành nếp |
 | **Trọn đời** | Không bán | Không giới hạn | Chỉ do quản trị viên cấp thủ công<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
-Tất cả là **thanh toán một lần**, không tự động gia hạn. Màn hình bảng giá còn liệt kê thêm quyền lợi cho gói gia đình (báo cáo theo dõi hằng tuần, thi đua gia đình, hỗ trợ kỹ thuật nhanh) và cho Gói Năm (ưu tiên hỗ trợ, ebook cẩm nang nuôi dạy con); ebook hiện **chưa phát hành**.
+Bản tháng và bản năm của cùng một gói có quyền lợi giống hệt, chỉ khác giá và thời hạn. Tất cả là **thanh toán một lần**, không tự động gia hạn. Màn hình bảng giá còn liệt kê thêm quyền lợi cho gói trả phí (báo cáo theo dõi hằng tuần, thi đua gia đình, hỗ trợ kỹ thuật nhanh); ebook hiện **chưa phát hành**.
 
-**Tên gọi khác nhau theo nơi:** website giới thiệu gọi *Gói Một Bé* là "Gói Cơ bản" và hai gói gia đình là "Gói Cao cấp" (theo tháng, theo năm). Cùng một sản phẩm, cùng giá.
+**Tên gọi trên website** giống trong ứng dụng: *Gói 1 bé* và *Gói Pro* (theo tháng, theo năm), cùng giá.
 
-**Số bé theo gói** do cơ sở dữ liệu kiểm tra: Gói Một Bé tối đa 1 bé; dùng thử, gói gia đình và trọn đời không giới hạn; không có gói hiệu lực thì không thêm được hồ sơ bé mới.
+**Số bé theo gói** do cơ sở dữ liệu kiểm tra khi **thêm** hồ sơ bé mới: Gói 1 bé tối đa 1 bé; Gói Pro và dùng thử tối đa 5 bé; trọn đời không giới hạn; không có gói hiệu lực thì không thêm được hồ sơ bé mới. Gia đình đang có nhiều hồ sơ hơn mức của gói vẫn **giữ nguyên các hồ sơ hiện có**; giới hạn chỉ chặn việc thêm mới.
 
-**Gói nâng cao với AI (sắp ra mắt).** Trong Bảng giá và trang giá có thêm mục **Gói nâng cao với AI**: Gia Đình Plus theo tháng và theo năm, gồm mọi thứ của Gói Gia Đình cộng gợi ý bước nhỏ và tóm tắt tuần bằng AI với nhiều lượt gợi ý mỗi ngày hơn. Các gói này **đang phát triển**: chưa có giá, chưa mua được, nút bấm bị khóa; giá và ngày ra mắt sẽ công bố sau, và các gói hiện tại không thay đổi. Xem [Gợi ý bằng AI](09-bao-mat-va-rieng-tu.md#goi-y-ai) để biết dữ liệu nào được gửi.
+**Gói Pro Plus và Huấn luyện viên thói quen (đang phát triển).** Gói Pro Plus (79.000đ / tháng hoặc 790.000đ / năm) gồm mọi thứ của Gói Pro cộng **Huấn luyện viên thói quen** (gợi ý bước nhỏ và tóm tắt tuần bằng AI), tối đa 5 bé. Gói này **đang phát triển**: chưa mở bán, không có nút mua và chưa có ngày ra mắt; các gói hiện tại không thay đổi. Xem [Gợi ý bằng AI](09-bao-mat-va-rieng-tu.md#goi-y-ai) để biết dữ liệu nào được gửi.
+
+**Ưu đãi ra mắt.** 10 gia đình đầu tiên thanh toán thành công **Gói Pro theo năm** trước khi Pro Plus ra mắt được nâng cấp miễn phí lên Pro Plus cho phần còn lại của năm đã trả. Mỗi gia đình tối đa 1 suất, tính theo thứ tự thanh toán thành công; hết 10 suất thì trang ghi "Đã hết suất". Suất bị thu hồi nếu đơn đó được hoàn tiền.
 
 <a id="noi-mua"></a>
 ## Nơi mua
@@ -73,21 +76,21 @@ Nếu đã chuyển khoản mà chưa thấy gói: chờ vài phút, mở lại 
 <a id="cong-don"></a>
 ## Cộng dồn thời gian
 
-Mua khi vẫn còn hạn thì thời gian được **cộng nối vào cuối hạn hiện tại** (kể cả hạn dùng thử còn lại): Gói tháng cộng 1 tháng, Gói năm cộng 1 năm. Mua gói thấp hơn gói đang có thì **giữ gói cao hơn**. Gói trọn đời không bị thay bởi gói khác.
+Mua khi vẫn còn hạn thì thời gian được **cộng nối vào cuối hạn hiện tại** (kể cả hạn dùng thử còn lại): bản tháng cộng 1 tháng, bản năm cộng 1 năm. Mua gói thấp hơn gói đang có thì **giữ gói cao hơn**. Gói trọn đời không bị thay bởi gói khác.
 
 <a id="coupon"></a>
 ## Mã tặng (coupon)
 
 Mã tặng do đội vận hành tạo. Nhập ở `Cài đặt → Tài khoản → Mã coupon → Áp dụng mã`.
 
-- Mã tặng cộng **thêm số ngày** sử dụng (mã chỉ giảm giá không dùng được ở đây). Nếu gia đình chưa có gói trả phí thì chuyển sang Gói Gia Đình · Tháng với số ngày tương ứng; đang có gói thì cộng vào cuối hạn, giữ nguyên gói. Gói Trọn đời không áp mã.
+- Mã tặng cộng **thêm số ngày** sử dụng (mã chỉ giảm giá không dùng được ở đây). Nếu gia đình chưa có gói trả phí thì chuyển sang Gói Pro · Tháng với số ngày tương ứng; đang có gói thì cộng vào cuối hạn, giữ nguyên gói. Gói Trọn đời không áp mã.
 - Mỗi mã chỉ được **một gia đình dùng một lần**; một gia đình có thể dùng các mã khác nhau. Mã hết hạn, hết lượt hoặc bị tắt thì báo "Mã không tồn tại, đã dùng hoặc đã hết hạn."
 - Thử sai quá **10 lần trong 15 phút** sẽ bị tạm khóa vài phút.
 
 <a id="giam-gia"></a>
 ## Giảm giá cho gia đình được giới thiệu
 
-Gia đình nhập mã giới thiệu (qua liên kết `?ref=` hoặc nhập tay) được **giảm 10% Gói Năm đầu tiên** (399.000đ còn 359.100đ), chỉ khi gia đình chưa có đơn nào đã trả. Màn thanh toán hiện "Đã giảm 10% nhờ mã giới thiệu". Chi tiết: [8. Giới thiệu bạn bè](08-gioi-thieu-ban-be.md#giam-10).
+Gia đình nhập mã giới thiệu (qua liên kết `?ref=` hoặc nhập tay) được **giảm 10% đơn đầu tiên của một trong hai gói năm**: Gói Pro · Năm 590.000đ còn 531.000đ, Gói 1 bé · Năm 399.000đ còn 359.100đ; chỉ khi gia đình chưa có đơn nào đã trả. Màn thanh toán hiện "Đã giảm 10% nhờ mã giới thiệu". Chi tiết: [8. Giới thiệu bạn bè](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Hoàn tiền và hủy

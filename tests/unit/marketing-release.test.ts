@@ -36,7 +36,7 @@ describe('marketing release verifier', () => {
       directory: await buildFixture(),
       appOrigin: 'https://app.example',
       marketingOrigin: 'https://www.example',
-    })).resolves.toEqual({ routes: 11, plans: 3 });
+    })).resolves.toEqual({ routes: 11, plans: 4 });
   });
 
   it('rejects a wrong canonical URL', async () => {
@@ -107,7 +107,7 @@ describe('marketing release verifier', () => {
       marketingOrigin: 'https://www.example',
       liveOrigin: 'https://preview.example',
       fetchImpl,
-    })).resolves.toEqual({ routes: 11, plans: 3 });
+    })).resolves.toEqual({ routes: 11, plans: 4 });
     expect(fetchImpl).toHaveBeenCalledTimes(11);
   });
 });

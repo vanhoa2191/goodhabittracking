@@ -14,7 +14,7 @@ Chương trình có hai phía, kết nối với nhau qua một **mã giới thi
 | Phía | Được gì |
 |---|---|
 | **Người giới thiệu** (một phụ huynh đang dùng KidHabit) | **Hoa hồng 30%** trên số tiền thực trả của gia đình được giới thiệu |
-| **Gia đình được giới thiệu** | **Giảm 10%** khi mua Gói Năm lần đầu (399.000đ còn 359.100đ) |
+| **Gia đình được giới thiệu** | **Giảm 10%** đơn đầu tiên của một trong hai gói năm (Gói Pro · Năm 590.000đ còn 531.000đ; Gói 1 bé · Năm 399.000đ còn 359.100đ) |
 
 Điều khoản công khai: trang `/gioi-thieu/` trên [website](11-website-va-trang-cong-khai.md#trang-chinh). <!--op-->Quy tắc kỹ thuật và vận hành: [Chương trình giới thiệu bạn bè](../affiliate-program.md).<!--/op-->
 
@@ -32,7 +32,7 @@ Bạn **không** thấy tên, email hay mã gia đình của người được g
 
 - Mở liên kết `?ref=` của bạn bè rồi đăng nhập và thiết lập gia đình như bình thường, hoặc **nhập mã tay** ở ô "Có mã giới thiệu từ bạn bè?" (trong `Cài đặt` hoặc ngay trong cửa sổ thanh toán).
 - Gia đình được ghi nhận và nhìn thấy "Bạn được giảm 10% khi mua gói năm lần đầu".
-- Khi thanh toán **Gói Năm** lần đầu, màn thanh toán hiện giá đã giảm và dòng "Đã giảm 10% nhờ mã giới thiệu". Gói tháng và gói trọn đời không giảm.
+- Khi thanh toán **gói năm** (Gói 1 bé hoặc Gói Pro) lần đầu, màn thanh toán hiện giá đã giảm và dòng "Đã giảm 10% nhờ mã giới thiệu". Các gói tháng và gói trọn đời không giảm.
 - Điều kiện: gia đình còn mới (trong 60 ngày từ lúc tạo), chưa có đơn nào đã trả, chưa được giới thiệu, và đây không phải mã của chính bạn.
 
 <a id="ghi-nhan"></a>
@@ -48,7 +48,7 @@ Kết quả hiện ngay: đã ghi nhận; mã không đúng; không thể dùng 
 <a id="hoa-hong"></a>
 ## Hoa hồng
 
-- **30%** số tiền thực trả (đã trừ giảm giá), cho mọi thanh toán trong **12 tháng đầu** kể từ lúc gia đình được giới thiệu tạo. Ví dụ Gói Năm đã giảm 359.100đ cho 107.730đ hoa hồng.
+- **30%** số tiền thực trả (đã trừ giảm giá), cho mọi thanh toán trong **12 tháng đầu** kể từ lúc gia đình được giới thiệu tạo. Ví dụ Gói Pro · Năm đã giảm 531.000đ cho 159.300đ hoa hồng.
 - Mỗi khoản **giữ 35 ngày** (qua hạn hoàn tiền 30 ngày) rồi mới chuyển sang "Có thể rút".
 - Hệ thống tự sinh hoa hồng khi đơn thành công ([kích hoạt gói](07-goi-va-thanh-toan.md#kich-hoat)); lỗi ở bước này không bao giờ làm hỏng việc kích hoạt gói của khách.
 

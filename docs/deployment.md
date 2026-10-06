@@ -159,6 +159,15 @@ Production migration là gate thủ công vì thay đổi RLS và dữ liệu tr
 6. chạy pairing/payment/domain smoke tests;
 7. chỉ sau đó promote Worker.
 
+### Bảng giá theo bậc và ưu đãi ra mắt (`202610070001`)
+
+Migration `supabase/migrations/202610070001_pricing_tiers_launch_offer.sql` thêm gói `solo_yearly`, giới hạn 5 bé cho Gói Pro và dùng thử (trigger `enforce_family_child_limit`, hàm `family_child_limit`), bảng `launch_offer_claims` và RPC `launch_offer_remaining`, và áp giảm giá giới thiệu cho cả hai gói năm. Phiên bản schema là `202610070001`.
+
+1. Chủ dự án chạy `supabase/preflight/202610070001_pricing_tiers_launch_offer.verify.sql` bằng vai trò `postgres` qua `psql` hoặc Supabase CLI, trong khung giờ ít người dùng, **trước** `db push`. Tệp báo các gia đình đang có hơn 5 bé; những gia đình này giữ nguyên hồ sơ (giới hạn chỉ chặn việc thêm mới) nhưng nên được biết trước.
+2. Áp migration lên `evkwelozdcmsmwdzhlxz`, chạy lại tệp xác minh, rồi mới deploy ứng dụng. Trang marketing chỉ deploy sau khi app đã có migration, để giá công khai không đi trước dữ liệu.
+3. Ứng dụng cần biến `NEXT_PUBLIC_MARKETING_URL` (origin của trang marketing, ví dụ `https://kidhabithero.com`): endpoint công khai trả số suất ưu đãi còn lại dùng nó cho CORS. Thiếu biến thì trang marketing không đọc được số suất thật.
+4. Hoàn tiền một đơn Gói Pro năm đang giữ suất ưu đãi do quản trị viên xử lý thủ công trong admin; suất bị thu hồi cùng đơn.
+
 ## Staged rollout
 
 - Preview: health endpoint phải `ready`; chạy E2E desktop/mobile và webhook test mode.
