@@ -31,9 +31,16 @@ begin
     actor := gen_random_uuid();
     insert into auth.users (id, email, raw_user_meta_data, raw_app_meta_data)
     values (actor, actor::text || '@example.invalid', '{}'::jsonb, '{}'::jsonb);
-    select membership.family_id into strict actor_family
+    actor_family := null;
+    select membership.family_id into actor_family
     from public.family_memberships membership
     where membership.user_id = actor and membership.role = 'owner';
+    -- Databases restored without the auth.users bootstrap trigger still get a fixture family.
+    if actor_family is null then
+      insert into public.families (name, created_by) values ('Pricing verification', actor)
+      returning id into actor_family;
+      insert into public.family_memberships (family_id, user_id, role) values (actor_family, actor, 'owner');
+    end if;
     insert into pricing_verification_families values (ordinal, actor, actor_family);
   end loop;
 end
