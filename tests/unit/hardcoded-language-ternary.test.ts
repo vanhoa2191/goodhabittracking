@@ -16,6 +16,7 @@ const TERNARY = new RegExp(
 const ALLOWED: Readonly<Record<string, string>> = {
   'AffiliateCard.tsx': 'chooses a number and date locale and a currency symbol, not a sentence',
   'public/PricingContent.tsx': 'chooses a price market code, not text',
+  'public/UpcomingPlans.tsx': 'chooses a price market code, not text',
 };
 
 function listTsx(directory: string): string[] {

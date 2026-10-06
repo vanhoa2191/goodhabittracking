@@ -27,14 +27,17 @@ test('parents see that AI suggestions are coming, and nothing about them can be 
   await expect(breakdown).toContainText('Sắp ra mắt');
 });
 
-test('the pricing dialog announces the AI plans as coming soon, with no price and nothing to buy', async ({ page }) => {
+test('the pricing dialog announces the AI plans as coming soon, with the price and nothing to buy', async ({ page }) => {
   test.setTimeout(90_000);
   await page.goto('/?pricing=1');
   const section = page.getByTestId('upcoming-plans');
   await expect(section).toBeVisible({ timeout: 30_000 });
   await expect(section).toContainText('Sắp ra mắt');
   await expect(section.locator('[data-plan]')).toHaveCount(2);
-  await expect(section).not.toContainText(/\d{3}/);
+  await expect(section).toContainText('Chưa mở bán');
+  await expect(section).toContainText('79.000');
+  await expect(section).toContainText('790.000');
+  await expect(section.getByRole('link')).toHaveCount(0);
   for (const button of await section.getByRole('button').all()) await expect(button).toBeDisabled();
   // The three plans that can be bought are still there and unchanged.
   await expect(page.getByTestId('paid-plan-grid').locator('> div')).toHaveCount(3);

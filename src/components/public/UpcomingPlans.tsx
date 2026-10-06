@@ -1,11 +1,12 @@
 'use client';
 
 import { CheckCircle2, Sparkles } from 'lucide-react';
-import { UPCOMING_PLAN_IDS } from '@/lib/upcoming-plans';
+import { UPCOMING_PLAN_IDS, UPCOMING_PLAN_PRICES } from '@/lib/upcoming-plans';
+import { formatCurrency } from '@/lib/i18n/formatters';
 import { useTranslation } from '@/lib/i18n/context';
 import { getUpcomingPlansCopy } from '@/lib/i18n/upcoming-plans-copy';
 
-/** Announces the advanced plans with AI. There is no price and no button that can be pressed: they are not on sale yet. */
+/** Announces Pro Plus with its price and a "not on sale yet" chip. There is no purchase button or checkout link: the plan cannot be bought yet. */
 export function UpcomingPlans() {
   const { language } = useTranslation();
   const copy = getUpcomingPlansCopy(language);
@@ -21,8 +22,7 @@ export function UpcomingPlans() {
         {UPCOMING_PLAN_IDS.map((id) => (
           <div key={id} role="group" aria-label={copy.names[id]} data-plan={id} className="flex flex-col rounded-3xl border border-dashed border-indigo-300 bg-indigo-50/40 p-5 dark:border-indigo-800 dark:bg-indigo-950/20">
             <h4 className="text-base font-black text-slate-800 dark:text-slate-100">{copy.names[id]}</h4>
-            <p className="mt-1 text-xs font-bold text-slate-500 dark:text-slate-300">{copy.periods[id]}</p>
-            <p className="mt-3 rounded-2xl bg-white px-3 py-2 text-sm font-bold text-slate-700 dark:bg-zinc-900 dark:text-slate-200">{copy.priceSoon}</p>
+            <p className="mt-3 flex flex-wrap items-center gap-2 rounded-2xl bg-white px-3 py-2 text-sm font-bold text-slate-700 dark:bg-zinc-900 dark:text-slate-200"><strong className="text-xl font-black">{formatCurrency(UPCOMING_PLAN_PRICES[id], language, language === 'vi' ? 'VN' : 'UNAVAILABLE')}</strong><span className="text-xs font-semibold text-slate-600 dark:text-slate-300">{copy.periods[id]}</span><span className="rounded-full bg-slate-200 px-2 py-0.5 text-xs font-black text-slate-700 dark:bg-zinc-700 dark:text-slate-100">{copy.priceSoon}</span></p>
             <p className="mt-3 text-sm font-semibold text-slate-700 dark:text-slate-200">{copy.includes}</p>
             <ul className="mt-2 flex-1 space-y-2">
               {[copy.coachFeature, ...copy.features].map((feature) => (

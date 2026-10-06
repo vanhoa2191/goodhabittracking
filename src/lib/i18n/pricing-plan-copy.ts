@@ -13,7 +13,7 @@ export const PLAN_LOCALIZATION: Record<
     fr: { name: 'Forfait un enfant · Mensuel', desc: 'L’expérience essentielle complète pour un enfant', period: '/ mois', badge: 'Pour bien commencer', cta: 'Choisir le forfait un enfant · Mensuel' },
     de: { name: 'Ein-Kind-Paket · Monatlich', desc: 'Das vollständige Kernerlebnis für ein Kind', period: '/ Monat', badge: 'Sanfter Einstieg', cta: 'Ein-Kind-Paket · Monatlich wählen' },
     it: { name: 'Piano un bambino · Mensile', desc: 'L’esperienza essenziale completa per un bambino', period: '/ mese', badge: 'Un inizio leggero', cta: 'Scegli Piano un bambino · Mensile' },
-    es: { name: 'Plan para un menor · Mensual', desc: 'La experiencia esencial completa para un niño', period: '/ mes', badge: 'Un comienzo sencillo', cta: 'Elegir plan para un menor · Mensual' },
+    es: { name: 'Plan para un menor · Mensual', desc: 'La experiencia esencial completa para un menor', period: '/ mes', badge: 'Un comienzo sencillo', cta: 'Elegir plan para un menor · Mensual' },
     zh: { name: '单宝贝套餐 · 月付', desc: '为一个孩子提供完整的核心体验', period: '/ 月', badge: '轻松起步', cta: '选择单宝贝套餐 · 月付' },
     ja: { name: 'お子さま1人プラン · 月額', desc: 'お子さま1人向けの基本機能をすべて利用できます', period: '/ 月', badge: 'やさしくスタート', cta: 'お子さま1人プラン · 月額を選ぶ' },
     ko: { name: '아이 한 명 플랜 · 월간', desc: '아이 한 명을 위한 모든 핵심 기능', period: '/ 월', badge: '가볍게 시작', cta: '아이 한 명 플랜 · 월간 선택' },
