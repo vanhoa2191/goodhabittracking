@@ -73,13 +73,13 @@ function Task({ href, count: value, title, detail }: { readonly href: string; re
 }
 
 /** What needs a person today, then the few numbers that say how the business is doing. */
-export async function AdminOverviewPanel() {
+export async function AdminOverviewPanel({ canSeeLaunchOffer }: { readonly canSeeLaunchOffer: boolean }) {
   const counts = await load();
   if (!counts) {
     return (
       <div className="space-y-6">
         <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-bold text-rose-700">Chưa tải được số liệu tổng quan. Các tab khác vẫn dùng được.</p>
-        <AdminLaunchOfferPanel />
+        {canSeeLaunchOffer && <AdminLaunchOfferPanel />}
       </div>
     );
   }
@@ -111,7 +111,7 @@ export async function AdminOverviewPanel() {
           ))}
         </dl>
       </div>
-      <AdminLaunchOfferPanel />
+      {canSeeLaunchOffer && <AdminLaunchOfferPanel />}
     </section>
   );
 }

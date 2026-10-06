@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const rpc = vi.fn();
 const recordAdminAudit = vi.fn();
 let claims: unknown[] = [];
+let claim: { revoked_at: string | null } | null = { revoked_at: null };
 
 vi.mock('@/lib/auth/admin-access', () => ({
   authorizeAdmin: async () => ({ authorized: true, user: { id: 'admin-1' }, role: 'finance' }),
@@ -14,7 +15,14 @@ vi.mock('@/lib/auth/admin-audit-server', () => ({ recordAdminAudit: (...args: un
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminSupabaseClient: () => ({
     rpc,
-    from: () => ({ select: () => ({ eq: () => ({ order: async () => ({ data: claims, error: null }) }) }) }),
+    from: () => ({
+      select: () => ({
+        eq: () => ({
+          order: async () => ({ data: claims, error: null }),
+          eq: () => ({ maybeSingle: async () => ({ data: claim, error: null }) }),
+        }),
+      }),
+    }),
   }),
 }));
 
@@ -33,6 +41,7 @@ describe('/api/admin/launch-offer', () => {
     recordAdminAudit.mockReset();
     recordAdminAudit.mockResolvedValue(true);
     claims = [];
+    claim = { revoked_at: null };
   });
 
   it('lists claims with a shortened family id and nothing else about the family', async () => {
@@ -47,6 +56,22 @@ describe('/api/admin/launch-offer', () => {
     expect(rpc).toHaveBeenCalledWith('admin_revoke_launch_offer_claim', { target_order_code: 123, reason: 'Hoàn tiền đơn này' });
     expect(recordAdminAudit.mock.calls.map(([, input]) => input.outcome)).toEqual(['attempted', 'succeeded']);
     expect(recordAdminAudit.mock.calls[0]![1]).toMatchObject({ action: 'launch_offer.revoke', targetId: '123' });
+  });
+
+  it('answers 404 and changes nothing when the order has no claim', async () => {
+    claim = null;
+    expect((await post({ orderCode: 9, reason: 'ok' })).status).toBe(404);
+    expect(rpc).not.toHaveBeenCalled();
+    expect(recordAdminAudit).not.toHaveBeenCalled();
+  });
+
+  it('answers 409 and changes nothing when the claim is already revoked', async () => {
+    claim = { revoked_at: '2026-10-08T00:00:00Z' };
+    const response = await post({ orderCode: 9, reason: 'ok' });
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toMatchObject({ code: 'already_revoked' });
+    expect(rpc).not.toHaveBeenCalled();
+    expect(recordAdminAudit).not.toHaveBeenCalled();
   });
 
   it.each([{ orderCode: 'x', reason: 'a' }, { orderCode: 1, reason: '' }, { orderCode: 1, reason: 'a'.repeat(201) }, { orderCode: 1, reason: 'ok', extra: 1 }])('rejects %o', async (body) => {

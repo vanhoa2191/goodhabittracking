@@ -51,12 +51,21 @@ export async function POST(request: NextRequest) {
 
   const { orderCode, reason } = parsed.data;
   const admin = createAdminSupabaseClient();
+  const { data: claim, error: readError } = await admin
+    .from('launch_offer_claims')
+    .select('revoked_at')
+    .eq('order_code', orderCode)
+    .eq('offer_code', LAUNCH_OFFER.code)
+    .maybeSingle();
+  if (readError) return adminJsonResponse({ error: 'Could not inspect the claim.', correlationId }, correlationId, 503);
+  if (!claim) return adminJsonResponse({ error: 'Claim not found.', correlationId }, correlationId, 404);
+  if (claim.revoked_at !== null) return adminJsonResponse({ error: 'That claim is already revoked.', code: 'already_revoked', correlationId }, correlationId, 409);
   const audit = {
     actor: access,
     action: 'launch_offer.revoke',
     targetType: 'launch_offer_claim',
     targetId: String(orderCode),
-    before: { revoked: false },
+    before: { revoked: false, claimedOrder: orderCode },
     after: { revoked: true },
     reason,
     correlationId,
