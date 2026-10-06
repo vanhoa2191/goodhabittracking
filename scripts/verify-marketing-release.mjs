@@ -10,6 +10,25 @@ const paidPlans = Object.values(pricingTiers)
   .flatMap((tier) => [tier.month.id, tier.year.id]);
 const forbiddenMarkers = ['/api/', 'supabase_service_role_key', 'payos_api_key', 'serviceworker.register', 'manifest.webmanifest'];
 
+const formatPrice = (amount) => `${String(amount).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}đ`;
+
+// Every public price the pages must show, formatted the way the pages format it.
+const expectedPrices = Object.values(pricingTiers)
+  .filter((tier) => tier.purchasable)
+  .flatMap((tier) => [tier.month.amount, tier.year.amount])
+  .map(formatPrice);
+
+function assertSalesPages(home, pricing, label) {
+  for (const [route, html] of [['/', home], ['/pricing/', pricing]]) {
+    if (/plan=family_plus/.test(html)) {
+      throw new Error(`${label} ${route} links to checkout for a plan that is not on sale (family_plus).`);
+    }
+    for (const price of expectedPrices) {
+      if (!html.includes(price)) throw new Error(`${label} ${route} does not show the price ${price}.`);
+    }
+  }
+}
+
 function parseOrigin(value, label) {
   const url = new URL(value);
   if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.pathname !== '/' || url.search || url.hash) {
@@ -97,9 +116,7 @@ export async function verifyMarketingRelease({
     }
   }
 
-  if (/plan=family_plus/.test(htmlByRoute.get('/'))) {
-    throw new Error('The home page links to checkout for a plan that is not on sale (family_plus).');
-  }
+  assertSalesPages(htmlByRoute.get('/'), htmlByRoute.get('/pricing/'), 'The built');
 
   if (liveOrigin) {
     const origin = parseOrigin(liveOrigin, 'liveOrigin');
@@ -111,9 +128,7 @@ export async function verifyMarketingRelease({
       assertHtmlContract(html, route, appOrigin, marketingOrigin);
       liveHtmlByRoute.set(route, html);
     }
-    if (/plan=family_plus/.test(liveHtmlByRoute.get('/'))) {
-      throw new Error('The live home page links to checkout for a plan that is not on sale (family_plus).');
-    }
+    assertSalesPages(liveHtmlByRoute.get('/'), liveHtmlByRoute.get('/pricing/'), 'The live');
     const liveSalesHtml = `${liveHtmlByRoute.get('/')}\n${liveHtmlByRoute.get('/pricing/')}`;
     for (const plan of paidPlans) {
       if (!liveSalesHtml.includes(`href="${appOrigin}/checkout?plan=${plan}"`)) {

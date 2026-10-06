@@ -26,13 +26,18 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   webServer: [
-    {
-      command: `node scripts/preview-marketing.mjs --port ${marketingPort}`,
-      url: marketingURL,
-      reuseExistingServer: !process.env.CI,
-      timeout: 30_000,
-    },
-    ...(externalBaseUrl
+    // Only for `npm run test:e2e:marketing`, which builds dist/marketing first; other runs never need it.
+    ...(process.env.PLAYWRIGHT_MARKETING === '1'
+      ? [
+          {
+            command: `node scripts/preview-marketing.mjs --port ${marketingPort}`,
+            url: marketingURL,
+            reuseExistingServer: !process.env.CI,
+            timeout: 30_000,
+          },
+        ]
+      : []),
+    ...(externalBaseUrl || process.env.PLAYWRIGHT_MARKETING === '1'
       ? []
       : [
           {
