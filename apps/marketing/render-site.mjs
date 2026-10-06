@@ -516,7 +516,7 @@ function renderStoryFaq(appOrigin, { home = false } = {}) {
 }
 
 function renderSafety() {
-  return `<div class="wrap"><div class="safety reveal" aria-labelledby="safety-title">
+  return `<div class="wrap"><div class="safety reveal" role="group" aria-labelledby="safety-title">
       <div class="safety-head"><h3 id="safety-title">${escapeHtml(safety.title)}</h3><p>${escapeHtml(safety.text)}</p><a class="story-link" href="/privacy/">${escapeHtml(safety.link)} <span aria-hidden="true">→</span></a></div>
       <ul class="safety-grid">${safety.points.map((point) => `<li class="safety-item"><span class="safety-icon">${icon(point.icon)}</span><div><b>${escapeHtml(point.title)}</b><p>${escapeHtml(point.text)}</p></div></li>`).join('')}</ul>
     </div></div>`;

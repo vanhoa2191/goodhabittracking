@@ -1,9 +1,13 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { pricingTiers } from '../apps/marketing/pricing.mjs';
 
 const publicRoutes = ['/', '/pricing/', '/framework/', '/science/', '/roadmaps/', '/docs/', '/blog/', '/privacy/', '/terms/', '/gioi-thieu/', '/contact/'];
-const paidPlans = ['solo_monthly', 'solo_yearly', 'monthly', 'yearly'];
+// The purchasable plan ids come from the same table the pages are built from. Pro Plus is announced only.
+const paidPlans = Object.values(pricingTiers)
+  .filter((tier) => tier.purchasable)
+  .flatMap((tier) => [tier.month.id, tier.year.id]);
 const forbiddenMarkers = ['/api/', 'supabase_service_role_key', 'payos_api_key', 'serviceworker.register', 'manifest.webmanifest'];
 
 function parseOrigin(value, label) {
@@ -93,6 +97,10 @@ export async function verifyMarketingRelease({
     }
   }
 
+  if (/plan=family_plus/.test(htmlByRoute.get('/'))) {
+    throw new Error('The home page links to checkout for a plan that is not on sale (family_plus).');
+  }
+
   if (liveOrigin) {
     const origin = parseOrigin(liveOrigin, 'liveOrigin');
     const liveHtmlByRoute = new Map();
@@ -102,6 +110,9 @@ export async function verifyMarketingRelease({
       const html = await response.text();
       assertHtmlContract(html, route, appOrigin, marketingOrigin);
       liveHtmlByRoute.set(route, html);
+    }
+    if (/plan=family_plus/.test(liveHtmlByRoute.get('/'))) {
+      throw new Error('The live home page links to checkout for a plan that is not on sale (family_plus).');
     }
     const liveSalesHtml = `${liveHtmlByRoute.get('/')}\n${liveHtmlByRoute.get('/pricing/')}`;
     for (const plan of paidPlans) {

@@ -35,140 +35,286 @@ if (toggle && navigation) {
   });
 }
 
-const stickyCta = document.querySelector('[data-sticky-cta]');
-const heroActions = document.querySelector('.hero-actions');
+const root = document.documentElement;
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+root.dataset.js = '';
+if (!reduceMotion) root.dataset.motion = '';
 
-if (stickyCta && heroActions && 'IntersectionObserver' in window) {
-  let heroVisible = true;
-  const overlapping = new Set();
-  const update = () => {
-    stickyCta.hidden = heroVisible || overlapping.size > 0;
+const $ = (selector, scope = document) => scope.querySelector(selector);
+const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
+
+// Sections fade in as they scroll into view. Without motion or IntersectionObserver everything shows at once.
+(() => {
+  const items = $$('.reveal');
+  if (!items.length) return;
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    for (const item of items) item.classList.add('is-in');
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      entry.target.classList.add('is-in');
+      observer.unobserve(entry.target);
+    }
+  }, { threshold: 0.15 });
+  for (const item of items) observer.observe(item);
+})();
+
+// A radiogroup of buttons with a roving tab stop and arrow-key selection. Returns select(button, focus).
+function radioGroup(group, onChange) {
+  const items = $$('[role="radio"]', group);
+  const select = (button, focus) => {
+    for (const item of items) {
+      const on = item === button;
+      item.setAttribute('aria-checked', String(on));
+      item.tabIndex = on ? 0 : -1;
+    }
+    if (focus) button.focus();
+    onChange(button);
+  };
+  items.forEach((button, index) => {
+    button.addEventListener('click', () => select(button));
+    button.addEventListener('keydown', (event) => {
+      const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+      if (!step) return;
+      event.preventDefault();
+      select(items[(index + step + items.length) % items.length], true);
+    });
+  });
+  return select;
+}
+
+// Chapters: current chapter in the header, the progress bar, the phone menu, the bottom bar and the morning timeline.
+(() => {
+  const sections = $$('[data-chapter]');
+  if (!sections.length) return;
+  const links = $$('[data-chapter-link]');
+  const pill = $('[data-chapter-pill]');
+  const menu = $('[data-chapter-menu]');
+  const pillNum = $('[data-pill-num]');
+  const pillName = $('[data-pill-name]');
+  const progress = $('[data-progress]');
+  const header = $('[data-story-top]');
+  const dock = $('[data-dock]');
+  const dockTitle = dock && $('[data-dock-title]', dock);
+  const dockNote = dock && $('[data-dock-note]', dock);
+  const dockCta = dock && $('[data-dock-cta]', dock);
+  const plans = $('#gia');
+  const bubbles = $$('[data-timeline] li');
+  const counter = $('[data-nag-count]');
+
+  const setMenu = (open) => {
+    if (!pill || !menu) return;
+    menu.hidden = !open;
+    pill.setAttribute('aria-expanded', String(open));
+  };
+  if (pill && menu) {
+    pill.addEventListener('click', () => setMenu(menu.hidden));
+    menu.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('a')) setMenu(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !menu.hidden) {
+        setMenu(false);
+        pill.focus();
+      }
+    });
+    document.addEventListener('click', (event) => {
+      if (!menu.hidden && event.target instanceof Node && !menu.contains(event.target) && !pill.contains(event.target)) setMenu(false);
+    });
+  }
+
+  let current = -1;
+  const setChapter = (index) => {
+    if (index !== current) {
+      current = index;
+      const id = sections[index].id;
+      for (const link of links) link.setAttribute('aria-current', link.getAttribute('href') === `#${id}` ? 'true' : 'false');
+      if (pillNum) pillNum.textContent = index === 0 ? '' : `${index}/${sections.length - 1}`;
+      if (pillName) pillName.textContent = sections[index].dataset.chapter ?? '';
+    }
+    if (!dock) return;
+    const section = sections[index];
+    const copy = section.dataset.dockTitle ? section.dataset : null;
+    const plansBox = plans?.getBoundingClientRect();
+    const overPlans = plansBox ? plansBox.top < window.innerHeight && plansBox.bottom > 0 : false;
+    dock.hidden = !(copy && window.scrollY > 500 && !overPlans);
+    if (!copy) return;
+    if (dockTitle) dockTitle.textContent = copy.dockTitle;
+    if (dockNote) dockNote.textContent = copy.dockNote ?? '';
+    if (dockCta) {
+      dockCta.textContent = copy.dockCta ?? '';
+      if (copy.dockHref) dockCta.setAttribute('href', copy.dockHref);
+    }
   };
 
-  new IntersectionObserver(([entry]) => {
-    heroVisible = entry.isIntersecting || entry.boundingClientRect.top > 0;
-    update();
-  }).observe(heroActions);
-
-  const salesObserver = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      if (entry.isIntersecting) overlapping.add(entry.target);
-      else overlapping.delete(entry.target);
+  const update = () => {
+    const line = window.scrollY + window.innerHeight * 0.35;
+    let index = 0;
+    sections.forEach((section, i) => {
+      if (section.getBoundingClientRect().top + window.scrollY <= line) index = i;
+    });
+    setChapter(index);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+    header?.classList.toggle('scrolled', window.scrollY > 10);
+    if (bubbles.length) {
+      let lit = 0;
+      for (const bubble of bubbles) {
+        const on = reduceMotion || bubble.getBoundingClientRect().top < window.innerHeight * 0.62;
+        bubble.classList.toggle('on', on);
+        if (on) lit += 1;
+      }
+      if (counter) counter.textContent = String(lit);
     }
-    update();
-  }, { threshold: 0.15 });
-  for (const selector of ['#bang-gia', '.final-cta']) {
-    const target = document.querySelector(selector);
-    if (target) salesObserver.observe(target);
+  };
+  let frame = 0;
+  const schedule = () => {
+    if (frame) return;
+    frame = window.requestAnimationFrame(() => {
+      frame = 0;
+      update();
+    });
+  };
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule);
+  update();
+})();
+
+// Opening question: the answer text and the closing title follow the chosen option.
+(() => {
+  const quiz = $('[data-quiz]');
+  if (!quiz) return;
+  const answer = $('[data-quiz-answer]', quiz);
+  const finalTitle = $('h2[data-final-title]');
+  radioGroup($('[role="radiogroup"]', quiz), (button) => {
+    const key = button.dataset.quizOption;
+    if (answer) answer.hidden = false;
+    for (const text of $$('[data-quiz-text]', quiz)) text.hidden = text.dataset.quizText !== key;
+    if (finalTitle && button.dataset.finalTitle) finalTitle.textContent = button.dataset.finalTitle;
+  });
+})();
+
+// "Tried it" cards.
+(() => {
+  const group = $('[data-tried]');
+  if (!group) return;
+  const cards = $$('.tried', group);
+  const count = $('[data-tried-count]');
+  const number = $('[data-tried-n]');
+  const empty = $('[data-tried-result="empty"]');
+  const some = $('[data-tried-result="count"]');
+  for (const card of cards) {
+    card.addEventListener('click', () => {
+      card.setAttribute('aria-pressed', String(card.getAttribute('aria-pressed') !== 'true'));
+      const n = cards.filter((item) => item.getAttribute('aria-pressed') === 'true').length;
+      if (count) count.textContent = n ? String(n) : '?';
+      if (number) number.textContent = String(n);
+      if (empty) empty.hidden = n > 0;
+      if (some) some.hidden = n === 0;
+    });
+  }
+})();
+
+// Age explorer: five panels are in the page; the tabs only choose which one shows.
+(() => {
+  const list = $('[data-age-tabs]');
+  if (!list) return;
+  const tabs = $$('[data-age-tab]', list);
+  const show = (index, focus) => {
+    tabs.forEach((tab, i) => {
+      const on = i === index;
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+      const panel = document.getElementById(tab.getAttribute('aria-controls') ?? '');
+      if (panel) panel.hidden = !on;
+    });
+    if (focus) tabs[index].focus();
+  };
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => show(index));
+    tab.addEventListener('keydown', (event) => {
+      const target = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: tabs.length - 1 }[event.key];
+      if (target === undefined) return;
+      event.preventDefault();
+      show((target + tabs.length) % tabs.length, true);
+    });
+  });
+})();
+
+// "Try being the child" demo: three tasks, stars, a bar, a parent's stamp and a praise line.
+(() => {
+  const tasks = $$('[data-demo-task]');
+  if (!tasks.length) return;
+  const stars = $('[data-demo-stars]');
+  const starsBox = stars?.closest('.stars');
+  const bar = $('[data-demo-bar]');
+  const stamp = $('[data-demo-stamp]');
+  const praise = $('[data-demo-praise]');
+  for (const task of tasks) {
+    task.addEventListener('click', () => {
+      task.setAttribute('aria-pressed', String(task.getAttribute('aria-pressed') !== 'true'));
+      const done = tasks.filter((item) => item.getAttribute('aria-pressed') === 'true');
+      if (stars) stars.textContent = String(done.reduce((sum, item) => sum + Number(item.dataset.points || 0), 0));
+      if (bar) bar.style.width = `${(done.length / tasks.length) * 100}%`;
+      if (starsBox && !reduceMotion) {
+        starsBox.classList.remove('pop');
+        void starsBox.offsetWidth;
+        starsBox.classList.add('pop');
+      }
+      const all = done.length === tasks.length;
+      if (stamp) stamp.hidden = !all;
+      if (praise) praise.hidden = !all;
+    });
+  }
+})();
+
+// Plan picker. Both billing cycles are already in the page with their prices; this only chooses what shows.
+for (const section of $$('[data-pricing-cycle]')) {
+  const cycleGroup = $('[data-cycle-toggle]', section);
+  const kidsGroup = $('[data-kids]', section);
+  const selectCycle = cycleGroup
+    ? radioGroup(cycleGroup, (button) => { section.dataset.pricingCycle = button.dataset.value ?? 'year'; })
+    : () => {};
+  if (kidsGroup) {
+    radioGroup(kidsGroup, (button) => {
+      for (const card of $$('[data-plan]', section)) {
+        const on = card.dataset.plan === button.dataset.tier;
+        if (card.dataset.plan === 'pro_plus') continue;
+        card.classList.toggle('recommended', on);
+        for (const cta of $$('[data-plan-cta]', card)) {
+          cta.classList.toggle('btn-primary', on);
+          cta.classList.toggle('btn-line', !on);
+        }
+      }
+    });
+  }
+  const yearButton = cycleGroup && $('[data-value="year"]', cycleGroup);
+  for (const nudge of $$('[data-cycle-nudge]', section)) {
+    nudge.addEventListener('click', () => {
+      if (yearButton) selectCycle(yearButton, true);
+    });
   }
 }
 
-const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-const motionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-if (finePointer && motionAllowed) {
-  const hero = document.querySelector('[data-hero]');
-  const visual = document.querySelector('.hero-visual');
-  const heroPhone = document.querySelector('.phone-hero');
-  const magnets = [...document.querySelectorAll('[data-magnetic]')];
-  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-  let lastEvent = null;
-  let frame = 0;
-  let tiltedPhone = null;
-
-  const resetTilt = (phone) => {
-    phone.style.removeProperty('--tilt-x');
-    phone.style.removeProperty('--tilt-y');
-    phone.classList.remove('is-tilting');
-  };
-
-  const resetHero = () => {
-    hero?.classList.remove('is-pointer-active');
-    visual?.style.removeProperty('--px');
-    visual?.style.removeProperty('--py');
-    if (heroPhone && tiltedPhone !== heroPhone) resetTilt(heroPhone);
-  };
-
-  const apply = () => {
-    frame = 0;
-    const event = lastEvent;
-    if (!event) return;
-    const target = event.target instanceof Element ? event.target : null;
-
-    if (hero && visual) {
-      const heroBox = hero.getBoundingClientRect();
-      const inside = event.clientX >= heroBox.left && event.clientX <= heroBox.right
-        && event.clientY >= heroBox.top && event.clientY <= heroBox.bottom;
-      if (inside) {
-        const box = visual.getBoundingClientRect();
-        const px = clamp((event.clientX - (box.left + box.width / 2)) / (box.width / 2), -1, 1);
-        const py = clamp((event.clientY - (box.top + box.height / 2)) / (box.height / 2), -1, 1);
-        hero.style.setProperty('--hx', `${event.clientX - heroBox.left}px`);
-        hero.style.setProperty('--hy', `${event.clientY - heroBox.top}px`);
-        hero.classList.add('is-pointer-active');
-        visual.style.setProperty('--px', px.toFixed(3));
-        visual.style.setProperty('--py', py.toFixed(3));
-        if (heroPhone && !heroPhone.contains(target)) {
-          heroPhone.style.setProperty('--tilt-y', `${(px * 6).toFixed(2)}deg`);
-          heroPhone.style.setProperty('--tilt-x', `${(py * -4).toFixed(2)}deg`);
-        }
-      } else {
-        resetHero();
-      }
-    }
-
-    const card = target?.closest('[data-spotlight]');
-    if (card) {
-      const box = card.getBoundingClientRect();
-      card.style.setProperty('--sx', `${event.clientX - box.left}px`);
-      card.style.setProperty('--sy', `${event.clientY - box.top}px`);
-    }
-
-    const phone = target?.closest('[data-tilt]');
-    if (tiltedPhone && tiltedPhone !== phone) resetTilt(tiltedPhone);
-    tiltedPhone = phone ?? null;
-    if (phone) {
-      const box = phone.getBoundingClientRect();
-      const nx = clamp((event.clientX - box.left) / box.width, 0, 1);
-      const ny = clamp((event.clientY - box.top) / box.height, 0, 1);
-      phone.style.setProperty('--tilt-y', `${((nx - 0.5) * 16).toFixed(2)}deg`);
-      phone.style.setProperty('--tilt-x', `${((0.5 - ny) * 12).toFixed(2)}deg`);
-      phone.style.setProperty('--glare-x', `${(nx * 100).toFixed(1)}%`);
-      phone.style.setProperty('--glare-y', `${(ny * 100).toFixed(1)}%`);
-      phone.classList.add('is-tilting');
-    }
-
-    for (const magnet of magnets) {
-      const box = magnet.getBoundingClientRect();
-      const dx = event.clientX - (box.left + box.width / 2);
-      const dy = event.clientY - (box.top + box.height / 2);
-      const nearestX = clamp(event.clientX, box.left, box.right);
-      const nearestY = clamp(event.clientY, box.top, box.bottom);
-      if (Math.hypot(event.clientX - nearestX, event.clientY - nearestY) < 72) {
-        magnet.style.setProperty('--mx', `${clamp(dx * 0.2, -8, 8).toFixed(1)}px`);
-        magnet.style.setProperty('--my', `${clamp(dy * 0.3, -6, 6).toFixed(1)}px`);
-      } else {
-        magnet.style.removeProperty('--mx');
-        magnet.style.removeProperty('--my');
-      }
-    }
-  };
-
-  document.addEventListener('pointermove', (event) => {
-    lastEvent = event;
-    if (!frame) frame = window.requestAnimationFrame(apply);
-  }, { passive: true });
-
-  document.documentElement.addEventListener('pointerleave', () => {
-    resetHero();
-    if (tiltedPhone) resetTilt(tiltedPhone);
-    tiltedPhone = null;
-    for (const magnet of magnets) {
-      magnet.style.removeProperty('--mx');
-      magnet.style.removeProperty('--my');
-    }
-  });
-}
+// Launch-offer places left: only ever the number the app reports; any failure leaves the line empty.
+(() => {
+  const target = $('[data-offer-remaining]');
+  const origin = target?.dataset.appOrigin;
+  if (!target || !origin || !('fetch' in window)) return;
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), 5000);
+  fetch(`${origin}/api/offers/launch`, { credentials: 'omit', signal: controller.signal })
+    .then((response) => (response.ok ? response.json() : null))
+    .then((data) => {
+      const { remaining, slots } = data ?? {};
+      if (!Number.isInteger(remaining) || !Number.isInteger(slots) || remaining < 0 || slots <= 0 || remaining > slots) return;
+      target.textContent = remaining > 0 ? `Còn ${remaining}/${slots} suất` : 'Đã hết suất ưu đãi';
+    })
+    .catch(() => {})
+    .finally(() => window.clearTimeout(timer));
+})();
 
 // Images below the first screen are lazy so the page opens fast. Once the page has loaded and the browser is idle,
 // the rest are fetched in the background, so a quick scroll never lands on an empty phone frame or mascot card.

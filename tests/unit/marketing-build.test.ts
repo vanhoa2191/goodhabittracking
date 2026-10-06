@@ -258,7 +258,7 @@ describe('marketing static artifact', () => {
       const faqChapter = page.slice(page.indexOf('id="hoi-dap"'), page.indexOf('class="faq'));
       expect(faqChapter).toContain('An tâm cho cả nhà');
       expect(faqChapter.match(/<li class="safety-item">/g)).toHaveLength(4);
-      for (const title of ['Khu vực phụ huynh có mã PIN', 'Mỗi gia đình một không gian riêng', 'Chia sẻ công khai mặc định tắt', 'Ba mẹ quyết định giữ hay xóa']) expect(faqChapter).toContain(title);
+      for (const title of ['Khu vực phụ huynh được bảo vệ bằng mã PIN', 'Mỗi gia đình một không gian riêng', 'Chia sẻ công khai mặc định tắt', 'Ba mẹ quyết định giữ hay xóa']) expect(faqChapter).toContain(title);
       expect(faqChapter).toContain('href="/privacy/"');
       expect(faqChapter).toContain('không quảng cáo, không bán dữ liệu của bé');
     }
