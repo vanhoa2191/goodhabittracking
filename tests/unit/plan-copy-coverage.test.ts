@@ -89,3 +89,31 @@ describe('plan names and copy', () => {
     }
   });
 });
+
+describe('each language shows its own wording', () => {
+  it('names the AI suggestions with the same habit-coach term the Pro Plus card starts with', () => {
+    for (const language of LANGUAGES) {
+      const title = getAiCopy(language).soonTitle;
+      expect(getUpcomingPlansCopy(language).coachFeature.startsWith(title), language).toBe(true);
+    }
+  });
+
+  it('keeps every script and language-specific term in its own language', () => {
+    const hangul = /[ᄀ-ᇿ㄰-㆏가-힯]/u;
+    const kana = /[぀-ヿ]/u;
+    const han = /[一-鿿]/u;
+    const german = /Ein-Kind|Pro-Paket|Gewohnheits/;
+    for (const language of LANGUAGES) {
+      const text = JSON.stringify([
+        Object.values(getPublicPricingCopy(language)),
+        Object.values(getAiCopy(language)).filter((value) => typeof value === 'string'),
+        Object.values(getUpcomingPlansCopy(language)).map((value) => (typeof value === 'function' ? value(3) : value)),
+        PAID_PLAN_IDS.map((id) => PLAN_LOCALIZATION[id][language]),
+      ]);
+      expect(hangul.test(text), `hangul in ${language}`).toBe(language === 'ko');
+      expect(kana.test(text), `kana in ${language}`).toBe(language === 'ja');
+      expect(han.test(text), `han in ${language}`).toBe(language === 'zh' || language === 'ja');
+      expect(german.test(text), `german in ${language}`).toBe(language === 'de');
+    }
+  });
+});
