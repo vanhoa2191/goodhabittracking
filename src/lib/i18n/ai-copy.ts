@@ -102,7 +102,7 @@ const en: AiCopy = {
 
 const fr: AiCopy = {
   soonBadge: 'Bientôt disponible',
-  soonTitle: 'Habit coach',
+  soonTitle: 'Gewohnheits-Coach',
   soonBody: 'En développement : découper une habitude en petites étapes et résumer la semaine. Désactivé par défaut, uniquement avec votre accord, sans jamais envoyer le nom ni le journal de votre enfant.',
   soonBreakdown: 'Suggérer de petites étapes par IA',
   soonSummary: 'Résumer la semaine par IA',
@@ -116,7 +116,7 @@ const fr: AiCopy = {
 
 const de: AiCopy = {
   soonBadge: 'Demnächst verfügbar',
-  soonTitle: 'Habit coach',
+  soonTitle: 'Coach delle abitudini',
   soonBody: 'In Entwicklung: eine Gewohnheit in leichte Schritte aufteilen und die Woche zusammenfassen. Standardmäßig aus, nur mit Ihrer Zustimmung, und Name oder Tagebuch Ihres Kindes werden nie gesendet.',
   soonBreakdown: 'Kleine Schritte per KI vorschlagen',
   soonSummary: 'Woche per KI zusammenfassen',
@@ -130,7 +130,7 @@ const de: AiCopy = {
 
 const it: AiCopy = {
   soonBadge: 'In arrivo',
-  soonTitle: 'Habit coach',
+  soonTitle: 'Coach de hábitos',
   soonBody: 'In sviluppo: dividere un’abitudine in passi facili e riassumere la settimana. Sarà disattivato per impostazione predefinita, attivo solo con il Suo consenso, e non invierà mai il nome né il diario del bambino.',
   soonBreakdown: 'Suggerisci piccoli passi con l’IA',
   soonSummary: 'Riassumi la settimana con l’IA',
@@ -144,7 +144,7 @@ const it: AiCopy = {
 
 const es: AiCopy = {
   soonBadge: 'Próximamente',
-  soonTitle: 'Habit coach',
+  soonTitle: '习惯教练',
   soonBody: 'En desarrollo: dividir un hábito en pasos fáciles y resumir la semana. Estará desactivado por defecto, solo con su consentimiento, y nunca enviará el nombre ni el diario de su hijo o hija.',
   soonBreakdown: 'Sugerir pasos pequeños con IA',
   soonSummary: 'Resumir la semana con IA',
@@ -158,7 +158,7 @@ const es: AiCopy = {
 
 const zh: AiCopy = {
   soonBadge: '即将推出',
-  soonTitle: 'Habit coach',
+  soonTitle: '習慣コーチ',
   soonBody: '开发中：把一个习惯拆成容易完成的小步骤，并总结一周情况。默认关闭，只有在您同意后才会运行，绝不会发送孩子的姓名或日记。',
   soonBreakdown: '用 AI 建议小步骤',
   soonSummary: '用 AI 总结本周',
@@ -172,7 +172,7 @@ const zh: AiCopy = {
 
 const ja: AiCopy = {
   soonBadge: '近日公開',
-  soonTitle: 'Habit coach',
+  soonTitle: '습관 코치',
   soonBody: '開発中：習慣を取り組みやすい小さなステップに分けたり、1週間をまとめたりします。初期設定はオフで、同意した場合にのみ動作し、お子さまの名前や日記は送信しません。',
   soonBreakdown: 'AI で小さなステップを提案',
   soonSummary: 'AI で今週をまとめる',
@@ -186,7 +186,7 @@ const ja: AiCopy = {
 
 const ko: AiCopy = {
   soonBadge: '곧 출시',
-  soonTitle: 'Habit coach',
+  soonTitle: '습관 코치',
   soonBody: '개발 중: 습관을 쉬운 단계로 나누고 한 주를 요약합니다. 기본값은 꺼짐이며, 동의하신 경우에만 작동하고 자녀의 이름이나 일기는 절대 보내지 않습니다.',
   soonBreakdown: 'AI로 작은 단계 제안',
   soonSummary: 'AI로 주간 요약',

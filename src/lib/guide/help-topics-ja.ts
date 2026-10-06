@@ -62,7 +62,7 @@ export const HELP_TOPICS_JA: HelpTranslationTable<HelpText> = {
   'settings.theme': { title: '表示', text: 'ライト、ダーク、または端末の設定に合わせます。' },
   'settings.pin': { title: 'PIN', text: '保護者エリアを守る4桁の番号です。正しく入力すると、このブラウザは2時間ロック解除されたままになります。ミッションの承認、端末のアクセス取り消し、支払い、データ削除、紹介料の出金に必要です。お子さまと共有しないでください。' },
 
-  'payment.plans': { title: '料金プラン', text: 'One-child plan: 39,000 VND/month or 399,000 VND/year (1 child). Pro plan: 59,000 VND/month or 590,000 VND/year (up to 5 children). Pro Plus plan: coming soon. One-off payment, no auto-renewal.' },
+  'payment.plans': { title: '料金プラン', text: 'お子さま1人プラン：月額39,000 VNDまたは年額399,000 VND（お子さま1人）。Proプラン：月額59,000 VNDまたは年額590,000 VND（お子さまのプロフィール最大5件）。Pro Plusプラン：近日公開。買い切りで、自動更新はありません。' },
   'payment.trial': { title: '7日間お試し', text: '無料で、カードは不要、自動請求もありません。1家族につき1回です。' },
   'payment.memo': { title: '振込内容', text: 'システムが支払いを認識できるよう、金額と振込メモは正確に入力してください。各項目をコピーするか、QRコードを保存できます。' },
   'payment.activation': { title: 'プランが有効になるタイミング', text: '支払いが確認されると、通常数秒で有効になります。表示されない場合は数分待って再度開き、注文コードを添えてサポートに連絡してください。' },

@@ -52,9 +52,7 @@ describe('affiliate copy language coverage', () => {
     for (const language of languages.filter((item) => !['vi', 'en'].includes(item))) {
       const translated = translatedLeafStrings(getAffiliateCopy(language));
       expect(translated).not.toEqual(englishLeaves);
-      // Plan labels awaiting translation are exempt until each language has its own wording.
-      const awaiting = new Set(['One-child plan · Monthly', 'One-child plan · Yearly', 'Pro plan · Monthly', 'Pro plan · Yearly']);
-      const sameIndices = translated.flatMap((text, index) => text === englishLeaves[index] && !awaiting.has(text) ? [index] : []);
+      const sameIndices = translated.flatMap((text, index) => text === englishLeaves[index] ? [index] : []);
       expect(sameIndices, language).toEqual([]);
     }
   });

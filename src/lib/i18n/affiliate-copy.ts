@@ -220,7 +220,7 @@ const fr: AffiliateCopy = {
   recent: 'Commissions récentes',
   noCommissions: 'Aucune commission pour le moment.',
   status: { pending: 'En attente', available: 'Disponible', requested: 'Retrait demandé', paid: 'Versé', reversed: 'Annulée' },
-  plan: { solo_monthly: 'One-child plan · Monthly', solo_yearly: 'One-child plan · Yearly', monthly: 'Pro plan · Monthly', yearly: 'Pro plan · Yearly', lifetime: 'À vie' },
+  plan: { solo_monthly: 'Forfait un enfant · Mensuel', solo_yearly: 'Forfait un enfant · Annuel', monthly: 'Forfait Pro · Mensuel', yearly: 'Forfait Pro · Annuel', lifetime: 'À vie' },
   tax: 'Les commissions peuvent être soumises à l’impôt sur le revenu ; vous êtes responsable de les déclarer selon les règles en vigueur.',
   entry: {
     prompt: 'Vous avez un code de parrainage d’un ami ?',
@@ -290,7 +290,7 @@ const de: AffiliateCopy = {
   recent: 'Letzte Provisionen',
   noCommissions: 'Noch keine Provisionen.',
   status: { pending: 'Zurückgehalten', available: 'Verfügbar', requested: 'Auszahlung angefordert', paid: 'Ausgezahlt', reversed: 'Zurückgenommen' },
-  plan: { solo_monthly: 'One-child plan · Monthly', solo_yearly: 'One-child plan · Yearly', monthly: 'Pro plan · Monthly', yearly: 'Pro plan · Yearly', lifetime: 'Lebenslang' },
+  plan: { solo_monthly: 'Ein-Kind-Paket · Monatlich', solo_yearly: 'Ein-Kind-Paket · Jährlich', monthly: 'Pro-Paket · Monatlich', yearly: 'Pro-Paket · Jährlich', lifetime: 'Lebenslang' },
   tax: 'Provisionen können der persönlichen Einkommensteuer unterliegen; du bist selbst für die vorschriftsmäßige Erklärung verantwortlich.',
   entry: {
     prompt: 'Hast du einen Empfehlungscode von einem Freund?',
@@ -360,7 +360,7 @@ const it: AffiliateCopy = {
   recent: 'Commissioni recenti',
   noCommissions: 'Nessuna commissione ancora.',
   status: { pending: 'In attesa', available: 'Disponibile', requested: 'Prelievo richiesto', paid: 'Pagato', reversed: 'Stornato' },
-  plan: { solo_monthly: 'One-child plan · Monthly', solo_yearly: 'One-child plan · Yearly', monthly: 'Pro plan · Monthly', yearly: 'Pro plan · Yearly', lifetime: 'A vita' },
+  plan: { solo_monthly: 'Piano un bambino · Mensile', solo_yearly: 'Piano un bambino · Annuale', monthly: 'Piano Pro · Mensile', yearly: 'Piano Pro · Annuale', lifetime: 'A vita' },
   tax: 'Le commissioni possono essere soggette all’imposta sul reddito delle persone fisiche; sei responsabile della dichiarazione secondo le norme vigenti.',
   entry: {
     prompt: 'Hai un codice invito da un amico?',
@@ -430,7 +430,7 @@ const es: AffiliateCopy = {
   recent: 'Comisiones recientes',
   noCommissions: 'Aún no hay comisiones.',
   status: { pending: 'Retenida', available: 'Disponible', requested: 'Retiro solicitado', paid: 'Pagada', reversed: 'Revertida' },
-  plan: { solo_monthly: 'One-child plan · Monthly', solo_yearly: 'One-child plan · Yearly', monthly: 'Pro plan · Monthly', yearly: 'Pro plan · Yearly', lifetime: 'De por vida' },
+  plan: { solo_monthly: 'Plan para un menor · Mensual', solo_yearly: 'Plan para un menor · Anual', monthly: 'Plan Pro · Mensual', yearly: 'Plan Pro · Anual', lifetime: 'De por vida' },
   tax: 'Las comisiones pueden estar sujetas al impuesto sobre la renta; tú eres responsable de declararlas según corresponda.',
   entry: {
     prompt: '¿Tienes un código de recomendación de un amigo?',
@@ -500,7 +500,7 @@ const zh: AffiliateCopy = {
   recent: '最近佣金',
   noCommissions: '暂时没有佣金。',
   status: { pending: '保留中', available: '可提现', requested: '已申请提现', paid: '已支付', reversed: '已收回' },
-  plan: { solo_monthly: 'One-child plan · Monthly', solo_yearly: 'One-child plan · Yearly', monthly: 'Pro plan · Monthly', yearly: 'Pro plan · Yearly', lifetime: '终身方案' },
+  plan: { solo_monthly: '单宝贝套餐 · 月付', solo_yearly: '单宝贝套餐 · 年付', monthly: 'Pro 套餐 · 月付', yearly: 'Pro 套餐 · 年付', lifetime: '终身方案' },
   tax: '佣金可能需要缴纳个人所得税；你需要按规定自行申报。',
   entry: {
     prompt: '有朋友给你的推荐码吗？',
@@ -570,7 +570,7 @@ const ja: AffiliateCopy = {
   recent: '最近の紹介料',
   noCommissions: '紹介料はまだありません。',
   status: { pending: '保留中', available: '引き出し可能', requested: '引き出し申請済み', paid: '支払い済み', reversed: '取り消し済み' },
-  plan: { solo_monthly: 'One-child plan · Monthly', solo_yearly: 'One-child plan · Yearly', monthly: 'Pro plan · Monthly', yearly: 'Pro plan · Yearly', lifetime: '生涯プラン' },
+  plan: { solo_monthly: 'お子さま1人プラン · 月額', solo_yearly: 'お子さま1人プラン · 年額', monthly: 'Proプラン · 月額', yearly: 'Proプラン · 年額', lifetime: '生涯プラン' },
   tax: '紹介料には所得税がかかる場合があります。必要な申告はご自身の責任で行ってください。',
   entry: {
     prompt: '友だちから紹介コードを受け取りましたか？',
@@ -640,7 +640,7 @@ const ko: AffiliateCopy = {
   recent: '최근 커미션',
   noCommissions: '아직 커미션이 없습니다.',
   status: { pending: '보류 중', available: '출금 가능', requested: '출금 요청됨', paid: '지급 완료', reversed: '회수됨' },
-  plan: { solo_monthly: 'One-child plan · Monthly', solo_yearly: 'One-child plan · Yearly', monthly: 'Pro plan · Monthly', yearly: 'Pro plan · Yearly', lifetime: '평생 플랜' },
+  plan: { solo_monthly: '아이 한 명 플랜 · 월간', solo_yearly: '아이 한 명 플랜 · 연간', monthly: 'Pro 플랜 · 월간', yearly: 'Pro 플랜 · 연간', lifetime: '평생 플랜' },
   tax: '커미션에는 개인 소득세가 부과될 수 있으며, 관련 신고는 본인의 책임입니다.',
   entry: {
     prompt: '친구에게 추천 코드를 받으셨나요?',

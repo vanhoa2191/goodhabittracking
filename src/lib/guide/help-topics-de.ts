@@ -63,7 +63,7 @@ export const HELP_TOPICS_DE: HelpTranslationTable<HelpText> = {
   'settings.theme': { title: 'Darstellung', text: 'Hell, dunkel oder wie auf dem Gerät.' },
   'settings.pin': { title: 'PIN', text: 'Vier Ziffern zum Schutz des Elternbereichs. Nach korrekter Eingabe bleibt dieser Browser 2 Stunden entsperrt. Nötig zum Genehmigen, Gerätewiderruf, Bezahlen, Löschen und Auszahlen von Empfehlungsprovisionen. Niemals mit dem Kind teilen.' },
 
-  'payment.plans': { title: 'Tarife', text: 'One-child plan: 39,000 VND/month or 399,000 VND/year (1 child). Pro plan: 59,000 VND/month or 590,000 VND/year (up to 5 children). Pro Plus plan: coming soon. One-off payment, no auto-renewal.' },
+  'payment.plans': { title: 'Tarife', text: 'Ein-Kind-Paket: 39.000 VND/Monat oder 399.000 VND/Jahr (1 Kind). Pro-Paket: 59.000 VND/Monat oder 590.000 VND/Jahr (bis zu 5 Kinderprofile). Pro-Plus-Paket: demnächst verfügbar. Einmalzahlung, keine automatische Verlängerung.' },
   'payment.trial': { title: '7-Tage-Test', text: 'Kostenlos, ohne Karte und automatische Abbuchung. Einmal pro Familie.' },
   'payment.memo': { title: 'Verwendungszweck', text: 'Betrag und Verwendungszweck exakt übernehmen, damit das System die Zahlung erkennt. Einträge kopieren oder QR-Code herunterladen.' },
   'payment.activation': { title: 'Tarif-Freischaltung', text: 'Nach der Zahlungsbestätigung wird der Tarif meist innerhalb weniger Sekunden freigeschaltet. Falls nicht, warten Sie einige Minuten, öffnen Sie die App erneut und kontaktieren Sie den Support mit dem Bestellcode.' },
