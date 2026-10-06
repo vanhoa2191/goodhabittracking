@@ -1,8 +1,9 @@
 import { z } from 'zod';
+import { PAID_PLAN_IDS } from '@/lib/billing/plan-catalog';
 
 const locale = z.enum(['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko']);
 const market = z.enum(['VN', 'other']);
-const plan = z.enum(['solo_monthly', 'monthly', 'yearly']);
+const plan = z.enum(PAID_PLAN_IDS);
 
 const publicFunnelEventSchema = z.discriminatedUnion('event', [
   z.strictObject({ event: z.literal('landing_view'), locale, market }),

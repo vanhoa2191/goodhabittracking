@@ -1,3 +1,4 @@
+import { isPaidPlanId, planChildLimit, type PaidPlanId } from '@/lib/billing/plan-catalog';
 import type { SubscriptionPlan } from '@/types';
 
 export interface SubscriptionDetails {
@@ -20,7 +21,7 @@ export function checkIsPro(
   now = Date.now(),
 ): boolean {
   if (plan === 'lifetime') return true;
-  if (plan === 'solo_monthly' || plan === 'monthly' || plan === 'yearly') {
+  if (isPaidPlanId(plan)) {
     // Mirrors family_has_pro_entitlement: a paid plan without an end date is not active.
     if (!subscriptionEndsAt) return false;
     return new Date(subscriptionEndsAt).getTime() > now;
@@ -41,9 +42,16 @@ export function buildSubscriptionCapabilities(
   const canWrite = checkIsPro(plan, trialEndsAt, subscriptionEndsAt, now);
   return {
     canWrite,
-    maxChildren: canWrite && plan === 'solo_monthly' ? 1 : canWrite ? null : 0,
+    maxChildren: canWrite ? planChildLimit(plan) : 0,
   };
 }
+
+const PAID_PLAN_LABELS: Readonly<Record<PaidPlanId, string>> = {
+  solo_monthly: 'Gói 1 bé · Tháng',
+  solo_yearly: 'Gói 1 bé · Năm',
+  monthly: 'Gói Pro · Tháng',
+  yearly: 'Gói Pro · Năm',
+};
 
 function daysUntil(date: string, now: number): number {
   const millisecondsPerDay = 1000 * 60 * 60 * 24;
@@ -64,29 +72,13 @@ export function buildSubscriptionDetails(
   if (plan === 'lifetime') {
     label = 'Trọn Đời';
     statusText = '👑 Thành viên Trọn Đời (Vĩnh viễn)';
-  } else if (plan === 'yearly') {
-    label = 'Gói Năm';
+  } else if (isPaidPlanId(plan)) {
+    label = PAID_PLAN_LABELS[plan];
     if (subscriptionEndsAt) {
       daysRemaining = daysUntil(subscriptionEndsAt, now);
-      statusText = `Gói Năm (${daysRemaining} ngày còn lại)`;
+      statusText = `${label} (${daysRemaining} ngày còn lại)`;
     } else {
-      statusText = 'Gói Năm (Đang hoạt động)';
-    }
-  } else if (plan === 'solo_monthly') {
-    label = 'Gói Một Bé';
-    if (subscriptionEndsAt) {
-      daysRemaining = daysUntil(subscriptionEndsAt, now);
-      statusText = `Gói Một Bé (${daysRemaining} ngày còn lại)`;
-    } else {
-      statusText = 'Gói Một Bé (Đang hoạt động)';
-    }
-  } else if (plan === 'monthly') {
-    label = 'Gói Gia Đình · Tháng';
-    if (subscriptionEndsAt) {
-      daysRemaining = daysUntil(subscriptionEndsAt, now);
-      statusText = `Gói Gia Đình · Tháng (${daysRemaining} ngày còn lại)`;
-    } else {
-      statusText = 'Gói Gia Đình · Tháng (Đang hoạt động)';
+      statusText = `${label} (Đang hoạt động)`;
     }
   } else if (plan === 'trial') {
     label = 'Dùng Thử';

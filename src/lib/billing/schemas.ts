@@ -1,6 +1,7 @@
 import { z } from 'zod';
+import { PAID_PLAN_IDS } from '@/lib/billing/plan-catalog';
 
-export const paidPlanSchema = z.enum(['solo_monthly', 'monthly', 'yearly']);
+export const paidPlanSchema = z.enum(PAID_PLAN_IDS);
 
 export const createPaymentRequestSchema = z
   .object({

@@ -1,3 +1,4 @@
+import { PAID_PLAN_IDS } from '@/lib/billing/plan-catalog';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 
 type Counts = {
@@ -27,7 +28,7 @@ async function load(): Promise<Counts | null> {
     const dayAgo = new Date(now.getTime() - 86_400_000).toISOString();
     const weekAhead = new Date(now.getTime() + 7 * 86_400_000).toISOString();
     const head = { count: 'exact', head: true } as const;
-    const paidPlans = ['solo_monthly', 'monthly', 'yearly'];
+    const paidPlans = [...PAID_PLAN_IDS];
     const [affiliate, casesOpen, ordersPending, lifetime, paidInTerm, trialing, expiring] = await Promise.all([
       admin.rpc('admin_affiliate_overview'),
       count(admin.from('billing_support_cases').select('id', head).in('status', ['requested', 'reviewing', 'approved'])),

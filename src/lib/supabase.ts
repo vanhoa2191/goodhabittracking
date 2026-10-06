@@ -1,5 +1,5 @@
 import { getBrowserSupabase, isSupabaseConfigured } from '@/lib/supabase/browser';
-import type { SubscriptionPlan } from '@/types';
+import { isPaidPlanId, type PaidPlanId } from '@/lib/billing/plan-catalog';
 
 export { isSupabaseConfigured };
 
@@ -10,12 +10,10 @@ export function getSupabase() {
 // ==============================================================================
 // GOOGLE OAUTH AUTHENTICATION HELPERS
 // ==============================================================================
-export type PaidPlan = Extract<SubscriptionPlan, 'solo_monthly' | 'monthly' | 'yearly'>;
-
-const PAID_PLANS = new Set<PaidPlan>(['solo_monthly', 'monthly', 'yearly']);
+export type PaidPlan = PaidPlanId;
 
 export function parseCheckoutPlan(value: string | null): PaidPlan | null {
-  return value !== null && PAID_PLANS.has(value as PaidPlan) ? value as PaidPlan : null;
+  return isPaidPlanId(value) ? value : null;
 }
 
 function sanitizeReturnPath(returnPath?: string): string {

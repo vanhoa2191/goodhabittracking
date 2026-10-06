@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { useAdminTab } from '@/components/AdminShell';
+import { PAID_PLAN_IDS, type PaidPlanId } from '@/lib/billing/plan-catalog';
 import {
   CUSTOMER_FILTERS,
   PLAN_LABELS,
@@ -18,7 +19,7 @@ import {
 } from '@/lib/admin/admin-view';
 
 type Subscription = {
-  readonly plan: 'free' | 'trial' | 'solo_monthly' | 'monthly' | 'yearly' | 'lifetime';
+  readonly plan: 'free' | 'trial' | PaidPlanId | 'lifetime';
   readonly status: 'active' | 'inactive' | 'cancelled';
   readonly subscription_ends_at: string | null;
   readonly trial_ends_at: string | null;
@@ -70,7 +71,7 @@ const TONE_CLASS: Readonly<Record<Tone, string>> = {
   neutral: 'bg-slate-100 text-slate-700 dark:bg-zinc-800 dark:text-slate-300',
 };
 
-const planSchema = z.enum(['free', 'trial', 'solo_monthly', 'monthly', 'yearly', 'lifetime']);
+const planSchema = z.enum(['free', 'trial', ...PAID_PLAN_IDS, 'lifetime']);
 const subscriptionStatusSchema = z.enum(['active', 'inactive', 'cancelled']);
 
 function toDateInput(value: string | null | undefined) {
@@ -459,9 +460,7 @@ export function AdminCustomerManager() {
                         <select aria-label="Gói đăng ký" value={customer.subscription?.plan ?? 'free'} disabled={!customer.familyId} onChange={(event) => updateSubscription(customer, planChangePatch(planSchema.parse(event.target.value), new Date()))} className={`${inputClass} mt-1`}>
                           <option value="free">Chưa có gói</option>
                           <option value="trial">Dùng thử</option>
-                          <option value="solo_monthly">Gói Một Bé</option>
-                          <option value="monthly">Gói Gia Đình · Tháng</option>
-                          <option value="yearly">Gói Gia Đình · Năm</option>
+                          {PAID_PLAN_IDS.map((id) => <option key={id} value={id}>{PLAN_LABELS[id]}</option>)}
                           <option value="lifetime">Trọn đời (đã cấp trước đây)</option>
                         </select>
                       </label>

@@ -10,12 +10,12 @@ vi.mock('@/lib/supabase/browser', () => ({
 afterEach(() => vi.unstubAllGlobals());
 
 describe('checkout intent', () => {
-  it.each(['solo_monthly', 'monthly', 'yearly'])('accepts paid plan %s', (value) => {
+  it.each(['solo_monthly', 'solo_yearly', 'monthly', 'yearly'])('accepts paid plan %s', (value) => {
     expect(auth).toHaveProperty('parseCheckoutPlan');
     expect(auth.parseCheckoutPlan(value)).toBe(value);
   });
 
-  it.each([null, '', 'trial', 'free', 'lifetime', 'unknown', 'Monthly', ' monthly', 'monthly,yearly', 'monthly&plan=yearly'])('rejects %s', (value) => {
+  it.each([null, '', 'trial', 'free', 'lifetime', 'unknown', 'Monthly', ' monthly', 'monthly,yearly', 'monthly&plan=yearly', 'family_plus_yearly'])('rejects %s', (value) => {
     expect(auth).toHaveProperty('parseCheckoutPlan');
     expect(auth.parseCheckoutPlan(value)).toBeNull();
   });
