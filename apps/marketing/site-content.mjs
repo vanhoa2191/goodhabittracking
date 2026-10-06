@@ -2,10 +2,10 @@ import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { typ
 import { pricingTiers } from './pricing.mjs';
 
 export const navigation = [
-  { href: '/framework/', label: 'Khung thói quen', anchor: '#chan-dung' },
+  { href: '/framework/', label: 'Khung thói quen' },
   { href: '/science/', label: 'Cơ sở khoa học' },
   { href: '/roadmaps/', label: 'Lộ trình' },
-  { href: '/pricing/', label: 'Bảng giá', anchor: '#bang-gia' },
+  { href: '/pricing/', label: 'Bảng giá' },
   { href: '/blog/', label: 'Blog' },
   { href: '/docs/', label: 'Hướng dẫn' },
 ];
@@ -130,7 +130,7 @@ export const story = {
     question: 'Sáng nay, ba mẹ đã nhắc con bao nhiêu lần?',
     options: [
       { value: 'low', label: '1–2 lần', answer: 'Nhà bạn đang có nhịp tốt. Câu chuyện dưới đây gợi ý một cách giữ nhịp ấy, cả trong những tuần bận rộn.', finalTitle: 'Giữ nhịp tốt như sáng nay, mỗi ngày.' },
-      { value: 'mid', label: '3–5 lần', answer: 'Ba đến năm lần mỗi sáng là 90 đến 150 lần mỗi tháng. Câu chuyện dưới đây có thể quen với bạn.', finalTitle: 'Sáng mai, thử bớt một lần nhắc.' },
+      { value: 'mid', label: '3–5 lần', answer: 'Ba đến năm lần mỗi sáng, nếu sáng nào cũng vậy, là 90 đến 150 lần mỗi tháng. Câu chuyện dưới đây có thể quen với bạn.', finalTitle: 'Sáng mai, thử bớt một lần nhắc.' },
       { value: 'high', label: 'Không đếm nổi', answer: 'Bạn không đơn độc. Người làm ra KidHabit cũng từng đếm không nổi. Đây là câu chuyện của họ.', finalTitle: 'Sáng mai, bắt đầu từ một việc con tự làm.' },
     ],
     readMore: 'Đọc câu chuyện',
@@ -187,11 +187,12 @@ export const story = {
     lead: 'Thử làm con một phút: chạm vào từng việc để hoàn thành. Con mở danh sách, tự đánh dấu, ba mẹ chỉ cần duyệt và khen đúng việc.',
     child: 'Sáng nay của Minh An',
     cheer: 'Leo đang cổ vũ con',
-    // Sample tasks; each label is a quality the framework uses (keys of traitLabels).
+    // Sample tasks. A task with `trait` shows that framework quality's label; brushing teeth shows a plain
+    // description of the task instead ("Chăm sóc bản thân" is not a framework quality, so it has no tag).
     tasks: [
-      { title: 'Tự dậy khi chuông reo', trait: '#ChânDung:CD-10-LuatSatBanThan', points: 5 },
-      { title: 'Đánh răng 2 phút', trait: '#ChânDung:CD-07-SucKhoeNguoiSat', points: 5 },
-      { title: 'Tự soạn cặp', trait: '#8TốChất:NTAI-06-GanhVac', points: 10 },
+      { title: 'Tự dậy khi chuông reo', trait: '#ChânDung:CD-10-LuatSatBanThan', label: traitLabels['#ChânDung:CD-10-LuatSatBanThan'], points: 5 },
+      { title: 'Đánh răng 2 phút', label: 'Chăm sóc bản thân', points: 5 },
+      { title: 'Tự soạn cặp', trait: '#8TốChất:NTAI-06-GanhVac', label: traitLabels['#8TốChất:NTAI-06-GanhVac'], points: 10 },
     ],
     stamp: 'Ba mẹ đã duyệt',
     swaps: [
@@ -273,45 +274,6 @@ export const story = {
     'hoi-dap': ['Vẫn còn băn khoăn?', 'Thử 7 ngày rồi quyết định', 'Bắt đầu'],
   },
 };
-
-export const mascots = [
-  { id: 'leo', name: 'Leo', species: 'sư tử', trait: 'Tập dũng cảm từ việc nhỏ' },
-  { id: 'bunny', name: 'Bunny', species: 'thỏ', trait: 'Biết quan tâm mọi người' },
-  { id: 'panda', name: 'Panda', species: 'gấu trúc', trait: 'Bình tĩnh để nhìn rõ hơn' },
-  { id: 'fox', name: 'Fox', species: 'cáo', trait: 'Tò mò trước điều mới' },
-  { id: 'turtle', name: 'Turtle', species: 'rùa', trait: 'Kiên nhẫn đi cùng bé' },
-  { id: 'bee', name: 'Bee', species: 'ong', trait: 'Vui khi cả nhà giúp nhau' },
-];
-
-export const trustPoints = ['7 ngày dùng thử', 'Không cần thẻ', 'Hoàn tiền 30 ngày'];
-
-export const steps = [
-  {
-    image: 'parent-roadmap',
-    alt: 'Màn hình phụ huynh chọn lộ trình theo độ tuổi: các giai đoạn 0–3, 3–6, 6–12, 12–15, 15–18 và vai trò của ba mẹ ở từng giai đoạn',
-    caption: 'Chọn giai đoạn tuổi để thấy thói quen phù hợp và vai trò của ba mẹ.',
-    bullets: ['Khung 47 thói quen, chia 5 giai đoạn từ 0 đến 18 tuổi', 'Mỗi thói quen có lời giải thích “vì sao” cho con và hướng dẫn cho ba mẹ', 'Ba mẹ chọn, sửa hoặc tự tạo nhiệm vụ'],
-  },
-  {
-    image: 'kid-tasks',
-    alt: 'Danh sách nhiệm vụ buổi sáng của bé trong KidHabit, có việc đã hoàn thành và số sao thưởng',
-    caption: 'Mỗi việc có hướng dẫn rõ ràng và số sao thưởng. Ảnh là màn hình của bé.',
-    bullets: ['Giao diện riêng cho bé, tự đổi theo ba dải tuổi: 3–8, 9–12 và từ 13 tuổi', 'Bé vào bằng mã QR hoặc mã nhập tay, không cần tài khoản riêng', 'Vuốt hoặc chạm để hoàn thành, có đồng hồ đếm giờ khi việc cần thời gian'],
-  },
-  {
-    image: 'parent-approvals',
-    alt: 'Màn hình phụ huynh có nhiệm vụ chờ bố mẹ duyệt với nút Duyệt và Từ chối',
-    caption: 'Việc quan trọng chờ ba mẹ duyệt trước khi bé nhận sao.',
-    bullets: ['Duyệt hoặc từ chối chỉ với một chạm', 'Xem chuỗi ngày, sao và huy hiệu của từng bé; đổi quà theo danh sách ba mẹ đã thống nhất', 'Gói Pro: tối đa 5 hồ sơ bé và mời người thân cùng theo dõi'],
-  },
-];
-
-export const safetyPoints = [
-  { icon: 'lock', title: 'Khu vực phụ huynh có mã PIN', text: 'Thanh toán và cài đặt gia đình nằm ngoài tầm với của bé.' },
-  { icon: 'shield', title: 'Mỗi gia đình một không gian riêng', text: 'Dữ liệu được tách biệt, gia đình này không xem được gia đình khác.' },
-  { icon: 'eye-off', title: 'Chia sẻ công khai mặc định tắt', text: 'Bảng xếp hạng công khai chỉ hiện bé khi ba mẹ bật và bé tham gia, bằng biệt danh. Tên thật và tuổi không bao giờ hiện.' },
-  { icon: 'trash', title: 'Ba mẹ quyết định giữ hay xóa', text: 'Chủ gia đình có thể xóa toàn bộ dữ liệu gia đình trong ứng dụng.' },
-];
 
 // Only real, consented quotes belong here. An entry is shown when it has a
 // quote, a name, recorded consent, a source and a review date still in the future.
@@ -432,65 +394,15 @@ export const publicPages = {
   },
 };
 
-// ---------------------------------------------------------------------------------------------------------------
-// The current home page renderer still uses the blocks below; they go with it when the story page replaces it.
-// `plans` also feeds the price list in the terms (legal-content.mjs), so its amounts come from pricing.mjs.
-
-export const outcomes = [
-  {
-    icon: 'compass',
-    title: 'Biết nên rèn gì cho con',
-    description: 'Chọn thói quen phù hợp với độ tuổi và mục tiêu của gia đình, không phải tự nghĩ mọi thứ từ đầu.',
-  },
-  {
-    icon: 'list-checks',
-    title: 'Giao việc rõ, con dễ làm',
-    description: 'Mỗi nhiệm vụ có cách làm cụ thể, để con dễ hiểu việc cần làm và ba mẹ đỡ phải giải thích lại.',
-  },
-  {
-    icon: 'trend-up',
-    title: 'Xem lại những việc con đã làm',
-    description: 'Cả nhà xem được chuỗi ngày, điểm thưởng và những việc nhỏ con đã hoàn thành.',
-  },
-];
-
-export const comparison = {
-  beforeTitle: 'Khi chỉ dựa vào nhắc nhở',
-  before: [
-    '7 giờ sáng: giục dậy, nhắc đánh răng, nhắc soạn cặp, rồi nhắc lại lần nữa.',
-    '9 giờ tối: nhắc dọn đồ, nhắc học bài. Con né tránh, ba mẹ mệt và căng thẳng.',
-    'Con làm vì bị nhắc, chưa hiểu vì sao nên làm.',
-  ],
-  afterTitle: 'Với KidHabit',
-  after: [
-    '7 giờ sáng: con mở danh sách việc hôm nay, đọc cách làm và tự đánh dấu từng việc.',
-    '9 giờ tối: ba mẹ duyệt những việc con đã làm và khen đúng việc.',
-    'Cuối ngày, cả nhà nhìn lại những điều con đã làm tốt.',
-  ],
-};
-
-const planCopy = [
-  { tier: 'solo', cycle: 'month', label: 'Khởi đầu gọn nhẹ', summary: 'Dành cho gia đình bắt đầu cùng một bé.', features: ['1 hồ sơ bé', 'Khung thói quen theo độ tuổi', 'Nhiệm vụ, điểm và phần thưởng', 'Đồng bộ đám mây'], cta: 'Chọn gói 1 bé theo tháng' },
-  { tier: 'solo', cycle: 'year', label: 'Tiết kiệm hơn cho 1 bé', summary: 'Cùng quyền lợi Gói 1 bé, thanh toán một lần cho 12 tháng.', features: ['1 hồ sơ bé', 'Đầy đủ quyền lợi Gói 1 bé', 'Thanh toán một lần cho 12 tháng', 'Không tự động gia hạn'], cta: 'Chọn gói 1 bé theo năm' },
-  { tier: 'pro', cycle: 'month', label: 'Linh hoạt theo tháng', summary: 'Phù hợp gia đình có nhiều bé, tối đa 5 bé.', features: ['Tối đa 5 hồ sơ bé', 'Toàn bộ khung thói quen', 'Lộ trình theo độ tuổi', 'Theo dõi tiến bộ gia đình'], cta: 'Chọn Gói Pro theo tháng' },
-  { tier: 'pro', cycle: 'year', label: 'Tiết kiệm nhất', summary: 'Duy trì hành trình đủ lâu để những việc nhỏ trở thành nếp sống.', features: ['Đầy đủ quyền lợi Gói Pro', 'Tối đa 5 hồ sơ bé', 'Thanh toán một lần cho 12 tháng', 'Không tự động gia hạn'], cta: 'Chọn Gói Pro theo năm', featured: true },
-];
-
-/** The four plans on sale, one entry per plan id. */
-export const plans = planCopy.map(({ tier, cycle, ...copy }) => {
+/** The four plans on sale, one entry per plan id, for the price list in the terms (legal-content.mjs). */
+export const plans = ['solo', 'pro'].flatMap((tier) => ['month', 'year'].map((cycle) => {
   const { id, amount } = pricingTiers[tier][cycle];
   return {
     id,
     amount,
-    period: cycle === 'year' ? 'Năm' : 'Tháng',
-    ...(cycle === 'year' ? { monthlyId: pricingTiers[tier].month.id } : {}),
     name: pricingTiers[tier].name,
+    period: cycle === 'year' ? 'Năm' : 'Tháng',
     price: String(amount).replace(/\B(?=(\d{3})+(?!\d))/g, '.'),
     cadence: cycle === 'year' ? '/ năm' : '/ tháng',
-    ...copy,
   };
-});
-
-export const upcomingPlanNote = 'Gói Pro Plus (gồm Gói Pro và Huấn luyện viên thói quen) đang phát triển, chưa mở bán.';
-
-export const launchOfferNote = '10 gia đình đầu tiên thanh toán Gói Pro theo năm trước khi Pro Plus ra mắt sẽ được nâng cấp miễn phí lên Pro Plus cho phần còn lại của năm đã trả. Mỗi gia đình tối đa một suất, tính theo thứ tự thanh toán thành công.';
+}));

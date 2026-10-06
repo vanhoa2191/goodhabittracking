@@ -12,7 +12,11 @@ export function inlineScriptHashes(documents) {
   return [...hashes].sort();
 }
 
-export function renderHeadersFile(documents) {
+/**
+ * @param {string[]} documents every rendered page, for the inline script hashes
+ * @param {{ appOrigin?: string }} [options] the app origin the pages may read from (the live launch offer count)
+ */
+export function renderHeadersFile(documents, { appOrigin } = {}) {
   const scriptSources = ["'self'", ...inlineScriptHashes(documents)].join(' ');
   const policy = [
     "default-src 'self'",
@@ -20,7 +24,7 @@ export function renderHeadersFile(documents) {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     'font-src https://fonts.gstatic.com',
     "img-src 'self' data: https:",
-    "connect-src 'self'",
+    appOrigin ? `connect-src 'self' ${appOrigin}` : "connect-src 'self'",
     "object-src 'none'",
     "frame-ancestors 'none'",
     "base-uri 'self'",

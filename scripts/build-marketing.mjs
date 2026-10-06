@@ -80,7 +80,7 @@ export async function buildMarketingSite({ appOrigin, marketingOrigin, outputDir
 
   const pageFiles = (await readdir(target, { recursive: true })).filter((file) => file.endsWith('.html'));
   const documents = await Promise.all(pageFiles.map((file) => readFile(join(target, file), 'utf8')));
-  await writeFile(join(target, '_headers'), renderHeadersFile(documents), 'utf8');
+  await writeFile(join(target, '_headers'), renderHeadersFile(documents, { appOrigin: app }), 'utf8');
 
   const homepage = await readFile(join(target, 'index.html'), 'utf8');
   if (homepage.includes('/api/') || /supabase/i.test(homepage) || homepage.includes('serviceWorker')) {

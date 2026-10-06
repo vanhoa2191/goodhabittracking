@@ -2,7 +2,8 @@ import { buildLegalPages, legalUpdatedLabel } from './legal-content.mjs';
 import { sessionHintCookie } from './session-hint.mjs';
 import scienceData from '../../src/data/science-content.json' with { type: 'json' };
 import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
-import { comparison, faqs, launchOfferNote, mascots, navigation, outcomes, plans, upcomingPlanNote, publicPages, safetyPoints, steps, testimonials, trustPoints } from './site-content.mjs';
+import { maxSavingPercent, priceView, pricingTiers, upgradeDifference } from './pricing.mjs';
+import { faqs, launchOffer, navigation, publicPages, story, storyStages, testimonials } from './site-content.mjs';
 
 const icons = {
   compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>',
@@ -54,17 +55,6 @@ function formatVnd(amount) {
   return String(amount).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }
 
-function planTitle(plan) {
-  return plan.period ? `${plan.name} · ${plan.period}` : plan.name;
-}
-
-function yearlySaving(plan) {
-  const monthly = plans.find((candidate) => candidate.id === plan.monthlyId);
-  if (!monthly) return null;
-  return { perMonth: Math.round(plan.amount / 12 / 100) * 100, saved: monthly.amount * 12 - plan.amount };
-}
-
-
 function jsonLd(data) {
   return `<script type="application/ld+json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script>`;
 }
@@ -104,21 +94,24 @@ function renderStructuredData({ marketingOrigin, appOrigin }) {
     url: new URL('/', `${marketingOrigin}/`).href,
     image: new URL('/og-image.jpg', `${marketingOrigin}/`).href,
     description: 'Ứng dụng đồng hành giáo dục con qua thói quen: ba mẹ chọn việc nhỏ phù hợp độ tuổi, con làm mỗi ngày và cả nhà cùng ghi nhận.',
-    offers: plans.map((plan) => ({
-      '@type': 'Offer',
-      name: planTitle(plan),
-      price: String(plan.amount),
-      priceCurrency: 'VND',
-      url: appUrl(appOrigin, `/checkout?plan=${plan.id}`),
-      availability: 'https://schema.org/InStock',
+    // Only the plans on sale; Pro Plus has no plan id and no offer.
+    offers: Object.keys(pricingTiers).filter((tier) => pricingTiers[tier].purchasable).flatMap((tier) => ['month', 'year'].map((cycle) => {
+      const view = priceView(tier, cycle);
+      return {
+        '@type': 'Offer',
+        name: `${pricingTiers[tier].name} · ${cycle === 'year' ? 'Năm' : 'Tháng'}`,
+        price: String(view.price),
+        priceCurrency: 'VND',
+        url: appUrl(appOrigin, `/checkout?plan=${view.planId}`),
+        availability: 'https://schema.org/InStock',
+      };
     })),
   };
   return `<script type="application/ld+json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script>`;
 }
 
-// On the home page a nav item whose section is on the page scrolls to it; the others (and every other page) go
-// to their own page. `anchor` is set in site-content.mjs only where the home page really has that section.
-function renderHeader(appOrigin, { home = false } = {}) {
+// Every page but the home page (which has its own chapter header) uses this navigation.
+function renderHeader(appOrigin) {
   return `<header class="site-header">
     <div class="shell nav-shell">
       <a class="brand" href="/" aria-label="KidHabit Hero, trang chủ">
@@ -127,7 +120,7 @@ function renderHeader(appOrigin, { home = false } = {}) {
       </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Mở trình đơn">${icon('menu')}</button>
       <nav id="primary-navigation" class="primary-nav" aria-label="Điều hướng chính">
-        ${navigation.map((item) => `<a href="${home && item.anchor ? item.anchor : item.href}">${escapeHtml(item.label)}</a>`).join('')}
+        ${navigation.map((item) => `<a href="${item.href}">${escapeHtml(item.label)}</a>`).join('')}
         <a href="${appUrl(appOrigin, '/')}" class="nav-login" data-guest>Đăng nhập</a>
         <a href="${appUrl(appOrigin, '/start')}" class="button button-small" data-guest>Dùng thử 7 ngày</a><a href="${appUrl(appOrigin, '/')}" class="button button-small" data-member>Vào ứng dụng</a>
       </nav>
@@ -150,7 +143,7 @@ function renderFooter(appOrigin) {
   </footer>`;
 }
 
-export function renderDocument({ title, description, path, marketingOrigin, appOrigin, body, structuredData = '', ogType = 'website', extraHead = '' }) {
+export function renderDocument({ title, description, path, marketingOrigin, appOrigin, body, structuredData = '', ogType = 'website', extraHead = '', header = renderHeader(appOrigin) }) {
   const canonical = new URL(path, `${marketingOrigin}/`).href;
   const shareImage = new URL('/og-image.jpg', `${marketingOrigin}/`).href;
   return `<!doctype html>
@@ -175,11 +168,11 @@ export function renderDocument({ title, description, path, marketingOrigin, appO
   <meta name="twitter:title" content="${escapeHtml(title)}">
   <meta name="twitter:description" content="${escapeHtml(description)}">
   <meta name="twitter:image" content="${shareImage}">
-  <meta name="theme-color" content="#4f46e5">
+  <meta name="theme-color" content="#1f5f47">
   <link rel="icon" href="/logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap&subset=vietnamese" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap&subset=vietnamese" rel="stylesheet">
   <script>if(document.cookie.split('; ').indexOf('${sessionHintCookie}=1')>-1)document.documentElement.classList.add('is-member')</script>
   <link rel="stylesheet" href="/styles.css">
   <script src="/client.js" defer></script>
@@ -188,99 +181,11 @@ export function renderDocument({ title, description, path, marketingOrigin, appO
 </head>
 <body>
   <a class="skip-link" href="#noi-dung">Bỏ qua điều hướng</a>
-  ${renderHeader(appOrigin, { home: path === '/' })}
+  ${header}
   ${body}
   ${renderFooter(appOrigin)}
 </body>
 </html>`;
-}
-
-function renderPricing(appOrigin, heading = 'Chọn gói phù hợp với gia đình') {
-  return `<section class="section pricing-section" id="bang-gia" aria-labelledby="pricing-title"><div class="shell">
-    <div class="pricing-heading"><div><p class="eyebrow">7 ngày trải nghiệm đầy đủ</p><h2 id="pricing-title">${heading}</h2><p>Không cần thẻ tín dụng. Hoàn tiền trong 30 ngày nếu chưa hài lòng.</p></div><a class="text-link" href="/terms/">Xem điều khoản ${icon('arrow')}</a></div>
-    <div class="pricing-grid">${plans.map((plan) => `<article class="price-card${plan.featured ? ' price-card-featured' : ''}" data-plan="${plan.id}" data-spotlight>
-      <div class="plan-top"><p class="plan-label">${plan.label}</p><h3>${planTitle(plan)}</h3><p>${plan.summary}</p></div>
-      <p class="price"><strong>${plan.price}</strong><span>VNĐ ${plan.cadence}</span></p>${plan.monthlyId ? (() => { const saving = yearlySaving(plan); return saving ? `
-      <p class="price-saving">Tương đương khoảng ${formatVnd(saving.perMonth)} VNĐ/tháng. Tiết kiệm ${formatVnd(saving.saved)} VNĐ so với trả theo tháng.</p>` : ''; })() : ''}
-      <ul>${plan.features.map((feature) => `<li>${icon('check')}<span>${feature}</span></li>`).join('')}</ul>
-      <a class="button ${plan.featured ? 'button-primary' : 'button-secondary'}" href="${appUrl(appOrigin, `/checkout?plan=${plan.id}`)}">${plan.cta} ${icon('arrow')}</a>
-    </article>`).join('')}</div>
-    <p class="pricing-note">${upcomingPlanNote} ${launchOfferNote}</p>
-    <p class="pricing-note">Hết 7 ngày dùng thử, ba mẹ chọn một gói để tiếp tục ghi nhận việc của con. Không có khoản trừ tiền tự động. Gói đăng ký gắn với gia đình trong tài khoản phụ huynh; sau khi đăng nhập, bạn tiếp tục thanh toán mà không phải chọn lại gói.</p>
-  </div></section>`;
-}
-
-function renderCompanions() {
-  return `<section class="section companions" aria-labelledby="companions-title"><div class="shell">
-    <div class="section-heading section-heading-center"><p class="eyebrow">Người bạn đồng hành</p><h2 id="companions-title">Mỗi bé chọn một người bạn đồng hành</h2><p>Bé chọn nhân vật mình thích để cùng làm nhiệm vụ, nhận lời khen và đổi phần thưởng mà ba mẹ đã thống nhất.</p></div>
-    <ul class="companion-grid">${mascots.map((mascot) => `<li class="companion-card" data-spotlight><img class="companion-image" src="/mascots/${mascot.id}.webp" alt="${mascot.name}, chú ${mascot.species} đồng hành cùng bé" width="400" height="400" loading="lazy" decoding="async"><strong>${mascot.name}</strong><span>${mascot.trait}</span></li>`).join('')}</ul>
-  </div></section>`;
-}
-
-function renderFaq() {
-  return `<section class="section faq-section" aria-labelledby="faq-title"><div class="shell faq-layout"><div><h2 id="faq-title">Điều ba mẹ thường hỏi</h2><p>Nếu cần thêm trợ giúp, hãy xem hướng dẫn hoặc liên hệ với KidHabit.</p><a class="text-link" href="/docs/">Xem hướng dẫn ${icon('arrow')}</a></div><div class="faq-list">${faqs.map((item) => `<details><summary>${item.question}</summary><p>${item.answer}</p></details>`).join('')}</div></div></section>`;
-}
-
-const growthStages = [
-  ['0–3', 'Làm mẫu và đồng hành'],
-  ['3–6', 'Làm cùng con'],
-  ['6–12', 'Con tự chọn dần'],
-  ['12–15', 'Con chủ động hơn'],
-  ['15–18', 'Con tự làm chủ'],
-];
-
-const growthPoints = [
-  ['book', 'Mỗi thói quen có lời giải thích', 'Con hiểu vì sao mình làm việc đó, còn ba mẹ biết cách đồng hành cho đúng lúc.'],
-  ['trend-up', 'Việc nhỏ, lặp lại mỗi ngày', 'Những việc vừa sức, làm đều đặn, dần trở thành nếp thay vì một lần cố gắng rồi bỏ.'],
-  ['users', 'Ba mẹ luôn là người quyết định', 'Ba mẹ chọn, điều chỉnh hoặc tự tạo thói quen cho phù hợp với con và nhịp sống của gia đình.'],
-];
-
-const shortHabitName = (name) => name.replace(/\s*[(—:].*$/, '').trim();
-const growthExampleIds = ['GD3-HT-01', 'GD3-SK-01'];
-
-function renderGrowthExamples() {
-  const habits = growthExampleIds.map((id) => frameworkData.habits.find((habit) => habit.id === id)).filter(Boolean);
-  if (!habits.length) return '';
-  return `<div class="growth-examples"><p class="fw-examples-label">Ví dụ về những việc con sẽ nghe ở tuổi 6–12:</p><ul class="fw-habits">${habits.map((habit) => `<li class="fw-habit"><h4>${escapeHtml(shortHabitName(habit.name))}</h4><p>${escapeHtml(habit.childMeaning)}</p></li>`).join('')}</ul></div>`;
-}
-
-function renderPortraits() {
-  return `<section class="section growth" id="chan-dung" aria-labelledby="growth-title"><div class="shell">
-    <div class="section-heading section-heading-center"><p class="eyebrow">Vì sao những việc nhỏ có ý nghĩa</p><h2 id="growth-title">Mỗi thói quen là một nét vẽ nên chân dung của con</h2><p><strong>Chân dung</strong> là hình ảnh con lớn lên: tự tin, tử tế và làm chủ cuộc sống của mình. KidHabit không chỉ đếm việc đã làm, mà giúp ba mẹ chọn những thói quen nhỏ phù hợp với từng độ tuổi để dần vẽ nên hình ảnh ấy.</p></div>
-    <ol class="growth-stages" aria-label="Năm giai đoạn từ 0 đến 18 tuổi">${growthStages.map(([age, label]) => `<li><span class="growth-age">${age}<small>tuổi</small></span><span>${label}</span></li>`).join('')}</ol>
-    ${renderGrowthExamples()}
-    <ul class="growth-points">${growthPoints.map(([name, title, text]) => `<li><span class="icon-box">${icon(name)}</span><div><h3>${title}</h3><p>${text}</p></div></li>`).join('')}</ul>
-    <p class="growth-cta"><a class="text-link" href="/framework/">Xem khung thói quen ${icon('arrow')}</a></p>
-    <p class="growth-note">KidHabit phù hợp nhất với bé 4–12 tuổi tự xem việc và tự đánh dấu xong; khung đi đến 18 tuổi để ba mẹ thấy cả chặng đường phía trước. Chân dung là hướng trưởng thành, không phải nhãn tính cách hay điểm số cho con. KidHabit là công cụ đồng hành cùng gia đình và không cam kết một kết quả phát triển cụ thể.</p>
-  </div></section>`;
-}
-
-function renderComparison() {
-  const list = (items, name) => `<ul>${items.map((item) => `<li>${icon(name === 'before' ? 'x' : 'check')}<span>${item}</span></li>`).join('')}</ul>`;
-  return `<section class="section shift" aria-labelledby="shift-title"><div class="shell">
-    <div class="section-heading section-heading-center"><p class="eyebrow">Từ nhắc nhở đến tự giác</p><h2 id="shift-title">Nhắc mãi không phải cách duy nhất</h2><p>Khi con hiểu việc cần làm và thấy mình tiến bộ, ba mẹ không phải đóng vai người nhắc suốt ngày.</p></div>
-    <div class="compare-grid">
-      <article class="compare-card compare-before" data-spotlight><h3>${comparison.beforeTitle}</h3>${list(comparison.before, 'before')}</article>
-      <article class="compare-card compare-after" data-spotlight><h3>${comparison.afterTitle}</h3>${list(comparison.after, 'after')}</article>
-    </div>
-  </div></section>`;
-}
-
-function renderSteps() {
-  return `<section class="section steps" id="cach-hoat-dong" aria-labelledby="steps-title"><div class="shell">
-    <div class="section-heading section-heading-center"><p class="eyebrow">Cách KidHabit hoạt động</p><h2 id="steps-title">Từ việc nhỏ đến thói quen, chỉ ba bước</h2><p>Ba mẹ dẫn đường, con thực hành, cả nhà cùng ghi nhận tiến bộ thay vì chỉ nhắc lỗi.</p></div>
-    <ol class="step-list">${steps.map((step, index) => `<li class="step">
-      <div class="step-copy"><span class="step-number" aria-hidden="true">${index + 1}</span><h3>${outcomes[index].title}</h3><p>${outcomes[index].description}</p><ul>${step.bullets.map((bullet) => `<li>${icon('check')}<span>${bullet}</span></li>`).join('')}</ul></div>
-      <figure class="step-figure"><div class="phone" data-tilt><img src="/screens/${step.image}.webp" alt="${step.alt}" width="600" height="1298" loading="lazy" decoding="async"></div><figcaption>${step.caption} <small>Ảnh chụp từ bản demo, dữ liệu mẫu.</small></figcaption></figure>
-    </li>`).join('')}</ol>
-  </div></section>`;
-}
-
-function renderSafety() {
-  return `<section class="section safety" aria-labelledby="safety-title"><div class="shell safety-layout">
-    <div class="safety-intro"><p class="eyebrow">An tâm cho cả nhà</p><h2 id="safety-title">Ba mẹ nắm quyền, con được bảo vệ</h2><p>KidHabit chỉ lưu những gì cần để vận hành thói quen của gia đình, không quảng cáo, không bán dữ liệu của bé, và luôn để ba mẹ quyết định.</p><a class="text-link" href="/privacy/">Đọc chính sách quyền riêng tư ${icon('arrow')}</a><a class="text-link" href="/science/">Cơ sở khoa học và giới hạn của nó ${icon('arrow')}</a></div>
-    <ul class="safety-list">${safetyPoints.map((point) => `<li>${icon(point.icon)}<div><h3>${point.title}</h3><p>${point.text}</p></div></li>`).join('')}</ul>
-  </div></section>`;
 }
 
 export function selectPublishableTestimonials(list, now = new Date()) {
@@ -301,37 +206,347 @@ function renderFamilyQuotes({ now }) {
   </div></section>`;
 }
 
-function renderStickyCta(appOrigin) {
-  return `<div class="sticky-cta" data-sticky-cta data-guest hidden><div class="shell sticky-cta-inner"><p><strong>Dùng thử 7 ngày</strong><span>Không cần thẻ.</span></p><a class="button button-primary" href="${appUrl(appOrigin, '/start')}">Bắt đầu ${icon('arrow')}</a></div></div>`;
+// ---- Story-led home page and the plans. Everything the page script toggles is rendered here first, so the page
+// reads in full without the script: the yearly prices, the 6–12 age panel and every chapter are visible. ----
+
+const vnd = (amount) => `${formatVnd(amount)}đ`;
+const tick = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+const smallTick = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+const arrow = '<span class="arrow" aria-hidden="true">→</span>';
+
+/** Wraps the first occurrence of each phrase in `tag`; the text is escaped first. */
+function emphasise(text, phrases, tag = 'b') {
+  let html = escapeHtml(text);
+  for (const phrase of phrases) {
+    const escaped = escapeHtml(phrase);
+    html = html.replace(escaped, `<${tag}>${escaped}</${tag}>`);
+  }
+  return html;
+}
+
+function chapter(id) {
+  return story.chapters.find((item) => item.id === id);
+}
+
+// Where the sticky bar's button leads from each chapter; anything not listed starts the trial.
+const dockTargets = { 'buoi-sang': '#thu-lam-con', 'da-thu': '#ban-do', 'la-thu': '#gia' };
+
+/** Opening attributes of a chapter section: its id, its name for the chapter nav and the sticky bar copy. */
+function chapterAttributes(id, appOrigin) {
+  const dock = story.dock[id];
+  const dockData = dock
+    ? ` data-dock-title="${escapeHtml(dock[0])}" data-dock-note="${escapeHtml(dock[1])}" data-dock-cta="${escapeHtml(dock[2])}" data-dock-href="${dockTargets[id] ?? appUrl(appOrigin, '/start')}"`
+    : '';
+  return `id="${id}" data-chapter="${escapeHtml(chapter(id).label)}"${dockData}`;
+}
+
+function renderNext(id) {
+  const current = chapter(id);
+  if (!current?.next) return '';
+  const target = story.chapters[story.chapters.indexOf(current) + 1];
+  return `<div class="wrap next"><a href="#${target.id}"><span>${escapeHtml(story.nextLabel)}</span><strong>${escapeHtml(current.next)}</strong><span class="chev" aria-hidden="true">↓</span></a></div>`;
+}
+
+function renderStoryHeader(appOrigin) {
+  const links = (numbered) => story.chapters.map((item, index) => `<li><a href="#${item.id}" data-chapter-link>${numbered ? `<span>${index + 1}</span>` : ''}${escapeHtml(item.label)}</a></li>`).join('');
+  return `<header class="story-top" data-story-top>
+    <div class="wrap top-inner">
+      <a class="logo" href="#mo-dau" aria-label="KidHabit Hero, về đầu trang"><img src="/mascots/leo.webp" alt="" width="400" height="400">KidHabit</a>
+      <nav class="chapter-nav" aria-label="Các chương"><ol class="chapters">${links(false)}</ol></nav>
+      <button class="chapter-pill" type="button" data-chapter-pill aria-expanded="false" aria-controls="chapter-menu"><b data-pill-num></b> <span data-pill-name>${escapeHtml(story.chapters[0].label)}</span> <span aria-hidden="true">▾</span></button>
+      <ol class="chapter-menu" id="chapter-menu" data-chapter-menu hidden>${links(true)}</ol>
+      <a class="btn btn-primary top-cta" data-guest href="${appUrl(appOrigin, '/start')}">Dùng thử 7 ngày</a><a class="btn btn-primary top-cta" data-member href="${appUrl(appOrigin, '/')}">Vào ứng dụng</a>
+    </div>
+    <div class="progress" data-progress></div>
+  </header>`;
+}
+
+function renderStoryHero(appOrigin) {
+  const { hero, quiz } = story;
+  const [before, after] = hero.title.split(hero.highlight);
+  return `<section class="hero" ${chapterAttributes('mo-dau', appOrigin)}>
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">${escapeHtml(hero.eyebrow)}</p>
+          <h1>${escapeHtml(before)}<span class="hl">${escapeHtml(hero.highlight)}<svg viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true"><path d="M4 11 C 70 3, 150 14, 220 7 S 290 6, 296 9"/></svg></span>${escapeHtml(after)}</h1>
+          <p class="lead hero-lead">${escapeHtml(hero.lead)}</p>
+          <div class="actions">
+            <a class="btn btn-primary" data-guest href="${appUrl(appOrigin, '/start')}">${escapeHtml(hero.primaryCta)} ${arrow}</a><a class="btn btn-primary" data-member href="${appUrl(appOrigin, '/')}">Vào ứng dụng của gia đình ${arrow}</a>
+            <a class="btn btn-line" href="#thu-lam-con">${escapeHtml(hero.secondaryCta)}</a>
+          </div>
+          <ul class="assure">${hero.assurances.map((item) => `<li>${tick}${escapeHtml(item)}</li>`).join('')}</ul>
+        </div>
+        <div class="photo-wrap">
+          <figure class="photo">
+            <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+            <img src="/screens/kid-home.webp" alt="${escapeHtml(hero.imageAlt)}" width="600" height="1298" fetchpriority="high">
+            <figcaption>${escapeHtml(hero.caption)}</figcaption></figure>
+          <span class="chip chip-a"><i></i>${escapeHtml(hero.chip)}</span>
+          <img class="mascot" src="/mascots/leo.webp" alt="" width="400" height="400">
+        </div>
+      </div>
+      <div class="quiz reveal" data-quiz>
+        <div><p class="eyebrow">${escapeHtml(quiz.eyebrow)}</p><h2 class="quiz-q" id="quiz-q">${escapeHtml(quiz.question)}</h2></div>
+        <div class="options" role="radiogroup" aria-labelledby="quiz-q">${quiz.options.map((option, index) => `<button class="opt" type="button" role="radio" aria-checked="false" tabindex="${index === 0 ? 0 : -1}" data-quiz-option="${option.value}" data-final-title="${escapeHtml(option.finalTitle)}">${escapeHtml(option.label)}</button>`).join('')}</div>
+        <div class="answer" data-quiz-answer hidden aria-live="polite">
+          ${quiz.options.map((option) => `<p data-quiz-text="${option.value}" hidden>${escapeHtml(option.answer)}</p>`).join('')}
+          <a class="btn btn-soft" href="#buoi-sang">${escapeHtml(quiz.readMore)} <span class="arrow" aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function renderMorning(appOrigin) {
+  const { morning } = story;
+  return `<section class="tone-soft" ${chapterAttributes('buoi-sang', appOrigin)}>
+    <div class="wrap split">
+      <div class="sticky-col reveal">
+        <p class="eyebrow">${escapeHtml(morning.eyebrow)}</p>
+        <h2>${escapeHtml(morning.title)}</h2>
+        <p class="lead">${escapeHtml(morning.lead)}</p>
+        <div class="counter"><strong data-nag-count>${morning.timeline.length}</strong><span>${escapeHtml(morning.counterLabel)}</span></div>
+      </div>
+      <ol class="timeline" data-timeline>${morning.timeline.map((item) => `<li><time>${escapeHtml(item.time)}</time><div><span class="bubble">${escapeHtml(item.text)}</span></div></li>`).join('')}</ol>
+    </div>
+    ${renderNext('buoi-sang')}
+  </section>`;
+}
+
+function renderTried(appOrigin) {
+  const { tried } = story;
+  const [countBefore, countAfter] = tried.resultCount.split('{n}');
+  return `<section ${chapterAttributes('da-thu', appOrigin)}>
+    <div class="wrap">
+      <div class="reveal">
+        <p class="eyebrow">${escapeHtml(tried.eyebrow)}</p>
+        <h2>${escapeHtml(tried.title)}</h2>
+        <p class="lead">${escapeHtml(tried.lead)}</p>
+      </div>
+      <div class="tried-grid reveal" data-tried>${tried.cards.map((card) => `<button class="tried" type="button" aria-pressed="false"><span class="tick" aria-hidden="true">✓</span><span class="ico" aria-hidden="true">${card.icon}</span><span class="tried-title">${escapeHtml(card.title)}</span><span class="tried-text">${escapeHtml(card.text)}</span><span class="end">${escapeHtml(card.end)}</span></button>`).join('')}</div>
+      <div class="tried-result reveal" aria-live="polite">
+        <strong data-tried-count>?</strong>
+        <p data-tried-result="empty">${escapeHtml(tried.resultEmpty)}</p>
+        <p data-tried-result="count" hidden>${escapeHtml(countBefore)}<span data-tried-n>0</span>${escapeHtml(countAfter)}</p>
+      </div>
+    </div>
+    ${renderNext('da-thu')}
+  </section>`;
+}
+
+function renderMap(appOrigin) {
+  const { missing } = story;
+  const { explorer } = missing;
+  const tabs = storyStages.map((stage) => {
+    const selected = stage.id === explorer.defaultStage;
+    return `<button class="age" type="button" role="tab" id="age-${stage.id}" aria-controls="stage-${stage.id}" aria-selected="${selected}" tabindex="${selected ? 0 : -1}" data-age-tab="${stage.id}">${escapeHtml(stage.age)}<small>${escapeHtml(explorer.ageUnit)}</small></button>`;
+  }).join('');
+  const panels = storyStages.map((stage) => `<div class="stage" role="tabpanel" id="stage-${stage.id}" aria-labelledby="age-${stage.id}" tabindex="0" data-age-panel="${stage.id}"${stage.id === explorer.defaultStage ? '' : ' hidden'}>
+        <div class="stage-meta"><h3>${escapeHtml(stage.age)} ${escapeHtml(explorer.ageUnit)} · ${escapeHtml(stage.title)}</h3><span>${escapeHtml(explorer.roleLabel)}: <b>${escapeHtml(stage.adultRole)}</b></span></div>
+        <div class="habits">${stage.habits.map((habit) => `<article class="habit"><h4>${escapeHtml(habit.name)}</h4><p class="meaning">${escapeHtml(habit.childMeaning)}</p><div class="traits">${habit.traits.map((trait) => `<span class="trait">${escapeHtml(trait.label)}</span>`).join('')}</div></article>`).join('')}</div>
+      </div>`).join('');
+  return `<section class="tone-soft" ${chapterAttributes('ban-do', appOrigin)}>
+    <div class="wrap">
+      <div class="reveal narrow">
+        <p class="eyebrow">${escapeHtml(missing.eyebrow)}</p>
+        <h2>${escapeHtml(missing.title)}</h2>
+      </div>
+      <div class="three reveal">${missing.items.map((item) => `<div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.text)}</p></div>`).join('')}</div>
+      <div class="explorer reveal">
+        <div class="explorer-head">
+          <h3 class="explorer-q" id="age-q">${escapeHtml(explorer.question)}</h3>
+          <p class="muted">${escapeHtml(explorer.hint)}</p>
+          <div class="ages" role="tablist" aria-labelledby="age-q" data-age-tabs>${tabs}</div>
+        </div>
+        ${panels}
+        <p class="muted stage-note">${escapeHtml(explorer.note)}</p>
+      </div>
+    </div>
+    ${renderNext('ban-do')}
+  </section>`;
+}
+
+function renderDemo(appOrigin) {
+  const { demo } = story;
+  return `<section ${chapterAttributes('thu-lam-con', appOrigin)}>
+    <div class="wrap demo-grid">
+      <div class="phone reveal" data-demo>
+        <div class="phone-head"><img src="/mascots/leo.webp" alt="" width="400" height="400" loading="lazy" decoding="async"><div><b>${escapeHtml(demo.child)}</b><small>${escapeHtml(demo.cheer)}</small></div><span class="stars" aria-live="polite"><span aria-hidden="true">★</span> <span data-demo-stars>0</span><span class="sr-only"> sao</span></span></div>
+        <div class="bar" aria-hidden="true"><i data-demo-bar></i></div>
+        ${demo.tasks.map((task) => `<button class="task" type="button" aria-pressed="false" data-demo-task data-points="${task.points}"><span class="box" aria-hidden="true">✓</span><span><b>${escapeHtml(task.title)}</b><small>${escapeHtml(task.label)}</small></span><span class="pts">+${task.points}</span></button>`).join('')}
+        <div class="stamp" data-demo-stamp hidden>${escapeHtml(demo.stamp)}</div>
+      </div>
+      <div class="reveal">
+        <p class="eyebrow">${escapeHtml(demo.eyebrow)}</p>
+        <h2>${escapeHtml(demo.title)}</h2>
+        <p class="lead">${escapeHtml(demo.lead)}</p>
+        <ul class="swap">${demo.swaps.map((swap) => `<li><del>${escapeHtml(swap.before)}</del><span aria-hidden="true">→</span><b>${escapeHtml(swap.after)}</b></li>`).join('')}</ul>
+        <div class="praise" data-demo-praise hidden><small>${escapeHtml(demo.praiseLabel)}</small><p>${escapeHtml(demo.praise)}</p></div>
+        <p class="muted demo-note">${escapeHtml(demo.sampleNote)}</p>
+      </div>
+    </div>
+    ${renderNext('thu-lam-con')}
+  </section>`;
+}
+
+function renderLetter(appOrigin) {
+  const { letter } = story;
+  const paragraph = (text) => `<p>${text.includes(letter.highlight) ? emphasise(text, [letter.highlight], 'mark') : escapeHtml(text)}</p>`;
+  return `<section class="tone-soft" ${chapterAttributes('la-thu', appOrigin)}>
+    <div class="wrap letter-wrap">
+      <aside class="letter-aside reveal">
+        <img src="/mascots/turtle.webp" alt="" width="400" height="400" loading="lazy" decoding="async">
+        <p class="eyebrow">${escapeHtml(letter.eyebrow)}</p>
+        <h2>${escapeHtml(letter.title)}</h2>
+      </aside>
+      <article class="letter reveal">
+        <p class="big">${escapeHtml(letter.opening)}</p>
+        ${letter.beforeList.map(paragraph).join('')}
+        <ol>${letter.missing.map((item) => `<li><b>${escapeHtml(item.strong)}</b>${escapeHtml(item.rest)}</li>`).join('')}</ol>
+        ${letter.afterList.map(paragraph).join('')}
+        <div class="sig"><b>${escapeHtml(letter.signature.name)}</b><span class="muted">${escapeHtml(letter.signature.role)} · ${escapeHtml(letter.signature.maker)}</span></div>
+        <p class="ps"><b>${escapeHtml(letter.postscriptLabel)}</b> ${escapeHtml(letter.postscript)}</p>
+      </article>
+    </div>
+    ${renderNext('la-thu')}
+  </section>`;
+}
+
+/** Both cycles of one card; the section's data-pricing-cycle decides which shows. */
+function renderPlanCard(tier, appOrigin, recommended) {
+  const plan = pricingTiers[tier];
+  const year = priceView(tier, 'year');
+  const month = priceView(tier, 'month');
+  const copy = story.pricing;
+  const features = plan.features.map((feature) => {
+    const [lead, rest] = feature.split(/:(.*)/s);
+    const text = tier === 'pro_plus' && rest ? `<span><b>${escapeHtml(lead)}</b>:${escapeHtml(rest)}</span>` : escapeHtml(feature);
+    return `<li>${smallTick}${text}</li>`;
+  }).join('');
+  const amounts = `<div class="amount" data-cycle="year">
+          <div class="was"><span class="sr-only">Trả theo tháng cả năm: </span><s>${vnd(year.fullYearPrice)}</s></div>
+          <div class="now"><strong>${vnd(year.price)}</strong><span>/ năm</span></div>
+          <p class="per">≈ ${vnd(year.perMonth)} mỗi tháng · khoảng ${vnd(year.perDay)} mỗi ngày</p>
+          <span class="saved">Tiết kiệm ${vnd(year.saving)} (${year.savingPercent}%)</span>
+        </div>
+        <div class="amount" data-cycle="month">
+          <div class="now"><strong>${vnd(month.price)}</strong><span>/ tháng</span></div>
+          <p class="per">khoảng ${vnd(month.perDay)} mỗi ngày</p>
+          ${plan.purchasable ? `<button class="nudge" type="button" data-cycle-nudge>Trả theo năm tiết kiệm ${vnd(year.saving)} →</button>` : ''}
+        </div>`;
+  if (!plan.purchasable) {
+    return `<article class="plan plan-soon" data-plan="${tier}">
+        <span class="badge badge-soon">${escapeHtml(plan.status)}</span>
+        <h3>${escapeHtml(plan.name)}</h3>
+        <p class="for">${escapeHtml(plan.who)}</p>
+        ${amounts}
+        <ul>${features}</ul>
+        <p class="soon-note">${escapeHtml(launchOffer.upcomingNote)}</p>
+        <button class="btn btn-soon" type="button" disabled>${escapeHtml(copy.soonButton)}</button>
+      </article>`;
+  }
+  const upgrade = tier === 'pro'
+    ? `<p class="upgrade" data-cycle="year">Chỉ hơn ${escapeHtml(pricingTiers.solo.name)} ${vnd(upgradeDifference('year'))} mỗi năm, dùng cho tối đa 5 bé.</p><p class="upgrade" data-cycle="month">Chỉ hơn ${escapeHtml(pricingTiers.solo.name)} ${vnd(upgradeDifference('month'))} mỗi tháng, dùng cho tối đa 5 bé.</p>`
+    : '';
+  const buttonClass = recommended ? 'btn btn-primary' : 'btn btn-line';
+  const checkout = (cycle) => appUrl(appOrigin, `/checkout?plan=${priceView(tier, cycle).planId}`);
+  return `<article class="plan${recommended ? ' recommended' : ''}" data-plan="${tier}">
+        <span class="badge">${escapeHtml(copy.recommendedBadge)}</span>
+        <h3>${escapeHtml(plan.name)}</h3>
+        <p class="for">${escapeHtml(plan.who)}</p>
+        ${amounts}
+        <ul>${features}</ul>
+        ${upgrade}
+        <a class="${buttonClass}" data-cycle="year" data-plan-cta href="${checkout('year')}">Chọn ${escapeHtml(plan.name)} · năm</a>
+        <a class="${buttonClass}" data-cycle="month" data-plan-cta href="${checkout('month')}">Chọn ${escapeHtml(plan.name)} · tháng</a>
+        <a class="month-link" data-cycle="year" href="${checkout('month')}">Hoặc trả theo tháng: ${vnd(month.price)}</a>
+      </article>`;
+}
+
+/** The plans block, shared by the home page (as chapter 6) and /pricing/. */
+function renderPlans(appOrigin, { home = false } = {}) {
+  const copy = story.pricing;
+  const recommendedTier = copy.kidsOptions[0].tier;
+  const radio = (option, checked, attribute) => `<button type="button" role="radio" aria-checked="${checked}" tabindex="${checked ? 0 : -1}" data-value="${option.value}"${attribute}>`;
+  const opening = home ? `<section class="pricing" ${chapterAttributes('gia', appOrigin)} aria-labelledby="gia-title" data-pricing-cycle="${copy.defaultCycle}">` : `<section class="pricing" id="gia" aria-labelledby="gia-title" data-pricing-cycle="${copy.defaultCycle}">`;
+  return `${opening}
+    <div class="wrap">
+      <div class="price-head reveal">
+        <p class="eyebrow">${home ? escapeHtml(copy.eyebrow) : 'Bảng giá'}</p>
+        <h2 id="gia-title">${escapeHtml(copy.title)}</h2>
+        <p class="lead">${escapeHtml(copy.lead)}</p>
+      </div>
+      <div class="controls reveal">
+        <div class="control"><span id="kids-l">${escapeHtml(copy.kidsLabel)}</span>
+          <div class="seg" role="radiogroup" aria-labelledby="kids-l" data-kids>${copy.kidsOptions.map((option, index) => `${radio(option, index === 0, ` data-tier="${option.tier}"`)}${escapeHtml(option.label)}</button>`).join('')}</div>
+        </div>
+        <div class="control"><span id="cycle-l">${escapeHtml(copy.cycleLabel)}</span>
+          <div class="seg" role="radiogroup" aria-labelledby="cycle-l" data-cycle-toggle>${copy.cycleOptions.map((option) => `${radio(option, option.value === copy.defaultCycle, '')}${escapeHtml(option.label)}${option.value === 'year' ? ` <span class="save">-${maxSavingPercent}%</span>` : ''}</button>`).join('')}</div>
+        </div>
+      </div>
+      <div class="offer reveal">
+        <span class="offer-tag">${escapeHtml(launchOffer.tag)}</span>
+        <p>${emphasise(launchOffer.text, ['10 gia đình đầu tiên', 'Gói Pro theo năm', 'nâng cấp miễn phí lên Pro Plus'])}</p>
+        <span class="offer-left" data-offer-remaining data-app-origin="${escapeHtml(appOrigin)}" aria-live="polite"></span>
+      </div>
+      <div class="plans">
+        ${Object.keys(pricingTiers).map((tier) => renderPlanCard(tier, appOrigin, tier === recommendedTier)).join('')}
+      </div>
+      <ul class="pledge reveal">${copy.pledge.map((item) => `<li><b>${escapeHtml(item.strong)}</b><span>${escapeHtml(item.text)}</span></li>`).join('')}</ul>
+    </div>
+  </section>`;
+}
+
+function renderStoryFaq(appOrigin, { home = false } = {}) {
+  const opening = home ? `<section class="tone-soft" ${chapterAttributes('hoi-dap', appOrigin)} aria-labelledby="faq-title">` : '<section class="tone-soft" id="hoi-dap" aria-labelledby="faq-title">';
+  return `${opening}
+    <div class="wrap faq-grid">
+      <div class="reveal">
+        <p class="eyebrow">${home ? escapeHtml(story.faq.eyebrow) : 'Hỏi đáp'}</p>
+        <h2 id="faq-title">${escapeHtml(story.faq.title)}</h2>
+      </div>
+      <div class="faq reveal">${faqs.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join('')}</div>
+    </div>
+  </section>`;
+}
+
+function renderFinal(appOrigin) {
+  const { final } = story;
+  return `<section class="final" aria-labelledby="final-title">
+    <div class="wrap reveal">
+      <img src="/mascots/leo.webp" alt="" width="400" height="400" loading="lazy" decoding="async">
+      <h2 id="final-title" data-final-title>${escapeHtml(final.title)}</h2>
+      <p class="lead">${escapeHtml(final.text)}</p>
+      <a class="btn btn-primary" data-guest href="${appUrl(appOrigin, '/start')}">${escapeHtml(final.cta)} ${arrow}</a><a class="btn btn-primary" data-member href="${appUrl(appOrigin, '/')}">Vào ứng dụng của gia đình ${arrow}</a>
+    </div>
+  </section>`;
+}
+
+function renderDock(appOrigin) {
+  const [title, note, cta] = story.dock['mo-dau'];
+  return `<div class="dock" data-dock data-guest hidden><p><span data-dock-title>${escapeHtml(title)}</span><small data-dock-note>${escapeHtml(note)}</small></p><a class="btn" data-dock-cta href="${appUrl(appOrigin, '/start')}">${escapeHtml(cta)}</a></div>`;
 }
 
 export function renderHome({ marketingOrigin, appOrigin, now = new Date() }) {
-  const body = `<main id="noi-dung">
-    <section class="hero" data-hero><div class="shell hero-grid">
-      <div class="hero-copy"><p class="hero-kicker">Ứng dụng thói quen cho bé 4–12 tuổi</p><h1>Bớt nhắc, để con tự làm việc nhỏ mỗi ngày</h1><p class="hero-lead">Con xem việc cần làm và tự đánh dấu xong. Ba mẹ chỉ cần duyệt và khen. Mỗi ngày một việc nhỏ, cùng một người bạn đồng hành.</p><div class="hero-actions"><a class="button button-primary" data-guest data-magnetic href="${appUrl(appOrigin, '/start')}">Dùng thử 7 ngày ${icon('arrow')}</a><a class="button button-quiet" data-guest href="${appUrl(appOrigin, '/?demo=1')}">Xem bản demo</a><a class="button button-primary" data-member data-magnetic href="${appUrl(appOrigin, '/')}">Vào ứng dụng của gia đình ${icon('arrow')}</a></div><ul class="trust-points" aria-label="Cam kết khi bắt đầu">${trustPoints.map((point) => `<li>${icon('check')}<span>${point}</span></li>`).join('')}</ul></div>
-      <div class="hero-visual">
-        <div class="phone phone-hero" data-tilt><img class="phone-screen" src="/screens/kid-home.webp" alt="Màn hình của bé trong KidHabit: nhân vật Leo, 120 sao, 3 huy hiệu và tiến độ 3 trên 6 việc hôm nay" width="600" height="1298" fetchpriority="high"></div>
-        <img class="hero-mascot" src="/mascots/leo.webp" alt="Leo, chú sư tử nhỏ vẫy tay chào bé" width="400" height="400" fetchpriority="high">
-        <span class="float-chip float-chip-stars">${icon('star')} 120 sao</span>
-        <span class="float-chip float-chip-review">${icon('shield')} Chờ bố mẹ duyệt</span>
-      </div>
-    </div></section>
-    ${renderComparison()}
-    ${renderSteps()}
-    ${renderPortraits()}
-    ${renderCompanions()}
-    ${renderSafety()}
+  const body = `<main id="noi-dung" class="story">
+    ${renderStoryHero(appOrigin)}
+    ${renderMorning(appOrigin)}
+    ${renderTried(appOrigin)}
+    ${renderMap(appOrigin)}
+    ${renderDemo(appOrigin)}
+    ${renderLetter(appOrigin)}
     ${renderFamilyQuotes({ now })}
-    ${renderPricing(appOrigin)}
-    ${renderFaq()}
-    <section class="final-cta"><div class="shell final-cta-inner"><div><h2>Bắt đầu với một việc nhỏ hôm nay</h2><p>Thiết lập hồ sơ đầu tiên, chọn thói quen phù hợp và để con tự hoàn thành bước tiếp theo.</p><p class="final-cta-note">7 ngày dùng thử, không cần thẻ, hoàn tiền trong 30 ngày.</p></div><div class="final-cta-actions"><a class="button button-light" data-guest data-magnetic href="${appUrl(appOrigin, '/start')}">Bắt đầu cùng con ${icon('arrow')}</a><a class="text-link text-link-light" data-guest href="${appUrl(appOrigin, '/?demo=1')}">Xem bản demo trước</a><a class="button button-light" data-member data-magnetic href="${appUrl(appOrigin, '/')}">Vào ứng dụng của gia đình ${icon('arrow')}</a></div><img class="final-mascot" src="/mascots/leo.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></div></section>
-    ${renderStickyCta(appOrigin)}
-  </main>`;
-  return renderDocument({ title: 'KidHabit Hero | Bớt nhắc, để con tự làm việc nhỏ mỗi ngày', description: 'KidHabit giúp ba mẹ chọn thói quen hợp độ tuổi, giao việc rõ ràng và cùng con ghi nhận từng bước nhỏ mỗi ngày. Dùng thử 7 ngày, không cần thẻ.', path: '/', marketingOrigin, appOrigin, body, structuredData: renderStructuredData({ marketingOrigin, appOrigin }) });
+    ${renderPlans(appOrigin, { home: true })}
+    ${renderStoryFaq(appOrigin, { home: true })}
+    ${renderFinal(appOrigin)}
+  </main>
+  ${renderDock(appOrigin)}`;
+  return renderDocument({ title: 'KidHabit Hero | Bớt nhắc, để con tự làm việc nhỏ mỗi ngày', description: 'KidHabit giúp ba mẹ chọn thói quen hợp độ tuổi, giao việc rõ ràng và cùng con ghi nhận từng bước nhỏ mỗi ngày. Dùng thử 7 ngày, không cần thẻ.', path: '/', marketingOrigin, appOrigin, body, structuredData: renderStructuredData({ marketingOrigin, appOrigin }), header: renderStoryHeader(appOrigin) });
 }
 
 export function renderPricingPage({ marketingOrigin, appOrigin }) {
-  const body = `<main id="noi-dung">${renderInfoHero({ slug: 'pricing', eyebrow: 'Bảng giá rõ ràng', title: 'Chọn nhịp đồng hành phù hợp', lede: 'Ba gói trả phí, không có phí ẩn và không tự động gia hạn.', mascot: 'bee' })}${renderPricing(appOrigin, 'Ba lựa chọn, một hành trình rõ ràng')}${renderFaq()}</main>`;
+  const body = `<main id="noi-dung">${renderInfoHero({ slug: 'pricing', eyebrow: 'Bảng giá rõ ràng', title: 'Chọn gói hợp với nhà mình', lede: 'Gói 1 bé hoặc Gói Pro cho tối đa 5 bé, trả theo tháng hay theo năm đều cùng quyền lợi. Không phí ẩn, không tự động gia hạn.', mascot: 'bee' })}<div class="story">${renderPlans(appOrigin)}${renderStoryFaq(appOrigin)}</div></main>`;
   return renderDocument({ title: 'Bảng giá KidHabit Hero | Dùng thử 7 ngày', description: 'So sánh ba gói KidHabit cho một bé hoặc cả gia đình: giá rõ ràng, không phí ẩn, không tự động gia hạn và có 7 ngày dùng thử trước khi quyết định.', path: '/pricing/', marketingOrigin, appOrigin, body, structuredData: `${renderStructuredData({ marketingOrigin, appOrigin })}${renderPageStructuredData({ name: 'Bảng giá', description: 'So sánh ba gói KidHabit cho một bé hoặc cả gia đình.', path: '/pricing/', marketingOrigin, faqItems: faqs })}` });
 }
 
