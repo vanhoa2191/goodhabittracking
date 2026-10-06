@@ -5,6 +5,9 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { selectPublishableTestimonials } from '../../apps/marketing/render-site.mjs';
 import { sessionHintCookie } from '../../apps/marketing/session-hint.mjs';
+import { faqs, launchOffer, story, storyStages, traitLabels } from '../../apps/marketing/site-content.mjs';
+import frameworkData from '../../src/data/habit-framework-v1.vi.json';
+import { LAUNCH_OFFER } from '@/lib/billing/plan-catalog';
 import { buildMarketingSite } from '../../scripts/build-marketing.mjs';
 
 const outputs: string[] = [];
@@ -526,5 +529,79 @@ describe('marketing static artifact', () => {
       marketingOrigin: 'https://www.example',
       outputDir: await makeOutput('kidhabit-marketing-invalid-'),
     })).rejects.toThrow('appOrigin');
+  });
+});
+
+describe('home page story content', () => {
+  const approvedHabits = [
+    ['GD1-NT-01', 'GD1-MQH-01', 'GD1-TC-01'],
+    ['GD2-NT-02', 'GD2-HT-02', 'GD2-TC-01'],
+    ['GD3-NT-01', 'GD3-TC-01', 'GD3-SK-01'],
+    ['GD4-NT-02', 'GD4-MQH-02', 'GD4-HT-01'],
+    ['GD5-NT-01', 'GD5-NT-03', 'GD5-HT-03'],
+  ];
+  const habitById = new Map(frameworkData.habits.map((habit) => [habit.id, habit]));
+
+  it('walks the five framework stages with the approved habits, in order', () => {
+    expect(storyStages.map((stage) => stage.id)).toEqual(frameworkData.stages.map((stage) => stage.id));
+    expect(storyStages.map((stage) => stage.habits.map((habit) => habit.id))).toEqual(approvedHabits);
+    for (const stage of storyStages) {
+      const source = frameworkData.stages.find((candidate) => candidate.id === stage.id)!;
+      expect(stage.age).toBe(source.ageRange.replace('-', '–'));
+      expect(stage.adultRole).toBe(source.adultRole);
+    }
+  });
+
+  it('quotes each habit’s meaning for the child word for word from the framework', () => {
+    for (const habit of storyStages.flatMap((stage) => stage.habits)) {
+      const source = habitById.get(habit.id)!;
+      expect(habit.childMeaning).toBe(source.childMeaning);
+      expect(habit.fullName).toBe(source.name);
+      expect(habit.name.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('labels each habit only with qualities tagged on that habit in the framework', () => {
+    for (const habit of storyStages.flatMap((stage) => stage.habits)) {
+      const tags = habitById.get(habit.id)!.conceptTags;
+      expect(habit.traits.length).toBeGreaterThan(0);
+      for (const trait of habit.traits) {
+        expect(tags).toContain(trait.tag);
+        expect(trait.label).toBe(traitLabels[trait.tag]);
+      }
+    }
+    // Every label names a tag the framework really uses.
+    const allTags = new Set(frameworkData.habits.flatMap((habit) => habit.conceptTags));
+    for (const tag of Object.keys(traitLabels)) expect(allTags.has(tag)).toBe(true);
+    for (const task of story.demo.tasks) expect(traitLabels[task.trait]).toBeTruthy();
+  });
+
+  it('signs the letter as the founder, a parent, and promises no result', () => {
+    expect(story.letter.signature).toEqual({ name: 'Nguyễn Văn Hoà', role: 'Ba của Sam', maker: 'Người làm ra KidHabit' });
+    const text = JSON.stringify(story);
+    expect(text).toContain('Tôi không hứa con bạn sẽ thay đổi sau một tuần.');
+    expect(text).not.toMatch(/đảm bảo|cam kết hiệu quả|tăng động lực|\b(số 1|top 1|#1)\b/i);
+    expect(text).not.toMatch(/\d[\d.]*\s*(gia đình|phụ huynh|người dùng) (đã|đang) dùng/i);
+  });
+
+  it('states the launch offer from the app’s own numbers, without a remaining count', () => {
+    expect(launchOffer.slots).toBe(LAUNCH_OFFER.slots);
+    expect(launchOffer.planId).toBe(LAUNCH_OFFER.planId);
+    expect(launchOffer.soldOut).toBe('Đã hết suất');
+    expect(launchOffer).not.toHaveProperty('remaining');
+  });
+
+  it('answers the launch offer, the trial, the refund and the age questions', () => {
+    const questions = faqs.map((item) => item.question);
+    for (const question of [
+      'Ưu đãi nâng cấp lên Pro Plus hoạt động thế nào?',
+      'Hết 7 ngày dùng thử thì sao?',
+      'Tôi có được hoàn tiền không?',
+      'Con bao nhiêu tuổi thì phù hợp?',
+      'KidHabit có thay thế việc ba mẹ dạy con không?',
+      'Giao diện của bé có đổi theo tuổi không?',
+    ]) expect(questions).toContain(question);
+    expect(new Set(questions).size).toBe(questions.length);
+    expect(JSON.stringify(faqs)).not.toMatch(/đủ điều kiện|đảm bảo/);
   });
 });
