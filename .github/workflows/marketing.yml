@@ -77,4 +77,5 @@ jobs:
             --dir dist/marketing \
             --app-origin "$NEXT_PUBLIC_APP_URL" \
             --marketing-origin "$NEXT_PUBLIC_MARKETING_URL" \
-            --url "$NEXT_PUBLIC_MARKETING_URL"
+            --url "$NEXT_PUBLIC_MARKETING_URL" \
+            --wait-release "$GITHUB_SHA"
