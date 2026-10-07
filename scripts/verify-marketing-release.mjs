@@ -1,10 +1,33 @@
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { pricingTiers } from '../apps/marketing/pricing.mjs';
 
 const publicRoutes = ['/', '/pricing/', '/framework/', '/science/', '/roadmaps/', '/docs/', '/blog/', '/privacy/', '/terms/', '/gioi-thieu/', '/contact/'];
-const paidPlans = ['solo_monthly', 'solo_yearly', 'monthly', 'yearly'];
+// The purchasable plan ids come from the same table the pages are built from. Pro Plus is announced only.
+const paidPlans = Object.values(pricingTiers)
+  .filter((tier) => tier.purchasable)
+  .flatMap((tier) => [tier.month.id, tier.year.id]);
 const forbiddenMarkers = ['/api/', 'supabase_service_role_key', 'payos_api_key', 'serviceworker.register', 'manifest.webmanifest'];
+
+const formatPrice = (amount) => `${String(amount).replace(/\B(?=(\d{3})+(?!\d))/g, '.')}đ`;
+
+// Every public price the pages must show, formatted the way the pages format it.
+const expectedPrices = Object.values(pricingTiers)
+  .filter((tier) => tier.purchasable)
+  .flatMap((tier) => [tier.month.amount, tier.year.amount])
+  .map(formatPrice);
+
+function assertSalesPages(home, pricing, label) {
+  for (const [route, html] of [['/', home], ['/pricing/', pricing]]) {
+    if (/plan=family_plus/.test(html)) {
+      throw new Error(`${label} ${route} links to checkout for a plan that is not on sale (family_plus).`);
+    }
+    for (const price of expectedPrices) {
+      if (!html.includes(price)) throw new Error(`${label} ${route} does not show the price ${price}.`);
+    }
+  }
+}
 
 function parseOrigin(value, label) {
   const url = new URL(value);
@@ -93,6 +116,8 @@ export async function verifyMarketingRelease({
     }
   }
 
+  assertSalesPages(htmlByRoute.get('/'), htmlByRoute.get('/pricing/'), 'The built');
+
   if (liveOrigin) {
     const origin = parseOrigin(liveOrigin, 'liveOrigin');
     const liveHtmlByRoute = new Map();
@@ -103,6 +128,7 @@ export async function verifyMarketingRelease({
       assertHtmlContract(html, route, appOrigin, marketingOrigin);
       liveHtmlByRoute.set(route, html);
     }
+    assertSalesPages(liveHtmlByRoute.get('/'), liveHtmlByRoute.get('/pricing/'), 'The live');
     const liveSalesHtml = `${liveHtmlByRoute.get('/')}\n${liveHtmlByRoute.get('/pricing/')}`;
     for (const plan of paidPlans) {
       if (!liveSalesHtml.includes(`href="${appOrigin}/checkout?plan=${plan}"`)) {

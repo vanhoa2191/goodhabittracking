@@ -39,6 +39,38 @@ describe('marketing release verifier', () => {
     })).resolves.toEqual({ routes: 11, plans: 4 });
   });
 
+  it('rejects a home page or pricing page that lacks a public price', async () => {
+    for (const route of ['index.html', 'pricing/index.html']) {
+      const directory = await buildFixture();
+      await replace(directory, route, '399.000đ', '398.000đ');
+      await expect(verifyMarketingRelease({
+        directory, appOrigin: 'https://app.example', marketingOrigin: 'https://www.example',
+      })).rejects.toThrow(/does not show the price 399\.000đ/);
+    }
+  });
+
+  it('rejects a checkout link for a plan that is not on sale', async () => {
+    const directory = await buildFixture();
+    await replace(directory, 'pricing/index.html', 'plan=yearly', 'plan=family_plus_yearly');
+    await expect(verifyMarketingRelease({
+      directory, appOrigin: 'https://app.example', marketingOrigin: 'https://www.example',
+    })).rejects.toThrow(/family_plus/);
+  });
+
+  it('rejects a live page that shows a wrong price', async () => {
+    const directory = await buildFixture();
+    const fetchImpl = vi.fn(async (url: URL) => {
+      const route = new URL(url).pathname;
+      let html = await readFile(join(directory, route === '/' ? 'index.html' : `${route.slice(1)}index.html`), 'utf8').catch(() => '');
+      if (route === '/pricing/') html = html.replaceAll('590.000đ', '580.000đ');
+      return new Response(html, { status: 200 });
+    });
+    await expect(verifyMarketingRelease({
+      directory, appOrigin: 'https://app.example', marketingOrigin: 'https://www.example',
+      liveOrigin: 'https://live.example', fetchImpl: fetchImpl as unknown as typeof fetch,
+    })).rejects.toThrow(/live \/pricing\/ does not show the price 590\.000đ/i);
+  });
+
   it('rejects a wrong canonical URL', async () => {
     const directory = await buildFixture();
     await replace(directory, 'pricing/index.html', 'https://www.example/pricing/', 'https://wrong.example/pricing/');

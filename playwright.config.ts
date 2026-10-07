@@ -5,6 +5,10 @@ const baseURL = externalBaseUrl ?? 'http://127.0.0.1:3000';
 const localBrowserChannel = process.env.PLAYWRIGHT_USE_SYSTEM_CHROME ? 'chrome' : undefined;
 const e2eSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://e2e-test.supabase.co';
 const e2eSupabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'e2e-anon-key';
+// The static marketing build (npm run build:marketing) is served on its own fixed port for marketing-home.spec.ts.
+const marketingPort = 4321;
+const marketingURL = `http://127.0.0.1:${marketingPort}`;
+const marketingSpec = /marketing-home\.spec\.ts/;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -21,46 +25,75 @@ export default defineConfig({
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
   },
-  webServer: externalBaseUrl
-    ? undefined
-    : {
-        command: 'npm run dev -- --webpack --hostname 127.0.0.1',
-        env: {
-          NEXT_PUBLIC_SUPABASE_URL: e2eSupabaseUrl,
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: e2eSupabaseAnonKey,
-          NEXT_PUBLIC_DAILY_MASCOT_LETTER: 'true',
-          NEXT_PUBLIC_DAILY_JOURNAL: 'true',
-          NEXT_PUBLIC_PARENT_REENGAGEMENT: 'true',
-          NEXT_PUBLIC_HABIT_PROGRAMS: 'true',
-          NEXT_PUBLIC_DAILY_EASE: 'true',
-          NEXT_PUBLIC_INDEPENDENCE: 'true',
-          NEXT_PUBLIC_HABIT_COACH: 'true',
-          KIDHABIT_E2E_ADMIN_BYPASS: 'true',
-          NEXT_PUBLIC_ENABLE_PWA_DEV: 'true',
-          NEXT_PUBLIC_APP_URL: baseURL,
-          NEXT_PUBLIC_MARKETING_URL: 'https://www.example.test',
-          NEXT_PUBLIC_DEPLOY_TARGET: 'app',
-        },
-        url: baseURL,
-        reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
-      },
+  webServer: [
+    // Only for `npm run test:e2e:marketing`, which builds dist/marketing first; other runs never need it.
+    ...(process.env.PLAYWRIGHT_MARKETING === '1'
+      ? [
+          {
+            command: `node scripts/preview-marketing.mjs --port ${marketingPort}`,
+            url: marketingURL,
+            reuseExistingServer: !process.env.CI,
+            timeout: 30_000,
+          },
+        ]
+      : []),
+    ...(externalBaseUrl || process.env.PLAYWRIGHT_MARKETING === '1'
+      ? []
+      : [
+          {
+            command: 'npm run dev -- --webpack --hostname 127.0.0.1',
+            env: {
+              NEXT_PUBLIC_SUPABASE_URL: e2eSupabaseUrl,
+              NEXT_PUBLIC_SUPABASE_ANON_KEY: e2eSupabaseAnonKey,
+              NEXT_PUBLIC_DAILY_MASCOT_LETTER: 'true',
+              NEXT_PUBLIC_DAILY_JOURNAL: 'true',
+              NEXT_PUBLIC_PARENT_REENGAGEMENT: 'true',
+              NEXT_PUBLIC_HABIT_PROGRAMS: 'true',
+              NEXT_PUBLIC_DAILY_EASE: 'true',
+              NEXT_PUBLIC_INDEPENDENCE: 'true',
+              NEXT_PUBLIC_HABIT_COACH: 'true',
+              KIDHABIT_E2E_ADMIN_BYPASS: 'true',
+              NEXT_PUBLIC_ENABLE_PWA_DEV: 'true',
+              NEXT_PUBLIC_APP_URL: baseURL,
+              NEXT_PUBLIC_MARKETING_URL: 'https://www.example.test',
+              NEXT_PUBLIC_DEPLOY_TARGET: 'app',
+            },
+            url: baseURL,
+            reuseExistingServer: !process.env.CI,
+            timeout: 120_000,
+          },
+        ]),
+  ],
   projects: [
     {
       name: 'chromium',
+      testIgnore: marketingSpec,
       use: { ...devices['Desktop Chrome'], channel: localBrowserChannel },
     },
     {
       name: 'mobile-chromium',
+      testIgnore: marketingSpec,
       use: { ...devices['Pixel 7'], channel: localBrowserChannel },
     },
+    // Its server only exists for `npm run test:e2e:marketing` (PLAYWRIGHT_MARKETING=1), so the project is gated the same way.
+    ...(process.env.PLAYWRIGHT_MARKETING === '1'
+      ? [
+          {
+            name: 'marketing',
+            testMatch: marketingSpec,
+            use: { ...devices['Desktop Chrome'], channel: localBrowserChannel, baseURL: marketingURL },
+          },
+        ]
+      : []),
     // Safari engines: run nightly on a focused set of specs (see .github/workflows/webkit-nightly.yml), not on every PR.
     {
       name: 'webkit',
+      testIgnore: marketingSpec,
       use: { ...devices['Desktop Safari'] },
     },
     {
       name: 'mobile-safari',
+      testIgnore: marketingSpec,
       use: { ...devices['iPhone 15'] },
     },
   ],
