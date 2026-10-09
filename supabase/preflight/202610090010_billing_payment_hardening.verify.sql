@@ -137,6 +137,7 @@ begin
   if result <> 'order_already_paid' then raise exception 'Paid order must be idempotent for another valid reference'; end if;
   if public.referral_discount_bps(fixture.family, fixture.actor) <> 0 then raise exception 'Second paid yearly discount must be zero'; end if;
   insert into public.families(name, created_by) values ('Recreated verification family', fixture.actor) returning id into recreated_family;
+  delete from public.family_memberships where user_id = fixture.actor;
   insert into public.family_memberships(family_id, user_id, role) values (recreated_family, fixture.actor, 'owner');
   select * into checkout from public.create_family_payment_order(recreated_family, fixture.actor, checkout_code + 1, 'solo_yearly', now() + interval '15 minutes');
   if checkout.amount <> 399000 then raise exception 'Recreated family must not reset paying-user discount'; end if;
@@ -196,6 +197,7 @@ begin
   select affiliate.code into code from public.affiliate_accounts affiliate where user_id = referrer_fixture.actor;
   insert into public.referrals(referrer_user_id, referred_family_id, referred_user_id, code)
   values (referrer_fixture.actor, owner_fixture.family, owner_fixture.actor, code);
+  delete from public.family_memberships where user_id = payer_fixture.actor;
   insert into public.family_memberships(family_id, user_id, role) values (owner_fixture.family, payer_fixture.actor, 'parent');
   select * into checkout from public.create_family_payment_order(owner_fixture.family, payer_fixture.actor, 8100000000000030, 'yearly', now() + interval '15 minutes');
   if checkout.amount <> 531000 then raise exception 'Co-parent payment must use referred owner eligibility'; end if;
@@ -215,12 +217,18 @@ begin
   select * into family_fixture from billing_hardening_fixtures where ordinal = 8;
   insert into public.referrals(referrer_user_id, referred_family_id, referred_user_id, code)
   values (referrer_fixture.actor, payer_fixture.family, payer_fixture.actor, code);
+  delete from public.family_memberships where user_id = payer_fixture.actor;
   insert into public.family_memberships(family_id, user_id, role) values (family_fixture.family, payer_fixture.actor, 'parent');
   select * into checkout from public.create_family_payment_order(family_fixture.family, payer_fixture.actor, 8100000000000033, 'solo_yearly', now() + interval '15 minutes');
   if checkout.amount <> 359100 then raise exception 'Referred payer must qualify even when the owner is not referred'; end if;
   update public.payment_orders set status = 'CANCELLED' where order_code = 8100000000000033;
-  insert into public.payment_orders(order_code,family_id,user_id,plan_id,amount,description,status)
-  values (8100000000000034, payer_fixture.family, family_fixture.actor, 'yearly', 590000, 'KIDHABIT 8100000000000034', 'PAID');
+  -- Restore ownership while seeding the historical payment, then move back as co-parent.
+  delete from public.family_memberships where user_id = payer_fixture.actor;
+  insert into public.family_memberships(family_id, user_id, role) values (payer_fixture.family, payer_fixture.actor, 'owner');
+  insert into public.payment_orders(order_code,family_id,user_id,family_owner_user_id,plan_id,amount,description,status)
+  values (8100000000000034, payer_fixture.family, family_fixture.actor, payer_fixture.actor, 'yearly', 590000, 'KIDHABIT 8100000000000034', 'PAID');
+  delete from public.family_memberships where user_id = payer_fixture.actor;
+  insert into public.family_memberships(family_id, user_id, role) values (family_fixture.family, payer_fixture.actor, 'parent');
   select * into checkout from public.create_family_payment_order(family_fixture.family, payer_fixture.actor, 8100000000000035, 'yearly', now() + interval '15 minutes');
   if checkout.amount <> 590000 then raise exception 'Referred payer with paid history in an owned family must not qualify again'; end if;
   raise notice 'Owner/payer OR eligibility: co-parent qualifies; owned-family paid history consumes eligibility; referred payer qualifies independently';

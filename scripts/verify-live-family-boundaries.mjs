@@ -477,7 +477,7 @@ try {
   assert(progress.data.completionCounts.find((count) => count.child_id === childId)?.count === 2, 'Caregiver completion aggregate failed.');
   assert(Object.keys(progress.data).sort().join(',') === 'activities,completionCounts,daily,familyId,familyRole,profiles', 'Caregiver progress contains extra domains.');
   assert(progress.data.profiles.every((profile) => Object.keys(profile).sort().join(',') === 'avatar,id,name,theme_color'), 'Caregiver profiles contain private fields.');
-  assert(progress.data.activities.every((activity) => Object.keys(activity).sort().join(',') === 'child_id,created_on,description,id,recurrence_days,recurrence_type,title'), 'Caregiver habits contain private fields.');
+  assert(progress.data.activities.every((activity) => Object.keys(activity).sort().join(',') === 'child_id,created_at,description,id,recurrence_days,recurrence_type,title'), 'Caregiver habits contain private fields.');
   assert(progress.data.daily.to === todayKey && Object.keys(progress.data.daily).sort().join(',') === 'counts,from,to', 'Caregiver daily window is wrong.');
   assert(progress.data.daily.counts.every((entry) => Object.keys(entry).sort().join(',') === 'child_id,count,day'), 'Caregiver daily counts contain log detail.');
   assert(progress.data.daily.counts.find((entry) => entry.child_id === childId && entry.day === todayKey)?.count === 2, 'Caregiver daily aggregate failed.');

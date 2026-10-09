@@ -37,6 +37,7 @@ try {
     alter table public.user_subscriptions add column family_id uuid references public.families(id) on delete cascade;
     alter table public.family_memberships drop constraint family_memberships_role_check;
     alter table public.family_memberships add constraint family_memberships_role_check check(role in ('owner','parent','guardian','caregiver'));
+    create unique index family_memberships_one_family_per_user on public.family_memberships(user_id);
     ${definition(family,'current_family_id')}
     ${definition(family,'can_manage_family')}
     ${section(billing,'alter table public.payment_orders','drop policy if exists subscriptions_insert_family')}
