@@ -7,6 +7,7 @@ import { LayoutDashboard, Smartphone, Users } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getOnboardingWizardCopy } from '@/lib/i18n/onboarding-wizard-copy';
+import { getPinCopy } from '@/lib/i18n/pin-copy';
 import { readPairingCredential } from '@/lib/store/pairing-client';
 
 type HandoffStepProps = {
@@ -32,7 +33,8 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
   const { language } = useTranslation();
   const wizard = getOnboardingWizardCopy(language);
   const copy = wizard.handoff;
-  const { currentUser, parentPinConfigured, updateParentPin, setActiveChildId, setMode } = useAppStore();
+  const pinCopy = getPinCopy(language);
+  const { currentUser, parentPinConfigured, refreshParentPinStatus, updateParentPin, setActiveChildId, lockParent } = useAppStore();
   const signedIn = Boolean(currentUser);
   const [choice, setChoice] = useState<DeviceChoice | null>(signedIn ? null : 'shared');
   const [pairing, setPairing] = useState<Pairing>({ status: 'idle' });
@@ -63,8 +65,22 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
 
   const openKid = () => {
     setActiveChildId(childId);
-    setMode('kid');
+    lockParent();
     onFinish();
+  };
+
+  const loadPinStatus = async () => {
+    setPinError(null);
+    try {
+      await refreshParentPinStatus();
+    } catch {
+      setPinError(pinCopy.cannotCheck);
+    }
+  };
+
+  const chooseSharedDevice = () => {
+    setChoice('shared');
+    if (parentPinConfigured === null) void loadPinStatus();
   };
 
   const setPinAndOpen = async () => {
@@ -77,12 +93,12 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
     try {
       const result = await updateParentPin({ newPin: pin });
       if (result.status !== 'updated') {
-        setPinError(copy.pinError);
+        setPinError(result.status === 'invalid_format' ? copy.pinError : pinCopy.cannotSave);
         return;
       }
       openKid();
     } catch {
-      setPinError(copy.pinError);
+      setPinError(pinCopy.cannotProcess);
     } finally {
       setSavingPin(false);
     }
@@ -103,7 +119,7 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
             <span>{copy.ownDevice}</span>
           </button>
         )}
-        <button type="button" aria-pressed={choice === 'shared'} onClick={() => setChoice('shared')} className={choiceButton(choice === 'shared')}>
+        <button type="button" aria-pressed={choice === 'shared'} onClick={chooseSharedDevice} className={choiceButton(choice === 'shared')}>
           <Users className="h-5 w-5 text-indigo-600" aria-hidden="true" />
           <span>{copy.sharedDevice}</span>
         </button>
@@ -136,7 +152,17 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
 
       {choice === 'shared' && (
         <div className="p-4 rounded-3xl bg-slate-50 dark:bg-zinc-800/60 border border-slate-200/80 dark:border-zinc-700/60 space-y-3">
-          {parentPinConfigured !== true ? (
+          {parentPinConfigured === null ? (
+            <>
+              {pinError ? (
+                <>
+                  <p role="alert" className="text-sm font-bold text-rose-700 dark:text-rose-300">{pinError}</p>
+                  <button type="button" onClick={() => void loadPinStatus()} className={secondaryButton}>{pinCopy.retry}</button>
+                </>
+              ) : <p role="status" className="text-sm text-slate-700 dark:text-slate-200">{pinCopy.checking}</p>}
+              <button type="button" onClick={openKid} className={secondaryButton}>{copy.skipPin}</button>
+            </>
+          ) : parentPinConfigured === false ? (
             <>
               <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-200">{copy.pinExplain}</p>
               <div>

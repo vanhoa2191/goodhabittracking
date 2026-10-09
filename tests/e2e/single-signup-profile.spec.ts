@@ -1,30 +1,150 @@
+import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
-import { installCloudFamilyFixture } from './cloud-family-fixture';
+import type { ProfileMutation } from '../../src/lib/domain/profile-mutations';
+import type { RewardMutation } from '../../src/lib/domain/reward-mutations';
+import { defaultCloudProfile, installCloudFamilyFixture } from './cloud-family-fixture';
 import { installCustomerProfileFixture } from './customer-profile-fixture';
 
 const freePlan = { plan: 'free', status: 'active', trial_ends_at: null, subscription_ends_at: null };
 const checkoutName = 'Thanh Toán VietQR Tự Động';
+
+// Route mocks must handle requests directly, without the PWA worker taking over.
+test.use({ serviceWorkers: 'block' });
 
 test.beforeEach(async ({ page }) => {
   await page.route('**/api/child/session', (route) => route.fulfill({ status: 401, json: {} }));
   await page.route('**/api/referral/claim', (route) => route.fulfill({ status: 200, json: { state: 'hidden' } }));
 });
 
-test('onboarding only creates a child and keeps extra customization collapsed', async ({ page, baseURL }) => {
+test('onboarding wizard opens on step 1 with defaults', async ({ page, baseURL }) => {
   await installCloudFamilyFixture(page, baseURL, { profiles: [], subscription: freePlan });
   const requests: string[] = [];
   page.on('request', (request) => { if (request.url().includes('/api/account/profile')) requests.push(request.url()); });
   await page.goto('/start');
   const dialog = page.getByRole('dialog');
+  await expect(dialog).toContainText('Bước 1/5');
   await expect(dialog.locator('#onboarding-child-name')).toBeVisible();
   await expect(dialog.locator('#onboarding-parent-name, #onboarding-parent-phone')).toHaveCount(0);
   await expect(dialog.locator('#onboarding-child-age')).toHaveValue('5');
   await expect(dialog.locator('#onboarding-child-nickname')).toBeVisible();
-  await expect(dialog.getByRole('button', { name: 'Leo', exact: true })).toBeHidden();
-  await dialog.locator('summary').filter({ hasText: 'Tùy chỉnh thêm' }).click();
   await expect(dialog.getByRole('button', { name: 'Leo', exact: true })).toHaveAttribute('aria-pressed', 'true');
-  await expect(dialog.getByLabel('Tự động nạp mẫu')).toBeChecked();
   expect(requests).toEqual([]);
+});
+
+test('onboarding wizard recommends habits by age', async ({ page, baseURL }) => {
+  await installCloudFamilyFixture(page, baseURL, { profiles: [], subscription: freePlan });
+  await page.goto('/start');
+  const dialog = page.getByRole('dialog');
+  await dialog.locator('#onboarding-child-name').fill('Minh An');
+  await dialog.getByRole('button', { name: 'Tiếp tục', exact: true }).click();
+  await expect(dialog).toContainText('Đã chọn 2 · khuyến nghị 2');
+  await dialog.getByRole('button', { name: 'Quay lại', exact: true }).click();
+  await dialog.locator('#onboarding-child-age').fill('8');
+  await dialog.getByRole('button', { name: 'Tiếp tục', exact: true }).click();
+  await expect(dialog).toContainText('Đã chọn 3 · khuyến nghị 3');
+});
+
+test('onboarding wizard ends in the child screen on a shared device', { tag: '@a11y' }, async ({ page, baseURL }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  const profiles: Record<string, unknown>[] = [];
+  const rewards: Record<string, unknown>[] = [];
+  const subscription: Record<string, unknown> = { ...freePlan };
+  const pinRequests: string[] = [];
+  let releasePinStatus: () => void = () => undefined;
+  const pinStatusReady = new Promise<void>((resolve) => { releasePinStatus = resolve; });
+  await installCloudFamilyFixture(page, baseURL, { profiles, rewards, subscription });
+  await page.route('**/api/parent-pin', async (route) => {
+    const method = route.request().method();
+    pinRequests.push(method);
+    if (method === 'GET') await pinStatusReady;
+    await route.fulfill(method === 'DELETE'
+      ? { status: 204 }
+      : method === 'PUT'
+        ? { status: 429, json: { status: 'locked', retryAfterSeconds: 60 } }
+      : { status: 200, json: { configured: false, lockedUntil: null } });
+  });
+  await page.route('**/api/privacy/consent', async (route) => {
+    expect(route.request().postDataJSON()).toEqual({ policyVersion: '2026-09-19', childDataConsent: true });
+    await route.fulfill({ status: 200, json: { success: true } });
+  });
+  await page.route('**/api/entitlement/trial', async (route) => {
+    Object.assign(subscription, { plan: 'trial', trial_ends_at: '2099-01-01T00:00:00.000Z' });
+    await route.fulfill({ status: 200, json: { success: true, entitlement: subscription } });
+  });
+  await page.route('**/api/domain/profiles', async (route) => {
+    const mutation = route.request().postDataJSON() as Extract<ProfileMutation, { type: 'create' }>;
+    expect(mutation.type).toBe('create');
+    expect(mutation.starterActivities).toHaveLength(2);
+    profiles.push({
+      ...defaultCloudProfile,
+      id: mutation.profile.id,
+      name: mutation.profile.name,
+      nickname: mutation.profile.nickname,
+      points: mutation.profile.points,
+      total_earned: mutation.profile.totalEarned,
+      level: mutation.profile.level,
+      streak: mutation.profile.streak,
+      birth_year: mutation.profile.birthYear,
+      age_stage: mutation.profile.ageStage,
+      is_public_on_leaderboard: mutation.profile.isPublicOnLeaderboard,
+    });
+    await route.fulfill({ status: 200, json: { success: true, profileId: mutation.profile.id } });
+  });
+  await page.route('**/api/domain/rewards', async (route) => {
+    const mutation = route.request().postDataJSON() as Extract<RewardMutation, { type: 'create' }>;
+    expect(mutation.type).toBe('create');
+    rewards.push({
+      id: mutation.reward.id,
+      family_id: defaultCloudProfile.family_id,
+      title: mutation.reward.title,
+      description: mutation.reward.description,
+      icon: mutation.reward.icon,
+      cost_points: mutation.reward.costPoints,
+      stock: mutation.reward.stock,
+      is_active: mutation.reward.isActive,
+      created_at: mutation.reward.createdAt,
+    });
+    await route.fulfill({ status: 200, json: { success: true, rewardId: mutation.reward.id } });
+  });
+  await page.goto('/start');
+  const dialog = page.getByRole('dialog');
+  const checkStep = async (step: number, title: string) => {
+    await expect(dialog).toContainText(`Bước ${step}/5`);
+    if (step > 1) await expect(dialog.getByRole('heading', { name: title, exact: true })).toBeFocused();
+    const results = await new AxeBuilder({ page }).include('[role="dialog"]').analyze();
+    expect(results.violations.filter((violation) => violation.impact === 'critical' || violation.impact === 'serious')).toEqual([]);
+  };
+  await checkStep(1, 'Bé của bạn');
+  await dialog.locator('#onboarding-child-name').fill('Minh An');
+  await dialog.getByRole('button', { name: 'Tiếp tục', exact: true }).click();
+  await checkStep(2, 'Thói quen đầu tiên');
+  await dialog.getByRole('button', { name: 'Tiếp tục', exact: true }).click();
+  await checkStep(3, 'Quà để đổi sao');
+  await dialog.getByRole('button', { name: 'Tiếp tục', exact: true }).click();
+  await checkStep(4, 'Xác nhận & bắt đầu');
+  await dialog.getByRole('checkbox').check();
+  await dialog.getByRole('button', { name: 'Bắt đầu 7 ngày dùng thử & tạo hồ sơ', exact: true }).click();
+  await checkStep(5, 'Đưa app cho bé');
+  await expect(dialog).not.toContainText('Chưa thêm được quà');
+  expect(subscription.plan).toBe('trial');
+  await expect(page).toHaveURL(/\/start$/);
+  await dialog.getByRole('button', { name: 'Dùng chung máy này', exact: true }).click();
+  await expect(dialog.locator('#onboarding-parent-pin')).toHaveCount(0);
+  await expect(dialog.getByRole('status')).toHaveText('Đang kiểm tra mã PIN…');
+  releasePinStatus();
+  await dialog.locator('#onboarding-parent-pin').fill('12');
+  await dialog.getByRole('button', { name: 'Đặt PIN & mở màn hình của bé', exact: true }).click();
+  await expect(dialog.getByRole('alert')).toHaveText('PIN cần đúng 4 chữ số.');
+  await dialog.locator('#onboarding-parent-pin').fill('1234');
+  await dialog.getByRole('button', { name: 'Đặt PIN & mở màn hình của bé', exact: true }).click();
+  await expect(dialog.getByRole('alert')).toHaveText('Chưa thể lưu mã PIN. Vui lòng thử lại.');
+  await dialog.getByRole('button', { name: 'Bỏ qua, mở màn hình của bé', exact: true }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'kid');
+  await expect.poll(() => pinRequests).toContain('DELETE');
+  await page.getByRole('button', { name: 'Phụ huynh', exact: true }).click();
+  await expect(page.getByRole('dialog', { name: /PIN/i })).toBeVisible();
+  await expect(page.getByTestId('app-surface')).toHaveAttribute('data-app-mode', 'kid');
 });
 
 test('an incomplete account can use the app after login without a blocking prompt', async ({ page, baseURL }) => {
