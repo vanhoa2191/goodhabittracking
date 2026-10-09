@@ -29,10 +29,17 @@ describe('billing payment hardening', () => {
   it('reserves only the first yearly discount and serializes checkout creation with settlement', () => {
     const sql = definition('create_family_payment_order');
     expect(sql.indexOf('for update;')).toBeLessThan(sql.indexOf('public.referral_discount_bps('));
-    expect(sql).toContain("raise exception 'yearly_checkout_pending'");
+    expect(sql).toContain('return query select pending.amount, 0, pending.order_code');
+    expect(sql).toContain('order by created_at desc, order_code desc limit 1');
     const discount = definition('referral_discount_bps');
     expect(discount).toContain("payment_order.plan_id in ('yearly', 'solo_yearly')");
     expect(discount).toContain("payment_order.status in ('PAID', 'PENDING')");
+    expect(discount).toContain('select target_user as user_id');
+    expect(discount).toContain("family_id = target_family and role = 'owner'");
+    expect(discount).toContain('payment_order.user_id = eligible.user_id');
+    expect(discount).toContain("owner_membership.user_id = eligible.user_id and owner_membership.role = 'owner'");
+    expect(verification).toContain('Co-parent payment must use referred owner eligibility');
+    expect(verification).toContain('Referred payer must qualify even when the owner is not referred');
     expect(sql).toContain('insert into public.payment_orders');
   });
   it('checks owner permission before trial consumption or coupon quota', () => {
@@ -48,8 +55,15 @@ describe('billing payment hardening', () => {
     expect(sql).toContain('public.admin_revoke_launch_offer_claim(');
     expect(sql.indexOf('public.admin_revoke_launch_offer_claim(')).toBeLessThan(sql.indexOf('update public.billing_support_cases'));
     expect(sql).toContain("'launchOfferClaim'");
+    expect(migration).toContain('Duplicate confirmed refunds must be reviewed before billing migration: %');
+    expect(verification).toContain('group by order_code having count(*) > 1');
     expect(migration).toContain('create unique index billing_one_confirmed_refund_per_order');
     expect(migration).toContain("where case_type = 'refund' and status = 'completed' and resolution_code = 'manual_refund_confirmed'");
+  });
+  it('restricts saved reconcile progress to the service role', () => {
+    expect(migration).toContain('alter table public.billing_reconcile_state force row level security');
+    expect(migration).toContain('revoke all on public.billing_reconcile_state from public, anon, authenticated');
+    expect(migration).toContain('grant select, insert, update on public.billing_reconcile_state to service_role');
   });
   it('keeps all new administrative entry points service-only', () => {
     for (const signature of ['admin_update_family_subscription(uuid, text, text, timestamptz, timestamptz)', 'create_family_payment_order(uuid, uuid, bigint, text, timestamptz)', 'admin_resolve_billing_case(uuid, text, text, uuid, text)']) {

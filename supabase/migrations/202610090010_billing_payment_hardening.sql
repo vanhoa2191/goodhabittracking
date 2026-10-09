@@ -1,5 +1,18 @@
 begin;
 
+-- A valid second payment reference is acknowledged but must remain visible in admin signals.
+alter table public.operational_events drop constraint operational_events_reason_code_check;
+alter table public.operational_events add constraint operational_events_reason_code_check check (reason_code in (
+  'attempts_exhausted', 'child_limit_reached', 'consumed', 'expired',
+  'family_membership_required', 'invalid', 'invalid_code', 'invalid_profile_mutation',
+  'order_mismatch', 'order_not_found', 'order_already_paid', 'processing_failed',
+  'profile_conflict', 'profile_mutation_failed', 'profile_not_found', 'profile_service_unavailable',
+  'rate_limited', 'redacted', 'revoked', 'service_unavailable', 'unknown_failure'
+));
+alter table public.operational_events drop constraint operational_events_status_check;
+alter table public.operational_events add constraint operational_events_status_check
+  check (status = 200 or status between 400 and 599);
+
 create or replace function public.activate_family_trial()
 returns table (
   plan text,
@@ -172,7 +185,15 @@ $$;
 revoke execute on function public.redeem_family_coupon(text) from public, anon;
 grant execute on function public.redeem_family_coupon(text) to authenticated;
 
--- User attribution survives deletion/recreation of a family. Check both user and family histories.
+-- The referred payer OR the referred owner can qualify the order. Owned-family history survives
+-- co-parent payment and family recreation; a PENDING reservation temporarily holds eligibility.
+alter table public.payment_orders add column if not exists family_owner_user_id uuid
+references auth.users(id) on delete set null;
+update public.payment_orders payment_order set family_owner_user_id = membership.user_id
+from public.family_memberships membership
+where membership.family_id = payment_order.family_id and membership.role = 'owner'
+  and payment_order.family_owner_user_id is null;
+
 create or replace function public.referral_discount_bps(target_family uuid, target_user uuid)
 returns integer
 language sql
@@ -180,12 +201,23 @@ stable
 security definer
 set search_path = ''
 as $$
-  select case when settings.enabled
-    and exists (select 1 from public.referrals where referred_user_id = target_user)
-    and not exists (select 1 from public.payment_orders payment_order
-      where (payment_order.user_id = target_user or payment_order.family_id = target_family)
-        and payment_order.status in ('PAID', 'PENDING')
-        and payment_order.plan_id in ('yearly', 'solo_yearly'))
+  with eligible_users as (
+    select target_user as user_id
+    union
+    select user_id from public.family_memberships where family_id = target_family and role = 'owner'
+  )
+  select case when settings.enabled and exists (
+    select 1 from eligible_users eligible
+    where exists (select 1 from public.referrals where referred_user_id = eligible.user_id)
+      and not exists (select 1 from public.payment_orders payment_order
+        where (payment_order.user_id = eligible.user_id or payment_order.family_owner_user_id = eligible.user_id or exists (
+          select 1 from public.family_memberships owner_membership
+          where owner_membership.family_id = payment_order.family_id
+            and owner_membership.user_id = eligible.user_id and owner_membership.role = 'owner'
+        ))
+          and payment_order.status in ('PAID', 'PENDING')
+          and payment_order.plan_id in ('yearly', 'solo_yearly'))
+  )
     then settings.referred_discount_bps else 0 end
   from public.affiliate_settings settings where settings.singleton
 $$;
@@ -245,12 +277,43 @@ $$;
 revoke all on function public.admin_update_family_subscription(uuid, text, text, timestamptz, timestamptz) from public, anon, authenticated;
 grant execute on function public.admin_update_family_subscription(uuid, text, text, timestamptz, timestamptz) to service_role;
 
--- A pending yearly checkout reserves the first-year price until PayOS confirms payment or cancellation.
--- Local expiry alone never releases the reservation: an older provider link might still accept money.
+alter table public.payment_orders add column if not exists checkout_payment jsonb;
+alter table public.payment_orders add column if not exists checkout_creation_finished_at timestamptz;
+
+-- Historical expiry/missing URL/reference does not prove unpaid: the create response or webhook may
+-- have been lost. There is no persisted provider cancellation proof in the historical schema.
+-- Leave these reservations to authenticated PayOS reconciliation (including legacy NULL expiry).
+do $$
+declare stale_count bigint;
+begin
+  select count(*) into stale_count from public.payment_orders
+  where status = 'PENDING' and plan_id in ('yearly', 'solo_yearly')
+    and coalesce(expires_at, created_at + interval '15 minutes') <= now();
+  raise notice 'Billing cleanup: % stale yearly orders require PayOS unpaid/unknown proof; reconcile after migration', stale_count;
+end
+$$;
+
+create table public.billing_reconcile_state (
+  singleton boolean primary key default true check (singleton),
+  cursor_order_code bigint,
+  cursor_created_at timestamptz,
+  updated_at timestamptz not null default now()
+);
+alter table public.billing_reconcile_state enable row level security;
+alter table public.billing_reconcile_state force row level security;
+revoke all on public.billing_reconcile_state from public, anon, authenticated;
+grant select, insert, update on public.billing_reconcile_state to service_role;
+insert into public.billing_reconcile_state(singleton) values (true);
+create index billing_pending_reconcile_idx on public.payment_orders(created_at desc, order_code desc)
+where status = 'PENDING';
+
+-- The route reuses a valid matching link or obtains provider cancellation proof before retrying.
+-- Return the locked reservation rather than blocking customers with an unresolvable exception.
+drop function if exists public.create_family_payment_order(uuid, uuid, bigint, text, timestamptz);
 create or replace function public.create_family_payment_order(
   target_family uuid, actor_id uuid, new_order_code bigint, selected_plan text, expires_at timestamptz
 )
-returns table(amount integer, discount_bps integer)
+returns table(amount integer, discount_bps integer, existing_order_code bigint)
 language plpgsql
 security definer
 set search_path = ''
@@ -259,13 +322,22 @@ declare
   list_price integer;
   discount integer := 0;
   charged integer;
+  pending public.payment_orders%rowtype;
+  owner_id uuid;
+  lock_user uuid;
 begin
   list_price := case selected_plan
     when 'solo_monthly' then 39000 when 'solo_yearly' then 399000
     when 'monthly' then 59000 when 'yearly' then 590000 end;
   if list_price is null then raise exception 'invalid_plan'; end if;
-  -- Serialize the same paying user across recreated/different families as well.
-  perform pg_advisory_xact_lock(hashtextextended('billing-checkout:' || actor_id::text, 0));
+  select user_id into owner_id from public.family_memberships
+  where family_id = target_family and role = 'owner' limit 1;
+  -- Lock both attribution identities in a stable order: co-parent and owner payments must queue
+  -- across every family the referred user owns, not just the family in this request.
+  for lock_user in select distinct identity_id from unnest(array[actor_id, owner_id]) identity_id
+    where identity_id is not null order by identity_id loop
+    perform pg_advisory_xact_lock(hashtextextended('billing-checkout:' || lock_user::text, 0));
+  end loop;
   perform 1 from public.families where id = target_family for update;
   if not found or not exists (
     select 1 from public.family_memberships where family_id = target_family and user_id = actor_id
@@ -273,21 +345,48 @@ begin
   ) then raise exception 'not_authorized'; end if;
   if selected_plan in ('yearly', 'solo_yearly') then
     -- One yearly link at a time also prevents a full-price link paying before the discounted link.
-    if exists (select 1 from public.payment_orders where (family_id = target_family or user_id = actor_id)
-      and plan_id in ('yearly', 'solo_yearly') and status = 'PENDING') then
-      raise exception 'yearly_checkout_pending';
+    select * into pending from public.payment_orders
+    where (family_id = target_family or user_id in (actor_id, owner_id)
+      or family_owner_user_id in (actor_id, owner_id) or exists (
+      select 1 from public.family_memberships owner_membership
+      where owner_membership.family_id = payment_orders.family_id
+        and owner_membership.role = 'owner' and owner_membership.user_id in (actor_id, owner_id)
+    ))
+      and plan_id in ('yearly', 'solo_yearly') and status = 'PENDING'
+    order by created_at desc, order_code desc limit 1;
+    if found then
+      return query select pending.amount, 0, pending.order_code;
+      return;
     end if;
     discount := coalesce(public.referral_discount_bps(target_family, actor_id), 0);
   end if;
   charged := greatest(1, list_price - floor(list_price::numeric * discount / 10000)::integer);
-  insert into public.payment_orders (order_code, family_id, user_id, plan_id, amount, description, status, expires_at)
-  values (new_order_code, target_family, actor_id, selected_plan, charged,
+  insert into public.payment_orders (order_code, family_id, user_id, family_owner_user_id, plan_id, amount, description, status, expires_at)
+  values (new_order_code, target_family, actor_id, owner_id, selected_plan, charged,
     left('KIDHABIT ' || new_order_code::text, 25), 'PENDING', expires_at);
-  return query select charged, discount;
+  return query select charged, discount, null::bigint;
 end
 $$;
 revoke all on function public.create_family_payment_order(uuid, uuid, bigint, text, timestamptz) from public, anon, authenticated;
 grant execute on function public.create_family_payment_order(uuid, uuid, bigint, text, timestamptz) to service_role;
+
+-- Fail with actionable order/case IDs before the index emits an opaque duplicate-key error.
+do $$
+declare duplicates text;
+begin
+  select string_agg(format('order %s: cases %s', order_code, case_ids), '; ' order by order_code)
+  into duplicates from (
+    select order_code, string_agg(id::text, ', ' order by created_at, id) as case_ids
+    from public.billing_support_cases
+    where case_type = 'refund' and status = 'completed' and resolution_code = 'manual_refund_confirmed'
+      and order_code is not null
+    group by order_code having count(*) > 1
+  ) duplicate_orders;
+  if duplicates is not null then
+    raise exception 'Duplicate confirmed refunds must be reviewed before billing migration: %', duplicates;
+  end if;
+end
+$$;
 
 create unique index billing_one_confirmed_refund_per_order on public.billing_support_cases(order_code)
 where case_type = 'refund' and status = 'completed' and resolution_code = 'manual_refund_confirmed';

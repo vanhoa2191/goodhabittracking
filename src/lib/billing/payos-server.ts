@@ -11,6 +11,7 @@ import type { PaidPlan } from '@/lib/billing/schemas';
 import { requireSafePayOSConfig } from '@/lib/billing/payos-config';
 import { resolveVietQrBankName } from '@/lib/billing/vietqr-bank-directory';
 import { getAppOrigin } from '@/lib/site';
+import { isPayOSOrderNotFound, PayOSOrderNotFoundError } from '@/lib/billing/payos-errors';
 
 const payOSResponseSchema = z.object({
   code: z.string(),
@@ -32,7 +33,7 @@ const payOSResponseSchema = z.object({
 
 const payOSCancellationSchema = z.object({
   code: z.string(),
-  data: z.object({ status: z.string() }).optional(),
+  data: z.object({ status: z.string(), amountPaid: z.number().int().nonnegative() }).optional(),
 });
 
 export function createPayOSSignature(data: Record<string, unknown>, checksumKey?: string): string {
@@ -93,6 +94,7 @@ export async function createPayOSPayment(input: {
       expiredAt: Math.floor(new Date(input.expiresAt ?? Date.now() + 15 * 60 * 1000).getTime() / 1000),
       signature: createPayOSSignature(signatureFields, checksumKey),
     }),
+    signal: AbortSignal.timeout(8000),
   });
 
   const parsed = payOSResponseSchema.safeParse(await response.json());
@@ -140,9 +142,13 @@ export async function cancelPayOSPayment(orderCode: number, reason: string): Pro
       'content-type': 'application/json',
     },
     body: JSON.stringify({ cancellationReason: reason.slice(0, 200) }),
+    signal: AbortSignal.timeout(5000),
   });
-  const parsed = payOSCancellationSchema.safeParse(await response.json().catch(() => null));
-  if (!response.ok || !parsed.success || parsed.data.code !== '00' || parsed.data.data?.status !== 'CANCELLED') {
+  const raw: unknown = await response.json().catch(() => null);
+  if (isPayOSOrderNotFound(response.status, raw)) throw new PayOSOrderNotFoundError();
+  const parsed = payOSCancellationSchema.safeParse(raw);
+  if (!response.ok || !parsed.success || parsed.data.code !== '00'
+    || parsed.data.data?.status !== 'CANCELLED' || parsed.data.data.amountPaid !== 0) {
     throw new Error('PayOS rejected the cancellation request.');
   }
 }

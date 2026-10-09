@@ -1,5 +1,18 @@
 begin;
 
+-- Run this duplicate query before applying the migration too; review real financial records, never auto-dedupe.
+select order_code, array_agg(id order by created_at, id) as confirmed_refund_case_ids
+from public.billing_support_cases
+where case_type = 'refund' and status = 'completed' and resolution_code = 'manual_refund_confirmed'
+  and order_code is not null
+group by order_code having count(*) > 1;
+
+-- This count is deliberately not a local cleanup predicate: require PayOS unpaid/unknown proof.
+select count(*) as stale_yearly_orders_needing_provider_verification from public.payment_orders
+where status = 'PENDING' and plan_id in ('yearly', 'solo_yearly')
+  and coalesce(expires_at, created_at + interval '15 minutes') <= now();
+
+
 -- Temporarily allow the fixture to claim a seat; rollback restores the offer and all fixture data.
 select code from public.launch_offers where code = 'pro_plus_founding' for update;
 update public.launch_offers set slots = slots + 1, opened_at = now(), closed_at = null where code = 'pro_plus_founding';
@@ -10,7 +23,7 @@ declare
   actor uuid;
   family uuid;
 begin
-  for ordinal in 1..4 loop
+  for ordinal in 1..8 loop
     actor := gen_random_uuid();
     insert into auth.users(id, email, raw_user_meta_data, raw_app_meta_data)
     values (actor, actor::text || '@example.invalid', '{}'::jsonb, '{}'::jsonb);
@@ -111,12 +124,9 @@ begin
   checkout_code := checkout_code + 1;
   select * into checkout from public.create_family_payment_order(fixture.family, fixture.actor, checkout_code, 'solo_yearly', now() - interval '1 minute');
   if checkout.amount <> 359100 or checkout.discount_bps <> 1000 then raise exception 'Monthly history must not consume yearly discount'; end if;
-  begin
-    perform public.create_family_payment_order(fixture.family, fixture.actor, checkout_code + 1, 'yearly', now() + interval '15 minutes');
-    raise exception 'Concurrent yearly checkout bypassed reservation';
-  exception when others then
-    if sqlerrm <> 'yearly_checkout_pending' then raise; end if;
-  end;
+  select * into checkout from public.create_family_payment_order(fixture.family, fixture.actor, checkout_code + 1, 'yearly', now() + interval '15 minutes');
+  if checkout.existing_order_code is distinct from checkout_code then raise exception 'Concurrent yearly checkout bypassed reservation'; end if;
+  if exists (select 1 from public.payment_orders where order_code = checkout_code + 1) then raise exception 'Pending lookup inserted a second order'; end if;
   update public.payment_orders set status = 'CANCELLED' where payment_orders.order_code = checkout_code;
   checkout_code := checkout_code + 1;
   select * into checkout from public.create_family_payment_order(fixture.family, fixture.actor, checkout_code, 'yearly', now() + interval '15 minutes');
@@ -165,6 +175,70 @@ begin
   result := public.admin_resolve_billing_case(case_id, 'completed', 'manual_refund_confirmed', fixture.actor, 'Retry refund');
   if result->>'code' <> 'updated' then raise exception 'Idempotent refund retry failed'; end if;
   raise notice 'P6/LAUNCH: one confirmed refund, final closed case, automatic launch revocation, retry succeeds';
+end
+$$;
+
+-- Referral eligibility belongs to either the payer or the family owner, including co-parent history.
+do $$
+declare
+  owner_fixture billing_hardening_fixtures%rowtype;
+  payer_fixture billing_hardening_fixtures%rowtype;
+  referrer_fixture billing_hardening_fixtures%rowtype;
+  family_fixture billing_hardening_fixtures%rowtype;
+  checkout record;
+  other_family uuid;
+  result text;
+  code text;
+begin
+  select * into owner_fixture from billing_hardening_fixtures where ordinal = 5;
+  select * into payer_fixture from billing_hardening_fixtures where ordinal = 6;
+  select * into referrer_fixture from billing_hardening_fixtures where ordinal = 4;
+  select affiliate.code into code from public.affiliate_accounts affiliate where user_id = referrer_fixture.actor;
+  insert into public.referrals(referrer_user_id, referred_family_id, referred_user_id, code)
+  values (referrer_fixture.actor, owner_fixture.family, owner_fixture.actor, code);
+  insert into public.family_memberships(family_id, user_id, role) values (owner_fixture.family, payer_fixture.actor, 'parent');
+  select * into checkout from public.create_family_payment_order(owner_fixture.family, payer_fixture.actor, 8100000000000030, 'yearly', now() + interval '15 minutes');
+  if checkout.amount <> 531000 then raise exception 'Co-parent payment must use referred owner eligibility'; end if;
+  select * into checkout from public.create_family_payment_order(owner_fixture.family, owner_fixture.actor, 8100000000000031, 'solo_yearly', now() + interval '15 minutes');
+  if checkout.existing_order_code is distinct from 8100000000000030::bigint then raise exception 'Owner and co-parent reservations must serialize'; end if;
+  result := public.process_payos_webhook(8100000000000030, 531000, 'KIDHABIT 8100000000000030', 'verify-co-parent', 'co-parent-link', '{}'::jsonb);
+  if result <> 'activated' then raise exception 'Co-parent fixture payment failed'; end if;
+  -- Deletion must not erase the owner identity on an order paid by a co-parent.
+  update public.payment_orders set family_id = null where order_code = 8100000000000030;
+  delete from public.family_memberships where family_id = owner_fixture.family;
+  insert into public.families(name, created_by) values ('Other owned verification family', owner_fixture.actor) returning id into other_family;
+  insert into public.family_memberships(family_id, user_id, role) values (other_family, owner_fixture.actor, 'owner');
+  select * into checkout from public.create_family_payment_order(other_family, owner_fixture.actor, 8100000000000032, 'solo_yearly', now() + interval '15 minutes');
+  if checkout.amount <> 399000 then raise exception 'Prior paid yearly in any owned family, even by co-parent, must consume eligibility'; end if;
+
+  select * into payer_fixture from billing_hardening_fixtures where ordinal = 7;
+  select * into family_fixture from billing_hardening_fixtures where ordinal = 8;
+  insert into public.referrals(referrer_user_id, referred_family_id, referred_user_id, code)
+  values (referrer_fixture.actor, payer_fixture.family, payer_fixture.actor, code);
+  insert into public.family_memberships(family_id, user_id, role) values (family_fixture.family, payer_fixture.actor, 'parent');
+  select * into checkout from public.create_family_payment_order(family_fixture.family, payer_fixture.actor, 8100000000000033, 'solo_yearly', now() + interval '15 minutes');
+  if checkout.amount <> 359100 then raise exception 'Referred payer must qualify even when the owner is not referred'; end if;
+  update public.payment_orders set status = 'CANCELLED' where order_code = 8100000000000033;
+  insert into public.payment_orders(order_code,family_id,user_id,plan_id,amount,description,status)
+  values (8100000000000034, payer_fixture.family, family_fixture.actor, 'yearly', 590000, 'KIDHABIT 8100000000000034', 'PAID');
+  select * into checkout from public.create_family_payment_order(family_fixture.family, payer_fixture.actor, 8100000000000035, 'yearly', now() + interval '15 minutes');
+  if checkout.amount <> 590000 then raise exception 'Referred payer with paid history in an owned family must not qualify again'; end if;
+  raise notice 'Owner/payer OR eligibility: co-parent qualifies; owned-family paid history consumes eligibility; referred payer qualifies independently';
+end
+$$;
+
+-- Admin signals support a 200 ACK for a possible double charge, and saved cursors stay private.
+insert into public.operational_events(signal_type, reason_code, correlation_id, status)
+values ('payment_webhook_failure', 'order_already_paid', gen_random_uuid(), 200);
+do $$
+begin
+  if has_table_privilege('anon', 'public.billing_reconcile_state', 'SELECT')
+    or has_table_privilege('authenticated', 'public.billing_reconcile_state', 'SELECT')
+    or has_table_privilege('authenticated', 'public.billing_reconcile_state', 'UPDATE')
+    or not has_table_privilege('service_role', 'public.billing_reconcile_state', 'UPDATE') then
+    raise exception 'Reconcile cursor must be service-only';
+  end if;
+  raise notice 'Double-charge signal accepted; reconcile cursor service-only';
 end
 $$;
 

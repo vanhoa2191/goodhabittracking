@@ -7,6 +7,76 @@ const migration = readFileSync(
   resolve('supabase/migrations/202609190001_family_tenancy.sql'),
   'utf8'
 );
+// Historical filenames are pinned: deleting/renaming a file must fail even if schema.sql changes too.
+const historicalMigrationNames = [
+  '202609190001_family_tenancy.sql',
+  '202609190002_secure_pairing.sql',
+  '202609190003_billing_integrity.sql',
+  '202609190004_authoritative_domain.sql',
+  '202609190005_privacy_lifecycle.sql',
+  '202609200001_authoritative_profiles.sql',
+  '202609200002_authoritative_social.sql',
+  '202609210001_force_server_table_rls.sql',
+  '202609210002_child_device_commands.sql',
+  '202609210003_persistent_pairing_credentials.sql',
+  '202609210004_habit_instructions.sql',
+  '202609210005_customer_admin.sql',
+  '202609220001_framework_habit_refs.sql',
+  '202609230001_experience_foundation.sql',
+  '202609230002_mascot_selection_cooldown.sql',
+  '202609230003_daily_mascot_letter.sql',
+  '202609230004_reject_unknown_mascot_changes.sql',
+  '202609230005_child_wishlist_commands.sql',
+  '202609240001_legacy_template_refs.sql',
+  '202609240002_child_session_legacy_ref.sql',
+  '202609240003_child_family_pause.sql',
+  '202609240004_family_pause_history.sql',
+  '202609240005_journey_habit_identity.sql',
+  '202609240006_daily_letter_read_transition.sql',
+  '202609240007_wishlist_change_transition.sql',
+  '202609240008_legacy_template_backfill.sql',
+  '202609250001_child_task_deferrals.sql',
+  '202609250002_analytics_parent_consent.sql',
+  '202609260001_child_journal.sql',
+  '202609260002_dream_city.sql',
+  '202609260003_parent_reminder_consent.sql',
+  '202609270001_idempotent_profile_mutations.sql',
+  '202609270002_solo_plan_entitlements.sql',
+  '202609270003_profile_starter_recurrence_days.sql',
+  '202609270004_parent_pin_security.sql',
+  '202609280001_lifecycle_revenue_operations.sql',
+  '202609280002_caregiver_invites.sql',
+  '202609280003_admin_security_observability.sql',
+  '202609300001_habit_programs.sql',
+  '202609300002_public_leaderboard.sql',
+  '202609300003_close_service_function_exposure.sql',
+  '202609300004_authoritative_command_hardening.sql',
+  '202609300005_billing_integrity.sql',
+  '202609300006_pairing_exchange_limits.sql',
+  '202609300007_account_lifecycle_integrity.sql',
+  '202609300008_activation_funnel.sql',
+  '202609300009_point_adjustments.sql',
+  '202609300010_affiliate_program.sql',
+  '202610010001_referral_claim_state.sql',
+  '202610010002_affiliate_hardening.sql',
+  '202610010003_affiliate_audit_fixes.sql',
+  '202610010004_referral_discount.sql',
+  '202610010005_admin_audit_fixes.sql',
+  '202610020001_admin_followups.sql',
+  '202610020002_family_snapshot.sql',
+  '202610020003_age_band_override.sql',
+  '202610020004_member_read_scope.sql',
+  '202610030001_caregiver_progress_projection.sql',
+  '202610030002_caregiver_daily_progress.sql',
+  '202610040001_review_habits_batch.sql',
+  '202610040002_habit_graduation.sql',
+  '202610040003_habit_coach.sql',
+  '202610040004_parent_ai.sql',
+  '202610050001_pin_gated_server_wrappers.sql',
+  '202610050002_close_pin_gated_originals.sql',
+  '202610070001_pricing_tiers_launch_offer.sql',
+];
+
 const schemaManifest = readFileSync(resolve('supabase/schema.sql'), 'utf8');
 const legacyTemplateRefsMigration = readFileSync(
   resolve('supabase/migrations/202609240001_legacy_template_refs.sql'),
@@ -214,6 +284,8 @@ describe('family tenancy migration', () => {
       .filter((name) => name.endsWith('.sql'))
       .sort();
 
+    expect(historicalMigrationNames).toHaveLength(66);
+    expect(migrationNames).toEqual(expect.arrayContaining(historicalMigrationNames));
     expect(schemaManifest.trim().split('\n')).toEqual(
       migrationNames.map((name) => `\\ir migrations/${name}`)
     );

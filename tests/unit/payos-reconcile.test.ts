@@ -54,6 +54,7 @@ describe('PayOS reconciliation', () => {
   it.each([
     ['still pending', { ...paid, status: 'PENDING', amountPaid: 0 }],
     ['cancelled', { ...paid, status: 'CANCELLED', amountPaid: 0 }],
+    ['no paid amount proof', { ...paid, status: 'CANCELLED', amountPaid: undefined }],
     ['partly paid', { ...paid, amountPaid: 10000 }],
     ['a different amount', { ...paid, amount: 59000, amountPaid: 59000 }],
     ['another order', { ...paid, orderCode: 999 }],
@@ -105,5 +106,41 @@ describe('PayOS reconciliation', () => {
   it('keeps a pending link open', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => payosAnswer({ ...paid, status: 'PENDING', amountPaid: 0 })));
     await expect(reconcileOrderOutcome({ rpc }, order)).resolves.toBe('open');
+  });
+});
+
+describe('provider-unknown order recovery', () => {
+  afterEach(() => vi.unstubAllGlobals());
+  const rpc = vi.fn();
+  const unknown = () => new Response(JSON.stringify({ code: '231', desc: 'Payment link not found' }));
+  it.each([
+    { expires_at: new Date(Date.now() - 1000).toISOString() },
+    { created_at: new Date(Date.now() - 16 * 60000).toISOString(), expires_at: null },
+  ])('closes a proven unknown order after grace (%o)', async (age) => {
+    vi.stubGlobal('fetch', vi.fn(async () => unknown()));
+    await expect(reconcileOrderOutcome({ rpc }, { ...order, ...age })).resolves.toBe('closed');
+    expect(rpc).not.toHaveBeenCalled();
+  });
+  it.each([
+    { expires_at: new Date(Date.now() + 1000).toISOString() },
+    { created_at: new Date().toISOString(), expires_at: null },
+    { expires_at: 'invalid' },
+    {},
+  ])('keeps an unknown order within grace or without an age open (%o)', async (age) => {
+    vi.stubGlobal('fetch', vi.fn(async () => unknown()));
+    await expect(reconcileOrderOutcome({ rpc }, { ...order, ...age })).resolves.toBe('open');
+  });
+  it.each([
+    [503, { code: '231' }], [401, { code: '231' }], [429, { code: '231' }],
+    [404, { message: 'proxy not found' }], [200, { code: '99', desc: 'system unavailable' }],
+  ])('never treats a transient/malformed HTTP %s answer as unpaid proof', async (status, body) => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(body), { status: Number(status) })));
+    await expect(reconcileOrderOutcome({ rpc }, { ...order, expires_at: new Date(Date.now() - 1000).toISOString() })).resolves.toBe('open');
+  });
+  it('passes a deadline signal to the provider request', async () => {
+    const fetchMock = vi.fn(async () => unknown()); vi.stubGlobal('fetch', fetchMock);
+    const signal = AbortSignal.timeout(100);
+    await reconcileOrderOutcome({ rpc }, order, signal);
+    expect(fetchMock).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({ signal }));
   });
 });

@@ -15,7 +15,7 @@ function table(name: string) {
   const node: Record<string, unknown> = {};
   for (const method of ['select', 'eq', 'neq', 'in', 'order']) node[method] = () => node;
   node.limit = async () => ({ data: name === 'billing_support_cases' ? otherConfirmed : [], error: null });
-  node.maybeSingle = async () => ({ data: name === 'payment_orders' ? orderRow : caseRow, error: null });
+  node.maybeSingle = async () => ({ data: name === 'payment_orders' ? (orderRow && { order_code: 4242, amount: 590000, description: 'KIDHABIT 4242', ...orderRow }) : caseRow, error: null });
   node.update = (values: unknown) => {
     (name === 'payment_orders' ? orderUpdate : caseUpdate)(values);
     const done: Record<string, unknown> = { error: null };
@@ -37,6 +37,7 @@ vi.mock('@/lib/auth/admin-audit-server', () => ({ recordAdminAudit: (...args: un
 vi.mock('@/lib/billing/payos-server', () => ({ cancelPayOSPayment: (...args: unknown[]) => cancelPayOSPayment(...args) }));
 vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: () => ({ rpc, from: (name: string) => table(name) }) }));
 
+import { PayOSOrderNotFoundError } from '@/lib/billing/payos-errors';
 import { PATCH } from '@/app/api/admin/billing-cases/route';
 
 function patch(body: unknown) {
@@ -152,6 +153,18 @@ describe('PATCH /api/admin/billing-cases', () => {
       expect(rpc).toHaveBeenCalledWith('admin_resolve_billing_case', expect.anything());
     });
 
+    it('closes an old provider-unknown order, including legacy orders with no expiry', async () => {
+      orderRow = { status: 'PENDING', created_at: new Date(Date.now() - 16 * 60000).toISOString(), expires_at: null };
+      cancelPayOSPayment.mockRejectedValue(new PayOSOrderNotFoundError());
+      expect((await patch(cancellation)).status).toBe(200);
+      expect(orderUpdate).toHaveBeenCalledWith(expect.objectContaining({ status: 'CANCELLED' }));
+    });
+    it.each([new PayOSOrderNotFoundError(), new Error('timeout')])('keeps an unverified fresh order open (%s)', async (error) => {
+      orderRow = { status: 'PENDING', created_at: new Date().toISOString() };
+      cancelPayOSPayment.mockRejectedValue(error);
+      expect((await patch(cancellation)).status).toBe(503);
+      expect(orderUpdate).not.toHaveBeenCalled();
+    });
     it('finishes a retry when the link was already cancelled, without asking PayOS again', async () => {
       orderRow = { status: 'CANCELLED' };
       expect((await patch(cancellation)).status).toBe(200);

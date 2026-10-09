@@ -99,9 +99,9 @@ function billingReasonLabel(reason: BillingCase['reason_code']) {
 function referralCommissionWarning(result: string | null): string | null {
   switch (result) {
     case 'in_payout':
-      return 'Hoa hồng giới thiệu của đơn này đang nằm trong một yêu cầu rút tiền. Hãy từ chối yêu cầu đó ở mục Chương trình giới thiệu trước khi chuyển khoản, rồi xử lý lại hồ sơ.';
+      return 'Hoa hồng của đơn này đang nằm trong một yêu cầu rút; yêu cầu rút đã bị khoá và hoa hồng sẽ bị thu hồi khi bạn từ chối yêu cầu đó.';
     case 'already_paid':
-      return 'Hoa hồng giới thiệu của đơn này đã được chuyển cho người giới thiệu. Cần xử lý tay (trừ vào khoản sau hoặc thu lại).';
+      return 'Hoa hồng của đơn này đã được chuyển; hãy liên hệ người giới thiệu để thoả thuận hoàn lại.';
     case 'error':
       return 'Không thu hồi được hoa hồng giới thiệu của đơn này do lỗi hệ thống. Kiểm tra mục Chương trình giới thiệu và thử lại.';
     default:

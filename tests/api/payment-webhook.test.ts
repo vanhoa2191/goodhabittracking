@@ -1,15 +1,18 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { verifyPayOSWebhook, rpc } = vi.hoisted(() => ({
+const { verifyPayOSWebhook, rpc, recordOperationalSignal } = vi.hoisted(() => ({
   verifyPayOSWebhook: vi.fn(),
   rpc: vi.fn(),
+  recordOperationalSignal: vi.fn(async () => undefined),
 }));
 
 vi.mock('@/lib/billing/payos-server', () => ({ verifyPayOSWebhook }));
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminSupabaseClient: vi.fn(() => ({ rpc })),
 }));
+
+vi.mock('@/lib/observability/operational-signal', () => ({ recordOperationalSignal }));
 
 import { POST } from '@/app/api/payment/webhook/route';
 
@@ -74,6 +77,12 @@ describe('POST /api/payment/webhook', () => {
     rpc.mockResolvedValue({ data: result, error: null });
     const response = await POST(request());
     expect(response.status).toBe(200);
+  });
+
+  it('records a possible double charge for a different reference while still acknowledging it', async () => {
+    rpc.mockResolvedValue({ data: 'order_already_paid', error: null });
+    expect((await POST(request())).status).toBe(200);
+    expect(recordOperationalSignal).toHaveBeenCalledWith(expect.objectContaining({ signalType: 'payment_webhook_failure', reasonCode: 'order_already_paid', status: 200 }));
   });
 
   it('rejects amount or description mismatches returned by the atomic RPC', async () => {

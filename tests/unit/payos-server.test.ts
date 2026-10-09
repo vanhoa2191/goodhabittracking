@@ -113,3 +113,23 @@ describe('payOS payment creation', () => {
     expect(payment.bankName).toBe('MBBank · Ngân hàng TMCP Quân đội');
   });
 });
+
+describe('PayOS cancellation proof', () => {
+  beforeEach(() => {
+    vi.stubEnv('PAYOS_CLIENT_ID', 'client-current'); vi.stubEnv('PAYOS_API_KEY', 'api-current'); vi.stubEnv('PAYOS_CHECKSUM_KEY', 'checksum-current');
+  });
+  it('distinguishes a structured missing-order answer from a provider outage', async () => {
+    const { cancelPayOSPayment } = await import('@/lib/billing/payos-server');
+    const { PayOSOrderNotFoundError } = await import('@/lib/billing/payos-errors');
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ code: '231' }))));
+    await expect(cancelPayOSPayment(123456, 'test')).rejects.toBeInstanceOf(PayOSOrderNotFoundError);
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ code: '231' }), { status: 503 })));
+    await expect(cancelPayOSPayment(123456, 'test')).rejects.not.toBeInstanceOf(PayOSOrderNotFoundError);
+  });
+  it.each([0, 1000])('only confirms a cancelled link when amountPaid is zero (%s)', async (amountPaid) => {
+    const { cancelPayOSPayment } = await import('@/lib/billing/payos-server');
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ code: '00', data: { status: 'CANCELLED', amountPaid } }))));
+    if (amountPaid === 0) await expect(cancelPayOSPayment(123456, 'test')).resolves.toBeUndefined();
+    else await expect(cancelPayOSPayment(123456, 'test')).rejects.toThrow();
+  });
+});

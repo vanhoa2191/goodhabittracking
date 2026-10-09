@@ -6,7 +6,7 @@ import {
   authorizeAdmin,
 } from '@/lib/auth/admin-access';
 import { recordAdminAudit, type AdminAuditInput } from '@/lib/auth/admin-audit-server';
-import { cancelPayOSPayment } from '@/lib/billing/payos-server';
+import { cancelPendingPayOSOrder } from '@/lib/billing/payos-reconcile';
 import { createCorrelationId } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
@@ -154,7 +154,7 @@ export async function PATCH(request: NextRequest) {
     }
     const { data: paidOrder } = await admin
       .from('payment_orders')
-      .select('status')
+      .select('order_code,amount,description,status,created_at,expires_at')
       .eq('order_code', supportCase.order_code)
       .eq('family_id', supportCase.family_id)
       .maybeSingle();
@@ -196,7 +196,7 @@ export async function PATCH(request: NextRequest) {
   if (parsed.data.resolutionCode === 'payment_link_cancelled') {
     const { data: order } = await admin
       .from('payment_orders')
-      .select('status')
+      .select('order_code,amount,description,status,created_at,expires_at')
       .eq('order_code', supportCase.order_code)
       .eq('family_id', supportCase.family_id)
       .maybeSingle();
@@ -204,7 +204,7 @@ export async function PATCH(request: NextRequest) {
     if (!order || (order.status !== 'PENDING' && order.status !== 'CANCELLED')) return fail('Only a pending payment link can be cancelled.', 409);
     if (order.status === 'PENDING') {
       try {
-        await cancelPayOSPayment(Number(supportCase.order_code), 'Customer support cancellation');
+        await cancelPendingPayOSOrder(order, 'Customer support cancellation');
       } catch {
         return fail('PayOS did not confirm the cancellation.', 503);
       }
