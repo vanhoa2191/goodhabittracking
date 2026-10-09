@@ -123,6 +123,7 @@ try {
 
   const settings = await admin.from('affiliate_settings').select('commission_bps,hold_days,min_payout_vnd').single();
   assert(!settings.error && settings.data.commission_bps === 3000, 'The commission must default to 30 percent.');
+  assert(settings.data.hold_days === 40, 'New commissions must use the 40-day refund/handling hold.');
 
   // Anonymous callers and plain table reads are refused.
   for (const [name, args] of [['affiliate_enroll', { accept_terms: true }], ['claim_referral', { referral_code: 'AAAAAAAA' }], ['affiliate_overview', {}], ['referral_claim_state', {}]]) {
@@ -176,9 +177,9 @@ try {
   const oldFamily = await admin.from('families').update({ created_at: new Date(Date.now() - 90 * 86_400_000).toISOString() }).eq('id', familyIds[2]);
   assert(!oldFamily.error, 'Could not age the late family.');
   const lateClaim = await late.client.rpc('claim_referral', { referral_code: code });
-  assert(lateClaim.data === 'expired', 'A family outside the attribution window was attributed.');
+  assert(lateClaim.data === 'claimed', 'A newly created user account must remain eligible even if its family timestamp is old.');
   const lateState = await late.client.rpc('referral_claim_state');
-  assert(lateState.data === 'closed', 'A family outside the attribution window must not be offered the code box.');
+  assert(lateState.data === 'referred', 'The account attribution must be visible after claiming, regardless of the family timestamp.');
 
   // Paid orders earn 30 percent, once each.
   let orderNumber = Date.now() * 100;
@@ -205,9 +206,10 @@ try {
 
   const firstOrder = await settleOrder('yearly', 399000);
   let overview = await referrer.client.rpc('affiliate_overview');
-  assert(!overview.error && overview.data.signups === 1 && overview.data.paying === 1, 'The referrer does not see the signup and the paying family.');
+  assert(!overview.error && overview.data.signups === 2 && overview.data.paying === 1, 'The referrer does not see the registered accounts and the paying count.');
   assert(overview.data.amounts.held === 119700 && overview.data.amounts.available === 0, 'A 399,000 order must earn 119,700 and hold it.');
   assert(!JSON.stringify(overview.data).includes(userIds[1]) && !JSON.stringify(overview.data).includes(familyIds[1]), 'The referrer can see who was referred.');
+  assert(!Object.hasOwn(overview.data, 'recent'), 'Individual payment, plan and refund history must not be exposed to the referrer.');
   const discountAfter = await admin.rpc('referral_discount_bps', { target_family: familyIds[1] });
   assert(discountAfter.data === 0, 'The referral discount must apply to the first paid order only.');
   const commissionCount = await admin.from('referral_commissions').select('id', { count: 'exact', head: true }).eq('order_code', firstOrder);

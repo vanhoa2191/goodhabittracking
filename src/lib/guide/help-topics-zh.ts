@@ -55,7 +55,7 @@ export const HELP_TOPICS_ZH: HelpTranslationTable<HelpText> = {
   'settings.account': { title: '客户信息', text: '姓名和电话号码用于账户及支付支持。你可以随时开启或关闭接收优惠。' },
   'settings.coupon': { title: '赠送码', text: '输入赠送码以增加使用天数。每个赠送码每个家庭只能使用一次；错误尝试过多会锁定几分钟。' },
   'settings.referralCode': { title: '推荐码', text: '如果朋友推荐了你，输入8位代码，首次购买年度方案可享9折。仅限家庭仍是新用户且尚未付款时使用。' },
-  'settings.affiliate': { title: '推荐朋友', text: '分享你的链接，新家庭付款后你可获得30%的佣金。佣金保留35天；最低提现额为200,000越南盾，并需要PIN码。' },
+  'settings.affiliate': { title: '推荐朋友', text: '分享你的链接，新家庭付款后你可获得30%的佣金。新佣金自付款成功起保留40天；该订单有未结案的退款或账单工单时继续冻结。最低提现额为200,000越南盾，并需要PIN码。' },
   'settings.familyData': { title: '家庭数据', text: '下载家庭数据的JSON副本。文件不含PIN码或支付信息，但含有孩子的数据，请妥善保管。' },
   'settings.leaderboardSharing': { title: '排行榜分享', text: '这是全家的开关，默认关闭。开启后，只有你在孩子档案中选择的孩子会以昵称显示，不会显示真实姓名或年龄。' },
   'settings.analytics': { title: '匿名数据统计', text: '允许进行不含姓名或孩子内容的总体数据统计。目前还没有数据接收端，因此不会有任何内容离开设备。默认关闭。' },

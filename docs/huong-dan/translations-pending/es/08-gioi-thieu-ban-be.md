@@ -23,9 +23,9 @@ Condiciones públicas: página `/gioi-thieu/` del [sitio web](11-website-va-tran
 
 1. Vaya a `Family → Settings → Offers & referrals` y abra la tarjeta **Recomendar a un amigo**. Lea las reglas, marque la casilla para aceptar las condiciones y pulse **Unirse al programa**.
 2. Copie o **comparta** «Su enlace de recomendación». Puede enviar el código como enlace o comunicárselo a su amigo para que lo introduzca manualmente.
-3. Consulte las cifras de familias registradas, familias que pagaron, importe **retenido**, **disponible**, **solicitado para retirar** y **abonado**, junto con las comisiones recientes y sus estados: Retenido, Disponible, Retirada solicitada, Abonado y Revertido.
+3. Consulte el número de familias registradas y que pagaron y las comisiones agregadas retenidas, disponibles, solicitadas y abonadas.
 
-**No puede** ver el nombre, el correo electrónico ni el código familiar de la familia recomendada; solo ve cantidades e importes.
+Sin autorrecomendaciones ni spam. Solo ves cantidades y comisiones agregadas, no historiales individuales ni datos de las familias.
 
 <a id="giam-10"></a>
 ## Para las familias recomendadas
@@ -33,7 +33,7 @@ Condiciones públicas: página `/gioi-thieu/` del [sitio web](11-website-va-tran
 - Abra el enlace `?ref=` de su amigo, inicie sesión y configure su familia como de costumbre; también puede **introducir el código manualmente** en el campo «¿Tiene un código de recomendación de un amigo?» (en `Settings` o directamente en la ventana de pago).
 - La recomendación queda registrada y verá «Obtiene un 10% de descuento en su primer plan anual».
 - Al pagar por primera vez el **Plan anual**, la pantalla de pago muestra el precio con descuento y la línea «10% de descuento con su código de recomendación». No hay descuento para el Plan familiar · Mensual ni para el plan De por vida.
-- Condiciones: la familia es nueva (creada hace menos de 60 días), no tiene pedidos pagados, no se había registrado ya como recomendada y no usa su propio código.
+- Cada cuenta de usuario solo puede registrarse como recomendada una vez, en los 60 días desde su creación y antes de cualquier pedido pagado. Eliminar o recrear una familia no reinicia los requisitos ni el plazo de 12 meses. No uses tu propio código.
 
 <a id="ghi-nhan"></a>
 ## Registro de recomendaciones
@@ -43,13 +43,13 @@ Hay dos formas de introducir un código. Se aplica la misma regla a ambas, así 
 1. **Enlace**: el sitio web lee `?ref=` y guarda la cookie `kidhabit_ref` (durante 60 días). Cuando el padre inicia sesión, la aplicación envía el código para registrarlo y luego elimina la cookie.
 2. **Introducción manual**: el campo del código en Configuración o en la ventana de pago.
 
-El resultado aparece de inmediato: registrado; código no válido; no puede usar su propio código; ya se registró un código de recomendación para la familia; el código solo se aplica a familias nuevas que no hayan pagado; el programa está en pausa. Solo los padres que pueden gestionar la familia pueden introducir un código.
+El resultado aparece de inmediato: registrado; código no válido; no puede usar su propio código; ya se registró un código de recomendación para la cuenta de usuario; el código solo se aplica a cuentas de usuario nuevas que nunca hayan pagado; el programa está en pausa. Solo los padres que pueden gestionar la familia pueden introducir un código.
 
 <a id="hoa-hong"></a>
 ## Comisiones
 
-- **30%** del importe pagado realmente (después de descuentos) por cada pago durante los **primeros 12 meses** desde la creación de la familia recomendada. Por ejemplo, el pago con descuento de un Plan anual de 359,100 VND genera una comisión de 107,730 VND.
-- Cada importe queda **retenido durante 35 días** (después del plazo de reembolso de 30 días) antes de pasar a «Disponible».
+- 30% del importe realmente pagado en cada pago durante los primeros 12 meses desde la creación de la cuenta de usuario recomendada, no de la familia. Por ejemplo, el pago con descuento de un Plan anual de 359,100 VND genera una comisión de 107,730 VND.
+- Las nuevas comisiones se retienen 40 días desde el pago exitoso para cubrir el plazo de reembolso de 30 días y la gestión; las fechas de liberación existentes no cambian. Permanecen congeladas mientras el pedido tenga un caso de reembolso o soporte de facturación abierto. Un pedido reembolsado pierde su comisión; si ya se abonó, contactamos con quien recomendó para acordar la devolución.
 - El sistema crea la comisión automáticamente cuando se completa el pedido ([activación del plan](07-goi-va-thanh-toan.md#kich-hoat)); un error en este paso nunca impide que se active el plan del cliente.
 
 <a id="rut-tien"></a>
@@ -65,13 +65,13 @@ Las comisiones pueden estar sujetas al impuesto sobre la renta personal; quienes
 <a id="hoan-tien-hoa-hong"></a>
 ## Reembolsos y comisiones
 
-Cuando se reembolsa un pedido (tras la confirmación manual), su comisión se **revierte** si todavía está dentro del periodo de retención (estado «Revertido»). Si ya forma parte de una solicitud de retirada o ya se abonó, el equipo de operaciones lo gestiona manualmente. Consulte [reembolsos](07-goi-va-thanh-toan.md#hoan-tien).
+Si está incluida en una solicitud de retirada, KidHabit la rechaza antes de revertirla; si ya se abonó, acordamos la devolución con quien recomendó, sin deducir automáticamente comisiones futuras. [Reembolsos](07-goi-va-thanh-toan.md#hoan-tien).
 
 <a id="quy-tac"></a>
 ## Reglas y límites
 
 - No se recomiende a sí mismo ni envíe correo basura. Se bloquean las autorrecomendaciones mediante la misma cuenta o familia.
-- Cada familia solo puede registrarse una vez; debe ser nueva y no haber pagado.
+- Cada cuenta de usuario solo puede registrarse como recomendada una vez, en los 60 días desde su creación y antes de cualquier pedido pagado. Eliminar o recrear una familia no reinicia los requisitos ni el plazo de 12 meses. No uses tu propio código.
 - Una persona puede crear dos cuentas para recomendarse a sí misma; el sistema no lo bloquea por completo, pero las transferencias son manuales y se revisan antes del pago.
 - Se puede suspender una cuenta de recomendación por incumplir las reglas (actualmente, un administrador lo hace manualmente).
 - Los porcentajes de comisión y descuento, los periodos de retención y los mínimos de retirada están guardados en la configuración del programa y pueden cambiar; las comisiones ya creadas conservan el porcentaje vigente al crearse.

@@ -101,7 +101,7 @@ flowchart TD
 
 ### D. 推荐朋友
 
-加入[计划](08-gioi-thieu-ban-be.md#tham-gia) → 发送链接 → 朋友输入代码，购买年付计划时享受[九折](07-goi-va-thanh-toan.md#giam-gia) → 朋友付款 → 您获得一笔[冻结 35 天的佣金](08-gioi-thieu-ban-be.md#hoa-hong) → 设置 PIN 并保存收款资料 → [申请提现](08-gioi-thieu-ban-be.md#rut-tien) → 管理员[转账](10-quan-tri-va-van-hanh.md#gioi-thieu-admin)。
+加入[计划](08-gioi-thieu-ban-be.md#tham-gia) → 发送链接 → 朋友输入代码，购买年付计划时享受[九折](07-goi-va-thanh-toan.md#giam-gia) → 朋友付款 → 您获得一笔[冻结 40 天的佣金](08-gioi-thieu-ban-be.md#hoa-hong)（该订单有未结案的退款或账单工单时继续冻结） → 设置 PIN 并保存收款资料 → [申请提现](08-gioi-thieu-ban-be.md#rut-tien) → 管理员[转账](10-quan-tri-va-van-hanh.md#gioi-thieu-admin)。
 
 <!--op-->### E. 客户申请退款
 

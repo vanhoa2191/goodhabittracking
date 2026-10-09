@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useState } from 'react';
 import { Copy, Gift, Share2 } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
-import { getAffiliateCopy, type AffiliateCopy } from '@/lib/i18n/affiliate-copy';
+import { getAffiliateCopy } from '@/lib/i18n/affiliate-copy';
 import { referralLink } from '@/lib/referral/referral-code';
 import { getMarketingOrigin } from '@/lib/site';
 import { HelpTip } from '@/components/help/HelpTip';
@@ -26,7 +26,6 @@ type Overview =
       readonly signups: number;
       readonly paying: number;
       readonly amounts: { readonly held: number; readonly available: number; readonly requested: number; readonly paid: number };
-      readonly recent: ReadonlyArray<{ readonly createdAt: string; readonly amount: number; readonly status: keyof AffiliateCopy['status']; readonly planId: string | null }>;
       readonly payout: { readonly bank: string | null; readonly accountLast4: string | null; readonly accountName: string | null; readonly complete: boolean };
       readonly settings: Settings;
     };
@@ -254,19 +253,6 @@ export function AffiliateCard() {
       </button>
       {notice && <p role={notice.kind === 'error' ? 'alert' : 'status'} className={`mt-3 text-sm font-semibold ${notice.kind === 'error' ? 'text-rose-700 dark:text-rose-300' : 'text-emerald-700 dark:text-emerald-300'}`}>{notice.text}</p>}
 
-      <h5 className="mt-5 text-sm font-extrabold text-slate-900 dark:text-slate-100">{copy.recent}</h5>
-      {overview.recent.length === 0 ? (
-        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">{copy.noCommissions}</p>
-      ) : (
-        <ul className="mt-2 divide-y divide-slate-100 text-sm dark:divide-zinc-800">
-          {overview.recent.map((entry) => (
-            <li key={`${entry.createdAt}-${entry.amount}`} className="flex flex-wrap items-center justify-between gap-2 py-2">
-              <span>{new Date(entry.createdAt).toLocaleDateString(language === 'vi' ? 'vi-VN' : 'en-US')} · {entry.planId ? copy.plan[entry.planId] ?? entry.planId : ''}</span>
-              <span className="font-bold tabular-nums">{money(entry.amount, language)} <span className="ml-1 rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold dark:bg-zinc-800">{copy.status[entry.status]}</span></span>
-            </li>
-          ))}
-        </ul>
-      )}
       <p className="mt-4 text-xs leading-5 text-slate-600 dark:text-slate-400">{copy.tax}</p>
     </section>
   );

@@ -55,7 +55,7 @@ export const HELP_TOPICS_KO: HelpTranslationTable<HelpText> = {
   'settings.account': { title: '고객 정보', text: '계정 및 결제 지원을 위한 이름과 전화번호입니다. 혜택 안내 수신은 언제든 켜거나 끌 수 있습니다.' },
   'settings.coupon': { title: '선물 코드', text: '선물 코드를 입력하면 이용 기간이 추가됩니다. 각 가족은 선물 코드별로 한 번씩 사용할 수 있으며, 틀린 입력이 너무 많으면 몇 분 동안 잠깁니다.' },
   'settings.referralCode': { title: '추천 코드', text: '친구의 추천을 받았다면 8자리 코드를 입력하여 첫 연간 플랜을 10% 할인받으세요. 가족이 아직 새 가족이고 결제 전일 때만 입력할 수 있습니다.' },
-  'settings.affiliate': { title: '친구 추천', text: '링크를 공유하여 새 가족이 결제하면 30% 수수료를 받습니다. 수수료는 35일 동안 보류되며, 최소 출금액은 200,000 VND이고 PIN이 필요합니다.' },
+  'settings.affiliate': { title: '친구 추천', text: '링크를 공유하여 새 가족이 결제하면 30% 수수료를 받습니다. 새 수수료는 결제 성공일부터 40일간 보류되며 해당 주문의 환불 또는 결제 지원 건이 열려 있으면 계속 동결됩니다. 최소 출금액은 200,000 VND이고 PIN이 필요합니다.' },
   'settings.familyData': { title: '가족 데이터', text: '가족 데이터의 JSON 사본을 다운로드합니다. PIN이나 결제 정보는 없지만 자녀 데이터가 들어 있으니 비공개로 보관하세요.' },
   'settings.leaderboardSharing': { title: '랭킹 공유', text: '가족 전체에 적용되는 스위치이며 기본값은 꺼짐입니다. 켜면 프로필에서 선택한 자녀만 별명으로 표시되고 실명이나 나이는 공개되지 않습니다.' },
   'settings.analytics': { title: '익명 측정', text: '이름이나 내용 없이 전체적인 측정을 허용합니다. 아직 데이터를 받을 곳이 없으므로 기기 밖으로 나가는 정보는 없습니다. 기본값은 꺼짐입니다.' },

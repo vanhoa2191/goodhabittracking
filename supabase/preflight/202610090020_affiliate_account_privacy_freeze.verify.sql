@@ -1,0 +1,55 @@
+do $$
+declare
+  signature text;
+  reversal_definition text;
+begin
+  if not exists (select 1 from public.affiliate_settings where singleton and hold_days = 40) then
+    raise exception 'new affiliate commissions must have a 40-day hold';
+  end if;
+  foreach signature in array array[
+    'public.affiliate_commission_block_reason(bigint)',
+    'public.lock_affiliate_billing_case_order()',
+    'public.accrue_referral_commission(bigint)',
+    'public.request_affiliate_payout(uuid)',
+    'public.admin_resolve_affiliate_payout(uuid,text,uuid,text,text)',
+    'public.admin_affiliate_overview()',
+    'public.admin_reverse_referral_commission(bigint,text)'
+  ] loop
+    if pg_catalog.has_function_privilege('authenticated', signature, 'EXECUTE')
+      or pg_catalog.has_function_privilege('anon', signature, 'EXECUTE')
+      or not pg_catalog.has_function_privilege('service_role', signature, 'EXECUTE') then
+      raise exception 'affiliate money function must be service-only: %', signature;
+    end if;
+  end loop;
+  foreach signature in array array['public.claim_referral(text)', 'public.referral_claim_state()', 'public.affiliate_overview()'] loop
+    if not pg_catalog.has_function_privilege('authenticated', signature, 'EXECUTE')
+      or pg_catalog.has_function_privilege('anon', signature, 'EXECUTE') then
+      raise exception 'affiliate parent function grants are incorrect: %', signature;
+    end if;
+  end loop;
+  if not exists (
+    select 1 from pg_catalog.pg_trigger
+    where tgrelid = 'public.billing_support_cases'::regclass
+      and tgname = 'affiliate_billing_case_order_lock' and not tgisinternal and tgenabled = 'O'
+  ) then
+    raise exception 'support-case order serialization trigger is missing';
+  end if;
+  if public.affiliate_commission_block_reason(null) is not null then
+    raise exception 'an unlinked order must not be frozen';
+  end if;
+  if pg_catalog.pg_get_functiondef('public.claim_referral(text)'::regprocedure) not like '%referred_user_id = actor%'
+    or pg_catalog.pg_get_functiondef('public.accrue_referral_commission(bigint)'::regprocedure) not like '%referred_user_id = paid_order.user_id%' then
+    raise exception 'referral attribution and commission accrual must follow the user account';
+  end if;
+  if pg_catalog.pg_get_functiondef('public.affiliate_overview()'::regprocedure) like '%''recent''%'
+    or pg_catalog.pg_get_functiondef('public.affiliate_overview()'::regprocedure) like '%''planId''%' then
+    raise exception 'affiliate overview must expose aggregate counts and amounts only';
+  end if;
+  reversal_definition := pg_catalog.pg_get_functiondef('public.admin_reverse_referral_commission(bigint,text)'::regprocedure);
+  if strpos(reversal_definition, 'perform 1 from public.payment_orders') = 0
+    or strpos(reversal_definition, 'perform 1 from public.payment_orders')
+       > strpos(reversal_definition, 'select * into commission from public.referral_commissions') then
+    raise exception 'refund reversal must lock the payment order before the commission';
+  end if;
+end
+$$;

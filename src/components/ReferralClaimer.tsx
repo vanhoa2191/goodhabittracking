@@ -21,7 +21,7 @@ export function ReferralClaimer() {
     if (familyRole !== 'owner' && familyRole !== 'parent' && familyRole !== 'guardian') return;
 
     const fromUrl = normalizeReferralCode(new URLSearchParams(window.location.search).get('ref'));
-    const code = readReferralCookie(document.cookie) ?? fromUrl;
+    const code = fromUrl ?? readReferralCookie(document.cookie);
     if (!code) return;
     attempted.current = true;
 

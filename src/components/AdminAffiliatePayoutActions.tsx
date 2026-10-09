@@ -11,7 +11,7 @@ export type PayoutClaimState = 'unclaimed' | 'mine' | 'other';
  * One admin claims a payout before transferring the money, so two people never pay the same request.
  * The claimer then records the bank reference here (or rejects the request).
  */
-export function AdminAffiliatePayoutActions({ payoutId, claimState }: { readonly payoutId: string; readonly claimState: PayoutClaimState }) {
+export function AdminAffiliatePayoutActions({ payoutId, claimState, blocked }: { readonly payoutId: string; readonly claimState: PayoutClaimState; readonly blocked: boolean }) {
   const router = useRouter();
   const id = useId();
   const [reference, setReference] = useState('');
@@ -20,6 +20,7 @@ export function AdminAffiliatePayoutActions({ payoutId, claimState }: { readonly
   const [error, setError] = useState<string | null>(null);
 
   const submit = async (resolution: 'claim' | 'paid' | 'rejected') => {
+    if (busy || (blocked && resolution !== 'rejected')) return;
     setBusy(true);
     setError(null);
     try {
@@ -29,8 +30,13 @@ export function AdminAffiliatePayoutActions({ payoutId, claimState }: { readonly
         body: JSON.stringify({ payoutId, resolution, reference, note: '', reason }),
       });
       if (!response.ok) {
-        const body = await response.json().catch(() => null) as { error?: string } | null;
-        setError(body?.error ?? 'Không thực hiện được.');
+        const body = await response.json().catch(() => null) as { error?: string; status?: string } | null;
+        const status = body?.status ?? body?.error;
+        const blockedErrors: Record<string, string> = {
+          billing_case_open: 'Chặn chuyển khoản: đơn có hồ sơ thanh toán đang mở. Từ chối yêu cầu rút hoặc xử lý hồ sơ trước.',
+          refund_confirmed: 'Chặn chuyển khoản: đơn đã xác nhận hoàn tiền. Từ chối yêu cầu rút để thu hồi hoa hồng.',
+        };
+        setError((status && blockedErrors[status]) || body?.error || 'Không thực hiện được.');
         return;
       }
       router.refresh();
@@ -51,7 +57,8 @@ export function AdminAffiliatePayoutActions({ payoutId, claimState }: { readonly
           <input id={`${id}-claim-reason`} className={field} value={reason} maxLength={500} onChange={(event) => setReason(event.target.value)} />
         </label>
         <div className="sm:col-span-2">
-          <button type="button" disabled={busy || reason.trim().length < 5} onClick={() => void submit('claim')} className="min-h-10 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white disabled:opacity-60">Nhận xử lý trước khi chuyển khoản</button>
+          <button type="button" disabled={blocked || busy || reason.trim().length < 5} onClick={() => void submit('claim')} className="min-h-10 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white disabled:opacity-60">Nhận xử lý trước khi chuyển khoản</button>
+          {blocked && <button type="button" disabled={busy || reason.trim().length < 5} onClick={() => void submit('rejected')} className="ml-2 min-h-10 rounded-xl border border-rose-300 px-4 text-sm font-bold text-rose-700 disabled:opacity-60 dark:border-rose-800 dark:text-rose-300">Từ chối</button>}
         </div>
         {error && <p role="alert" className="text-sm font-semibold text-rose-700 dark:text-rose-300 sm:col-span-2">{error}</p>}
       </div>
@@ -67,7 +74,7 @@ export function AdminAffiliatePayoutActions({ payoutId, claimState }: { readonly
         <input id={`${id}-reason`} className={field} value={reason} maxLength={500} onChange={(event) => setReason(event.target.value)} />
       </label>
       <div className="flex flex-wrap gap-2 sm:col-span-2">
-        <button type="button" disabled={busy || reference.trim() === '' || reason.trim().length < 5} onClick={() => void submit('paid')} className="min-h-10 rounded-xl bg-emerald-600 px-4 text-sm font-bold text-white disabled:opacity-60">Đã chuyển khoản</button>
+        <button type="button" disabled={blocked || busy || reference.trim() === '' || reason.trim().length < 5} onClick={() => void submit('paid')} className="min-h-10 rounded-xl bg-emerald-600 px-4 text-sm font-bold text-white disabled:opacity-60">Đã chuyển khoản</button>
         <button type="button" disabled={busy || reason.trim().length < 5} onClick={() => void submit('rejected')} className="min-h-10 rounded-xl border border-rose-300 px-4 text-sm font-bold text-rose-700 disabled:opacity-60 dark:border-rose-800 dark:text-rose-300">Từ chối</button>
       </div>
       {error && <p role="alert" className="text-sm font-semibold text-rose-700 dark:text-rose-300 sm:col-span-2">{error}</p>}

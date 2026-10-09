@@ -101,7 +101,7 @@ Wählen Sie [Pause machen](05-gia-dinh-va-cai-dat.md#tam-nghi): Die Serie bleibt
 
 ### D. Eine Freundin oder einen Freund werben
 
-Nehmen Sie am [Programm](08-gioi-thieu-ban-be.md#tham-gia) teil → senden Sie den Link → Ihre Freundin oder Ihr Freund gibt den Code ein und erhält beim Kauf des Jahrestarifs [10 % Rabatt](07-goi-va-thanh-toan.md#giam-gia) → die Person bezahlt → Ihre [Provision wird 35 Tage zurückgehalten](08-gioi-thieu-ban-be.md#hoa-hong) → legen Sie eine PIN fest und speichern Sie Ihre Auszahlungsdaten → [fordern Sie eine Auszahlung an](08-gioi-thieu-ban-be.md#rut-tien) → Admin [überweist das Geld](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
+Nehmen Sie am [Programm](08-gioi-thieu-ban-be.md#tham-gia) teil → senden Sie den Link → Ihre Freundin oder Ihr Freund gibt den Code ein und erhält beim Kauf des Jahrestarifs [10 % Rabatt](07-goi-va-thanh-toan.md#giam-gia) → die Person bezahlt → Ihre [Provision wird 40 Tage zurückgehalten](08-gioi-thieu-ban-be.md#hoa-hong) (weiter gesperrt bei einem offenen Erstattungs- oder Abrechnungsfall zur Bestellung) → legen Sie eine PIN fest und speichern Sie Ihre Auszahlungsdaten → [fordern Sie eine Auszahlung an](08-gioi-thieu-ban-be.md#rut-tien) → Admin [überweist das Geld](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
 
 <!--op-->### E. Eine Kundin oder ein Kunde beantragt eine Rückerstattung
 

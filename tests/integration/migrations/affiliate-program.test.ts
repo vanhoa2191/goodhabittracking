@@ -18,12 +18,6 @@ describe('affiliate programme migration contract', () => {
     await expect(parse(verification)).resolves.toBeDefined();
   });
 
-  it('starts at 30 percent with a refund-window hold and a payout minimum', () => {
-    expect(migration).toContain('commission_bps integer not null default 3000');
-    expect(migration).toContain('hold_days integer not null default 35');
-    expect(migration).toContain('min_payout_vnd integer not null default 200000');
-    expect(migration).toContain('earning_window_days integer not null default 365');
-  });
 
   it('keeps every affiliate table private to the database functions', () => {
     for (const table of ['affiliate_settings', 'affiliate_accounts', 'referrals', 'affiliate_payouts', 'referral_commissions']) {

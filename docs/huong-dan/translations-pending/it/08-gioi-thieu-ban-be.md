@@ -23,9 +23,9 @@ Condizioni pubbliche: la pagina `/gioi-thieu/` sul [sito web](11-website-va-tran
 
 1. Acceda a `Family → Settings → Offers & referrals`, quindi apra la scheda **Refer a friend**. Legga le regole, selezioni la casella per accettare le condizioni e faccia clic su **Join the programme**.
 2. Copi o **condivida** «Your referral link». Può inviare il codice invito come link oppure comunicarlo all'amico, che potrà inserirlo manualmente.
-3. Segua il numero di famiglie registrate, di famiglie che hanno pagato, gli importi **in attesa**, **disponibili**, **con prelievo richiesto** e **pagati**, insieme alle commissioni recenti e ai rispettivi stati: In attesa, Disponibile, Prelievo richiesto, Pagato e Stornato.
+3. Segua i conteggi delle famiglie registrate e paganti e le commissioni aggregate in attesa, disponibili, richieste e pagate.
 
-**Non può** vedere il nome, l'indirizzo e-mail o il codice famiglia della famiglia invitata; vede solo conteggi e importi.
+Niente auto-inviti o spam. Vedi solo conteggi e commissioni aggregate, non cronologie individuali o dati delle famiglie.
 
 <a id="giam-10"></a>
 ## Per le famiglie invitate
@@ -33,7 +33,7 @@ Condizioni pubbliche: la pagina `/gioi-thieu/` sul [sito web](11-website-va-tran
 - Apra il link dell'amico con `?ref=`, poi acceda e configuri la famiglia come di consueto; in alternativa, **inserisca il codice manualmente** nel campo «Have a referral code from a friend?» (in `Settings` o direttamente nella finestra di pagamento).
 - L'invito viene registrato e appare il messaggio «You get 10% off your first yearly plan».
 - Al primo pagamento del **piano annuale**, la pagina di pagamento mostra il prezzo scontato e la dicitura «10% off with your referral code». I piani Family · Mensile e a vita non hanno sconti.
-- Condizioni: la famiglia è nuova (creata da meno di 60 giorni), non ha ordini pagati, non è già stata invitata e il codice non è il proprio.
+- Ogni account utente può essere invitato una sola volta, entro 60 giorni dalla creazione e prima di qualsiasi ordine pagato. Eliminare o ricreare una famiglia non azzera i requisiti né la finestra di 12 mesi. Non usare il tuo codice.
 
 <a id="ghi-nhan"></a>
 ## Registrazione degli inviti
@@ -43,13 +43,13 @@ Condizioni pubbliche: la pagina `/gioi-thieu/` sul [sito web](11-website-va-tran
 1. **Link**: il sito legge `?ref=` e salva il cookie `kidhabit_ref` (60 giorni). Dopo l'accesso del genitore, l'app invia il codice per registrarlo e poi elimina il cookie.
 2. **Inserimento manuale**: il campo per il codice nelle Impostazioni o nella finestra di pagamento.
 
-L'esito appare subito: registrato; codice non valido; non è possibile usare il proprio codice; per la famiglia è già stato registrato un codice invito; il codice vale solo per le famiglie nuove che non hanno pagato; il programma è sospeso. Solo i genitori che possono gestire la famiglia possono inserire un codice.
+L'esito appare subito: registrato; codice non valido; non è possibile usare il proprio codice; per l’account è già stato registrato un codice invito; il codice vale solo per gli account utente nuovi che non hanno mai pagato; il programma è sospeso. Solo i genitori che possono gestire la famiglia possono inserire un codice.
 
 <a id="hoa-hong"></a>
 ## Commissioni
 
-- **30%** dell'importo effettivamente pagato (dopo gli sconti), su ogni pagamento effettuato durante i **primi 12 mesi** dalla creazione della famiglia invitata. Per esempio, un pagamento scontato di 359,100 VND per il piano annuale genera una commissione di 107,730 VND.
-- Ogni importo resta **in attesa per 35 giorni** (oltre il periodo di rimborso di 30 giorni) prima di diventare «Disponibile».
+- 30% dell’importo effettivamente pagato per ogni pagamento nei primi 12 mesi dalla creazione dell’account utente invitato, non della famiglia. Per esempio, un pagamento scontato di 359,100 VND per il piano annuale genera una commissione di 107,730 VND.
+- Le nuove commissioni restano in attesa per 40 giorni dal pagamento riuscito per coprire i 30 giorni per il rimborso e la gestione; le date di sblocco esistenti non cambiano. Restano bloccate se l’ordine ha una pratica di rimborso o assistenza sulla fatturazione aperta. Un ordine rimborsato annulla la commissione; se già pagata, contattiamo chi ha invitato per concordare la restituzione.
 - Il sistema crea automaticamente la commissione quando un ordine va a buon fine ([attivazione del piano](07-goi-va-thanh-toan.md#kich-hoat)); un errore in questo passaggio non impedisce mai l'attivazione del piano del cliente.
 
 <a id="rut-tien"></a>
@@ -65,13 +65,13 @@ Le commissioni possono essere soggette all'imposta sul reddito delle persone fis
 <a id="hoan-tien-hoa-hong"></a>
 ## Rimborsi e commissioni
 
-Quando un ordine viene rimborsato (dopo la conferma manuale), la relativa commissione viene **stornata** se è ancora nel periodo di attesa (stato «Stornato»). Se la commissione è già inclusa in una richiesta di prelievo o è già stata pagata, il team operativo gestisce il caso manualmente. Veda [rimborsi](07-goi-va-thanh-toan.md#hoan-tien).
+Se inclusa in una richiesta di prelievo, KidHabit rifiuta la richiesta prima dello storno; se già pagata, concordiamo la restituzione con chi ha invitato, senza detrarre automaticamente le commissioni future. [Rimborsi](07-goi-va-thanh-toan.md#hoan-tien).
 
 <a id="quy-tac"></a>
 ## Regole e limiti
 
 - Non inviti sé stesso e non invii spam. Gli auto-inviti che usano lo stesso account o la stessa famiglia vengono bloccati.
-- Ogni famiglia può essere registrata una sola volta; deve essere nuova e non aver pagato.
+- Ogni account utente può essere invitato una sola volta, entro 60 giorni dalla creazione e prima di qualsiasi ordine pagato. Eliminare o ricreare una famiglia non azzera i requisiti né la finestra di 12 mesi. Non usare il tuo codice.
 - Una persona può creare due account per invitare sé stessa; il sistema non lo impedisce completamente, ma i bonifici sono manuali e vengono verificati prima del pagamento.
 - Un account invitante può essere sospeso in caso di violazioni (attualmente la sospensione viene eseguita manualmente da un amministratore).
 - Le percentuali di commissione e sconto, i periodi di attesa e gli importi minimi di prelievo sono memorizzati nella configurazione del programma e possono cambiare; le commissioni già create mantengono la percentuale in vigore al momento della creazione.
