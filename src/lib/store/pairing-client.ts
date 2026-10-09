@@ -180,7 +180,7 @@ export function rotatePairingCredential(
 }
 
 export async function loadChildSession(request: Requester = fetch): Promise<ChildSessionResult> {
-  const response = await request('/api/child/session', { cache: 'no-store' });
+  const response = await request('/api/child/session', { method: 'POST', cache: 'no-store' });
   const payload = await readJson(response);
   if (!response.ok) {
     const failure = errorSchema.safeParse(payload);

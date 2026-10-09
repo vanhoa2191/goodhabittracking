@@ -92,6 +92,44 @@ describe('reward actions', () => {
     expect(requestChildDomainCommand).not.toHaveBeenCalled();
   });
 
+  it.each(['pending', 'approved'] as const)('refunds an undelivered %s demo request when its reward is deleted', async (status) => {
+    let profiles = [child];
+    let redemptions: Redemption[] = [{ ...pendingRedemption, status }];
+    let rewards = [reward];
+    const actions = createRewardActions({
+      activeChildId: child.id, currentUser: null, familyId: null,
+      isFamilyConnected: false, isDemoSession: true,
+      profiles, redemptions, rewards, setCloudSyncActive: vi.fn(),
+      setProfiles: stateSetter(() => profiles, (value) => { profiles = value; }),
+      setRedemptions: stateSetter(() => redemptions, (value) => { redemptions = value; }),
+      setRewards: stateSetter(() => rewards, (value) => { rewards = value; }),
+      refreshChildSession: vi.fn(async () => true), syncCloudFamily: vi.fn(async () => true),
+    });
+    await expect(actions.deleteReward(reward.id)).resolves.toBe(true);
+    expect(profiles[0].points).toBe(child.points + reward.costPoints);
+    expect(profiles[0].totalEarned).toBe(child.totalEarned);
+    expect(redemptions).toHaveLength(0);
+    expect(rewards).toHaveLength(0);
+  });
+
+  it.each([0, -1])('restores demo stock on rejection only for finite stock %s', (stock) => {
+    let profiles = [child];
+    let redemptions: Redemption[] = [pendingRedemption];
+    let rewards = [{ ...reward, stock }];
+    const actions = createRewardActions({
+      activeChildId: child.id, currentUser: null, familyId: null,
+      isFamilyConnected: false, isDemoSession: true,
+      profiles, redemptions, rewards, setCloudSyncActive: vi.fn(),
+      setProfiles: stateSetter(() => profiles, (value) => { profiles = value; }),
+      setRedemptions: stateSetter(() => redemptions, (value) => { redemptions = value; }),
+      setRewards: stateSetter(() => rewards, (value) => { rewards = value; }),
+      refreshChildSession: vi.fn(async () => true), syncCloudFamily: vi.fn(async () => true),
+    });
+    actions.rejectRedemption(pendingRedemption.id);
+    expect(rewards[0].stock).toBe(stock >= 0 ? stock + 1 : stock);
+    expect(profiles[0].points).toBe(child.points + reward.costPoints);
+  });
+
   it('claims a local reward with one points and redemption transition', async () => {
     let profiles = [child];
     let redemptions: Redemption[] = [];

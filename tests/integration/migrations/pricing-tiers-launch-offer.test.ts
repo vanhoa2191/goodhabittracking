@@ -115,6 +115,6 @@ describe('pricing tiers and launch offer migration', () => {
   it('runs the migration atomically and rolls back verification fixtures', () => {
     expect(migration.trim()).toMatch(/^begin;[\s\S]*commit;$/);
     expect(verification.trim()).toMatch(/^begin;[\s\S]*rollback;$/);
-    expect(readFileSync(resolve('supabase/schema.sql'), 'utf8').trim().split('\n').at(-1)).toBe('\\ir migrations/202610070001_pricing_tiers_launch_offer.sql');
+    expect(readFileSync(resolve('supabase/schema.sql'), 'utf8').trim().split('\n')).toContain('\\ir migrations/202610070001_pricing_tiers_launch_offer.sql');
   });
 });

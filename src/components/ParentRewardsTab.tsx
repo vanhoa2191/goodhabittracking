@@ -66,7 +66,17 @@ export function ParentRewardsTab() {
   };
 
   const handleDeleteReward = async (reward: Reward) => {
-    if (!await confirm({ message: mutationCopy.deleteConfirm(reward.title), confirmLabel: t.delete, destructive: true })) return;
+    if (!await confirm({ message: `${mutationCopy.deleteConfirm(reward.title)} ${({
+      vi: 'Yêu cầu đổi quà chưa giao sẽ được hủy và hoàn lại sao cho bé.',
+      en: 'Undelivered requests will be cancelled and their stars refunded.',
+      es: 'Las solicitudes sin entregar se cancelarán y se devolverán las estrellas.',
+      fr: 'Les demandes non livrées seront annulées et les étoiles remboursées.',
+      de: 'Nicht gelieferte Anfragen werden storniert und die Sterne zurückerstattet.',
+      pt: 'Pedidos não entregues serão cancelados e as estrelas devolvidas.',
+      ja: '未配達のリクエストはキャンセルされ、スターが返還されます。',
+      ko: '미전달 요청은 취소되고 별이 반환됩니다.',
+      zh: '尚未交付的兑换申请将被取消，星星会退还。',
+    } as Record<string, string>)[language] ?? 'Undelivered requests will be cancelled and their stars refunded.'}`, confirmLabel: t.delete, destructive: true })) return;
     setMutationError('');
     const deleted = await deleteReward(reward.id);
     if (!deleted) setMutationError(mutationCopy.deleteError);

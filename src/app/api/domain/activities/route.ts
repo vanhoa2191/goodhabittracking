@@ -6,6 +6,8 @@ import {
 } from '@/lib/domain/activity-mutations';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { requireParentUnlock } from '@/lib/security/parent-unlock';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
@@ -112,7 +114,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const supabase = await createServerSupabaseClient();
+  const parentClient = await createServerSupabaseClient();
+  const locked = await requireParentUnlock(request, parent, parentClient);
+  if (locked) return locked;
+  // All activity writes run only after unlock; tenancy fields come from the authenticated parent.
+  const supabase = createAdminSupabaseClient();
   let error: { readonly code?: string } | null;
   switch (parsed.data.type) {
     case 'create': {

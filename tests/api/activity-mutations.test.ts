@@ -1,18 +1,22 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getParentContext, insert, update, remove, from } = vi.hoisted(() => ({
+const { getParentContext, insert, update, remove, from, unlock } = vi.hoisted(() => ({
   getParentContext: vi.fn(),
   insert: vi.fn(),
   update: vi.fn(),
   remove: vi.fn(),
   from: vi.fn(),
+  unlock: vi.fn(),
 }));
 
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/supabase/server', () => ({
   createServerSupabaseClient: vi.fn(async () => ({ from })),
 }));
+
+vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ from })) }));
+vi.mock('@/lib/security/parent-unlock', () => ({ requireParentUnlock: unlock }));
 
 import { POST } from '@/app/api/domain/activities/route';
 
@@ -49,6 +53,7 @@ function request(body: unknown): NextRequest {
 describe('POST /api/domain/activities', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    unlock.mockResolvedValue(null);
     getParentContext.mockResolvedValue({
       familyId: 'family-a',
       role: 'owner',
@@ -62,6 +67,16 @@ describe('POST /api/domain/activities', () => {
     const deleteByFamily = vi.fn(() => ({ eq: deleteById }));
     remove.mockReturnValue({ eq: deleteByFamily });
     from.mockReturnValue({ insert, update, delete: remove });
+  });
+
+  it.each([
+    { type: 'update', activityId: activity.id, updates: { points: 10000, requiresApproval: false } },
+    { type: 'create', activity },
+    { type: 'createMany', activities: [activity] },
+  ])('blocks the locked-parent award-policy bypass: %o', async (body) => {
+    unlock.mockResolvedValue(new Response(JSON.stringify({ code: 'parent_pin_required' }), { status: 403 }));
+    expect((await POST(request(body))).status).toBe(403);
+    expect(from).not.toHaveBeenCalled();
   });
 
   it('requires an authenticated parent before mutating activities', async () => {

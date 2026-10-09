@@ -39,6 +39,15 @@ describe('daily mascot letter API', () => {
 
   afterEach(() => vi.useRealTimers());
 
+  it('rejects cross-site POST before letter creation or marking read', async () => {
+    const response = await POST(new NextRequest('http://localhost/api/mascot/letter', {
+      method: 'POST', headers: { origin: 'https://evil.example', 'content-type': 'application/json' },
+      body: JSON.stringify({ childId, date: '2026-09-23' }),
+    }));
+    expect(response.status).toBe(403);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
   it('opens a letter only for the child named by the paired session', async () => {
     rpc.mockResolvedValue({ data: { status: 'ready', template_key: 'leo_1', read_at: null, newly_read: false }, error: null });
     const response = await GET(getRequest());
