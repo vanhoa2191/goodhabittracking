@@ -35,7 +35,7 @@ Hai bên có thể phát hành độc lập; thứ tự phát hành và quay lui
 | **Liên hệ** | `/contact/` | Cách liên hệ hỗ trợ: gửi gì khi lỗi hoặc cần hỗ trợ thanh toán, và điều **không** nên gửi (mật khẩu, PIN, mã ghép còn hiệu lực) |
 | **Quyền riêng tư, Điều khoản** | `/privacy/`, `/terms/` | Văn bản pháp lý ([bên dưới](#phap-ly-web)) |
 
-Website hiện viết bằng **tiếng Việt**; ứng dụng mới có đủ [chín ngôn ngữ](01-bat-dau.md#ngon-ngu). Tên gói trên website giống trong ứng dụng: "Gói 1 bé" và "Gói Pro" ([chi tiết các gói](07-goi-va-thanh-toan.md#cac-goi)).
+Website hiện viết bằng **tiếng Việt**; ứng dụng mới có đủ [chín ngôn ngữ](01-bat-dau.md#ngon-ngu). Tên gói trên website giống trong ứng dụng: "Gói Cơ bản" và "Gói Pro" ([chi tiết các gói](07-goi-va-thanh-toan.md#cac-goi)).
 
 <a id="trang-khung"></a>
 ## Trang Khung thói quen

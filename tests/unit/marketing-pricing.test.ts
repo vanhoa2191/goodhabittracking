@@ -34,6 +34,13 @@ describe('marketing pricing', () => {
     expect(pricingTiers.pro.purchasable).toBe(true);
   });
 
+  it('shows caregiver invitations as a shared benefit for Basic and Pro', () => {
+    expect(pricingTiers.solo.name).toBe('Gói Cơ bản');
+    const benefit = 'Mời người thân cùng theo dõi';
+    expect(pricingTiers.solo.features).toContain(benefit);
+    expect(pricingTiers.pro.features).toContain(benefit);
+  });
+
   it('keeps the launch offer on the yearly Pro plan', () => {
     expect(pricingTiers.pro.year.id).toBe(LAUNCH_OFFER.planId);
   });

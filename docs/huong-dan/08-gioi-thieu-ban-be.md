@@ -14,7 +14,7 @@ Chương trình có hai phía, kết nối với nhau qua một **mã giới thi
 | Phía | Được gì |
 |---|---|
 | **Người giới thiệu** (một phụ huynh đang dùng KidHabit) | **Hoa hồng 30%** trên số tiền thực trả của gia đình được giới thiệu |
-| **Gia đình được giới thiệu** | **Giảm 10%** đơn đầu tiên của một trong hai gói năm (Gói Pro · Năm 590.000đ còn 531.000đ; Gói 1 bé · Năm 399.000đ còn 359.100đ) |
+| **Gia đình được giới thiệu** | **Giảm 10%** đơn đầu tiên của một trong hai gói năm (Gói Pro · Năm 590.000đ còn 531.000đ; Gói Cơ bản · Năm 399.000đ còn 359.100đ) |
 
 Điều khoản công khai: trang `/gioi-thieu/` trên [website](11-website-va-trang-cong-khai.md#trang-chinh). <!--op-->Quy tắc kỹ thuật và vận hành: [Chương trình giới thiệu bạn bè](../affiliate-program.md).<!--/op-->
 
@@ -32,7 +32,7 @@ Bạn **không** thấy tên, email hay mã gia đình của người được g
 
 - Mở liên kết `?ref=` của bạn bè rồi đăng nhập và thiết lập gia đình như bình thường, hoặc **nhập mã tay** ở ô "Có mã giới thiệu từ bạn bè?" (trong `Cài đặt` hoặc ngay trong cửa sổ thanh toán).
 - Gia đình được ghi nhận và nhìn thấy "Bạn được giảm 10% khi mua gói năm lần đầu".
-- Khi thanh toán **gói năm** (Gói 1 bé hoặc Gói Pro) lần đầu, màn thanh toán hiện giá đã giảm và dòng "Đã giảm 10% nhờ mã giới thiệu". Các gói tháng và gói trọn đời không giảm.
+- Khi thanh toán **gói năm** (Gói Cơ bản hoặc Gói Pro) lần đầu, màn thanh toán hiện giá đã giảm và dòng "Đã giảm 10% nhờ mã giới thiệu". Các gói tháng và gói trọn đời không giảm.
 - Điều kiện: gia đình còn mới (trong 60 ngày từ lúc tạo), chưa có đơn nào đã trả, chưa được giới thiệu, và đây không phải mã của chính bạn.
 
 <a id="ghi-nhan"></a>

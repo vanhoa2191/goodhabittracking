@@ -65,6 +65,26 @@ describe('payOS payment creation', () => {
     expect(body.cancelUrl).toBe('https://kidhabit.example/checkout?payment=cancel&orderCode=123456');
   });
 
+  it.each([
+    ['solo_monthly', 'Gói Cơ bản · Tháng', 39000],
+    ['solo_yearly', 'Gói Cơ bản · Năm', 399000],
+  ] as const)('sends the renamed %s item without changing the bounded payment description', async (planId, name, amount) => {
+    vi.stubGlobal('fetch', vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({
+        code: '00', data: { ...providerPayment, amount },
+      }), { status: 200 }))
+      .mockRejectedValueOnce(new TypeError('directory unavailable')));
+
+    await createPayOSPayment({ planId, orderCode: 123456 });
+
+    const request = vi.mocked(fetch).mock.calls[0]?.[1];
+    const body = JSON.parse(String(request?.body));
+    expect(body.description).toBe('KIDHABIT 123456');
+    expect(body.description).toMatch(/^[A-Z0-9 ]{1,25}$/);
+    expect(body.items).toEqual([{ name, quantity: 1, price: amount }]);
+    expect(body.items[0].name.length).toBeLessThanOrEqual(25);
+  });
+
   it('rejects provider transaction values that differ from the server-owned order', async () => {
     // Given
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({

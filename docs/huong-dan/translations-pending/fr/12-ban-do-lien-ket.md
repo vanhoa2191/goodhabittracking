@@ -93,7 +93,7 @@ Lisez chaque ligne de gauche à droite : la fonctionnalité de la première colo
 
 ### B. Ajouter un deuxième enfant
 
-[Enfants](05-gia-dinh-va-cai-dat.md#ho-so) → Ajouter. Un forfait Famille ou un essai actif est nécessaire (le forfait Un enfant autorise un seul enfant). Chaque enfant dispose de son propre code et appareil ; l’accès à chaque appareil peut être [révoqué](05-gia-dinh-va-cai-dat.md#thiet-bi) séparément.
+[Enfants](05-gia-dinh-va-cai-dat.md#ho-so) → Ajouter. Un forfait Famille ou un essai actif est nécessaire (le forfait Essentiel autorise un seul enfant). Chaque enfant dispose de son propre code et appareil ; l’accès à chaque appareil peut être [révoqué](05-gia-dinh-va-cai-dat.md#thiet-bi) séparément.
 
 ### C. Votre famille part en voyage ou une personne est malade
 
@@ -135,7 +135,7 @@ Le client transmet le code de commande dans les 30 jours → l’assistance [ouv
 | Le QR code ne peut pas être scanné | L’autorisation d’utiliser l’appareil photo n’a pas été accordée ou la connexion n’utilise pas https | Accordez l’autorisation ou saisissez le code manuellement |
 | Le code d’association est refusé | Le code a été renouvelé ou trop de tentatives incorrectes ont été effectuées | Obtenez un nouveau code dans [Enfants](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi) ; si votre accès est limité, patientez quelques minutes |
 | Le virement a été effectué, mais le forfait n’apparaît pas | Confirmation PayOS en attente | Patientez quelques minutes et rouvrez `/checkout` ; ne payez pas à nouveau ; contactez l’assistance avec le code de commande ([activation](07-goi-va-thanh-toan.md#kich-hoat)) |
-| Impossible d’ajouter un profil d’enfant | Le forfait a expiré ou le forfait Un enfant compte déjà un enfant | Achetez un forfait ou [passez à un autre forfait](07-goi-va-thanh-toan.md#cac-goi) |
+| Impossible d’ajouter un profil d’enfant | Le forfait a expiré ou le forfait Essentiel compte déjà un enfant | Achetez un forfait ou [passez à un autre forfait](07-goi-va-thanh-toan.md#cac-goi) |
 | Le champ du code de parrainage est absent | La famille a déjà payé, la période d’enregistrement a expiré ou un code existe déjà | Aucun autre code ne peut être enregistré ([8](08-gioi-thieu-ban-be.md#giam-10)) |
 | Impossible de retirer une commission | Aucun code PIN, montant inférieur à 200,000 VND, période de retenue non terminée ou coordonnées de versement modifiées récemment (attente de 24 heures) | Consultez [Demander un retrait](08-gioi-thieu-ban-be.md#rut-tien) |
 | L’enfant ne voit pas le classement public | Le partage est désactivé, l’enfant n’a pas été sélectionné ou la famille est en pause | [Activez le partage](05-gia-dinh-va-cai-dat.md#rieng-tu) et sélectionnez l’enfant |

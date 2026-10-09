@@ -243,7 +243,7 @@ function radioGroup(group, onChange) {
   });
 })();
 
-// "Try being the child" demo: three tasks, stars, a bar, a parent's stamp and a praise line.
+// "Try being the child" demo: three tasks, stars, a bar, a parent's sample stamp and Leo's praise line.
 (() => {
   const tasks = $$('[data-demo-task]');
   if (!tasks.length) return;

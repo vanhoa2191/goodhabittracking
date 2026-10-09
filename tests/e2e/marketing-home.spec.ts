@@ -66,6 +66,8 @@ test('finishing the three demo tasks shows the stamp and the praise', async ({ p
   for (let i = 0; i < 3; i += 1) await tasks.nth(i).click();
   await expect(stamp).toBeVisible();
   await expect(page.locator('[data-demo-praise]')).toBeVisible();
+  await expect(page.locator('[data-demo-praise] small')).toHaveText('Leo khen con');
+  await expect(page.locator('[data-demo-praise]')).toContainText('Leo thấy con đã cố gắng!');
   await expect(page.locator('[data-demo-stars]')).toHaveText('20');
   await tasks.nth(0).click();
   await expect(stamp).toBeHidden();
@@ -118,6 +120,33 @@ test('the sticky bar shows for guests mid-story and hides over the plans', async
 
 test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
+  test('the overview, fixed copy and grouped FAQs work on mobile without JavaScript', async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 800 });
+    await page.goto('/');
+    const overview = page.locator('#mo-dau .how-it-works');
+    await expect(overview.getByRole('heading', { name: 'Cách hoạt động trong 3 bước' })).toBeVisible();
+    await expect(overview.locator('.how-steps-home > li')).toHaveCount(3);
+    await expect(overview.locator('.feature-strip > li')).toHaveCount(5);
+    await expect(overview).toContainText('Bỏ lỡ một ngày không làm mất tiến triển.');
+    await expect(page.locator('#la-thu .letter ol')).toHaveCount(0);
+    await expect(page.locator('#thu-lam-con')).toContainText('duyệt những việc cần duyệt');
+    await expect(page.locator('#hoi-dap')).toContainText('thanh toán và các thao tác quan trọng');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(360);
+    for (const route of ['/', '/pricing/']) {
+      await page.goto(route);
+      await expect(page.locator('.faq-group h3')).toHaveText(['Dùng thử & thanh toán', 'Cho con dùng', 'An toàn & dữ liệu']);
+      const payment = page.locator('.faq details', { has: page.getByText('Thanh toán bằng cách nào?', { exact: true }) });
+      await payment.locator('summary').click();
+      await expect(payment.locator('p')).toBeVisible();
+      await expect(payment).toContainText('mã VietQR (qua PayOS)');
+      await expect(payment).toContainText('Gói được kích hoạt khi PayOS xác nhận thanh toán.');
+      const readAloud = page.locator('.faq details', { has: page.getByText('Bé chưa biết đọc thì sao?', { exact: true }) });
+      await readAloud.locator('summary').click();
+      await expect(readAloud.locator('p')).toBeVisible();
+      await expect(readAloud).toContainText('bấm nút đọc to');
+    }
+  });
+
   test('all four checkout links and the yearly price are in the page', async ({ page }) => {
     await page.goto('/');
     for (const plan of ['solo_monthly', 'solo_yearly', 'monthly', 'yearly']) {

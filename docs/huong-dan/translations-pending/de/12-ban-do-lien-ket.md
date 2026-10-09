@@ -93,7 +93,7 @@ Lesen Sie jede Zeile von links nach rechts: Die Funktion in der ersten Spalte **
 
 ### B. Ein zweites Kind hinzufügen
 
-[Kinder](05-gia-dinh-va-cai-dat.md#ho-so) → Hinzufügen. Sie benötigen einen Familientarif oder eine aktive Testphase (der Tarif für ein Kind erlaubt höchstens 1 Kind). Jedes Kind hat einen eigenen Code und ein eigenes Gerät; jedes Gerät kann einzeln [entkoppelt](05-gia-dinh-va-cai-dat.md#thiet-bi) werden.
+[Kinder](05-gia-dinh-va-cai-dat.md#ho-so) → Hinzufügen. Sie benötigen einen Familientarif oder eine aktive Testphase (der Basis-Tarif erlaubt höchstens 1 Kind). Jedes Kind hat einen eigenen Code und ein eigenes Gerät; jedes Gerät kann einzeln [entkoppelt](05-gia-dinh-va-cai-dat.md#thiet-bi) werden.
 
 ### C. Ihre Familie verreist oder jemand ist krank
 
@@ -135,7 +135,7 @@ Die Kundin oder der Kunde sendet den Bestellcode innerhalb von 30 Tagen → der 
 | QR-Code kann nicht gescannt werden | Kameraberechtigung fehlt oder die Verbindung verwendet kein https | Berechtigung erteilen oder Code manuell eingeben |
 | Kopplungscode wird abgelehnt | Code wurde erneuert oder es gab zu viele falsche Versuche | Unter [Kinder](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi) einen neuen Code abrufen; bei Ratenbegrenzung einige Minuten warten |
 | Zahlung überwiesen, Tarif wird aber nicht angezeigt | Bestätigung durch PayOS steht aus | Einige Minuten warten und `/checkout` erneut öffnen; nicht erneut zahlen; Support mit Bestellcode kontaktieren ([Aktivierung](07-goi-va-thanh-toan.md#kich-hoat)) |
-| Kinderprofil kann nicht hinzugefügt werden | Tarif ist abgelaufen oder der Tarif für ein Kind hat bereits 1 Kind | Tarif kaufen oder [wechseln](07-goi-va-thanh-toan.md#cac-goi) |
+| Kinderprofil kann nicht hinzugefügt werden | Tarif ist abgelaufen oder der Basis-Tarif hat bereits 1 Kind | Tarif kaufen oder [wechseln](07-goi-va-thanh-toan.md#cac-goi) |
 | Feld für Empfehlungscode fehlt | Familie hat bereits bezahlt, Eingabezeitraum ist abgelaufen oder es gibt bereits einen Code | Es kann kein weiterer Code erfasst werden ([8](08-gioi-thieu-ban-be.md#giam-10)) |
 | Provision kann nicht ausgezahlt werden | Keine PIN, weniger als 200,000 VND, Betrag noch im Zurückhaltezeitraum oder Auszahlungsdaten gerade geändert (24 Stunden Wartezeit) | Siehe [Auszahlung anfordern](08-gioi-thieu-ban-be.md#rut-tien) |
 | Kind sieht die öffentliche Rangliste nicht | Freigabe ist ausgeschaltet, Kind wurde nicht ausgewählt oder Familie macht Pause | [Freigabe aktivieren](05-gia-dinh-va-cai-dat.md#rieng-tu) und Kind auswählen |

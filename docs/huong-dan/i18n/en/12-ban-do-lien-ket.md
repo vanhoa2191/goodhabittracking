@@ -93,7 +93,7 @@ Read each row from left to right: the feature in the first column **needs or use
 
 ### B. Add a second child
 
-[Children](05-gia-dinh-va-cai-dat.md#ho-so) → Add. You need an active plan or trial (the 1-Child plan allows up to 1 child; the Pro plan and the trial allow up to 5). Each child has a separate code and device; each device can be [revoked](05-gia-dinh-va-cai-dat.md#thiet-bi) separately.
+[Children](05-gia-dinh-va-cai-dat.md#ho-so) → Add. You need an active plan or trial (the Basic plan allows up to 1 child; the Pro plan and the trial allow up to 5). Each child has a separate code and device; each device can be [revoked](05-gia-dinh-va-cai-dat.md#thiet-bi) separately.
 
 ### C. Your family is away or someone is ill
 
@@ -135,7 +135,7 @@ The customer sends the order code within 30 days → support [opens a case](10-q
 | QR code cannot be scanned | Camera permission has not been granted, or the connection is not using https | Grant permission or enter the code manually |
 | Pairing code rejected | The code was refreshed, or too many incorrect attempts were made | Get a new code from [Children](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi); wait a few minutes if you are rate-limited |
 | Payment transferred but plan has not appeared | Waiting for PayOS confirmation | Wait a few minutes and reopen `/checkout`; do not pay again; contact support with the order code ([activation](07-goi-va-thanh-toan.md#kich-hoat)) |
-| Cannot add a child profile | The plan has expired, the 1-Child plan already has 1 child, or the Pro plan already has 5 | Buy a plan or [upgrade](07-goi-va-thanh-toan.md#cac-goi) |
+| Cannot add a child profile | The plan has expired, the Basic plan already has 1 child, or the Pro plan already has 5 | Buy a plan or [upgrade](07-goi-va-thanh-toan.md#cac-goi) |
 | Referral code field is missing | The family has already paid, the recording window has expired, or a code already exists | No additional code can be recorded ([8](08-gioi-thieu-ban-be.md#giam-10)) |
 | Cannot withdraw commission | No PIN set, less than 200,000 VND, the amount is still within the hold period, or payout details were just changed (24-hour wait) | See [request a withdrawal](08-gioi-thieu-ban-be.md#rut-tien) |
 | Child cannot see the public leaderboard | Sharing is off, the child has not been selected, or the family is paused | [Enable sharing](05-gia-dinh-va-cai-dat.md#rieng-tu) and select the child |

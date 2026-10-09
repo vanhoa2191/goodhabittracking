@@ -93,7 +93,7 @@ flowchart TD
 
 ### B. Thêm bé thứ hai
 
-[Hồ sơ các con](05-gia-dinh-va-cai-dat.md#ho-so) → Thêm. Cần gói đang hiệu lực hoặc đang dùng thử (Gói 1 bé tối đa 1 bé; Gói Pro và dùng thử tối đa 5 bé). Có mã riêng và thiết bị riêng; [thu hồi](05-gia-dinh-va-cai-dat.md#thiet-bi) từng máy được.
+[Hồ sơ các con](05-gia-dinh-va-cai-dat.md#ho-so) → Thêm. Cần gói đang hiệu lực hoặc đang dùng thử (Gói Cơ bản tối đa 1 bé; Gói Pro và dùng thử tối đa 5 bé). Có mã riêng và thiết bị riêng; [thu hồi](05-gia-dinh-va-cai-dat.md#thiet-bi) từng máy được.
 
 ### C. Gia đình đi xa hoặc ốm
 
@@ -135,7 +135,7 @@ Khách gửi mã đơn trong 30 ngày → hỗ trợ [mở ca](10-quan-tri-va-va
 | Không quét được QR | Chưa cấp quyền camera, không dùng https | Cấp quyền hoặc nhập mã tay |
 | Mã ghép bị từ chối | Mã đã làm mới, nhập sai nhiều lần | Lấy mã mới ở [Hồ sơ các con](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi), chờ vài phút nếu bị giới hạn |
 | Chuyển khoản rồi chưa thấy gói | Đang chờ xác nhận từ PayOS | Chờ vài phút, mở lại `/checkout`; đừng trả lại; liên hệ hỗ trợ kèm mã đơn ([kích hoạt](07-goi-va-thanh-toan.md#kich-hoat)) |
-| Không thêm được hồ sơ bé | Hết hạn, Gói 1 bé đã có 1 bé hoặc Gói Pro đã có 5 bé | Mua gói hoặc [nâng cấp](07-goi-va-thanh-toan.md#cac-goi) |
+| Không thêm được hồ sơ bé | Hết hạn, Gói Cơ bản đã có 1 bé hoặc Gói Pro đã có 5 bé | Mua gói hoặc [nâng cấp](07-goi-va-thanh-toan.md#cac-goi) |
 | Không thấy ô nhập mã giới thiệu | Gia đình đã trả tiền, quá hạn ghi nhận, hoặc đã có mã | Không thể ghi nhận thêm ([8](08-gioi-thieu-ban-be.md#giam-10)) |
 | Không rút được hoa hồng | Chưa đặt PIN, chưa đủ 200.000đ, khoản còn trong thời gian giữ, vừa đổi thông tin nhận tiền (chờ 24 giờ) | Xem [rút tiền](08-gioi-thieu-ban-be.md#rut-tien) |
 | Bé không thấy bảng xếp hạng công khai | Chia sẻ chưa bật, hoặc bé chưa được chọn, hoặc gia đình đang tạm nghỉ | [Bật chia sẻ](05-gia-dinh-va-cai-dat.md#rieng-tu) và chọn bé |

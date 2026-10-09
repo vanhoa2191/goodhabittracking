@@ -13,8 +13,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 for (const [plan, name, price] of [
-  ['solo_monthly', 'Gói 1 bé · Tháng', '39.000'],
-  ['solo_yearly', 'Gói 1 bé · Năm', '399.000'],
+  ['solo_monthly', 'Gói Cơ bản · Tháng', '39.000'],
+  ['solo_yearly', 'Gói Cơ bản · Năm', '399.000'],
   ['monthly', 'Gói Pro · Tháng', '59.000'],
   ['yearly', 'Gói Pro · Năm', '590.000'],
 ]) {
@@ -76,14 +76,14 @@ test('authenticated checkout waits for family readiness then opens once without 
     await route.fulfill({ status: 503, json: { success: false, error: 'Payment provider unavailable in test.' } });
   });
   await page.goto('/checkout?plan=solo_monthly');
-  await expect(page.getByRole('heading', { name: 'Gói 1 bé · Tháng', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Gói Cơ bản · Tháng', exact: true })).toBeVisible();
   await expect(page.getByRole('status')).toContainText('gia đình');
   expect(plans).toEqual([]);
   await expect(page.getByRole('dialog')).toHaveCount(0);
   releaseFamily();
   const dialog = page.getByRole('dialog');
   await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText('Gói 1 bé · Tháng');
+  await expect(dialog).toContainText('Gói Cơ bản · Tháng');
   await completeCheckoutProfile(dialog);
   if (process.env.NEXT_PUBLIC_LEGAL_PAGES_APPROVED === 'true') {
     expect(plans).toEqual([]);

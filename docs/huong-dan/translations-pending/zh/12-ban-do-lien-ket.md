@@ -93,7 +93,7 @@ flowchart TD
 
 ### B. 添加第二名儿童
 
-前往[儿童](05-gia-dinh-va-cai-dat.md#ho-so) → 添加。您需要家庭计划或有效试用（单儿童计划最多允许 1 名儿童）。每名儿童都有单独的代码和设备；可分别[撤销](05-gia-dinh-va-cai-dat.md#thiet-bi)每台设备。
+前往[儿童](05-gia-dinh-va-cai-dat.md#ho-so) → 添加。您需要家庭计划或有效试用（基础版计划最多允许 1 名儿童）。每名儿童都有单独的代码和设备；可分别[撤销](05-gia-dinh-va-cai-dat.md#thiet-bi)每台设备。
 
 ### C. 全家外出或有人生病
 
@@ -135,7 +135,7 @@ flowchart TD
 | 无法扫描 QR 码 | 尚未授予相机权限，或连接不是 https | 授予权限或手动输入代码 |
 | 配对码被拒绝 | 代码已刷新，或错误尝试次数过多 | 在[儿童](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi)中获取新代码；若触发速率限制，请等待几分钟 |
 | 已转账但尚未显示计划 | 正在等待 PayOS 确认 | 等待几分钟后重新打开 `/checkout`；不要再次付款；向客服提供订单代码（[启用](07-goi-va-thanh-toan.md#kich-hoat)） |
-| 无法添加儿童档案 | 计划已到期，或单儿童计划已有 1 名儿童 | 购买计划或[升级](07-goi-va-thanh-toan.md#cac-goi) |
+| 无法添加儿童档案 | 计划已到期，或基础版计划已有 1 名儿童 | 购买计划或[升级](07-goi-va-thanh-toan.md#cac-goi) |
 | 看不到推荐码输入框 | 家庭已付款、记录时限已过，或已有代码 | 无法再记录其他代码（[8](08-gioi-thieu-ban-be.md#giam-10)） |
 | 无法提取佣金 | 尚未设置 PIN、金额不足 200,000 VND、冻结期未结束，或刚更改收款资料（需等待 24 小时） | 查看[申请提现](08-gioi-thieu-ban-be.md#rut-tien) |
 | 儿童看不到公开排行榜 | 分享已关闭、未选择该儿童，或家庭已暂停 | [开启分享](05-gia-dinh-va-cai-dat.md#rieng-tu)并选择儿童 |

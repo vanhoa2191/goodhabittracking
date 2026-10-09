@@ -24,11 +24,11 @@ describe('plan names and copy', () => {
   });
 
   it('uses the new Vietnamese and English plan names', () => {
-    expect(PLAN_LOCALIZATION.solo_monthly.vi.name).toBe('Gói 1 bé · Tháng');
-    expect(PLAN_LOCALIZATION.solo_yearly.vi.name).toBe('Gói 1 bé · Năm');
+    expect(PLAN_LOCALIZATION.solo_monthly.vi.name).toBe('Gói Cơ bản · Tháng');
+    expect(PLAN_LOCALIZATION.solo_yearly.vi.name).toBe('Gói Cơ bản · Năm');
     expect(PLAN_LOCALIZATION.monthly.vi.name).toBe('Gói Pro · Tháng');
     expect(PLAN_LOCALIZATION.yearly.vi.name).toBe('Gói Pro · Năm');
-    expect(PLAN_LOCALIZATION.solo_yearly.en.name).toContain('One-child plan');
+    expect(PLAN_LOCALIZATION.solo_yearly.en.name).toContain('Basic plan');
     expect(PLAN_LOCALIZATION.yearly.en.name).toContain('Pro plan');
   });
 
@@ -57,6 +57,16 @@ describe('plan names and copy', () => {
       }
     }
     expect(getPublicPricingCopy('vi').upToFive).toContain('5');
+  });
+
+  it('includes caregiver invitations in every paid tier and language', () => {
+    for (const language of LANGUAGES) {
+      const sharedBenefit = getPublicPricingCopy(language).caregiverInvites;
+      expect(sharedBenefit.trim().length, language).toBeGreaterThan(0);
+      for (const id of PAID_PLAN_IDS) {
+        expect(getCheckoutPlanFeatures(id, language), `${id} ${language}`).toContain(sharedBenefit);
+      }
+    }
   });
 
   it('announces Pro Plus with the habit coach and the launch offer in every language', () => {

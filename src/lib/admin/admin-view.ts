@@ -30,8 +30,8 @@ export type SubscriptionView = {
 export const PLAN_LABELS: Readonly<Record<SubscriptionView['plan'], string>> = {
   free: 'Chưa có gói',
   trial: 'Dùng thử',
-  solo_monthly: 'Gói 1 bé · Tháng',
-  solo_yearly: 'Gói 1 bé · Năm',
+  solo_monthly: 'Gói Cơ bản · Tháng',
+  solo_yearly: 'Gói Cơ bản · Năm',
   monthly: 'Gói Pro · Tháng',
   yearly: 'Gói Pro · Năm',
   lifetime: 'Trọn đời',

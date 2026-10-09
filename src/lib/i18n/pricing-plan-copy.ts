@@ -8,26 +8,26 @@ export const PLAN_LOCALIZATION: Record<
   Record<Language, { name: string; desc: string; period: string; badge?: string; cta: string }>
 > = {
   solo_monthly: {
-    vi: { name: 'Gói 1 bé · Tháng', desc: 'Đầy đủ trải nghiệm cốt lõi cho một bé', period: '/ tháng', badge: 'Khởi đầu nhẹ nhàng', cta: 'Chọn Gói 1 bé · Tháng' },
-    en: { name: 'One-child plan · Monthly', desc: 'The complete core experience for one child', period: '/ month', badge: 'A gentle start', cta: 'Choose One-child plan · Monthly' },
-    fr: { name: 'Forfait un enfant · Mensuel', desc: 'L’expérience essentielle complète pour un enfant', period: '/ mois', badge: 'Pour bien commencer', cta: 'Choisir le forfait un enfant · Mensuel' },
-    de: { name: 'Ein-Kind-Paket · Monatlich', desc: 'Das vollständige Kernerlebnis für ein Kind', period: '/ Monat', badge: 'Sanfter Einstieg', cta: 'Ein-Kind-Paket · Monatlich wählen' },
-    it: { name: 'Piano un bambino · Mensile', desc: 'L’esperienza essenziale completa per un bambino', period: '/ mese', badge: 'Un inizio leggero', cta: 'Scegli Piano un bambino · Mensile' },
-    es: { name: 'Plan para un menor · Mensual', desc: 'La experiencia esencial completa para un menor', period: '/ mes', badge: 'Un comienzo sencillo', cta: 'Elegir plan para un menor · Mensual' },
-    zh: { name: '单宝贝套餐 · 月付', desc: '为一个孩子提供完整的核心体验', period: '/ 月', badge: '轻松起步', cta: '选择单宝贝套餐 · 月付' },
-    ja: { name: 'お子さま1人プラン · 月額', desc: 'お子さま1人向けの基本機能をすべて利用できます', period: '/ 月', badge: 'やさしくスタート', cta: 'お子さま1人プラン · 月額を選ぶ' },
-    ko: { name: '아이 한 명 플랜 · 월간', desc: '아이 한 명을 위한 모든 핵심 기능', period: '/ 월', badge: '가볍게 시작', cta: '아이 한 명 플랜 · 월간 선택' },
+    vi: { name: 'Gói Cơ bản · Tháng', desc: 'Đầy đủ trải nghiệm cốt lõi cho một bé', period: '/ tháng', badge: 'Khởi đầu nhẹ nhàng', cta: 'Chọn Gói Cơ bản · Tháng' },
+    en: { name: 'Basic plan · Monthly', desc: 'The complete core experience for one child', period: '/ month', badge: 'A gentle start', cta: 'Choose Basic plan · Monthly' },
+    fr: { name: 'Forfait Essentiel · Mensuel', desc: 'L’expérience essentielle complète pour un enfant', period: '/ mois', badge: 'Pour bien commencer', cta: 'Choisir le forfait Essentiel · Mensuel' },
+    de: { name: 'Basis-Paket · Monatlich', desc: 'Das vollständige Kernerlebnis für ein Kind', period: '/ Monat', badge: 'Sanfter Einstieg', cta: 'Basis-Paket · Monatlich wählen' },
+    it: { name: 'Piano Base · Mensile', desc: 'L’esperienza essenziale completa per un bambino', period: '/ mese', badge: 'Un inizio leggero', cta: 'Scegli Piano Base · Mensile' },
+    es: { name: 'Plan Básico · Mensual', desc: 'La experiencia esencial completa para un menor', period: '/ mes', badge: 'Un comienzo sencillo', cta: 'Elegir plan Básico · Mensual' },
+    zh: { name: '基础套餐 · 月付', desc: '为一个孩子提供完整的核心体验', period: '/ 月', badge: '轻松起步', cta: '选择基础套餐 · 月付' },
+    ja: { name: 'ベーシックプラン · 月額', desc: 'お子さま1人向けの基本機能をすべて利用できます', period: '/ 月', badge: 'やさしくスタート', cta: 'ベーシックプラン · 月額を選ぶ' },
+    ko: { name: '베이직 플랜 · 월간', desc: '아이 한 명을 위한 모든 핵심 기능', period: '/ 월', badge: '가볍게 시작', cta: '베이직 플랜 · 월간 선택' },
   },
   solo_yearly: {
-    vi: { name: 'Gói 1 bé · Năm', desc: 'Cả năm đồng hành cùng một bé với giá tốt hơn trả từng tháng', period: '/ năm', badge: 'Tiết kiệm cho một bé', cta: 'Chọn Gói 1 bé · Năm' },
-    en: { name: 'One-child plan · Yearly', desc: 'A full year with one child at a better price than paying monthly', period: '/ year', badge: 'Savings for one child', cta: 'Choose One-child plan · Yearly' },
-    fr: { name: 'Forfait un enfant · Annuel', desc: 'Une année complète avec un enfant à un meilleur prix qu’un paiement mensuel', period: '/ an', badge: 'Économies pour un enfant', cta: 'Choisir le forfait un enfant · Annuel' },
-    de: { name: 'Ein-Kind-Paket · Jährlich', desc: 'Ein ganzes Jahr mit einem Kind zu einem besseren Preis als bei monatlicher Zahlung', period: '/ Jahr', badge: 'Ersparnis für ein Kind', cta: 'Ein-Kind-Paket · Jährlich wählen' },
-    it: { name: 'Piano un bambino · Annuale', desc: 'Un anno intero con un bambino a un prezzo migliore rispetto al pagamento mensile', period: '/ anno', badge: 'Risparmio per un bambino', cta: 'Scegli Piano un bambino · Annuale' },
-    es: { name: 'Plan para un menor · Anual', desc: 'Un año completo con un menor a un precio mejor que pagando mes a mes', period: '/ año', badge: 'Ahorro para un menor', cta: 'Elegir plan para un menor · Anual' },
-    zh: { name: '单宝贝套餐 · 年付', desc: '陪伴一个孩子一整年，比按月支付更划算', period: '/ 年', badge: '一个孩子更省钱', cta: '选择单宝贝套餐 · 年付' },
-    ja: { name: 'お子さま1人プラン · 年額', desc: '月払いよりお得な料金で、お子さま1人と1年間利用できます', period: '/ 年', badge: 'お子さま1人ならお得', cta: 'お子さま1人プラン · 年額を選ぶ' },
-    ko: { name: '아이 한 명 플랜 · 연간', desc: '월간 결제보다 저렴한 가격으로 아이 한 명과 1년 동안 함께할 수 있습니다', period: '/ 년', badge: '아이 한 명에게 더 알뜰하게', cta: '아이 한 명 플랜 · 연간 선택' },
+    vi: { name: 'Gói Cơ bản · Năm', desc: 'Cả năm đồng hành cùng một bé với giá tốt hơn trả từng tháng', period: '/ năm', badge: 'Tiết kiệm cho một bé', cta: 'Chọn Gói Cơ bản · Năm' },
+    en: { name: 'Basic plan · Yearly', desc: 'A full year with one child at a better price than paying monthly', period: '/ year', badge: 'Savings for one child', cta: 'Choose Basic plan · Yearly' },
+    fr: { name: 'Forfait Essentiel · Annuel', desc: 'Une année complète avec un enfant à un meilleur prix qu’un paiement mensuel', period: '/ an', badge: 'Économies pour un enfant', cta: 'Choisir le forfait Essentiel · Annuel' },
+    de: { name: 'Basis-Paket · Jährlich', desc: 'Ein ganzes Jahr mit einem Kind zu einem besseren Preis als bei monatlicher Zahlung', period: '/ Jahr', badge: 'Ersparnis für ein Kind', cta: 'Basis-Paket · Jährlich wählen' },
+    it: { name: 'Piano Base · Annuale', desc: 'Un anno intero con un bambino a un prezzo migliore rispetto al pagamento mensile', period: '/ anno', badge: 'Risparmio per un bambino', cta: 'Scegli Piano Base · Annuale' },
+    es: { name: 'Plan Básico · Anual', desc: 'Un año completo con un menor a un precio mejor que pagando mes a mes', period: '/ año', badge: 'Ahorro para un menor', cta: 'Elegir plan Básico · Anual' },
+    zh: { name: '基础套餐 · 年付', desc: '陪伴一个孩子一整年，比按月支付更划算', period: '/ 年', badge: '一个孩子更省钱', cta: '选择基础套餐 · 年付' },
+    ja: { name: 'ベーシックプラン · 年額', desc: '月払いよりお得な料金で、お子さま1人と1年間利用できます', period: '/ 年', badge: 'お子さま1人ならお得', cta: 'ベーシックプラン · 年額を選ぶ' },
+    ko: { name: '베이직 플랜 · 연간', desc: '월간 결제보다 저렴한 가격으로 아이 한 명과 1년 동안 함께할 수 있습니다', period: '/ 년', badge: '아이 한 명에게 더 알뜰하게', cta: '베이직 플랜 · 연간 선택' },
   },
   monthly: {
     vi: {
@@ -164,10 +164,10 @@ export const PLAN_LOCALIZATION: Record<
 export function getCheckoutPlanFeatures(planId: SubscriptionPlan, language: Language): readonly string[] {
   const common = getPublicPricingCopy(language);
   switch (planId) {
-    case 'solo_monthly': return [common.oneChild, common.sync, common.library];
-    case 'solo_yearly': return [common.oneChild, common.sync, common.library, common.soloSavings];
-    case 'monthly': return [common.upToFive, common.sync, common.fullLibrary];
-    case 'yearly': return [common.upToFive, common.sync, common.fullLibrary, common.annualPayment, common.savings];
+    case 'solo_monthly': return [common.oneChild, common.sync, common.caregiverInvites, common.library];
+    case 'solo_yearly': return [common.oneChild, common.sync, common.caregiverInvites, common.library, common.soloSavings];
+    case 'monthly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary];
+    case 'yearly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, common.annualPayment, common.savings];
     default: return [];
   }
 }
