@@ -131,7 +131,8 @@ export async function POST(request: NextRequest) {
       } catch {
         // Keep PENDING so a paid/open provider link remains eligible for reconciliation.
       }
-      // The create attempt has settled: a later retry can attempt provider cancellation immediately.
+      // The create attempt has settled. If PayOS still reports this order unknown on a later checkout, the
+      // create is known to have failed, so that checkout closes it locally at once instead of waiting out the grace period.
       await admin.from('payment_orders').update({ checkout_creation_finished_at: new Date().toISOString() })
         .eq('order_code', orderCode).eq('family_id', parent.familyId).eq('status', 'PENDING');
       throw error;

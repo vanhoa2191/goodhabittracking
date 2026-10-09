@@ -130,6 +130,10 @@ describe('provider-unknown order recovery', () => {
     vi.stubGlobal('fetch', vi.fn(async () => unknown()));
     await expect(reconcileOrderOutcome({ rpc }, { ...order, ...age })).resolves.toBe('open');
   });
+  it('closes an unknown order within grace once its create attempt has finished', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => unknown()));
+    await expect(reconcileOrderOutcome({ rpc }, { ...order, expires_at: new Date(Date.now() + 60000).toISOString(), checkout_creation_finished_at: new Date().toISOString() })).resolves.toBe('closed');
+  });
   it.each([
     [503, { code: '231' }], [401, { code: '231' }], [429, { code: '231' }],
     [404, { message: 'proxy not found' }], [200, { code: '99', desc: 'system unavailable' }],

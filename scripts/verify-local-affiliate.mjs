@@ -39,6 +39,10 @@ try {
   await client.query(`insert into public.payment_orders(order_code,user_id,family_id,amount,status,plan_id) values (90,'00000000-0000-0000-0000-000000000002','10000000-0000-0000-0000-000000000002',1000000,'PAID','yearly');
     insert into public.referral_commissions(referral_id,order_code,base_amount,rate_bps,amount,available_at) select id,90,1000000,3000,300000,now() - interval '1 day' from public.referrals;
     insert into public.billing_support_cases(family_id,user_id,order_code,status,case_type,reason_code,created_by,resolution_code,resolved_at) values ('10000000-0000-0000-0000-000000000002','00000000-0000-0000-0000-000000000002',90,'completed','refund','other','00000000-0000-0000-0000-000000000002','manual_refund_confirmed',now());`);
+  // An open case that predates the migration must be backfilled onto its commission.
+  await client.query(`insert into public.payment_orders(order_code,user_id,family_id,amount,status,plan_id) values (91,'00000000-0000-0000-0000-000000000002','10000000-0000-0000-0000-000000000002',1000000,'PAID','yearly');
+    insert into public.referral_commissions(referral_id,order_code,base_amount,rate_bps,amount,available_at) select id,91,1000000,3000,300000,now() - interval '1 day' from public.referrals;
+    insert into public.billing_support_cases(family_id,user_id,order_code,status,case_type,reason_code,created_by) values ('10000000-0000-0000-0000-000000000002','00000000-0000-0000-0000-000000000002',91,'reviewing','refund','other','00000000-0000-0000-0000-000000000002');`);
   await client.query('create temporary table test_original_refund_release as select available_at as original_release from public.referral_commissions where order_code = 90');
   await client.query(load('supabase/migrations/202610090020_affiliate_account_privacy_freeze.sql'));
   await client.query(load('supabase/preflight/202610090020_affiliate_account_privacy_freeze.verify.sql'));

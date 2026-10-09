@@ -17,6 +17,20 @@ from public.billing_support_cases support_case
 where support_case.order_code = commission.order_code
   and support_case.status = 'completed' and support_case.resolution_code = 'manual_refund_confirmed';
 
+-- An open billing case freezes the commission on the commission itself: the case row cascades away
+-- with the customer's family, so deleting the account must not make a disputed commission payable.
+-- Only resolving the case without a refund clears it; a confirmed refund sets refund_confirmed_at.
+alter table public.referral_commissions add column dispute_opened_at timestamptz;
+update public.referral_commissions commission
+set dispute_opened_at = opened.first_opened_at
+from (
+  select support_case.order_code, min(support_case.created_at) as first_opened_at
+  from public.billing_support_cases support_case
+  where support_case.order_code is not null and support_case.status in ('requested', 'reviewing', 'approved')
+  group by support_case.order_code
+) opened
+where opened.order_code = commission.order_code and commission.dispute_opened_at is null;
+
 -- Claims use an advisory lock on the referred owner, not a lock on GoTrue's auth.users.
 -- Legacy duplicate rows remain intact; accrual uses the first account attribution.
 create index referrals_referred_user_idx on public.referrals (referred_user_id, created_at, id);
@@ -65,7 +79,7 @@ begin
 end
 $$;
 
--- Open cases freeze commissions; confirmed refunds are derived from the durable commission record.
+-- Both freezes are read from the durable commission record, never from the deletable case row.
 create or replace function public.affiliate_commission_block_reason(target_order_code bigint)
 returns text
 language sql
@@ -74,17 +88,17 @@ security definer
 set search_path = ''
 as $$
   select case
-    when exists (select 1 from public.referral_commissions commission
-                 where commission.order_code = target_order_code
-                   and commission.refund_confirmed_at is not null) then 'refund_confirmed'
-    when exists (select 1 from public.billing_support_cases support_case
-                 where support_case.order_code = target_order_code
-                   and support_case.status in ('requested', 'reviewing', 'approved')) then 'billing_case_open'
+    when commission.refund_confirmed_at is not null then 'refund_confirmed'
+    when commission.dispute_opened_at is not null then 'billing_case_open'
     else null
   end
+  from public.referral_commissions commission
+  where commission.order_code = target_order_code
 $$;
 
--- Serialize support-case changes with payout eligibility/payment decisions without changing routes.
+-- Serialize support-case changes with payout eligibility/payment decisions without changing routes,
+-- then persist the dispute freeze on the commission (order lock before commission lock).
+-- Deleting a case (including the family cascade) deliberately leaves the freeze in place.
 create or replace function public.lock_affiliate_billing_case_order()
 returns trigger
 language plpgsql
@@ -101,6 +115,22 @@ begin
     order by order_code for update;
   end if;
   if TG_OP = 'DELETE' then return old; end if;
+  if new.order_code is null then return new; end if;
+
+  if new.status in ('requested', 'reviewing', 'approved') then
+    update public.referral_commissions set dispute_opened_at = now()
+    where order_code = new.order_code and dispute_opened_at is null;
+  elsif TG_OP = 'UPDATE' and old.status in ('requested', 'reviewing', 'approved')
+    and new.resolution_code is distinct from 'manual_refund_confirmed' then
+    -- Resolved without a refund: release only when no other open case still disputes the order.
+    update public.referral_commissions set dispute_opened_at = null
+    where order_code = new.order_code and dispute_opened_at is not null
+      and not exists (
+        select 1 from public.billing_support_cases other_case
+        where other_case.order_code = new.order_code and other_case.id <> new.id
+          and other_case.status in ('requested', 'reviewing', 'approved')
+      );
+  end if;
   return new;
 end
 $$;
@@ -240,8 +270,11 @@ begin
   commission := floor(paid_order.amount::numeric * settings.commission_bps / 10000)::integer;
   if commission <= 0 then return; end if;
 
-  insert into public.referral_commissions (referral_id, order_code, base_amount, rate_bps, amount, available_at)
-  values (referral.id, paid_order.order_code, paid_order.amount, settings.commission_bps, commission, now() + make_interval(days => settings.hold_days))
+  -- A case opened before settlement already disputes the order; carry its freeze onto the commission.
+  insert into public.referral_commissions (referral_id, order_code, base_amount, rate_bps, amount, available_at, dispute_opened_at)
+  values (referral.id, paid_order.order_code, paid_order.amount, settings.commission_bps, commission, now() + make_interval(days => settings.hold_days),
+    (select min(support_case.created_at) from public.billing_support_cases support_case
+     where support_case.order_code = paid_order.order_code and support_case.status in ('requested', 'reviewing', 'approved')))
   on conflict (order_code) do nothing;
 exception when others then
   raise warning 'referral commission skipped for order %: %', target_order_code, sqlerrm;

@@ -157,6 +157,27 @@ describe('POST /api/payment/create atomic order reservation', () => {
     expect(cancelPayOSPayment).toHaveBeenCalledWith(987, 'Customer selected a new checkout');
     expect(createPayOSPayment).toHaveBeenCalledWith(expect.objectContaining({ planId: 'solo_yearly' }));
   });
+  it('closes a failed-create order PayOS does not know at once instead of returning 503 during grace', async () => {
+    pending = { order_code: 987, family_id: 'family-a', plan_id: 'yearly', amount: 590000, description: 'KIDHABIT 987', status: 'PENDING', created_at: new Date().toISOString(), expires_at: new Date(Date.now() + 14 * 60000).toISOString(), checkout_creation_finished_at: new Date().toISOString() };
+    rpc.mockResolvedValueOnce({ data: [{ amount: 590000, discount_bps: 0, existing_order_code: 987 }], error: null });
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ code: '231', desc: 'Payment link not found' }))));
+    cancelPayOSPayment.mockRejectedValue(new PayOSOrderNotFoundError());
+    const response = await post('yearly');
+    expect(response.status).toBe(200);
+    expect(update).toHaveBeenCalledWith(expect.objectContaining({ status: 'CANCELLED' }));
+    expect(eq).toHaveBeenCalledWith('order_code', 987);
+    expect(createPayOSPayment).toHaveBeenCalledWith(expect.objectContaining({ planId: 'yearly' }));
+    expect(rpc).toHaveBeenCalledTimes(2);
+  });
+  it('still holds an unknown order within grace while its create may be in flight', async () => {
+    pending = { order_code: 987, family_id: 'family-a', plan_id: 'yearly', amount: 590000, description: 'KIDHABIT 987', status: 'PENDING', created_at: new Date().toISOString(), expires_at: new Date(Date.now() + 14 * 60000).toISOString() };
+    rpc.mockResolvedValue({ data: [{ amount: 590000, discount_bps: 0, existing_order_code: 987 }], error: null });
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ code: '231', desc: 'Payment link not found' }))));
+    cancelPayOSPayment.mockRejectedValue(new PayOSOrderNotFoundError());
+    expect((await post('yearly')).status).toBe(409);
+    expect(update).not.toHaveBeenCalledWith(expect.objectContaining({ status: 'CANCELLED' }));
+    expect(createPayOSPayment).not.toHaveBeenCalled();
+  });
   it('does not cancel another family reservation based only on shared owner attribution', async () => {
     pending = { order_code: 987, family_id: 'other-family', user_id: 'another-payer', plan_id: 'yearly', amount: 590000, status: 'PENDING' };
     rpc.mockResolvedValue({ data: [{ amount: 590000, discount_bps: 0, existing_order_code: 987 }], error: null });

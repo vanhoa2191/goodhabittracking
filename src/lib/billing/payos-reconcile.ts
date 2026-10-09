@@ -57,18 +57,31 @@ export type PendingOrder = {
   readonly status: string;
   readonly created_at?: string | null;
   readonly expires_at?: string | null;
+  /** Set once our create attempt for this order has returned (success or failure), so no create is still in flight. */
+  readonly checkout_creation_finished_at?: string | null;
 };
+
+/**
+ * PayOS saying "unknown order" only proves no link exists once no create request can still be in flight:
+ * either our create attempt has finished (it failed before PayOS created anything) or the grace period passed.
+ */
+function unknownOrderIsClosed(order: PendingOrder): boolean {
+  return Boolean(order.checkout_creation_finished_at) || unknownOrderGraceElapsed(order);
+}
 
 type RpcClient = { rpc: (name: string, args: Record<string, unknown>) => PromiseLike<{ data: unknown; error: unknown }> };
 
 export type OrderOutcome = 'paid' | 'closed' | 'open';
 
-/** Unknown young orders may be a create still in flight; only release them after the grace period. */
+/**
+ * Unknown young orders may be a create still in flight; release them only after the grace period, or at once
+ * when the create attempt has already finished and PayOS still does not know the order.
+ */
 export async function cancelPendingPayOSOrder(order: PendingOrder, reason: string): Promise<void> {
   try {
     await cancelPayOSPayment(Number(order.order_code), reason);
   } catch (error) {
-    if (error instanceof PayOSOrderNotFoundError && unknownOrderGraceElapsed(order)) return;
+    if (error instanceof PayOSOrderNotFoundError && unknownOrderIsClosed(order)) return;
     throw error;
   }
 }
@@ -87,7 +100,7 @@ export async function reconcileOrderOutcome(admin: RpcClient, order: PendingOrde
   try {
     info = await fetchPayOSPaymentInfo(orderCode, signal);
   } catch (error) {
-    if (error instanceof PayOSOrderNotFoundError) return unknownOrderGraceElapsed(order) ? 'closed' : 'open';
+    if (error instanceof PayOSOrderNotFoundError) return unknownOrderIsClosed(order) ? 'closed' : 'open';
     throw error;
   }
   if (!info || info.orderCode !== orderCode) return 'open';

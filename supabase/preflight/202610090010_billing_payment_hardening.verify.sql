@@ -262,4 +262,21 @@ begin
 end
 $$;
 
+-- The cancellation path must take order -> family locks like process_payos_webhook, never family -> order.
+do $$
+declare
+  definition text := pg_catalog.pg_get_functiondef('public.admin_resolve_billing_case(uuid,text,text,uuid,text)'::regprocedure);
+  cancellation integer := strpos(definition, 'subscription_cancelled'' then');
+  order_lock integer;
+  family_lock integer;
+begin
+  order_lock := strpos(substr(definition, cancellation), 'perform 1 from public.payment_orders');
+  family_lock := strpos(substr(definition, cancellation), 'perform 1 from public.families');
+  if cancellation = 0 or order_lock = 0 or family_lock = 0 or order_lock > family_lock then
+    raise exception 'Subscription cancellation must lock the payment order before the family';
+  end if;
+  raise notice 'Cancellation lock order matches the webhook';
+end
+$$;
+
 rollback;

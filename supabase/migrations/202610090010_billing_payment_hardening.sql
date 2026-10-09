@@ -446,6 +446,9 @@ begin
     if support_case.case_type <> 'cancellation' or next_status <> 'completed' then
       return jsonb_build_object('code', 'invalid_subscription_cancellation');
     end if;
+    -- Same order -> family lock order as process_payos_webhook; the case update trigger below then
+    -- re-locks an order this transaction already holds instead of waiting behind a webhook.
+    perform 1 from public.payment_orders where order_code = support_case.order_code for update;
     perform 1 from public.families where id = support_case.family_id for update;
     update public.user_subscriptions set status = 'cancelled', updated_at = clock_timestamp() where family_id = support_case.family_id;
   end if;

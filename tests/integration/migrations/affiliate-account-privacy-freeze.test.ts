@@ -20,6 +20,17 @@ describe('affiliate account/privacy/freeze migration contract', () => {
     }
   });
 
+  it('reads the open-case freeze from the commission so case deletion cannot release it', () => {
+    const block = functions.find((fn) => fn.funcname?.some((part) => 'String' in part && part.String.sval === 'affiliate_commission_block_reason'));
+    const body = JSON.stringify(block?.options);
+    expect(body).toContain('dispute_opened_at');
+    expect(body).not.toContain('billing_support_cases');
+    expect(migration).toContain('alter table public.referral_commissions add column dispute_opened_at timestamptz;');
+    expect(scenarios).toContain('open-case freeze survives family deletion');
+    expect(scenarios).toContain('case resolved without refund clears the freeze');
+    expect(verification).toContain('an open billing case left its commission unfrozen');
+  });
+
   it('parses every PL/pgSQL replacement, SQL scenario and preflight assertion', async () => {
     await expect(parsePlPgSQL(migration)).resolves.toBeDefined();
     await expect(parse(scenarios)).resolves.toBeDefined();

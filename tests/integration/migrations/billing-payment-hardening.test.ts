@@ -60,6 +60,14 @@ describe('billing payment hardening', () => {
     expect(migration).toContain('create unique index billing_one_confirmed_refund_per_order');
     expect(migration).toContain("where case_type = 'refund' and status = 'completed' and resolution_code = 'manual_refund_confirmed'");
   });
+  it('locks the payment order before the family when cancelling a subscription, like the webhook', () => {
+    const sql = definition('admin_resolve_billing_case');
+    const cancellation = sql.slice(sql.indexOf("if next_resolution = 'subscription_cancelled' then"));
+    const orderLock = cancellation.indexOf('perform 1 from public.payment_orders where order_code = support_case.order_code for update;');
+    expect(orderLock).toBeGreaterThanOrEqual(0);
+    expect(orderLock).toBeLessThan(cancellation.indexOf('perform 1 from public.families where id = support_case.family_id for update;'));
+    expect(verification).toContain('Subscription cancellation must lock the payment order before the family');
+  });
   it('restricts saved reconcile progress to the service role', () => {
     expect(migration).toContain('alter table public.billing_reconcile_state force row level security');
     expect(migration).toContain('revoke all on public.billing_reconcile_state from public, anon, authenticated');

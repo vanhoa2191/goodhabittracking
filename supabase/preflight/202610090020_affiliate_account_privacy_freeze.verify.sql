@@ -41,6 +41,18 @@ begin
     select 1 from information_schema.columns
     where table_schema = 'public' and table_name = 'referral_commissions' and column_name = 'refund_confirmed_at'
   ) then raise exception 'durable commission refund evidence is missing'; end if;
+  if not exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public' and table_name = 'referral_commissions' and column_name = 'dispute_opened_at'
+  ) then raise exception 'durable commission dispute freeze is missing'; end if;
+  if pg_catalog.pg_get_functiondef('public.affiliate_commission_block_reason(bigint)'::regprocedure) like '%billing_support_cases%' then
+    raise exception 'the dispute freeze must be read from the commission, not the deletable case row';
+  end if;
+  if exists (
+    select 1 from public.referral_commissions commission
+    join public.billing_support_cases support_case on support_case.order_code = commission.order_code
+    where support_case.status in ('requested', 'reviewing', 'approved') and commission.dispute_opened_at is null
+  ) then raise exception 'an open billing case left its commission unfrozen'; end if;
   if pg_catalog.pg_get_functiondef('public.claim_referral(text)'::regprocedure) not like '%pg_advisory_xact_lock%'
     or pg_catalog.pg_get_functiondef('public.accrue_referral_commission(bigint)'::regprocedure) not like '%owner.user_id = attribution.referred_user_id%' then
     raise exception 'attribution must lock the owner account and accrue payments for owned families';
