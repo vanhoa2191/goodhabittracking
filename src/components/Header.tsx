@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useId, useRef, useState, type ReactNode } from 'react';
+import React, { useEffect, useId, useRef, useState, type ReactNode } from 'react';
 import Image from 'next/image';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
@@ -27,6 +27,7 @@ import {
 import { useAppStore } from '@/lib/store';
 import { useTranslation, SUPPORTED_LANGUAGES, LanguageOption } from '@/lib/i18n/context';
 import { sounds } from '@/lib/sound';
+import { PARENT_PIN_REQUIRED_EVENT } from '@/lib/security/parent-pin-signal';
 import { PinModal } from './PinModal';
 import { FontSettingsModal } from './FontSettingsModal';
 import { DeviceConnectModal } from './DeviceConnectModal';
@@ -85,6 +86,12 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
   const copy = getHeaderCopy(language);
   const chromeCopy = getChromeCopy(language);
   const [isPinModalOpen, setIsPinModalOpen] = useState(false);
+  useEffect(() => {
+    if (!currentUser || isCaregiver) return;
+    const requestUnlock = () => setIsPinModalOpen(true);
+    window.addEventListener(PARENT_PIN_REQUIRED_EVENT, requestUnlock);
+    return () => window.removeEventListener(PARENT_PIN_REQUIRED_EVENT, requestUnlock);
+  }, [currentUser, isCaregiver]);
   const [isFontModalOpen, setIsFontModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuPanelRef = useRef<HTMLDivElement>(null);

@@ -3,6 +3,164 @@ begin;
 -- O1: browser table writes cannot bypass the parent-unlock route.
 revoke insert, update, delete on public.habit_activities from public, anon, authenticated;
 
+-- O1: starter activities and profile edits use the same parent-unlock boundary.
+create or replace function public.mutate_child_profile_command(mutation_input jsonb)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  actor_family_id uuid := public.current_family_id();
+  actor_id uuid := auth.uid();
+  mutation_type text := mutation_input->>'type';
+  profile_input jsonb := mutation_input->'profile';
+  updates_input jsonb := mutation_input->'updates';
+  target_profile_id uuid;
+  existing_family_id uuid;
+  affected_rows integer;
+begin
+  if actor_id is null or actor_family_id is null
+    or not public.can_manage_family(actor_family_id) then
+    raise exception 'profile_access_denied';
+  end if;
+
+  if mutation_type = 'create' then
+    target_profile_id := (profile_input->>'id')::uuid;
+
+    select child.family_id
+      into existing_family_id
+    from public.child_profiles child
+    where child.id = target_profile_id;
+
+    if found then
+      if existing_family_id <> actor_family_id then
+        raise exception 'profile_conflict';
+      end if;
+      return jsonb_build_object('profileId', target_profile_id);
+    end if;
+
+    if nullif(trim(profile_input->>'name'), '') is null then
+      raise exception 'profile_name_required';
+    end if;
+    if coalesce(jsonb_typeof(profile_input->'points') <> 'number'
+      or (profile_input->>'points')::numeric not in (0, 20)
+      or jsonb_typeof(profile_input->'totalEarned') <> 'number'
+      or (profile_input->>'totalEarned')::numeric <> (profile_input->>'points')::numeric
+      or jsonb_typeof(profile_input->'level') <> 'number'
+      or (profile_input->>'level')::numeric <> 1
+      or jsonb_typeof(profile_input->'streak') <> 'number'
+      or (profile_input->>'streak')::numeric not in (0, 1), true) then
+      raise exception 'invalid_initial_progress';
+    end if;
+    if jsonb_typeof(coalesce(mutation_input->'starterActivities', '[]'::jsonb)) <> 'array'
+      or jsonb_array_length(coalesce(mutation_input->'starterActivities', '[]'::jsonb)) > 50 then
+      raise exception 'invalid_starter_activities';
+    end if;
+    if exists (
+      select 1
+      from jsonb_array_elements(coalesce(mutation_input->'starterActivities', '[]'::jsonb)) activity
+      where (activity->>'childId')::uuid is distinct from target_profile_id
+    ) then
+      raise exception 'starter_activity_child_mismatch';
+    end if;
+
+    -- Match the route's Zod limits even for internal calls: no null, fractional or oversized awards.
+    if exists (
+      select 1 from jsonb_array_elements(coalesce(mutation_input->'starterActivities', '[]'::jsonb)) activity
+      where coalesce(jsonb_typeof(activity->'points') <> 'number'
+        or (activity->>'points')::numeric not between 0 and 10000
+        or (activity->>'points')::numeric <> trunc((activity->>'points')::numeric), true)
+        or jsonb_typeof(activity->'requiresApproval') is distinct from 'boolean'
+    ) then
+      raise exception 'invalid_starter_activities';
+    end if;
+
+    insert into public.child_profiles (
+      id, family_id, user_id, name, nickname, show_real_name_on_leaderboard,
+      is_public_on_leaderboard, avatar, theme_color, points, total_earned,
+      level, streak, birth_year, age_stage, league_tier, created_at
+    ) values (
+      target_profile_id, actor_family_id, actor_id, trim(profile_input->>'name'),
+      nullif(trim(profile_input->>'nickname'), ''),
+      coalesce((profile_input->>'showRealNameOnLeaderboard')::boolean, false),
+      coalesce((profile_input->>'isPublicOnLeaderboard')::boolean, false),
+      profile_input->>'avatar', profile_input->>'themeColor',
+      (profile_input->>'points')::integer, (profile_input->>'totalEarned')::integer,
+      (profile_input->>'level')::integer, (profile_input->>'streak')::integer,
+      (profile_input->>'birthYear')::integer, profile_input->>'ageStage',
+      coalesce(profile_input->>'leagueTier', 'bronze'),
+      (profile_input->>'createdAt')::timestamptz
+    );
+
+    insert into public.habit_activities (
+      id, family_id, user_id, child_id, title, description, icon, category, points,
+      recurrence_type, recurrence_days, time_of_day, duration_minutes,
+      requires_approval, is_active, target_age_stage, is_parent_role,
+      portrait16_key, bo_thi7_key, created_at
+    )
+    select
+      activity."id", actor_family_id, actor_id, activity."childId", activity."title",
+      activity."description", activity."icon", activity."category", activity."points",
+      activity."recurrenceType", to_jsonb(activity."recurrenceDays"), activity."timeOfDay",
+      activity."durationMinutes", activity."requiresApproval", activity."isActive",
+      coalesce(activity."targetAgeStage", 'all'), coalesce(activity."isParentRole", false),
+      activity."portrait16Key", activity."boThi7Key", activity."createdAt"
+    from jsonb_to_recordset(coalesce(mutation_input->'starterActivities', '[]'::jsonb)) as activity(
+      "id" uuid, "childId" uuid, "title" text, "description" text, "icon" text,
+      "category" text, "points" integer, "recurrenceType" text,
+      "recurrenceDays" integer[], "timeOfDay" text, "durationMinutes" integer,
+      "requiresApproval" boolean, "isActive" boolean, "targetAgeStage" text,
+      "isParentRole" boolean, "portrait16Key" text, "boThi7Key" text,
+      "createdAt" timestamptz
+    );
+  elsif mutation_type = 'update' then
+    target_profile_id := (mutation_input->>'profileId')::uuid;
+    if updates_input ? 'name' and nullif(trim(updates_input->>'name'), '') is null then
+      raise exception 'profile_name_required';
+    end if;
+    update public.child_profiles
+    set
+      name = case when updates_input ? 'name' then trim(updates_input->>'name') else name end,
+      nickname = case when updates_input ? 'nickname' then nullif(trim(updates_input->>'nickname'), '') else nickname end,
+      show_real_name_on_leaderboard = case when updates_input ? 'showRealNameOnLeaderboard' then (updates_input->>'showRealNameOnLeaderboard')::boolean else show_real_name_on_leaderboard end,
+      is_public_on_leaderboard = case when updates_input ? 'isPublicOnLeaderboard' then (updates_input->>'isPublicOnLeaderboard')::boolean else is_public_on_leaderboard end,
+      avatar = case when updates_input ? 'avatar' then updates_input->>'avatar' else avatar end,
+      theme_color = case when updates_input ? 'themeColor' then updates_input->>'themeColor' else theme_color end,
+      birth_year = case when updates_input ? 'birthYear' then (updates_input->>'birthYear')::integer else birth_year end,
+      age_stage = case when updates_input ? 'ageStage' then updates_input->>'ageStage' else age_stage end,
+      league_tier = case when updates_input ? 'leagueTier' then updates_input->>'leagueTier' else league_tier end,
+      age_band_override = case when updates_input ? 'ageBandOverride' then updates_input->>'ageBandOverride' else age_band_override end
+    where id = target_profile_id and family_id = actor_family_id;
+    get diagnostics affected_rows = row_count;
+    if affected_rows <> 1 then raise exception 'profile_not_found'; end if;
+  elsif mutation_type = 'delete' then
+    target_profile_id := (mutation_input->>'profileId')::uuid;
+    delete from public.child_profiles
+    where id = target_profile_id and family_id = actor_family_id;
+    get diagnostics affected_rows = row_count;
+    if affected_rows <> 1 then raise exception 'profile_not_found'; end if;
+  else
+    raise exception 'invalid_profile_mutation';
+  end if;
+
+  return jsonb_build_object('profileId', target_profile_id);
+end
+$$;
+
+revoke all on function public.mutate_child_profile_command(jsonb) from public, anon, authenticated, service_role;
+
+-- Use the existing transaction-local parent identity bridge; original ACL remains closed.
+create or replace function public.mutate_child_profile_command_as(actor_user_id uuid, mutation_input jsonb)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+begin
+  perform public.act_as_user(actor_user_id);
+  return public.mutate_child_profile_command(mutation_input);
+end
+$$;
+revoke all on function public.mutate_child_profile_command_as(uuid,jsonb) from public, anon, authenticated;
+grant execute on function public.mutate_child_profile_command_as(uuid,jsonb) to service_role;
+
 -- O3/O5: record which requests actually reserved finite stock.
 alter table public.redemptions add column stock_reserved boolean not null default false;
 update public.redemptions redemption set stock_reserved = true
@@ -148,11 +306,17 @@ begin
     and is_active
   for share;
   if not found then raise exception 'activity_not_found'; end if;
+  -- No family/device timezone is stored. A local day may be the UTC date minus one
+  -- anywhere in UTC-12..+14; reject only dates earlier than that earliest local day.
+  if target_log_date < (activity.created_at at time zone 'UTC')::date - 1 then
+    raise exception 'activity_not_started';
+  end if;
   if not coalesce((case activity.recurrence_type
     when 'daily' then true
     when 'weekdays' then extract(dow from target_log_date)::integer between 1 and 5
     when 'weekends' then extract(dow from target_log_date)::integer in (0, 6)
-    when 'custom' then extract(dow from target_log_date)::integer = any(activity.recurrence_days)
+    when 'custom' then coalesce(activity.recurrence_days, '[]'::jsonb)
+      @> jsonb_build_array(extract(dow from target_log_date)::integer)
     else false end), false) then
     raise exception 'activity_not_scheduled';
   end if;
@@ -479,6 +643,9 @@ returns trigger language plpgsql security definer set search_path = '' as $$
 declare
   request public.redemptions%rowtype;
 begin
+  -- During a family cascade the parent row is already gone. There is nobody to refund
+  -- and inserting an audit row would reference the deleted family (or child).
+  if not exists (select 1 from public.families where id = old.family_id) then return old; end if;
   perform 1 from public.redemptions
   where reward_id = old.id and family_id = old.family_id and status in ('pending', 'approved')
   order by id for update;

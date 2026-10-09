@@ -15,9 +15,22 @@ begin
     if body not like '%recompute_child_streak%' then raise exception 'Missing streak recomputation: %', function_name; end if;
   end loop;
   body := pg_catalog.pg_get_functiondef('public.complete_child_habit_command(text,uuid,date,uuid)'::regprocedure);
-  if body not like '%activity_not_scheduled%' or body not like '%activity.recurrence_days%' then
+  if body not like '%activity_not_scheduled%' or body not like '%@> jsonb_build_array(extract(dow from target_log_date)::integer)%'
+    or body like '%any(activity.recurrence_days)%'
+    or body not like '%activity_not_started%' then
     raise exception 'Child completion must enforce recurrence';
   end if;
+  if pg_catalog.has_function_privilege('authenticated', 'public.mutate_child_profile_command(jsonb)', 'EXECUTE')
+    or pg_catalog.has_function_privilege('anon', 'public.mutate_child_profile_command(jsonb)', 'EXECUTE')
+    or pg_catalog.has_function_privilege('service_role', 'public.mutate_child_profile_command(jsonb)', 'EXECUTE')
+    or pg_catalog.has_function_privilege('authenticated', 'public.mutate_child_profile_command_as(uuid,jsonb)', 'EXECUTE')
+    or pg_catalog.has_function_privilege('anon', 'public.mutate_child_profile_command_as(uuid,jsonb)', 'EXECUTE')
+    or not pg_catalog.has_function_privilege('service_role', 'public.mutate_child_profile_command_as(uuid,jsonb)', 'EXECUTE') then
+    raise exception 'Profile mutations must go through the unlocked service wrapper';
+  end if;
+  body := pg_catalog.pg_get_functiondef('public.mutate_child_profile_command(jsonb)'::regprocedure);
+  if body not like '%not between 0 and 10000%' or body not like '%not in (0, 20)%'
+    or body not like '%can_manage_family%' then raise exception 'Profile award limits and family authorization required'; end if;
   body := pg_catalog.pg_get_functiondef('public.get_child_session(text)'::regprocedure);
   if body like '%update public.%' or body like '%insert into public.%' then raise exception 'Child GET must be read-only'; end if;
   body := pg_catalog.pg_get_functiondef('public.get_parent_pin_status(uuid)'::regprocedure);

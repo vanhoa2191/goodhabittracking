@@ -5,6 +5,8 @@ import { createCorrelationId, logOperationalEvent } from '@/lib/observability/lo
 import { recordOperationalSignal } from '@/lib/observability/operational-signal';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { z } from 'zod';
+import { requireParentUnlock } from '@/lib/security/parent-unlock';
+import { callParentRpc } from '@/lib/security/parent-rpc';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
@@ -84,11 +86,13 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = await createServerSupabaseClient();
+  const locked = await requireParentUnlock(request, parent, supabase);
+  if (locked) return locked;
   const mutation = parsed.data;
   let data: unknown;
   let error: { code?: string; message?: string } | null;
   try {
-    const result = await supabase.rpc('mutate_child_profile_command', {
+    const result = await callParentRpc(parent.user.id, 'mutate_child_profile_command', {
       mutation_input: mutation,
     });
     data = result.data;

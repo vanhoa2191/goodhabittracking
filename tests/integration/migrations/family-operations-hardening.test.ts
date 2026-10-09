@@ -23,11 +23,23 @@ describe('family operations hardening migration', () => {
   it('O1 removes the direct activity write bypass', () => {
     expect(migration).toContain('revoke insert, update, delete on public.habit_activities from public, anon, authenticated');
   });
+  it('O1 closes original profile RPC and exposes only the service identity wrapper', () => {
+    expect(migration).toContain('revoke all on function public.mutate_child_profile_command(jsonb) from public, anon, authenticated, service_role');
+    expect(migration).toContain('grant execute on function public.mutate_child_profile_command_as(uuid,jsonb) to service_role');
+    expect(definition('mutate_child_profile_command')).toContain('not public.can_manage_family(actor_family_id)');
+    expect(definition('mutate_child_profile_command')).toContain('not between 0 and 10000');
+    expect(definition('mutate_child_profile_command')).toContain("jsonb_typeof(activity->'requiresApproval') is distinct from 'boolean'");
+    expect(definition('mutate_child_profile_command_as')).toContain('public.act_as_user(actor_user_id)');
+  });
   it('O2 enforces daily/weekdays/weekends/custom on child dates and retains parent backfill', () => {
     const child = definition('complete_child_habit_command');
     for (const recurrence of ['daily', 'weekdays', 'weekends', 'custom']) expect(child).toContain(`when '${recurrence}'`);
     expect(child).toContain('extract(dow from target_log_date)');
-    expect(child).toContain('any(activity.recurrence_days)');
+    expect(child).not.toMatch(/=\s*any\s*\(\s*activity\.recurrence_days/i);
+    expect(child).toContain("coalesce(activity.recurrence_days, '[]'::jsonb)");
+    expect(child).toContain('@> jsonb_build_array(extract(dow from target_log_date)::integer)');
+    expect(child).toContain("(activity.created_at at time zone 'UTC')::date - 1");
+    expect(child.indexOf('activity_not_started')).toBeLessThan(child.indexOf('insert into public.activity_logs'));
     expect(child.indexOf('activity_not_scheduled')).toBeLessThan(child.indexOf('insert into public.activity_logs'));
     expect(definition('complete_habit_command')).not.toContain('activity_not_scheduled');
   });
@@ -37,6 +49,7 @@ describe('family operations hardening migration', () => {
     expect(body).toContain('points = points + request.points_spent');
     expect(body).toContain("'reward_deleted'");
     expect(body).toContain('insert into public.reward_refund_events');
+    expect(body).toContain('if not exists (select 1 from public.families where id = old.family_id) then return old; end if;');
     expect(migration).toContain('before delete on public.rewards');
     expect(migration).not.toMatch(/reward_id uuid[^,]*references public\.rewards/);
   });

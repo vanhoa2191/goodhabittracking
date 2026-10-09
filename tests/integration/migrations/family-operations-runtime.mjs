@@ -6,11 +6,11 @@ import { readFileSync, readdirSync } from 'node:fs';
 import assert from 'node:assert/strict';
 const { PGlite } = await import(process.env.PGLITE_MODULE_PATH ?? '@electric-sql/pglite');
 const baseline = process.env.OPS_RUNTIME_BASELINE === '1';
-const migrationPath = 'supabase/migrations/202610090030_family_operations_hardening.sql';
+const migrationPath = process.env.OPS_RUNTIME_MIGRATION_PATH ?? 'supabase/migrations/202610090030_family_operations_hardening.sql';
 const baselineFiles = readdirSync('supabase/migrations').filter((name) => name.endsWith('.sql') && !name.startsWith('20261009003')).sort();
 const names = ['complete_habit_command', 'complete_child_habit_command', 'undo_habit_command', 'undo_child_habit_command',
   'review_habit_command', 'redeem_reward_command', 'redeem_child_reward_command', 'transition_redemption_command',
-  'get_parent_pin_status', 'verify_parent_pin', 'set_parent_pin', 'claim_lifecycle_messages', 'get_child_session', 'open_daily_mascot_letter'];
+  'get_parent_pin_status', 'verify_parent_pin', 'set_parent_pin', 'claim_lifecycle_messages', 'get_child_session', 'open_daily_mascot_letter', 'mutate_child_profile_command', 'act_as_user', 'current_family_id', 'can_manage_family'];
 const oldDefinitions = names.map((name) => {
   let definition;
   for (const file of baselineFiles) {
@@ -26,37 +26,49 @@ const activity = '00000000-0000-4000-8000-000000000003';
 const reward = '00000000-0000-4000-8000-000000000004';
 const user = '00000000-0000-4000-8000-000000000005';
 const uuid = () => crypto.randomUUID();
+// Fixture is a projection, not a full production schema. Types cross-checked against:
+// 202609190001 (family/member/profile additions, parent/device columns and cascade FKs),
+// 202609190002 (last_seen_at), 202609200001/202610020003 (typed profile/starter records),
+// 202609210004 (instructions), 202609220001/202609240001 (framework/legacy refs),
+// 202609230001 (letters), 202609270004 (PIN), 202609280001 (outbox/suppressions),
+// 202610040002/003 (graduation/focus). recurrence_days is JSONB: 202609270003
+// serializes integer[] with to_jsonb on INSERT; 202610030002 uses JSONB containment.
+// Legacy base CREATE TABLE statements are absent from this repo; base scalar types
+// follow the typed SQL command records/casts. No remote schema inspection is used.
 const fixture = `
 create role anon; create role authenticated; create role service_role;
 create schema auth; create schema extensions;
 create table auth.users (id uuid primary key, email text);
-create function auth.uid() returns uuid language sql as $$ select '${user}'::uuid $$;
+create function auth.uid() returns uuid language sql as $$ select coalesce(nullif(current_setting('request.jwt.claim.sub',true),''),'${user}')::uuid $$;
 create function public.current_family_id() returns uuid language sql as $$ select '${family}'::uuid $$;
 create function public.can_manage_family(uuid) returns boolean language sql as $$ select $1 = '${family}'::uuid $$;
 -- Stub cryptographic primitives only: tests cover RPC locking/version contracts, not bcrypt.
 create function extensions.crypt(text,text) returns text language sql as $$ select $1 $$;
 create function extensions.gen_salt(text,integer) returns text language sql as $$ select 'salt' $$;
 create table families (id uuid primary key);
-create table child_profiles (id uuid primary key, family_id uuid, points integer default 100, total_earned integer default 100,
+create table family_memberships (family_id uuid references families(id) on delete cascade,
+ user_id uuid references auth.users(id) on delete cascade, role text, created_at timestamptz default now(), primary key(family_id,user_id));
+create table child_profiles (id uuid primary key, family_id uuid references families(id) on delete cascade, user_id uuid,
+ show_real_name_on_leaderboard boolean, is_public_on_leaderboard boolean, points integer default 100, total_earned integer default 100,
  level integer default 2, streak integer default 0, last_active_date date, name text, nickname text, avatar text,
  theme_color text, birth_year integer, age_stage text, age_band_override text, league_tier text, created_at timestamptz default now());
-create table habit_activities (id uuid primary key, family_id uuid, child_id uuid, user_id uuid, points integer default 10,
- requires_approval boolean default false, is_active boolean default true, recurrence_type text default 'daily', recurrence_days integer[],
+create table habit_activities (id uuid primary key, family_id uuid references families(id) on delete cascade, child_id uuid references child_profiles(id) on delete cascade, user_id uuid, points integer default 10,
+ requires_approval boolean default false, is_active boolean default true, recurrence_type text default 'daily', recurrence_days jsonb,
  title text, description text, instructions text, icon text, category text, time_of_day text, duration_minutes integer,
  target_age_stage text, is_parent_role boolean, portrait16_key text, bo_thi7_key text, framework_habit_id text, framework_content_version text,
  legacy_template_id text, graduated_at timestamptz, offered_for_focus boolean, created_at timestamptz default now());
-create table activity_logs (id uuid primary key, family_id uuid, user_id uuid, activity_id uuid, child_id uuid,
+create table activity_logs (id uuid primary key, family_id uuid references families(id) on delete cascade, user_id uuid, activity_id uuid references habit_activities(id) on delete cascade, child_id uuid references child_profiles(id) on delete cascade,
  log_date date, status text, points_awarded integer, completed_at timestamptz default now(), proof_note text,
  unique(activity_id, child_id, log_date));
-create table rewards (id uuid primary key, family_id uuid, stock integer default 1, cost_points integer default 40,
+create table rewards (id uuid primary key, family_id uuid references families(id) on delete cascade, stock integer default 1, cost_points integer default 40,
  is_active boolean default true, title text, description text, icon text, created_at timestamptz default now());
-create table redemptions (id uuid primary key, family_id uuid, user_id uuid, reward_id uuid references rewards(id) on delete cascade,
- child_id uuid, points_spent integer, status text, resolved_at timestamptz, requested_at timestamptz default now());
-create table device_sessions (id uuid primary key, family_id uuid, child_id uuid, token_hash text, revoked_at timestamptz,
+create table redemptions (id uuid primary key, family_id uuid references families(id) on delete cascade, user_id uuid, reward_id uuid references rewards(id) on delete cascade,
+ child_id uuid references child_profiles(id) on delete cascade, points_spent integer, status text, resolved_at timestamptz, requested_at timestamptz default now());
+create table device_sessions (id uuid primary key, family_id uuid references families(id) on delete cascade, child_id uuid references child_profiles(id) on delete cascade, token_hash text, revoked_at timestamptz,
  expires_at timestamptz, capabilities text[], last_seen_at timestamptz);
 create table child_weekly_focus (family_id uuid, child_id uuid, week_start date, activity_ids uuid[], chosen_by text);
 create table daily_mascot_letters (family_id uuid, child_id uuid, local_date date, template_key text, read_at timestamptz, unique(child_id,local_date));
-create table parent_settings (family_id uuid primary key, parent_pin_hash text, parent_pin_configured_at timestamptz,
+create table parent_settings (family_id uuid primary key references families(id) on delete cascade, parent_pin_hash text, parent_pin_configured_at timestamptz,
  parent_pin_failed_attempts integer default 0, parent_pin_locked_until timestamptz, updated_at timestamptz);
 create table parent_profiles (user_id uuid primary key, marketing_consent boolean);
 create table lifecycle_outbox (id uuid primary key, user_id uuid, status text, locked_at timestamptz, updated_at timestamptz,
@@ -78,8 +90,9 @@ async function database() {
   grant execute on function claim_lifecycle_messages(integer) to service_role;`);
   if (!baseline) await db.exec(readFileSync(migrationPath, 'utf8'));
   await db.exec(`insert into families values ('${family}'); insert into auth.users values ('${user}','parent@example.test');
+    insert into family_memberships(family_id,user_id,role) values ('${family}','${user}','owner');
     insert into child_profiles(id,family_id) values ('${child}','${family}');
-    insert into habit_activities(id,family_id,child_id,recurrence_days) values ('${activity}','${family}','${child}',array[0,1,2,3,4,5,6]);
+    insert into habit_activities(id,family_id,child_id,recurrence_days) values ('${activity}','${family}','${child}','[0,1,2,3,4,5,6]'::jsonb);
     insert into rewards(id,family_id) values ('${reward}','${family}');
     insert into device_sessions values ('${uuid()}','${family}','${child}','token',null,now()+interval '1 day',array['child:read','child:complete'],timestamp '2000-01-01');`);
   return db;
@@ -98,8 +111,70 @@ async function test(name, work) {
 await test('O1 authenticated direct activity policy write is denied', async (db) => {
   assert.equal(await scalar(db,"select has_table_privilege('authenticated','habit_activities','UPDATE') as value"), false);
 });
+await test('O1 profile original/browser wrapper closed; service wrapper allowed', async (db) => {
+  for (const role of ['anon','authenticated','service_role']) {
+    assert.equal(await scalar(db, `select has_function_privilege('${role}','mutate_child_profile_command(jsonb)','EXECUTE') as value`),false);
+  }
+  for (const role of ['anon','authenticated']) {
+    assert.equal(await scalar(db, `select has_function_privilege('${role}','mutate_child_profile_command_as(uuid,jsonb)','EXECUTE') as value`),false);
+  }
+  assert.equal(await scalar(db, "select has_function_privilege('service_role','mutate_child_profile_command_as(uuid,jsonb)','EXECUTE') as value"),true);
+});
+const profileInput = (id=uuid()) => ({ type:'create', profile:{ id, name:'Child', avatar:'🦁',themeColor:'#123456',points:0,totalEarned:0,level:1,streak:0,createdAt:new Date().toISOString() },starterActivities:[] });
+const starterInput = (childId) => ({ id:uuid(),childId,title:'Read',icon:'📖',category:'study',points:10,recurrenceType:'daily',recurrenceDays:[0,1,2,3,4,5,6],timeOfDay:'anytime',requiresApproval:false,isActive:true,createdAt:new Date().toISOString() });
+await test('O1 profile rejects invalid starting points and starter awards atomically', async (db) => {
+  for (const points of [-1,21,100000,null,0.5,'20']) {
+    const input=profileInput(); input.profile.points=points; input.profile.totalEarned=points;
+    await assert.rejects(command(db,'mutate_child_profile_command_as',[user,input]),/invalid_initial_progress/);
+  }
+  for (const points of [-1,10001,null,0.5,'20']) {
+    const input=profileInput(); input.starterActivities=[{...starterInput(input.profile.id),points}];
+    await assert.rejects(command(db,'mutate_child_profile_command_as',[user,input]),/invalid_starter_activities/);
+  }
+  const input=profileInput(); input.starterActivities=[{...starterInput(input.profile.id),requiresApproval:null}];
+  await assert.rejects(command(db,'mutate_child_profile_command_as',[user,input]),/invalid_starter_activities/);
+  assert.equal(await scalar(db,'select count(*)::integer as value from child_profiles'),1);
+});
+await test('O1 parent profile service wrapper accepts bounded starter activities and preserves JSONB', async (db) => {
+  const input=profileInput(); input.profile.points=20; input.profile.totalEarned=20;
+  input.starterActivities=[{...starterInput(input.profile.id),points:0}, {...starterInput(input.profile.id),points:10000,requiresApproval:true}];
+  assert.equal((await command(db,'mutate_child_profile_command_as',[user,input])).profileId,input.profile.id);
+  await command(db,'mutate_child_profile_command_as',[user,{type:'update',profileId:input.profile.id,updates:{name:'Updated'}}]);
+  assert.equal(await scalar(db,`select name as value from child_profiles where id='${input.profile.id}'`),'Updated');
+  assert.deepEqual(await scalar(db,`select recurrence_days as value from habit_activities where child_id='${input.profile.id}' limit 1`),[0,1,2,3,4,5,6]);
+});
+await test('O1 profile service wrapper excludes caregivers and other-family profiles', async (db) => {
+  await db.exec("update family_memberships set role='caregiver'");
+  await assert.rejects(command(db,'mutate_child_profile_command_as',[user,profileInput()]),/profile_access_denied/);
+  await db.exec("update family_memberships set role='owner'");
+  const otherFamily=uuid(), otherChild=uuid();
+  await db.query('insert into families values ($1)',[otherFamily]);
+  await db.query('insert into child_profiles(id,family_id) values ($1,$2)',[otherChild,otherFamily]);
+  await assert.rejects(command(db,'mutate_child_profile_command_as',[user,{ type:'update',profileId:otherChild,updates:{name:'Changed'} }]),/profile_not_found/);
+  await assert.rejects(command(db,'mutate_child_profile_command_as',[user,profileInput(otherChild)]),/profile_conflict/);
+});
+await test('O2 child DAILY completion today succeeds with real JSONB recurrence_days', async (db) => {
+  const today=await scalar(db,'select current_date::text as value');
+  assert.equal((await command(db,'complete_child_habit_command',['token',activity,today,uuid()])).status,'completed');
+});
+await test('O2 child CUSTOM scheduled day succeeds; unscheduled day rejects', async (db) => {
+  const today=await scalar(db,'select current_date::text as value');
+  await db.exec("update habit_activities set recurrence_type='custom',recurrence_days=jsonb_build_array(extract(dow from current_date)::integer)");
+  assert.equal((await command(db,'complete_child_habit_command',['token',activity,today,uuid()])).status,'completed');
+  await db.exec('delete from activity_logs');
+  await db.exec('update habit_activities set recurrence_days=jsonb_build_array((extract(dow from current_date)::integer+1)%7)');
+  await assert.rejects(command(db,'complete_child_habit_command',['token',activity,today,uuid()]),/activity_not_scheduled/);
+});
+await test('O2 creation local-day bounds: UTC-1 accepted, earlier rejected; parent backfill accepted', async (db) => {
+  const earliest=await scalar(db,'select (current_date-1)::text as value');
+  const before=await scalar(db,'select (current_date-2)::text as value');
+  await db.exec("update habit_activities set created_at=(current_date::text || ' 00:30:00+00')::timestamptz");
+  assert.equal((await command(db,'complete_child_habit_command',['token',activity,earliest,uuid()])).status,'completed');
+  await assert.rejects(command(db,'complete_child_habit_command',['token',activity,before,uuid()]),/activity_not_started/);
+  assert.equal((await command(db,'complete_habit_command',[activity,child,before,uuid()])).status,'completed');
+});
 await test('O2 off-schedule child rejected; parent backfill accepted', async (db) => {
-  await db.exec("update habit_activities set recurrence_type='custom',recurrence_days=array[(extract(dow from current_date)::integer+1)%7]");
+  await db.exec("update habit_activities set recurrence_type='custom',recurrence_days=jsonb_build_array((extract(dow from current_date)::integer+1)%7)");
   const today = await scalar(db,'select current_date::text as value');
   await assert.rejects(command(db,'complete_child_habit_command',['token',activity,today,uuid()]), /activity_not_scheduled/);
   assert.equal(await scalar(db,'select count(*)::integer as value from activity_logs'), 0);
@@ -110,7 +185,7 @@ await test('O2 daily/weekday/weekend/custom due dates accepted and excluded week
   for (const type of ['daily','weekdays','weekends','custom']) {
     for (const day of days) {
       await db.exec('delete from activity_logs');
-      await db.query('update habit_activities set recurrence_type=$1,recurrence_days=array[1,3,5]',[type]);
+      await db.query("update habit_activities set recurrence_type=$1,recurrence_days='[1,3,5]'::jsonb,created_at=now()-interval '5 days'",[type]);
       const due = type === 'daily' || (type === 'weekdays' && day.dow >= 1 && day.dow <= 5)
         || (type === 'weekends' && [0,6].includes(day.dow)) || (type === 'custom' && [1,3,5].includes(day.dow));
       const call = command(db,'complete_child_habit_command',['token',activity,day.date,uuid()]);
@@ -131,6 +206,15 @@ await test('O3 delete refunds pending and approved, excludes delivered/rejected,
   assert.equal(await scalar(db,`select points as value from child_profiles where id='${child}'`),180);
   assert.equal(await scalar(db,'select count(*)::integer as value from redemptions'),0);
   assert.equal(await scalar(db,"select count(*)::integer as value from reward_refund_events where reason='reward_deleted'"),2);
+});
+await test('O3 whole-family deletion with pending reward requests cascades without refund FK failure', async (db) => {
+  for (const status of ['pending','approved']) {
+    await db.query('insert into redemptions(id,family_id,reward_id,child_id,points_spent,status) values ($1,$2,$3,$4,40,$5)',[uuid(),family,reward,child,status]);
+  }
+  await db.exec(`delete from families where id='${family}'`);
+  for (const table of ['families','child_profiles','habit_activities','activity_logs','rewards','redemptions','reward_refund_events','device_sessions']) {
+    assert.equal(await scalar(db,`select count(*)::integer as value from ${table}`),0,table);
+  }
 });
 await test('O4 verify/set returns its own version rather than later status', async (db) => {
   const initial = await command(db,'set_parent_pin',[family,null,'1234']);
@@ -227,5 +311,5 @@ await test('S3 PIN status with no settings row returns unconfigured without inse
 if (!baseline) await test('migration catalog preflight passes with closed original command grants', async (db) => {
   await db.exec(readFileSync('supabase/preflight/202610090030_family_operations_hardening.verify.sql','utf8'));
 });
-console.log(`${baseline?'BASELINE':'FIXED'}: ${failures} failures`);
+console.log(`${baseline ? 'BASELINE' : process.env.OPS_RUNTIME_MIGRATION_PATH ? 'REVIEWED' : 'FIXED'}: ${failures} failures`);
 process.exitCode = failures ? 1 : 0;

@@ -111,6 +111,9 @@ export function createProfileActions(dependencies: Dependencies): ProfileActions
       }
       return { success: true, profileId: result.profileId, refreshed: synced };
     } catch (error: unknown) {
+      if (error instanceof ProfileMutationRequestError && error.code === 'parent_pin_required') {
+        return { success: false, code: error.code };
+      }
       dependencies.setCloudSyncActive(false);
       console.error(
         'Saving child profile failed:',

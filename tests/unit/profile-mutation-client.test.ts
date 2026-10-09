@@ -35,6 +35,14 @@ describe('profile mutation client', () => {
     expect(body).not.toEqual(expect.stringContaining('userId'));
   });
 
+  it('preserves the PIN response so the global unlock flow can be retried', async () => {
+    const requester = vi.fn<ProfileMutationRequester>(async () => new Response(JSON.stringify({
+      error: 'Parent PIN required.', code: 'parent_pin_required',
+    }), { status: 403 }));
+    await expect(requestProfileMutation({ type: 'create', profile, starterActivities: [] }, requester))
+      .rejects.toMatchObject({ status: 403, code: 'parent_pin_required' });
+  });
+
   it('rejects malformed success payloads', async () => {
     const requester = vi.fn<ProfileMutationRequester>(
       async () => new Response(JSON.stringify({ success: true }), { status: 200 }),
