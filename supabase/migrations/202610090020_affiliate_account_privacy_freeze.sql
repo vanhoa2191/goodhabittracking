@@ -2,14 +2,70 @@ begin;
 
 -- New commissions use the longer hold; existing available_at values are deliberately untouched.
 alter table public.affiliate_settings alter column hold_days set default 40;
-update public.affiliate_settings set hold_days = 40, updated_at = now() where singleton;
+alter table public.affiliate_settings alter column terms_version set default '2026-10-09';
+update public.affiliate_settings set hold_days = 40, terms_version = '2026-10-09', updated_at = now() where singleton;
 
--- Claims are serialized on auth.users and reject any existing user attribution. Legacy duplicate
--- rows remain intact to avoid moving historical earnings between referrers; accrual uses the first.
+-- Refund evidence survives deletion of the customer's family, account and support cases.
+alter table public.referral_commissions add column refund_confirmed_at timestamptz;
+update public.referral_commissions commission
+set refund_confirmed_at = coalesce(support_case.resolved_at, support_case.updated_at, now()),
+    reverse_reason = coalesce(commission.reverse_reason, 'manual_refund_confirmed'),
+    status = case when commission.status = 'pending' then 'reversed' else commission.status end,
+    reversed_at = case when commission.status = 'pending'
+      then coalesce(support_case.resolved_at, support_case.updated_at, now()) else commission.reversed_at end
+from public.billing_support_cases support_case
+where support_case.order_code = commission.order_code
+  and support_case.status = 'completed' and support_case.resolution_code = 'manual_refund_confirmed';
+
+-- Claims use an advisory lock on the referred owner, not a lock on GoTrue's auth.users.
+-- Legacy duplicate rows remain intact; accrual uses the first account attribution.
 create index referrals_referred_user_idx on public.referrals (referred_user_id, created_at, id);
 
--- All order-linked open billing cases freeze commissions. A confirmed refund continues blocking
--- after the case closes, including commissions already attached to a pending payout.
+-- Re-enrolment accepts the current terms without changing the referrer's code or earnings.
+create or replace function public.affiliate_enroll(accept_terms boolean)
+returns text
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  actor uuid := auth.uid();
+  settings public.affiliate_settings%rowtype;
+  existing public.affiliate_accounts%rowtype;
+  alphabet constant text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  candidate text;
+  attempt integer := 0;
+begin
+  if actor is null then raise exception 'authentication_required'; end if;
+  select * into settings from public.affiliate_settings where singleton;
+  if not settings.enabled then raise exception 'affiliate_disabled'; end if;
+  perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtext(actor::text));
+  select * into existing from public.affiliate_accounts where user_id = actor for update;
+  if found and existing.terms_version = settings.terms_version then return existing.code; end if;
+  if accept_terms is distinct from true then raise exception 'terms_required'; end if;
+  if existing.user_id is not null then
+    update public.affiliate_accounts set terms_version = settings.terms_version, terms_accepted_at = now()
+    where user_id = actor;
+    return existing.code;
+  end if;
+  loop
+    attempt := attempt + 1;
+    candidate := '';
+    for slot in 1..8 loop
+      candidate := candidate || substr(alphabet, 1 + floor(random() * 32)::integer, 1);
+    end loop;
+    begin
+      insert into public.affiliate_accounts (user_id, code, terms_version)
+      values (actor, candidate, settings.terms_version);
+      return candidate;
+    exception when unique_violation then
+      if attempt >= 10 then raise exception 'code_generation_failed'; end if;
+    end;
+  end loop;
+end
+$$;
+
+-- Open cases freeze commissions; confirmed refunds are derived from the durable commission record.
 create or replace function public.affiliate_commission_block_reason(target_order_code bigint)
 returns text
 language sql
@@ -18,10 +74,9 @@ security definer
 set search_path = ''
 as $$
   select case
-    when exists (select 1 from public.billing_support_cases support_case
-                 where support_case.order_code = target_order_code
-                   and support_case.status = 'completed'
-                   and support_case.resolution_code = 'manual_refund_confirmed') then 'refund_confirmed'
+    when exists (select 1 from public.referral_commissions commission
+                 where commission.order_code = target_order_code
+                   and commission.refund_confirmed_at is not null) then 'refund_confirmed'
     when exists (select 1 from public.billing_support_cases support_case
                  where support_case.order_code = target_order_code
                    and support_case.status in ('requested', 'reviewing', 'approved')) then 'billing_case_open'
@@ -62,6 +117,7 @@ declare
   actor uuid := auth.uid();
   actor_family uuid := public.current_family_id();
   settings public.affiliate_settings%rowtype;
+  referred_actor uuid;
   account public.affiliate_accounts%rowtype;
   account_created timestamptz;
 begin
@@ -69,10 +125,13 @@ begin
   if not public.can_manage_family(actor_family) then raise exception 'family_manager_required'; end if;
   select * into settings from public.affiliate_settings where singleton;
   if not settings.enabled then return 'disabled'; end if;
+  select membership.user_id into referred_actor from public.family_memberships membership
+  where membership.family_id = actor_family and membership.role = 'owner';
+  if referred_actor is null then raise exception 'family_owner_required'; end if;
 
   select * into account from public.affiliate_accounts where code = upper(trim(coalesce(referral_code, '')));
   if not found or account.status <> 'active' then return 'invalid'; end if;
-  if account.user_id = actor
+  if account.user_id = referred_actor
     or exists (
       select 1 from public.family_memberships membership
       where membership.user_id = account.user_id and membership.family_id = actor_family
@@ -80,18 +139,23 @@ begin
     return 'self';
   end if;
 
-  -- Serialize account claims even across deleted/recreated families.
-  select user_account.created_at into account_created from auth.users user_account where user_account.id = actor for update;
-  if exists (select 1 from public.referrals where referred_user_id = actor or referred_family_id = actor_family) then return 'already_referred'; end if;
+  -- Serialize owner attribution even across deleted/recreated families.
+  perform pg_catalog.pg_advisory_xact_lock(pg_catalog.hashtext(referred_actor::text));
+  select user_account.created_at into account_created from auth.users user_account where user_account.id = referred_actor;
+  if exists (select 1 from public.referrals where referred_user_id = referred_actor or referred_family_id = actor_family) then return 'already_referred'; end if;
 
   perform 1 from public.families family where family.id = actor_family for update;
   if account_created is null or account_created < now() - make_interval(days => settings.attribution_days) then return 'expired'; end if;
-  if exists (select 1 from public.payment_orders payment_order where (payment_order.user_id = actor or payment_order.family_id = actor_family) and payment_order.status = 'PAID') then
+  if exists (
+    select 1 from public.payment_orders payment_order
+    join public.family_memberships owner on owner.family_id = payment_order.family_id and owner.role = 'owner'
+    where owner.user_id = referred_actor and payment_order.status = 'PAID'
+  ) then
     return 'expired';
   end if;
 
   insert into public.referrals (referrer_user_id, referred_family_id, referred_user_id, code)
-  values (account.user_id, actor_family, actor, account.code)
+  values (account.user_id, actor_family, referred_actor, account.code)
   on conflict do nothing;
   if not found then return 'already_referred'; end if;
   return 'claimed';
@@ -109,17 +173,24 @@ declare
   actor uuid := auth.uid();
   actor_family uuid := public.current_family_id();
   settings public.affiliate_settings%rowtype;
+  referred_actor uuid;
   account_created timestamptz;
 begin
   if actor is null or actor_family is null then raise exception 'family_membership_required'; end if;
   select * into settings from public.affiliate_settings where singleton;
   if not settings.enabled then return 'disabled'; end if;
-  if exists (select 1 from public.referrals where referred_user_id = actor or referred_family_id = actor_family) then return 'referred'; end if;
+  select membership.user_id into referred_actor from public.family_memberships membership
+  where membership.family_id = actor_family and membership.role = 'owner';
+  if exists (select 1 from public.referrals where referred_user_id = referred_actor or referred_family_id = actor_family) then return 'referred'; end if;
   if not public.can_manage_family(actor_family) then return 'closed'; end if;
 
-  select user_account.created_at into account_created from auth.users user_account where user_account.id = actor;
+  select user_account.created_at into account_created from auth.users user_account where user_account.id = referred_actor;
   if account_created is null or account_created < now() - make_interval(days => settings.attribution_days) then return 'closed'; end if;
-  if exists (select 1 from public.payment_orders payment_order where (payment_order.user_id = actor or payment_order.family_id = actor_family) and payment_order.status = 'PAID') then
+  if exists (
+    select 1 from public.payment_orders payment_order
+    join public.family_memberships owner on owner.family_id = payment_order.family_id and owner.role = 'owner'
+    where owner.user_id = referred_actor and payment_order.status = 'PAID'
+  ) then
     return 'closed';
   end if;
   return 'eligible';
@@ -146,8 +217,11 @@ begin
   select * into paid_order from public.payment_orders where order_code = target_order_code and status = 'PAID';
   if not found or paid_order.family_id is null then return; end if;
 
-  select * into referral from public.referrals where referred_user_id = paid_order.user_id
-  order by created_at, id limit 1;
+  select attribution.* into referral
+  from public.referrals attribution
+  join public.family_memberships owner on owner.user_id = attribution.referred_user_id
+    and owner.family_id = paid_order.family_id and owner.role = 'owner'
+  order by attribution.created_at, attribution.id limit 1;
   if not found or referral.referrer_user_id is null then return; end if;
 
   select * into account from public.affiliate_accounts where user_id = referral.referrer_user_id;
@@ -192,6 +266,7 @@ begin
   select * into account from public.affiliate_accounts where user_id = target_user for update;
   if not found then return jsonb_build_object('status', 'not_enrolled'); end if;
   if account.status <> 'active' then return jsonb_build_object('status', 'suspended'); end if;
+  if account.terms_version <> settings.terms_version then return jsonb_build_object('status', 'terms_required'); end if;
   if account.payout_bank is null or account.payout_account_number is null or account.payout_account_name is null then
     return jsonb_build_object('status', 'missing_details');
   end if;
@@ -305,7 +380,11 @@ begin
   if resolution = 'paid' then
     update public.referral_commissions set status = 'paid' where payout_id = payout.id and status = 'requested';
   else
-    update public.referral_commissions set status = 'pending', payout_id = null where payout_id = payout.id and status = 'requested';
+    update public.referral_commissions
+    set status = case when refund_confirmed_at is not null then 'reversed' else 'pending' end,
+        reversed_at = case when refund_confirmed_at is not null then now() else reversed_at end,
+        payout_id = null
+    where payout_id = payout.id and status = 'requested';
   end if;
   return resolution;
 end
@@ -364,6 +443,7 @@ begin
     'enabled', settings.enabled,
     'code', account.code,
     'status', account.status,
+    'termsAccepted', account.terms_version = settings.terms_version,
     'signups', signups,
     'paying', paying,
     'amounts', jsonb_build_object('held', held, 'available', available, 'requested', requested, 'paid', paid),
@@ -452,6 +532,10 @@ begin
   select * into commission from public.referral_commissions where order_code = target_order_code for update;
   if not found then return 'no_commission'; end if;
   if commission.status = 'reversed' then return 'already_reversed'; end if;
+  update public.referral_commissions
+  set refund_confirmed_at = coalesce(refund_confirmed_at, now()),
+      reverse_reason = left(coalesce(reason, ''), 300)
+  where id = commission.id;
   if commission.status = 'requested' then return 'in_payout'; end if;
   if commission.status = 'paid' then return 'already_paid'; end if;
   update public.referral_commissions
@@ -461,6 +545,8 @@ begin
 end
 $$;
 
+revoke all on function public.affiliate_enroll(boolean) from public, anon;
+grant execute on function public.affiliate_enroll(boolean) to authenticated;
 revoke all on function public.claim_referral(text) from public, anon;
 grant execute on function public.claim_referral(text) to authenticated;
 revoke all on function public.referral_claim_state() from public, anon;

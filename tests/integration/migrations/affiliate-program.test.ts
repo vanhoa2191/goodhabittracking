@@ -18,6 +18,17 @@ describe('affiliate programme migration contract', () => {
     await expect(parse(verification)).resolves.toBeDefined();
   });
 
+  it('sets the published commission, attribution, earning window and payout minimum defaults', () => {
+    expect(migration).toContain('enabled boolean not null default true');
+    expect(migration).toContain('commission_bps integer not null default 3000');
+    expect(migration).toContain('attribution_days integer not null default 60');
+    expect(migration).toContain('earning_window_days integer not null default 365');
+    expect(migration).toContain('min_payout_vnd integer not null default 200000');
+    const currentPolicy = readFileSync(resolve('supabase/migrations/202610090020_affiliate_account_privacy_freeze.sql'), 'utf8');
+    expect(currentPolicy).toContain('alter column hold_days set default 40');
+    expect(currentPolicy).toContain("alter column terms_version set default '2026-10-09'");
+  });
+
 
   it('keeps every affiliate table private to the database functions', () => {
     for (const table of ['affiliate_settings', 'affiliate_accounts', 'referrals', 'affiliate_payouts', 'referral_commissions']) {

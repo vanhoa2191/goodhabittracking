@@ -19,7 +19,7 @@ vi.mock('@/components/help/HelpTip', () => ({ HelpTip: () => null }));
 beforeEach(() => {
   hooks.index = 0;
   hooks.overview = {
-    enrolled: true, enabled: true, code: 'ABCDEFGH', status: 'active', signups: 17, paying: 9,
+    enrolled: true, enabled: true, termsAccepted: true, code: 'ABCDEFGH', status: 'active', signups: 17, paying: 9,
     amounts: { held: 111111, available: 222222, requested: 333333, paid: 444444 },
     payout: { bank: 'Bank', accountLast4: '1234', accountName: 'Affiliate', complete: true },
     settings: { commissionBps: 3000, attributionDays: 60, earningWindowDays: 365, holdDays: 35, minPayout: 100000 },
@@ -39,5 +39,15 @@ describe('AffiliateCard aggregate privacy', () => {
     expect(obsoleteHtml).toBe(aggregateHtml);
     const values = [...obsoleteHtml.matchAll(/<dd\b[^>]*>(.*?)<\/dd>/g)].map((match) => match[1]);
     expect(values).toEqual(['17', '9', '111,111 VND', '222,222 VND', '333,333 VND', '444,444 VND']);
+  });
+
+  it('requires existing referrers to accept changed terms before displaying sharing and withdrawal controls', () => {
+    hooks.overview.termsAccepted = false;
+    const html = renderToStaticMarkup(createElement(AffiliateCard));
+    expect(html).toContain('type="checkbox"');
+    expect(html).toContain('I have read and accept the referral programme terms.');
+    expect(html).toMatch(/<button[^>]*disabled/);
+    expect(html).not.toContain('data-testid="affiliate-link"');
+    expect(html).not.toContain('data-testid="affiliate-request"');
   });
 });

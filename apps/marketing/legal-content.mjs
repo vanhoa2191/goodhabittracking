@@ -270,8 +270,9 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         title: '2. Hoa hồng bao nhiêu và tính thế nào',
         blocks: [
           'Hoa hồng là 30% số tiền gia đình được giới thiệu thực trả cho mỗi khoản thanh toán, làm tròn xuống đồng gần nhất, cho mọi thanh toán trong 12 tháng đầu kể từ ngày họ tạo tài khoản. Dùng thử miễn phí không phát sinh hoa hồng.',
+          'Đơn hàng sinh hoa hồng phải thuộc gia đình do người được giới thiệu sở hữu, dù phụ huynh hoặc người giám hộ nào trong gia đình thanh toán. Thanh toán cho gia đình mà người được giới thiệu không sở hữu không sinh hoa hồng.',
           'Gia đình được giới thiệu (bằng liên kết hoặc nhập mã trong ứng dụng) được giảm 10% khi mua một trong hai gói năm (Gói Cơ bản hoặc Gói Pro) lần đầu. Hoa hồng của bạn tính trên số tiền họ thực trả sau khi giảm.',
-          'Việc ghi nhận chỉ áp dụng trong 60 ngày kể từ ngày người được giới thiệu tạo tài khoản người dùng, trước khi tài khoản đó có bất kỳ đơn nào đã thanh toán. Mỗi tài khoản chỉ gắn với một người giới thiệu; xóa hoặc tạo lại gia đình không đặt lại điều kiện hay thời hạn. Nếu có nhiều liên kết, liên kết được dùng sau cùng trước khi ghi nhận được tính.',
+          'Việc ghi nhận chỉ áp dụng trong 60 ngày kể từ ngày người được giới thiệu (chủ gia đình) tạo tài khoản người dùng, trước khi các gia đình do tài khoản đó sở hữu có đơn đã thanh toán. Mỗi tài khoản chủ gia đình chỉ gắn với một người giới thiệu; xóa hoặc tạo lại gia đình không đặt lại điều kiện hay thời hạn. Nếu có nhiều liên kết, liên kết được dùng sau cùng trước khi ghi nhận được tính.',
           'Tỉ lệ, thời hạn ghi nhận, thời hạn hưởng và mức rút tối thiểu có thể thay đổi cho các gia đình đăng ký sau thời điểm thay đổi; thay đổi được thông báo trên trang này.',
         ],
       },
@@ -279,7 +280,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         title: '3. Thời gian giữ và hoàn tiền',
         blocks: [
           'Hoa hồng mới được giữ 40 ngày kể từ lúc thanh toán thành công để bao phủ thời hạn hoàn tiền 30 ngày và thời gian xử lý. Ngày hết hạn giữ của hoa hồng đã ghi nhận trước thay đổi này không đổi. Hoa hồng tiếp tục bị đóng băng, không thể rút hoặc chi trả, trong khi đơn hàng đó có ca hỗ trợ hoàn tiền hoặc thanh toán còn mở.',
-          'Nếu đơn hàng được hoàn tiền, hoa hồng của đơn đó bị thu hồi. Nếu đã nằm trong một yêu cầu rút, KidHabit từ chối yêu cầu đó trước rồi thu hồi; nếu đã chuyển, KidHabit liên hệ người giới thiệu để thống nhất việc hoàn trả khoản hoa hồng đó, không tự động trừ vào hoa hồng sau.',
+          'Nếu đơn hàng được hoàn tiền, hoa hồng của đơn đó bị thu hồi, kể cả khi gia đình được giới thiệu sau đó xóa dữ liệu. Nếu hoa hồng đã nằm trong một yêu cầu rút, KidHabit từ chối yêu cầu đó rồi thu hồi khoản hoa hồng; nếu hoa hồng đã được chuyển, KidHabit sẽ liên hệ với bạn để thoả thuận hoàn lại.',
         ],
       },
       {
@@ -319,6 +320,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         title: '8. Thay đổi hoặc chấm dứt chương trình',
         blocks: [
           'KidHabit có thể thay đổi hoặc chấm dứt chương trình. Hoa hồng hợp lệ đã ghi nhận trước thời điểm thay đổi vẫn được xử lý theo các điều kiện áp dụng lúc đó.',
+          'Phiên bản điều khoản ngày 09/10/2026: người giới thiệu đã tham gia cần đọc và đồng ý lại trong ứng dụng trước khi tiếp tục chia sẻ liên kết hoặc yêu cầu rút tiền.',
         ],
       },
       {

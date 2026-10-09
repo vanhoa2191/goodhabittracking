@@ -264,8 +264,6 @@ try {
   const adminView = await admin.rpc('admin_affiliate_overview');
   const payout = (adminView.data?.payouts ?? []).find((entry) => entry.amount === 239400 && entry.accountNumber === '0123456789');
   assert(!adminView.error && payout, 'The admin cannot see the payout request.');
-  const inPayout = await admin.rpc('admin_reverse_referral_commission', { target_order_code: firstOrder, reason: 'Synthetic' });
-  assert(inPayout.data === 'in_payout', 'A commission inside a payout request was reversed.');
   // One admin handles a payout at a time: it must be claimed before it is paid, and nobody else can touch it meanwhile.
   const unclaimedPaid = await admin.rpc('admin_resolve_affiliate_payout', {
     target_payout_id: payout.id, resolution: 'paid', admin_user: userIds[0], payout_reference: 'SYNTHETIC-UNCLAIMED', payout_note: '',

@@ -22,6 +22,7 @@ type Overview =
       readonly enrolled: true;
       readonly enabled: boolean;
       readonly code: string;
+      readonly termsAccepted: boolean;
       readonly status: 'active' | 'suspended';
       readonly signups: number;
       readonly paying: number;
@@ -146,7 +147,7 @@ export function AffiliateCard() {
     minPayout: money(overview.settings.minPayout, language),
   });
 
-  if (!overview.enrolled) {
+  if (!overview.enrolled || !overview.termsAccepted) {
     return (
       <section data-testid="affiliate-card" className="rounded-3xl border border-slate-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900" aria-labelledby={titleId}>
         <div className="flex items-center gap-1"><h4 id={titleId} className="flex items-center gap-2 text-base font-extrabold text-slate-900 dark:text-slate-100"><Gift aria-hidden="true" className="h-4 w-4 text-indigo-600" />{copy.title}</h4><HelpTip topic="settings.affiliate" /></div>
@@ -159,7 +160,7 @@ export function AffiliateCard() {
           <span>{copy.terms} <a href={new URL('/gioi-thieu/', marketingOrigin).href} className="font-bold text-indigo-700 underline dark:text-indigo-300">{copy.termsLink}</a></span>
         </label>
         <button type="button" disabled={!accepted || busy} className={`${primary} mt-4`} onClick={() => void run({ action: 'enroll', acceptTerms: true }, async () => { await load(); return null; })}>
-          {busy ? copy.joining : copy.join}
+          {busy ? copy.joining : overview.enrolled ? copy.acceptUpdatedTerms : copy.join}
         </button>
         {notice && <p role={notice.kind === 'error' ? 'alert' : 'status'} className={`mt-3 text-sm font-semibold ${notice.kind === 'error' ? 'text-rose-700 dark:text-rose-300' : 'text-emerald-700 dark:text-emerald-300'}`}>{notice.text}</p>}
       </section>

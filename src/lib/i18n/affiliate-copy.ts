@@ -7,6 +7,7 @@ export type AffiliateCopy = {
   readonly terms: string;
   readonly termsLink: string;
   readonly join: string;
+  readonly acceptUpdatedTerms: string;
   readonly joining: string;
   readonly yourLink: string;
   readonly copy: string;
@@ -46,6 +47,7 @@ const vi: AffiliateCopy = {
   intro: (percent) => `Chia sẻ liên kết của bạn. Khi một gia đình mới đăng ký qua đó và trả tiền, bạn nhận hoa hồng ${percent}% trên mỗi khoản thanh toán của họ, và bạn bè được giảm 10% khi mua gói năm lần đầu.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `Hoa hồng ${percent}% trên số tiền thực trả, cho mọi thanh toán trong ${Math.round(windowDays / 30)} tháng đầu từ ngày tạo tài khoản người dùng được giới thiệu, không phải ngày tạo gia đình.`,
+    'Chỉ đơn của gia đình do người được giới thiệu sở hữu sinh hoa hồng, dù phụ huynh hoặc người giám hộ nào trả tiền. Thanh toán cho gia đình không sở hữu không được tính.',
     `Hoa hồng mới giữ ${holdDays} ngày từ thanh toán thành công để bao phủ hạn hoàn tiền 30 ngày và xử lý; ngày hết hạn giữ cũ không đổi. Đóng băng khi đơn có ca hỗ trợ hoàn tiền/thanh toán còn mở. Đơn hoàn tiền bị thu hồi hoa hồng; nếu đã chi, liên hệ thống nhất hoàn trả.`,
     `Rút tối thiểu ${minPayout}. KidHabit chuyển khoản thủ công và báo khi đã chuyển.`,
     'Không tự giới thiệu, không gửi thư rác. Chỉ thấy số lượng và tổng hoa hồng, không lịch sử hay thông tin từng gia đình.',
@@ -53,6 +55,7 @@ const vi: AffiliateCopy = {
   terms: 'Tôi đã đọc và đồng ý với điều khoản chương trình giới thiệu.',
   termsLink: 'Xem điều khoản',
   join: 'Tham gia chương trình',
+  acceptUpdatedTerms: 'Đồng ý điều khoản mới',
   joining: 'Đang đăng ký…',
   yourLink: 'Liên kết giới thiệu của bạn',
   copy: 'Sao chép',
@@ -112,6 +115,7 @@ const en: AffiliateCopy = {
   intro: (percent) => `Share your link. When a new family signs up through it and pays, you earn ${percent}% of each of their payments, and your friend gets 10% off their first yearly plan.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `${percent}% of the amount actually paid on every payment in the first ${Math.round(windowDays / 30)} months from creation of the referred user account, not the family.`,
+    'Only orders for a family owned by the referred user earn commission, regardless of which parent or guardian pays. Payments for a family they do not own do not count.',
     `New commissions are held for ${holdDays} days from successful payment to cover the 30-day refund window and handling; existing release dates stay unchanged. They remain frozen while that order has an open refund or billing support case. Refunded orders lose their commission; if already paid out, we contact the referrer to agree repayment.`,
     `Minimum withdrawal ${minPayout}. KidHabit pays by bank transfer by hand and tells you when it is sent.`,
     'No self-referrals or spam. You see counts and aggregate commissions only, not individual history or family details.',
@@ -119,6 +123,7 @@ const en: AffiliateCopy = {
   terms: 'I have read and accept the referral programme terms.',
   termsLink: 'Read the terms',
   join: 'Join the programme',
+  acceptUpdatedTerms: 'Accept the updated terms',
   joining: 'Joining…',
   yourLink: 'Your referral link',
   copy: 'Copy',
@@ -178,6 +183,7 @@ const fr: AffiliateCopy = {
   intro: (percent) => `Partagez votre lien. Lorsqu’une nouvelle famille s’inscrit grâce à lui et paie, vous gagnez ${percent} % de chacun de ses paiements, et votre ami bénéficie de 10 % de réduction sur son premier forfait annuel.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `${percent} % du montant réellement payé pour chaque paiement pendant les ${Math.round(windowDays / 30)} premiers mois à partir de la création du compte utilisateur parrainé, et non de la famille.`,
+    'Seules les commandes pour une famille dont l’utilisateur parrainé est propriétaire donnent droit à une commission, quel que soit le parent ou tuteur qui paie. Les autres familles ne comptent pas.',
     `Les nouvelles commissions sont retenues ${holdDays} jours à partir du paiement réussi pour couvrir le délai de remboursement de 30 jours et le traitement ; les dates de libération existantes restent inchangées. Elles restent gelées tant que la commande fait l’objet d’un dossier de remboursement ou d’assistance à la facturation ouvert. Une commande remboursée annule sa commission ; si elle a déjà été versée, nous contactons le parrain pour convenir du remboursement.`,
     `Retrait minimum : ${minPayout}. KidHabit paie manuellement par virement bancaire et vous prévient lorsque le virement est effectué.`,
     'Pas d’auto-parrainage ni de spam. Seuls les nombres et les commissions agrégées sont visibles, sans historique individuel ni informations sur les familles.',
@@ -185,6 +191,7 @@ const fr: AffiliateCopy = {
   terms: 'J’ai lu et j’accepte les conditions du programme de parrainage.',
   termsLink: 'Lire les conditions',
   join: 'Rejoindre le programme',
+  acceptUpdatedTerms: 'Accepter les nouvelles conditions',
   joining: 'Inscription…',
   yourLink: 'Votre lien de parrainage',
   copy: 'Copier',
@@ -244,6 +251,7 @@ const de: AffiliateCopy = {
   intro: (percent) => `Teile deinen Link. Wenn sich eine neue Familie darüber anmeldet und bezahlt, erhältst du ${percent} % von jeder Zahlung der Familie, und dein Freund bekommt 10 % Rabatt auf sein erstes Jahresabo.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `${percent} % des tatsächlich gezahlten Betrags für jede Zahlung in den ersten ${Math.round(windowDays / 30)} Monaten ab Erstellung des geworbenen Benutzerkontos, nicht der Familie.`,
+    'Nur Bestellungen für eine Familie, deren Eigentümer das geworbene Benutzerkonto ist, erzeugen Provisionen, unabhängig davon, welcher Elternteil oder Vormund bezahlt. Andere Familien zählen nicht.',
     `Neue Provisionen werden ab erfolgreicher Zahlung ${holdDays} Tage zurückgehalten, um die 30-tägige Erstattungsfrist und Bearbeitung abzudecken; bestehende Freigabedaten bleiben unverändert. Bei einem offenen Erstattungs- oder Abrechnungssupportfall zur Bestellung bleiben sie gesperrt. Erstattete Bestellungen verlieren ihre Provision; nach Auszahlung kontaktieren wir die werbende Person, um die Rückzahlung zu vereinbaren.`,
     `Mindestauszahlung ${minPayout}. KidHabit überweist manuell und informiert dich, sobald das Geld gesendet wurde.`,
     'Keine Selbstempfehlungen und kein Spam. Du siehst nur Anzahlen und zusammengefasste Provisionen, keine Einzelhistorie oder Familiendaten.',
@@ -251,6 +259,7 @@ const de: AffiliateCopy = {
   terms: 'Ich habe die Bedingungen des Empfehlungsprogramms gelesen und akzeptiere sie.',
   termsLink: 'Bedingungen lesen',
   join: 'Programm beitreten',
+  acceptUpdatedTerms: 'Neue Bedingungen akzeptieren',
   joining: 'Anmeldung…',
   yourLink: 'Dein Empfehlungslink',
   copy: 'Kopieren',
@@ -310,6 +319,7 @@ const it: AffiliateCopy = {
   intro: (percent) => `Condividi il tuo link. Quando una nuova famiglia si iscrive tramite il link e paga, guadagni il ${percent}% di ogni suo pagamento e il tuo amico riceve il 10% di sconto sul primo piano annuale.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `${percent}% dell’importo effettivamente pagato per ogni pagamento nei primi ${Math.round(windowDays / 30)} mesi dalla creazione dell’account utente invitato, non della famiglia.`,
+    'Solo gli ordini per una famiglia di cui l’utente invitato è proprietario generano commissioni, indipendentemente dal genitore o tutore che paga. Le altre famiglie non contano.',
     `Le nuove commissioni restano in attesa per ${holdDays} giorni dal pagamento riuscito per coprire i 30 giorni per il rimborso e la gestione; le date di sblocco esistenti non cambiano. Restano bloccate se l’ordine ha una pratica di rimborso o assistenza sulla fatturazione aperta. Un ordine rimborsato annulla la commissione; se già pagata, contattiamo chi ha invitato per concordare la restituzione.`,
     `Prelievo minimo ${minPayout}. KidHabit paga manualmente con bonifico bancario e ti avvisa quando viene inviato.`,
     'Niente auto-inviti o spam. Vedi solo conteggi e commissioni aggregate, non cronologie individuali o dati delle famiglie.',
@@ -317,6 +327,7 @@ const it: AffiliateCopy = {
   terms: 'Ho letto e accetto i termini del programma di inviti.',
   termsLink: 'Leggi i termini',
   join: 'Partecipa al programma',
+  acceptUpdatedTerms: 'Accetta i nuovi termini',
   joining: 'Iscrizione…',
   yourLink: 'Il tuo link di invito',
   copy: 'Copia',
@@ -376,6 +387,7 @@ const es: AffiliateCopy = {
   intro: (percent) => `Comparte tu enlace. Cuando una familia nueva se registre mediante él y pague, ganas el ${percent}% de cada uno de sus pagos y tu amigo obtiene un 10% de descuento en su primer plan anual.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `${percent}% del importe realmente pagado en cada pago durante los primeros ${Math.round(windowDays / 30)} meses desde la creación de la cuenta de usuario recomendada, no de la familia.`,
+    'Solo los pedidos para una familia cuyo propietario es el usuario recomendado generan comisión, independientemente del padre o tutor que pague. Las otras familias no cuentan.',
     `Las nuevas comisiones se retienen ${holdDays} días desde el pago exitoso para cubrir el plazo de reembolso de 30 días y la gestión; las fechas de liberación existentes no cambian. Permanecen congeladas mientras el pedido tenga un caso de reembolso o soporte de facturación abierto. Un pedido reembolsado pierde su comisión; si ya se abonó, contactamos con quien recomendó para acordar la devolución.`,
     `Retiro mínimo: ${minPayout}. KidHabit paga manualmente mediante transferencia bancaria y te avisa cuando se envía.`,
     'Sin autorrecomendaciones ni spam. Solo ves cantidades y comisiones agregadas, no historiales individuales ni datos de las familias.',
@@ -383,6 +395,7 @@ const es: AffiliateCopy = {
   terms: 'He leído y acepto las condiciones del programa de recomendaciones.',
   termsLink: 'Leer las condiciones',
   join: 'Unirse al programa',
+  acceptUpdatedTerms: 'Aceptar los nuevos términos',
   joining: 'Registrando…',
   yourLink: 'Tu enlace de recomendación',
   copy: 'Copiar',
@@ -442,6 +455,7 @@ const zh: AffiliateCopy = {
   intro: (percent) => `分享你的链接。新家庭通过链接注册并完成付款后，你可获得其每笔付款的 ${percent}% 佣金，朋友首次购买年度方案还可享受 10% 折扣。`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `被推荐用户账户创建后前 ${Math.round(windowDays / 30)} 个月内的每笔付款，按实际支付金额的 ${percent}% 计算佣金，不以家庭创建时间为准。`,
+    '只有被推荐用户作为所有者的家庭订单产生佣金，无论由哪位家长或监护人付款。为不属于该用户的家庭付款不计入。',
     `新佣金自付款成功起保留 ${holdDays} 天，以覆盖 30 天退款期限及处理时间；已有佣金的解冻日期不变。该订单有未结案的退款或账单支持工单时，佣金继续冻结。退款订单的佣金会撤回；如已支付，我们会联系推荐人协商返还。`,
     `最低提现金额为 ${minPayout}。KidHabit 通过人工银行转账付款，转出后会通知你。`,
     '请勿自我推荐或发送垃圾信息。只能查看数量和汇总佣金，不能查看个人历史或家庭资料。',
@@ -449,6 +463,7 @@ const zh: AffiliateCopy = {
   terms: '我已阅读并同意推荐计划条款。',
   termsLink: '阅读条款',
   join: '加入计划',
+  acceptUpdatedTerms: '接受新条款',
   joining: '正在加入…',
   yourLink: '你的推荐链接',
   copy: '复制',
@@ -508,6 +523,7 @@ const ja: AffiliateCopy = {
   intro: (percent) => `紹介リンクをシェアしましょう。新しいご家族がリンクから登録してお支払いをすると、そのお支払いごとに ${percent}% の紹介料を受け取れます。お友だちは初回の年間プランを 10% 引きで購入できます。`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `紹介されたユーザーアカウントの作成から最初の ${Math.round(windowDays / 30)} か月間の各支払いについて、実支払額の ${percent}% を受け取れます。家族の作成日を基準にはしません。`,
+    '紹介されたユーザーが所有者である家族の注文のみが紹介料の対象です。どの保護者が支払っても対象ですが、所有していない家族への支払いは対象外です。',
     `新しい紹介料は支払い成功から ${holdDays} 日間保留し、30 日間の返金期間と処理時間を確保します。既存の解除日は変わりません。その注文に未解決の返金・請求サポート案件がある間は凍結が続きます。返金された注文の紹介料は取り消され、送金済みの場合は紹介者に連絡して返還方法を合意します。`,
     `最低引き出し額は ${minPayout} です。KidHabit が銀行振込で手動送金し、送金後にお知らせします。`,
     '自己紹介や迷惑メッセージは禁止です。件数と紹介料の集計のみ表示され、個別履歴や家族の情報は表示されません。',
@@ -515,6 +531,7 @@ const ja: AffiliateCopy = {
   terms: '紹介プログラムの規約を読み、同意します。',
   termsLink: '規約を読む',
   join: 'プログラムに参加',
+  acceptUpdatedTerms: '新しい規約に同意',
   joining: '参加登録中…',
   yourLink: 'あなたの紹介リンク',
   copy: 'コピー',
@@ -574,6 +591,7 @@ const ko: AffiliateCopy = {
   intro: (percent) => `링크를 공유하세요. 새로운 가족이 이 링크로 가입하고 결제하면, 해당 가족의 각 결제 금액에 대해 ${percent}%의 커미션을 받습니다. 친구는 첫 연간 플랜을 10% 할인받습니다.`,
   rules: ({ percent, holdDays, windowDays, minPayout }) => [
     `추천받은 사용자 계정 생성일부터 첫 ${Math.round(windowDays / 30)}개월 동안의 각 결제에 대해 실제 결제 금액의 ${percent}%를 받습니다. 가족 생성일 기준이 아닙니다.`,
+    '추천받은 사용자가 소유자인 가족의 주문만 커미션 대상이며, 어느 부모나 보호자가 결제해도 됩니다. 소유하지 않은 가족의 결제는 포함되지 않습니다.',
     `새 커미션은 결제 성공일부터 ${holdDays}일간 보류하여 30일 환불 기간과 처리 시간을 확보합니다. 기존 해제일은 변경되지 않습니다. 해당 주문의 환불 또는 결제 지원 건이 열려 있으면 계속 동결됩니다. 환불된 주문의 커미션은 회수하며, 이미 지급한 경우 추천인에게 연락해 반환을 합의합니다.`,
     `최소 출금액은 ${minPayout}입니다. KidHabit은 은행 송금으로 직접 지급하고 송금되면 알려드립니다.`,
     '자기 추천이나 스팸은 금지됩니다. 수와 합산 커미션만 표시되며 개인별 이력이나 가족 정보는 표시되지 않습니다.',
@@ -581,6 +599,7 @@ const ko: AffiliateCopy = {
   terms: '추천 프로그램 약관을 읽었으며 동의합니다.',
   termsLink: '약관 보기',
   join: '프로그램 참여',
+  acceptUpdatedTerms: '새 약관에 동의',
   joining: '참여 중…',
   yourLink: '내 추천 링크',
   copy: '복사',

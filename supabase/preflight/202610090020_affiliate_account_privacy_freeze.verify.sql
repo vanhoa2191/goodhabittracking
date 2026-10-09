@@ -3,7 +3,7 @@ declare
   signature text;
   reversal_definition text;
 begin
-  if not exists (select 1 from public.affiliate_settings where singleton and hold_days = 40) then
+  if not exists (select 1 from public.affiliate_settings where singleton and hold_days = 40 and terms_version = '2026-10-09') then
     raise exception 'new affiliate commissions must have a 40-day hold';
   end if;
   foreach signature in array array[
@@ -21,7 +21,7 @@ begin
       raise exception 'affiliate money function must be service-only: %', signature;
     end if;
   end loop;
-  foreach signature in array array['public.claim_referral(text)', 'public.referral_claim_state()', 'public.affiliate_overview()'] loop
+  foreach signature in array array['public.affiliate_enroll(boolean)', 'public.claim_referral(text)', 'public.referral_claim_state()', 'public.affiliate_overview()'] loop
     if not pg_catalog.has_function_privilege('authenticated', signature, 'EXECUTE')
       or pg_catalog.has_function_privilege('anon', signature, 'EXECUTE') then
       raise exception 'affiliate parent function grants are incorrect: %', signature;
@@ -37,9 +37,13 @@ begin
   if public.affiliate_commission_block_reason(null) is not null then
     raise exception 'an unlinked order must not be frozen';
   end if;
-  if pg_catalog.pg_get_functiondef('public.claim_referral(text)'::regprocedure) not like '%referred_user_id = actor%'
-    or pg_catalog.pg_get_functiondef('public.accrue_referral_commission(bigint)'::regprocedure) not like '%referred_user_id = paid_order.user_id%' then
-    raise exception 'referral attribution and commission accrual must follow the user account';
+  if not exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public' and table_name = 'referral_commissions' and column_name = 'refund_confirmed_at'
+  ) then raise exception 'durable commission refund evidence is missing'; end if;
+  if pg_catalog.pg_get_functiondef('public.claim_referral(text)'::regprocedure) not like '%pg_advisory_xact_lock%'
+    or pg_catalog.pg_get_functiondef('public.accrue_referral_commission(bigint)'::regprocedure) not like '%owner.user_id = attribution.referred_user_id%' then
+    raise exception 'attribution must lock the owner account and accrue payments for owned families';
   end if;
   if pg_catalog.pg_get_functiondef('public.affiliate_overview()'::regprocedure) like '%''recent''%'
     or pg_catalog.pg_get_functiondef('public.affiliate_overview()'::regprocedure) like '%''planId''%' then
