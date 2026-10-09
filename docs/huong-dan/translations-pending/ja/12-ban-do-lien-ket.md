@@ -101,7 +101,7 @@ flowchart TD
 
 ### D. 友だちを紹介する
 
-[プログラム](08-gioi-thieu-ban-be.md#tham-gia)に参加 → リンクを送信 → 友だちがコードを入力して年払いプランを購入すると[10%割引](07-goi-va-thanh-toan.md#giam-gia) → 友だちが支払い → [35日間保留](08-gioi-thieu-ban-be.md#hoa-hong)の紹介手数料が発生 → PINを設定して出金先を保存 → [出金を申請](08-gioi-thieu-ban-be.md#rut-tien) → 管理者が[振込](10-quan-tri-va-van-hanh.md#gioi-thieu-admin)。
+[プログラム](08-gioi-thieu-ban-be.md#tham-gia)に参加 → リンクを送信 → 友だちがコードを入力して年払いプランを購入すると[10%割引](07-goi-va-thanh-toan.md#giam-gia) → 友だちが支払い → [40日間保留](08-gioi-thieu-ban-be.md#hoa-hong)（その注文の返金・請求案件が未解決の場合は凍結が続きます）の紹介手数料が発生 → PINを設定して出金先を保存 → [出金を申請](08-gioi-thieu-ban-be.md#rut-tien) → 管理者が[振込](10-quan-tri-va-van-hanh.md#gioi-thieu-admin)。
 
 <!--op-->### E. お客様が返金を依頼する
 

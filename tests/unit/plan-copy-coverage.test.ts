@@ -4,7 +4,6 @@ import { PAID_PLAN_IDS } from '@/lib/billing/plan-catalog';
 import { getCheckoutPlanFeatures, PLAN_LOCALIZATION } from '@/lib/i18n/pricing-plan-copy';
 import { getUpcomingPlansCopy } from '@/lib/i18n/upcoming-plans-copy';
 import { getPublicPricingCopy } from '@/lib/i18n/public-pricing-copy';
-import { getAffiliateCopy } from '@/lib/i18n/affiliate-copy';
 import { getAiCopy } from '@/lib/i18n/ai-copy';
 
 const LANGUAGES: readonly Language[] = ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'];
@@ -37,7 +36,6 @@ describe('plan names and copy', () => {
     const text = [
       ...PAID_PLAN_IDS.flatMap((id) => Object.values(PLAN_LOCALIZATION[id].vi)),
       ...Object.values(getPublicPricingCopy('vi')),
-      ...Object.values(getAffiliateCopy('vi').plan),
       upcoming.includes, upcoming.coachFeature, upcoming.offerBody, ...Object.values(upcoming.names), ...upcoming.features,
       getAiCopy('vi').soonTitle,
     ].join('\n');
@@ -92,12 +90,6 @@ describe('plan names and copy', () => {
     expect(getAiCopy('en').soonTitle).toBe('Habit coach');
   });
 
-  it('labels every paid plan in the affiliate list', () => {
-    for (const language of LANGUAGES) {
-      const plan = getAffiliateCopy(language).plan;
-      for (const id of [...PAID_PLAN_IDS, 'lifetime']) expect(plan[id]?.trim().length, `${id} ${language}`).toBeGreaterThan(0);
-    }
-  });
 });
 
 describe('each language shows its own wording', () => {

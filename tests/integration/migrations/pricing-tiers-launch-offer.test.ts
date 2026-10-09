@@ -115,8 +115,13 @@ describe('pricing tiers and launch offer migration', () => {
   it('runs the migration atomically and rolls back verification fixtures', () => {
     expect(migration.trim()).toMatch(/^begin;[\s\S]*commit;$/);
     expect(verification.trim()).toMatch(/^begin;[\s\S]*rollback;$/);
-    const entries = readFileSync(resolve('supabase/schema.sql'), 'utf8').trim().split('\n');
-    expect(entries).toContain('\\ir migrations/202610070001_pricing_tiers_launch_offer.sql');
-    expect(entries.indexOf('\\ir migrations/202610070001_pricing_tiers_launch_offer.sql')).toBeLessThan(entries.indexOf('\\ir migrations/202610090010_billing_payment_hardening.sql'));
+    const manifest = readFileSync(resolve('supabase/schema.sql'), 'utf8').trim().split('\n');
+    const pricingIndex = manifest.indexOf('\\ir migrations/202610070001_pricing_tiers_launch_offer.sql');
+    expect(pricingIndex).toBeGreaterThanOrEqual(0);
+    for (const [index, entry] of manifest.entries()) {
+      if (entry.split('/').at(-1)! > '202610070001_pricing_tiers_launch_offer.sql') {
+        expect(index).toBeGreaterThan(pricingIndex);
+      }
+    }
   });
 });

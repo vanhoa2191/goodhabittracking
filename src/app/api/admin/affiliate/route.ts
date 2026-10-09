@@ -93,6 +93,16 @@ export async function POST(request: NextRequest) {
       correlationId,
     }, correlationId, 409);
   }
+  if (data === 'billing_case_open' || data === 'refund_confirmed') {
+    return adminJsonResponse({
+      error: data === 'billing_case_open'
+        ? 'This payout contains an order with an open billing or refund case. Do not transfer money until the case is resolved.'
+        : 'This payout contains a refunded order. Reject the payout before reversing the commission.',
+      status: data,
+      blocked: true,
+      correlationId,
+    }, correlationId, 409);
+  }
   if (data === 'amount_mismatch') {
     return adminJsonResponse({ error: 'The commissions in this payout no longer add up to its amount, usually because a refund took one back. Reject the payout so the parent can request again.', status: data, correlationId }, correlationId, 409);
   }

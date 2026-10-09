@@ -23,9 +23,9 @@ Das Programm hat zwei Seiten, die über einen **8-stelligen Empfehlungscode** im
 
 1. Öffnen Sie `Family → Settings → Offers & referrals` und dann die Karte **Freunde werben**. Lesen Sie die Regeln, markieren Sie die Zustimmung zu den Bedingungen und klicken Sie auf **Am Programm teilnehmen**.
 2. Kopieren oder **Teilen** Sie „Ihren Empfehlungslink“. Sie können den Empfehlungscode als Link senden oder Ihrer Freundin bzw. Ihrem Freund den Code nennen, damit die Person ihn manuell eingibt.
-3. Verfolgen Sie die Zahlen zu angemeldeten Familien, zahlenden Familien, **zurückgehaltenen**, **verfügbaren**, **zur Auszahlung angeforderten** und **ausgezahlten** Beträgen sowie die letzten Provisionen und deren Status: Zurückgehalten, Verfügbar, Auszahlung angefordert, Ausgezahlt und Rückgängig gemacht.
+3. Verfolge die Anzahl angemeldeter und zahlender Familien sowie die zusammengefassten zurückgehaltenen, verfügbaren, angeforderten und ausgezahlten Provisionen.
 
-Sie können **weder Namen noch E-Mail-Adressen oder Familiencodes** der geworbenen Familien sehen; angezeigt werden nur Anzahl und Beträge.
+Keine Selbstempfehlungen und kein Spam. Du siehst nur Anzahlen und zusammengefasste Provisionen, keine Einzelhistorie oder Familiendaten.
 
 <a id="giam-10"></a>
 ## Für geworbene Familien
@@ -33,7 +33,7 @@ Sie können **weder Namen noch E-Mail-Adressen oder Familiencodes** der geworben
 - Öffnen Sie den `?ref=`-Link Ihrer Freundin oder Ihres Freundes und melden Sie sich an; richten Sie Ihre Familie wie gewohnt ein. Alternativ können Sie den Code **manuell eingeben**. Das Feld „Haben Sie einen Empfehlungscode von einer Freundin oder einem Freund?“ finden Sie in den `Settings` oder direkt im Bezahlfenster.
 - Die Empfehlung wird erfasst und Sie sehen „Sie erhalten 10 % Rabatt auf Ihren ersten Jahrestarif“.
 - Beim ersten Bezahlen des **Jahrestarifs** wird im Bezahlvorgang der reduzierte Preis und die Zeile „10 % Rabatt mit Ihrem Empfehlungscode“ angezeigt. Für die Tarife Family · Monatlich und Lifetime gibt es keinen Rabatt.
-- Bedingungen: Die Familie ist neu (innerhalb von 60 Tagen nach Erstellung), hat keine bezahlten Bestellungen, wurde noch nicht geworben, und Sie verwenden nicht Ihren eigenen Code.
+- Jedes Benutzerkonto kann nur einmal geworben werden, innerhalb von 60 Tagen ab Kontoerstellung und vor jeder bezahlten Bestellung. Löschen oder Neuerstellen einer Familie setzt weder die Berechtigung noch das 12-Monats-Fenster zurück. Verwende nicht deinen eigenen Code.
 
 <a id="ghi-nhan"></a>
 ## Empfehlungen erfassen
@@ -43,13 +43,13 @@ Es gibt zwei Möglichkeiten, einen Code einzugeben. Beide folgen derselben Regel
 1. **Link**: Die Website liest `?ref=` und speichert das Cookie `kidhabit_ref` (60 Tage). Nach der Anmeldung des Elternteils sendet die App den Code zur Erfassung und löscht anschließend das Cookie.
 2. **Manuelle Eingabe**: über das Codefeld in den Einstellungen oder im Bezahlfenster.
 
-Das Ergebnis wird sofort angezeigt: erfasst; Code ungültig; eigener Code kann nicht verwendet werden; für die Familie wurde bereits ein Empfehlungscode erfasst; der Code gilt nur für neue Familien ohne bisherige Zahlung; das Programm ist pausiert. Nur Eltern, die die Familie verwalten können, dürfen einen Code eingeben.
+Das Ergebnis wird sofort angezeigt: erfasst; Code ungültig; eigener Code kann nicht verwendet werden; für das Benutzerkonto wurde bereits ein Empfehlungscode erfasst; der Code gilt nur für neue Benutzerkonten ohne bisherige Zahlung; das Programm ist pausiert. Nur Eltern, die die Familie verwalten können, dürfen einen Code eingeben.
 
 <a id="hoa-hong"></a>
 ## Provisionen
 
-- **30 %** des tatsächlich bezahlten Betrags (nach Abzügen), auf jede Zahlung während der **ersten 12 Monate** nach Erstellung der geworbenen Familie. Beispiel: Für eine Zahlung von 359,100 VND für den rabattierten Jahrestarif beträgt die Provision 107,730 VND.
-- Jeder Betrag wird **35 Tage zurückgehalten** (über den 30-tägigen Erstattungszeitraum hinaus), bevor er den Status „Verfügbar“ erhält.
+- 30 % des tatsächlich gezahlten Betrags für jede Zahlung in den ersten 12 Monaten ab Erstellung des geworbenen Benutzerkontos, nicht der Familie. Beispiel: Für eine Zahlung von 359,100 VND für den rabattierten Jahrestarif beträgt die Provision 107,730 VND.
+- Neue Provisionen werden ab erfolgreicher Zahlung 40 Tage zurückgehalten, um die 30-tägige Erstattungsfrist und Bearbeitung abzudecken; bestehende Freigabedaten bleiben unverändert. Bei einem offenen Erstattungs- oder Abrechnungssupportfall zur Bestellung bleiben sie gesperrt. Erstattete Bestellungen verlieren ihre Provision; nach Auszahlung kontaktieren wir die werbende Person, um die Rückzahlung zu vereinbaren.
 - Das System erstellt die Provision automatisch, sobald eine Bestellung erfolgreich ist ([Tarifaktivierung](07-goi-va-thanh-toan.md#kich-hoat)). Ein Fehler in diesem Schritt verhindert niemals die Aktivierung des Tarifs für die Kundschaft.
 
 <a id="rut-tien"></a>
@@ -65,13 +65,13 @@ Provisionen können der Einkommensteuer unterliegen; Empfängerinnen und Empfän
 <a id="hoan-tien-hoa-hong"></a>
 ## Rückerstattungen und Provisionen
 
-Wenn eine Bestellung erstattet wird (nach manueller Bestätigung), wird ihre Provision **rückgängig gemacht**, sofern sie sich noch im Zurückhaltezeitraum befindet (Status „Rückgängig gemacht“). Ist die Provision bereits Teil eines Auszahlungsantrags oder schon ausgezahlt, bearbeitet das Betriebsteam den Fall manuell. Siehe [Rückerstattungen](07-goi-va-thanh-toan.md#hoan-tien).
+Bei einem Auszahlungsantrag lehnt KidHabit diesen vor der Rücknahme ab; nach Auszahlung vereinbaren wir mit der werbenden Person die Rückzahlung, ohne künftige Provisionen automatisch abzuziehen. [Rückerstattungen](07-goi-va-thanh-toan.md#hoan-tien).
 
 <a id="quy-tac"></a>
 ## Regeln und Grenzen
 
 - Werben Sie nicht für sich selbst und versenden Sie keinen Spam. Selbstempfehlungen über dasselbe Konto oder dieselbe Familie werden blockiert.
-- Jede Familie kann nur einmal erfasst werden; sie muss neu sein und darf noch nicht bezahlt haben.
+- Jedes Benutzerkonto kann nur einmal geworben werden, innerhalb von 60 Tagen ab Kontoerstellung und vor jeder bezahlten Bestellung. Löschen oder Neuerstellen einer Familie setzt weder die Berechtigung noch das 12-Monats-Fenster zurück. Verwende nicht deinen eigenen Code.
 - Eine Person kann zwei Konten erstellen, um sich selbst zu werben. Das System verhindert dies nicht vollständig; Überweisungen erfolgen jedoch manuell und werden vor der Zahlung geprüft.
 - Ein Empfehlungskonto kann bei Verstößen gesperrt werden (derzeit erfolgt dies manuell durch eine Administration).
 - Provisions- und Rabattprozentsätze, Zurückhaltefristen und Mindestauszahlungen sind in der Programmkonfiguration gespeichert und können sich ändern. Bereits erstellte Provisionen behalten den zum Erstellungszeitpunkt geltenden Satz.

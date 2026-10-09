@@ -101,7 +101,7 @@ Choose [Take a break](05-gia-dinh-va-cai-dat.md#tam-nghi): the streak is preserv
 
 ### D. Refer a friend
 
-Join the [programme](08-gioi-thieu-ban-be.md#tham-gia) → send the link → your friend enters the code and gets [10% off](07-goi-va-thanh-toan.md#giam-gia) when buying a yearly plan → your friend pays → you have a [commission held for 35 days](08-gioi-thieu-ban-be.md#hoa-hong) → set a PIN and save your payout details → [request a withdrawal](08-gioi-thieu-ban-be.md#rut-tien) → admin [transfers the money](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
+Join the [programme](08-gioi-thieu-ban-be.md#tham-gia) → send the link → your friend enters the code and gets [10% off](07-goi-va-thanh-toan.md#giam-gia) when buying a yearly plan → your friend pays → you have a [commission held for 40 days](08-gioi-thieu-ban-be.md#hoa-hong) (still frozen while the order has an open refund or billing case) → set a PIN and save your payout details → [request a withdrawal](08-gioi-thieu-ban-be.md#rut-tien) → admin [transfers the money](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
 
 <!--op-->### E. A customer requests a refund
 
