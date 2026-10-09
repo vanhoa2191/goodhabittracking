@@ -114,10 +114,10 @@ export const story = {
   ],
   nextLabel: 'Chương tiếp',
   hero: {
-    eyebrow: 'Nhật ký của một gia đình hay nhắc',
+    eyebrow: 'Ứng dụng thói quen theo tuổi cho bé 4–12',
     title: 'Thôi làm chiếc đồng hồ báo thức biết nói của con.',
     highlight: 'đồng hồ báo thức',
-    lead: 'Bảng sao, hứa thưởng, ứng dụng nhắc giờ… nếu cách nào cũng chỉ được vài tuần, có thể thứ còn thiếu là một lộ trình. KidHabit cho cả nhà một lộ trình theo tuổi: biết cần làm gì, mỗi việc nhỏ gắn với một phẩm chất, con tự đánh dấu, ba mẹ chỉ cần khen.',
+    lead: 'KidHabit gợi ý thói quen theo tuổi để con tự xem việc và đánh dấu xong. Ba mẹ chọn việc, duyệt những việc cần duyệt và khen con đúng việc.',
     primaryCta: 'Dùng thử 7 ngày',
     secondaryCta: 'Xem con sẽ thấy gì',
     assurances: ['Không cần thẻ', 'Không tự trừ tiền', 'Hoàn tiền 30 ngày'],
@@ -125,13 +125,29 @@ export const story = {
     caption: 'Màn hình của con',
     chip: 'Con tự đánh dấu xong',
   },
+  howItWorks: {
+    title: 'Cách hoạt động trong 3 bước',
+    steps: [
+      { title: 'Ba mẹ chọn thói quen theo tuổi', text: 'Chọn từ khung gợi ý hoặc tự tạo việc phù hợp với con.' },
+      { title: 'Con tự đánh dấu trên thiết bị của con', text: 'Con mở màn hình riêng, xem việc hôm nay và đánh dấu khi làm xong.' },
+      { title: 'Ba mẹ duyệt việc cần duyệt, con đổi sao lấy phần thưởng', text: 'Ba mẹ đặt phần thưởng trong cửa hàng để con dùng sao đã nhận.' },
+    ],
+    featuresLabel: 'Có sẵn trong ứng dụng',
+    features: [
+      { title: 'Đọc to cho bé chưa biết đọc', text: 'Đọc tên và mô tả việc trên trình duyệt hỗ trợ giọng đọc.' },
+      { title: 'Cửa hàng phần thưởng', text: 'Ba mẹ chọn quà và số sao cần đổi.' },
+      { title: 'Chuỗi ngày nhẹ nhàng', text: 'Bỏ lỡ một ngày không làm mất tiến triển.' },
+      { title: 'Bản in tuần', text: 'In bảng thói quen hoặc báo cáo tuần của con.' },
+      { title: 'Giao diện 9 ngôn ngữ', text: 'Chọn ngôn ngữ trong ứng dụng.' },
+    ],
+  },
   quiz: {
     eyebrow: 'Trước khi đọc tiếp',
     question: 'Sáng nay, ba mẹ đã nhắc con bao nhiêu lần?',
     options: [
-      { value: 'low', label: '1–2 lần', answer: 'Nhà bạn đang có nhịp tốt. Câu chuyện dưới đây gợi ý một cách giữ nhịp ấy, cả trong những tuần bận rộn.', finalTitle: 'Giữ nhịp tốt như sáng nay, mỗi ngày.' },
-      { value: 'mid', label: '3–5 lần', answer: 'Ba đến năm lần mỗi sáng, nếu sáng nào cũng vậy, là 90 đến 150 lần mỗi tháng. Câu chuyện dưới đây có thể quen với bạn.', finalTitle: 'Sáng mai, thử bớt một lần nhắc.' },
-      { value: 'high', label: 'Không đếm nổi', answer: 'Bạn không đơn độc. Người làm ra KidHabit cũng từng đếm không nổi. Đây là câu chuyện của họ.', finalTitle: 'Sáng mai, bắt đầu từ một việc con tự làm.' },
+      { value: 'low', label: '1–2 lần', answer: 'Gia đình mình đang có nhịp tốt. Câu chuyện dưới đây gợi ý một cách giữ nhịp ấy, cả trong những tuần bận rộn.', finalTitle: 'Giữ nhịp tốt như sáng nay, mỗi ngày.' },
+      { value: 'mid', label: '3–5 lần', answer: 'Ba đến năm lần mỗi sáng, nếu sáng nào cũng vậy, là 90 đến 150 lần mỗi tháng. Câu chuyện dưới đây có thể quen với ba mẹ.', finalTitle: 'Sáng mai, thử bớt một lần nhắc.' },
+      { value: 'high', label: 'Không đếm nổi', answer: 'Ba mẹ không đơn độc. Người làm ra KidHabit cũng từng đếm không nổi. Đây là câu chuyện của họ.', finalTitle: 'Sáng mai, bắt đầu từ một việc con tự làm.' },
     ],
     readMore: 'Đọc câu chuyện',
   },
@@ -147,7 +163,7 @@ export const story = {
       { time: '7:00', text: 'Ăn nhanh lên con.' },
       { time: '7:05', text: 'Cặp đâu? Áo khoác đâu?' },
       { time: '7:10', text: 'Nhanh lên, muộn rồi!' },
-      { time: '7:15', text: 'Mẹ nói bao nhiêu lần rồi?' },
+      { time: '7:15', text: 'Ba nói bao nhiêu lần rồi?' },
     ],
   },
   tried: {
@@ -184,7 +200,7 @@ export const story = {
   demo: {
     eyebrow: 'Chương 4',
     title: 'Cùng buổi sáng ấy, với KidHabit.',
-    lead: 'Thử làm con một phút: chạm vào từng việc để hoàn thành. Con mở danh sách, tự đánh dấu, ba mẹ chỉ cần duyệt và khen đúng việc.',
+    lead: 'Thử làm con một phút: chạm vào từng việc để hoàn thành. Con mở danh sách, tự đánh dấu, ba mẹ duyệt những việc cần duyệt và khen đúng việc.',
     child: 'Sáng nay của Minh An',
     cheer: 'Leo đang cổ vũ con',
     // Sample tasks. A task with `trait` shows that framework quality's label; brushing teeth shows a plain
@@ -198,10 +214,10 @@ export const story = {
     swaps: [
       { before: '“Dậy đi con.”', after: 'Con tự dậy' },
       { before: '“Đánh răng chưa?”', after: 'Con tự đánh dấu' },
-      { before: '“Mẹ nói bao nhiêu lần rồi?”', after: '“Hôm nay con xong mấy việc?”' },
+      { before: '“Ba nói bao nhiêu lần rồi?”', after: '“Hôm nay con xong mấy việc?”' },
     ],
-    praiseLabel: 'Lời khen của ba mẹ',
-    praise: 'Sáng nay con tự làm hết rồi. Ba mẹ tự hào về con!',
+    praiseLabel: 'Leo khen con',
+    praise: 'Con đã làm xong các việc sáng nay rồi. Leo thấy con đã cố gắng!',
     sampleNote: 'Dữ liệu mẫu.',
   },
   letter: {
@@ -211,20 +227,14 @@ export const story = {
     beforeList: [
       'Tôi đọc sách nuôi dạy con, lưu cả chục bài viết, ghi chép đủ thứ. Nhưng lần nào cũng chỉ được vài tuần. Một tối, nhìn tờ bảng sao đã bong một góc, tôi tự hỏi: tôi đang muốn con thành người như thế nào?',
       'Tôi muốn con tự giác, biết ơn, dám nhận lỗi, biết giữ lời. Nhưng tôi chưa bao giờ nối được những điều lớn ấy với việc nhỏ hằng ngày. Tôi nhắc con dọn giường, mà chưa từng nói cho con biết: dọn giường là cách con giữ lời hứa với chính mình.',
-      'Tôi nhận ra mình thiếu ba thứ:',
+      'Tôi cần một cách nối những việc con làm mỗi ngày với điều tôi mong con học được, phù hợp với từng chặng lớn lên của con.',
     ],
     /** Part of the second paragraph the page highlights. */
     highlight: 'dọn giường là cách con giữ lời hứa với chính mình.',
-    missing: [
-      // `rest` follows the bold words as written, punctuation included.
-      { strong: 'Biết cần làm gì', rest: ' ở từng độ tuổi.' },
-      { strong: 'Một lộ trình', rest: ' từ lúc con còn nhỏ đến khi con tự làm chủ được mình.' },
-      { strong: 'Một lý do', rest: ': mỗi việc nhỏ gắn với một phẩm chất.' },
-    ],
     afterList: [
       'Tôi làm KidHabit cho chính gia đình mình trước. Thứ giữ nhịp cho cả nhà không còn là trí nhớ hay sức chịu đựng của ba mẹ, mà là một lộ trình mà cả ba mẹ và con cùng nhìn thấy.',
-      'Bây giờ vẫn có hôm con lề mề, vẫn có hôm tôi lỡ lời. Nhưng thay vì “Mẹ nói bao nhiêu lần rồi?”, giờ tôi hỏi “Hôm nay con xong mấy việc rồi?”.',
-      'Tôi không hứa con bạn sẽ thay đổi sau một tuần. Mỗi đứa trẻ có nhịp riêng. Điều tôi tin là khi cả nhà biết cần làm gì, đi theo lộ trình nào và vì sao mình làm, việc giữ nhịp sẽ bớt nặng hơn nhiều.',
+      'Bây giờ vẫn có hôm con lề mề, vẫn có hôm tôi lỡ lời. Nhưng thay vì “Ba nói bao nhiêu lần rồi?”, giờ tôi hỏi “Hôm nay con xong mấy việc rồi?”.',
+      'Tôi không hứa con của ba mẹ sẽ thay đổi sau một tuần. Mỗi đứa trẻ có nhịp riêng. Điều tôi tin là khi cả nhà biết cần làm gì, đi theo lộ trình nào và vì sao mình làm, việc giữ nhịp sẽ bớt nặng hơn nhiều.',
     ],
     signature: { name: 'Nguyễn Văn Hoà', role: 'Ba của Sam', maker: 'Người làm ra KidHabit' },
     postscriptLabel: 'T.B.',
@@ -245,7 +255,7 @@ export const story = {
       { value: 'year', label: 'Năm' },
     ],
     defaultCycle: 'year',
-    recommendedBadge: 'Hợp với nhà bạn',
+    recommendedBadge: 'Hợp với gia đình mình',
     soonButton: 'Sắp ra mắt',
     pledge: [
       { strong: '7 ngày', text: 'dùng thử đầy đủ' },
@@ -260,7 +270,7 @@ export const story = {
   },
   final: {
     title: 'Bắt đầu từ một việc nhỏ, ngay sáng mai.',
-    text: 'Ngày đầu tiên, đừng chọn nhiều. Chỉ một việc thôi, và khen con đúng lúc con làm xong. Phần còn lại, cứ để lộ trình dẫn đường.',
+    text: 'Mở KidHabit cùng con, xem danh sách việc hôm nay và chọn phần thưởng cả nhà đã thống nhất. Ba mẹ có 7 ngày để thử xem cách này có hợp với nhịp sống của gia đình.',
     cta: 'Dùng thử 7 ngày, không cần thẻ',
   },
   /** Sticky bar copy per chapter: [title, note, button]. */
@@ -268,8 +278,8 @@ export const story = {
     'mo-dau': ['Dùng thử 7 ngày', 'Không cần thẻ · không tự trừ tiền', 'Bắt đầu'],
     'buoi-sang': ['Mệt vì phải nhắc?', 'Xem cách con tự làm', 'Thử ngay'],
     'da-thu': ['Lần này khác ở lộ trình', 'Biết cần làm gì ở từng tuổi', 'Xem lộ trình'],
-    'ban-do': ['Lộ trình theo tuổi của con', 'Dùng thử 7 ngày, không cần thẻ', 'Bắt đầu'],
-    'thu-lam-con': ['Thử cùng con nhà mình', 'Dùng thử 7 ngày, không cần thẻ', 'Bắt đầu'],
+    'ban-do': ['Lộ trình theo tuổi của con', 'Ba mẹ chọn việc vừa sức', 'Bắt đầu'],
+    'thu-lam-con': ['Thử cùng con nhà mình', 'Con có màn hình riêng để xem việc', 'Bắt đầu'],
     'la-thu': ['Bắt đầu từ một việc nhỏ', 'Hoàn tiền 30 ngày nếu chưa hợp', 'Chọn gói'],
     'hoi-dap': ['Vẫn còn băn khoăn?', 'Thử 7 ngày rồi quyết định', 'Bắt đầu'],
   },
@@ -281,7 +291,7 @@ export const safety = {
   text: 'KidHabit chỉ lưu những gì cần để vận hành thói quen của gia đình, không quảng cáo, không bán dữ liệu của bé, và luôn để ba mẹ quyết định.',
   link: 'Đọc chính sách quyền riêng tư',
   points: [
-    { icon: 'lock', title: 'Khu vực phụ huynh có thể khoá bằng mã PIN', text: 'Khi ba mẹ đặt mã PIN, thanh toán và cài đặt gia đình chỉ mở được bằng mã đó. Bé dùng màn hình riêng của mình.' },
+    { icon: 'lock', title: 'Khu vực phụ huynh có thể khoá bằng mã PIN', text: 'Khi ba mẹ đặt mã PIN, thanh toán và các thao tác quan trọng chỉ mở được bằng mã đó. Bé dùng màn hình riêng của mình.' },
     { icon: 'shield', title: 'Mỗi gia đình một không gian riêng', text: 'Dữ liệu mỗi gia đình được tách biệt bằng kiểm soát truy cập, gia đình này không xem được gia đình khác.' },
     { icon: 'eye-off', title: 'Chia sẻ công khai mặc định tắt', text: 'Bảng xếp hạng công khai chỉ hiện bé khi ba mẹ bật và bé tham gia, bằng biệt danh. Tên thật và tuổi không bao giờ hiện.' },
     { icon: 'trash', title: 'Ba mẹ quyết định giữ hay xóa', text: 'Chủ gia đình có thể xóa toàn bộ dữ liệu gia đình trong ứng dụng.' },
@@ -292,61 +302,81 @@ export const safety = {
 // quote, a name, recorded consent, a source and a review date still in the future.
 export const testimonials = [];
 
-// Shown on the home page and /pricing/. Describes what the product does; no promised results.
-export const faqs = [
+// Shared groups on the home page and /pricing/. Keep a flat list for FAQ structured data.
+export const faqGroups = [
   {
-    question: 'Con có chán sau một tuần không?',
-    answer: 'Có thể có những ngày con lười, điều đó bình thường. KidHabit bắt đầu từ một việc nhỏ vừa sức, có người bạn đồng hành và lời khen đúng việc, để những ngày khó vẫn có lý do làm tiếp.',
+    id: 'dung-thu-thanh-toan',
+    title: 'Dùng thử & thanh toán',
+    items: [
+      {
+        question: 'Dùng thử có cần thẻ và hết 7 ngày thì sao?',
+        answer: 'Không cần thẻ. Mỗi gia đình dùng thử 7 ngày một lần; khi hết hạn, ba mẹ chọn một gói để tiếp tục ghi nhận việc của con. KidHabit không tự trừ tiền và không tự gia hạn.',
+      },
+      {
+        question: 'Thanh toán bằng cách nào?',
+        answer: 'Ba mẹ chuyển khoản bằng VietQR qua PayOS theo thông tin của đơn thanh toán. Gói được kích hoạt khi thanh toán được xác nhận.',
+      },
+      {
+        question: 'Ba mẹ có được hoàn tiền không?',
+        answer: 'Có. Nếu chưa hài lòng, ba mẹ có thể yêu cầu hoàn tiền trong 30 ngày kể từ ngày thanh toán bằng cách gửi mã đơn và thời điểm thanh toán tới email hỗ trợ.',
+      },
+      {
+        question: 'Ưu đãi nâng cấp lên Pro Plus hoạt động thế nào?',
+        answer: '10 gia đình đầu tiên thanh toán Gói Pro theo năm trước ngày Pro Plus ra mắt sẽ được chuyển lên Pro Plus miễn phí cho phần còn lại của năm đã trả. Suất được tính theo thứ tự thanh toán thành công, mỗi gia đình tối đa một suất; khi đủ 10 suất, trang sẽ ghi rõ.',
+      },
+    ],
   },
   {
-    question: 'Có thêm giờ màn hình cho con không?',
-    answer: 'Ứng dụng được thiết kế để con mở nhanh, xem việc và đánh dấu xong; việc thật diễn ra ngoài đời. Ba mẹ có thể thống nhất với con lúc nào mở ứng dụng.',
+    id: 'cho-con-dung',
+    title: 'Cho con dùng',
+    items: [
+      {
+        question: 'Con bao nhiêu tuổi thì phù hợp, giao diện có đổi theo tuổi không?',
+        answer: 'KidHabit phù hợp nhất với bé 4–12 tuổi tự xem việc và tự đánh dấu xong. Khung thói quen đi từ 0 đến 18 tuổi: với bé nhỏ, ba mẹ làm cùng; với bé lớn hơn, con chủ động hơn. Kích thước nút, cách khen và nhãn phần thưởng đổi theo ba dải tuổi: 3–8, 9–12 và từ 13 tuổi. Từ 13 tuổi, con tự chọn kiểu gọn hoặc có bạn đồng hành. Ba mẹ có thể ghim một dải cho từng bé hoặc giữ giao diện cũ. Bé dưới 3 tuổi, hoặc chưa có năm sinh, vẫn dùng giao diện mặc định.',
+      },
+      {
+        question: 'Bé chưa biết đọc thì sao?',
+        answer: 'Con có thể bấm nút đọc to để nghe tên và mô tả việc trên trình duyệt hỗ trợ giọng đọc. Ba mẹ vẫn có thể đọc cùng con; giao diện cho bé 3–8 tuổi có nút to, hình nhân vật và lời khen ngắn.',
+      },
+      {
+        question: 'Nhà có hai bé khác tuổi?',
+        answer: 'Gói Pro dùng cho tối đa 5 bé. Mỗi bé có lộ trình và giao diện riêng theo tuổi.',
+      },
+      {
+        question: 'Con có chán sau một tuần không?',
+        answer: 'Có thể có những ngày con không muốn làm. KidHabit có nhân vật đồng hành, lời khen của nhân vật và cửa hàng phần thưởng; ba mẹ cùng con chọn việc vừa sức rồi điều chỉnh khi cần.',
+      },
+      {
+        question: 'Có thêm giờ màn hình cho con không?',
+        answer: 'Ứng dụng được thiết kế để con mở nhanh, xem việc và đánh dấu xong; việc thật diễn ra ngoài đời. Ba mẹ có thể thống nhất với con lúc nào mở ứng dụng.',
+      },
+      {
+        question: 'KidHabit có thay thế việc ba mẹ dạy con không?',
+        answer: 'Không. KidHabit là công cụ đồng hành: ba mẹ chọn thói quen, duyệt những việc cần duyệt và khen con. Ứng dụng không thay việc dạy con và không cam kết một kết quả phát triển cụ thể.',
+      },
+      {
+        question: 'Con có cần tài khoản riêng không?',
+        answer: 'Không. Con vào bằng mã QR hoặc mã nhập tay do ba mẹ cấp và chỉ thấy hồ sơ của chính mình.',
+      },
+      {
+        question: 'Có cần cài ứng dụng không?',
+        answer: 'KidHabit chạy ngay trên trình duyệt điện thoại hoặc máy tính. Ba mẹ có thể thêm vào màn hình chính để mở nhanh như một ứng dụng.',
+      },
+    ],
   },
   {
-    question: 'Bé chưa biết đọc thì sao?',
-    answer: 'Với bé nhỏ, ba mẹ đọc cùng con. Giao diện cho bé 3–8 tuổi có nút to, hình nhân vật và lời khen ngắn.',
-  },
-  {
-    question: 'Nhà có hai bé khác tuổi?',
-    answer: 'Gói Pro dùng cho tối đa 5 bé. Mỗi bé có lộ trình và giao diện riêng theo tuổi.',
-  },
-  {
-    question: 'Ưu đãi nâng cấp lên Pro Plus hoạt động thế nào?',
-    answer: '10 gia đình đầu tiên thanh toán Gói Pro theo năm trước ngày Pro Plus ra mắt sẽ được chuyển lên Pro Plus miễn phí cho phần còn lại của năm đã trả. Suất được tính theo thứ tự thanh toán thành công, mỗi gia đình tối đa một suất; khi đủ 10 suất, trang sẽ ghi rõ.',
-  },
-  {
-    question: 'Hết 7 ngày dùng thử thì sao?',
-    answer: 'Ba mẹ chọn một gói để tiếp tục ghi nhận việc của con. KidHabit không tự trừ tiền và không tự gia hạn.',
-  },
-  {
-    question: 'Con bao nhiêu tuổi thì phù hợp?',
-    answer: 'KidHabit phù hợp nhất với bé 4–12 tuổi tự xem việc và tự đánh dấu xong. Khung thói quen đi từ 0 đến 18 tuổi: với bé nhỏ, ba mẹ làm cùng; với bé lớn hơn, con chủ động hơn.',
-  },
-  {
-    question: 'KidHabit có thay thế việc ba mẹ dạy con không?',
-    answer: 'Không. KidHabit là công cụ đồng hành: ba mẹ chọn thói quen, duyệt và khen. Ứng dụng không thay việc dạy con và không cam kết một kết quả phát triển cụ thể.',
-  },
-  {
-    question: 'Giao diện của bé có đổi theo tuổi không?',
-    answer: 'Có. Kích thước nút, cách khen và nhãn phần thưởng đổi theo ba dải tuổi: 3–8, 9–12 và từ 13 tuổi. Từ 13 tuổi, bạn tự chọn kiểu gọn hoặc có bạn đồng hành. Ba mẹ có thể ghim một dải cho từng bé hoặc giữ giao diện cũ. Bé dưới 3 tuổi, hoặc chưa có năm sinh, vẫn dùng giao diện mặc định.',
-  },
-  {
-    question: 'Tôi có cần nhập thẻ để dùng thử không?',
-    answer: 'Không. Mỗi gia đình dùng thử 7 ngày một lần, không cần thẻ và không bị tự động trừ tiền khi hết hạn.',
-  },
-  {
-    question: 'Tôi có được hoàn tiền không?',
-    answer: 'Có. Nếu chưa hài lòng, bạn có thể yêu cầu hoàn tiền trong 30 ngày kể từ ngày thanh toán bằng cách gửi mã đơn và thời điểm thanh toán tới email hỗ trợ.',
-  },
-  {
-    question: 'Con có cần tài khoản riêng không?',
-    answer: 'Không. Con vào bằng mã QR hoặc mã nhập tay do ba mẹ cấp và chỉ thấy hồ sơ của chính mình.',
-  },
-  {
-    question: 'Có cần cài ứng dụng không?',
-    answer: 'KidHabit chạy ngay trên trình duyệt điện thoại hoặc máy tính. Bạn có thể thêm vào màn hình chính để mở nhanh như một ứng dụng.',
+    id: 'an-toan-du-lieu',
+    title: 'An toàn & dữ liệu',
+    items: [
+      {
+        question: 'Ba mẹ có thể bảo vệ và xoá dữ liệu gia đình thế nào?',
+        answer: 'Khi ba mẹ đặt mã PIN, thanh toán và các thao tác quan trọng cần mã đó. Bé dùng màn hình riêng. Chủ gia đình có thể xoá toàn bộ dữ liệu gia đình trong ứng dụng; chính sách quyền riêng tư mô tả cách KidHabit xử lý dữ liệu.',
+      },
+    ],
   },
 ];
+
+export const faqs = faqGroups.flatMap((group) => group.items);
 
 export const publicPages = {
   framework: {

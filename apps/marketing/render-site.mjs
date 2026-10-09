@@ -3,7 +3,7 @@ import { sessionHintCookie } from './session-hint.mjs';
 import scienceData from '../../src/data/science-content.json' with { type: 'json' };
 import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
 import { maxSavingPercent, priceView, pricingTiers, upgradeDifference } from './pricing.mjs';
-import { faqs, launchOffer, navigation, publicPages, safety, story, storyStages, testimonials } from './site-content.mjs';
+import { faqGroups, faqs, launchOffer, navigation, publicPages, safety, story, storyStages, testimonials } from './site-content.mjs';
 
 const icons = {
   compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>',
@@ -263,6 +263,16 @@ function renderStoryHeader(appOrigin) {
   </header>`;
 }
 
+function renderHowItWorks() {
+  const copy = story.howItWorks;
+  return `<div class="how-it-works" role="group" aria-labelledby="how-it-works-title">
+        <h2 id="how-it-works-title">${escapeHtml(copy.title)}</h2>
+        <ol class="how-steps-home">${copy.steps.map((step, index) => `<li><span class="how-number" aria-hidden="true">${index + 1}</span><div><h3>${escapeHtml(step.title)}</h3><p>${escapeHtml(step.text)}</p></div></li>`).join('')}</ol>
+        <p class="feature-label" id="home-features-title">${escapeHtml(copy.featuresLabel)}</p>
+        <ul class="feature-strip" aria-labelledby="home-features-title">${copy.features.map((feature) => `<li><b>${escapeHtml(feature.title)}</b><span>${escapeHtml(feature.text)}</span></li>`).join('')}</ul>
+      </div>`;
+}
+
 function renderStoryHero(appOrigin) {
   const { hero, quiz } = story;
   const [before, after] = hero.title.split(hero.highlight);
@@ -288,6 +298,7 @@ function renderStoryHero(appOrigin) {
           <img class="mascot" src="/mascots/leo.webp" alt="" width="400" height="400">
         </div>
       </div>
+      ${renderHowItWorks()}
       <div class="quiz reveal" data-quiz>
         <div><p class="eyebrow">${escapeHtml(quiz.eyebrow)}</p><h2 class="quiz-q" id="quiz-q">${escapeHtml(quiz.question)}</h2></div>
         <div class="options" role="radiogroup" aria-labelledby="quiz-q">${quiz.options.map((option, index) => `<button class="opt" type="button" role="radio" aria-checked="false" tabindex="${index === 0 ? 0 : -1}" data-quiz-option="${option.value}" data-final-title="${escapeHtml(option.finalTitle)}">${escapeHtml(option.label)}</button>`).join('')}</div>
@@ -406,7 +417,6 @@ function renderLetter(appOrigin) {
       <article class="letter reveal">
         <p class="big">${escapeHtml(letter.opening)}</p>
         ${letter.beforeList.map(paragraph).join('')}
-        <ol>${letter.missing.map((item) => `<li><b>${escapeHtml(item.strong)}</b>${escapeHtml(item.rest)}</li>`).join('')}</ol>
         ${letter.afterList.map(paragraph).join('')}
         <div class="sig"><b>${escapeHtml(letter.signature.name)}</b><span class="muted">${escapeHtml(letter.signature.role)} · ${escapeHtml(letter.signature.maker)}</span></div>
         <p class="ps"><b>${escapeHtml(letter.postscriptLabel)}</b> ${escapeHtml(letter.postscript)}</p>
@@ -510,14 +520,14 @@ function renderStoryFaq(appOrigin, { home = false } = {}) {
         <p class="eyebrow">${home ? escapeHtml(story.faq.eyebrow) : 'Hỏi đáp'}</p>
         <h2 id="faq-title">${escapeHtml(story.faq.title)}</h2>
       </div>
-      <div class="faq reveal">${faqs.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join('')}</div>
+      <div class="faq reveal">${faqGroups.map((group) => `<div class="faq-group" role="group" aria-labelledby="faq-${group.id}"><h3 id="faq-${group.id}">${escapeHtml(group.title)}</h3>${group.items.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join('')}</div>`).join('')}</div>
     </div>
   </section>`;
 }
 
 function renderSafety() {
   return `<div class="wrap"><div class="safety reveal" role="group" aria-labelledby="safety-title">
-      <div class="safety-head"><h3 id="safety-title">${escapeHtml(safety.title)}</h3><p>${escapeHtml(safety.text)}</p><a class="story-link" href="/privacy/">${escapeHtml(safety.link)} <span aria-hidden="true">→</span></a></div>
+      <div class="safety-head"><h2 id="safety-title">${escapeHtml(safety.title)}</h2><p>${escapeHtml(safety.text)}</p><a class="story-link" href="/privacy/">${escapeHtml(safety.link)} <span aria-hidden="true">→</span></a></div>
       <ul class="safety-grid">${safety.points.map((point) => `<li class="safety-item"><span class="safety-icon">${icon(point.icon)}</span><div><b>${escapeHtml(point.title)}</b><p>${escapeHtml(point.text)}</p></div></li>`).join('')}</ul>
     </div></div>`;
 }
@@ -557,7 +567,7 @@ export function renderHome({ marketingOrigin, appOrigin, now = new Date() }) {
 }
 
 export function renderPricingPage({ marketingOrigin, appOrigin }) {
-  const body = `<main id="noi-dung">${renderInfoHero({ slug: 'pricing', eyebrow: 'Bảng giá rõ ràng', title: 'Chọn gói hợp với nhà mình', lede: 'Gói 1 bé hoặc Gói Pro cho tối đa 5 bé, trả theo tháng hay theo năm đều cùng quyền lợi. Không phí ẩn, không tự động gia hạn.', mascot: 'bee' })}<div class="story">${renderPlans(appOrigin)}${renderStoryFaq(appOrigin)}</div></main>`;
+  const body = `<main id="noi-dung">${renderInfoHero({ slug: 'pricing', eyebrow: 'Bảng giá rõ ràng', title: 'Chọn gói hợp với nhà mình', lede: `${pricingTiers.solo.name} cho 1 bé hoặc ${pricingTiers.pro.name} cho tối đa 5 bé, trả theo tháng hay theo năm đều cùng quyền lợi. Không phí ẩn, không tự động gia hạn.`, mascot: 'bee' })}<div class="story">${renderPlans(appOrigin)}${renderStoryFaq(appOrigin)}</div></main>`;
   return renderDocument({ title: 'Bảng giá KidHabit Hero | Dùng thử 7 ngày', description: 'So sánh ba gói KidHabit cho một bé hoặc cả gia đình: giá rõ ràng, không phí ẩn, không tự động gia hạn và có 7 ngày dùng thử trước khi quyết định.', path: '/pricing/', marketingOrigin, appOrigin, body, structuredData: `${renderStructuredData({ marketingOrigin, appOrigin })}${renderPageStructuredData({ name: 'Bảng giá', description: 'So sánh ba gói KidHabit cho một bé hoặc cả gia đình.', path: '/pricing/', marketingOrigin, faqItems: faqs })}` });
 }
 
@@ -628,7 +638,7 @@ function renderSciencePage({ marketingOrigin, appOrigin }) {
     return `<article id="${principle.id}" class="science-card">
       <header class="science-card-head"><span class="science-number" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span><h3>${escapeHtml(principle.title)}</h3></header>
       <div class="science-block block-evidence"><h4>${icon('search')}Bằng chứng nói gì</h4><p>${escapeHtml(principle.evidence)}</p></div>
-      <div class="science-block block-action"><h4>${icon('lightbulb')}Bạn có thể làm gì</h4><p>${escapeHtml(principle.action)}</p></div>
+      <div class="science-block block-action"><h4>${icon('lightbulb')}Ba mẹ có thể làm gì</h4><p>${escapeHtml(principle.action)}</p></div>
       <div class="science-block block-limit"><h4>${icon('alert')}Giới hạn</h4><p>${escapeHtml(principle.limit)}</p></div>
       <p class="science-sources">${icon('file')}Nguồn: ${sources}</p>
     </article>`;
@@ -719,7 +729,7 @@ function renderFrameworkPage({ marketingOrigin, appOrigin }) {
   ];
   const howList = `<ol class="info-cards step-list how-steps">${howSteps.map(([title, text], index) => `<li class="info-card"><span class="step-number" aria-hidden="true">${index + 1}</span><div><h3>${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></div></li>`).join('')}</ol>`;
   const faq = `<div class="fw-faq">${frameworkFaqs.map((item) => `<details><summary>${escapeHtml(item.question)}</summary><p>${escapeHtml(item.answer)}</p></details>`).join('')}</div>`;
-  const body = `<main id="noi-dung">${renderInfoHero({ slug: 'framework', eyebrow: page.eyebrow, title: page.title, lede: `Bộ khung gồm ${habitCount} thói quen cho trẻ từ ${youngest} đến ${oldest} tuổi, chia thành ${stageCount} giai đoạn. Mỗi thói quen là một việc nhỏ, nói bằng lời của con. Bạn không cần làm hết: chọn một việc vừa sức rồi tăng dần.`, mascot: page.mascot })}
+  const body = `<main id="noi-dung">${renderInfoHero({ slug: 'framework', eyebrow: page.eyebrow, title: page.title, lede: `Bộ khung gồm ${habitCount} thói quen cho trẻ từ ${youngest} đến ${oldest} tuổi, chia thành ${stageCount} giai đoạn. Mỗi thói quen là một việc nhỏ, nói bằng lời của con. Ba mẹ không cần làm hết: chọn một việc vừa sức rồi tăng dần.`, mascot: page.mascot })}
   <section class="section info-body"><div class="shell">
     <h2 class="fw-heading">Khung được thiết kế như thế nào</h2>
     <ul class="info-cards">${principleCards}</ul>
