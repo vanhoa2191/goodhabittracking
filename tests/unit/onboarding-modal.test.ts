@@ -193,6 +193,17 @@ describe('submitOnboarding', () => {
     expect(deps.createReward).not.toHaveBeenCalled();
   });
 
+  it('creates no reward for a family that already has children', async () => {
+    const deps = makeDeps();
+    const draft = {
+      ...createInitialDraft({ language: 'vi', hasChildren: true, existingRewardTitles: [] }),
+      childName: 'Minh An',
+      hasConsent: true,
+    };
+    expect(await submitOnboarding(draft, deps)).toEqual({ ok: true, profileId, rewardsFailed: false });
+    expect(deps.createReward).not.toHaveBeenCalled();
+  });
+
   it('uses the selected nickname, habits and localized reward with the edited cost', async () => {
     const deps = makeDeps();
     const draft = makeDraft();

@@ -1,14 +1,18 @@
 import { describe, expect, it } from 'vitest';
+import { getOnboardingWizardCopy } from '@/lib/i18n/onboarding-wizard-copy';
 import { generateAgeAdaptedHabits, getStageFromAge } from '@/lib/wit-framework';
 import {
+  MAX_REWARD_COST,
   ONBOARDING_REWARD_IDS,
   canAdvance,
   createInitialDraft,
   daysToReward,
   estimateDailyStars,
+  firstInvalidRewardId,
   initialHabitSelection,
   initialRewardSelection,
   isParentRoleStage,
+  isValidRewardCost,
   selectedStarterHabits,
   withAge,
 } from '@/lib/onboarding/wizard';
@@ -59,6 +63,26 @@ describe('onboarding wizard', () => {
     expect(draft.habits.every((habit) => !habit.selected)).toBe(true);
   });
 
+  it('keeps the habit choices when the age stays in the same stage and limit (7 -> 8)', () => {
+    const at7 = withAge(createInitialDraft(), 7);
+    const draft = {
+      ...at7,
+      habits: at7.habits.map((habit) => ({ ...habit, selected: habit.templateIndex === 5, requiresApproval: !habit.requiresApproval })),
+    };
+
+    expect(withAge(draft, 8)).toEqual({ ...draft, childAge: 8 });
+  });
+
+  it.each([
+    [5, 6, 'the recommended limit changes'],
+    [6, 7, 'the age stage changes'],
+  ])('resets the habit choices from age %i to %i because %s', (from, to) => {
+    const atFrom = withAge(createInitialDraft(), from);
+    const draft = { ...atFrom, habits: atFrom.habits.map((habit) => ({ ...habit, selected: false })) };
+
+    expect(withAge(draft, to).habits).toEqual(initialHabitSelection(to));
+  });
+
   it('offers rewards in the onboarding order with only the first selected', () => {
     const rewards = initialRewardSelection();
 
@@ -68,6 +92,36 @@ describe('onboarding wizard', () => {
     expect(rewards.map((reward) => reward.id)).toEqual(ONBOARDING_REWARD_IDS);
     expect(rewards.map((reward) => reward.costPoints)).toEqual([25, 35, 40]);
     expect(rewards.map((reward) => reward.selected)).toEqual([true, false, false]);
+    expect(rewards.map((reward) => reward.alreadyAdded)).toEqual([false, false, false]);
+  });
+
+  it('preselects no reward when the family already has children', () => {
+    const draft = createInitialDraft({ language: 'en', hasChildren: true, existingRewardTitles: [] });
+
+    expect(draft.rewards.map((reward) => reward.selected)).toEqual([false, false, false]);
+    expect(draft.rewards.map((reward) => reward.alreadyAdded)).toEqual([false, false, false]);
+  });
+
+  it('marks rewards whose localized title already exists as added and unselected', () => {
+    const titles = getOnboardingWizardCopy('en').rewardTitles;
+    const draft = createInitialDraft({
+      language: 'en',
+      hasChildren: false,
+      existingRewardTitles: [
+        `  ${titles['experience-bedtime-story'].title.toUpperCase()} `,
+        titles['experience-parent-time'].title,
+        getOnboardingWizardCopy('vi').rewardTitles['experience-meal-choice'].title,
+      ],
+    });
+
+    expect(draft.rewards.map((reward) => reward.alreadyAdded)).toEqual([true, false, true]);
+    expect(draft.rewards.map((reward) => reward.selected)).toEqual([false, false, false]);
+  });
+
+  it('keeps the first reward preselected for a new family without matching rewards', () => {
+    const draft = createInitialDraft({ language: 'vi', hasChildren: false, existingRewardTitles: ['Đi công viên'] });
+
+    expect(draft.rewards).toEqual(initialRewardSelection());
   });
 
   it('returns only chosen habit indexes with their approval overrides', () => {
@@ -135,6 +189,33 @@ describe('onboarding wizard', () => {
         costPoints: index === 1 ? costPoints : reward.costPoints,
       })),
     })).toBe(false);
+  });
+
+  it.each([[1, true], [MAX_REWARD_COST, true], [MAX_REWARD_COST + 1, false], [0, false], [2.5, false]])(
+    'validates reward cost %s',
+    (cost, expected) => expect(isValidRewardCost(cost)).toBe(expected),
+  );
+
+  it.each([[1_000_000, true], [1_000_001, false]])('allows selected reward cost %i on step 3: %s', (costPoints, expected) => {
+    const draft = createInitialDraft();
+    expect(MAX_REWARD_COST).toBe(1_000_000);
+    expect(canAdvance(3, {
+      ...draft,
+      rewards: draft.rewards.map((reward) => (reward.selected ? { ...reward, costPoints } : reward)),
+    })).toBe(expected);
+  });
+
+  it('finds the first selected reward with an invalid cost', () => {
+    const draft = createInitialDraft();
+    expect(firstInvalidRewardId(draft)).toBeNull();
+    expect(firstInvalidRewardId({
+      ...draft,
+      rewards: draft.rewards.map((reward, index) => ({
+        ...reward,
+        selected: index > 0,
+        costPoints: index === 0 ? 0 : MAX_REWARD_COST + 1,
+      })),
+    })).toBe('experience-meal-choice');
   });
 
   it('ignores invalid unselected reward costs on step 3', () => {

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { type RefObject } from 'react';
 import Link from 'next/link';
 import { BookOpen } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/context';
@@ -15,11 +15,13 @@ type ConfirmStepProps = {
   readonly draft: WizardDraft;
   readonly onChange: (draft: WizardDraft) => void;
   readonly error: string | null;
+  readonly consentError: string | null;
+  readonly consentRef: RefObject<HTMLInputElement | null>;
 };
 
 const marketingOrigin = getMarketingOrigin();
 
-export function ConfirmStep({ draft, onChange, error }: ConfirmStepProps) {
+export function ConfirmStep({ draft, onChange, error, consentError, consentRef }: ConfirmStepProps) {
   const { language } = useTranslation();
   const copy = getOnboardingCopy(language);
   const extra = getOnboardingExtraCopy(language);
@@ -36,17 +38,23 @@ export function ConfirmStep({ draft, onChange, error }: ConfirmStepProps) {
         </p>
       </div>
 
-      <label className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs leading-relaxed text-slate-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-200">
-        <input
-          type="checkbox"
-          checked={draft.hasConsent}
-          onChange={(event) => onChange({ ...draft, hasConsent: event.target.checked })}
-          className="mt-0.5 h-5 w-5 shrink-0 accent-indigo-600"
-        />
-        <span>
-          {copy.consent}
-        </span>
-      </label>
+      <div>
+        <label className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs leading-relaxed text-slate-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-200">
+          <input
+            ref={consentRef}
+            type="checkbox"
+            checked={draft.hasConsent}
+            onChange={(event) => onChange({ ...draft, hasConsent: event.target.checked })}
+            aria-invalid={consentError ? true : undefined}
+            aria-describedby={consentError ? 'onboarding-consent-error' : undefined}
+            className="mt-0.5 h-5 w-5 shrink-0 accent-indigo-600"
+          />
+          <span>
+            {copy.consent}
+          </span>
+        </label>
+        {consentError && <p id="onboarding-consent-error" role="alert" className="mt-1.5 text-sm font-bold text-rose-700 dark:text-rose-300">{consentError}</p>}
+      </div>
       <p className="text-center text-xs text-slate-600 dark:text-slate-300">{extra.legalTemplate.split(/(\[privacy\]|\[terms\])/).map((part, index) => {
         if (part === '[privacy]') return <Link key={index} href={`${marketingOrigin}/privacy`} target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">{extra.privacy}</Link>;
         if (part === '[terms]') return <Link key={index} href={`${marketingOrigin}/terms`} target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">{extra.terms}</Link>;

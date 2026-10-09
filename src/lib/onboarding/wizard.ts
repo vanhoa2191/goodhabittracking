@@ -1,6 +1,8 @@
 import { newHabitLimit } from '@/lib/habit-programs/config';
+import { getOnboardingWizardCopy } from '@/lib/i18n/onboarding-wizard-copy';
 import { MEANINGFUL_REWARD_TEMPLATES } from '@/lib/reward-templates';
 import { generateAgeAdaptedHabits, getStageFromAge } from '@/lib/wit-framework';
+import type { Language } from '@/types';
 
 export type WizardStep = 1 | 2 | 3 | 4 | 5;
 
@@ -21,10 +23,15 @@ export type StarterHabitChoice = {
   readonly requiresApproval: boolean;
 };
 
+/** Matches the server reward schema (`costPoints` max in reward-mutations). */
+export const MAX_REWARD_COST = 1_000_000;
+
 export type RewardChoice = {
   readonly id: OnboardingRewardId;
   readonly selected: boolean;
   readonly costPoints: number;
+  /** The family already has a reward with this localized title; it cannot be selected again. */
+  readonly alreadyAdded: boolean;
 };
 
 export type WizardDraft = {
@@ -38,7 +45,14 @@ export type WizardDraft = {
   readonly hasConsent: boolean;
 };
 
-export function createInitialDraft(): WizardDraft {
+/** Store data for a wizard opened by a family that may already have children and rewards. */
+export type InitialDraftOptions = {
+  readonly language: Language;
+  readonly hasChildren: boolean;
+  readonly existingRewardTitles: readonly string[];
+};
+
+export function createInitialDraft(options?: InitialDraftOptions): WizardDraft {
   return {
     childName: '',
     childNickname: '',
@@ -46,7 +60,7 @@ export function createInitialDraft(): WizardDraft {
     childAvatar: 'mascot:leo',
     childThemeColor: '#F59E0B',
     habits: initialHabitSelection(5),
-    rewards: initialRewardSelection(),
+    rewards: initialRewardSelection(options),
     hasConsent: false,
   };
 }
@@ -62,17 +76,26 @@ export function initialHabitSelection(age: number): StarterHabitChoice[] {
   }));
 }
 
-export function initialRewardSelection(): RewardChoice[] {
+const normalizeTitle = (title: string) => title.trim().toLocaleLowerCase();
+
+export function initialRewardSelection(options?: InitialDraftOptions): RewardChoice[] {
+  const titles = options ? getOnboardingWizardCopy(options.language).rewardTitles : null;
+  const existingTitles = new Set(options?.existingRewardTitles.map(normalizeTitle));
+
   return ONBOARDING_REWARD_IDS.map((id, index) => {
     const template = MEANINGFUL_REWARD_TEMPLATES.find((reward) => reward.id === id);
     if (!template) throw new Error(`Missing onboarding reward template: ${id}`);
 
-    return { id, selected: index === 0, costPoints: template.costPoints };
+    const alreadyAdded = titles !== null && existingTitles.has(normalizeTitle(titles[id].title));
+    const selected = index === 0 && !options?.hasChildren && !alreadyAdded;
+    return { id, selected, costPoints: template.costPoints, alreadyAdded };
   });
 }
 
 export function withAge(draft: WizardDraft, age: number): WizardDraft {
-  return { ...draft, childAge: age, habits: initialHabitSelection(age) };
+  const sameStarterSet = getStageFromAge(age) === getStageFromAge(draft.childAge)
+    && newHabitLimit(age) === newHabitLimit(draft.childAge);
+  return { ...draft, childAge: age, habits: sameStarterSet ? draft.habits : initialHabitSelection(age) };
 }
 
 export function selectedStarterHabits(
@@ -95,6 +118,14 @@ export function daysToReward(costPoints: number, dailyStars: number): number | n
   return dailyStars <= 0 ? null : Math.ceil(costPoints / dailyStars);
 }
 
+export function isValidRewardCost(cost: number): boolean {
+  return Number.isInteger(cost) && cost > 0 && cost <= MAX_REWARD_COST;
+}
+
+export function firstInvalidRewardId(draft: WizardDraft): OnboardingRewardId | null {
+  return draft.rewards.find((reward) => reward.selected && !isValidRewardCost(reward.costPoints))?.id ?? null;
+}
+
 export function isParentRoleStage(age: number): boolean {
   return getStageFromAge(age) === '0-3';
 }
@@ -107,9 +138,7 @@ export function canAdvance(step: WizardStep, draft: WizardDraft): boolean {
     case 5:
       return true;
     case 3:
-      return draft.rewards.every((reward) =>
-        !reward.selected || (Number.isInteger(reward.costPoints) && reward.costPoints > 0),
-      );
+      return firstInvalidRewardId(draft) === null;
     case 4:
       return draft.hasConsent;
   }

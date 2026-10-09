@@ -3,8 +3,10 @@
 import { useTranslation } from '@/lib/i18n/context';
 import { getOnboardingWizardCopy } from '@/lib/i18n/onboarding-wizard-copy';
 import {
+  MAX_REWARD_COST,
   daysToReward,
   estimateDailyStars,
+  isValidRewardCost,
   type OnboardingRewardId,
   type RewardChoice,
   type WizardDraft,
@@ -14,16 +16,15 @@ import { MEANINGFUL_REWARD_TEMPLATES } from '@/lib/reward-templates';
 type RewardsStepProps = {
   readonly draft: WizardDraft;
   readonly onChange: (draft: WizardDraft) => void;
+  readonly registerCostInput: (id: OnboardingRewardId, input: HTMLInputElement | null) => void;
 };
 
-const isValidCost = (cost: number) => Number.isInteger(cost) && cost > 0;
-
-export function RewardsStep({ draft, onChange }: RewardsStepProps) {
+export function RewardsStep({ draft, onChange, registerCostInput }: RewardsStepProps) {
   const { language } = useTranslation();
   const wizard = getOnboardingWizardCopy(language);
   const dailyStars = estimateDailyStars(draft);
   const selectedCosts = draft.rewards
-    .filter((reward) => reward.selected && isValidCost(reward.costPoints))
+    .filter((reward) => reward.selected && isValidRewardCost(reward.costPoints))
     .map((reward) => reward.costPoints);
   const cheapest = selectedCosts.length > 0 ? Math.min(...selectedCosts) : null;
   const days = cheapest === null ? null : daysToReward(cheapest, dailyStars);
@@ -45,7 +46,7 @@ export function RewardsStep({ draft, onChange }: RewardsStepProps) {
           const icon = MEANINGFUL_REWARD_TEMPLATES.find((template) => template.id === reward.id)?.icon;
           const checkboxId = `onboarding-reward-${reward.id}`;
           const costId = `${checkboxId}-cost`;
-          const costInvalid = reward.selected && !isValidCost(reward.costPoints);
+          const costInvalid = reward.selected && !isValidRewardCost(reward.costPoints);
           return (
             <li
               key={reward.id}
@@ -55,18 +56,28 @@ export function RewardsStep({ draft, onChange }: RewardsStepProps) {
                   : 'border-slate-100 bg-slate-50 dark:border-zinc-700 dark:bg-zinc-800/60'
               }`}
             >
-              <label htmlFor={checkboxId} className="flex min-h-11 min-w-0 flex-1 cursor-pointer items-start gap-2">
+              <label
+                htmlFor={checkboxId}
+                className={`flex min-h-11 min-w-0 flex-1 items-start gap-2 ${reward.alreadyAdded ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+              >
                 <input
                   id={checkboxId}
                   type="checkbox"
                   checked={reward.selected}
+                  disabled={reward.alreadyAdded}
                   onChange={(e) => updateReward(reward.id, { selected: e.target.checked })}
-                  className="mt-0.5 h-5 w-5 shrink-0 accent-indigo-600"
+                  aria-describedby={reward.alreadyAdded ? `${checkboxId}-added` : undefined}
+                  className="mt-0.5 h-5 w-5 shrink-0 accent-indigo-600 disabled:opacity-50"
                 />
                 {icon && <span className="text-base font-black text-indigo-600 dark:text-indigo-300" aria-hidden="true">{icon}</span>}
                 <span className="min-w-0">
                   <span className="block text-sm font-bold text-slate-800 dark:text-slate-100">{rewardCopy.title}</span>
                   <span className="block text-xs leading-relaxed text-slate-600 dark:text-slate-300">{rewardCopy.description}</span>
+                  {reward.alreadyAdded && (
+                    <span id={`${checkboxId}-added`} className="mt-1 inline-block rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-bold text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
+                      {wizard.rewards.alreadyAdded}
+                    </span>
+                  )}
                 </span>
               </label>
               <div className="shrink-0 sm:w-28">
@@ -74,10 +85,12 @@ export function RewardsStep({ draft, onChange }: RewardsStepProps) {
                   {wizard.rewards.costLabel}
                 </label>
                 <input
+                  ref={(input) => registerCostInput(reward.id, input)}
                   id={costId}
                   type="number"
                   inputMode="numeric"
                   min={1}
+                  max={MAX_REWARD_COST}
                   step={1}
                   value={reward.costPoints === 0 ? '' : reward.costPoints}
                   disabled={!reward.selected}

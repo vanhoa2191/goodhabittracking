@@ -23,6 +23,7 @@ export type OnboardingWizardCopy = {
     readonly costLabel: string;
     readonly later: string;
     readonly invalidCost: string;
+    readonly alreadyAdded: string;
   };
   readonly confirm: {
     readonly title: string;
@@ -74,7 +75,8 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       estimate: (s, c, d) => `Con kiếm khoảng ${s} sao/ngày → quà ${c} sao ≈ ${d} ngày cố gắng.`,
       costLabel: 'Giá (sao)',
       later: 'Để sau',
-      invalidCost: 'Giá sao phải là số nguyên lớn hơn 0.',
+      invalidCost: 'Giá sao phải là số nguyên từ 1 đến 1.000.000.',
+      alreadyAdded: 'Đã có trong danh sách quà',
     },
     confirm: {
       title: 'Xác nhận & bắt đầu',
@@ -137,7 +139,8 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       estimate: (s, c, d) => `Your child earns about ${s} stars/day → a ${c}-star reward ≈ ${d} days of effort.`,
       costLabel: 'Cost (stars)',
       later: 'Later',
-      invalidCost: 'The star cost must be a whole number greater than 0.',
+      invalidCost: 'The star cost must be a whole number from 1 to 1,000,000.',
+      alreadyAdded: 'Already in your rewards',
     },
     confirm: {
       title: 'Confirm & start',
@@ -200,7 +203,8 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       estimate: (s, c, d) => `孩子每天约赚 ${s} 颗星 → ${c} 星的奖励 ≈ 努力 ${d} 天。`,
       costLabel: '价格（星）',
       later: '以后再说',
-      invalidCost: '星星价格必须是大于 0 的整数。',
+      invalidCost: '星星价格必须是 1 到 1,000,000 之间的整数。',
+      alreadyAdded: '已在奖励列表中',
     },
     confirm: {
       title: '确认并开始',
@@ -263,7 +267,8 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       estimate: (s, c, d) => `お子さまは 1 日に約 ${s} スター獲得 → ${c} スターのごほうびまで ≈ ${d} 日の頑張り。`,
       costLabel: '必要スター数',
       later: '後で',
-      invalidCost: 'スター数は 0 より大きい整数にしてください。',
+      invalidCost: 'スター数は 1〜1,000,000 の整数にしてください。',
+      alreadyAdded: 'ごほうびに追加済み',
     },
     confirm: {
       title: '確認してスタート',
@@ -326,7 +331,8 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       estimate: (s, c, d) => `아이는 하루 약 ${s}개의 별을 모아요 → ${c}별 선물까지 ≈ ${d}일 노력.`,
       costLabel: '필요한 별',
       later: '나중에',
-      invalidCost: '별 개수는 0보다 큰 정수여야 해요.',
+      invalidCost: '별 개수는 1부터 1,000,000 사이의 정수여야 해요.',
+      alreadyAdded: '이미 선물 상점에 있어요',
     },
     confirm: {
       title: '확인하고 시작',
@@ -389,7 +395,8 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       estimate: (s, c, d) => `Votre enfant gagne environ ${s} étoiles/jour → une récompense de ${c} étoiles ≈ ${d} jours d’efforts.`,
       costLabel: 'Coût (étoiles)',
       later: 'Plus tard',
-      invalidCost: 'Le coût en étoiles doit être un nombre entier supérieur à 0.',
+      invalidCost: 'Le coût en étoiles doit être un nombre entier entre 1 et 1 000 000.',
+      alreadyAdded: 'Déjà dans vos cadeaux',
     },
     confirm: {
       title: 'Confirmer et commencer',
@@ -452,7 +459,8 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       estimate: (s, c, d) => `Dein Kind sammelt etwa ${s} Sterne/Tag → eine Belohnung für ${c} Sterne ≈ ${d} Tage Einsatz.`,
       costLabel: 'Preis (Sterne)',
       later: 'Später',
-      invalidCost: 'Der Sternepreis muss eine ganze Zahl größer als 0 sein.',
+      invalidCost: 'Der Sternepreis muss eine ganze Zahl zwischen 1 und 1.000.000 sein.',
+      alreadyAdded: 'Schon bei deinen Belohnungen',
     },
     confirm: {
       title: 'Bestätigen & starten',
@@ -515,7 +523,8 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       estimate: (s, c, d) => `Tuo figlio guadagna circa ${s} stelle al giorno → un premio da ${c} stelle ≈ ${d} giorni di impegno.`,
       costLabel: 'Costo (stelle)',
       later: 'Più tardi',
-      invalidCost: 'Il costo in stelle deve essere un numero intero maggiore di 0.',
+      invalidCost: 'Il costo in stelle deve essere un numero intero tra 1 e 1.000.000.',
+      alreadyAdded: 'Già tra i tuoi premi',
     },
     confirm: {
       title: 'Conferma e inizia',
@@ -578,7 +587,8 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       estimate: (s, c, d) => `Tu hijo gana unas ${s} estrellas al día → un premio de ${c} estrellas ≈ ${d} días de esfuerzo.`,
       costLabel: 'Precio (estrellas)',
       later: 'Más tarde',
-      invalidCost: 'El precio en estrellas debe ser un número entero mayor que 0.',
+      invalidCost: 'El precio en estrellas debe ser un número entero entre 1 y 1.000.000.',
+      alreadyAdded: 'Ya está en tus recompensas',
     },
     confirm: {
       title: 'Confirmar y empezar',

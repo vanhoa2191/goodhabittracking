@@ -9,7 +9,14 @@ import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 import { getOnboardingExtraCopy } from '@/lib/i18n/onboarding-extra-copy';
 import { getOnboardingWizardCopy } from '@/lib/i18n/onboarding-wizard-copy';
 import { submitOnboarding } from '@/lib/onboarding/submit';
-import { canAdvance, createInitialDraft, type WizardDraft, type WizardStep } from '@/lib/onboarding/wizard';
+import {
+  canAdvance,
+  createInitialDraft,
+  firstInvalidRewardId,
+  type OnboardingRewardId,
+  type WizardDraft,
+  type WizardStep,
+} from '@/lib/onboarding/wizard';
 import { ChildStep } from './ChildStep';
 import { ConfirmStep } from './ConfirmStep';
 import { HabitsStep } from './HabitsStep';
@@ -29,16 +36,23 @@ export function OnboardingWizard({ onClose }: OnboardingWizardProps) {
   const copy = getOnboardingCopy(language);
   const extra = getOnboardingExtraCopy(language);
   const wizard = getOnboardingWizardCopy(language);
-  const { createProfile, createReward, currentUser, isPro, activateFreeTrial } = useAppStore();
+  const { createProfile, createReward, currentUser, isPro, activateFreeTrial, profiles, rewards } = useAppStore();
 
-  const [draft, setDraft] = useState<WizardDraft>(createInitialDraft);
+  const [draft, setDraft] = useState<WizardDraft>(() => createInitialDraft({
+    language,
+    hasChildren: profiles.length > 0,
+    existingRewardTitles: rewards.map((reward) => reward.title),
+  }));
   const [step, setStep] = useState<WizardStep>(1);
   const [requestId] = useState(() => crypto.randomUUID());
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [nameError, setNameError] = useState<string | null>(null);
+  const [consentError, setConsentError] = useState<string | null>(null);
   const [result, setResult] = useState<{ readonly profileId: string; readonly rewardsFailed: boolean } | null>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+  const consentRef = useRef<HTMLInputElement>(null);
+  const costInputs = useRef(new Map<OnboardingRewardId, HTMLInputElement>());
   const headingRef = useRef<HTMLHeadingElement>(null);
   const shownStep = useRef<WizardStep>(step);
 
@@ -59,6 +73,12 @@ export function OnboardingWizard({ onClose }: OnboardingWizardProps) {
   const updateDraft = (next: WizardDraft) => {
     setDraft(next);
     setNameError(null);
+    setConsentError(null);
+  };
+
+  const registerCostInput = (id: OnboardingRewardId, input: HTMLInputElement | null) => {
+    if (input) costInputs.current.set(id, input);
+    else costInputs.current.delete(id);
   };
 
   const submit = async () => {
@@ -95,6 +115,12 @@ export function OnboardingWizard({ onClose }: OnboardingWizardProps) {
       if (step === 1) {
         setNameError(copy.childNameRequired);
         nameRef.current?.focus();
+      } else if (step === 3) {
+        const invalidId = firstInvalidRewardId(draft);
+        if (invalidId) costInputs.current.get(invalidId)?.focus();
+      } else if (step === 4) {
+        setConsentError(copy.consentRequired);
+        consentRef.current?.focus();
       }
       return;
     }
@@ -110,8 +136,6 @@ export function OnboardingWizard({ onClose }: OnboardingWizardProps) {
   };
 
   const canGoBack = (step === 2 || step === 3 || step === 4) && !isSubmitting;
-  const nextDisabled = step !== 1 && (!canAdvance(step, draft) || isSubmitting);
-
   return (
     <form noValidate onSubmit={handleNext} className="flex min-h-0 flex-1 flex-col">
       <div className="shrink-0 px-5 sm:px-6 pt-4 space-y-2">
@@ -136,8 +160,10 @@ export function OnboardingWizard({ onClose }: OnboardingWizardProps) {
 
         {step === 1 && <ChildStep draft={draft} onChange={updateDraft} nameError={nameError} nameRef={nameRef} />}
         {step === 2 && <HabitsStep draft={draft} onChange={updateDraft} />}
-        {step === 3 && <RewardsStep draft={draft} onChange={updateDraft} />}
-        {step === 4 && <ConfirmStep draft={draft} onChange={updateDraft} error={submitError} />}
+        {step === 3 && <RewardsStep draft={draft} onChange={updateDraft} registerCostInput={registerCostInput} />}
+        {step === 4 && (
+          <ConfirmStep draft={draft} onChange={updateDraft} error={submitError} consentError={consentError} consentRef={consentRef} />
+        )}
         {step === 5 && result && (
           <HandoffStep childId={result.profileId} rewardsFailed={result.rewardsFailed} onFinish={onClose} />
         )}
@@ -157,7 +183,7 @@ export function OnboardingWizard({ onClose }: OnboardingWizardProps) {
           )}
           <button
             type="submit"
-            disabled={nextDisabled}
+            disabled={isSubmitting}
             className="min-h-11 flex-1 py-3 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
           >
             {step === 4 ? (
