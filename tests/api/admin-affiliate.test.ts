@@ -116,6 +116,14 @@ describe('POST /api/admin/affiliate', () => {
     await expect(response.json()).resolves.toMatchObject({ status: data });
   });
 
+  it.each(['billing_case_open', 'refund_confirmed'])('exposes a durable payment block for %s without reporting success', async (status) => {
+    rpc.mockResolvedValue({ data: status, error: null });
+    const response = await POST(post({ payoutId, resolution: 'paid', reference: 'FT1', reason: 'Chuyển khoản xong' }));
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toMatchObject({ status, blocked: true });
+    expect(recordAdminAudit.mock.calls.at(-1)![1].outcome).toBe('failed');
+  });
+
   it('refuses a cross-site request', async () => {
     const response = await POST(post({ payoutId, resolution: 'paid', reference: 'x', reason: 'Chuyển khoản xong' }, { origin: 'https://evil.example' }));
     expect(response.status).toBe(403);

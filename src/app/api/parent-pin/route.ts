@@ -13,12 +13,12 @@ const changeSchema = z.object({ currentPin: pinSchema.optional(), newPin: pinSch
 
 type ParentClient = NonNullable<Awaited<ReturnType<typeof parentClient>>>;
 
-/** Unlocks this browser for the PIN that is current now; refuses when that version cannot be read. */
+/** Sign only the version verified/changed under the RPC row lock. */
 async function unlockedResponse(context: ParentClient, data: unknown, status: number): Promise<NextResponse> {
-  const pinStatus = await context.supabase.rpc('get_parent_pin_status', { target_family_id: context.parent.familyId });
-  if (pinStatus.error || !pinStatus.data) return NextResponse.json({ error: 'Could not verify PIN.' }, { status: 503 });
+  const version = parentPinVersion(data);
+  if (!version) return NextResponse.json({ error: 'Could not verify PIN.' }, { status: 503 });
   const response = NextResponse.json(data, { status });
-  await issueParentUnlock(response, context.parent, parentPinVersion(pinStatus.data));
+  await issueParentUnlock(response, context.parent, version);
   return response;
 }
 

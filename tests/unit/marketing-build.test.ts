@@ -343,15 +343,18 @@ describe('marketing static artifact', () => {
     expect(css).toMatch(/\.plan\.recommended \.badge, \.plan-soon \.badge \{[^}]*visibility: visible;/);
   });
 
-  it('publishes the referral programme with its real numbers and rules', async () => {
+  it('publishes the referral programme in the site navigation and sitemap', async () => {
     const { outputDir } = await buildFixture();
     const page = await readFile(join(outputDir, 'gioi-thieu', 'index.html'), 'utf8');
+    expect(page).toContain('href="/gioi-thieu/"');
+    for (const fact of ['30%', '12 tháng', '40 ngày', '200.000', '60 ngày', 'thuế thu nhập cá nhân', 'khấu trừ thuế', 'Không tự giới thiệu', 'mã PIN phụ huynh']) {
+      expect(page).toContain(fact);
+    }
+    expect(page).not.toContain('35 ngày');
     const text = page.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
-    for (const fact of ['30%', '12 tháng đầu', '35 ngày', '200.000 đồng', 'kidhabit_ref', '60 ngày', 'thuế thu nhập cá nhân']) {
+    for (const fact of ['12 tháng đầu', 'kidhabit_ref', 'không cam kết mức thu nhập nào', 'thoả thuận hoàn lại']) {
       expect(text).toContain(fact);
     }
-    expect(text).toContain('không cam kết mức thu nhập nào');
-    expect(page).toContain('href="/gioi-thieu/"');
     expect(await readFile(join(outputDir, 'sitemap.xml'), 'utf8')).toContain('/gioi-thieu/');
   });
 

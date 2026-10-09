@@ -101,7 +101,7 @@ Choisissez [Mettre en pause](05-gia-dinh-va-cai-dat.md#tam-nghi) : la série est
 
 ### D. Parrainer un proche
 
-Adhérez au [programme](08-gioi-thieu-ban-be.md#tham-gia) → envoyez le lien → votre proche saisit le code et obtient [10 % de réduction](07-goi-va-thanh-toan.md#giam-gia) sur le forfait annuel → il règle son achat → une [commission est retenue pendant 35 jours](08-gioi-thieu-ban-be.md#hoa-hong) → définissez un code PIN et enregistrez vos coordonnées de versement → [demandez un retrait](08-gioi-thieu-ban-be.md#rut-tien) → l’administration [effectue le virement](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
+Adhérez au [programme](08-gioi-thieu-ban-be.md#tham-gia) → envoyez le lien → votre proche saisit le code et obtient [10 % de réduction](07-goi-va-thanh-toan.md#giam-gia) sur le forfait annuel → il règle son achat → une [commission est retenue pendant 40 jours](08-gioi-thieu-ban-be.md#hoa-hong) (toujours gelée si la commande a un dossier de remboursement ou de facturation ouvert) → définissez un code PIN et enregistrez vos coordonnées de versement → [demandez un retrait](08-gioi-thieu-ban-be.md#rut-tien) → l’administration [effectue le virement](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
 
 <!--op-->### E. Un client demande un remboursement
 

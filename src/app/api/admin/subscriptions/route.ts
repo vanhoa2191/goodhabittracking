@@ -83,19 +83,19 @@ export async function PATCH(request: NextRequest) {
     return adminJsonResponse({ error: 'Could not record the admin action.', correlationId }, correlationId, 503);
   }
 
-  const { error } = await admin.from('user_subscriptions').upsert({
-    family_id: parsed.data.familyId,
-    user_id: membership.user_id,
-    plan: parsed.data.plan,
-    status: parsed.data.status,
-    subscription_ends_at: isPaidPlanId(parsed.data.plan) ? endsAt : null,
-    trial_ends_at: parsed.data.plan === 'trial' ? endsAt : null,
-    // A trial granted here is a trial used: it must count as consumed so the family cannot start another later.
-    trial_consumed_at: current?.trial_consumed_at ?? (parsed.data.plan === 'trial' ? new Date().toISOString() : null),
-    updated_at: new Date().toISOString(),
-  }, { onConflict: 'family_id' });
-  await recordAdminAudit(admin, { ...audit, outcome: error ? 'failed' : 'succeeded' });
-  return error
+  const { data: result, error } = await admin.rpc('admin_update_family_subscription', {
+    target_family: parsed.data.familyId,
+    next_plan: parsed.data.plan,
+    next_status: parsed.data.status,
+    ends_at: endsAt,
+    expected_updated_at: parsed.data.expectedUpdatedAt,
+  });
+  await recordAdminAudit(admin, { ...audit, outcome: error || result !== 'updated' ? 'failed' : 'succeeded' });
+  if (result === 'subscription_changed') {
+    return adminJsonResponse({ error: 'The subscription changed while saving. Reload and review it before saving.', code: result, correlationId }, correlationId, 409);
+  }
+  if (result === 'family_not_found') return adminJsonResponse({ error: 'Family not found.', correlationId }, correlationId, 404);
+  return error || result !== 'updated'
     ? adminJsonResponse({ error: 'Could not update subscription.', correlationId }, correlationId, 503)
     : adminJsonResponse({ success: true, correlationId }, correlationId);
 }

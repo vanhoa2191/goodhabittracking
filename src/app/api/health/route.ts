@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { inspectPayOSConfig } from '@/lib/billing/payos-config';
 import { remember } from '@/lib/health-cache';
 import { hasBearerSecret } from '@/lib/security/bearer-secret';
+import { parentUnlockConfigReady } from '@/lib/security/parent-unlock';
 import { EXPECTED_SCHEMA_VERSION } from '@/lib/schema-version';
 
 export const runtime = 'nodejs';
@@ -86,7 +87,8 @@ export async function GET(request: Request) {
     ? await remember(`${databaseUrl}:schema-version:${EXPECTED_SCHEMA_VERSION}`, () => probeSchemaVersion(databaseUrl, serviceRoleKey))
     : null;
   const schemaVersionReady = schemaProbe?.ready ?? false;
-  const ready = databaseConnectionReady && billingReady && pairingReady && schemaVersionReady;
+  const parentUnlockReady = parentUnlockConfigReady();
+  const ready = databaseConnectionReady && billingReady && pairingReady && schemaVersionReady && parentUnlockReady;
 
   const operator = hasBearerSecret(request, process.env.CRON_SECRET);
 
@@ -101,6 +103,7 @@ export async function GET(request: Request) {
           databaseConnection: databaseConnectionReady,
           billingConfig: billingReady,
           pairingConfig: pairingReady,
+          parentUnlockConfig: parentUnlockReady,
           schemaVersion: schemaVersionReady,
         },
       }),

@@ -1,6 +1,8 @@
 import { maskPayoutAccounts } from '@/lib/referral/mask-account';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
-import { AdminAffiliatePayoutActions, type PayoutClaimState } from '@/components/AdminAffiliatePayoutActions';
+import { AdminAffiliateCommissionActions } from '@/components/AdminAffiliateCommissionActions';
+import { AdminAffiliatePayoutActions } from '@/components/AdminAffiliatePayoutActions';
+import type { PayoutClaimState } from '@/components/AdminAffiliatePayoutActions';
 
 type Payout = {
   readonly id: string;
@@ -14,6 +16,8 @@ type Payout = {
   readonly reference: string | null;
   readonly processingBy?: string | null;
   readonly processingAt?: string | null;
+  readonly blocked: boolean;
+  readonly blockedOrderCodes: readonly number[];
 };
 
 type Overview = {
@@ -21,6 +25,7 @@ type Overview = {
   readonly referrals: number;
   readonly owed: { readonly held: number; readonly available: number; readonly requested: number; readonly paid: number };
   readonly payouts: readonly Payout[];
+  readonly frozenCommissions?: readonly { readonly orderCode: number; readonly amount: number; readonly frozenAt: string }[];
   readonly loadedAt: number;
 };
 
@@ -71,7 +76,7 @@ export async function AdminAffiliatePanel({ canSeeFullAccounts, adminId }: { rea
     <section aria-labelledby="affiliate-admin-title" className="space-y-4 rounded-3xl border border-slate-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
       <div>
         <h2 id="affiliate-admin-title" className="text-lg font-black">Chương trình giới thiệu</h2>
-        <p className="mt-1 text-sm text-slate-500">Hoa hồng 30% mỗi đơn, giữ 35 ngày. Chuyển khoản thủ công rồi ghi mã giao dịch; hoàn tiền xác nhận ở mục thanh toán sẽ tự thu hồi hoa hồng còn đang giữ.</p>
+        <p className="mt-1 text-sm text-slate-500">Hoa hồng 30% mỗi đơn; khoản mới giữ 40 ngày kể từ thanh toán thành công, khoản cũ giữ nguyên ngày có thể rút. Hồ sơ thanh toán hoặc hoàn tiền đang mở sẽ chặn rút và chuyển khoản. Chỉ chuyển khoản khi yêu cầu không bị chặn, rồi ghi mã giao dịch; đơn đã xác nhận hoàn tiền cần từ chối yêu cầu rút trước khi thu hồi hoa hồng.</p>
       </div>
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {cards.map(([label, value]) => (
@@ -81,6 +86,21 @@ export async function AdminAffiliatePanel({ canSeeFullAccounts, adminId }: { rea
           </div>
         ))}
       </dl>
+      {(overview.frozenCommissions?.length ?? 0) > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-extrabold">Hoa hồng còn đóng băng sau khi hồ sơ đã đóng hoặc bị xoá</h3>
+          <p className="text-sm text-slate-500">Kiểm tra chứng từ trước khi xác nhận tranh chấp đã giải quyết và đơn không hoàn tiền. Bỏ đóng băng giữ nguyên ngày có thể rút, không tự chuyển tiền.</p>
+          <ul className="space-y-3">
+            {overview.frozenCommissions?.map(commission => (
+              <li key={commission.orderCode} className="rounded-2xl border border-amber-200 p-4 dark:border-amber-900">
+                <p className="text-sm font-bold">Đơn {commission.orderCode} · {money(commission.amount)}</p>
+                <p className="text-xs text-slate-500">Đóng băng từ {new Date(commission.frozenAt).toLocaleString('vi-VN')}</p>
+                {canSeeFullAccounts && <AdminAffiliateCommissionActions orderCode={commission.orderCode} />}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <h3 className="text-sm font-extrabold">Yêu cầu rút tiền đang chờ ({waiting.length})</h3>
       {waiting.length === 0 && <p className="text-sm text-slate-500">Không có yêu cầu nào.</p>}
       <ul className="space-y-3">
@@ -89,7 +109,12 @@ export async function AdminAffiliatePanel({ canSeeFullAccounts, adminId }: { rea
             <p className="font-black tabular-nums">{money(payout.amount)}</p>
             <p className="text-sm">{payout.bank} · {payout.accountNumber} · {payout.accountName}</p>
             <p className="text-xs text-slate-500">Yêu cầu lúc {new Date(payout.requestedAt).toLocaleString('vi-VN')}</p>
-            <AdminAffiliatePayoutActions payoutId={payout.id} claimState={claimStateOf(payout, adminId, overview.loadedAt)} />
+            {payout.blocked && (
+              <p role="alert" className="mt-2 text-sm font-bold text-rose-700 dark:text-rose-300">
+                Chặn chuyển khoản: có đơn đang xử lý hoặc đã xác nhận hoàn tiền. Mã đơn: {payout.blockedOrderCodes.join(', ')}. Từ chối yêu cầu rút trước khi thu hồi hoa hồng.
+              </p>
+            )}
+            <AdminAffiliatePayoutActions payoutId={payout.id} claimState={claimStateOf(payout, adminId, overview.loadedAt)} blocked={payout.blocked} />
           </li>
         ))}
       </ul>

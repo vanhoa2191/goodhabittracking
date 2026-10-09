@@ -270,16 +270,17 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         title: '2. Hoa hồng bao nhiêu và tính thế nào',
         blocks: [
           'Hoa hồng là 30% số tiền gia đình được giới thiệu thực trả cho mỗi khoản thanh toán, làm tròn xuống đồng gần nhất, cho mọi thanh toán trong 12 tháng đầu kể từ ngày họ tạo tài khoản. Dùng thử miễn phí không phát sinh hoa hồng.',
+          'Đơn hàng sinh hoa hồng phải thuộc gia đình do người được giới thiệu sở hữu, dù phụ huynh hoặc người giám hộ nào trong gia đình thanh toán. Thanh toán cho gia đình mà người được giới thiệu không sở hữu không sinh hoa hồng.',
           'Gia đình được giới thiệu (bằng liên kết hoặc nhập mã trong ứng dụng) được giảm 10% khi mua một trong hai gói năm (Gói Cơ bản hoặc Gói Pro) lần đầu. Hoa hồng của bạn tính trên số tiền họ thực trả sau khi giảm.',
-          'Gia đình được ghi nhận khi họ đăng nhập lần đầu trong vòng 60 ngày kể từ khi bấm vào liên kết của bạn và chưa trả tiền trước đó. Mỗi gia đình chỉ gắn với một người giới thiệu; nếu có nhiều liên kết, liên kết được dùng sau cùng trước khi đăng ký được tính.',
+          'Việc ghi nhận chỉ áp dụng trong 60 ngày kể từ ngày người được giới thiệu (chủ gia đình) tạo tài khoản người dùng, trước khi các gia đình do tài khoản đó sở hữu có đơn đã thanh toán. Mỗi tài khoản chủ gia đình chỉ gắn với một người giới thiệu; xóa hoặc tạo lại gia đình không đặt lại điều kiện hay thời hạn. Nếu có nhiều liên kết, liên kết được dùng sau cùng trước khi ghi nhận được tính.',
           'Tỉ lệ, thời hạn ghi nhận, thời hạn hưởng và mức rút tối thiểu có thể thay đổi cho các gia đình đăng ký sau thời điểm thay đổi; thay đổi được thông báo trên trang này.',
         ],
       },
       {
         title: '3. Thời gian giữ và hoàn tiền',
         blocks: [
-          'Mỗi khoản hoa hồng được giữ 35 ngày kể từ lúc thanh toán thành công, đủ để qua thời hạn hoàn tiền 30 ngày. Hết thời gian giữ, khoản đó mới có thể rút.',
-          'Nếu đơn hàng được hoàn tiền, hoa hồng của đơn đó bị thu hồi. Nếu đã nằm trong một yêu cầu rút, KidHabit từ chối yêu cầu đó trước rồi thu hồi; nếu đã chuyển, KidHabit có thể trừ vào các khoản hoa hồng sau của bạn.',
+          'Hoa hồng mới được giữ 40 ngày kể từ lúc thanh toán thành công để bao phủ thời hạn hoàn tiền 30 ngày và thời gian xử lý. Ngày hết hạn giữ của hoa hồng đã ghi nhận trước thay đổi này không đổi. Hoa hồng tiếp tục bị đóng băng, không thể rút hoặc chi trả, trong khi đơn hàng đó có ca hỗ trợ hoàn tiền hoặc thanh toán còn mở.',
+          'Nếu đơn hàng được hoàn tiền, hoa hồng của đơn đó bị thu hồi, kể cả khi gia đình được giới thiệu sau đó xóa dữ liệu. Nếu hoa hồng đã nằm trong một yêu cầu rút, KidHabit từ chối yêu cầu đó rồi thu hồi khoản hoa hồng; nếu hoa hồng đã được chuyển, KidHabit sẽ liên hệ với bạn để thoả thuận hoàn lại.',
         ],
       },
       {
@@ -311,7 +312,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
       {
         title: '7. Quyền riêng tư',
         blocks: [
-          'Bạn chỉ thấy số lượng gia đình đã đăng ký, số đã trả tiền và số tiền hoa hồng. Bạn không thấy tên, email hay bất kỳ thông tin nào của gia đình được giới thiệu; gia đình được giới thiệu cũng không thấy thông tin của bạn.',
+          'Bạn chỉ thấy số lượng gia đình đã đăng ký, số đã trả tiền và tổng tiền hoa hồng theo nhóm trạng thái. Không có lịch sử từng khoản hoa hồng hay thông tin từng gia đình: tên, email, mã gia đình, gói mua, thời điểm thanh toán hoặc trạng thái hoàn tiền. Gia đình được giới thiệu cũng không thấy thông tin của bạn.',
           'Để ghi nhận người giới thiệu, trình duyệt của người truy cập lưu mã giới thiệu trong cookie kidhabit_ref tối đa 60 ngày; cookie bị xóa ngay khi việc ghi nhận hoàn tất. Thông tin ngân hàng của bạn chỉ dùng để chuyển hoa hồng và chỉ nhân viên được phân quyền xem.',
         ],
       },
@@ -319,6 +320,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         title: '8. Thay đổi hoặc chấm dứt chương trình',
         blocks: [
           'KidHabit có thể thay đổi hoặc chấm dứt chương trình. Hoa hồng hợp lệ đã ghi nhận trước thời điểm thay đổi vẫn được xử lý theo các điều kiện áp dụng lúc đó.',
+          'Phiên bản điều khoản ngày 09/10/2026: người giới thiệu đã tham gia cần đọc và đồng ý lại trong ứng dụng trước khi tiếp tục chia sẻ liên kết hoặc yêu cầu rút tiền.',
         ],
       },
       {

@@ -101,7 +101,7 @@ Elija [Tomarse un descanso](05-gia-dinh-va-cai-dat.md#tam-nghi): se conserva la 
 
 ### D. Recomendar a un amigo
 
-Únase al [programa](08-gioi-thieu-ban-be.md#tham-gia) → envíe el enlace → su amigo introduce el código y obtiene [un 10% de descuento](07-goi-va-thanh-toan.md#giam-gia) al comprar el plan anual → su amigo paga → usted recibe una [comisión retenida durante 35 días](08-gioi-thieu-ban-be.md#hoa-hong) → configure un PIN y guarde sus datos de cobro → [solicite el abono](08-gioi-thieu-ban-be.md#rut-tien) → el administrador [transfiere el dinero](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
+Únase al [programa](08-gioi-thieu-ban-be.md#tham-gia) → envíe el enlace → su amigo introduce el código y obtiene [un 10% de descuento](07-goi-va-thanh-toan.md#giam-gia) al comprar el plan anual → su amigo paga → usted recibe una [comisión retenida durante 40 días](08-gioi-thieu-ban-be.md#hoa-hong) (sigue congelada mientras el pedido tenga un caso de reembolso o facturación abierto) → configure un PIN y guarde sus datos de cobro → [solicite el abono](08-gioi-thieu-ban-be.md#rut-tien) → el administrador [transfiere el dinero](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
 
 <!--op-->### E. Un cliente solicita un reembolso
 

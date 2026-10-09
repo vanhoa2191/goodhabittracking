@@ -6,7 +6,7 @@ import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
 
-export async function GET() {
+async function loadSession(touch: boolean) {
   const cookieStore = await cookies();
   const token = cookieStore.get(CHILD_SESSION_COOKIE)?.value;
   if (!token) {
@@ -24,8 +24,14 @@ export async function GET() {
   }
   if (!data) {
     const response = NextResponse.json({ error: 'Phiên đã hết hạn hoặc bị thu hồi.' }, { status: 401 });
-    response.cookies.delete(CHILD_SESSION_COOKIE);
+    if (touch) response.cookies.delete(CHILD_SESSION_COOKIE);
     return response;
+  }
+
+  if (touch) {
+    const touched = await supabase.rpc('touch_child_session', { session_token_hash: sessionTokenHash });
+    if (touched.error) return NextResponse.json({ error: 'Không thể cập nhật phiên của bé.' }, { status: 503 });
+    if (!touched.data) return NextResponse.json({ error: 'Phiên đã hết hạn hoặc bị thu hồi.' }, { status: 401 });
   }
 
   const pause = await supabase.rpc('get_child_family_pause_state', {
@@ -36,11 +42,21 @@ export async function GET() {
   }
   if (!pause.data) {
     const response = NextResponse.json({ error: 'Phiên đã hết hạn hoặc bị thu hồi.' }, { status: 401 });
-    response.cookies.delete(CHILD_SESSION_COOKIE);
+    if (touch) response.cookies.delete(CHILD_SESSION_COOKIE);
     return response;
   }
 
   return NextResponse.json({ ...data, familyPausedAt: pause.data.pausedAt, familyPausePeriods: pause.data.pausePeriods });
+}
+
+export async function GET() {
+  return loadSession(false);
+}
+
+export async function POST(request: NextRequest) {
+  const crossSite = rejectCrossSiteRequest(request);
+  if (crossSite) return crossSite;
+  return loadSession(true);
 }
 
 export async function DELETE(request: NextRequest) {

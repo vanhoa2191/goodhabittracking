@@ -1,15 +1,19 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getParentContext, rpc } = vi.hoisted(() => ({
+const { getParentContext, rpc, requireParentUnlock } = vi.hoisted(() => ({
   getParentContext: vi.fn(),
   rpc: vi.fn(),
+  requireParentUnlock: vi.fn(),
 }));
 
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/supabase/server', () => ({
   createServerSupabaseClient: vi.fn(async () => ({ rpc })),
 }));
+
+vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ rpc })) }));
+vi.mock('@/lib/security/parent-unlock', () => ({ requireParentUnlock }));
 
 import { POST } from '@/app/api/domain/profiles/route';
 
@@ -37,6 +41,7 @@ describe('POST /api/domain/profiles', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     getParentContext.mockResolvedValue({ familyId: 'family-a', user: { id: 'user-a' } });
+    requireParentUnlock.mockResolvedValue(null);
     rpc.mockResolvedValue({ data: { profileId: profile.id }, error: null });
   });
 
@@ -57,11 +62,23 @@ describe('POST /api/domain/profiles', () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 
+  it.each([
+    { type: 'create', profile, starterActivities: [] },
+    { type: 'update', profileId: profile.id, updates: { name: 'New name' } },
+    { type: 'delete', profileId: profile.id },
+  ])('refuses a locked parent before any privileged mutation: $type', async (mutation) => {
+    requireParentUnlock.mockResolvedValue(new Response(JSON.stringify({ code: 'parent_pin_required' }), { status: 403 }));
+    const response = await POST(request(mutation));
+    expect(response.status).toBe(403);
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
   it('passes profile and starter habits to one atomic command', async () => {
     const response = await POST(request({ type: 'create', profile, starterActivities: [] }));
     expect(response.status).toBe(200);
     expect(rpc).toHaveBeenCalledTimes(1);
-    expect(rpc).toHaveBeenCalledWith('mutate_child_profile_command', {
+    expect(rpc).toHaveBeenCalledWith('mutate_child_profile_command_as', {
+      actor_user_id: 'user-a',
       mutation_input: { type: 'create', profile, starterActivities: [] },
     });
   });

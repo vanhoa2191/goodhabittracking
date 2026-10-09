@@ -1,8 +1,9 @@
 import 'server-only';
 
 import { z } from 'zod';
-import { verifyPayOSWebhook } from '@/lib/billing/payos-server';
+import { cancelPayOSPayment, verifyPayOSWebhook } from '@/lib/billing/payos-server';
 import { requireSafePayOSConfig } from '@/lib/billing/payos-config';
+import { isPayOSOrderNotFound, PayOSOrderNotFoundError, unknownOrderGraceElapsed } from '@/lib/billing/payos-errors';
 
 const paymentInfoSchema = z.object({
   code: z.string(),
@@ -19,19 +20,21 @@ const paymentInfoSchema = z.object({
 export type PayOSPaymentInfo = {
   readonly orderCode: number;
   readonly amount: number;
-  readonly amountPaid: number;
+  readonly amountPaid: number | null;
   readonly status: string;
   readonly reference: string | null;
   readonly raw: unknown;
 };
 
 /** What PayOS itself says about a payment link, asked with our API key. Null when PayOS cannot answer or the answer is not trustworthy. */
-export async function fetchPayOSPaymentInfo(orderCode: number): Promise<PayOSPaymentInfo | null> {
+export async function fetchPayOSPaymentInfo(orderCode: number, signal?: AbortSignal): Promise<PayOSPaymentInfo | null> {
   const { PAYOS_CLIENT_ID: clientId, PAYOS_API_KEY: apiKey, PAYOS_CHECKSUM_KEY: checksumKey } = requireSafePayOSConfig();
   const response = await fetch(`https://api-merchant.payos.vn/v2/payment-requests/${orderCode}`, {
     headers: { 'x-client-id': clientId, 'x-api-key': apiKey },
+    signal: signal ?? AbortSignal.timeout(5000),
   });
   const raw: unknown = await response.json().catch(() => null);
+  if (isPayOSOrderNotFound(response.status, raw)) throw new PayOSOrderNotFoundError();
   const parsed = paymentInfoSchema.safeParse(raw);
   if (!response.ok || !parsed.success || parsed.data.code !== '00' || !parsed.data.data) return null;
   const { data, signature } = parsed.data;
@@ -40,23 +43,48 @@ export async function fetchPayOSPaymentInfo(orderCode: number): Promise<PayOSPay
   return {
     orderCode: data.orderCode,
     amount: data.amount,
-    amountPaid: data.amountPaid ?? 0,
+    amountPaid: data.amountPaid ?? null,
     status: data.status,
     reference: data.transactions?.find((transaction) => typeof transaction.reference === 'string' && transaction.reference !== '')?.reference ?? null,
     raw,
   };
 }
 
-type PendingOrder = {
+export type PendingOrder = {
   readonly order_code: number | string;
   readonly amount: number;
   readonly description: string;
   readonly status: string;
+  readonly created_at?: string | null;
+  readonly expires_at?: string | null;
+  /** Set once our create attempt for this order has returned (success or failure), so no create is still in flight. */
+  readonly checkout_creation_finished_at?: string | null;
 };
+
+/**
+ * PayOS saying "unknown order" only proves no link exists once no create request can still be in flight:
+ * either our create attempt has finished (it failed before PayOS created anything) or the grace period passed.
+ */
+function unknownOrderIsClosed(order: PendingOrder): boolean {
+  return Boolean(order.checkout_creation_finished_at) || unknownOrderGraceElapsed(order);
+}
 
 type RpcClient = { rpc: (name: string, args: Record<string, unknown>) => PromiseLike<{ data: unknown; error: unknown }> };
 
 export type OrderOutcome = 'paid' | 'closed' | 'open';
+
+/**
+ * Unknown young orders may be a create still in flight; release them only after the grace period, or at once
+ * when the create attempt has already finished and PayOS still does not know the order.
+ */
+export async function cancelPendingPayOSOrder(order: PendingOrder, reason: string): Promise<void> {
+  try {
+    await cancelPayOSPayment(Number(order.order_code), reason);
+  } catch (error) {
+    if (error instanceof PayOSOrderNotFoundError && unknownOrderIsClosed(order)) return;
+    throw error;
+  }
+}
 
 /**
  * Settles a pending order that PayOS reports as fully paid, through the same function the webhook uses, so a
@@ -64,11 +92,17 @@ export type OrderOutcome = 'paid' | 'closed' | 'open';
  * 'closed' means PayOS itself says the link was cancelled or expired with nothing paid, so no money can still
  * arrive for it; anything else unsettled stays 'open'.
  */
-export async function reconcileOrderOutcome(admin: RpcClient, order: PendingOrder): Promise<OrderOutcome> {
+export async function reconcileOrderOutcome(admin: RpcClient, order: PendingOrder, signal?: AbortSignal): Promise<OrderOutcome> {
   if (order.status === 'PAID') return 'paid';
   if (order.status !== 'PENDING') return 'open';
   const orderCode = Number(order.order_code);
-  const info = await fetchPayOSPaymentInfo(orderCode);
+  let info: PayOSPaymentInfo | null;
+  try {
+    info = await fetchPayOSPaymentInfo(orderCode, signal);
+  } catch (error) {
+    if (error instanceof PayOSOrderNotFoundError) return unknownOrderIsClosed(order) ? 'closed' : 'open';
+    throw error;
+  }
   if (!info || info.orderCode !== orderCode) return 'open';
   if ((info.status === 'CANCELLED' || info.status === 'EXPIRED') && info.amountPaid === 0) return 'closed';
   if (info.status !== 'PAID' || info.amountPaid !== order.amount || info.amount !== order.amount) return 'open';

@@ -64,3 +64,7 @@
 \ir migrations/202610050001_pin_gated_server_wrappers.sql
 \ir migrations/202610050002_close_pin_gated_originals.sql
 \ir migrations/202610070001_pricing_tiers_launch_offer.sql
+\ir migrations/202610090010_billing_payment_hardening.sql
+\ir migrations/202610090020_affiliate_account_privacy_freeze.sql
+\ir migrations/202610090030_family_operations_hardening.sql
+\ir migrations/202610090040_affiliate_commission_unfreeze.sql

@@ -120,7 +120,7 @@ describe('pairing client', () => {
         lastActiveDate: undefined,
       },
     } });
-    expect(request).toHaveBeenNthCalledWith(2, '/api/child/session', { cache: 'no-store' });
+    expect(request).toHaveBeenNthCalledWith(2, '/api/child/session', { method: 'POST', cache: 'no-store' });
   });
 
   it('exchanges a scanned token without treating it as a manual code', async () => {

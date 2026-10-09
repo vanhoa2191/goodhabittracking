@@ -101,7 +101,7 @@ Bấm [Tạm nghỉ](05-gia-dinh-va-cai-dat.md#tam-nghi): chuỗi không bị ph
 
 ### D. Giới thiệu một người bạn
 
-Tham gia [chương trình](08-gioi-thieu-ban-be.md#tham-gia) → gửi liên kết → bạn nhập mã, được [giảm 10%](07-goi-va-thanh-toan.md#giam-gia) khi mua Gói Năm → bạn trả → bạn có [hoa hồng giữ 35 ngày](08-gioi-thieu-ban-be.md#hoa-hong) → đặt PIN và lưu tài khoản → [rút tiền](08-gioi-thieu-ban-be.md#rut-tien) → quản trị [chuyển khoản](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
+Tham gia [chương trình](08-gioi-thieu-ban-be.md#tham-gia) → gửi liên kết → bạn nhập mã, được [giảm 10%](07-goi-va-thanh-toan.md#giam-gia) khi mua Gói Năm → bạn trả → bạn có [hoa hồng giữ 40 ngày](08-gioi-thieu-ban-be.md#hoa-hong) (tiếp tục đóng băng nếu hồ sơ hoàn tiền hoặc thanh toán của đơn còn mở) → đặt PIN và lưu tài khoản → [rút tiền](08-gioi-thieu-ban-be.md#rut-tien) → quản trị [chuyển khoản](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
 
 <!--op-->### E. Khách xin hoàn tiền
 

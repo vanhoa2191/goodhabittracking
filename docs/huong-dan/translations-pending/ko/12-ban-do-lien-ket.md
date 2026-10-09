@@ -101,7 +101,7 @@ flowchart TD
 
 ### D. 친구 추천
 
-[프로그램](08-gioi-thieu-ban-be.md#tham-gia)에 가입 → 링크 전송 → 친구가 코드를 입력하고 연간 요금제 구매 시 [10% 할인](07-goi-va-thanh-toan.md#giam-gia) → 친구 결제 → [35일간 수수료 보류](08-gioi-thieu-ban-be.md#hoa-hong) → PIN 설정 및 지급 정보 저장 → [출금 요청](08-gioi-thieu-ban-be.md#rut-tien) → 관리자가 [송금](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
+[프로그램](08-gioi-thieu-ban-be.md#tham-gia)에 가입 → 링크 전송 → 친구가 코드를 입력하고 연간 요금제 구매 시 [10% 할인](07-goi-va-thanh-toan.md#giam-gia) → 친구 결제 → [40일간 수수료 보류](08-gioi-thieu-ban-be.md#hoa-hong) (해당 주문의 환불 또는 결제 지원 건이 열려 있으면 계속 동결) → PIN 설정 및 지급 정보 저장 → [출금 요청](08-gioi-thieu-ban-be.md#rut-tien) → 관리자가 [송금](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
 
 <!--op-->### E. 고객 환불 요청
 

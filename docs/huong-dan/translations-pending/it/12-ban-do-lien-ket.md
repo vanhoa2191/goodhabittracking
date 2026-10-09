@@ -101,7 +101,7 @@ Scelga [Fai una pausa](05-gia-dinh-va-cai-dat.md#tam-nghi): la serie viene mante
 
 ### D. Invitare un amico
 
-Si iscriva al [programma](08-gioi-thieu-ban-be.md#tham-gia) → invii il link → l'amico inserisce il codice e riceve il [10% di sconto](07-goi-va-thanh-toan.md#giam-gia) acquistando il piano annuale → l'amico paga → la Sua [commissione resta in attesa per 35 giorni](08-gioi-thieu-ban-be.md#hoa-hong) → imposti un PIN e salvi i dati di pagamento → [richieda un prelievo](08-gioi-thieu-ban-be.md#rut-tien) → l'amministrazione [trasferisce l'importo](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
+Si iscriva al [programma](08-gioi-thieu-ban-be.md#tham-gia) → invii il link → l'amico inserisce il codice e riceve il [10% di sconto](07-goi-va-thanh-toan.md#giam-gia) acquistando il piano annuale → l'amico paga → la Sua [commissione resta in attesa per 40 giorni](08-gioi-thieu-ban-be.md#hoa-hong) (resta bloccata se l’ordine ha una pratica di rimborso o fatturazione aperta) → imposti un PIN e salvi i dati di pagamento → [richieda un prelievo](08-gioi-thieu-ban-be.md#rut-tien) → l'amministrazione [trasferisce l'importo](10-quan-tri-va-van-hanh.md#gioi-thieu-admin).
 
 <!--op-->### E. Un cliente richiede un rimborso
 

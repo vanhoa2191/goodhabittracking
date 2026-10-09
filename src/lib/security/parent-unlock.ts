@@ -12,10 +12,14 @@ type UnlockSubject = { readonly familyId: string; readonly user: { readonly id: 
  * `PARENT_UNLOCK_SECRET` keeps this cookie apart from pairing and is required in production. Elsewhere
  * the pairing secret signs it when no dedicated secret is set.
  */
+export function parentUnlockConfigReady(): boolean {
+  return process.env.NODE_ENV !== 'production' || (process.env.PARENT_UNLOCK_SECRET?.trim().length ?? 0) >= 32;
+}
+
 function signingSecret(): string {
   const dedicated = process.env.PARENT_UNLOCK_SECRET?.trim() ?? '';
   if (dedicated.length >= 32) return dedicated;
-  if (process.env.NODE_ENV === 'production') {
+  if (!parentUnlockConfigReady()) {
     throw new Error('PARENT_UNLOCK_SECRET must be at least 32 characters in production.');
   }
   return getPairingSecret() ?? 'local-development-parent-unlock-secret';

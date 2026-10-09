@@ -202,3 +202,26 @@ Cờ build `NEXT_PUBLIC_PARENT_AI=true` (mặc định tắt; biến repository 
 - **Tắt khẩn cấp không cần build**: đặt biến Worker `AI_KILL_SWITCH=true` (dashboard Cloudflare hoặc `wrangler secret put AI_KILL_SWITCH`); mọi route AI trả 503 `ai_disabled`. Gỡ biến để bật lại.
 - **Trước khi bật cho người dùng thật** phải xong: xác minh điều khoản Cloudflare về dữ liệu gửi qua Workers AI (ghi ngày và đường dẫn vào `docs/security-privacy.md`), cập nhật chính sách riêng tư và danh sách bên xử lý, duyệt văn bản đồng ý (đổi `AI_POLICY_VERSION` khi đổi văn bản để mọi người đồng ý lại). Thử chọn mô hình với bảng 20 thói quen mẫu vi/en.
 - Theo dõi: Workers AI dashboard (Neurons); log của ứng dụng chỉ có mã (`model_timeout`, `quota_system_day`, `model_invalid_output`…), không có nội dung.
+
+### Kiểm thử SQL trong CI
+
+Job `sql` của CI dùng PostgreSQL 18.4 cục bộ, chạy `npm run test:sql` và chặn deploy nếu thất bại. Mỗi harness tạo database riêng rồi xoá khi xong; chỉ chấp nhận địa chỉ loopback, không dùng khóa hay dữ liệu production. Fixtures là projection của các migration: billing chạy toàn bộ preflight cùng ba ca hai kết nối thật (checkout, webhook/admin, hoàn tiền); affiliate chạy migration, quyền, tình huống hoàn tiền/xoá gia đình và bỏ đóng băng; family operations kiểm tra JSONB, PIN, điểm, kho quà và route đọc.
+
+Chạy trên PostgreSQL tạm có sẵn:
+
+```bash
+SQL_TEST_DATABASE_URL=postgresql://postgres:local-only@127.0.0.1:5432/postgres npm run test:sql
+```
+
+Hoặc trên máy không có PostgreSQL (gói tùy chọn chỉ cài ngoài repo):
+
+```bash
+npm install --prefix /tmp/kidhabit-sql-runtime --no-save embedded-postgres@18.4.0-beta.17
+EMBEDDED_POSTGRES_MODULE_PATH=/tmp/kidhabit-sql-runtime/node_modules/embedded-postgres/dist/index.js npm run test:sql
+```
+
+### Bỏ đóng băng hoa hồng (`202610090040`)
+
+Sau khi áp `202610090010`, `202610090020`, `202610090030`, áp migration `202610090040_affiliate_commission_unfreeze.sql` và chạy các file verify tương ứng. Trang admin giới thiệu liệt kê tối đa 50 hoa hồng còn đóng băng nhưng không có hồ sơ đang mở hoặc xác nhận hoàn tiền. Finance/super admin đã xác thực hai bước nhập lý do xác nhận tranh chấp đã giải quyết, không hoàn tiền, rồi bỏ đóng băng. Hàm SQL kiểm lại membership trong giao dịch; chặn khoản đã hoàn tiền, đã trả, đã thu hồi và tranh chấp đang mở. Audit thành công và việc bỏ đóng băng cùng commit hoặc cùng rollback. Giữ nguyên số tiền, trạng thái yêu cầu rút và ngày hết giữ; thao tác này không chuyển tiền.
+
+Trước rollout, giữ backup logical và kiểm tra hoàn tiền xác nhận trùng; không tự gộp/xoá bản ghi tài chính. Áp migration gần thời điểm bản app mới được phát hành vì `202610090030` đóng đường ghi hồ sơ/việc cũ. Sau deploy chạy health theo SHA và smoke tổng hợp tự dọn.
