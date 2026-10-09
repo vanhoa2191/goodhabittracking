@@ -19,6 +19,7 @@ const SAFE_REASON_CODES = new Set([
   'invalid_profile_mutation',
   'order_mismatch',
   'order_not_found',
+  'order_already_paid',
   'processing_failed',
   'profile_conflict',
   'profile_mutation_failed',

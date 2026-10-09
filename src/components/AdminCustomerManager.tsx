@@ -99,9 +99,9 @@ function billingReasonLabel(reason: BillingCase['reason_code']) {
 function referralCommissionWarning(result: string | null): string | null {
   switch (result) {
     case 'in_payout':
-      return 'Hoa hồng giới thiệu của đơn này đang nằm trong một yêu cầu rút tiền. Hãy từ chối yêu cầu đó ở mục Chương trình giới thiệu trước khi chuyển khoản, rồi xử lý lại hồ sơ.';
+      return 'Hoa hồng của đơn này đang nằm trong một yêu cầu rút; yêu cầu rút đã bị khoá và hoa hồng sẽ bị thu hồi khi bạn từ chối yêu cầu đó.';
     case 'already_paid':
-      return 'Hoa hồng giới thiệu của đơn này đã được chuyển cho người giới thiệu. Cần xử lý tay (trừ vào khoản sau hoặc thu lại).';
+      return 'Hoa hồng của đơn này đã được chuyển; hãy liên hệ người giới thiệu để thoả thuận hoàn lại.';
     case 'error':
       return 'Không thu hồi được hoa hồng giới thiệu của đơn này do lỗi hệ thống. Kiểm tra mục Chương trình giới thiệu và thử lại.';
     default:
@@ -367,10 +367,10 @@ export function AdminCustomerManager() {
       return;
     }
     setChangeReason('');
-    const body = await response.json().catch(() => null) as { referralCommission?: string | null } | null;
+    const body = await response.json().catch(() => null) as { referralCommission?: string | null; launchOfferClaim?: string | null } | null;
     const warning = referralCommissionWarning(body?.referralCommission ?? null);
-    setNotice('Đã cập nhật trạng thái và lưu dấu vết xử lý.');
     await load();
+    setNotice(body?.launchOfferClaim === 'revoked' ? 'Đã xác nhận hoàn tiền, thu hồi suất ưu đãi ra mắt và lưu dấu vết xử lý.' : 'Đã cập nhật trạng thái và lưu dấu vết xử lý.');
     router.refresh();
     // load() clears the banner, so the warning is set after it.
     if (warning) setError(warning);

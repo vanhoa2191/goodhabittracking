@@ -42,7 +42,11 @@ export async function POST(request: NextRequest) {
     });
     if (error) throw error;
 
-    if (result === 'activated' || result === 'duplicate') {
+    if (result === 'order_already_paid') {
+      logOperationalEvent('warn', { operation: 'payment_webhook', reasonCode: 'order_already_paid', correlationId, route: request.nextUrl.pathname, status: 200 });
+      await recordOperationalSignal({ signalType: 'payment_webhook_failure', reasonCode: 'order_already_paid', correlationId, status: 200 });
+    }
+    if (result === 'activated' || result === 'duplicate' || result === 'order_already_paid') {
       return NextResponse.json({ success: true, message: 'Webhook processed.' });
     }
     if (result === 'order_not_found') {
