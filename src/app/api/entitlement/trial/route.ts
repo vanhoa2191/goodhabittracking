@@ -14,6 +14,9 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = await createServerSupabaseClient();
+  const { data: canManage, error: permissionError } = await supabase.rpc('can_manage_family', { target_family_id: parent.familyId });
+  if (permissionError) return NextResponse.json({ success: false, error: 'Could not check family permission.' }, { status: 503 });
+  if (!canManage) return NextResponse.json({ success: false, error: 'Family manager required.' }, { status: 403 });
   const { data, error } = await supabase.rpc('activate_family_trial');
   if (error) {
     const conflict = error.message.includes('trial_already_consumed');

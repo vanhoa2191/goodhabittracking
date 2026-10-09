@@ -70,7 +70,7 @@ describe('POST /api/payment/webhook', () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 
-  it.each(['activated', 'duplicate'])('acknowledges the idempotent %s result', async (result) => {
+  it.each(['activated', 'duplicate', 'order_already_paid'])('acknowledges the idempotent %s result', async (result) => {
     rpc.mockResolvedValue({ data: result, error: null });
     const response = await POST(request());
     expect(response.status).toBe(200);

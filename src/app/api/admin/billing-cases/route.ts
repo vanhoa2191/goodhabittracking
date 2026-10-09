@@ -10,7 +10,6 @@ import { cancelPayOSPayment } from '@/lib/billing/payos-server';
 import { createCorrelationId } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
-import { reverseCommissionForConfirmedRefund } from '@/lib/referral/refund-reversal';
 
 const readRoles = ['support', 'finance', 'super_admin'] as const;
 const createRoles = ['support', 'finance', 'super_admin'] as const;
@@ -222,49 +221,22 @@ export async function PATCH(request: NextRequest) {
     }
   }
 
-  if (parsed.data.resolutionCode === 'subscription_cancelled') {
-    const { error: subscriptionError } = await admin.from('user_subscriptions').update({
-      status: 'cancelled',
-      updated_at: new Date().toISOString(),
-    }).eq('family_id', supportCase.family_id);
-    if (subscriptionError) return fail('Could not cancel the subscription.', 503);
-  }
-
-  // A confirmed refund takes back the referral commission that order earned, while it is still held. This runs
-  // before the case is marked completed: if it fails the case stays open and can be retried (the reversal is
-  // idempotent), instead of leaving a completed refund whose commission is still payable.
-  const reversal = await reverseCommissionForConfirmedRefund(admin, {
-    caseId: supportCase.id,
-    caseType: supportCase.case_type,
-    status: parsed.data.status,
-    resolutionCode: parsed.data.resolutionCode,
-    orderCode: supportCase.order_code,
+  // The row lock, finality check, refund uniqueness and financial side effects share one transaction.
+  const { data: result, error } = await admin.rpc('admin_resolve_billing_case', {
+    target_case: supportCase.id,
+    next_status: parsed.data.status,
+    next_resolution: parsed.data.resolutionCode,
+    actor_id: access.user.id,
+    reason: parsed.data.reason,
   });
-  let referral: string | null = null;
-  if (reversal.applies) {
-    referral = reversal.result;
-    await recordAdminAudit(admin, {
-      ...audit,
-      action: 'affiliate.commission.reverse',
-      targetType: 'payment_order',
-      targetId: String(supportCase.order_code),
-      before: null,
-      after: { referral },
-      outcome: reversal.failed ? 'failed' : 'succeeded',
-    });
-    if (reversal.failed) return fail('The referral commission could not be reversed, so the refund was not marked complete. Try again.', 503);
+  await recordAdminAudit(admin, { ...audit, outcome: error || result?.code !== 'updated' ? 'failed' : 'succeeded' });
+  if (error || !result) return adminJsonResponse({ error: 'Could not update billing case.', correlationId }, correlationId, 503);
+  if (result.code !== 'updated') return adminJsonResponse({ error: 'This case changed or cannot be resolved. Reload and review it.', code: result.code, correlationId }, correlationId, result.code === 'case_not_found' ? 404 : 409);
+  if (result.referralCommission) {
+    await recordAdminAudit(admin, { ...audit, action: 'affiliate.commission.reverse', targetType: 'payment_order', targetId: String(supportCase.order_code), before: null, after: { referral: result.referralCommission }, outcome: 'succeeded' });
   }
-
-  const terminal = parsed.data.status === 'completed' || parsed.data.status === 'rejected';
-  const { error } = await admin.from('billing_support_cases').update({
-    status: parsed.data.status,
-    resolution_code: parsed.data.resolutionCode,
-    assigned_to: access.user.id,
-    resolved_at: terminal ? new Date().toISOString() : null,
-    updated_at: new Date().toISOString(),
-  }).eq('id', supportCase.id);
-  await recordAdminAudit(admin, { ...audit, outcome: error ? 'failed' : 'succeeded' });
-  if (error) return adminJsonResponse({ error: 'Could not update billing case.', correlationId }, correlationId, 503);
-
-  return adminJsonResponse({ success: true, referralCommission: referral, correlationId }, correlationId);
+  if (result.launchOfferClaim === 'revoked') {
+    await recordAdminAudit(admin, { ...audit, action: 'launch_offer.revoke', targetType: 'launch_offer_claim', targetId: String(supportCase.order_code), before: null, after: { revoked: true }, outcome: 'succeeded' });
+  }
+  return adminJsonResponse({ success: true, referralCommission: result.referralCommission, launchOfferClaim: result.launchOfferClaim, correlationId }, correlationId);
 }

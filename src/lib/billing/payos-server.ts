@@ -54,6 +54,7 @@ export async function createPayOSPayment(input: {
   orderCode: number;
   /** The amount to charge when it differs from the list price (a referral discount); defaults to the plan price. */
   amount?: number;
+  expiresAt?: string;
 }): Promise<PaymentResult & { paymentLinkId: string }> {
   const {
     PAYOS_CLIENT_ID: clientId,
@@ -89,6 +90,7 @@ export async function createPayOSPayment(input: {
     body: JSON.stringify({
       ...signatureFields,
       items: [{ name: plan.name, quantity: 1, price: amount }],
+      expiredAt: Math.floor(new Date(input.expiresAt ?? Date.now() + 15 * 60 * 1000).getTime() / 1000),
       signature: createPayOSSignature(signatureFields, checksumKey),
     }),
   });

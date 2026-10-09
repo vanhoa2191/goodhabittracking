@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { createOrderCode, isUniqueViolation } from '@/lib/billing/order-code';
-import { createPayOSPayment } from '@/lib/billing/payos-server';
-import { planCycle } from '@/lib/billing/plan-catalog';
+import { cancelPayOSPayment, createPayOSPayment } from '@/lib/billing/payos-server';
 import { createPaymentRequestSchema } from '@/lib/billing/schemas';
 import { getPricingPlan } from '@/lib/payos';
-import { discountedPrice } from '@/lib/billing/referral-discount';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 import { requireParentUnlock } from '@/lib/security/parent-unlock';
@@ -32,37 +30,37 @@ export async function POST(request: NextRequest) {
   try {
     const admin = createAdminSupabaseClient();
     const plan = getPricingPlan(parsed.data.planId);
-    // A family that entered a friend's code pays less for its first yearly plan; the server decides the price.
-    let discountBps = 0;
-    if (planCycle(parsed.data.planId) === 'year') {
-      const { data, error: discountError } = await admin.rpc('referral_discount_bps', { target_family: parent.familyId });
-      if (discountError) throw discountError;
-      discountBps = typeof data === 'number' ? data : 0;
-    }
-    const amount = discountedPrice(plan.price, discountBps);
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
-
-    // Two checkouts in the same millisecond can draw the same code; the second simply draws again.
     let orderCode = 0;
-    let insertError: { code?: string } | null = null;
+    let amount = 0;
+    let discountBps = 0;
+    let insertError: { code?: string; message?: string } | null = null;
     for (let attempt = 0; attempt < 3; attempt += 1) {
       orderCode = createOrderCode();
-      ({ error: insertError } = await admin.from('payment_orders').insert({
-        order_code: orderCode,
-        family_id: parent.familyId,
-        user_id: parent.user.id,
-        plan_id: parsed.data.planId,
-        amount,
-        description: `KIDHABIT ${orderCode}`.slice(0, 25),
-        status: 'PENDING',
+      const result = await admin.rpc('create_family_payment_order', {
+        target_family: parent.familyId,
+        actor_id: parent.user.id,
+        new_order_code: orderCode,
+        selected_plan: parsed.data.planId,
         expires_at: expiresAt,
-      }));
+      });
+      insertError = result.error;
+      if (insertError?.message?.includes('yearly_checkout_pending')) {
+        return NextResponse.json({ success: false, error: 'Gia đình đang có một đơn năm chờ thanh toán. Vui lòng hoàn tất hoặc hủy đơn đó trước.', code: 'yearly_checkout_pending' }, { status: 409 });
+      }
+      if (!insertError) {
+        const order = Array.isArray(result.data) ? result.data[0] : result.data;
+        if (!order || typeof order.amount !== 'number' || typeof order.discount_bps !== 'number') throw new Error('Invalid payment order.');
+        amount = order.amount;
+        discountBps = order.discount_bps;
+        break;
+      }
       if (!isUniqueViolation(insertError)) break;
     }
     if (insertError) throw insertError;
 
     try {
-      const payment = await createPayOSPayment({ planId: parsed.data.planId, orderCode, amount });
+      const payment = await createPayOSPayment({ planId: parsed.data.planId, orderCode, amount, expiresAt });
       const { error: updateError } = await admin
         .from('payment_orders')
         .update({
@@ -79,11 +77,17 @@ export async function POST(request: NextRequest) {
       const discount = amount < plan.price ? { listPrice: plan.price, discountPercent: Math.round(discountBps / 100) } : {};
       return NextResponse.json({ success: true, payment: { ...publicPayment, ...discount } });
     } catch (error) {
-      await admin
-        .from('payment_orders')
-        .update({ status: 'CANCELLED', cancelled_at: new Date().toISOString() })
-        .eq('order_code', orderCode)
-        .eq('family_id', parent.familyId);
+      // A failed response may still have created a provider link. Close locally only after PayOS confirms.
+      try {
+        await cancelPayOSPayment(orderCode, 'Payment link creation could not be completed');
+        await admin.from('payment_orders')
+          .update({ status: 'CANCELLED', cancelled_at: new Date().toISOString() })
+          .eq('order_code', orderCode)
+          .eq('family_id', parent.familyId)
+          .eq('status', 'PENDING');
+      } catch {
+        // Keep PENDING so a paid/open provider link remains eligible for reconciliation.
+      }
       throw error;
     }
   } catch (error) {

@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const upsert = vi.fn();
+const rpc = vi.fn();
 const recordAdminAudit = vi.fn();
 let currentRow: Record<string, unknown> | null = null;
 
@@ -20,9 +20,10 @@ vi.mock('@/lib/auth/admin-access', () => ({
 vi.mock('@/lib/auth/admin-audit-server', () => ({ recordAdminAudit: (...args: unknown[]) => recordAdminAudit(...args) }));
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminSupabaseClient: () => ({
+    rpc,
     from: (table: string) => (table === 'family_memberships'
       ? chain(() => ({ user_id: 'owner-1' }))
-      : { ...chain(() => currentRow), upsert: async (row: unknown) => { upsert(row); return { error: null }; } }),
+      : chain(() => currentRow)),
   }),
 }));
 
@@ -39,7 +40,8 @@ function patch(body: Record<string, unknown>) {
 
 describe('PATCH /api/admin/subscriptions', () => {
   beforeEach(() => {
-    upsert.mockReset();
+    rpc.mockReset();
+    rpc.mockResolvedValue({ data: 'updated', error: null });
     recordAdminAudit.mockReset();
     recordAdminAudit.mockResolvedValue(true);
     currentRow = null;
@@ -49,7 +51,7 @@ describe('PATCH /api/admin/subscriptions', () => {
     currentRow = { plan: 'free', status: 'inactive', subscription_ends_at: null, trial_ends_at: null, trial_consumed_at: null, updated_at: '2026-10-01 09:41:43.875+00' };
     const response = await patch({ expectedUpdatedAt: '2026-10-01 09:41:43.875+00' });
     expect(response.status).toBe(200);
-    expect(upsert).toHaveBeenCalledWith(expect.objectContaining({ plan: 'monthly', status: 'active' }));
+    expect(rpc).toHaveBeenCalledWith('admin_update_family_subscription', expect.objectContaining({ next_plan: 'monthly', next_status: 'active', expected_updated_at: currentRow.updated_at }));
   });
 
   it('refuses a save made on a stale page, so a payment made meanwhile is not overwritten', async () => {
@@ -57,7 +59,7 @@ describe('PATCH /api/admin/subscriptions', () => {
     const response = await patch({ expectedUpdatedAt: '2026-10-01 09:41:43.875+00' });
     expect(response.status).toBe(409);
     await expect(response.json()).resolves.toMatchObject({ code: 'subscription_changed' });
-    expect(upsert).not.toHaveBeenCalled();
+    expect(rpc).not.toHaveBeenCalled();
     expect(recordAdminAudit).not.toHaveBeenCalled();
   });
 
@@ -68,17 +70,18 @@ describe('PATCH /api/admin/subscriptions', () => {
     expect((await patch({ expectedUpdatedAt: null })).status).toBe(200);
   });
 
-  it('records a trial granted here as used, and keeps an earlier record', async () => {
-    currentRow = null;
-    await patch({ plan: 'trial', endsAt: '2026-10-08T23:59:59.000Z' });
-    expect(upsert.mock.calls[0]![0].trial_consumed_at).toEqual(expect.any(String));
-    currentRow = { plan: 'free', status: 'inactive', subscription_ends_at: null, trial_ends_at: null, trial_consumed_at: '2026-08-01T00:00:00Z', updated_at: 'x' };
-    await patch({ plan: 'trial', endsAt: '2026-10-08T23:59:59.000Z', expectedUpdatedAt: 'x' });
-    expect(upsert.mock.calls[1]![0].trial_consumed_at).toBe('2026-08-01T00:00:00Z');
+  it('detects a payment committed between the initial read and the atomic write', async () => {
+    currentRow = { plan: 'free', updated_at: '2026-10-01T00:00:00Z' };
+    rpc.mockResolvedValue({ data: 'subscription_changed', error: null });
+    const response = await patch({ expectedUpdatedAt: currentRow.updated_at });
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toMatchObject({ code: 'subscription_changed' });
+    expect(recordAdminAudit).toHaveBeenLastCalledWith(expect.anything(), expect.objectContaining({ outcome: 'failed' }));
   });
 
-  it('does not mark a paid plan as a used trial', async () => {
-    await patch({});
-    expect(upsert.mock.calls[0]![0].trial_consumed_at).toBeNull();
+  it('delegates trial consumption to the locked database row', async () => {
+    await patch({ plan: 'trial', endsAt: '2026-10-08T23:59:59.000Z' });
+    expect(rpc).toHaveBeenCalledWith('admin_update_family_subscription', expect.objectContaining({ next_plan: 'trial', expected_updated_at: null }));
+    expect(rpc.mock.calls[0]![1]).not.toHaveProperty('trial_consumed_at');
   });
 });

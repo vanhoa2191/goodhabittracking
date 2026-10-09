@@ -51,6 +51,7 @@ const confirmRefund = { caseId: baseCase.id, status: 'completed', resolutionCode
 describe('PATCH /api/admin/billing-cases', () => {
   beforeEach(() => {
     rpc.mockReset();
+    rpc.mockResolvedValue({ data: { code: 'updated', referralCommission: 'reversed', launchOfferClaim: 'revoked' }, error: null });
     caseUpdate.mockReset();
     orderUpdate.mockReset();
     cancelPayOSPayment.mockReset();
@@ -62,14 +63,13 @@ describe('PATCH /api/admin/billing-cases', () => {
   });
 
   describe('confirmed refund', () => {
-    it('takes the referral commission back before the case is marked completed', async () => {
-      const order: string[] = [];
-      rpc.mockImplementation(async () => { order.push('reverse'); return { data: 'reversed', error: null }; });
-      caseUpdate.mockImplementation(() => order.push('complete'));
+    it('atomically resolves the case with commission reversal and launch-seat revocation', async () => {
       const response = await patch(confirmRefund);
       expect(response.status).toBe(200);
-      expect(order).toEqual(['reverse', 'complete']);
-      await expect(response.json()).resolves.toMatchObject({ referralCommission: 'reversed' });
+      expect(rpc).toHaveBeenCalledWith('admin_resolve_billing_case', expect.objectContaining({ target_case: baseCase.id, next_status: 'completed', next_resolution: 'manual_refund_confirmed' }));
+      expect(caseUpdate).not.toHaveBeenCalled();
+      await expect(response.json()).resolves.toMatchObject({ referralCommission: 'reversed', launchOfferClaim: 'revoked' });
+      expect(recordAdminAudit).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ action: 'launch_offer.revoke', outcome: 'succeeded' }));
     });
 
     it('leaves the case open when the reversal fails, so it can be retried', async () => {
@@ -79,16 +79,16 @@ describe('PATCH /api/admin/billing-cases', () => {
     });
 
     it.each(['in_payout', 'already_paid'])('still completes the case but reports %s so the admin acts on it', async (result) => {
-      rpc.mockResolvedValue({ data: result, error: null });
+      rpc.mockResolvedValue({ data: { code: 'updated', referralCommission: result, launchOfferClaim: 'revoked' }, error: null });
       const response = await patch(confirmRefund);
       expect(response.status).toBe(200);
-      expect(caseUpdate).toHaveBeenCalledTimes(1);
+      expect(caseUpdate).not.toHaveBeenCalled();
       await expect(response.json()).resolves.toMatchObject({ referralCommission: result });
     });
 
     it('does not touch commissions for anything but a confirmed refund', async () => {
       expect((await patch({ ...confirmRefund, status: 'reviewing', resolutionCode: 'manual_refund_required' })).status).toBe(200);
-      expect(rpc).not.toHaveBeenCalled();
+      expect(rpc).toHaveBeenCalledWith('admin_resolve_billing_case', expect.objectContaining({ next_status: 'reviewing' }));
     });
 
     it('refuses to confirm a refund for an order that is not paid', async () => {
@@ -116,6 +116,14 @@ describe('PATCH /api/admin/billing-cases', () => {
     });
   });
 
+  it.each(['case_closed', 'refund_already_confirmed'])('reports a concurrent %s conflict from the atomic RPC', async (code) => {
+    rpc.mockResolvedValue({ data: { code }, error: null });
+    const response = await patch(confirmRefund);
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toMatchObject({ code });
+    expect(caseUpdate).not.toHaveBeenCalled();
+  });
+
   describe('closed cases', () => {
     it('cannot be reopened by an old page', async () => {
       caseRow = { ...baseCase, status: 'completed', resolution_code: 'manual_refund_confirmed' };
@@ -127,7 +135,7 @@ describe('PATCH /api/admin/billing-cases', () => {
 
     it('accepts saving the same closing result again, as a retry', async () => {
       caseRow = { ...baseCase, status: 'completed', resolution_code: 'manual_refund_confirmed' };
-      rpc.mockResolvedValue({ data: 'already_reversed', error: null });
+      rpc.mockResolvedValue({ data: { code: 'updated', referralCommission: 'already_reversed' }, error: null });
       expect((await patch(confirmRefund)).status).toBe(200);
     });
   });
@@ -141,14 +149,14 @@ describe('PATCH /api/admin/billing-cases', () => {
       expect((await patch(cancellation)).status).toBe(200);
       expect(cancelPayOSPayment).toHaveBeenCalledTimes(1);
       expect(orderUpdate).toHaveBeenCalledWith(expect.objectContaining({ status: 'CANCELLED' }));
-      expect(caseUpdate).toHaveBeenCalled();
+      expect(rpc).toHaveBeenCalledWith('admin_resolve_billing_case', expect.anything());
     });
 
     it('finishes a retry when the link was already cancelled, without asking PayOS again', async () => {
       orderRow = { status: 'CANCELLED' };
       expect((await patch(cancellation)).status).toBe(200);
       expect(cancelPayOSPayment).not.toHaveBeenCalled();
-      expect(caseUpdate).toHaveBeenCalled();
+      expect(rpc).toHaveBeenCalledWith('admin_resolve_billing_case', expect.anything());
     });
 
     it('refuses a link that was paid', async () => {

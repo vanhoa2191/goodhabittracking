@@ -7,13 +7,15 @@ vi.mock('@/lib/billing/payos-reconcile', () => ({ reconcileOrderOutcome }));
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminSupabaseClient: () => ({
     from: () => ({
-      select: () => ({ eq: () => ({ gte: () => ({ order: (...args: unknown[]) => { order(...args); return { limit }; } }) }) }),
+      select: () => ({ eq: () => ({ lte: () => ({ gt: (_column: string, cursor: number) => { cursorRead(cursor); return { order: (...args: unknown[]) => { order(...args); return { limit }; } }; } }) }) }),
       update: (patch: unknown) => ({ eq: (_column: string, code: unknown) => ({ eq: async () => closeOrder(patch, code) }) }),
     }),
   }),
 }));
 
 import { POST } from '@/app/api/internal/billing/reconcile/route';
+
+const cursorRead = vi.fn();
 
 const secret = 's'.repeat(40);
 function call(token?: string, headers: Record<string, string> = {}) {
@@ -29,6 +31,7 @@ describe('POST /api/internal/billing/reconcile', () => {
     limit.mockReset();
     closeOrder.mockReset();
     order.mockReset();
+    cursorRead.mockReset();
     closeOrder.mockResolvedValue({ error: null });
     vi.stubEnv('CRON_SECRET', secret);
     limit.mockResolvedValue({ data: [{ order_code: 1, amount: 49000, description: 'KIDHABIT 1', status: 'PENDING' }, { order_code: 2, amount: 29000, description: 'KIDHABIT 2', status: 'PENDING' }], error: null });
@@ -58,10 +61,21 @@ describe('POST /api/internal/billing/reconcile', () => {
     await expect((await call(secret)).json()).resolves.toMatchObject({ checked: 2, activated: 1, failed: 1 });
   });
 
-  it('looks at the newest pending orders first so a fresh payment is never crowded out by abandoned ones', async () => {
+  it('walks pending orders oldest first with a stable cursor', async () => {
     reconcileOrderOutcome.mockResolvedValue('open');
     await call(secret);
-    expect(order).toHaveBeenCalledWith('created_at', { ascending: false });
+    expect(order).toHaveBeenCalledWith('order_code', { ascending: true });
+  });
+
+  it('walks all pages even when 25 pending links remain open', async () => {
+    const pending = Array.from({ length: 60 }, (_, index) => ({ order_code: index + 1, amount: 59000, description: `KIDHABIT ${index + 1}`, status: 'PENDING' }));
+    limit.mockResolvedValueOnce({ data: pending.slice(0, 25), error: null })
+      .mockResolvedValueOnce({ data: pending.slice(25, 50), error: null })
+      .mockResolvedValueOnce({ data: pending.slice(50), error: null });
+    reconcileOrderOutcome.mockResolvedValue('open');
+    await expect((await call(secret)).json()).resolves.toMatchObject({ checked: 60 });
+    expect(cursorRead.mock.calls.map(([cursor]) => cursor)).toEqual([0, 25, 50]);
+    expect(reconcileOrderOutcome).toHaveBeenLastCalledWith(expect.anything(), pending[59]);
   });
 
   it('closes an order PayOS reports as cancelled or expired, so it stops being checked', async () => {

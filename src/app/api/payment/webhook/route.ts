@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     });
     if (error) throw error;
 
-    if (result === 'activated' || result === 'duplicate') {
+    if (result === 'activated' || result === 'duplicate' || result === 'order_already_paid') {
       return NextResponse.json({ success: true, message: 'Webhook processed.' });
     }
     if (result === 'order_not_found') {

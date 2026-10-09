@@ -367,10 +367,10 @@ export function AdminCustomerManager() {
       return;
     }
     setChangeReason('');
-    const body = await response.json().catch(() => null) as { referralCommission?: string | null } | null;
+    const body = await response.json().catch(() => null) as { referralCommission?: string | null; launchOfferClaim?: string | null } | null;
     const warning = referralCommissionWarning(body?.referralCommission ?? null);
-    setNotice('Đã cập nhật trạng thái và lưu dấu vết xử lý.');
     await load();
+    setNotice(body?.launchOfferClaim === 'revoked' ? 'Đã xác nhận hoàn tiền, thu hồi suất ưu đãi ra mắt và lưu dấu vết xử lý.' : 'Đã cập nhật trạng thái và lưu dấu vết xử lý.');
     router.refresh();
     // load() clears the banner, so the warning is set after it.
     if (warning) setError(warning);
