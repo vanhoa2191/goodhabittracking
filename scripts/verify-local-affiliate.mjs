@@ -1,22 +1,18 @@
-// Isolated local regression runner; the optional database package stays outside this repo.
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-if (!process.argv[2]) throw new Error('Usage: node scripts/verify-local-affiliate.mjs /tmp/fix-affiliate-db/node_modules/embedded-postgres/dist/index.js');
-const { default: EmbeddedPostgres } = await import(pathToFileURL(resolve(process.argv[2])).href);
+// Disposable PostgreSQL regression runner, also used by CI.
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { createSqlTestDatabase, stopSqlTestServer } from './sql-test-database.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
-const databaseDir = mkdtempSync(join(tmpdir(), 'affiliate-sql-'));
 const load = path => readFileSync(`${root}/${path}`, 'utf8');
-const pg = new EmbeddedPostgres({databaseDir, user:'postgres', password:'local-only', port:55439, persistent:false, onLog:()=>{}, onError:console.error});
 let client;
+let database;
 const out = [];
 try {
-  await pg.initialise(); await pg.start(); client = pg.getPgClient(); await client.connect();
+  database = await createSqlTestDatabase(); client = database.client;
   client.on('notice', n => { if (n.severity === 'WARNING') out.push(`WARNING: ${n.message}`); });
   const family = load('supabase/migrations/202609190001_family_tenancy.sql');
   const cases = load('supabase/migrations/202609280001_lifecycle_revenue_operations.sql');
-  await client.query(`create role anon; create role authenticated; create role service_role; create schema auth;
+  await client.query(`create schema auth;
     create table auth.users(id uuid primary key, created_at timestamptz not null default now());
     create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid$$;
     ${family.slice(family.indexOf('create table if not exists public.user_subscriptions'), family.indexOf('create table if not exists public.parent_profiles'))}
@@ -46,9 +42,18 @@ try {
   await client.query('create temporary table test_original_refund_release as select available_at as original_release from public.referral_commissions where order_code = 90');
   await client.query(load('supabase/migrations/202610090020_affiliate_account_privacy_freeze.sql'));
   await client.query(load('supabase/preflight/202610090020_affiliate_account_privacy_freeze.verify.sql'));
+  const adminSchema = load('supabase/migrations/202609280003_admin_security_observability.sql');
+  await client.query(adminSchema.slice(adminSchema.indexOf('create table if not exists public.admin_memberships'), adminSchema.indexOf('create table if not exists public.operational_events')));
+  const unfreeze = '202610090040_affiliate_commission_unfreeze';
+  await client.query(load(`supabase/migrations/${unfreeze}.sql`));
+  await client.query(load(`supabase/preflight/${unfreeze}.verify.sql`));
   out.push(`PostgreSQL: ${(await client.query('select version()')).rows[0].version}`);
   out.push('PASS: migration and preflight execute');
   const results = await client.query(load('tests/integration/migrations/affiliate-account-privacy-freeze.scenarios.sql'));
   for (const result of results) if (result.rows?.[0]?.result) out.push(result.rows[0].result);
+  await client.query(load('tests/integration/migrations/affiliate-commission-unfreeze.scenarios.sql'));
+  out.push('PASS: admin unfreeze permissions, orphan release, refund/open-case refusal and atomic audit');
 } catch(e) { out.push(`FAIL: ${e.message}`); process.exitCode=1; }
-finally { if(client) await client.end(); await pg.stop(); out.push('Temporary PostgreSQL stopped'); rmSync(databaseDir, { recursive: true, force: true }); console.log(out.join('\n')); }
+finally { if(database) await database.close(); await stopSqlTestServer(); out.push('Disposable PostgreSQL removed'); console.log(out.join('\n')); }
+
+process.exit(process.exitCode ?? 0);

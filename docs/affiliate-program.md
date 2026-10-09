@@ -56,3 +56,5 @@ Gia đình đã được ghi nhận (qua liên kết hoặc nhập mã thủ cô
 - Chuyển khoản tự động qua ngân hàng hoặc cổng chi hộ (hiện thủ công).
 - Thông báo email cho người giới thiệu khi có hoa hồng đầu tiên hoặc khi đã chuyển khoản (cần cấu hình email vòng đời).
 - Tạm khóa một người giới thiệu: đặt `affiliate_accounts.status = 'suspended'` bằng SQL (không sinh hoa hồng mới, không rút được); giao diện admin cho việc này chưa có.
+
+Khi hồ sơ hỗ trợ bị xoá cùng gia đình mà hoa hồng còn đóng băng, finance/super admin dùng mục hoa hồng đóng băng trong trang quản trị. Chỉ bỏ đóng băng sau khi kiểm tra chứng từ, xác nhận tranh chấp đã giải quyết không hoàn tiền và ghi lý do. Hệ thống không cho bỏ chặn đơn đã hoàn tiền hoặc còn hồ sơ đang mở; hành động được audit trong cùng giao dịch và giữ nguyên ngày có thể rút.

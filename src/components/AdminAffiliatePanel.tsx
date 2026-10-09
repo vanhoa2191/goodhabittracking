@@ -1,5 +1,6 @@
 import { maskPayoutAccounts } from '@/lib/referral/mask-account';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { AdminAffiliateCommissionActions } from '@/components/AdminAffiliateCommissionActions';
 import { AdminAffiliatePayoutActions } from '@/components/AdminAffiliatePayoutActions';
 import type { PayoutClaimState } from '@/components/AdminAffiliatePayoutActions';
 
@@ -24,6 +25,7 @@ type Overview = {
   readonly referrals: number;
   readonly owed: { readonly held: number; readonly available: number; readonly requested: number; readonly paid: number };
   readonly payouts: readonly Payout[];
+  readonly frozenCommissions?: readonly { readonly orderCode: number; readonly amount: number; readonly frozenAt: string }[];
   readonly loadedAt: number;
 };
 
@@ -84,6 +86,21 @@ export async function AdminAffiliatePanel({ canSeeFullAccounts, adminId }: { rea
           </div>
         ))}
       </dl>
+      {(overview.frozenCommissions?.length ?? 0) > 0 && (
+        <div className="space-y-3">
+          <h3 className="text-sm font-extrabold">Hoa hồng còn đóng băng sau khi hồ sơ đã đóng hoặc bị xoá</h3>
+          <p className="text-sm text-slate-500">Kiểm tra chứng từ trước khi xác nhận tranh chấp đã giải quyết và đơn không hoàn tiền. Bỏ đóng băng giữ nguyên ngày có thể rút, không tự chuyển tiền.</p>
+          <ul className="space-y-3">
+            {overview.frozenCommissions?.map(commission => (
+              <li key={commission.orderCode} className="rounded-2xl border border-amber-200 p-4 dark:border-amber-900">
+                <p className="text-sm font-bold">Đơn {commission.orderCode} · {money(commission.amount)}</p>
+                <p className="text-xs text-slate-500">Đóng băng từ {new Date(commission.frozenAt).toLocaleString('vi-VN')}</p>
+                {canSeeFullAccounts && <AdminAffiliateCommissionActions orderCode={commission.orderCode} />}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
       <h3 className="text-sm font-extrabold">Yêu cầu rút tiền đang chờ ({waiting.length})</h3>
       {waiting.length === 0 && <p className="text-sm text-slate-500">Không có yêu cầu nào.</p>}
       <ul className="space-y-3">

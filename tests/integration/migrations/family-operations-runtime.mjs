@@ -1,10 +1,9 @@
-// Local, disposable PostgreSQL WASM regression harness; never connects to Supabase.
-// npm install --prefix /tmp/fix-ops-db --no-save @electric-sql/pglite@0.3.14
-// PGLITE_MODULE_PATH=/tmp/fix-ops-db/node_modules/@electric-sql/pglite/dist/index.js node tests/integration/migrations/family-operations-runtime.mjs
+// Disposable native PostgreSQL regression harness; never connects to Supabase.
+// Set SQL_TEST_DATABASE_URL or EMBEDDED_POSTGRES_MODULE_PATH (see docs/deployment.md).
 // OPS_RUNTIME_BASELINE=1 demonstrates failures against the latest pre-fix definitions.
 import { readFileSync, readdirSync } from 'node:fs';
 import assert from 'node:assert/strict';
-const { PGlite } = await import(process.env.PGLITE_MODULE_PATH ?? '@electric-sql/pglite');
+import { createSqlTestDatabase, stopSqlTestServer } from '../../../scripts/sql-test-database.mjs';
 const baseline = process.env.OPS_RUNTIME_BASELINE === '1';
 const migrationPath = process.env.OPS_RUNTIME_MIGRATION_PATH ?? 'supabase/migrations/202610090030_family_operations_hardening.sql';
 const baselineFiles = readdirSync('supabase/migrations').filter((name) => name.endsWith('.sql') && !name.startsWith('20261009003')).sort();
@@ -36,7 +35,7 @@ const uuid = () => crypto.randomUUID();
 // Legacy base CREATE TABLE statements are absent from this repo; base scalar types
 // follow the typed SQL command records/casts. No remote schema inspection is used.
 const fixture = `
-create role anon; create role authenticated; create role service_role;
+
 create schema auth; create schema extensions;
 create table auth.users (id uuid primary key, email text);
 create function auth.uid() returns uuid language sql as $$ select coalesce(nullif(current_setting('request.jwt.claim.sub',true),''),'${user}')::uuid $$;
@@ -78,7 +77,7 @@ create table email_suppressions (user_id uuid, scope text);
 grant all on habit_activities to authenticated;
 `;
 async function database() {
-  const db = new PGlite();
+  const db = await createSqlTestDatabase();
   await db.exec(fixture);
   await db.exec(oldDefinitions);
   await db.exec(`revoke all on function transition_redemption_command(uuid,text) from public, anon, authenticated, service_role;
@@ -312,4 +311,7 @@ if (!baseline) await test('migration catalog preflight passes with closed origin
   await db.exec(readFileSync('supabase/preflight/202610090030_family_operations_hardening.verify.sql','utf8'));
 });
 console.log(`${baseline ? 'BASELINE' : process.env.OPS_RUNTIME_MIGRATION_PATH ? 'REVIEWED' : 'FIXED'}: ${failures} failures`);
+await stopSqlTestServer();
 process.exitCode = failures ? 1 : 0;
+
+process.exit(process.exitCode ?? 0);

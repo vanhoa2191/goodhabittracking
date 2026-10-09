@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { parse } from '@libpg-query/parser';
 import { describe, expect, it } from 'vitest';
+import { EXPECTED_SCHEMA_VERSION } from '@/lib/schema-version';
 
 const migration = readFileSync(resolve(process.env.OPS_MIGRATION_UNDER_TEST ?? 'supabase/migrations/202610090030_family_operations_hardening.sql'), 'utf8');
 const verification = readFileSync(resolve('supabase/preflight/202610090030_family_operations_hardening.verify.sql'), 'utf8');
@@ -18,7 +19,7 @@ describe('family operations hardening migration', () => {
   });
   it('registers the new migration in the schema entrypoint and build health version', () => {
     expect(readFileSync(resolve('supabase/schema.sql'), 'utf8')).toContain('\\ir migrations/202610090030_family_operations_hardening.sql');
-    expect(readFileSync(resolve('src/lib/schema-version.ts'), 'utf8')).toContain('202610090030');
+    expect(BigInt(EXPECTED_SCHEMA_VERSION)).toBeGreaterThanOrEqual(BigInt('202610090030'));
   });
   it('O1 removes the direct activity write bypass', () => {
     expect(migration).toContain('revoke insert, update, delete on public.habit_activities from public, anon, authenticated');
