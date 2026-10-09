@@ -117,7 +117,7 @@ export const story = {
     eyebrow: 'Ứng dụng thói quen theo tuổi cho bé 4–12',
     title: 'Thôi làm chiếc đồng hồ báo thức biết nói của con.',
     highlight: 'đồng hồ báo thức',
-    lead: 'KidHabit gợi ý thói quen theo tuổi để con tự xem việc và đánh dấu xong. Ba mẹ chọn việc, duyệt những việc cần duyệt và khen con đúng việc.',
+    lead: 'KidHabit gợi ý thói quen theo tuổi để con tự xem việc và đánh dấu xong. Ba mẹ chọn việc, duyệt việc khi cần và khen con đúng lúc.',
     primaryCta: 'Dùng thử 7 ngày',
     secondaryCta: 'Xem con sẽ thấy gì',
     assurances: ['Không cần thẻ', 'Không tự trừ tiền', 'Hoàn tiền 30 ngày'],
@@ -129,8 +129,8 @@ export const story = {
     title: 'Cách hoạt động trong 3 bước',
     steps: [
       { title: 'Ba mẹ chọn thói quen theo tuổi', text: 'Chọn từ khung gợi ý hoặc tự tạo việc phù hợp với con.' },
-      { title: 'Con tự đánh dấu trên thiết bị của con', text: 'Con mở màn hình riêng, xem việc hôm nay và đánh dấu khi làm xong.' },
-      { title: 'Ba mẹ duyệt việc cần duyệt, con đổi sao lấy phần thưởng', text: 'Ba mẹ đặt phần thưởng trong cửa hàng để con dùng sao đã nhận.' },
+      { title: 'Con tự đánh dấu trên màn hình riêng', text: 'Con mở màn hình của mình, xem việc hôm nay và đánh dấu khi làm xong.' },
+      { title: 'Duyệt việc, đổi sao lấy quà', text: 'Việc nào ba mẹ đánh dấu cần duyệt sẽ chờ ba mẹ xác nhận; con dùng sao để đổi phần thưởng ba mẹ đặt trong cửa hàng.' },
     ],
     featuresLabel: 'Có sẵn trong ứng dụng',
     features: [
@@ -270,7 +270,7 @@ export const story = {
   },
   final: {
     title: 'Bắt đầu từ một việc nhỏ, ngay sáng mai.',
-    text: 'Mở KidHabit cùng con, xem danh sách việc hôm nay và chọn phần thưởng cả nhà đã thống nhất. Ba mẹ có 7 ngày để thử xem cách này có hợp với nhịp sống của gia đình.',
+    text: 'Mở KidHabit cùng con, xem danh sách việc hôm nay và chọn phần thưởng cả nhà đã thống nhất. Ba mẹ có 7 ngày để thử xem cách này có hợp với nhịp sống của gia đình hay không.',
     cta: 'Dùng thử 7 ngày, không cần thẻ',
   },
   /** Sticky bar copy per chapter: [title, note, button]. */
@@ -314,7 +314,7 @@ export const faqGroups = [
       },
       {
         question: 'Thanh toán bằng cách nào?',
-        answer: 'Ba mẹ chuyển khoản bằng VietQR qua PayOS theo thông tin của đơn thanh toán. Gói được kích hoạt khi thanh toán được xác nhận.',
+        answer: 'Ba mẹ quét mã VietQR (qua PayOS) bằng ứng dụng ngân hàng, hoặc chuyển khoản theo thông tin trên đơn. Gói được kích hoạt khi PayOS xác nhận thanh toán.',
       },
       {
         question: 'Ba mẹ có được hoàn tiền không?',

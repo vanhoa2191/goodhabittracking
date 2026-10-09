@@ -500,7 +500,7 @@ const zh: AffiliateCopy = {
   recent: '最近佣金',
   noCommissions: '暂时没有佣金。',
   status: { pending: '保留中', available: '可提现', requested: '已申请提现', paid: '已支付', reversed: '已收回' },
-  plan: { solo_monthly: '基础版套餐 · 月付', solo_yearly: '基础版套餐 · 年付', monthly: 'Pro 套餐 · 月付', yearly: 'Pro 套餐 · 年付', lifetime: '终身方案' },
+  plan: { solo_monthly: '基础套餐 · 月付', solo_yearly: '基础套餐 · 年付', monthly: 'Pro 套餐 · 月付', yearly: 'Pro 套餐 · 年付', lifetime: '终身方案' },
   tax: '佣金可能需要缴纳个人所得税；你需要按规定自行申报。',
   entry: {
     prompt: '有朋友给你的推荐码吗？',

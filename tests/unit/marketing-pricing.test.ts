@@ -36,7 +36,7 @@ describe('marketing pricing', () => {
 
   it('shows caregiver invitations as a shared benefit for Basic and Pro', () => {
     expect(pricingTiers.solo.name).toBe('Gói Cơ bản');
-    const benefit = 'Mời người thân cùng theo dõi (mọi gói)';
+    const benefit = 'Mời người thân cùng theo dõi';
     expect(pricingTiers.solo.features).toContain(benefit);
     expect(pricingTiers.pro.features).toContain(benefit);
   });

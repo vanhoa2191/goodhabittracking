@@ -105,8 +105,8 @@ describe('marketing static artifact', () => {
       expect(headings).toEqual(['Dùng thử &amp; thanh toán', 'Cho con dùng', 'An toàn &amp; dữ liệu']);
       for (const group of faqGroups) expect(faq).toContain(`aria-labelledby="faq-${group.id}"`);
       expect(faq.match(/<summary>/g)).toHaveLength(faqs.length);
-      expect(faq).toContain('VietQR qua PayOS');
-      expect(faq).toContain('Gói được kích hoạt khi thanh toán được xác nhận.');
+      expect(faq).toContain('mã VietQR (qua PayOS)');
+      expect(faq).toContain('Gói được kích hoạt khi PayOS xác nhận thanh toán.');
       expect(faq).toContain('bấm nút đọc to');
       expect(faq).toContain('Từ 13 tuổi, con tự chọn');
       expect(faq).not.toMatch(/ngay lập tức|tức thì|thời gian thực/);
@@ -128,7 +128,7 @@ describe('marketing static artifact', () => {
     const { html } = await buildFixture();
     expect(html).toContain('Leo khen con');
     expect(html).toContain(story.demo.praise);
-    expect(story.hero.lead).toContain('duyệt những việc cần duyệt');
+    expect(story.hero.lead).toContain('duyệt việc khi cần');
     expect(story.demo.lead).toContain('duyệt những việc cần duyệt');
     expect(html).toContain('thanh toán và các thao tác quan trọng');
     expect(html).not.toMatch(/Lời khen của ba mẹ|ba mẹ chỉ cần duyệt|thanh toán và cài đặt gia đình|Mẹ nói bao nhiêu lần rồi|con bạn|nhà bạn/);

@@ -138,8 +138,8 @@ test.describe('without JavaScript', () => {
       const payment = page.locator('.faq details', { has: page.getByText('Thanh toán bằng cách nào?', { exact: true }) });
       await payment.locator('summary').click();
       await expect(payment.locator('p')).toBeVisible();
-      await expect(payment).toContainText('VietQR qua PayOS');
-      await expect(payment).toContainText('Gói được kích hoạt khi thanh toán được xác nhận.');
+      await expect(payment).toContainText('mã VietQR (qua PayOS)');
+      await expect(payment).toContainText('Gói được kích hoạt khi PayOS xác nhận thanh toán.');
       const readAloud = page.locator('.faq details', { has: page.getByText('Bé chưa biết đọc thì sao?', { exact: true }) });
       await readAloud.locator('summary').click();
       await expect(readAloud.locator('p')).toBeVisible();

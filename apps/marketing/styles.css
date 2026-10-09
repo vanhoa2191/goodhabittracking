@@ -540,7 +540,7 @@ body { overflow-x: clip; }
 .feature-strip b, .feature-strip span { display: block; font-size: .9rem; line-height: 1.5; }
 .feature-strip span { margin-top: 4px; color: var(--ink-2); }
 @media (min-width: 640px) { .feature-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1000px) { .how-steps-home { grid-template-columns: repeat(3, minmax(0, 1fr)); } .feature-strip { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .how-steps-home { grid-template-columns: repeat(3, minmax(0, 1fr)); } .feature-strip { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); } }
 
 .quiz { display: grid; grid-template-columns: 1fr 1.3fr; gap: 32px; align-items: center; margin-top: 72px; padding: 32px; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); }
 .story .quiz .eyebrow { margin-bottom: 10px; }
