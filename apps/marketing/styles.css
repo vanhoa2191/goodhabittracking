@@ -526,6 +526,22 @@ body { overflow-x: clip; }
   .chip-a { left: -18px; top: 30px; }
 }
 
+/* A static overview inside the opening chapter, before the story question. */
+.how-it-works { margin-top: 72px; padding-top: 40px; border-top: 1px solid var(--line); }
+.story .how-it-works h2 { font-size: clamp(1.5rem, 3vw, 2rem); }
+.how-steps-home { display: grid; gap: 24px; margin: 28px 0 32px; padding: 0; list-style: none; }
+.how-steps-home li { display: flex; gap: 14px; min-width: 0; }
+.how-number { display: grid; place-items: center; flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: #fff; font-weight: 700; }
+.story .how-steps-home h3 { font-size: 1.08rem; }
+.story .how-steps-home p { margin: 8px 0 0; color: var(--ink-2); font-size: .95rem; }
+.story .feature-label { margin-bottom: 12px; color: var(--green); font-size: .85rem; font-weight: 700; }
+.feature-strip { display: grid; gap: 16px; margin: 0; padding: 22px; list-style: none; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+.feature-strip li { min-width: 0; }
+.feature-strip b, .feature-strip span { display: block; font-size: .9rem; line-height: 1.5; }
+.feature-strip span { margin-top: 4px; color: var(--ink-2); }
+@media (min-width: 640px) { .feature-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .how-steps-home { grid-template-columns: repeat(3, minmax(0, 1fr)); } .feature-strip { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+
 .quiz { display: grid; grid-template-columns: 1fr 1.3fr; gap: 32px; align-items: center; margin-top: 72px; padding: 32px; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); }
 .story .quiz .eyebrow { margin-bottom: 10px; }
 .story .quiz-q { font-size: 1.35rem; line-height: 1.35; }
@@ -608,7 +624,7 @@ body { overflow-x: clip; }
 
 /* "An tâm cho cả nhà", at the top of the questions chapter */
 .safety { display: grid; grid-template-columns: .8fr 1.2fr; gap: 32px 64px; align-items: start; margin-bottom: 72px; padding: 32px; background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); }
-.story .safety-head h3 { font-size: 1.35rem; }
+.story .safety-head h2 { font-size: 1.35rem; }
 .story .safety-head p { margin: 10px 0 6px; color: var(--ink-2); }
 .safety-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; margin: 0; padding: 0; list-style: none; }
 .safety-item { display: flex; gap: 14px; }
@@ -727,6 +743,8 @@ html:not([data-js]) .plan a.btn[data-cycle="month"], html:not([data-js]) .nudge 
 
 /* Chapter 7: questions */
 .faq-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 64px; }
+.faq-group + .faq-group { margin-top: 36px; }
+.story .faq-group h3 { color: var(--green); font-size: 1.08rem; }
 .faq details { border-bottom: 1px solid var(--line); }
 .faq summary { display: flex; justify-content: space-between; gap: 18px; padding: 22px 0; font-size: 1.08rem; font-weight: 700; line-height: 1.5; list-style: none; cursor: pointer; }
 .faq summary::-webkit-details-marker { display: none; }

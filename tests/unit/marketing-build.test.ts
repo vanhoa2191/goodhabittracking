@@ -5,7 +5,8 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { selectPublishableTestimonials } from '../../apps/marketing/render-site.mjs';
 import { sessionHintCookie } from '../../apps/marketing/session-hint.mjs';
-import { faqs, launchOffer, story, storyStages, traitLabels } from '../../apps/marketing/site-content.mjs';
+import { faqGroups, faqs, launchOffer, story, storyStages, traitLabels } from '../../apps/marketing/site-content.mjs';
+import { pricingTiers } from '../../apps/marketing/pricing.mjs';
 import frameworkData from '../../src/data/habit-framework-v1.vi.json';
 import { LAUNCH_OFFER } from '@/lib/billing/plan-catalog';
 import { buildMarketingSite } from '../../scripts/build-marketing.mjs';
@@ -77,6 +78,71 @@ describe('marketing static artifact', () => {
     expect(html).not.toMatch(/\b(số 1|top 1|#1)\b/i);
   });
 
+  it('shows a static three-step overview and verified features inside the opening chapter', async () => {
+    const { html } = await buildFixture();
+    const opening = html.slice(html.indexOf('<section class="hero"'), html.indexOf('<section class="tone-soft"'));
+    const overview = opening.slice(opening.indexOf('class="how-it-works"'), opening.indexOf('class="quiz'));
+    expect(opening.indexOf('class="how-it-works"')).toBeGreaterThan(opening.indexOf('class="hero-grid"'));
+    expect(overview).toContain('<h2 id="how-it-works-title">Cách hoạt động trong 3 bước</h2>');
+    expect(overview).toMatch(/<ol class="how-steps-home">/);
+    expect(overview.match(/<h3>/g)).toHaveLength(3);
+    for (const step of story.howItWorks.steps) expect(overview).toContain(step.title);
+    for (const feature of story.howItWorks.features) {
+      expect(overview).toContain(`<b>${feature.title}</b>`);
+      expect(overview).toContain(feature.text);
+    }
+    expect(overview).not.toMatch(/(?<![-\w])hidden\b|data-chapter=|data-quiz/);
+    expect(story.hero.lead.match(/[.!?](?: |$)/g)).toHaveLength(2);
+    expect(html).toContain('Ứng dụng thói quen theo tuổi cho bé 4–12');
+  });
+
+  it('uses the same three FAQ groups and payment answer on home and pricing, including structured data', async () => {
+    const { outputDir, html } = await buildFixture();
+    for (const page of [html, await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8')]) {
+      const faq = page.slice(page.indexOf('class="faq reveal"'), page.indexOf('</main>'));
+      expect(faq.match(/class="faq-group"/g)).toHaveLength(3);
+      const headings = [...faq.matchAll(/<h3 id="faq-[^"]+">([^<]+)<\/h3>/g)].map((match) => match[1]);
+      expect(headings).toEqual(['Dùng thử &amp; thanh toán', 'Cho con dùng', 'An toàn &amp; dữ liệu']);
+      for (const group of faqGroups) expect(faq).toContain(`aria-labelledby="faq-${group.id}"`);
+      expect(faq.match(/<summary>/g)).toHaveLength(faqs.length);
+      expect(faq).toContain('VietQR qua PayOS');
+      expect(faq).toContain('Gói được kích hoạt khi thanh toán được xác nhận.');
+      expect(faq).toContain('bấm nút đọc to');
+      expect(faq).toContain('Từ 13 tuổi, con tự chọn');
+      expect(faq).not.toMatch(/ngay lập tức|tức thì|thời gian thực/);
+      const ageQuestions = faqs.filter((item) => /^Con bao nhiêu tuổi|^Bé chưa biết đọc/.test(item.question));
+      expect(ageQuestions).toHaveLength(2);
+      expect(faqs.filter((item) => /7 ngày|thẻ/.test(item.question))).toHaveLength(1);
+      const data = [...page.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+        .map((match) => JSON.parse(match[1]!))
+        .flatMap((block) => block['@graph'] ?? [block]);
+      const structuredFaq = data.find((node) => node['@type'] === 'FAQPage');
+      if (structuredFaq) expect(structuredFaq.mainEntity.map((item: { name: string }) => item.name)).toEqual(faqs.map((item) => item.question));
+      if (page !== html) expect(structuredFaq).toBeDefined();
+    }
+    const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
+    expect(pricing).toContain(`${pricingTiers.solo.name} cho 1 bé hoặc ${pricingTiers.pro.name} cho tối đa 5 bé`);
+  });
+
+  it('corrects the product copy and keeps the founder’s letter free of the chapter-three list', async () => {
+    const { html } = await buildFixture();
+    expect(html).toContain('Leo khen con');
+    expect(html).toContain(story.demo.praise);
+    expect(story.hero.lead).toContain('duyệt những việc cần duyệt');
+    expect(story.demo.lead).toContain('duyệt những việc cần duyệt');
+    expect(html).toContain('thanh toán và các thao tác quan trọng');
+    expect(html).not.toMatch(/Lời khen của ba mẹ|ba mẹ chỉ cần duyệt|thanh toán và cài đặt gia đình|Mẹ nói bao nhiêu lần rồi|con bạn|nhà bạn/);
+    expect(html.match(/Ba nói bao nhiêu lần rồi\?/g)).toHaveLength(3);
+    const letter = html.slice(html.indexOf('<article class="letter'), html.indexOf('<div class="sig"'));
+    expect(letter).not.toContain('<ol>');
+    for (const item of story.missing.items) {
+      expect(html).toContain(`<h3>${item.title}</h3>`);
+      expect(letter).not.toContain(item.title);
+    }
+    expect(story.final.text).not.toContain(story.letter.postscript);
+    expect(new Set(Object.values(story.dock).map((copy) => copy[1])).size).toBe(Object.keys(story.dock).length);
+  });
+
   it('server-renders every interactive part so the next script only toggles it', async () => {
     const { html } = await buildFixture();
     expect(html).toMatch(/<div class="quiz[^"]*" data-quiz>/);
@@ -131,7 +197,7 @@ describe('marketing static artifact', () => {
     expect(html).toContain('<b>Nguyễn Văn Hoà</b>');
     expect(html).toContain('Ba của Sam · Người làm ra KidHabit');
     expect(html).toContain('<mark>dọn giường là cách con giữ lời hứa với chính mình.</mark>');
-    expect(html).toContain('Tôi không hứa con bạn sẽ thay đổi sau một tuần.');
+    expect(html).toContain('Tôi không hứa con của ba mẹ sẽ thay đổi sau một tuần.');
     expect(html).not.toContain('class="quote-card"');
     expect(html).not.toMatch(/\d[\d.]*\s*(gia đình|phụ huynh|người dùng) (đã|đang) dùng/i);
   });
@@ -141,7 +207,7 @@ describe('marketing static artifact', () => {
       const { outputDir } = await buildFixture();
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
       expect(openingTag(html, 'data-pricing-cycle')).toContain('data-pricing-cycle="year"');
-      for (const text of ['Tiết kiệm 69.000đ (15%)', 'Tiết kiệm 118.000đ (17%)', '468.000đ', '399.000đ', '590.000đ', '≈ 33.300đ mỗi tháng', '≈ 49.200đ mỗi tháng', 'Chỉ hơn Gói 1 bé 191.000đ mỗi năm', 'Chỉ hơn Gói 1 bé 20.000đ mỗi tháng', '<span class="save">đến -17%</span>']) {
+      for (const text of ['Tiết kiệm 69.000đ (15%)', 'Tiết kiệm 118.000đ (17%)', '468.000đ', '399.000đ', '590.000đ', '≈ 33.300đ mỗi tháng', '≈ 49.200đ mỗi tháng', `Chỉ hơn ${pricingTiers.solo.name} 191.000đ mỗi năm`, `Chỉ hơn ${pricingTiers.solo.name} 20.000đ mỗi tháng`, '<span class="save">đến -17%</span>']) {
         expect(html).toContain(text);
       }
       const checkout = new Set(html.match(/href="https:\/\/app\.example\/checkout\?plan=[a-z_]+"/g) ?? []);
@@ -394,7 +460,7 @@ describe('marketing static artifact', () => {
 
   it('describes the age-tuned child screen as a feature with its limits, without promising results', async () => {
     const { html } = await buildFixture();
-    expect(html).toContain('Giao diện của bé có đổi theo tuổi không?');
+    expect(html).toContain('Con bao nhiêu tuổi thì phù hợp, giao diện có đổi theo tuổi không?');
     expect(html).toContain('3–8, 9–12 và từ 13 tuổi');
     expect(html).toContain('Bé dưới 3 tuổi, hoặc chưa có năm sinh, vẫn dùng giao diện mặc định.');
     expect(html).not.toMatch(/tăng động lực|đảm bảo|cam kết hiệu quả/i);
@@ -413,7 +479,7 @@ describe('marketing static artifact', () => {
 
   it('answers the age, the trial and the replace-the-parent questions and does not say "đủ điều kiện"', async () => {
     const { html } = await buildFixture();
-    for (const question of ['Con bao nhiêu tuổi thì phù hợp?', 'Hết 7 ngày dùng thử thì sao?', 'KidHabit có thay thế việc ba mẹ dạy con không?']) expect(html).toContain(question);
+    for (const question of ['Con bao nhiêu tuổi thì phù hợp, giao diện có đổi theo tuổi không?', 'Dùng thử có cần thẻ và hết 7 ngày thì sao?', 'KidHabit có thay thế việc ba mẹ dạy con không?']) expect(html).toContain(question);
     expect(html).not.toContain('đủ điều kiện');
   });
 
@@ -518,7 +584,7 @@ describe('marketing static artifact', () => {
     expect(terms).toContain('Hoàn tiền trong 30 ngày');
     expect(terms).toContain('30 ngày kể từ ngày thanh toán');
     const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
-    expect(pricing).toContain('Tôi có được hoàn tiền không?');
+    expect(pricing).toContain('Ba mẹ có được hoàn tiền không?');
     expect(pricing).toContain('30 ngày');
   });
 
@@ -639,7 +705,7 @@ describe('home page story content', () => {
   it('signs the letter as the founder, a parent, and promises no result', () => {
     expect(story.letter.signature).toEqual({ name: 'Nguyễn Văn Hoà', role: 'Ba của Sam', maker: 'Người làm ra KidHabit' });
     const text = JSON.stringify(story);
-    expect(text).toContain('Tôi không hứa con bạn sẽ thay đổi sau một tuần.');
+    expect(text).toContain('Tôi không hứa con của ba mẹ sẽ thay đổi sau một tuần.');
     expect(text).not.toMatch(/đảm bảo|cam kết hiệu quả|tăng động lực|\b(số 1|top 1|#1)\b/i);
     expect(text).not.toMatch(/\d[\d.]*\s*(gia đình|phụ huynh|người dùng) (đã|đang) dùng/i);
   });
@@ -655,11 +721,12 @@ describe('home page story content', () => {
     const questions = faqs.map((item) => item.question);
     for (const question of [
       'Ưu đãi nâng cấp lên Pro Plus hoạt động thế nào?',
-      'Hết 7 ngày dùng thử thì sao?',
-      'Tôi có được hoàn tiền không?',
-      'Con bao nhiêu tuổi thì phù hợp?',
+      'Dùng thử có cần thẻ và hết 7 ngày thì sao?',
+      'Ba mẹ có được hoàn tiền không?',
+      'Con bao nhiêu tuổi thì phù hợp, giao diện có đổi theo tuổi không?',
       'KidHabit có thay thế việc ba mẹ dạy con không?',
-      'Giao diện của bé có đổi theo tuổi không?',
+      'Bé chưa biết đọc thì sao?',
+      'Thanh toán bằng cách nào?',
     ]) expect(questions).toContain(question);
     expect(new Set(questions).size).toBe(questions.length);
     expect(JSON.stringify(faqs)).not.toMatch(/đủ điều kiện|đảm bảo/);
