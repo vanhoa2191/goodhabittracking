@@ -44,8 +44,9 @@ export function StartTrialEntry() {
   const hasChild = profiles.length > 0;
 
   useEffect(() => {
-    if (ready && isPro && hasChild) router.replace('/');
-  }, [hasChild, isPro, ready, router]);
+    // Wait until the setup wizard is closed, so its last step is not cut off by the redirect.
+    if (ready && isPro && hasChild && !isOnboardingOpen) router.replace('/');
+  }, [hasChild, isOnboardingOpen, isPro, ready, router]);
 
   useEffect(() => {
     if (!ready || hasChild || openedSetup.current) return;
