@@ -270,7 +270,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         title: '2. Hoa hồng bao nhiêu và tính thế nào',
         blocks: [
           'Hoa hồng là 30% số tiền gia đình được giới thiệu thực trả cho mỗi khoản thanh toán, làm tròn xuống đồng gần nhất, cho mọi thanh toán trong 12 tháng đầu kể từ ngày họ tạo tài khoản. Dùng thử miễn phí không phát sinh hoa hồng.',
-          'Gia đình được giới thiệu (bằng liên kết hoặc nhập mã trong ứng dụng) được giảm 10% khi mua một trong hai gói năm (Gói 1 bé hoặc Gói Pro) lần đầu. Hoa hồng của bạn tính trên số tiền họ thực trả sau khi giảm.',
+          'Gia đình được giới thiệu (bằng liên kết hoặc nhập mã trong ứng dụng) được giảm 10% khi mua một trong hai gói năm (Gói Cơ bản hoặc Gói Pro) lần đầu. Hoa hồng của bạn tính trên số tiền họ thực trả sau khi giảm.',
           'Gia đình được ghi nhận khi họ đăng nhập lần đầu trong vòng 60 ngày kể từ khi bấm vào liên kết của bạn và chưa trả tiền trước đó. Mỗi gia đình chỉ gắn với một người giới thiệu; nếu có nhiều liên kết, liên kết được dùng sau cùng trước khi đăng ký được tính.',
           'Tỉ lệ, thời hạn ghi nhận, thời hạn hưởng và mức rút tối thiểu có thể thay đổi cho các gia đình đăng ký sau thời điểm thay đổi; thay đổi được thông báo trên trang này.',
         ],

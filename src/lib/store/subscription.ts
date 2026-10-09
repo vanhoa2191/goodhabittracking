@@ -47,8 +47,8 @@ export function buildSubscriptionCapabilities(
 }
 
 const PAID_PLAN_LABELS: Readonly<Record<PaidPlanId, string>> = {
-  solo_monthly: 'Gói 1 bé · Tháng',
-  solo_yearly: 'Gói 1 bé · Năm',
+  solo_monthly: 'Gói Cơ bản · Tháng',
+  solo_yearly: 'Gói Cơ bản · Năm',
   monthly: 'Gói Pro · Tháng',
   yearly: 'Gói Pro · Năm',
 };

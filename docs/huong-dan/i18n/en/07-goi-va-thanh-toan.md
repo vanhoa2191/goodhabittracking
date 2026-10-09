@@ -22,17 +22,17 @@
 | Plan | Price | Children | Best for |
 |---|---|---|---|
 | **7-Day Free Trial** | 0 VND | Up to 5 (same as Pro) | Trying everything before you decide |
-| **1-Child Plan · Monthly** | 39,000 VND / month | 1 child | Families starting with one child |
-| **1-Child Plan · Yearly** | 399,000 VND / year (saves 69,000 VND, 15% compared with paying monthly) | 1 child | One child, paid once for 12 months |
+| **Basic Plan · Monthly** | 39,000 VND / month | 1 child | Families starting with one child |
+| **Basic Plan · Yearly** | 399,000 VND / year (saves 69,000 VND, 15% compared with paying monthly) | 1 child | One child, paid once for 12 months |
 | **Pro Plan · Monthly** | 59,000 VND / month | Up to 5 children | Families with several children, flexible by the month |
 | **Pro Plan · Yearly** | 590,000 VND / year (saves 118,000 VND, 17% compared with paying monthly) | Up to 5 children | Staying with it long enough for small steps to become habits |
 | **Lifetime** | Not sold | Unlimited | Granted manually by an administrator only<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 The monthly and yearly versions of the same plan include exactly the same benefits and differ only in price and term. All payments are **one-time payments** with no automatic renewal. The pricing screen also lists extra benefits for the paid plans (weekly tracking reports, family competitions, and faster technical support); the ebook is **not yet available**.
 
-**Names on the website** are the same as in the app: *1-Child Plan* and *Pro Plan* (monthly and yearly), at the same prices.
+**Names on the website** are the same as in the app: *Basic Plan* and *Pro Plan* (monthly and yearly), at the same prices.
 
-**The number of children per plan** is checked by the database when you **add** a new child profile: the 1-Child Plan allows up to 1 child; the Pro Plan and the trial allow up to 5; the lifetime plan is unlimited; without an active plan, you cannot add a new child profile. A family that already has more profiles than its plan allows **keeps its existing profiles**; the limit only blocks adding new ones.
+**The number of children per plan** is checked by the database when you **add** a new child profile: the Basic Plan allows up to 1 child; the Pro Plan and the trial allow up to 5; the lifetime plan is unlimited; without an active plan, you cannot add a new child profile. A family that already has more profiles than its plan allows **keeps its existing profiles**; the limit only blocks adding new ones.
 
 **Pro Plus Plan and the Habit Coach (in development).** The Pro Plus Plan (79,000 VND / month or 790,000 VND / year) includes everything in the Pro Plan plus the **Habit Coach** (AI small-step suggestions and a weekly summary), for up to 5 children. This plan is **in development**: it cannot be bought, has no buy button and has no launch date; the current plans do not change. See [AI suggestions](09-bao-mat-va-rieng-tu.md#goi-y-ai) for what data is sent.
 
@@ -90,7 +90,7 @@ Gift codes are created by the operations team. Enter one in `Settings → Accoun
 <a id="giam-gia"></a>
 ## Discount for referred families
 
-A family that enters a referral code (through a `?ref=` link or by entering it manually) gets **10% off its first order of either yearly plan**: Pro Plan · Yearly 590,000 VND becomes 531,000 VND, and 1-Child Plan · Yearly 399,000 VND becomes 359,100 VND; only if the family has no previously paid order. The payment screen shows “10% off thanks to the referral code.” Details: [8. Referrals](08-gioi-thieu-ban-be.md#giam-10).
+A family that enters a referral code (through a `?ref=` link or by entering it manually) gets **10% off its first order of either yearly plan**: Pro Plan · Yearly 590,000 VND becomes 531,000 VND, and Basic Plan · Yearly 399,000 VND becomes 359,100 VND; only if the family has no previously paid order. The payment screen shows “10% off thanks to the referral code.” Details: [8. Referrals](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Refunds and cancellation

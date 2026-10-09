@@ -22,16 +22,16 @@
 | Tarif | Preis | Kinder | Geeignet für |
 |---|---|---|---|
 | **7-tägige kostenlose Testphase** | 0 VND | Unbegrenzt | Alles ausprobieren, bevor Sie sich entscheiden |
-| **Tarif für ein Kind** | 29,000 VND / Monat | 1 Kind | Familien, die mit einem Kind beginnen |
+| **Basis-Tarif** | 29,000 VND / Monat | 1 Kind | Familien, die mit einem Kind beginnen |
 | **Familientarif · Monatlich** | 49,000 VND / Monat | Unbegrenzt | Mehrere Kinder oder voller Zugriff auf alle Funktionen |
 | **Familientarif · Jährlich** | 399,000 VND / Jahr (regulärer Preis 588,000 VND, 189,000 VND Ersparnis, 32 %) | Unbegrenzt | Lang genug dabeibleiben, damit aus kleinen Schritten Gewohnheiten werden können |
 | **Lifetime** | Wird nicht verkauft | Unbegrenzt | Wird nur manuell von einer Administration gewährt<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 Alle Zahlungen sind **einmalig**; es gibt keine automatische Verlängerung. Auf der Preisseite werden außerdem zusätzliche Vorteile des Familientarifs (wöchentliche Fortschrittsberichte, Familienwettbewerbe und schnellere technische Unterstützung) und des Jahrestarifs (bevorzugte Unterstützung und E-Book zur Erziehung) aufgeführt. Das E-Book ist **noch nicht verfügbar**.
 
-**Die Namen variieren je nach Ort:** Auf der Marketingwebsite heißt der *Tarif für ein Kind* „Basic Plan“; die beiden Familientarife heißen „Premium Plan“ (monatlich und jährlich). Es handelt sich um dieselben Produkte zu denselben Preisen.
+**Die Namen variieren je nach Ort:** Auf der Marketingwebsite heißt der *Basis-Tarif* „Basic Plan“; die beiden Familientarife heißen „Premium Plan“ (monatlich und jährlich). Es handelt sich um dieselben Produkte zu denselben Preisen.
 
-**Die Kinderanzahl je Tarif** wird von der Datenbank geprüft: Der Tarif für ein Kind erlaubt bis zu 1 Kind; Test-, Familien- und Lifetime-Tarife sind unbegrenzt. Ohne aktiven Tarif können Sie kein neues Kinderprofil hinzufügen.
+**Die Kinderanzahl je Tarif** wird von der Datenbank geprüft: Der Basis-Tarif erlaubt bis zu 1 Kind; Test-, Familien- und Lifetime-Tarife sind unbegrenzt. Ohne aktiven Tarif können Sie kein neues Kinderprofil hinzufügen.
 
 <a id="noi-mua"></a>
 ## Wo Sie kaufen können

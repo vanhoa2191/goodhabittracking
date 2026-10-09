@@ -24,7 +24,7 @@ Ogni bambino ha un profilo separato con:
 
 Dalla scheda del profilo, i genitori possono:
 
-- **Aggiungere, modificare o eliminare** un profilo bambino. Il numero di bambini dipende dal [piano](07-goi-va-thanh-toan.md#cac-goi): il piano per un bambino consente fino a 1 bambino; la prova e i piani famiglia non hanno limiti. Alla scadenza di un piano, non è possibile aggiungere un nuovo profilo senza un piano.
+- **Aggiungere, modificare o eliminare** un profilo bambino. Il numero di bambini dipende dal [piano](07-goi-va-thanh-toan.md#cac-goi): il piano Base consente fino a 1 bambino; la prova e i piani famiglia non hanno limiti. Alla scadenza di un piano, non è possibile aggiungere un nuovo profilo senza un piano.
 - **Caricare il pacchetto in base all’età** («Aggiungi automaticamente 6 abitudini adatte all’età…») per ottenere subito sei attività iniziali.
 - **[Assegnare o sottrarre stelle manualmente](03-hom-nay-va-duyet-viec.md#chinh-sao)**.
 - Visualizzare stelle, livello, serie e se il bambino è nascosto dalla classifica.

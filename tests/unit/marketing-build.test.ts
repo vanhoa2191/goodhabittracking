@@ -141,7 +141,7 @@ describe('marketing static artifact', () => {
       const { outputDir } = await buildFixture();
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
       expect(openingTag(html, 'data-pricing-cycle')).toContain('data-pricing-cycle="year"');
-      for (const text of ['Tiết kiệm 69.000đ (15%)', 'Tiết kiệm 118.000đ (17%)', '468.000đ', '399.000đ', '590.000đ', '≈ 33.300đ mỗi tháng', '≈ 49.200đ mỗi tháng', 'Chỉ hơn Gói 1 bé 191.000đ mỗi năm', 'Chỉ hơn Gói 1 bé 20.000đ mỗi tháng', '<span class="save">đến -17%</span>']) {
+      for (const text of ['Tiết kiệm 69.000đ (15%)', 'Tiết kiệm 118.000đ (17%)', '468.000đ', '399.000đ', '590.000đ', '≈ 33.300đ mỗi tháng', '≈ 49.200đ mỗi tháng', 'Chỉ hơn Gói Cơ bản 191.000đ mỗi năm', 'Chỉ hơn Gói Cơ bản 20.000đ mỗi tháng', '<span class="save">đến -17%</span>']) {
         expect(html).toContain(text);
       }
       const checkout = new Set(html.match(/href="https:\/\/app\.example\/checkout\?plan=[a-z_]+"/g) ?? []);

@@ -24,7 +24,7 @@ Chaque enfant dispose d’un profil distinct comprenant :
 
 Depuis la carte de profil, les parents peuvent :
 
-- **Ajouter, modifier ou supprimer** un profil d’enfant. Le nombre d’enfants dépend du [forfait](07-goi-va-thanh-toan.md#cac-goi) : le forfait Un enfant en autorise un ; l’essai et les forfaits Famille n’ont pas de limite. Après l’expiration d’un forfait, aucun nouveau profil ne peut être ajouté sans forfait.
+- **Ajouter, modifier ou supprimer** un profil d’enfant. Le nombre d’enfants dépend du [forfait](07-goi-va-thanh-toan.md#cac-goi) : le forfait Essentiel en autorise un ; l’essai et les forfaits Famille n’ont pas de limite. Après l’expiration d’un forfait, aucun nouveau profil ne peut être ajouté sans forfait.
 - **Charger le pack par âge** (« Ajouter automatiquement 6 habitudes adaptées à l’âge… ») pour obtenir immédiatement six tâches de départ.
 - **[Ajouter ou déduire des étoiles manuellement](03-hom-nay-va-duyet-viec.md#chinh-sao)**.
 - Consulter les étoiles, le niveau, la série et la visibilité de l’enfant dans le classement.

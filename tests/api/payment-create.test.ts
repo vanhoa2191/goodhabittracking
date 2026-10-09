@@ -79,7 +79,7 @@ describe('POST /api/payment/create referral discount', () => {
     expect(body.payment).toMatchObject({ amount: 531000, listPrice: 590000, discountPercent: 10 });
   });
 
-  it('discounts the yearly Gói 1 bé plan of a referred family too', async () => {
+  it('discounts the yearly Gói Cơ bản plan of a referred family too', async () => {
     rpc.mockResolvedValue({ data: 1000, error: null });
     const body = await (await post('solo_yearly')).json();
     expect(rpc).toHaveBeenCalledWith('referral_discount_bps', { target_family: 'family-a' });

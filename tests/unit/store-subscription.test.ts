@@ -57,8 +57,8 @@ describe('subscription domain', () => {
 
   it('names each plan the way the pricing page does', () => {
     const ends = '2026-10-20T00:00:00.000Z';
-    expect(buildSubscriptionDetails('solo_monthly', null, ends, true, now).label).toBe('Gói 1 bé · Tháng');
-    expect(buildSubscriptionDetails('solo_yearly', null, ends, true, now).label).toBe('Gói 1 bé · Năm');
+    expect(buildSubscriptionDetails('solo_monthly', null, ends, true, now).label).toBe('Gói Cơ bản · Tháng');
+    expect(buildSubscriptionDetails('solo_yearly', null, ends, true, now).label).toBe('Gói Cơ bản · Năm');
     expect(buildSubscriptionDetails('monthly', null, ends, true, now).label).toBe('Gói Pro · Tháng');
     expect(buildSubscriptionDetails('yearly', null, ends, true, now).label).toBe('Gói Pro · Năm');
     expect(buildSubscriptionDetails('yearly', null, null, true, now).statusText).toBe('Gói Pro · Năm (Đang hoạt động)');

@@ -11,6 +11,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     description: 'Mở khóa trọn bộ tính năng Pro, không cần thẻ tín dụng',
     features: [
       'Tối đa 5 bé',
+      'Mời người thân cùng theo dõi (mọi gói)',
       'Mở khóa trọn bộ 40+ thói quen & 7 Bố thí',
       'Lộ trình theo độ tuổi',
       'Đồng bộ đám mây trên nhiều thiết bị',
@@ -21,7 +22,7 @@ export const PRICING_PLANS: PricingPlan[] = [
   },
   {
     id: 'solo_monthly',
-    name: 'Gói 1 bé · Tháng',
+    name: 'Gói Cơ bản · Tháng',
     badge: 'Khởi đầu nhẹ nhàng',
     price: PLAN_PRICES.solo.month,
     periodLabel: '/ tháng',
@@ -29,14 +30,15 @@ export const PRICING_PLANS: PricingPlan[] = [
     description: 'Đầy đủ trải nghiệm cốt lõi cho hành trình của một bé',
     features: [
       'Quản lý 1 hồ sơ bé',
+      'Mời người thân cùng theo dõi (mọi gói)',
       'Đồng bộ đám mây trên nhiều thiết bị',
       'Toàn bộ thư viện thói quen, lộ trình và phần thưởng',
     ],
-    ctaText: 'Chọn Gói 1 bé · Tháng',
+    ctaText: 'Chọn Gói Cơ bản · Tháng',
   },
   {
     id: 'solo_yearly',
-    name: 'Gói 1 bé · Năm',
+    name: 'Gói Cơ bản · Năm',
     badge: 'Tiết kiệm cho một bé',
     price: PLAN_PRICES.solo.year,
     originalPrice: PLAN_PRICES.solo.month * 12,
@@ -45,11 +47,12 @@ export const PRICING_PLANS: PricingPlan[] = [
     dailyEquivalent: '~33.300đ / tháng (~1.090đ/ngày)',
     description: 'Cả năm đồng hành cùng một bé với giá tốt hơn trả từng tháng',
     features: [
-      'Tất cả quyền lợi của Gói 1 bé · Tháng',
+      'Tất cả quyền lợi của Gói Cơ bản · Tháng',
       'Quản lý 1 hồ sơ bé',
+      'Mời người thân cùng theo dõi (mọi gói)',
       'Tiết kiệm 69.000đ so với trả từng tháng',
     ],
-    ctaText: 'Chọn Gói 1 bé · Năm',
+    ctaText: 'Chọn Gói Cơ bản · Năm',
   },
   {
     id: 'monthly',
@@ -62,6 +65,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     description: 'Chỉ bằng 1/2 ly trà sữa, tạo dựng nếp sống vững chắc cho con',
     features: [
       'Tối đa 5 bé',
+      'Mời người thân cùng theo dõi (mọi gói)',
       'Đồng bộ tức thì trên nhiều thiết bị',
       'Mở khóa toàn bộ Thư viện thói quen & Lộ trình',
       'Bảng xếp hạng thi đua gia đình & liên minh',
@@ -82,6 +86,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     features: [
       'Tất cả quyền lợi của Gói Pro · Tháng',
       'Tối đa 5 bé',
+      'Mời người thân cùng theo dõi (mọi gói)',
       'Tiết kiệm 118.000đ so với trả từng tháng',
     ],
     ctaText: 'Chọn Gói Pro · Năm',

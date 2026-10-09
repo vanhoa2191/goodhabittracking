@@ -63,7 +63,7 @@ export const HELP_TOPICS_ES: HelpTranslationTable<HelpText> = {
   'settings.theme': { title: 'Aspecto', text: 'Claro, oscuro o según el dispositivo.' },
   'settings.pin': { title: 'PIN', text: 'Cuatro dígitos que protegen el área de padres. Tras introducirlo correctamente, este navegador queda desbloqueado durante 2 horas. Se necesita para aprobar, revocar dispositivos, pagar, eliminar datos y solicitar el retiro de tus comisiones por recomendación. Nunca lo compartas con tu hijo.' },
 
-  'payment.plans': { title: 'Planes', text: 'Plan para un menor: 39.000 VND/mes o 399.000 VND/año (1 menor). Plan Pro: 59.000 VND/mes o 590.000 VND/año (hasta 5 perfiles de menores). Plan Pro Plus: próximamente. Pago único, sin renovación automática.' },
+  'payment.plans': { title: 'Planes', text: 'Plan Básico: 39.000 VND/mes o 399.000 VND/año (1 menor). Plan Pro: 59.000 VND/mes o 590.000 VND/año (hasta 5 perfiles de menores). Plan Pro Plus: próximamente. Pago único, sin renovación automática.' },
   'payment.trial': { title: 'Prueba de 7 días', text: 'Gratis, sin tarjeta y sin cobro automático. Una vez por familia.' },
   'payment.memo': { title: 'Concepto de transferencia', text: 'Mantén el importe y el concepto exactos para que el sistema reconozca el pago. Puedes copiar cada dato o descargar el código QR.' },
   'payment.activation': { title: 'Cuándo se activa el plan', text: 'Cuando se confirme el pago, normalmente en segundos. Si no aparece, espera unos minutos y vuelve a abrir la aplicación; contacta con soporte con el código del pedido.' },

@@ -46,7 +46,7 @@ export function PricingPlans({ renderAction, isCurrent }: PricingPlansProps) {
     const planId = card.planId as PaidPlanId;
     const text: PlanText = PLAN_LOCALIZATION[planId]?.[language] ?? PLAN_LOCALIZATION[planId].vi;
     const popular = card.tier === 'pro';
-    const benefits = [card.tier === 'solo' ? copy.oneChild : copy.upToFive, copy.sync, card.tier === 'solo' ? copy.library : copy.fullLibrary, ...(cycle === 'year' ? [copy.annualPayment] : [])];
+    const benefits = [card.tier === 'solo' ? copy.oneChild : copy.upToFive, copy.sync, copy.caregiverInvites, card.tier === 'solo' ? copy.library : copy.fullLibrary, ...(cycle === 'year' ? [copy.annualPayment] : [])];
     const yearly = buildPricingView('year').find((candidate) => candidate.tier === card.tier);
     return (
       <div key={card.tier} data-plan={planId} className={`relative flex flex-col justify-between rounded-3xl p-5 ${popular ? 'border-2 border-indigo-600 bg-white shadow-xl dark:bg-zinc-900' : 'border border-slate-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900'}`}>

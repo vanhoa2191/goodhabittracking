@@ -22,16 +22,16 @@
 | Plan | Precio | Niños | Recomendado para |
 |---|---|---|---|
 | **Prueba gratuita de 7 días** | 0 VND | Ilimitados | Probarlo todo antes de decidir |
-| **Plan para un niño** | 29,000 VND / mes | 1 niño | Familias que empiezan con un niño |
+| **Plan Básico** | 29,000 VND / mes | 1 niño | Familias que empiezan con un niño |
 | **Plan familiar · Mensual** | 49,000 VND / mes | Ilimitados | Varios niños o acceso completo a todas las funciones |
 | **Plan familiar · Anual** | 399,000 VND / año (precio habitual 588,000 VND; ahorra 189,000 VND, 32%) | Ilimitados | Mantener el uso el tiempo suficiente para que los pequeños pasos se conviertan en hábitos |
 | **De por vida** | No se vende | Ilimitados | Solo lo concede manualmente un administrador<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 Todos los pagos son **únicos**, sin renovación automática. La pantalla de precios también enumera ventajas adicionales del plan familiar (informes semanales de seguimiento, competiciones familiares y asistencia técnica más rápida) y del plan anual (asistencia prioritaria y libro electrónico sobre crianza); el libro electrónico **todavía no está disponible**.
 
-**Los nombres varían según la ubicación:** el sitio web de marketing llama «Plan Básico» al *Plan para un niño* y «Plan Premium» a los dos planes familiares (mensual y anual). Son los mismos productos y precios.
+**Los nombres varían según la ubicación:** el sitio web de marketing llama «Plan Básico» al *Plan Básico* y «Plan Premium» a los dos planes familiares (mensual y anual). Son los mismos productos y precios.
 
-**El límite de niños de cada plan** se comprueba en la base de datos: el Plan para un niño permite hasta 1 niño; la prueba, los planes familiares y el plan de por vida no tienen límite; sin un plan activo, no puede añadir perfiles nuevos.
+**El límite de niños de cada plan** se comprueba en la base de datos: el Plan Básico permite hasta 1 niño; la prueba, los planes familiares y el plan de por vida no tienen límite; sin un plan activo, no puede añadir perfiles nuevos.
 
 <a id="noi-mua"></a>
 ## Dónde comprar

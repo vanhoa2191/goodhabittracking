@@ -22,16 +22,16 @@
 | Piano | Prezzo | Bambini | Ideale per |
 |---|---|---|---|
 | **Prova gratuita di 7 giorni** | 0 VND | Senza limiti | Provare tutte le funzionalità prima di decidere |
-| **Piano per un bambino** | 29,000 VND / mese | 1 bambino | Famiglie che iniziano con un solo bambino |
+| **Piano Base** | 29,000 VND / mese | 1 bambino | Famiglie che iniziano con un solo bambino |
 | **Piano famiglia · Mensile** | 49,000 VND / mese | Senza limiti | Più bambini o accesso completo a tutte le funzionalità |
 | **Piano famiglia · Annuale** | 399,000 VND / anno (prezzo normale 588,000 VND, risparmio 189,000 VND, 32%) | Senza limiti | Proseguire abbastanza a lungo da trasformare piccoli passi in abitudini |
 | **A vita** | Non in vendita | Senza limiti | Concesso manualmente solo da un amministratore<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 Tutti i pagamenti sono **una tantum**, senza rinnovo automatico. La schermata dei prezzi elenca anche vantaggi aggiuntivi per il piano famiglia (resoconti settimanali, competizioni familiari e assistenza tecnica più rapida) e per il piano annuale (assistenza prioritaria ed ebook di guida alla genitorialità); l’ebook **non è ancora disponibile**.
 
-**I nomi variano in base alla località:** il sito di marketing chiama il *Piano per un bambino* «Piano Base» e i due piani famiglia «Piano Premium» (mensile e annuale). Si tratta degli stessi prodotti agli stessi prezzi.
+**I nomi variano in base alla località:** il sito di marketing chiama il *Piano Base* «Piano Base» e i due piani famiglia «Piano Premium» (mensile e annuale). Si tratta degli stessi prodotti agli stessi prezzi.
 
-**Il numero di bambini consentito dal piano** viene verificato nel database: il piano per un bambino ne consente fino a 1; la prova, i piani famiglia e il piano a vita non hanno limiti; senza un piano attivo non è possibile aggiungere un nuovo profilo bambino.
+**Il numero di bambini consentito dal piano** viene verificato nel database: il piano Base ne consente fino a 1; la prova, i piani famiglia e il piano a vita non hanno limiti; senza un piano attivo non è possibile aggiungere un nuovo profilo bambino.
 
 <a id="noi-mua"></a>
 ## Dove acquistare
