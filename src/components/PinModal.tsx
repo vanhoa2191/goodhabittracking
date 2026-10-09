@@ -124,7 +124,8 @@ export function PinModal({ isOpen, onClose, onSuccess, refreshStatus, verifyPin,
       : t.enterPin;
 
   return (
-    <ModalShell isOpen={isOpen} onClose={onClose} label={heading} maxWidth="sm" mobileSheet={false}>
+    <ModalShell isOpen={isOpen} onClose={onClose} label={heading} maxWidth="sm" mobileSheet={false}
+      overlayClassName="fixed inset-0 z-[70] grid min-h-dvh place-items-center overflow-hidden bg-slate-950/55 p-3 backdrop-blur-sm sm:p-4">
       <div className="flex items-center justify-between border-b border-slate-100 p-4 sm:p-5 dark:border-zinc-800">
         <div className="flex items-center gap-2.5">
           <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400"><Lock aria-hidden="true" className="h-5 w-5" /></div>

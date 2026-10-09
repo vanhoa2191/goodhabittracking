@@ -24,6 +24,7 @@ const readyEnvironment = {
   PAYOS_CHECKSUM_KEY: 'checksum-current',
   PAIRING_RATE_LIMIT_SECRET: 'pairing-rate-limit-secret-at-least-32-bytes',
   CRON_SECRET: 'operations-secret',
+  PARENT_UNLOCK_SECRET: 'parent-unlock-secret-at-least-32-characters',
 };
 
 const operations = () => new Request('https://app.kidhabithero.com/api/health', {
@@ -41,6 +42,16 @@ describe('GET /api/health', () => {
   afterEach(() => {
     vi.unstubAllEnvs();
     vi.unstubAllGlobals();
+  });
+
+  it.each(['', 'too-short'])('O8 is degraded in production without a usable signing secret: %s', async (secret) => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    vi.stubEnv('NODE_ENV', 'production');
+    vi.stubEnv('PARENT_UNLOCK_SECRET', secret);
+    const response = await GET(operations());
+    expect(response.status).toBe(503);
+    expect(await response.json()).toMatchObject({ checks: { parentUnlockConfig: false } });
+    expect(await (await GET(anonymous())).json()).toEqual({ status: 'degraded', version: expect.any(String) });
   });
 
   it('reports ready only when database, billing, and pairing configuration are complete', async () => {

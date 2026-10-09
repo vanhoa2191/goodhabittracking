@@ -103,6 +103,12 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
     );
     dependencies.setRedemptions(transition.redemptions);
     dependencies.setProfiles(transition.profiles);
+    const before = dependencies.redemptions.find((item) => item.id === redemptionId);
+    const after = transition.redemptions.find((item) => item.id === redemptionId);
+    if (before && before.status !== 'rejected' && after?.status === 'rejected') {
+      dependencies.setRewards((previous) => previous.map((reward) => reward.id === before.rewardId && reward.stock >= 0
+        ? { ...reward, stock: reward.stock + 1 } : reward));
+    }
   };
 
   const persistCloudTransition = (
@@ -145,6 +151,11 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
       if (!dependencies.isDemoSession) {
         return persistReward({ type: 'delete', rewardId: id });
       }
+      const unsettled = dependencies.redemptions.filter((item) => item.rewardId === id && (item.status === 'pending' || item.status === 'approved'));
+      dependencies.setProfiles((previous) => previous.map((child) => ({ ...child,
+        points: child.points + unsettled.filter((item) => item.childId === child.id).reduce((sum, item) => sum + item.pointsSpent, 0),
+      })));
+      dependencies.setRedemptions((previous) => previous.filter((item) => item.rewardId !== id));
       dependencies.setRewards((previous) => removeReward(previous, id));
       return true;
     },

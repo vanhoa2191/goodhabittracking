@@ -11,6 +11,7 @@ const responseSchema = z.union([
     success: z.literal(false),
     error: z.string().min(1),
     errorCode: z.enum([
+      'parent_pin_required',
       'authentication_required',
       'family_membership_required',
       'invalid_profile_mutation',
@@ -58,6 +59,10 @@ export async function requestProfileMutation(
     body: JSON.stringify(parsedMutation),
   });
   const input: unknown = await response.json();
+  if (response.status === 403 && typeof input === 'object' && input !== null
+    && (input as { code?: unknown }).code === 'parent_pin_required') {
+    throw new ProfileMutationRequestError('Parent PIN required.', response.status, 'parent_pin_required');
+  }
   const parsedResponse = responseSchema.safeParse(input);
   if (!parsedResponse.success) {
     throw new ProfileMutationRequestError(
