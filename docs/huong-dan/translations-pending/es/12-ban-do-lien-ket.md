@@ -93,7 +93,7 @@ Lea cada fila de izquierda a derecha: la función de la primera columna **necesi
 
 ### B. Añadir un segundo niño
 
-[Niños](05-gia-dinh-va-cai-dat.md#ho-so) → Añadir. Necesita un Plan familiar o una prueba activa (el plan para un niño permite hasta 1). Cada niño tiene un código y dispositivo distintos; el acceso a cada dispositivo puede [revocarse](05-gia-dinh-va-cai-dat.md#thiet-bi) por separado.
+[Niños](05-gia-dinh-va-cai-dat.md#ho-so) → Añadir. Necesita un Plan familiar o una prueba activa (el plan Básico permite hasta 1). Cada niño tiene un código y dispositivo distintos; el acceso a cada dispositivo puede [revocarse](05-gia-dinh-va-cai-dat.md#thiet-bi) por separado.
 
 ### C. La familia está de viaje o alguien está enfermo
 
@@ -135,7 +135,7 @@ El cliente envía el código del pedido dentro de 30 días → asistencia [abre 
 | No se puede escanear el código QR | No se concedió permiso para la cámara o la conexión no usa https | Conceda permiso o introduzca el código manualmente |
 | Se rechaza el código de vinculación | Se renovó el código o hubo demasiados intentos incorrectos | Obtenga un código nuevo en [Niños](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi); si se limitó el acceso, espere unos minutos |
 | Se transfirió el pago, pero el plan no aparece | Se espera la confirmación de PayOS | Espere unos minutos y vuelva a abrir `/checkout`; no pague de nuevo; contacte con asistencia con el código del pedido ([activación](07-goi-va-thanh-toan.md#kich-hoat)) |
-| No se puede añadir un perfil de niño | El plan venció o el plan para un niño ya tiene 1 niño | Compre un plan o [cambie de plan](07-goi-va-thanh-toan.md#cac-goi) |
+| No se puede añadir un perfil de niño | El plan venció o el plan Básico ya tiene 1 niño | Compre un plan o [cambie de plan](07-goi-va-thanh-toan.md#cac-goi) |
 | No aparece el campo del código de recomendación | La familia ya pagó, venció el plazo para registrarlo o ya existe un código | No se puede registrar otro código ([8](08-gioi-thieu-ban-be.md#giam-10)) |
 | No se puede retirar una comisión | No hay PIN, el importe es inferior a 200,000 VND, sigue dentro del periodo de retención o se cambiaron hace poco los datos de cobro (espera de 24 horas) | Consulte [solicitar una retirada](08-gioi-thieu-ban-be.md#rut-tien) |
 | El niño no puede ver la clasificación pública | El uso compartido está desactivado, no se seleccionó al niño o la familia está en pausa | [Active el uso compartido](05-gia-dinh-va-cai-dat.md#rieng-tu) y seleccione al niño |

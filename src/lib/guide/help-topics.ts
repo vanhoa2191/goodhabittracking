@@ -198,8 +198,8 @@ export const HELP_TOPICS: Readonly<Record<HelpTopicId, HelpTopic>> = {
     ['PIN', 'Four digits that protect the parent area. After a correct entry this browser stays unlocked for 2 hours. Needed to approve, revoke devices, pay, delete data and withdraw referral money. Never share it with your child.']),
 
   'payment.plans': topic(PLANS, 'cac-goi',
-    ['Các gói', 'Gói 1 bé 39.000đ/tháng hoặc 399.000đ/năm (1 bé). Gói Pro 59.000đ/tháng hoặc 590.000đ/năm (tối đa 5 bé). Gói Pro Plus: sắp ra mắt. Thanh toán một lần, không tự gia hạn.'],
-    ['Plans', 'One-child plan: 39,000 VND/month or 399,000 VND/year (1 child). Pro plan: 59,000 VND/month or 590,000 VND/year (up to 5 children). Pro Plus plan: coming soon. One-off payment, no auto-renewal.']),
+    ['Các gói', 'Gói Cơ bản 39.000đ/tháng hoặc 399.000đ/năm (1 bé). Gói Pro 59.000đ/tháng hoặc 590.000đ/năm (tối đa 5 bé). Gói Pro Plus: sắp ra mắt. Thanh toán một lần, không tự gia hạn.'],
+    ['Plans', 'Basic plan: 39,000 VND/month or 399,000 VND/year (1 child). Pro plan: 59,000 VND/month or 590,000 VND/year (up to 5 children). Pro Plus plan: coming soon. One-off payment, no auto-renewal.']),
   'payment.trial': topic(PLANS, 'dung-thu',
     ['Dùng thử 7 ngày', 'Miễn phí, không cần thẻ, không tự trừ tiền. Mỗi gia đình một lần.'],
     ['7-day trial', 'Free, no card, no automatic charge. Once per family.']),

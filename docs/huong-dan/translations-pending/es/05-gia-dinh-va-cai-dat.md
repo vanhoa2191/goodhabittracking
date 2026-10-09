@@ -24,7 +24,7 @@ Cada niño tiene un perfil separado con:
 
 Desde la tarjeta del perfil, los padres pueden:
 
-- **Añadir, editar o eliminar** un perfil de niño. La cantidad de niños depende del [plan](07-goi-va-thanh-toan.md#cac-goi): el plan para un niño permite hasta 1; la prueba y los planes familiares no tienen límite. Cuando vence un plan, no se puede añadir otro perfil sin un plan.
+- **Añadir, editar o eliminar** un perfil de niño. La cantidad de niños depende del [plan](07-goi-va-thanh-toan.md#cac-goi): el plan Básico permite hasta 1; la prueba y los planes familiares no tienen límite. Cuando vence un plan, no se puede añadir otro perfil sin un plan.
 - **Cargar el paquete según la edad** («Añadir automáticamente 6 hábitos adecuados para la edad…») para obtener seis tareas iniciales de inmediato.
 - **[Añadir o descontar estrellas manualmente](03-hom-nay-va-duyet-viec.md#chinh-sao)**.
 - Consultar las estrellas, el nivel, la racha y si el niño está oculto de la clasificación.

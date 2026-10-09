@@ -22,16 +22,16 @@
 | Forfait | Prix | Enfants | Idéal pour |
 |---|---|---|---|
 | **Essai gratuit de 7 jours** | 0 VND | Illimité | Tout essayer avant de décider |
-| **Forfait Un enfant** | 29,000 VND / mois | 1 enfant | Familles qui commencent avec un enfant |
+| **Forfait Essentiel** | 29,000 VND / mois | 1 enfant | Familles qui commencent avec un enfant |
 | **Forfait Famille · Mensuel** | 49,000 VND / mois | Illimité | Plusieurs enfants ou accès complet à toutes les fonctionnalités |
 | **Forfait Famille · Annuel** | 399,000 VND / an (prix normal 588,000 VND, économie de 189,000 VND, 32 %) | Illimité | Continuer assez longtemps pour que de petits pas deviennent des habitudes |
 | **À vie** | Non vendu | Illimité | Attribué manuellement par un administrateur uniquement<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 Tous les paiements sont **ponctuels**, sans renouvellement automatique. La page des tarifs présente également des avantages supplémentaires pour le forfait Famille (rapports de suivi hebdomadaires, défis familiaux et assistance technique accélérée) et le forfait annuel (assistance prioritaire et livre numérique sur la parentalité) ; ce livre numérique **n’est pas encore disponible**.
 
-**Les noms varient selon l’emplacement :** le site marketing appelle le *Forfait Un enfant* « Forfait Basic » et les deux forfaits Famille « Forfait Premium » (mensuel ou annuel). Il s’agit des mêmes produits aux mêmes prix.
+**Les noms varient selon l’emplacement :** le site marketing appelle le *Forfait Essentiel* « Forfait Basic » et les deux forfaits Famille « Forfait Premium » (mensuel ou annuel). Il s’agit des mêmes produits aux mêmes prix.
 
-**Le nombre d’enfants par forfait** est vérifié dans la base de données : le forfait Un enfant autorise 1 enfant au maximum ; l’essai, les forfaits Famille et À vie sont illimités ; sans forfait actif, vous ne pouvez pas ajouter de profil d’enfant.
+**Le nombre d’enfants par forfait** est vérifié dans la base de données : le forfait Essentiel autorise 1 enfant au maximum ; l’essai, les forfaits Famille et À vie sont illimités ; sans forfait actif, vous ne pouvez pas ajouter de profil d’enfant.
 
 <a id="noi-mua"></a>
 ## Où souscrire

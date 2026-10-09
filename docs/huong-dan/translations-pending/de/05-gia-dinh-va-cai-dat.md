@@ -24,7 +24,7 @@ Jedes Kind hat ein eigenes Profil mit:
 
 Auf der Profilkarte können Eltern:
 
-- Ein Kinderprofil **hinzufügen, bearbeiten oder löschen**. Die Kinderanzahl richtet sich nach dem [Tarif](07-goi-va-thanh-toan.md#cac-goi): Der Tarif für ein Kind erlaubt bis zu 1 Kind; Test- und Familientarife sind unbegrenzt. Nach Ablauf eines Tarifs können Sie ohne Tarif kein neues Profil hinzufügen.
+- Ein Kinderprofil **hinzufügen, bearbeiten oder löschen**. Die Kinderanzahl richtet sich nach dem [Tarif](07-goi-va-thanh-toan.md#cac-goi): Der Basis-Tarif erlaubt bis zu 1 Kind; Test- und Familientarife sind unbegrenzt. Nach Ablauf eines Tarifs können Sie ohne Tarif kein neues Profil hinzufügen.
 - **Altersgerechtes Paket laden** („Automatisch 6 altersgerechte Gewohnheiten hinzufügen …“), um sofort sechs Startaufgaben zu erhalten.
 - **[Sterne manuell gutschreiben oder abziehen](03-hom-nay-va-duyet-viec.md#chinh-sao)**.
 - Sterne, Stufe, Serie und den Status ansehen, ob das Kind in der Rangliste ausgeblendet ist.
