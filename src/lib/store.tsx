@@ -38,7 +38,7 @@ import type { ChildSession } from './store/pairing-client';
 import { createHabitActions, type BatchReviewOutcome } from './store/habit-actions';
 import { resolveActiveChildId } from './store/active-child';
 import { createProfileActions } from './store/profile-actions';
-import type { ProfileCreateResult } from './store/profile-actions';
+import type { CreateProfileOptions, ProfileCreateResult } from './store/profile-actions';
 import { createRewardActions } from './store/reward-actions';
 import { createSocialActions } from './store/social-actions';
 import { createFamilyPauseAction } from './store/family-pause-actions';
@@ -162,6 +162,7 @@ interface AppStoreContextType {
   createProfile: (
     profile: Omit<ChildProfile, 'id' | 'createdAt'>,
     requestId?: string,
+    options?: CreateProfileOptions,
   ) => Promise<ProfileCreateResult>;
   updateProfile: (id: string, updates: Partial<ChildProfile>) => Promise<boolean>;
   deleteProfile: (id: string) => Promise<boolean>;
@@ -989,8 +990,9 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const createProfile = async (
     profileData: Omit<ChildProfile, 'id' | 'createdAt'>,
     requestId?: string,
+    options?: CreateProfileOptions,
   ): Promise<ProfileCreateResult> => {
-    return profileActions.createProfile(profileData, requestId);
+    return profileActions.createProfile(profileData, requestId, options);
   };
 
   const updateProfile = profileActions.updateProfile;

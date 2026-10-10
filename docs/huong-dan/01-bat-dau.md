@@ -31,14 +31,15 @@ Phụ huynh đăng nhập từ một liên kết giới thiệu (`?ref=`) đư�
 <a id="thiet-lap"></a>
 ## Tạo hồ sơ bé đầu tiên
 
-Lần đầu vào, cửa sổ "Đăng ký và cá nhân hóa theo lứa tuổi" chỉ tạo hồ sơ bé:
+Lần đầu vào, cửa sổ thiết lập dẫn ba mẹ qua **5 bước**, vừa tạo hồ sơ vừa giải thích cách con làm việc, nhận sao và đổi quà:
 
-- Nhập **họ tên bé** (bắt buộc), biệt danh (tùy chọn) và chọn độ tuổi (mặc định 5 tuổi).
-- Mở **Tùy chỉnh thêm** nếu muốn xem giải thích giai đoạn tuổi, đổi linh vật (mặc định Leo), xem trước sáu thói quen khởi đầu hoặc tắt tự động nạp mẫu (mặc định bật). Ba mẹ sửa lại sau cũng được.
+1. **Bé của bạn.** Nhập họ tên bé (bắt buộc), biệt danh (tùy chọn), chọn tuổi (mặc định 5) và linh vật đồng hành (mặc định Leo). Thẻ giai đoạn tuổi đổi theo tuổi đã chọn: tuổi quyết định giao diện con thấy và các thói quen được gợi ý.
+2. **Thói quen đầu tiên.** Xem sáu thói quen gợi ý theo tuổi; ứng dụng chọn sẵn 1–4 việc tùy tuổi để con dễ thành nếp. Ba mẹ chọn thêm hoặc bỏ bớt, xem bộ đếm mức khuyến nghị và chọn việc nào cần **Ba mẹ duyệt**. Con chạm Xong để nhận sao; việc cần duyệt chỉ cộng sao sau khi ba mẹ xác nhận. Với bé 0–3 tuổi, các việc là để ba mẹ làm gương nên không có công tắc duyệt. Bỏ chọn hết vẫn đi tiếp được; ba mẹ thêm việc sau ở **Thiết kế**.
+3. **Quà để đổi sao.** Chọn trong ba quà trải nghiệm: chọn truyện và người kể tối nay, chọn món cho bữa cơm gia đình và 30 phút riêng cùng ba hoặc mẹ. Khi tạo bé đầu tiên, quà đầu tiên được chọn sẵn; quà gia đình đã có sẽ hiện là đã thêm và không thêm trùng. Ba mẹ sửa giá thành số sao nguyên từ 1 đến 1.000.000 hoặc bấm **Để sau** để chưa thêm quà. Nếu đã chọn thói quen và quà, ứng dụng ước tính sao mỗi ngày và số ngày để đổi quà. Con xin đổi quà → ba mẹ duyệt → trao quà; nếu từ chối, con được hoàn sao.
+4. **Xác nhận & bắt đầu.** Kiểm tra tên, tuổi, số thói quen và quà, rồi **xác nhận là cha mẹ hoặc người giám hộ hợp pháp** và đồng ý để KidHabit lưu hồ sơ, thói quen, tiến độ của bé. Chỉ khi bấm nút ở bước này dữ liệu mới được lưu; ba mẹ có thể quay lại sửa các lựa chọn trước đó. Việc đồng ý được ghi theo phiên bản chính sách ([9](09-bao-mat-va-rieng-tu.md#dong-thuan)); bảng xếp hạng công khai mặc định tắt. Nếu đã đăng nhập và gia đình chưa có gói, nút **Bắt đầu 7 ngày dùng thử & tạo hồ sơ** tự bắt đầu dùng thử. Mỗi gia đình chỉ dùng thử một lần ([7](07-goi-va-thanh-toan.md#dung-thu)).
+5. **Đưa app cho bé.** Chọn **Máy riêng của bé** để lấy mã kết nối và QR: mở app trên máy bé, chọn **Đây là thiết bị của bé?**, rồi quét QR hoặc nhập mã. Hoặc chọn **Dùng chung máy này**: đặt PIN phụ huynh 4 số để giữ khu phụ huynh khỏi tay bé, hoặc bỏ qua, rồi mở màn hình của bé. Khi chưa đăng nhập chỉ có lựa chọn dùng chung máy. Nút **Vào bảng phụ huynh** kết thúc thiết lập để ba mẹ xem tiến độ và duyệt ở **Hôm nay → Duyệt việc**; dấu **?** cạnh mỗi mục mở hướng dẫn.
 
-Bắt buộc **xác nhận là cha mẹ hoặc người giám hộ hợp pháp** và đồng ý để KidHabit lưu hồ sơ, thói quen, tiến độ của bé. Việc đồng ý được ghi theo phiên bản chính sách ([9](09-bao-mat-va-rieng-tu.md#dong-thuan)). Bảng xếp hạng công khai mặc định tắt.
-
-Nếu gia đình chưa có gói, bước hoàn tất sẽ **tự bắt đầu 7 ngày dùng thử** (nút ghi "Bắt đầu dùng thử"). Dùng thử chỉ có một lần cho mỗi gia đình ([7](07-goi-va-thanh-toan.md#dung-thu)).
+Nếu chưa thêm được quà, ứng dụng vẫn cho đi tiếp và nhắc ba mẹ thêm lại ở **Thiết kế → Đổi quà**. Nếu chưa lấy được mã kết nối, ba mẹ lấy sau ở **Gia đình → Hồ sơ các con** hoặc dùng chung máy ngay.
 
 Có thể vào thẳng trang `/start` ("Bắt đầu 7 ngày dùng thử") từ website: đăng nhập Google, thiết lập gia đình rồi bấm bắt đầu.
 

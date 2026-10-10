@@ -15,6 +15,11 @@ import { addProfile, removeProfile, updateProfileList } from './local-domain-act
 
 type NewProfile = Omit<ChildProfile, 'id' | 'createdAt'>;
 
+export type CreateProfileOptions = {
+  /** Omit for all age-stage starters; an empty list creates none. Invalid indexes are ignored. */
+  readonly starterHabits?: ReadonlyArray<{ readonly templateIndex: number; readonly requiresApproval: boolean }>;
+};
+
 type Dependencies = {
   readonly activeChildId: string | null;
   readonly currentUser: User | null;
@@ -31,7 +36,7 @@ type Dependencies = {
 };
 
 type ProfileActions = {
-  readonly createProfile: (profile: NewProfile, requestId?: string) => Promise<ProfileCreateResult>;
+  readonly createProfile: (profile: NewProfile, requestId?: string, options?: CreateProfileOptions) => Promise<ProfileCreateResult>;
   readonly deleteProfile: (id: string) => Promise<boolean>;
   readonly updateProfile: (id: string, updates: Partial<ChildProfile>) => Promise<boolean>;
 };
@@ -126,16 +131,24 @@ export function createProfileActions(dependencies: Dependencies): ProfileActions
   };
 
   return {
-    createProfile: async (profileData, requestId = crypto.randomUUID()) => {
+    createProfile: async (profileData, requestId = crypto.randomUUID(), options) => {
       const createdAt = new Date().toISOString();
       const profile: ChildProfile = { ...profileData, id: requestId, createdAt };
-      const starterActivities: HabitActivity[] = profile.ageStage
-        ? generateAgeAdaptedHabits(profile.id, profile.ageStage).map((activity) => ({
-            ...activity,
-            id: crypto.randomUUID(),
-            createdAt,
-          }))
+      const templates = profile.ageStage
+        ? generateAgeAdaptedHabits(profile.id, profile.ageStage)
         : [];
+      const starterActivities: HabitActivity[] = [];
+      if (options?.starterHabits !== undefined) {
+        for (const { templateIndex, requiresApproval } of options.starterHabits) {
+          const activity = templates[templateIndex];
+          if (!activity) continue;
+          starterActivities.push({ ...activity, requiresApproval, id: crypto.randomUUID(), createdAt });
+        }
+      } else {
+        for (const activity of templates) {
+          starterActivities.push({ ...activity, id: crypto.randomUUID(), createdAt });
+        }
+      }
       if (!dependencies.isDemoSession) {
         return persist({
           type: 'create',

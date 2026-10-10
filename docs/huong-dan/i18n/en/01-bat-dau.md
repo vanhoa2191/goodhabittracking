@@ -31,14 +31,15 @@ Parents who sign in through a referral link (`?ref=`) are automatically recorded
 <a id="thiet-lap"></a>
 ## Create your first child profile
 
-The first time you enter, the “Create Your Family’s Age-Based Plan” window only creates a child profile:
+The first time you enter, the setup window guides you through **5 steps**, creating a profile while explaining how your child completes tasks, earns stars, and exchanges them for rewards:
 
-- Enter the **child’s full name** (required), nickname (optional), and age (5 by default).
-- Open **More customization** to read about the age stage, change the mascot (Leo by default), preview six starter habits, or turn off adding starter habits (on by default). Parents can edit these later.
+1. **Your child.** Enter the child's full name (required), nickname (optional), age (5 by default), and companion mascot (Leo by default). The age-stage card changes with the selected age: age determines the interface your child sees and the suggested habits.
+2. **First habits.** Review six habits suggested for the age; the app selects 1–4 tasks depending on age to help your child build a routine. Select more or fewer, check the recommended count, and choose which tasks need **Parent approves**. Your child taps Done to earn stars; tasks needing approval add stars only after you confirm. For children aged 0–3, the tasks are for parents to model, so there is no approval switch. You can deselect everything and add tasks later under **Design**.
+3. **Rewards to trade stars for.** Choose from three experience rewards: picking tonight's story and storyteller, choosing a dish for the family meal, and 30 minutes alone with Mom or Dad. For your first child, the first reward is selected by default; rewards your family already has show as added and are not duplicated. Edit the cost to a whole number from 1 to 1,000,000 stars or tap **Later** to add no rewards yet. If you selected habits and rewards, the app estimates daily stars and the days needed to earn a reward. Your child requests a reward → you approve → you deliver it; declining returns the stars to your child.
+4. **Confirm & start.** Check the name, age, and number of habits and rewards, then **confirm that you are the child's parent or legal guardian** and agree that KidHabit may store their profile, habits, and progress. Data is saved only when you press the button in this step; you can go back to review earlier choices before saving. Consent is recorded under the policy version ([9](09-bao-mat-va-rieng-tu.md#dong-thuan)); public leaderboards are off by default. If you are signed in and your family has no plan, **Start the 7-day trial & create profile** automatically starts the trial. Each family can use the trial only once ([7](07-goi-va-thanh-toan.md#dung-thu)).
+5. **Hand the app to your child.** Choose **Child's own device** to get a pairing code and QR: open the app on their device, choose **Is this a child's device?**, then scan the QR or enter the code. Or choose **Share this device**: set a 4-digit parent PIN to protect the parent area, or skip it, then open the child screen. When signed out, only the shared-device option is available. **Go to parent dashboard** finishes setup so you can view progress and approve tasks under **Today → Approvals**; the **?** next to each item opens help.
 
-You must **confirm that you are the child’s parent or legal guardian** and agree that KidHabit may store the child’s profile, habits, and progress. Consent is recorded under the policy version ([9](09-bao-mat-va-rieng-tu.md#dong-thuan)). Public leaderboards are off by default.
-
-If the family does not have a plan, completing setup will **automatically start a 7-day free trial** (the button says “Start 7-day trial”). Each family can use the trial only once ([7](07-goi-va-thanh-toan.md#dung-thu)).
+If a reward could not be added, setup still continues and reminds you to add it under **Design → Rewards**. If the pairing code could not be loaded, get it later under **Family → Child profiles**, or share the current device right away.
 
 You can open `/start` (“Start your 7-day trial”) directly from the website: sign in with Google, set up your family, then click start.
 

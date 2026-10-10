@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ChildProfile, HabitActivity } from '@/types';
 import { emptyExperienceState } from '@/lib/experience-state';
+import { generateAgeAdaptedHabits } from '@/lib/wit-framework';
 
 const requestProfileMutation = vi.hoisted(() => vi.fn());
 vi.mock('@/lib/store/profile-mutation-client', async (importOriginal) => ({
@@ -90,6 +91,103 @@ describe('profile actions', () => {
     }));
     expect(syncCloudFamily).toHaveBeenCalledTimes(1);
     expect(setActiveChildId).toHaveBeenCalledWith(expect.any(String));
+  });
+
+  it('sends only the chosen starter habits with overridden approval', async () => {
+    requestProfileMutation.mockImplementation(async (mutation) => ({
+      profileId: mutation.profile.id,
+    }));
+    const actions = createProfileActions({
+      activeChildId: null,
+      currentUser: {
+        id: 'user-a', app_metadata: {}, user_metadata: {}, aud: 'authenticated',
+        created_at: '2026-09-20T00:00:00.000Z',
+      },
+      experience: emptyExperienceState,
+      familyId: 'family-a',
+      profiles: [],
+      setActiveChildId: vi.fn(),
+      setActivities: vi.fn(),
+      setCloudSyncActive: vi.fn(),
+      setExperience: vi.fn(),
+      setProfiles: vi.fn(),
+      isDemoSession: false,
+      syncCloudFamily: vi.fn(async () => true),
+    });
+
+    await actions.createProfile({ ...baseProfile, ageStage: '3-6' }, '11111111-1111-4111-8111-111111111111', {
+      starterHabits: [
+        { templateIndex: 3, requiresApproval: true },
+        { templateIndex: 0, requiresApproval: false },
+      ],
+    });
+
+    const templates = generateAgeAdaptedHabits(null, '3-6');
+    const { starterActivities } = requestProfileMutation.mock.calls[0][0];
+    expect(starterActivities).toHaveLength(2);
+    expect(starterActivities.map((activity: HabitActivity) => activity.title)).toEqual([
+      templates[3].title,
+      templates[0].title,
+    ]);
+    expect(starterActivities.map((activity: HabitActivity) => activity.requiresApproval)).toEqual([true, false]);
+  });
+
+  it('sends no starter habits for an empty selection', async () => {
+    requestProfileMutation.mockImplementation(async (mutation) => ({
+      profileId: mutation.profile.id,
+    }));
+    const actions = createProfileActions({
+      activeChildId: null,
+      currentUser: {
+        id: 'user-a', app_metadata: {}, user_metadata: {}, aud: 'authenticated',
+        created_at: '2026-09-20T00:00:00.000Z',
+      },
+      experience: emptyExperienceState,
+      familyId: 'family-a',
+      profiles: [],
+      setActiveChildId: vi.fn(),
+      setActivities: vi.fn(),
+      setCloudSyncActive: vi.fn(),
+      setExperience: vi.fn(),
+      setProfiles: vi.fn(),
+      isDemoSession: false,
+      syncCloudFamily: vi.fn(async () => true),
+    });
+
+    await actions.createProfile({ ...baseProfile, ageStage: '3-6' }, '11111111-1111-4111-8111-111111111111', {
+      starterHabits: [],
+    });
+
+    expect(requestProfileMutation.mock.calls[0][0].starterActivities).toEqual([]);
+  });
+
+  it('ignores out-of-range template indexes', async () => {
+    requestProfileMutation.mockImplementation(async (mutation) => ({
+      profileId: mutation.profile.id,
+    }));
+    const actions = createProfileActions({
+      activeChildId: null,
+      currentUser: {
+        id: 'user-a', app_metadata: {}, user_metadata: {}, aud: 'authenticated',
+        created_at: '2026-09-20T00:00:00.000Z',
+      },
+      experience: emptyExperienceState,
+      familyId: 'family-a',
+      profiles: [],
+      setActiveChildId: vi.fn(),
+      setActivities: vi.fn(),
+      setCloudSyncActive: vi.fn(),
+      setExperience: vi.fn(),
+      setProfiles: vi.fn(),
+      isDemoSession: false,
+      syncCloudFamily: vi.fn(async () => true),
+    });
+
+    await actions.createProfile({ ...baseProfile, ageStage: '3-6' }, '11111111-1111-4111-8111-111111111111', {
+      starterHabits: [{ templateIndex: 99, requiresApproval: true }],
+    });
+
+    expect(requestProfileMutation.mock.calls[0][0].starterActivities).toEqual([]);
   });
 
   it('treats a committed profile as saved when the follow-up refresh fails', async () => {
