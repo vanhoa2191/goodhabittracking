@@ -25,7 +25,7 @@ KidHabit Hero 通过每天的小行动帮助家长和儿童培养良好习惯：
 5. [家庭和设置](05-gia-dinh-va-cai-dat.md)：儿童档案、设备配对、照护者、账户、PIN、外观、隐私、提醒、安装应用、数据和休息。
 6. [习惯科学](06-khoa-hoc-thoi-quen.md)：原则、四个阶段、建议逻辑、16 种人物优势和 7 种给予方式。
 7. [计划和付款](07-goi-va-thanh-toan.md)：试用、计划、PayOS、启用、优惠码、退款和电子邮件。
-8. [推荐朋友](08-gioi-thieu-ban-be.md)：推荐码、九折优惠、30% 佣金和提现。
+8. [推荐朋友](08-gioi-thieu-ban-be.md)：推荐码、九折优惠、20% 佣金和提现。
 9. [安全与隐私](09-bao-mat-va-rieng-tu.md)：PIN、配对码、同意、儿童数据和数据删除。
 10. [管理与运营](10-quan-tri-va-van-hanh.md)：管理页面、角色、客服、后台任务和技术文档。
 11. [网站和公开页面](11-website-va-trang-cong-khai.md)：落地页、博客、框架、路线、科学和法律页面。
@@ -96,7 +96,7 @@ KidHabit Hero 提供两个独立入口，各自有不同网址：
 | 7 天试用 | 家长 | `/start`、价格、设置 | 每个家庭一次 | 开启 | [7](07-goi-va-thanh-toan.md#dung-thu) |
 | 通过 PayOS 使用 VietQR 付款 | 家长 | 价格、`/checkout` | 登录 | 开启 | [7](07-goi-va-thanh-toan.md#thanh-toan) |
 | 礼品码（优惠码） | 家长 | 家庭 → 账户 | 有效代码 | 开启 | [7](07-goi-va-thanh-toan.md#coupon) |
-| 推荐朋友、10% 折扣、30% 佣金 | 家长 | 设置、`?ref=` 链接 | 提现需要 PIN | 开启 | [8](08-gioi-thieu-ban-be.md) |
+| 推荐朋友、10% 折扣、20% 佣金 | 家长 | 设置、`?ref=` 链接 | 提现需要 PIN | 开启 | [8](08-gioi-thieu-ban-be.md) |
 | 生命周期邮件 | 家长 | 收件箱 | 电子邮件配置 | 依配置而定 | [7](07-goi-va-thanh-toan.md#email) |
 | 管理员页面（6 个部分） | 管理员 | `/admin` | 角色和两步验证 | 开启 | [10](10-quan-tri-va-van-hanh.md#admin) |
 

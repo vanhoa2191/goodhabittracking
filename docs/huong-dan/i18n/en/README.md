@@ -25,7 +25,7 @@ KidHabit Hero helps parents and children build good habits through small daily a
 5. [Family and settings](05-gia-dinh-va-cai-dat.md): child profiles, device pairing, caregivers, account, PIN, appearance, privacy, reminders, app installation, data, and taking a break.
 6. [Habit science](06-khoa-hoc-thoi-quen.md): principles, the four phases, suggestion logic, 16 character profiles, and 7 ways of giving.
 7. [Plans and payment](07-goi-va-thanh-toan.md): trials, plans, PayOS, activation, coupons, refunds, and email.
-8. [Refer a friend](08-gioi-thieu-ban-be.md): referral codes, 10% discounts, 30% commissions, and withdrawals.
+8. [Refer a friend](08-gioi-thieu-ban-be.md): referral codes, 10% discounts, 20% commissions, and withdrawals.
 9. [Security and privacy](09-bao-mat-va-rieng-tu.md): PINs, pairing codes, consent, children’s data, and data deletion.
 10. [Administration and operations](10-quan-tri-va-van-hanh.md): the admin page, roles, customer support, background tasks, and technical documentation.
 11. [Website and public pages](11-website-va-trang-cong-khai.md): the landing page, blog, framework, roadmap, science, and legal pages.
@@ -96,7 +96,7 @@ The “Status” column shows whether a feature is enabled for all users (**On**
 | 7-day trial | Parents | `/start`, pricing, setup | Once per family | On | [7](07-goi-va-thanh-toan.md#dung-thu) |
 | VietQR payment through PayOS | Parents | Pricing, `/checkout` | Sign-in | On | [7](07-goi-va-thanh-toan.md#thanh-toan) |
 | Gift code (coupon) | Parents | Family → Account | A valid code | On | [7](07-goi-va-thanh-toan.md#coupon) |
-| Refer a friend, 10% discount, 30% commission | Parents | Settings, `?ref=` link | PIN required to withdraw money | On | [8](08-gioi-thieu-ban-be.md) |
+| Refer a friend, 10% discount, 20% commission | Parents | Settings, `?ref=` link | PIN required to withdraw money | On | [8](08-gioi-thieu-ban-be.md) |
 | Lifecycle email | Parents | Inbox | Email configuration | According to configuration | [7](07-goi-va-thanh-toan.md#email) |
 | Admin page (6 sections) | Administrators | `/admin` | Role and two-step verification | On | [10](10-quan-tri-va-van-hanh.md#admin) |
 

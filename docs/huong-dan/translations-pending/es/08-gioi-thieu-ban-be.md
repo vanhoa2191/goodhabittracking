@@ -13,8 +13,8 @@ El programa tiene dos partes, conectadas mediante un **código de recomendación
 
 | Parte | Qué obtiene |
 |---|---|
-| **Persona que recomienda** (padre o madre que usa KidHabit) | **Comisión del 30%** sobre el importe que paga realmente la familia recomendada |
-| **Familia recomendada** | **10% de descuento** en la primera compra del plan anual (399,000 VND pasa a 359,100 VND) |
+| **Persona que recomienda** (padre o madre que usa KidHabit) | **Comisión del 20%** sobre el importe que paga realmente la familia recomendada en cada pedido de plan anual o de por vida. Los planes mensuales no generan comisión. |
+| **Familia recomendada** | **10% de descuento** en la primera compra del plan anual (399,000 VND pasa a 359,000 VND, ahorra 40,000 VND) |
 
 Condiciones públicas: página `/gioi-thieu/` del [sitio web](11-website-va-trang-cong-khai.md#trang-chinh). <!--op-->Reglas técnicas y operativas: [Programa de recomendaciones](../affiliate-program.md).<!--/op-->
 
@@ -25,14 +25,14 @@ Condiciones públicas: página `/gioi-thieu/` del [sitio web](11-website-va-tran
 2. Copie o **comparta** «Su enlace de recomendación». Puede enviar el código como enlace o comunicárselo a su amigo para que lo introduzca manualmente.
 3. Consulte el número de familias registradas y que pagaron y las comisiones agregadas retenidas, disponibles, solicitadas y abonadas.
 
-Sin autorrecomendaciones ni spam. Solo ves cantidades y comisiones agregadas, no historiales individuales ni datos de las familias.
+Sin autorrecomendaciones ni spam. Solo ves cantidades y comisiones agregadas, no historiales individuales ni datos de las familias. El nombre visible de la persona que recomienda se muestra a la familia recomendada en el pago.
 
 <a id="giam-10"></a>
 ## Para las familias recomendadas
 
 - Abra el enlace `?ref=` de su amigo, inicie sesión y configure su familia como de costumbre; también puede **introducir el código manualmente** en el campo «¿Tiene un código de recomendación de un amigo?» (en `Settings` o directamente en la ventana de pago).
 - La recomendación queda registrada y verá «Obtiene un 10% de descuento en su primer plan anual».
-- Al pagar por primera vez el **Plan anual**, la pantalla de pago muestra el precio con descuento y la línea «10% de descuento con su código de recomendación». No hay descuento para el Plan familiar · Mensual ni para el plan De por vida.
+- Al pagar por primera vez el **Plan anual**, la pantalla de pago muestra el precio con descuento y: Ahorras X gracias a la recomendación de <nombre visible de la persona que recomienda>. No hay descuento para el Plan familiar · Mensual ni para el plan De por vida.
 - Cada cuenta de usuario solo puede registrarse como recomendada una vez, en los 60 días desde su creación y antes de cualquier pedido pagado. Eliminar o recrear una familia no reinicia los requisitos ni el plazo de 12 meses. No uses tu propio código.
 
 <a id="ghi-nhan"></a>
@@ -48,7 +48,7 @@ El resultado aparece de inmediato: registrado; código no válido; no puede usar
 <a id="hoa-hong"></a>
 ## Comisiones
 
-- 30% del importe realmente pagado en cada pago durante los primeros 12 meses desde la creación de la cuenta de usuario recomendada, no de la familia. Por ejemplo, el pago con descuento de un Plan anual de 359,100 VND genera una comisión de 107,730 VND.
+- 20% del importe realmente pagado en cada pedido de plan anual o de por vida durante los primeros 12 meses desde la creación de la cuenta de usuario recomendada, no de la familia. Los planes mensuales no generan comisión. Por ejemplo, el pago con descuento de un Plan anual de 359,000 VND genera una comisión de 71,800 VND.
 - Las nuevas comisiones se retienen 40 días desde el pago exitoso para cubrir el plazo de reembolso de 30 días y la gestión; las fechas de liberación existentes no cambian. Permanecen congeladas mientras el pedido tenga un caso de reembolso o soporte de facturación abierto. Un pedido reembolsado pierde su comisión; si ya se abonó, contactamos con quien recomendó para acordar la devolución.
 - El sistema crea la comisión automáticamente cuando se completa el pedido ([activación del plan](07-goi-va-thanh-toan.md#kich-hoat)); un error en este paso nunca impide que se active el plan del cliente.
 

@@ -55,7 +55,7 @@ export const HELP_TOPICS_DE: HelpTranslationTable<HelpText> = {
   'settings.account': { title: 'Kundendaten', text: 'Name und Telefonnummer für Konto- und Zahlungshilfe. Angebote jederzeit ein- oder ausschalten.' },
   'settings.coupon': { title: 'Geschenkcode', text: 'Geschenkcode eingeben, um Nutzungstage hinzuzufügen. Jeder Code kann pro Familie nur einmal eingelöst werden; zu viele falsche Versuche sperren ihn einige Minuten.' },
   'settings.referralCode': { title: 'Empfehlungscode', text: '8-stelligen Code eines Freundes eingeben für 10 % Rabatt auf den ersten Jahrestarif. Nur für neue, noch nicht zahlende Familien.' },
-  'settings.affiliate': { title: 'Freunde empfehlen', text: 'Link teilen und 30 % Provision erhalten, wenn eine neue Familie bezahlt. Neue Provisionen werden ab erfolgreicher Zahlung 40 Tage zurückgehalten; offene Erstattungs- oder Abrechnungsfälle sperren sie weiterhin. Die Mindestauszahlung beträgt 200.000 VND und erfordert Ihre PIN.' },
+  'settings.affiliate': { title: 'Freunde empfehlen', text: 'Teile deinen Link und erhalte 20 % des gezahlten Betrags für jede Jahres- oder Lifetime-Bestellung, die eine neue Familie in ihren ersten 12 Monaten macht. Monatstarife bringen keine Provision. Provisionen werden 40 Tage gehalten; Mindestauszahlung 200.000 VND, PIN nötig.' },
   'settings.familyData': { title: 'Familiendaten', text: 'Laden Sie eine JSON-Kopie der Familiendaten herunter. Sie enthält weder PIN noch Zahlungsdaten, aber Daten Ihrer Kinder. Bewahren Sie die Datei daher privat auf.' },
   'settings.leaderboardSharing': { title: 'Rangliste teilen', text: 'Familienweiter Schalter, standardmäßig aus. Aktiviert: Nur im Profil ausgewählte Kinder erscheinen unter Spitznamen, ohne echten Namen oder Alter.' },
   'settings.analytics': { title: 'Anonyme Messung', text: 'Allgemeine Messung ohne Namen oder Inhalte. Noch keine Datensammelstelle, daher verlässt nichts das Gerät. Standardmäßig aus.' },
@@ -63,7 +63,7 @@ export const HELP_TOPICS_DE: HelpTranslationTable<HelpText> = {
   'settings.theme': { title: 'Darstellung', text: 'Hell, dunkel oder wie auf dem Gerät.' },
   'settings.pin': { title: 'PIN', text: 'Vier Ziffern zum Schutz des Elternbereichs. Nach korrekter Eingabe bleibt dieser Browser 2 Stunden entsperrt. Nötig zum Genehmigen, Gerätewiderruf, Bezahlen, Löschen und Auszahlen von Empfehlungsprovisionen. Niemals mit dem Kind teilen.' },
 
-  'payment.plans': { title: 'Tarife', text: 'Basis-Paket: 39.000 VND/Monat oder 399.000 VND/Jahr (1 Kind). Pro-Paket: 59.000 VND/Monat oder 590.000 VND/Jahr (bis zu 5 Kinderprofile). Pro-Plus-Paket: demnächst verfügbar. Einmalzahlung, keine automatische Verlängerung.' },
+  'payment.plans': { title: 'Tarife', text: 'Basis-Paket: 49.000 VND/Monat oder 399.000 VND/Jahr (1 Kind). Pro-Paket: 69.000 VND/Monat oder 590.000 VND/Jahr (bis zu 5 Kinderprofile). Pro-Plus-Paket: demnächst verfügbar. Einmalzahlung, keine automatische Verlängerung.' },
   'payment.trial': { title: '7-Tage-Test', text: 'Kostenlos, ohne Karte und automatische Abbuchung. Einmal pro Familie.' },
   'payment.memo': { title: 'Verwendungszweck', text: 'Betrag und Verwendungszweck exakt übernehmen, damit das System die Zahlung erkennt. Einträge kopieren oder QR-Code herunterladen.' },
   'payment.activation': { title: 'Tarif-Freischaltung', text: 'Nach der Zahlungsbestätigung wird der Tarif meist innerhalb weniger Sekunden freigeschaltet. Falls nicht, warten Sie einige Minuten, öffnen Sie die App erneut und kontaktieren Sie den Support mit dem Bestellcode.' },

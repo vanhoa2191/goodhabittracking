@@ -13,8 +13,8 @@ Il programma ha due parti, collegate da un **codice invito di 8 caratteri** asso
 
 | Parte | Vantaggio |
 |---|---|
-| **Chi invita** (un genitore che usa KidHabit) | **Commissione del 30%** sull'importo effettivamente pagato dalla famiglia invitata |
-| **Famiglia invitata** | **Sconto del 10%** sul primo acquisto del piano annuale (399,000 VND diventano 359,100 VND) |
+| **Chi invita** (un genitore che usa KidHabit) | **Commissione del 20%** sull'importo effettivamente pagato per ciascun ordine di un piano annuale o a vita della famiglia invitata. I piani mensili non generano commissioni. |
+| **Famiglia invitata** | **Sconto del 10%** sul primo acquisto del piano annuale (399,000 VND diventano 359,000 VND, sconto di 40,000 VND) |
 
 Condizioni pubbliche: la pagina `/gioi-thieu/` sul [sito web](11-website-va-trang-cong-khai.md#trang-chinh). <!--op-->Regole tecniche e operative: [Programma di inviti](../affiliate-program.md).<!--/op-->
 
@@ -25,14 +25,14 @@ Condizioni pubbliche: la pagina `/gioi-thieu/` sul [sito web](11-website-va-tran
 2. Copi o **condivida** «Your referral link». Può inviare il codice invito come link oppure comunicarlo all'amico, che potrà inserirlo manualmente.
 3. Segua i conteggi delle famiglie registrate e paganti e le commissioni aggregate in attesa, disponibili, richieste e pagate.
 
-Niente auto-inviti o spam. Vedi solo conteggi e commissioni aggregate, non cronologie individuali o dati delle famiglie.
+Niente auto-inviti o spam. Vedi solo conteggi e commissioni aggregate, non cronologie individuali o dati delle famiglie. Il nome visualizzato di chi invita viene mostrato alla famiglia invitata al momento del pagamento.
 
 <a id="giam-10"></a>
 ## Per le famiglie invitate
 
 - Apra il link dell'amico con `?ref=`, poi acceda e configuri la famiglia come di consueto; in alternativa, **inserisca il codice manualmente** nel campo «Have a referral code from a friend?» (in `Settings` o direttamente nella finestra di pagamento).
 - L'invito viene registrato e appare il messaggio «You get 10% off your first yearly plan».
-- Al primo pagamento del **piano annuale**, la pagina di pagamento mostra il prezzo scontato e la dicitura «10% off with your referral code». I piani Family · Mensile e a vita non hanno sconti.
+- Al primo pagamento del **piano annuale**, la pagina di pagamento mostra il prezzo scontato e: Risparmi X grazie all'invito di <nome visualizzato di chi invita>. I piani Family · Mensile e a vita non hanno sconti.
 - Ogni account utente può essere invitato una sola volta, entro 60 giorni dalla creazione e prima di qualsiasi ordine pagato. Eliminare o ricreare una famiglia non azzera i requisiti né la finestra di 12 mesi. Non usare il tuo codice.
 
 <a id="ghi-nhan"></a>
@@ -48,7 +48,7 @@ L'esito appare subito: registrato; codice non valido; non è possibile usare il 
 <a id="hoa-hong"></a>
 ## Commissioni
 
-- 30% dell’importo effettivamente pagato per ogni pagamento nei primi 12 mesi dalla creazione dell’account utente invitato, non della famiglia. Per esempio, un pagamento scontato di 359,100 VND per il piano annuale genera una commissione di 107,730 VND.
+- 20% dell’importo effettivamente pagato per ciascun ordine di un piano annuale o a vita nei primi 12 mesi dalla creazione dell’account utente invitato, non della famiglia. I piani mensili non generano commissioni. Per esempio, un pagamento scontato di 359,000 VND per il piano annuale genera una commissione di 71,800 VND.
 - Le nuove commissioni restano in attesa per 40 giorni dal pagamento riuscito per coprire i 30 giorni per il rimborso e la gestione; le date di sblocco esistenti non cambiano. Restano bloccate se l’ordine ha una pratica di rimborso o assistenza sulla fatturazione aperta. Un ordine rimborsato annulla la commissione; se già pagata, contattiamo chi ha invitato per concordare la restituzione.
 - Il sistema crea automaticamente la commissione quando un ordine va a buon fine ([attivazione del piano](07-goi-va-thanh-toan.md#kich-hoat)); un errore in questo passaggio non impedisce mai l'attivazione del piano del cliente.
 

@@ -13,8 +13,8 @@ Chương trình có hai phía, kết nối với nhau qua một **mã giới thi
 
 | Phía | Được gì |
 |---|---|
-| **Người giới thiệu** (một phụ huynh đang dùng KidHabit) | **Hoa hồng 30%** trên số tiền thực trả của gia đình được giới thiệu |
-| **Gia đình được giới thiệu** | **Giảm 10%** đơn đầu tiên của một trong hai gói năm (Gói Pro · Năm 590.000đ còn 531.000đ; Gói Cơ bản · Năm 399.000đ còn 359.100đ) |
+| **Người giới thiệu** (một phụ huynh đang dùng KidHabit) | **Hoa hồng 20%** trên số tiền thực trả cho mỗi đơn gói Năm hoặc Trọn đời của gia đình được giới thiệu. Gói tháng không sinh hoa hồng. |
+| **Gia đình được giới thiệu** | **Giảm 10%** đơn đầu tiên của một trong hai gói năm (Gói Pro · Năm 590.000đ còn 531.000đ; Gói Cơ bản · Năm 399.000đ còn 359.000đ, giảm 40.000đ) |
 
 Điều khoản công khai: trang `/gioi-thieu/` trên [website](11-website-va-trang-cong-khai.md#trang-chinh). <!--op-->Quy tắc kỹ thuật và vận hành: [Chương trình giới thiệu bạn bè](../affiliate-program.md).<!--/op-->
 
@@ -25,14 +25,14 @@ Chương trình có hai phía, kết nối với nhau qua một **mã giới thi
 2. Sao chép hoặc **Chia sẻ** "Liên kết giới thiệu của bạn". Mã giới thiệu có thể được gửi dưới dạng liên kết hoặc nói miệng để bạn bè nhập tay.
 3. Theo dõi số gia đình đã đăng ký, đã trả tiền và tổng hoa hồng đang giữ, có thể rút, đã yêu cầu rút, đã chuyển.
 
-Không tự giới thiệu, không gửi thư rác. Chỉ thấy số lượng và tổng hoa hồng, không lịch sử hay thông tin từng gia đình.
+Không tự giới thiệu, không gửi thư rác. Chỉ thấy số lượng và tổng hoa hồng, không lịch sử hay thông tin từng gia đình. Tên hiển thị của người giới thiệu hiện cho gia đình được giới thiệu khi thanh toán.
 
 <a id="giam-10"></a>
 ## Cho gia đình được giới thiệu
 
 - Mở liên kết `?ref=` của bạn bè rồi đăng nhập và thiết lập gia đình như bình thường, hoặc **nhập mã tay** ở ô "Có mã giới thiệu từ bạn bè?" (trong `Cài đặt` hoặc ngay trong cửa sổ thanh toán).
 - Gia đình được ghi nhận và nhìn thấy "Bạn được giảm 10% khi mua gói năm lần đầu".
-- Khi thanh toán **gói năm** (Gói Cơ bản hoặc Gói Pro) lần đầu, màn thanh toán hiện giá đã giảm và dòng "Đã giảm 10% nhờ mã giới thiệu". Các gói tháng và gói trọn đời không giảm.
+- Khi thanh toán **gói năm** (Gói Cơ bản hoặc Gói Pro) lần đầu, màn thanh toán hiện giá đã giảm và dòng: Ba/mẹ được giảm X đồng thông qua giới thiệu của <tên hiển thị của người giới thiệu>. Các gói tháng và gói trọn đời không giảm.
 - Mỗi tài khoản người dùng chỉ được ghi nhận một lần, trong 60 ngày từ ngày tạo tài khoản, trước khi có bất kỳ đơn nào đã thanh toán. Xóa hoặc tạo lại gia đình không đặt lại điều kiện hay cửa sổ 12 tháng. Không dùng mã của chính mình.
 
 <a id="ghi-nhan"></a>
@@ -48,7 +48,7 @@ Kết quả hiện ngay: đã ghi nhận; mã không đúng; không thể dùng 
 <a id="hoa-hong"></a>
 ## Hoa hồng
 
-- Hoa hồng 30% trên số tiền thực trả, cho mọi thanh toán trong 12 tháng đầu từ ngày tạo tài khoản người dùng được giới thiệu, không phải ngày tạo gia đình. Ví dụ Gói Pro · Năm đã giảm 531.000đ cho 159.300đ hoa hồng.
+- Hoa hồng 20% trên số tiền thực trả cho mỗi đơn gói Năm hoặc Trọn đời trong 12 tháng đầu từ ngày tạo tài khoản người dùng được giới thiệu, không phải ngày tạo gia đình. Gói tháng không sinh hoa hồng. Ví dụ Gói Pro · Năm đã giảm 531.000đ cho 106.200đ hoa hồng.
 - Hoa hồng mới giữ 40 ngày từ thanh toán thành công để bao phủ hạn hoàn tiền 30 ngày và xử lý; ngày hết hạn giữ cũ không đổi. Đóng băng khi đơn có ca hỗ trợ hoàn tiền/thanh toán còn mở. Đơn hoàn tiền bị thu hồi hoa hồng; nếu đã chi, liên hệ thống nhất hoàn trả.
 - Hệ thống tự sinh hoa hồng khi đơn thành công ([kích hoạt gói](07-goi-va-thanh-toan.md#kich-hoat)); lỗi ở bước này không bao giờ làm hỏng việc kích hoạt gói của khách.
 

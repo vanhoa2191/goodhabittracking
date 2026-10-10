@@ -257,21 +257,22 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
 
   const referral = {
     title: 'Chương trình giới thiệu bạn bè',
-    description: 'Cách chương trình giới thiệu của KidHabit Hero hoạt động: hoa hồng 30% trên mỗi khoản thanh toán của gia đình được giới thiệu, thời gian giữ, cách rút tiền và các quy tắc.',
+    description: 'Hoa hồng 20% số tiền thực trả cho đơn gói Năm hoặc Trọn đời trong 12 tháng từ ngày tạo tài khoản người dùng. Gói tháng không sinh hoa hồng; điều khoản giữ và rút tiền.',
     sections: [
       {
         title: '1. Chương trình là gì',
         blocks: [
-          'Bất kỳ phụ huynh nào có tài khoản KidHabit Hero đều có thể tham gia. Sau khi đồng ý các điều khoản này trong ứng dụng (Cài đặt, mục Giới thiệu bạn bè), bạn nhận một liên kết riêng. Khi một gia đình mới đăng ký qua liên kết đó và trả tiền cho một gói, bạn nhận hoa hồng.',
+          'Bất kỳ phụ huynh nào có tài khoản KidHabit Hero đều có thể tham gia. Sau khi đồng ý các điều khoản này trong ứng dụng (Cài đặt, mục Giới thiệu bạn bè), bạn nhận một liên kết riêng. Khi một gia đình mới đăng ký qua liên kết đó và mua gói Năm hoặc gói Trọn đời, bạn nhận hoa hồng.',
           'Đây là cách cảm ơn người giới thiệu, không phải công việc hay hợp đồng lao động, và KidHabit không cam kết mức thu nhập nào.',
         ],
       },
       {
         title: '2. Hoa hồng bao nhiêu và tính thế nào',
         blocks: [
-          'Hoa hồng là 30% số tiền gia đình được giới thiệu thực trả cho mỗi khoản thanh toán, làm tròn xuống đồng gần nhất, cho mọi thanh toán trong 12 tháng đầu kể từ ngày họ tạo tài khoản. Dùng thử miễn phí không phát sinh hoa hồng.',
+          'Hoa hồng là 20% số tiền gia đình được giới thiệu thực trả cho mỗi đơn gói Năm hoặc Trọn đời, làm tròn xuống đồng gần nhất, trong 12 tháng đầu từ ngày tạo tài khoản người dùng được giới thiệu, không phải ngày tạo gia đình. Gói tháng không sinh hoa hồng. Dùng thử miễn phí không phát sinh hoa hồng.',
           'Đơn hàng sinh hoa hồng phải thuộc gia đình do người được giới thiệu sở hữu, dù phụ huynh hoặc người giám hộ nào trong gia đình thanh toán. Thanh toán cho gia đình mà người được giới thiệu không sở hữu không sinh hoa hồng.',
           'Gia đình được giới thiệu (bằng liên kết hoặc nhập mã trong ứng dụng) được giảm 10% khi mua một trong hai gói năm (Gói Cơ bản hoặc Gói Pro) lần đầu. Hoa hồng của bạn tính trên số tiền họ thực trả sau khi giảm.',
+          'Tên hiển thị của bạn sẽ hiện cho gia đình được giới thiệu khi họ thanh toán.',
           'Việc ghi nhận chỉ áp dụng trong 60 ngày kể từ ngày người được giới thiệu (chủ gia đình) tạo tài khoản người dùng, trước khi các gia đình do tài khoản đó sở hữu có đơn đã thanh toán. Mỗi tài khoản chủ gia đình chỉ gắn với một người giới thiệu; xóa hoặc tạo lại gia đình không đặt lại điều kiện hay thời hạn. Nếu có nhiều liên kết, liên kết được dùng sau cùng trước khi ghi nhận được tính.',
           'Tỉ lệ, thời hạn ghi nhận, thời hạn hưởng và mức rút tối thiểu có thể thay đổi cho các gia đình đăng ký sau thời điểm thay đổi; thay đổi được thông báo trên trang này.',
         ],
@@ -312,7 +313,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
       {
         title: '7. Quyền riêng tư',
         blocks: [
-          'Bạn chỉ thấy số lượng gia đình đã đăng ký, số đã trả tiền và tổng tiền hoa hồng theo nhóm trạng thái. Không có lịch sử từng khoản hoa hồng hay thông tin từng gia đình: tên, email, mã gia đình, gói mua, thời điểm thanh toán hoặc trạng thái hoàn tiền. Gia đình được giới thiệu cũng không thấy thông tin của bạn.',
+          'Bạn chỉ thấy số lượng gia đình đã đăng ký, số đã trả tiền và tổng tiền hoa hồng theo nhóm trạng thái. Không có lịch sử từng khoản hoa hồng hay thông tin từng gia đình: tên, email, mã gia đình, gói mua, thời điểm thanh toán hoặc trạng thái hoàn tiền. Gia đình được giới thiệu chỉ thấy tên hiển thị của bạn khi thanh toán, không thấy email, tài khoản, thu nhập hay thông tin khác của bạn.',
           'Để ghi nhận người giới thiệu, trình duyệt của người truy cập lưu mã giới thiệu trong cookie kidhabit_ref tối đa 60 ngày; cookie bị xóa ngay khi việc ghi nhận hoàn tất. Thông tin ngân hàng của bạn chỉ dùng để chuyển hoa hồng và chỉ nhân viên được phân quyền xem.',
         ],
       },
@@ -320,7 +321,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         title: '8. Thay đổi hoặc chấm dứt chương trình',
         blocks: [
           'KidHabit có thể thay đổi hoặc chấm dứt chương trình. Hoa hồng hợp lệ đã ghi nhận trước thời điểm thay đổi vẫn được xử lý theo các điều kiện áp dụng lúc đó.',
-          'Phiên bản điều khoản ngày 09/10/2026: người giới thiệu đã tham gia cần đọc và đồng ý lại trong ứng dụng trước khi tiếp tục chia sẻ liên kết hoặc yêu cầu rút tiền.',
+          'Phiên bản điều khoản ngày 10/10/2026: người giới thiệu đã tham gia cần đọc và đồng ý lại trong ứng dụng trước khi tiếp tục chia sẻ liên kết hoặc yêu cầu rút tiền.',
         ],
       },
       {

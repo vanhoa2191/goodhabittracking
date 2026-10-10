@@ -37,7 +37,7 @@ flowchart TD
   ST --> LB[Bảng xếp hạng<br/>2, 9]
   C --> LB
   F[Giới thiệu bạn bè<br/>8] -->|"mã, giảm 10%"| P
-  P -->|hoa hồng 30%| F
+  P -->|hoa hồng 20%| F
   AD[Quản trị<br/>10] -. "hỗ trợ" .-> P
   AD -. "chi trả" .-> F
   CG[Người chăm sóc<br/>5] -->|chỉ xem| ST

@@ -22,9 +22,9 @@
 | Plan | Price | Children | Best for |
 |---|---|---|---|
 | **7-Day Free Trial** | 0 VND | Up to 5 (same as Pro) | Trying everything before you decide |
-| **Basic Plan · Monthly** | 39,000 VND / month | 1 child | Families starting with one child |
+| **Basic Plan · Monthly** | 49,000 VND / month | 1 child | Families starting with one child |
 | **Basic Plan · Yearly** | 399,000 VND / year (saves 69,000 VND, 15% compared with paying monthly) | 1 child | One child, paid once for 12 months |
-| **Pro Plan · Monthly** | 59,000 VND / month | Up to 5 children | Families with several children, flexible by the month |
+| **Pro Plan · Monthly** | 69,000 VND / month | Up to 5 children | Families with several children, flexible by the month |
 | **Pro Plan · Yearly** | 590,000 VND / year (saves 118,000 VND, 17% compared with paying monthly) | Up to 5 children | Staying with it long enough for small steps to become habits |
 | **Lifetime** | Not sold | Unlimited | Granted manually by an administrator only<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
@@ -90,7 +90,7 @@ Gift codes are created by the operations team. Enter one in `Settings → Accoun
 <a id="giam-gia"></a>
 ## Discount for referred families
 
-A family that enters a referral code (through a `?ref=` link or by entering it manually) gets **10% off its first order of either yearly plan**: Pro Plan · Yearly 590,000 VND becomes 531,000 VND, and Basic Plan · Yearly 399,000 VND becomes 359,100 VND; only if the family has no previously paid order. The payment screen shows “10% off thanks to the referral code.” Details: [8. Referrals](08-gioi-thieu-ban-be.md#giam-10).
+A family that enters a referral code (through a `?ref=` link or by entering it manually) gets **10% off its first order of either yearly plan**: Pro Plan · Yearly 590,000 VND becomes 531,000 VND, and Basic Plan · Yearly 399,000 VND becomes 359,000 VND (saves 40,000 VND); only if the family has no previously paid order. The payment screen shows: You save X thanks to a referral from <referrer display name>. Details: [8. Referrals](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Refunds and cancellation

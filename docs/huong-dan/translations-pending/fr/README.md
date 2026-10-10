@@ -25,7 +25,7 @@ KidHabit Hero aide les parents et les enfants à développer de bonnes habitudes
 5. [Famille et paramètres](05-gia-dinh-va-cai-dat.md) : profils des enfants, association des appareils, aidants, compte, code PIN, apparence, confidentialité, rappels, installation, données et pause.
 6. [Science des habitudes](06-khoa-hoc-thoi-quen.md) : principes, quatre phases, logique de suggestion, 16 forces de caractère et 7 façons de donner.
 7. [Forfaits et paiement](07-goi-va-thanh-toan.md) : essais, forfaits, PayOS, activation, codes promotionnels, remboursements et courriels.
-8. [Parrainer un proche](08-gioi-thieu-ban-be.md) : codes de parrainage, réductions de 10 %, commissions de 30 % et retraits.
+8. [Parrainer un proche](08-gioi-thieu-ban-be.md) : codes de parrainage, réductions de 10 %, commissions de 20 % et retraits.
 9. [Sécurité et confidentialité](09-bao-mat-va-rieng-tu.md) : codes PIN et d’association, consentement, données des enfants et suppression des données.
 10. [Administration et opérations](10-quan-tri-va-van-hanh.md) : page d’administration, rôles, assistance, tâches en arrière-plan et documentation technique.
 11. [Site web et pages publiques](11-website-va-trang-cong-khai.md) : page d’accueil, blog, cadre, parcours, science et pages juridiques.
@@ -96,7 +96,7 @@ La colonne « État » indique si une fonctionnalité est activée pour tous les
 | Essai de 7 jours | Parents | `/start`, tarifs, configuration | Une fois par famille | Activée | [7](07-goi-va-thanh-toan.md#dung-thu) |
 | Paiement VietQR par PayOS | Parents | Tarifs, `/checkout` | Connexion requise | Activée | [7](07-goi-va-thanh-toan.md#thanh-toan) |
 | Code cadeau (coupon) | Parents | Famille → Compte | Code valide | Activée | [7](07-goi-va-thanh-toan.md#coupon) |
-| Parrainage, réduction de 10 %, commission de 30 % | Parents | Paramètres, lien `?ref=` | Code PIN requis pour retirer de l’argent | Activée | [8](08-gioi-thieu-ban-be.md) |
+| Parrainage, réduction de 10 %, commission de 20 % | Parents | Paramètres, lien `?ref=` | Code PIN requis pour retirer de l’argent | Activée | [8](08-gioi-thieu-ban-be.md) |
 | Courriels liés au cycle de vie | Parents | Boîte de réception | Configuration du courriel | Selon la configuration | [7](07-goi-va-thanh-toan.md#email) |
 | Page d’administration (6 sections) | Administrateurs | `/admin` | Rôle et vérification en deux étapes | Activée | [10](10-quan-tri-va-van-hanh.md#admin) |
 

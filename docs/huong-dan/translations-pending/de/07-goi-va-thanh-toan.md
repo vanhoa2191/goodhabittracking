@@ -85,7 +85,7 @@ Geschenkcodes werden vom Betriebsteam erstellt. Geben Sie einen unter `Settings 
 <a id="giam-gia"></a>
 ## Rabatt für geworbene Familien
 
-Eine Familie, die einen Empfehlungscode über einen `?ref=`-Link oder manuell eingibt, erhält **10 % Rabatt auf den ersten Jahrestarif** (399,000 VND werden zu 359,100 VND), sofern für die Familie noch keine bezahlte Bestellung vorliegt. Auf dem Zahlungsbildschirm steht „10 % Rabatt dank Empfehlungscode“. Details: [8. Empfehlungen](08-gioi-thieu-ban-be.md#giam-10).
+Eine Familie, die einen Empfehlungscode über einen `?ref=`-Link oder manuell eingibt, erhält **10 % Rabatt auf den ersten Jahrestarif** (399,000 VND werden zu 359,000 VND, 40,000 VND Ersparnis), sofern für die Familie noch keine bezahlte Bestellung vorliegt. Auf dem Zahlungsbildschirm steht: Du sparst X dank der Empfehlung von <Anzeigename der werbenden Person>. Details: [8. Empfehlungen](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Rückerstattung und Kündigung

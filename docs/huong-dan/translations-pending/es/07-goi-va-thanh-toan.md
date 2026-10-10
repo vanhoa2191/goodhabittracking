@@ -85,7 +85,7 @@ El equipo de operaciones crea los códigos de regalo. Introduzca uno en `Setting
 <a id="giam-gia"></a>
 ## Descuento para familias recomendadas
 
-Una familia que introduce un código de recomendación (mediante un enlace `?ref=` o escribiéndolo) obtiene **un 10% de descuento en su primer plan anual** (399,000 VND pasa a 359,100 VND), solo si no tiene pedidos pagados anteriores. La pantalla de pago muestra «10% de descuento gracias al código de recomendación». Detalles: [8. Recomendaciones](08-gioi-thieu-ban-be.md#giam-10).
+Una familia que introduce un código de recomendación (mediante un enlace `?ref=` o escribiéndolo) obtiene **un 10% de descuento en su primer plan anual** (399,000 VND pasa a 359,000 VND, ahorra 40,000 VND), solo si no tiene pedidos pagados anteriores. La pantalla de pago muestra: Ahorras X gracias a la recomendación de <nombre visible de la persona que recomienda>. Detalles: [8. Recomendaciones](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Reembolsos y cancelación

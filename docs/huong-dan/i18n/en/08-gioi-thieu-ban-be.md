@@ -13,8 +13,8 @@ The programme has two sides, connected by an **8-character referral code** attac
 
 | Side | What they get |
 |---|---|
-| **Referrer** (a parent using KidHabit) | **30% commission** on the amount the referred family actually pays |
-| **Referred family** | **10% off** their first order of either yearly plan (Pro Plan · Yearly 590,000 VND becomes 531,000 VND; Basic Plan · Yearly 399,000 VND becomes 359,100 VND) |
+| **Referrer** (a parent using KidHabit) | **20% commission** on the amount the referred family actually pays on each yearly or lifetime order. Monthly plans earn no commission. |
+| **Referred family** | **10% off** their first order of either yearly plan (Pro Plan · Yearly 590,000 VND becomes 531,000 VND; Basic Plan · Yearly 399,000 VND becomes 359,000 VND, saves 40,000 VND) |
 
 Public terms: the `/gioi-thieu/` page on the [website](11-website-va-trang-cong-khai.md#trang-chinh). <!--op-->Technical and operational rules: [Referral programme](../affiliate-program.md).<!--/op-->
 
@@ -25,14 +25,14 @@ Public terms: the `/gioi-thieu/` page on the [website](11-website-va-trang-cong-
 2. Copy or **Share** "Your referral link". You can send the referral code as a link or tell your friend the code so they can enter it manually.
 3. Track counts of families signed up and paying, and aggregate commissions held, available, requested and paid out.
 
-No self-referrals or spam. You see counts and aggregate commissions only, not individual history or family details.
+No self-referrals or spam. You see counts and aggregate commissions only, not individual history or family details. The referrer's display name is shown to the referred family at checkout.
 
 <a id="giam-10"></a>
 ## For referred families
 
 - Open your friend's `?ref=` link, then sign in and set up your family as usual, or **enter the code manually** in the "Have a referral code from a friend?" field (in `Settings` or directly in the checkout window).
 - The referral is recorded, and you see "You get 10% off your first yearly plan".
-- When you pay for a **yearly plan** (Basic or Pro) for the first time, the checkout shows the discounted price and the line "10% off with your referral code". The monthly and Lifetime plans are not discounted.
+- When you pay for a **yearly plan** (Basic or Pro) for the first time, the checkout shows the discounted price and: You save X thanks to a referral from <referrer display name>. The monthly and Lifetime plans are not discounted.
 - Each user account can be referred only once, within 60 days of account creation and before any paid order. Deleting or recreating a family does not reset eligibility or the 12-month window. Do not use your own code.
 
 <a id="ghi-nhan"></a>
@@ -48,7 +48,7 @@ The result appears immediately: recorded; code is invalid; you cannot use your o
 <a id="hoa-hong"></a>
 ## Commissions
 
-- 30% of the amount actually paid on every payment in the first 12 months from creation of the referred user account, not the family. For example, a discounted Pro Plan · Yearly payment of 531,000 VND earns 159,300 VND in commission.
+- 20% of the amount actually paid on each yearly or lifetime order in the first 12 months from creation of the referred user account, not the family. Monthly plans earn no commission. For example, a discounted Pro Plan · Yearly payment of 531,000 VND earns 106,200 VND in commission.
 - New commissions are held for 40 days from successful payment to cover the 30-day refund window and handling; existing release dates stay unchanged. They remain frozen while that order has an open refund or billing support case. Refunded orders lose their commission; if already paid out, we contact the referrer to agree repayment.
 - The system creates the commission automatically when an order succeeds ([plan activation](07-goi-va-thanh-toan.md#kich-hoat)); an error at this step never prevents the customer's plan from being activated.
 

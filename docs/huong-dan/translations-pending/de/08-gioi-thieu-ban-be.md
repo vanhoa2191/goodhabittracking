@@ -13,8 +13,8 @@ Das Programm hat zwei Seiten, die über einen **8-stelligen Empfehlungscode** im
 
 | Seite | Was sie erhält |
 |---|---|
-| **Werbende Person** (Elternteil mit KidHabit) | **30 % Provision** auf den Betrag, den die geworbene Familie tatsächlich bezahlt |
-| **Geworbene Familie** | **10 % Rabatt** auf den ersten Kauf des Jahrestarifs (399,000 VND werden zu 359,100 VND) |
+| **Werbende Person** (Elternteil mit KidHabit) | **20 % Provision** auf den tatsächlich gezahlten Betrag für jede Bestellung des Jahres- oder Lifetime-Tarifs der geworbenen Familie. Monatliche Tarife erhalten keine Provision. |
+| **Geworbene Familie** | **10 % Rabatt** auf den ersten Kauf des Jahrestarifs (399,000 VND werden zu 359,000 VND, 40,000 VND Ersparnis) |
 
 Öffentliche Bedingungen: Seite `/gioi-thieu/` auf der [Website](11-website-va-trang-cong-khai.md#trang-chinh). <!--op-->Technische und betriebliche Regeln: [Empfehlungsprogramm](../affiliate-program.md).<!--/op-->
 
@@ -25,14 +25,14 @@ Das Programm hat zwei Seiten, die über einen **8-stelligen Empfehlungscode** im
 2. Kopieren oder **Teilen** Sie „Ihren Empfehlungslink“. Sie können den Empfehlungscode als Link senden oder Ihrer Freundin bzw. Ihrem Freund den Code nennen, damit die Person ihn manuell eingibt.
 3. Verfolge die Anzahl angemeldeter und zahlender Familien sowie die zusammengefassten zurückgehaltenen, verfügbaren, angeforderten und ausgezahlten Provisionen.
 
-Keine Selbstempfehlungen und kein Spam. Du siehst nur Anzahlen und zusammengefasste Provisionen, keine Einzelhistorie oder Familiendaten.
+Keine Selbstempfehlungen und kein Spam. Du siehst nur Anzahlen und zusammengefasste Provisionen, keine Einzelhistorie oder Familiendaten. Der Anzeigename der werbenden Person wird der geworbenen Familie beim Bezahlen angezeigt.
 
 <a id="giam-10"></a>
 ## Für geworbene Familien
 
 - Öffnen Sie den `?ref=`-Link Ihrer Freundin oder Ihres Freundes und melden Sie sich an; richten Sie Ihre Familie wie gewohnt ein. Alternativ können Sie den Code **manuell eingeben**. Das Feld „Haben Sie einen Empfehlungscode von einer Freundin oder einem Freund?“ finden Sie in den `Settings` oder direkt im Bezahlfenster.
 - Die Empfehlung wird erfasst und Sie sehen „Sie erhalten 10 % Rabatt auf Ihren ersten Jahrestarif“.
-- Beim ersten Bezahlen des **Jahrestarifs** wird im Bezahlvorgang der reduzierte Preis und die Zeile „10 % Rabatt mit Ihrem Empfehlungscode“ angezeigt. Für die Tarife Family · Monatlich und Lifetime gibt es keinen Rabatt.
+- Beim ersten Bezahlen des **Jahrestarifs** wird im Bezahlvorgang der reduzierte Preis und: Du sparst X dank der Empfehlung von <Anzeigename der werbenden Person> angezeigt. Für die Tarife Family · Monatlich und Lifetime gibt es keinen Rabatt.
 - Jedes Benutzerkonto kann nur einmal geworben werden, innerhalb von 60 Tagen ab Kontoerstellung und vor jeder bezahlten Bestellung. Löschen oder Neuerstellen einer Familie setzt weder die Berechtigung noch das 12-Monats-Fenster zurück. Verwende nicht deinen eigenen Code.
 
 <a id="ghi-nhan"></a>
@@ -48,7 +48,7 @@ Das Ergebnis wird sofort angezeigt: erfasst; Code ungültig; eigener Code kann n
 <a id="hoa-hong"></a>
 ## Provisionen
 
-- 30 % des tatsächlich gezahlten Betrags für jede Zahlung in den ersten 12 Monaten ab Erstellung des geworbenen Benutzerkontos, nicht der Familie. Beispiel: Für eine Zahlung von 359,100 VND für den rabattierten Jahrestarif beträgt die Provision 107,730 VND.
+- 20 % des tatsächlich gezahlten Betrags für jede Bestellung des Jahres- oder Lifetime-Tarifs in den ersten 12 Monaten ab Erstellung des geworbenen Benutzerkontos, nicht der Familie. Monatliche Tarife erhalten keine Provision. Beispiel: Für eine Zahlung von 359,000 VND für den rabattierten Jahrestarif beträgt die Provision 71,800 VND.
 - Neue Provisionen werden ab erfolgreicher Zahlung 40 Tage zurückgehalten, um die 30-tägige Erstattungsfrist und Bearbeitung abzudecken; bestehende Freigabedaten bleiben unverändert. Bei einem offenen Erstattungs- oder Abrechnungssupportfall zur Bestellung bleiben sie gesperrt. Erstattete Bestellungen verlieren ihre Provision; nach Auszahlung kontaktieren wir die werbende Person, um die Rückzahlung zu vereinbaren.
 - Das System erstellt die Provision automatisch, sobald eine Bestellung erfolgreich ist ([Tarifaktivierung](07-goi-va-thanh-toan.md#kich-hoat)). Ein Fehler in diesem Schritt verhindert niemals die Aktivierung des Tarifs für die Kundschaft.
 

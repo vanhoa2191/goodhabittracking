@@ -25,7 +25,7 @@ KidHabit Hero unterstützt Eltern und Kinder dabei, durch kleine tägliche Schri
 5. [Familie und Einstellungen](05-gia-dinh-va-cai-dat.md): Kinderprofile, Gerätekopplung, Betreuungspersonen, Konto, PIN, Erscheinungsbild, Datenschutz, Erinnerungen, App-Installation, Daten und Pausen.
 6. [Gewohnheitswissenschaft](06-khoa-hoc-thoi-quen.md): Grundsätze, vier Phasen, Vorschlagslogik, 16 Persönlichkeitsprofile und 7 Arten des Gebens.
 7. [Tarife und Zahlungen](07-goi-va-thanh-toan.md): Testphasen, Tarife, PayOS, Aktivierung, Gutscheine, Rückerstattungen und E-Mail.
-8. [Freunde werben](08-gioi-thieu-ban-be.md): Empfehlungscodes, 10-%-Rabatte, 30-%-Provisionen und Auszahlungen.
+8. [Freunde werben](08-gioi-thieu-ban-be.md): Empfehlungscodes, 10-%-Rabatte, 20-%-Provisionen und Auszahlungen.
 9. [Sicherheit und Datenschutz](09-bao-mat-va-rieng-tu.md): PINs, Kopplungscodes, Einwilligung, Kinderdaten und Datenlöschung.
 10. [Verwaltung und Betrieb](10-quan-tri-va-van-hanh.md): Admin-Seite, Rollen, Kundendienst, Hintergrundaufgaben und technische Dokumentation.
 11. [Website und öffentliche Seiten](11-website-va-trang-cong-khai.md): Startseite, Blog, Rahmenwerk, Entwicklungsplan, Wissenschaft und rechtliche Seiten.
@@ -96,7 +96,7 @@ Die Spalte „Status“ zeigt, ob eine Funktion für alle Nutzer verfügbar (**E
 | 7-tägige Testphase | Eltern | `/start`, Preise, Einrichtung | Einmal pro Familie | Ein | [7](07-goi-va-thanh-toan.md#dung-thu) |
 | VietQR-Zahlung über PayOS | Eltern | Preise, `/checkout` | Anmeldung | Ein | [7](07-goi-va-thanh-toan.md#thanh-toan) |
 | Gutscheincode | Eltern | Familie → Konto | Gültiger Code | Ein | [7](07-goi-va-thanh-toan.md#coupon) |
-| Freunde werben, 10 % Rabatt, 30 % Provision | Eltern | Einstellungen, `?ref=`-Link | Für Auszahlung ist eine PIN erforderlich | Ein | [8](08-gioi-thieu-ban-be.md) |
+| Freunde werben, 10 % Rabatt, 20 % Provision | Eltern | Einstellungen, `?ref=`-Link | Für Auszahlung ist eine PIN erforderlich | Ein | [8](08-gioi-thieu-ban-be.md) |
 | E-Mails im Kundenlebenszyklus | Eltern | Posteingang | E-Mail-Konfiguration | Gemäß Konfiguration | [7](07-goi-va-thanh-toan.md#email) |
 | Admin-Seite (6 Bereiche) | Administratoren | `/admin` | Rolle und Zwei-Faktor-Authentifizierung | Ein | [10](10-quan-tri-va-van-hanh.md#admin) |
 

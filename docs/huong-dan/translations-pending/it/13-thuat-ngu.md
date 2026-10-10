@@ -25,7 +25,7 @@ Termini usati in tutta la documentazione, in ordine alfabetico, con link agli ap
 | **Associazione del dispositivo** | Collega un dispositivo a un bambino specifico usando un codice o un codice QR | [5](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi) |
 | **Pacchetto per età** | Un insieme di sei attività iniziali caricate con un tocco per la fascia d'età del bambino | [5](05-gia-dinh-va-cai-dat.md#ho-so) |
 | **Fascia di lega** | Bronzo, Argento, Oro o Diamante in base alle stelle totali ottenute | [2](02-man-hinh-be.md#sao-cap-chuoi) |
-| **Commissione** | Il 30% dell'importo effettivamente pagato da una famiglia segnalata | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
+| **Commissione** | Il 20% dell'importo effettivamente pagato per ciascun ordine di un piano annuale o a vita da una famiglia segnalata. I piani mensili non generano commissioni. | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
 | **Oggi** | La prima area per genitori: Approvazioni e statistiche | [3](03-hom-nay-va-duyet-viec.md) |
 | **Distintivo** | Un premio sbloccato al raggiungimento di un traguardo: 5 distintivi di base e 16 distintivi dei profili | [2](02-man-hinh-be.md#huy-hieu) |
 | **Framework delle 47 abitudini** | Un insieme di abitudini per le età da 0 a 18 anni, in 5 fasce e 5 aree | [6](06-khoa-hoc-thoi-quen.md#khung) |

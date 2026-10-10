@@ -22,9 +22,9 @@
 | Gói | Giá | Số bé | Dành cho |
 |---|---|---|---|
 | **Dùng thử 7 ngày** | 0đ | Tối đa 5 bé (như Gói Pro) | Trải nghiệm đầy đủ trước khi quyết định |
-| **Gói Cơ bản · Tháng** | 39.000đ / tháng | 1 bé | Gia đình bắt đầu cùng một bé |
+| **Gói Cơ bản · Tháng** | 49.000đ / tháng | 1 bé | Gia đình bắt đầu cùng một bé |
 | **Gói Cơ bản · Năm** | 399.000đ / năm (tiết kiệm 69.000đ, 15% so với trả theo tháng) | 1 bé | Một bé, thanh toán một lần cho 12 tháng |
-| **Gói Pro · Tháng** | 59.000đ / tháng | Tối đa 5 bé | Gia đình có nhiều bé, linh hoạt theo tháng |
+| **Gói Pro · Tháng** | 69.000đ / tháng | Tối đa 5 bé | Gia đình có nhiều bé, linh hoạt theo tháng |
 | **Gói Pro · Năm** | 590.000đ / năm (tiết kiệm 118.000đ, 17% so với trả theo tháng) | Tối đa 5 bé | Duy trì đủ lâu để việc nhỏ thành nếp |
 | **Trọn đời** | Không bán | Không giới hạn | Chỉ do quản trị viên cấp thủ công<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
@@ -90,7 +90,7 @@ Mã tặng do đội vận hành tạo. Nhập ở `Cài đặt → Tài khoản
 <a id="giam-gia"></a>
 ## Giảm giá cho gia đình được giới thiệu
 
-Gia đình nhập mã giới thiệu (qua liên kết `?ref=` hoặc nhập tay) được **giảm 10% đơn đầu tiên của một trong hai gói năm**: Gói Pro · Năm 590.000đ còn 531.000đ, Gói Cơ bản · Năm 399.000đ còn 359.100đ; chỉ khi gia đình chưa có đơn nào đã trả. Màn thanh toán hiện "Đã giảm 10% nhờ mã giới thiệu". Chi tiết: [8. Giới thiệu bạn bè](08-gioi-thieu-ban-be.md#giam-10).
+Gia đình nhập mã giới thiệu (qua liên kết `?ref=` hoặc nhập tay) được **giảm 10% đơn đầu tiên của một trong hai gói năm**: Gói Pro · Năm 590.000đ còn 531.000đ, Gói Cơ bản · Năm 399.000đ còn 359.000đ (giảm 40.000đ); chỉ khi gia đình chưa có đơn nào đã trả. Màn thanh toán hiện: Ba/mẹ được giảm X đồng thông qua giới thiệu của <tên hiển thị của người giới thiệu>. Chi tiết: [8. Giới thiệu bạn bè](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Hoàn tiền và hủy

@@ -25,7 +25,7 @@ Términos utilizados en toda la documentación, en orden alfabético, con enlace
 | **Vinculación de dispositivo** | Vincula un dispositivo a un niño concreto mediante un código o código QR | [5](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi) |
 | **Paquete según la edad** | Conjunto de seis tareas iniciales que se carga con un toque para el grupo de edad del niño | [5](05-gia-dinh-va-cai-dat.md#ho-so) |
 | **Categoría de liga** | Bronce, Plata, Oro o Diamante según el total de estrellas obtenidas | [2](02-man-hinh-be.md#sao-cap-chuoi) |
-| **Comisión** | 30% del importe real pagado por una familia recomendada | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
+| **Comisión** | 20% del importe real pagado en cada pedido de plan anual o de por vida por una familia recomendada. Los planes mensuales no generan comisión. | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
 | **Hoy** | Primera área para padres: Aprobaciones y Estadísticas | [3](03-hom-nay-va-duyet-viec.md) |
 | **Insignia** | Recompensa que se desbloquea al alcanzar un hito: 5 insignias básicas y 16 insignias de retrato | [2](02-man-hinh-be.md#huy-hieu) |
 | **Marco de 47 hábitos** | Conjunto de hábitos para edades de 0 a 18 años, en 5 etapas y 5 ámbitos | [6](06-khoa-hoc-thoi-quen.md#khung) |

@@ -143,7 +143,7 @@ describe('public content contracts', () => {
     expect(html).toContain(escaped(pricing.COPY[language].renewalTitle));
     expect(pricing.COPY[language].description).toContain('7');
     const market = language === 'vi' ? 'VN' : 'UNAVAILABLE';
-    for (const price of [399000, 468000, 590000, 708000, 790000]) {
+    for (const price of [399000, 588000, 590000, 828000, 790000]) {
       expect(html).toContain(escaped(formatCurrency(price, language, market)));
     }
     const international = render(createElement(PricingContent, { isVietnam: false }), language);
