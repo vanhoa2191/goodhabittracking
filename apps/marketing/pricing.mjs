@@ -7,7 +7,7 @@ export const pricingTiers = Object.freeze({
   solo: {
     name: 'Gói Cơ bản',
     who: 'Cho nhà có một bé',
-    month: { id: 'solo_monthly', amount: 39000 },
+    month: { id: 'solo_monthly', amount: 49000 },
     year: { id: 'solo_yearly', amount: 399000 },
     features: ['1 hồ sơ bé', 'Khung 47 thói quen theo tuổi', 'Nhiệm vụ, sao và phần thưởng', 'Đồng bộ trên nhiều thiết bị', 'Mời người thân cùng theo dõi'],
     purchasable: true,
@@ -15,7 +15,7 @@ export const pricingTiers = Object.freeze({
   pro: {
     name: 'Gói Pro',
     who: 'Cho nhà có tối đa 5 bé',
-    month: { id: 'monthly', amount: 59000 },
+    month: { id: 'monthly', amount: 69000 },
     year: { id: 'yearly', amount: 590000 },
     features: ['Tối đa 5 hồ sơ bé, mỗi bé một lộ trình', 'Mời người thân cùng theo dõi', 'Toàn bộ khung thói quen và lộ trình', 'Theo dõi tiến bộ cả nhà'],
     purchasable: true,
@@ -69,7 +69,7 @@ export function priceView(tier, cycle) {
   };
 }
 
-/** The best yearly saving across the tiers, for the "Năm -17%" toggle. */
+/** The best yearly saving across the tiers, for the "Năm -32%" toggle. */
 export const maxSavingPercent = Math.max(...Object.keys(pricingTiers).map((tier) => priceView(tier, 'year').savingPercent));
 
 /** How much more Pro costs than the one-child plan for the same cycle. */

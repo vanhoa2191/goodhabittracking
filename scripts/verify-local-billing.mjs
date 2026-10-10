@@ -50,11 +50,31 @@ try {
     ${definition(pricing,'claim_launch_offer')}
     ${definition(pricing,'admin_revoke_launch_offer_claim')}
     ${definition(pricing,'process_payos_webhook')}`);
-  for (const name of ['202609300010_affiliate_program','202610010002_affiliate_hardening','202610010003_affiliate_audit_fixes', '202610010004_referral_discount', '202610090010_billing_payment_hardening','202610090020_affiliate_account_privacy_freeze']) await db.exec(load(name));
+  for (const name of ['202609300010_affiliate_program','202610010002_affiliate_hardening','202610010003_affiliate_audit_fixes', '202610010004_referral_discount', '202610090010_billing_payment_hardening','202610090020_affiliate_account_privacy_freeze', '202610100001_money_model_v2']) await db.exec(load(name));
   await db.exec(definition(pricing,'process_payos_webhook'));
   db.client.on('notice', notice => { if (notice.message?.includes(':') || notice.message?.includes('verified')) console.log(notice.message); });
   await db.exec(readFileSync('supabase/preflight/202610090010_billing_payment_hardening.verify.sql','utf8'));
   console.log('PASS: full billing preflight (permissions, refunds, entitlement CAS, discounts and launch revocation)');
+  await db.exec(readFileSync('supabase/preflight/202610100001_money_model_v2.verify.sql', 'utf8'));
+  const referrer = crypto.randomUUID();
+  await db.query('insert into auth.users(id) values ($1)', [referrer]);
+  await db.query("insert into affiliate_accounts(user_id,code,terms_version) values ($1,'MNPRSTUV','2026-10-10')", [referrer]);
+  let priceOrderCode = 710000;
+  for (const [planId, expectedAmount, expectedDiscount] of [
+    ['solo_monthly', 49000, 0], ['monthly', 69000, 0],
+    ['solo_yearly', 359000, 1000], ['yearly', 531000, 1000],
+  ]) {
+    const priceActor = crypto.randomUUID(), priceFamily = crypto.randomUUID();
+    await db.query('insert into auth.users(id) values ($1)', [priceActor]);
+    await db.query('insert into families(id,created_by) values ($1,$2)', [priceFamily, priceActor]);
+    await db.query("insert into family_memberships(family_id,user_id,role) values ($1,$2,'owner')", [priceFamily, priceActor]);
+    await db.query("insert into referrals(referrer_user_id,referred_family_id,referred_user_id,code) values ($1,$2,$3,'MNPRSTUV')", [referrer, priceFamily, priceActor]);
+    const reservation = await db.query("select * from create_family_payment_order($1,$2,$3,$4,now()+interval '15 minutes')", [priceFamily, priceActor, ++priceOrderCode, planId]);
+    assert.equal(reservation.rows[0].amount, expectedAmount, planId);
+    assert.equal(reservation.rows[0].discount_bps, expectedDiscount, planId);
+  }
+  console.log('PASS: Money Model v2 monthly checkout 49000/69000 and first-yearly referral checkout 359000/531000');
+
 
   const actor = crypto.randomUUID(), familyId = crypto.randomUUID();
   await db.query('insert into auth.users(id) values ($1)',[actor]);

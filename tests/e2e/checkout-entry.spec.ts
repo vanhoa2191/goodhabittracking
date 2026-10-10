@@ -13,9 +13,9 @@ test.beforeEach(async ({ page }) => {
 });
 
 for (const [plan, name, price] of [
-  ['solo_monthly', 'Gói Cơ bản · Tháng', '39.000'],
+  ['solo_monthly', 'Gói Cơ bản · Tháng', '49.000'],
   ['solo_yearly', 'Gói Cơ bản · Năm', '399.000'],
-  ['monthly', 'Gói Pro · Tháng', '59.000'],
+  ['monthly', 'Gói Pro · Tháng', '69.000'],
   ['yearly', 'Gói Pro · Năm', '590.000'],
 ]) {
   test(`signed-out ${plan} shows the selected summary and one login action`, async ({ page }) => {

@@ -207,7 +207,7 @@ describe('marketing static artifact', () => {
       const { outputDir } = await buildFixture();
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
       expect(openingTag(html, 'data-pricing-cycle')).toContain('data-pricing-cycle="year"');
-      for (const text of ['Tiết kiệm 69.000đ (15%)', 'Tiết kiệm 118.000đ (17%)', '468.000đ', '399.000đ', '590.000đ', '≈ 33.300đ mỗi tháng', '≈ 49.200đ mỗi tháng', 'Chỉ hơn Gói Cơ bản 191.000đ mỗi năm', 'Chỉ hơn Gói Cơ bản 20.000đ mỗi tháng', '<span class="save">đến -17%</span>']) {
+      for (const text of ['Tiết kiệm 189.000đ (32%)', 'Tiết kiệm 238.000đ (29%)', '588.000đ', '399.000đ', '590.000đ', '≈ 33.300đ mỗi tháng', '≈ 49.200đ mỗi tháng', 'Chỉ hơn Gói Cơ bản 191.000đ mỗi năm', 'Chỉ hơn Gói Cơ bản 20.000đ mỗi tháng', '<span class="save">đến -32%</span>']) {
         expect(html).toContain(text);
       }
       const checkout = new Set(html.match(/href="https:\/\/app\.example\/checkout\?plan=[a-z_]+"/g) ?? []);
@@ -219,8 +219,8 @@ describe('marketing static artifact', () => {
         expect(card.match(/data-cycle="month"/g)?.length).toBeGreaterThanOrEqual(2);
       }
       // Without a script the yearly view is what shows, and it still offers the monthly checkout.
-      expect(html).toMatch(/<a class="month-link" data-cycle="year" href="https:\/\/app\.example\/checkout\?plan=solo_monthly">Hoặc trả theo tháng: 39\.000đ<\/a>/);
-      expect(html).toMatch(/<a class="month-link" data-cycle="year" href="https:\/\/app\.example\/checkout\?plan=monthly">Hoặc trả theo tháng: 59\.000đ<\/a>/);
+      expect(html).toMatch(/<a class="month-link" data-cycle="year" href="https:\/\/app\.example\/checkout\?plan=solo_monthly">Hoặc trả theo tháng: 49\.000đ<\/a>/);
+      expect(html).toMatch(/<a class="month-link" data-cycle="year" href="https:\/\/app\.example\/checkout\?plan=monthly">Hoặc trả theo tháng: 69\.000đ<\/a>/);
       const plus = planCard(html, 'pro_plus');
       expect(plus).toContain('Đang phát triển');
       expect(plus).toContain('<button class="btn btn-soon" type="button" disabled>Sắp ra mắt</button>');
@@ -347,7 +347,7 @@ describe('marketing static artifact', () => {
     const { outputDir } = await buildFixture();
     const page = await readFile(join(outputDir, 'gioi-thieu', 'index.html'), 'utf8');
     expect(page).toContain('href="/gioi-thieu/"');
-    for (const fact of ['30%', '12 tháng', '40 ngày', '200.000', '60 ngày', 'thuế thu nhập cá nhân', 'khấu trừ thuế', 'Không tự giới thiệu', 'mã PIN phụ huynh']) {
+    for (const fact of ['20%', '12 tháng', '40 ngày', '200.000', '60 ngày', 'thuế thu nhập cá nhân', 'khấu trừ thuế', 'Không tự giới thiệu', 'mã PIN phụ huynh']) {
       expect(page).toContain(fact);
     }
     expect(page).not.toContain('35 ngày');
@@ -566,7 +566,7 @@ describe('marketing static artifact', () => {
     expect(match).not.toBeNull();
     const data = JSON.parse(match![1]);
     expect(data['@type']).toBe('SoftwareApplication');
-    expect(data.offers.map((offer: { price: string }) => offer.price)).toEqual(['39000', '399000', '59000', '590000']);
+    expect(data.offers.map((offer: { price: string }) => offer.price)).toEqual(['49000', '399000', '69000', '590000']);
     for (const offer of data.offers) expect(offer.priceCurrency).toBe('VND');
     expect(JSON.stringify(data)).not.toMatch(/aggregateRating|review|family_plus/i);
   });
@@ -608,7 +608,7 @@ describe('marketing static artifact', () => {
     expect(privacy).toContain('<a href="mailto:support@example.com">support@example.com</a>');
     const terms = await readFile(join(outputDir, 'terms', 'index.html'), 'utf8');
     expect(terms).toContain('<h1>Điều khoản sử dụng</h1>');
-    for (const price of ['39.000 VNĐ', '399.000 VNĐ', '59.000 VNĐ', '590.000 VNĐ']) expect(terms).toContain(price);
+    for (const price of ['49.000 VNĐ', '399.000 VNĐ', '69.000 VNĐ', '590.000 VNĐ']) expect(terms).toContain(price);
     expect(terms).not.toContain('29.000 VNĐ');
     expect(terms).toContain('tối đa 5 hồ sơ bé');
     expect(terms).toContain('10 gia đình đầu tiên thanh toán Gói Pro theo năm');

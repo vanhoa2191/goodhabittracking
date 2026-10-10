@@ -4,6 +4,11 @@ import { fileURLToPath } from 'node:url';
 import { createSqlTestDatabase, stopSqlTestServer } from './sql-test-database.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const load = path => readFileSync(`${root}/${path}`, 'utf8');
+const definition = (sql, name) => {
+  const start = sql.indexOf(`create or replace function public.${name}(`);
+  if (start < 0) throw new Error(`Missing fixture function: ${name}`);
+  return sql.slice(start, sql.indexOf('\n$$;', start) + 4);
+};
 let client;
 let database;
 const out = [];
@@ -21,7 +26,7 @@ try {
     create function public.current_family_id() returns uuid language sql stable as $$select nullif(current_setting('test.family_id', true), '')::uuid$$;
     create function public.can_manage_family(target uuid) returns boolean language sql stable as $$select exists(select 1 from public.family_memberships where family_id = target and user_id = auth.uid() and role in ('owner', 'parent', 'guardian'))$$;
     ${cases.slice(cases.indexOf('create table if not exists public.billing_support_cases'), cases.indexOf('create table if not exists public.billing_support_case_events'))}`);
-  for (const name of ['202609300010_affiliate_program', '202610010002_affiliate_hardening', '202610010003_affiliate_audit_fixes']) {
+  for (const name of ['202609300010_affiliate_program', '202610010002_affiliate_hardening', '202610010003_affiliate_audit_fixes', '202610010004_referral_discount']) {
     await client.query(load(`supabase/migrations/${name}.sql`));
   }
   await client.query(`insert into auth.users(id) select ('00000000-0000-0000-0000-' || lpad(n::text,12,'0'))::uuid from generate_series(1,5) n;
@@ -53,6 +58,44 @@ try {
   for (const result of results) if (result.rows?.[0]?.result) out.push(result.rows[0].result);
   await client.query(load('tests/integration/migrations/affiliate-commission-unfreeze.scenarios.sql'));
   out.push('PASS: admin unfreeze permissions, orphan release, refund/open-case refusal and atomic audit');
+  // Keep the historical regressions at their original migration boundary, then advance the fixture.
+  const billing = load('supabase/migrations/202609190003_billing_integrity.sql');
+  const pricing = load('supabase/migrations/202610070001_pricing_tiers_launch_offer.sql');
+  const hardening = load('supabase/migrations/202610090010_billing_payment_hardening.sql');
+  await client.query(billing.slice(billing.indexOf('alter table public.payment_orders'), billing.indexOf('drop policy if exists subscriptions_insert_family')));
+  await client.query("alter table public.payment_orders add column family_owner_user_id uuid references auth.users(id) on delete set null");
+  const discountStart = hardening.indexOf('create or replace function public.referral_discount_bps(target_family uuid, target_user uuid)');
+  const discountEnd = hardening.indexOf('-- The family lock is shared with settlement', discountStart);
+  await client.query(hardening.slice(discountStart, discountEnd));
+  await client.query(pricing.slice(pricing.indexOf('create table public.launch_offers'), pricing.indexOf('create or replace function public.launch_offer_remaining')));
+  await client.query(definition(pricing, 'claim_launch_offer'));
+  await client.query(definition(pricing, 'process_payos_webhook'));
+  // Snapshot actual 30% rows and create a referred owner's 59k pending order before deployment.
+  await client.query(`create temporary table money_model_history as select id, to_jsonb(commission) as original from public.referral_commissions commission;
+    create temporary table money_model_legacy_pending as select gen_random_uuid() as owner_id, gen_random_uuid() as family_id;
+    insert into auth.users(id) select owner_id from money_model_legacy_pending;
+    insert into public.families(id,created_by) select family_id,owner_id from money_model_legacy_pending;
+    insert into public.family_memberships(family_id,user_id,role) select family_id,owner_id,'owner' from money_model_legacy_pending;
+    insert into public.referrals(referrer_user_id,referred_family_id,referred_user_id,code)
+      select '00000000-0000-0000-0000-000000000001',family_id,owner_id,'ABCDEFGH' from money_model_legacy_pending;
+    insert into public.payment_orders(order_code,user_id,family_id,amount,status,plan_id,description)
+      select 101000,owner_id,family_id,59000,'PENDING','monthly','KIDHABIT 101000' from money_model_legacy_pending;`);
+  const moneyModel = '202610100001_money_model_v2';
+  await client.query(load(`supabase/migrations/${moneyModel}.sql`));
+  await client.query(load(`supabase/preflight/${moneyModel}.verify.sql`));
+  const moneyResults = await client.query(load('tests/integration/migrations/money-model-v2.scenarios.sql'));
+  const expectedScenarios = new Set(['pro_yearly_referred', 'solo_yearly_referred', 'monthly_no_commission',
+    'monthly_then_yearly', 'lifetime_referred', 'history_untouched', 'old_price_pending_settles']);
+  for (const result of moneyResults) {
+    for (const row of result.rows ?? []) {
+      if (!row.scenario) continue;
+      if (!expectedScenarios.delete(row.scenario)) throw new Error(`Unexpected or duplicate scenario: ${row.scenario}`);
+      if (row.ok !== true) throw new Error(`Money Model v2 scenario failed: ${row.scenario} (ok=${row.ok})`);
+      out.push(`PASS: ${row.scenario} ok=true`);
+    }
+  }
+  if (expectedScenarios.size) throw new Error(`Missing Money Model v2 scenarios: ${[...expectedScenarios].join(', ')}`);
+
 } catch(e) { out.push(`FAIL: ${e.message}`); process.exitCode=1; }
 finally { if(database) await database.close(); await stopSqlTestServer(); out.push('Disposable PostgreSQL removed'); console.log(out.join('\n')); }
 

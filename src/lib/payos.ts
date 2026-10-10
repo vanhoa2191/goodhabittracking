@@ -18,7 +18,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     badge: 'Khởi đầu nhẹ nhàng',
     price: PLAN_PRICES.solo.month,
     periodLabel: '/ tháng',
-    dailyEquivalent: '~1.300đ / ngày',
+    dailyEquivalent: '~1.630đ / ngày',
     description: 'Đầy đủ trải nghiệm cốt lõi cho hành trình của một bé',
     features: [],
     ctaText: 'Chọn Gói Cơ bản · Tháng',
@@ -29,7 +29,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     badge: 'Tiết kiệm cho một bé',
     price: PLAN_PRICES.solo.year,
     originalPrice: PLAN_PRICES.solo.month * 12,
-    savings: 'Tiết kiệm 69.000đ (15%)',
+    savings: 'Tiết kiệm 189.000đ (32%)',
     periodLabel: '/ năm',
     dailyEquivalent: '~33.300đ / tháng (~1.090đ/ngày)',
     description: 'Cả năm đồng hành cùng một bé với giá tốt hơn trả từng tháng',
@@ -43,7 +43,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     popular: true,
     price: PLAN_PRICES.pro.month,
     periodLabel: '/ tháng',
-    dailyEquivalent: '~1.970đ / ngày',
+    dailyEquivalent: '~2.300đ / ngày',
     description: 'Đồng hành cùng gia đình với tối đa 5 hồ sơ bé',
     features: [],
     ctaText: 'Chọn Gói Pro · Tháng',
@@ -54,7 +54,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     badge: 'Tiết kiệm nhất',
     price: PLAN_PRICES.pro.year,
     originalPrice: PLAN_PRICES.pro.month * 12,
-    savings: 'Tiết kiệm 118.000đ (17%)',
+    savings: 'Tiết kiệm 238.000đ (29%)',
     periodLabel: '/ năm',
     dailyEquivalent: '~49.200đ / tháng (~1.620đ/ngày)',
     description: 'Lựa chọn tốt nhất và kinh tế nhất cho cả năm rèn luyện nếp sống',
@@ -81,7 +81,8 @@ export interface PaymentResult {
   vietQrUrl: string;
   checkoutUrl: string;
   planId: string;
-  /** Set when a referral discount was applied: the list price and the percentage taken off it. */
+  /** Set when a referral discount was applied: the list price, the amount taken off it and who referred the family. */
   listPrice?: number;
-  discountPercent?: number;
+  discountAmount?: number;
+  referrerName?: string | null;
 }

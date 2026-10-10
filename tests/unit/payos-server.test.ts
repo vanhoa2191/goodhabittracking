@@ -8,7 +8,7 @@ const providerPayment = {
   bin: '970422',
   accountNumber: '113366668888',
   accountName: 'KIDHABIT HERO',
-  amount: 59000,
+  amount: 69000,
   description: 'KIDHABIT 123456',
   orderCode: 123456,
   currency: 'VND',
@@ -67,7 +67,7 @@ describe('payOS payment creation', () => {
   });
 
   it.each([
-    ['solo_monthly', 'Gói Cơ bản · Tháng', 39000],
+    ['solo_monthly', 'Gói Cơ bản · Tháng', 49000],
     ['solo_yearly', 'Gói Cơ bản · Năm', 399000],
   ] as const)('sends the renamed %s item without changing the bounded payment description', async (planId, name, amount) => {
     vi.stubGlobal('fetch', vi.fn()
