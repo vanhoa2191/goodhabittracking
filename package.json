@@ -40,11 +40,11 @@
     "test:sql": "node scripts/verify-local-billing.mjs && node scripts/verify-local-affiliate.mjs && node tests/integration/migrations/family-operations-runtime.mjs"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "1.20.7",
+    "@opennextjs/cloudflare": "1.20.8",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.2",
     "canvas-confetti": "^1.9.4",
-    "lucide-react": "^1.48.0",
+    "lucide-react": "^1.52.0",
     "next": "16.3.8",
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.4",
@@ -70,7 +70,7 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.11",
-    "wrangler": "^4.135.0"
+    "wrangler": "^4.147.0"
   },
   "engines": {
     "node": ">=24"
