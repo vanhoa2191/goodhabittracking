@@ -23,9 +23,9 @@
 |---|---|---|---|
 | **Dùng thử 7 ngày** | 0đ | Tối đa 5 bé (như Gói Pro) | Trải nghiệm đầy đủ trước khi quyết định |
 | **Gói Cơ bản · Tháng** | 49.000đ / tháng | 1 bé | Gia đình bắt đầu cùng một bé |
-| **Gói Cơ bản · Năm** | 399.000đ / năm (tiết kiệm 69.000đ, 15% so với trả theo tháng) | 1 bé | Một bé, thanh toán một lần cho 12 tháng |
+| **Gói Cơ bản · Năm** | 399.000đ / năm (tiết kiệm 189.000đ, 32% so với trả theo tháng) | 1 bé | Một bé, thanh toán một lần cho 12 tháng |
 | **Gói Pro · Tháng** | 69.000đ / tháng | Tối đa 5 bé | Gia đình có nhiều bé, linh hoạt theo tháng |
-| **Gói Pro · Năm** | 590.000đ / năm (tiết kiệm 118.000đ, 17% so với trả theo tháng) | Tối đa 5 bé | Duy trì đủ lâu để việc nhỏ thành nếp |
+| **Gói Pro · Năm** | 590.000đ / năm (tiết kiệm 238.000đ, 29% so với trả theo tháng) | Tối đa 5 bé | Duy trì đủ lâu để việc nhỏ thành nếp |
 | **Trọn đời** | Không bán | Không giới hạn | Chỉ do quản trị viên cấp thủ công<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 Bản tháng và bản năm của cùng một gói có quyền lợi giống hệt, chỉ khác giá và thời hạn. Tất cả là **thanh toán một lần**, không tự động gia hạn. Màn hình bảng giá còn liệt kê thêm quyền lợi cho gói trả phí (báo cáo theo dõi hằng tuần, thi đua gia đình, hỗ trợ kỹ thuật nhanh); ebook hiện **chưa phát hành**.

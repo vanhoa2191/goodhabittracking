@@ -30,7 +30,9 @@ async function findReferrerName(admin: ReturnType<typeof createAdminSupabaseClie
     const { data: profile, error: profileError } = await admin.from('parent_profiles')
       .select('display_name').eq('user_id', referral.referrer_user_id).maybeSingle();
     if (profileError) throw profileError;
-    const name = typeof profile?.display_name === 'string' ? profile.display_name.trim().slice(0, REFERRER_NAME_MAX).trim() : '';
+    // Unicode mode preserves valid surrogate pairs while stripping lone surrogates and controls.
+    const trimmed = typeof profile?.display_name === 'string' ? profile.display_name.replace(/[\p{Cs}\p{Cc}]/gu, '').trim() : '';
+    const name = Array.from(trimmed).slice(0, REFERRER_NAME_MAX).join('').trim();
     return name || null;
   } catch (error) {
     console.warn('Referrer name lookup failed:', error instanceof Error ? error.message : 'unknown');

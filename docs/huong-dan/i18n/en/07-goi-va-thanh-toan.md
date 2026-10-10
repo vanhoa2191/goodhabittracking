@@ -23,9 +23,9 @@
 |---|---|---|---|
 | **7-Day Free Trial** | 0 VND | Up to 5 (same as Pro) | Trying everything before you decide |
 | **Basic Plan · Monthly** | 49,000 VND / month | 1 child | Families starting with one child |
-| **Basic Plan · Yearly** | 399,000 VND / year (saves 69,000 VND, 15% compared with paying monthly) | 1 child | One child, paid once for 12 months |
+| **Basic Plan · Yearly** | 399,000 VND / year (saves 189,000 VND, 32% compared with paying monthly) | 1 child | One child, paid once for 12 months |
 | **Pro Plan · Monthly** | 69,000 VND / month | Up to 5 children | Families with several children, flexible by the month |
-| **Pro Plan · Yearly** | 590,000 VND / year (saves 118,000 VND, 17% compared with paying monthly) | Up to 5 children | Staying with it long enough for small steps to become habits |
+| **Pro Plan · Yearly** | 590,000 VND / year (saves 238,000 VND, 29% compared with paying monthly) | Up to 5 children | Staying with it long enough for small steps to become habits |
 | **Lifetime** | Not sold | Unlimited | Granted manually by an administrator only<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 The monthly and yearly versions of the same plan include exactly the same benefits and differ only in price and term. All payments are **one-time payments** with no automatic renewal. The pricing screen also lists extra benefits for the paid plans (weekly tracking reports, family competitions, and faster technical support); the ebook is **not yet available**.

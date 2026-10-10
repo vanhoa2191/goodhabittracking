@@ -99,6 +99,29 @@ describe('POST /api/payment/create atomic order reservation', () => {
     const body = await (await post('solo_yearly')).json();
     expect(body.payment).toMatchObject({ amount: 359000, listPrice: 399000, discountAmount: 40000, referrerName: 'Lan' });
   });
+  it('truncates referrer names by code points without splitting an emoji', async () => {
+    const expected = `${'x'.repeat(39)}😀`;
+    referrerLookup.profile = { display_name: ` ${expected}extra ` };
+    const response = await post('solo_yearly');
+    expect(response.status).toBe(200);
+    const { payment } = await response.json();
+    expect(payment.referrerName).not.toMatch(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/);
+    expect(Array.from(payment.referrerName)).toHaveLength(40);
+    expect(payment.referrerName).toBe(expected);
+    expect(update).toHaveBeenCalledWith(expect.objectContaining({ checkout_payment: expect.objectContaining({ referrerName: expected }) }));
+    expect(cancelPayOSPayment).not.toHaveBeenCalled();
+  });
+  it.each([
+    ['lone surrogates and controls', ' \uD800La\u0000n\uDC00\u007F\u0085😀 ', 'Lan😀'],
+    ['only invalid characters', '\uD800\u0000\uDC00', null],
+  ])('strips %s from referrer names before saving checkout', async (_label, displayName, expected) => {
+    referrerLookup.profile = { display_name: displayName };
+    const response = await post('solo_yearly');
+    expect(response.status).toBe(200);
+    const { payment } = await response.json();
+    expect(payment.referrerName).toBe(expected);
+    expect(update).toHaveBeenCalledWith(expect.objectContaining({ checkout_payment: expect.objectContaining({ referrerName: expected }) }));
+  });
   it.each([
     ['blank name', { profile: { display_name: '   ' } }, null],
     ['long name', { profile: { display_name: ` ${'x'.repeat(60)} ` } }, 'x'.repeat(40)],
