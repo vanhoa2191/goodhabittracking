@@ -18,7 +18,7 @@ describe('small copy language coverage', () => {
   it('provides non-empty copy for all nine languages', () => {
     for (const language of LANGUAGES) {
       expect(docsStrings(language).every((value) => value.trim().length > 0)).toBe(true);
-      expect(referralDiscountLine(language, 12, '399.000 ₫').trim()).not.toBe('');
+      expect(referralDiscountLine(language, '40.000 ₫', 'Lan').trim()).not.toBe('');
       const share = buildSafeAchievementShare(language);
       expect(share.title.trim()).not.toBe('');
       expect(share.text.trim()).not.toBe('');
@@ -41,7 +41,7 @@ describe('small copy language coverage', () => {
   it('does not leak Vietnamese-only characters into non-Vietnamese copy', () => {
     for (const language of LANGUAGES.filter((value) => value !== 'vi')) {
       expect(docsStrings(language).some((value) => NON_VIETNAMESE_MARKS.test(value))).toBe(false);
-      expect(NON_VIETNAMESE_MARKS.test(referralDiscountLine(language, 12, '399.000 ₫'))).toBe(false);
+      expect(NON_VIETNAMESE_MARKS.test(referralDiscountLine(language, '40.000 ₫', 'Lan'))).toBe(false);
       const share = buildSafeAchievementShare(language);
       expect(NON_VIETNAMESE_MARKS.test(share.title)).toBe(false);
       expect(NON_VIETNAMESE_MARKS.test(share.text)).toBe(false);
@@ -50,20 +50,21 @@ describe('small copy language coverage', () => {
 
   it('keeps referral parameters in each localized line', () => {
     for (const language of LANGUAGES) {
-      const line = referralDiscountLine(language, 37, '1,234.56');
-      expect(line).toContain('37');
+      const line = referralDiscountLine(language, '1,234.56', 'Lan');
       expect(line).toContain('1,234.56');
+      expect(line).toContain('Lan');
+      expect(referralDiscountLine(language, '1,234.56', null)).not.toContain('Lan');
     }
   });
 
   it('does not copy English text verbatim into translated share or referral copy', () => {
     const englishShare = buildSafeAchievementShare('en');
-    const englishReferral = referralDiscountLine('en', 37, '1,234.56');
+    const englishReferral = referralDiscountLine('en', '1,234.56', 'Lan');
     for (const language of LANGUAGES.filter((value) => !['vi', 'en'].includes(value))) {
       const share = buildSafeAchievementShare(language);
       expect(share.title).not.toBe(englishShare.title);
       expect(share.text).not.toBe(englishShare.text);
-      expect(referralDiscountLine(language, 37, '1,234.56')).not.toBe(englishReferral);
+      expect(referralDiscountLine(language, '1,234.56', 'Lan')).not.toBe(englishReferral);
     }
   });
 });

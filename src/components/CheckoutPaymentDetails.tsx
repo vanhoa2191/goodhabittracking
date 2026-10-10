@@ -113,9 +113,9 @@ export function CheckoutPaymentDetails({
               <div className="font-mono font-black text-base text-indigo-700 dark:text-indigo-300">
                 {formatCurrency(payment.amount, language)}
               </div>
-              {payment.discountPercent && payment.listPrice ? (
+              {payment.discountAmount ? (
                 <div className="mt-1 text-xs font-bold text-emerald-700 dark:text-emerald-300">
-                  {referralDiscountLine(language, payment.discountPercent, formatCurrency(payment.listPrice, language))}
+                  {referralDiscountLine(language, formatCurrency(payment.discountAmount, language), payment.referrerName ?? null)}
                 </div>
               ) : null}
             </div>
