@@ -7,11 +7,11 @@ import type { SummaryInput } from '@/lib/ai/prompts';
 import type { AiLanguage, AiTier } from '@/lib/ai/config';
 
 export type AiFailureCode = 'ai_consent_required' | 'ai_quota' | 'ai_disabled' | 'ai_timeout' | 'ai_invalid_output' | 'ai_error' | 'pin' | 'network';
-export type AiFailure = { readonly ok: false; readonly code: AiFailureCode; readonly reason?: 'family_day' | 'system_day' | 'too_fast'; readonly tier?: AiTier };
-export type AiAnswer<T> = { readonly ok: true; readonly result: T; readonly remainingToday: number | null } | AiFailure;
+export type AiFailure = { readonly ok: false; readonly code: AiFailureCode; readonly reason?: 'family_month' | 'family_day' | 'system_day' | 'too_fast'; readonly tier?: AiTier };
+export type AiAnswer<T> = { readonly ok: true; readonly result: T; readonly remainingThisMonth: number | null } | AiFailure;
 
 const known: ReadonlySet<string> = new Set(['ai_consent_required', 'ai_quota', 'ai_disabled', 'ai_timeout', 'ai_invalid_output', 'ai_error']);
-const answer = z.object({ success: z.boolean(), result: z.unknown().optional(), remainingToday: z.number().nullable().optional(), code: z.string().optional(), reason: z.unknown().optional(), tier: z.unknown().optional() });
+const answer = z.object({ success: z.boolean(), result: z.unknown().optional(), remainingThisMonth: z.number().nullable().optional(), code: z.string().optional(), reason: z.unknown().optional(), tier: z.unknown().optional() });
 
 async function post<T>(path: string, body: unknown, read: (result: unknown) => T | null): Promise<AiAnswer<T>> {
   try {
@@ -26,12 +26,12 @@ async function post<T>(path: string, body: unknown, read: (result: unknown) => T
       const { reason, tier } = parsed.data;
       return {
         ok: false, code,
-        ...(reason === 'family_day' || reason === 'system_day' || reason === 'too_fast' ? { reason } : {}),
-        ...(tier === 'basic' || tier === 'plus' ? { tier } : {}),
+        ...(reason === 'family_month' || reason === 'family_day' || reason === 'system_day' || reason === 'too_fast' ? { reason } : {}),
+        ...(tier === 'free' || tier === 'standard' || tier === 'plus' ? { tier } : {}),
       };
     }
     const result = read(parsed.data.result);
-    return result ? { ok: true, result, remainingToday: parsed.data.remainingToday ?? null } : { ok: false, code: 'ai_invalid_output' };
+    return result ? { ok: true, result, remainingThisMonth: parsed.data.remainingThisMonth ?? null } : { ok: false, code: 'ai_invalid_output' };
   } catch {
     return { ok: false, code: 'network' };
   }

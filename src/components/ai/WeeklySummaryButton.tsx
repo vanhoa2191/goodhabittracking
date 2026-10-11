@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslation } from '@/lib/i18n/context';
-import { canBuyAiAddon, getAiCopy } from '@/lib/i18n/ai-copy';
+import { canBuyAiAddon, getAiCopy, quotaTemplate } from '@/lib/i18n/ai-copy';
 import { useAppStore } from '@/lib/store';
 import { aiLanguageOf } from '@/lib/ai/config';
 import type { WeeklySummary } from '@/lib/ai/output-check';
@@ -22,7 +22,7 @@ export function WeeklySummaryButton({ counts }: { readonly counts: Omit<SummaryI
   const [result, setResult] = useState<WeeklySummary | null>(null);
   const [failure, setFailure] = useState<AiFailure | null>(null);
   const aiLanguage = aiLanguageOf(language);
-  const dailyTier = failure?.code === 'ai_quota' && failure.reason === 'family_day' ? failure.tier : undefined;
+  const upsell = failure?.code === 'ai_quota' ? quotaTemplate(copy, failure.reason, failure.tier, addonSellable) : null;
 
   if (enabled === null || counts.weeks.length === 0) return null;
   if (!enabled) return <p className="text-xs text-slate-500 dark:text-slate-300">{copy.needConsent}</p>;
@@ -43,12 +43,12 @@ export function WeeklySummaryButton({ counts }: { readonly counts: Omit<SummaryI
         {busy ? copy.summaryWorking : copy.summaryButton}
       </button>
       {failure && (
-        <div role={dailyTier ? 'status' : 'alert'} className="space-y-2 text-xs font-bold text-slate-700 dark:text-slate-200">
-          <p>{dailyTier === 'basic' ? (addonSellable ? copy.quota.basic : copy.quota.basicUpgradeOnly).split(/(\{addon\}|\{upgrade\})/).map((part, index) =>
+        <div role={upsell ? 'status' : 'alert'} className="space-y-2 text-xs font-bold text-slate-700 dark:text-slate-200">
+          <p>{upsell ? upsell.split(/(\{addon\}|\{upgrade\})/).map((part, index) =>
             part === '{addon}' ? <a key={index} href="/checkout?plan=ai_addon_monthly" className="text-indigo-700 underline dark:text-indigo-300">{copy.quota.addon}</a> :
             part === '{upgrade}' ? <a key={index} href="/checkout?plan=pro_plus_monthly" className="text-indigo-700 underline dark:text-indigo-300">{copy.quota.upgrade}</a> :
             part,
-          ) : dailyTier === 'plus' ? copy.quota.plus : copy.errors[failure.code]}</p>
+          ) : copy.errors[failure.code]}</p>
         </div>
       )}
       {result && (

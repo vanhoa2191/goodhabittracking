@@ -9,8 +9,8 @@ describe('AI client', () => {
 
   it('returns three steps from a good answer', async () => {
     const steps = { steps: [{ text: 'a b c', minutes: 1 }, { text: 'd e f', minutes: 2 }, { text: 'g h i', minutes: 3 }] };
-    reply(200, { success: true, result: steps, remainingToday: 3 });
-    expect(await requestBreakdown(input)).toEqual({ ok: true, result: steps, remainingToday: 3 });
+    reply(200, { success: true, result: steps, remainingThisMonth: 3 });
+    expect(await requestBreakdown(input)).toEqual({ ok: true, result: steps, remainingThisMonth: 3 });
   });
 
   it('turns each refusal into a code the screen can word', async () => {
@@ -24,7 +24,7 @@ describe('AI client', () => {
     expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_error' });
   });
 
-  it.each(['basic', 'plus'])('keeps the %s family-day quota details for the screen', async (tier) => {
+  it.each(['free', 'standard', 'plus'])('keeps the %s family-day quota details for the screen', async (tier) => {
     reply(429, { success: false, code: 'ai_quota', reason: 'family_day', tier });
     expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_quota', reason: 'family_day', tier });
   });
@@ -32,6 +32,16 @@ describe('AI client', () => {
   it.each(['system_day', 'too_fast'])('keeps %s separate from the family limit', async (reason) => {
     reply(429, { success: false, code: 'ai_quota', reason });
     expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_quota', reason });
+  });
+
+  it.each(['free', 'standard', 'plus'])('keeps the %s monthly refusal details', async (tier) => {
+    reply(429, { success: false, code: 'ai_quota', reason: 'family_month', tier });
+    expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_quota', reason: 'family_month', tier });
+  });
+
+  it('drops the retired basic tier', async () => {
+    reply(429, { success: false, code: 'ai_quota', reason: 'family_day', tier: 'basic' });
+    expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_quota', reason: 'family_day' });
   });
 
   it('ignores unknown quota details without losing the refusal', async () => {

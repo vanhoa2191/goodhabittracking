@@ -60,21 +60,21 @@ describe('AI suggestion routes', () => {
     getParentContext.mockResolvedValue({ familyId, user: { id: 'parent-1' } });
     requireParentUnlock.mockResolvedValue(null);
     consentRow({ revoked_at: null });
-    rpc.mockResolvedValue({ data: { allowed: true, remainingToday: 4 }, error: null });
-    tierRpc.mockReset().mockResolvedValue({ data: 'basic', error: null });
+    rpc.mockResolvedValue({ data: { allowed: true, remainingThisMonth: 4 }, error: null });
+    tierRpc.mockReset().mockResolvedValue({ data: 'free', error: null });
     run.mockResolvedValue({ response: JSON.stringify(steps) });
   });
 
   it('turns a habit title into three steps and sends the model only the cleaned title and an age band', async () => {
     const response = await askBreakdown({ title: 'Đọc sách https://x.example gọi 0912345678', ageYears: 8, language: 'vi' });
     expect(response.status).toBe(200);
-    await expect(response.json()).resolves.toEqual({ success: true, result: steps, remainingToday: 4 });
+    await expect(response.json()).resolves.toEqual({ success: true, result: steps, remainingThisMonth: 4 });
     const sent = JSON.stringify(run.mock.calls[0]?.[1]);
     expect(sent).toContain('Đọc sách');
     expect(sent).toContain('6-12');
     expect(sent).not.toContain('x.example');
     expect(sent).not.toContain('0912345678');
-    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', { actor_user_id: 'parent-1', per_day: 1, system_per_day: 150, min_gap_seconds: 20 });
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_monthly_as', { actor_user_id: 'parent-1', per_month: 10, per_day: 100, system_per_day: 5000, min_gap_seconds: 20 });
   });
 
   it('refuses a request that comes from another site before anything else', async () => {
@@ -117,36 +117,61 @@ describe('AI suggestion routes', () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 
-  it.each([['plus', 10], ['basic', 1]] as const)('uses the %s family allowance', async (tier, perDay) => {
+  it.each([['plus', null], ['standard', 20], ['free', 10]] as const)('uses the %s monthly allowance', async (tier, perMonth) => {
     tierRpc.mockResolvedValue({ data: tier, error: null });
     expect((await askBreakdown()).status).toBe(200);
     expect(tierRpc).toHaveBeenCalledWith('family_ai_tier', { target_family: familyId });
-    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', { actor_user_id: 'parent-1', per_day: perDay, system_per_day: 150, min_gap_seconds: 20 });
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_monthly_as', { actor_user_id: 'parent-1', per_month: perMonth, per_day: 100, system_per_day: 5000, min_gap_seconds: 20 });
   });
 
   it.each([
     { data: 'plus', error: { message: 'unavailable' } },
     { data: null, error: null },
     { data: 'unknown', error: null },
-  ])('falls back to the basic allowance for an unavailable or invalid tier: %j', async (result) => {
+  ])('falls back to the free allowance for an unavailable or invalid tier: %j', async (result) => {
     tierRpc.mockResolvedValue(result);
     expect((await askBreakdown()).status).toBe(200);
-    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', expect.objectContaining({ per_day: 1 }));
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_monthly_as', expect.objectContaining({ per_month: 10 }));
   });
 
-  it('falls back to basic when the tier lookup throws', async () => {
+  it('falls back to free when the tier lookup throws', async () => {
     tierRpc.mockRejectedValue(new Error('connection failed'));
     expect((await askBreakdown()).status).toBe(200);
-    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', expect.objectContaining({ per_day: 1 }));
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_monthly_as', expect.objectContaining({ per_month: 10 }));
   });
 
-  it.each(['basic', 'plus'])('returns the %s tier on a daily family refusal without calling the model', async (tier) => {
+  it.each(['free', 'standard', 'plus'])('returns the %s tier on a daily family refusal without calling the model', async (tier) => {
     tierRpc.mockResolvedValue({ data: tier, error: null });
     rpc.mockResolvedValue({ data: { allowed: false, reason: 'family_day' }, error: null });
     const response = await askBreakdown();
     expect(response.status).toBe(429);
     await expect(response.json()).resolves.toMatchObject({ code: 'ai_quota', reason: 'family_day', tier });
     expect(run).not.toHaveBeenCalled();
+  });
+
+  it.each(['free', 'standard'])('returns the %s tier on a monthly refusal without calling the model', async (tier) => {
+    tierRpc.mockResolvedValue({ data: tier, error: null });
+    rpc.mockResolvedValue({ data: { allowed: false, reason: 'family_month' }, error: null });
+    const response = await askBreakdown();
+    expect(response.status).toBe(429);
+    await expect(response.json()).resolves.toMatchObject({ code: 'ai_quota', reason: 'family_month', tier });
+    expect(run).not.toHaveBeenCalled();
+  });
+
+  it('reports remainingThisMonth as null for an unlimited family', async () => {
+    tierRpc.mockResolvedValue({ data: 'plus', error: null });
+    rpc.mockResolvedValue({ data: { allowed: true, remainingThisMonth: null }, error: null });
+    await expect((await askBreakdown()).json()).resolves.toMatchObject({ success: true, remainingThisMonth: null });
+  });
+
+  it('answers ai_disabled and never calls Workers when DeepSeek is chosen without a key', async () => {
+    vi.stubEnv('AI_PROVIDER', 'deepseek');
+    vi.stubEnv('DEEPSEEK_API_KEY', '');
+    const response = await askBreakdown();
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toMatchObject({ code: 'ai_disabled' });
+    expect(run).not.toHaveBeenCalled();
+    vi.unstubAllEnvs();
   });
 
   it.each(['system_day', 'too_fast'])('does not turn %s into a family-tier upsell', async (reason) => {

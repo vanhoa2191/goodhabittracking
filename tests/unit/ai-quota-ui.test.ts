@@ -40,68 +40,68 @@ async function showFailure(render: () => ReactNode, failure: unknown) {
 
 beforeEach(() => { state.index = 0; state.values = []; state.language = 'vi'; state.plan = 'monthly'; state.endsAt = null; state.request.mockReset(); });
 
+const family = (reason: string, tier: string) => ({ ok: false, code: 'ai_quota', reason, tier });
+const text = (html: string) => html.replace(/<[^>]+>/g, '');
+
 for (const [surface, render] of surfaces) {
-  describe(`${surface} daily quota`, () => {
-    it('offers both paid options after the Vietnamese free daily suggestion', async () => {
-      const html = await showFailure(render, { ok: false, code: 'ai_quota', reason: 'family_day', tier: 'basic' });
-      expect(html.replace(/<[^>]+>/g, '')).toContain('Hôm nay bạn đã dùng 1 lượt gợi ý miễn phí. Thêm Add-on AI (29.000đ/tháng) hoặc nâng lên Pro Plus để có 10 lượt mỗi ngày.');
+  describe(`${surface} monthly quota`, () => {
+    it('sells only Pro Plus to a free family that used its 10 monthly suggestions', async () => {
+      state.plan = 'free';
+      const html = await showFailure(render, family('family_month', 'free'));
+      expect(text(html)).toContain('Bạn đã dùng hết 10 lượt gợi ý miễn phí tháng này. Nâng lên Pro Plus để dùng không giới hạn.');
+      expect(html).toContain('href="/checkout?plan=pro_plus_monthly"');
+      expect(html).not.toContain('ai_addon_monthly');
+      expect(html.match(/<a\b/g)).toHaveLength(1);
+    });
+
+    it('offers the add-on and Pro Plus to a standard family that used its 20', async () => {
+      const html = await showFailure(render, family('family_month', 'standard'));
+      expect(text(html)).toContain('Bạn đã dùng hết 20 lượt gợi ý tháng này. Thêm Add-on AI (29.000đ/tháng) hoặc nâng lên Pro Plus để dùng không giới hạn.');
       expect(html).toContain('href="/checkout?plan=ai_addon_monthly"');
       expect(html).toContain('href="/checkout?plan=pro_plus_monthly"');
       expect(html.match(/<a\b/g)).toHaveLength(2);
     });
 
-    it.each(['solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'lifetime'])('offers the add-on on the active %s plan', async (plan) => {
+    it.each([['free', null], ['pro_plus_monthly', null], ['monthly', '2000-01-01T00:00:00Z']])('offers only Pro Plus to a standard family on %s ending %s', async (plan, endsAt) => {
       state.plan = plan;
-      state.endsAt = '2999-01-01T00:00:00Z';
-      const html = await showFailure(render, { ok: false, code: 'ai_quota', reason: 'family_day', tier: 'basic' });
-      expect(html).toContain('href="/checkout?plan=ai_addon_monthly"');
-    });
-
-    it.each([['free', null], ['trial', null], ['pro_plus_monthly', null], ['monthly', '2000-01-01T00:00:00Z']])(
-      'offers only Pro Plus on %s ending %s', async (plan, endsAt) => {
-        state.plan = plan;
-        state.endsAt = endsAt;
-        const html = await showFailure(render, { ok: false, code: 'ai_quota', reason: 'family_day', tier: 'basic' });
-        expect(html.replace(/<[^>]+>/g, '')).toContain('Hôm nay bạn đã dùng 1 lượt gợi ý miễn phí. Nâng lên Pro Plus để có 10 lượt mỗi ngày.');
-        expect(html).not.toContain('ai_addon_monthly');
-        expect(html).toContain('href="/checkout?plan=pro_plus_monthly"');
-        expect(html.match(/<a\b/g)).toHaveLength(1);
-      });
-
-    it.each(languages)('localizes the Pro Plus only upsell in %s', async (language) => {
-      state.language = language;
-      state.plan = 'free';
-      const html = await showFailure(render, { ok: false, code: 'ai_quota', reason: 'family_day', tier: 'basic' });
-      expect(html).toContain('href="/checkout?plan=pro_plus_monthly"');
+      state.endsAt = endsAt;
+      const html = await showFailure(render, family('family_month', 'standard'));
+      expect(text(html)).toContain('Bạn đã dùng hết 20 lượt gợi ý tháng này. Nâng lên Pro Plus để dùng không giới hạn.');
       expect(html).not.toContain('ai_addon_monthly');
-      expect(html).not.toMatch(/\{upgrade\}/);
-      expect(html).not.toMatch(/[ăĂơƠưƯđĐĩĨũŨẠ-ỹ]/u);
     });
 
-    it('asks a Plus family to return tomorrow without selling the included allowance', async () => {
-      const html = await showFailure(render, { ok: false, code: 'ai_quota', reason: 'family_day', tier: 'plus' });
-      expect(html).toContain('Bạn đã dùng hết 10 lượt hôm nay. Quay lại vào ngày mai nhé.');
+    it.each(['free', 'standard', 'plus'])('asks a %s family to come back tomorrow after the daily safety cap, without a sale', async (tier) => {
+      const html = await showFailure(render, family('family_day', tier));
+      expect(html).toContain('Hôm nay bạn đã dùng rất nhiều gợi ý. Quay lại vào ngày mai nhé.');
       expect(html).not.toContain('/checkout?');
     });
 
-    it.each(languages)('localizes basic/plus quotas and purchase links in %s', async (language) => {
+    it('never sells to a plus family on a monthly refusal', async () => {
+      const html = await showFailure(render, family('family_month', 'plus'));
+      expect(html).toContain('role="alert"');
+      expect(html).not.toContain('/checkout?');
+    });
+
+    it.each(languages)('localizes both monthly upsells and the daily message in %s', async (language) => {
       state.language = language;
-      const basic = await showFailure(render, { ok: false, code: 'ai_quota', reason: 'family_day', tier: 'basic' });
-      expect(basic).toMatch(/29[., ]000/);
-      expect(basic).toContain('10');
-      expect(basic).toContain('Pro Plus');
-      expect(basic).toContain('href="/checkout?plan=ai_addon_monthly"');
-      expect(basic).toContain('href="/checkout?plan=pro_plus_monthly"');
-      expect(basic).not.toMatch(/\{addon\}|\{upgrade\}/);
-      const plus = await showFailure(render, { ok: false, code: 'ai_quota', reason: 'family_day', tier: 'plus' });
-      expect(plus).toContain('10');
-      expect(plus).not.toContain('/checkout?');
-      expect(basic + plus).not.toMatch(/[ăĂơƠưƯđĐĩĨũŨẠ-ỹ]/u);
-      expect(basic + plus).not.toContain('ngày');
+      const free = await showFailure(render, family('family_month', 'free'));
+      expect(free).toContain('10');
+      expect(free).toContain('href="/checkout?plan=pro_plus_monthly"');
+      expect(free).not.toContain('ai_addon_monthly');
+      const standard = await showFailure(render, family('family_month', 'standard'));
+      expect(standard).toContain('20');
+      expect(standard).toMatch(/29[., ]000/);
+      expect(standard).toContain('href="/checkout?plan=ai_addon_monthly"');
+      expect(standard).toContain('href="/checkout?plan=pro_plus_monthly"');
+      const day = await showFailure(render, family('family_day', 'plus'));
+      expect(day).not.toContain('/checkout?');
+      const all = free + standard + day;
+      expect(all).not.toMatch(/\{addon\}|\{upgrade\}/);
+      expect(all).not.toMatch(/[ăĂơƠưƯđĐĩĨũŨẠ-ỹ]/u);
     });
 
     it.each(['system_day', 'too_fast', undefined])('does not upsell a non-family refusal (%s)', async (reason) => {
-      const html = await showFailure(render, { ok: false, code: 'ai_quota', reason, tier: 'basic' });
+      const html = await showFailure(render, { ok: false, code: 'ai_quota', reason, tier: 'free' });
       expect(html).toContain('role="alert"');
       expect(html).not.toContain('/checkout?');
       expect(html).not.toContain('29.000');

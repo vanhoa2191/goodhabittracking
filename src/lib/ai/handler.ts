@@ -28,7 +28,7 @@ const code = (status: number, error: string, extra: Record<string, unknown> = {}
 
 /**
  * One path for every AI suggestion, after the route has refused cross-site requests: signed-in parent, feature on, PIN, the parent's own
- * agreement, a tier-based allowance left, then the model, then a strict check of what it said. Nothing the child or the
+ * agreement, a monthly allowance by tier left, then the model, then a strict check of what it said. Nothing the child or the
  * parent wrote is ever logged here; the logger keeps only codes.
  */
 export async function handleAiRequest<Input, Output>(request: NextRequest, spec: Handled<Input, Output>): Promise<NextResponse> {
@@ -70,16 +70,17 @@ export async function handleAiRequest<Input, Output>(request: NextRequest, spec:
   const messages = spec.buildMessages(prepared);
   if (!messages) return code(400, 'Invalid request.');
 
-  let tier: AiTier = 'basic';
+  let tier: AiTier = 'free';
   try {
     const entitlement = await createAdminSupabaseClient().rpc('family_ai_tier', { target_family: parent.familyId });
-    if (!entitlement.error && entitlement.data === 'plus') tier = 'plus';
+    if (!entitlement.error && (entitlement.data === 'plus' || entitlement.data === 'standard')) tier = entitlement.data;
   } catch {
     // A failed entitlement lookup never grants the paid allowance.
   }
 
-  const quota = await callParentRpc(parent.user.id, 'consume_ai_quota', {
-    per_day: tier === 'plus' ? AI_LIMITS.perFamilyPerDayPlus : AI_LIMITS.perFamilyPerDayBasic,
+  const quota = await callParentRpc(parent.user.id, 'consume_ai_quota_monthly', {
+    per_month: tier === 'plus' ? null : AI_LIMITS.perMonth[tier],
+    per_day: AI_LIMITS.perDaySafety,
     system_per_day: AI_LIMITS.systemPerDay,
     min_gap_seconds: AI_LIMITS.minSecondsBetweenCalls,
   });
@@ -87,10 +88,10 @@ export async function handleAiRequest<Input, Output>(request: NextRequest, spec:
     log('error', 'quota_unavailable', 503);
     return code(503, 'Suggestion unavailable.', { code: 'ai_error' });
   }
-  const verdict = quota.data as { allowed?: unknown; reason?: unknown; remainingToday?: unknown };
+  const verdict = quota.data as { allowed?: unknown; reason?: unknown; remainingThisMonth?: unknown };
   if (verdict.allowed !== true) {
     log('info', `quota_${String(verdict.reason ?? 'refused').replace(/[^a-z_]/g, '')}`, 429);
-    return code(429, 'No suggestions left for now.', { code: 'ai_quota', reason: verdict.reason, ...(verdict.reason === 'family_day' ? { tier } : {}) });
+    return code(429, 'No suggestions left for now.', { code: 'ai_quota', reason: verdict.reason, ...(verdict.reason === 'family_month' || verdict.reason === 'family_day' ? { tier } : {}) });
   }
 
   // Withdrawing the agreement takes effect even for a request that was already waiting on the allowance.
@@ -109,5 +110,5 @@ export async function handleAiRequest<Input, Output>(request: NextRequest, spec:
     return code(503, 'Suggestion unavailable.', { code: 'ai_invalid_output' });
   }
   log('info', 'suggestion_made', 200);
-  return NextResponse.json({ success: true, result: output, remainingToday: typeof verdict.remainingToday === 'number' ? verdict.remainingToday : null });
+  return NextResponse.json({ success: true, result: output, remainingThisMonth: typeof verdict.remainingThisMonth === 'number' ? verdict.remainingThisMonth : null });
 }
