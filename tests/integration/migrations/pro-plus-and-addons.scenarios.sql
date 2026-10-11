@@ -454,6 +454,8 @@ update addon_results set ok=ok and pg_temp.quota_error(34,10,100,5000,0,'family_
   where scenario='monthly_quota_authorization';
 -- Promo fixtures run after the existing founding/add-on/quota regressions.
 -- Every fixture is referred, so promo price checks also exercise non-stacking.
+-- Keep open fixtures independent of the production offer's calendar deadline.
+update public.launch_offers set closed_at=now()+interval '30 days' where code='pro_plus_b1g1';
 create function pg_temp.settle(code bigint, price integer) returns boolean language sql as $$
   select public.process_payos_webhook(code,price,'KIDHABIT '||code,'promo-test-'||code,'local','{}')='activated'
 $$;
@@ -542,17 +544,27 @@ begin
   select * into f from addon_fixtures where n=40;
   perform public.create_family_payment_order(f.family_id,f.owner_id,120040,'pro_plus_yearly_b1g1',now()+interval '15 minutes');
 end $$;
-update public.launch_offers set closed_at=now() where code='pro_plus_b1g1';
+update public.launch_offers set closed_at=now()-interval '1 minute' where code='pro_plus_b1g1';
 insert into addon_results values ('b1g1_closed_refuses_new',
   public.launch_offer_remaining('pro_plus_b1g1')=0
   and pg_temp.order_error(41,120041,'pro_plus_yearly_b1g1','offer_unavailable'));
+do $$
+declare f addon_fixtures%rowtype; reopened record;
+begin
+  select * into f from addon_fixtures where n=40;
+  select * into reopened from public.create_family_payment_order(f.family_id,f.owner_id,120048,'pro_plus_yearly_b1g1',now()+interval '15 minutes');
+  insert into addon_results values ('promo_pending_reused_when_closed',
+    reopened.existing_order_code=120040 and reopened.amount=790000 and reopened.discount_bps=0
+    and not exists(select 1 from public.payment_orders where order_code=120048)
+    and (select status='PENDING' from public.payment_orders where order_code=120040));
+end $$;
 insert into addon_results values ('b1g1_closed_after_creation',pg_temp.settle(120040,790000));
 update addon_results set ok=ok
   and (select plan='pro_plus_yearly' and subscription_ends_at=now()+interval '2 years'
     from public.user_subscriptions s join addon_fixtures f using(family_id) where n=40)
   and exists(select 1 from public.launch_offer_claims where order_code=120040 and offer_code='pro_plus_b1g1' and revoked_at is null)
   where scenario='b1g1_closed_after_creation';
-update public.launch_offers set closed_at='2026-12-31 17:00:00+00' where code='pro_plus_b1g1';
+update public.launch_offers set closed_at=now()+interval '30 days' where code='pro_plus_b1g1';
 
 -- Populate 199 claims, then reserve two families against the single remaining slot.
 insert into public.launch_offer_claims(offer_code,family_id,order_code)
@@ -566,7 +578,20 @@ begin
   select * into f from addon_fixtures where n=43;
   perform public.create_family_payment_order(f.family_id,f.owner_id,120043,'pro_plus_yearly_upsell',now()+interval '15 minutes');
 end $$;
-insert into addon_results values ('slot_overfill_honoured',pg_temp.settle(120042,690000) and pg_temp.settle(120043,690000));
+insert into addon_results values ('slot_overfill_honoured',pg_temp.settle(120042,690000));
+do $$
+declare f addon_fixtures%rowtype; reopened record;
+begin
+  select * into f from addon_fixtures where n=43;
+  select * into reopened from public.create_family_payment_order(f.family_id,f.owner_id,120049,'pro_plus_yearly_upsell',now()+interval '15 minutes');
+  insert into addon_results values ('promo_pending_reused_when_full',
+    public.launch_offer_remaining('pro_plus_upsell_690')=0
+    and reopened.existing_order_code=120043 and reopened.amount=690000 and reopened.discount_bps=0
+    and not exists(select 1 from public.payment_orders where order_code=120049)
+    and (select status='PENDING' from public.payment_orders where order_code=120043)
+    and pg_temp.order_error(44,120050,'pro_plus_yearly_upsell','offer_unavailable'));
+end $$;
+update addon_results set ok=ok and pg_temp.settle(120043,690000) where scenario='slot_overfill_honoured';
 update addon_results set ok=ok
   and (select count(*)=201 from public.launch_offer_claims where offer_code='pro_plus_upsell_690' and revoked_at is null)
   and (select count(*)=2 and bool_and(plan='pro_plus_yearly' and subscription_ends_at=now()+interval '1 year')
@@ -602,6 +627,15 @@ begin
         from public.launch_offer_claims where order_code=item_code)
       where scenario='promo_refund_frees_slot';
   end loop;
+  insert into addon_results values ('promo_refund_cannot_rebuy',
+    pg_temp.order_error(35,120051,'pro_plus_yearly_upsell','offer_already_used')
+    and pg_temp.order_error(35,120052,'pro_plus_yearly_b1g1','offer_already_used')
+    and public.launch_offer_remaining('pro_plus_b1g1')=1);
+  -- The returned B1G1 slot is available to a family that has never claimed it.
+  perform pg_temp.buy(46,120053,'pro_plus_yearly_b1g1');
+  update addon_results set ok=ok and public.launch_offer_remaining('pro_plus_b1g1')=0
+    and exists(select 1 from public.launch_offer_claims where order_code=120053 and revoked_at is null)
+    where scenario='promo_refund_frees_slot';
   -- The upsell was overfilled by one: a second refund makes an actual slot available.
   select * into f from addon_fixtures where n=42;
   insert into public.billing_support_cases(family_id,user_id,order_code,case_type,reason_code,created_by)
@@ -609,6 +643,8 @@ begin
   perform public.admin_resolve_billing_case(c,'completed','manual_refund_confirmed',f.owner_id,'overfill refund');
   update addon_results set ok=ok and public.launch_offer_remaining('pro_plus_upsell_690')=1
     where scenario='promo_refund_frees_slot';
+  update addon_results set ok=ok and pg_temp.order_error(42,120054,'pro_plus_yearly_upsell','offer_already_used')
+    and public.launch_offer_remaining('pro_plus_upsell_690')=1 where scenario='promo_refund_cannot_rebuy';
   perform pg_temp.buy(45,120047,'pro_plus_yearly_upsell');
   update addon_results set ok=ok and public.launch_offer_remaining('pro_plus_upsell_690')=0
     and (select amount=690000 from public.payment_orders where order_code=120047) where scenario='promo_refund_frees_slot';

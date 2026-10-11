@@ -126,6 +126,7 @@ try {
   const expectedAddons = new Set(['upsell_price_and_claim', 'upsell_referral_no_stack', 'b1g1_two_years',
     'b1g1_extends_pro_plus', 'slot_overfill_honoured', 'offer_unavailable_when_full',
     'b1g1_closed_after_creation', 'b1g1_closed_refuses_new', 'offer_already_used',
+    'promo_pending_reused_when_closed', 'promo_pending_reused_when_full', 'promo_refund_cannot_rebuy',
     'promo_refund_frees_slot', 'promo_pending_lock', 'promo_commission', 'pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
     'addon_requires_plan', 'addon_then_pro_plus', 'addon_extends', 'addon_duplicate_webhook',
     'addon_no_commission_no_discount', 'printables_once', 'founding_tier', 'refund_revokes_addon',

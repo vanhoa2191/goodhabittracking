@@ -123,12 +123,10 @@ begin
           end
     ) then raise exception 'higher_plan_active'; end if;
   end if;
-  if promo_offer is not null then
-    if exists (select 1 from public.launch_offer_claims claim
-      where claim.offer_code = promo_offer and claim.family_id = target_family and claim.revoked_at is null
-    ) then raise exception 'offer_already_used'; end if;
-    if public.launch_offer_remaining(promo_offer) = 0 then raise exception 'offer_unavailable'; end if;
-  end if;
+  -- A refund frees capacity for other families, but does not reset eligibility.
+  if promo_offer is not null and exists (select 1 from public.launch_offer_claims claim
+    where claim.offer_code = promo_offer and claim.family_id = target_family
+  ) then raise exception 'offer_already_used'; end if;
   if selected_plan in ('yearly', 'solo_yearly', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1') then
     -- One yearly link at a time also prevents a full-price link paying before the discounted link.
     select * into pending from public.payment_orders
@@ -148,6 +146,10 @@ begin
     if promo_offer is null then
       discount := coalesce(public.referral_discount_bps(target_family, actor_id), 0);
     end if;
+  end if;
+  -- An existing yearly link remains reopenable after the offer closes or fills.
+  if promo_offer is not null then
+    if public.launch_offer_remaining(promo_offer) = 0 then raise exception 'offer_unavailable'; end if;
   end if;
   charged := greatest(1, list_price - floor(list_price::numeric * discount / 10000)::integer);
   if discount > 0 then charged := greatest(1000, (charged / 1000) * 1000); end if;

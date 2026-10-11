@@ -77,10 +77,18 @@ describe('Pro Plus and add-ons migration', () => {
     for (const name of ['upsell_price_and_claim', 'upsell_referral_no_stack', 'b1g1_two_years',
       'b1g1_extends_pro_plus', 'slot_overfill_honoured', 'offer_unavailable_when_full',
       'b1g1_closed_after_creation', 'b1g1_closed_refuses_new', 'offer_already_used',
+      'promo_pending_reused_when_closed', 'promo_pending_reused_when_full', 'promo_refund_cannot_rebuy',
       'promo_refund_frees_slot', 'promo_pending_lock', 'promo_commission']) {
       expect(scenarios).toContain(`'${name}'`);
       for (const runner of runners) expect(runner).toContain(`'${name}'`);
     }
+  });
+  it('keeps promo scenario deadlines relative to the transaction clock', () => {
+    const scenarios = readFileSync(resolve('tests/integration/migrations/pro-plus-and-addons.scenarios.sql'), 'utf8');
+    expect(scenarios).toContain("closed_at=now()+interval '30 days'");
+    expect(scenarios).toContain("closed_at=now()-interval '1 minute'");
+    expect(scenarios).not.toContain('2026-12-31');
+    expect(preflight).toContain("closed_at='2026-12-31 17:00:00+00'");
   });
   it('protects add-on state with RLS and a read-only manager policy', () => {
     expect(migration).toContain('create table public.family_addons');

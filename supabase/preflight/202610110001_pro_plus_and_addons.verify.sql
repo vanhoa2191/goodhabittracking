@@ -1,6 +1,6 @@
 begin;
 do $$
-declare signature text; body text;
+declare signature text; body text; yearly_body text;
 begin
   if not exists(select 1 from public.launch_offers where code='pro_plus_upsell_690' and slots=200 and closed_at is null)
     or not exists(select 1 from public.launch_offers where code='pro_plus_b1g1' and slots=100 and closed_at='2026-12-31 17:00:00+00')
@@ -94,6 +94,16 @@ begin
     or strpos(body,'higher_plan_active')=0 or strpos(body,'lifetime_active')=0
     or strpos(body,'family_id = target_family and plan_id = ''printables'' and status = ''PENDING''')=0 then
     raise exception 'new checkout prices or eligibility missing';
+  end if;
+  yearly_body := substring(body from strpos(body,'-- One yearly link at a time'));
+  if strpos(yearly_body,'return query select pending.amount, 0, pending.order_code;')=0
+    or strpos(yearly_body,'return query select pending.amount, 0, pending.order_code;')
+      > strpos(yearly_body,'public.launch_offer_remaining(promo_offer)') then
+    raise exception 'pending yearly links must reopen before promo capacity or closing checks';
+  end if;
+  if strpos(body,'where claim.offer_code = promo_offer and claim.family_id = target_family')=0
+    or strpos(body,'where claim.offer_code = promo_offer and claim.family_id = target_family and claim.revoked_at is null')>0 then
+    raise exception 'promo eligibility must exclude all prior claims, including refunded claims';
   end if;
   foreach signature in array array[
     'public.create_family_payment_order(uuid,uuid,bigint,text,timestamptz)',
