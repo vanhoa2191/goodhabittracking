@@ -25,13 +25,14 @@ export type AiCopy = {
   readonly soonBody: string;
   readonly soonBreakdown: string;
   readonly soonSummary: string;
-  readonly quota: { readonly basic: string; readonly plus: string; readonly addon: string; readonly upgrade: string };
+  readonly quota: { readonly basic: string; readonly basicUpgradeOnly: string; readonly plus: string; readonly addon: string; readonly upgrade: string };
   readonly errors: Readonly<Record<AiFailureCode, string>>;
 };
 
 const vi: AiCopy = {
   quota: {
     basic: 'Hôm nay bạn đã dùng 1 lượt gợi ý miễn phí. Thêm {addon} hoặc nâng lên {upgrade} để có 10 lượt mỗi ngày.',
+    basicUpgradeOnly: 'Hôm nay bạn đã dùng 1 lượt gợi ý miễn phí. Nâng lên {upgrade} để có 10 lượt mỗi ngày.',
     plus: 'Bạn đã dùng hết 10 lượt hôm nay. Quay lại vào ngày mai nhé.',
     addon: 'Add-on AI (29.000đ/tháng)',
     upgrade: 'Pro Plus',
@@ -74,6 +75,7 @@ const vi: AiCopy = {
 const en: AiCopy = {
   quota: {
     basic: 'You have used your 1 free suggestion today. Add the {addon} or upgrade to {upgrade} for 10 suggestions each day.',
+    basicUpgradeOnly: 'You have used your 1 free suggestion today. Upgrade to {upgrade} for 10 suggestions each day.',
     plus: 'You have used all 10 suggestions today. Please come back tomorrow.',
     addon: 'AI add-on (29,000 VND/month)',
     upgrade: 'Pro Plus',
@@ -116,6 +118,7 @@ const en: AiCopy = {
 const fr: AiCopy = {
   quota: {
     basic: 'Vous avez utilisé votre suggestion gratuite du jour. Ajoutez l’{addon} ou passez à {upgrade} pour 10 suggestions par jour.',
+    basicUpgradeOnly: 'Vous avez utilisé votre suggestion gratuite du jour. Passez à {upgrade} pour 10 suggestions par jour.',
     plus: 'Vous avez utilisé vos 10 suggestions du jour. Revenez demain.',
     addon: 'option IA (29 000 VND/mois)',
     upgrade: 'Pro Plus',
@@ -136,6 +139,7 @@ const fr: AiCopy = {
 const de: AiCopy = {
   quota: {
     basic: 'Ihr 1 kostenloser Vorschlag für heute ist aufgebraucht. Mit dem {addon} oder {upgrade} erhalten Sie 10 Vorschläge pro Tag.',
+    basicUpgradeOnly: 'Ihr 1 kostenloser Vorschlag für heute ist aufgebraucht. Mit {upgrade} erhalten Sie 10 Vorschläge pro Tag.',
     plus: 'Sie haben heute alle 10 Vorschläge genutzt. Kommen Sie morgen wieder.',
     addon: 'KI-Zusatz (29.000 VND/Monat)',
     upgrade: 'Pro Plus',
@@ -156,6 +160,7 @@ const de: AiCopy = {
 const it: AiCopy = {
   quota: {
     basic: 'Ha usato il suggerimento gratuito di oggi. Aggiunga l’{addon} o passi a {upgrade} per 10 suggerimenti al giorno.',
+    basicUpgradeOnly: 'Ha usato il suggerimento gratuito di oggi. Passi a {upgrade} per 10 suggerimenti al giorno.',
     plus: 'Ha usato tutti i 10 suggerimenti di oggi. Torni domani.',
     addon: 'opzione IA (29.000 VND/mese)',
     upgrade: 'Pro Plus',
@@ -176,6 +181,7 @@ const it: AiCopy = {
 const es: AiCopy = {
   quota: {
     basic: 'Ha usado su sugerencia gratuita de hoy. Añada el {addon} o cambie a {upgrade} para tener 10 sugerencias al día.',
+    basicUpgradeOnly: 'Ha usado su sugerencia gratuita de hoy. Cambie a {upgrade} para tener 10 sugerencias al día.',
     plus: 'Ha usado las 10 sugerencias de hoy. Vuelva mañana.',
     addon: 'complemento IA (29.000 VND/mes)',
     upgrade: 'Pro Plus',
@@ -196,6 +202,7 @@ const es: AiCopy = {
 const zh: AiCopy = {
   quota: {
     basic: '您已用完今天的1次免费建议。购买 {addon}或升级至 {upgrade}，即可每天使用10次。',
+    basicUpgradeOnly: '您已用完今天的1次免费建议。升级至 {upgrade}，即可每天使用10次。',
     plus: '您已用完今天的10次建议。请明天再来。',
     addon: 'AI 附加服务（29,000 VND/月）',
     upgrade: 'Pro Plus',
@@ -216,6 +223,7 @@ const zh: AiCopy = {
 const ja: AiCopy = {
   quota: {
     basic: '本日の無料提案1回を利用しました。{addon}を購入するか {upgrade} にアップグレードすると、1日10回利用できます。',
+    basicUpgradeOnly: '本日の無料提案1回を利用しました。{upgrade} にアップグレードすると、1日10回利用できます。',
     plus: '本日の提案10回をすべて利用しました。また明日ご利用ください。',
     addon: 'AI 追加オプション（月額29,000 VND）',
     upgrade: 'Pro Plus',
@@ -236,6 +244,7 @@ const ja: AiCopy = {
 const ko: AiCopy = {
   quota: {
     basic: '오늘의 무료 제안 1회를 사용했습니다. {addon}을 구매하거나 {upgrade}로 업그레이드하면 하루 10회를 이용할 수 있습니다.',
+    basicUpgradeOnly: '오늘의 무료 제안 1회를 사용했습니다. {upgrade}로 업그레이드하면 하루 10회를 이용할 수 있습니다.',
     plus: '오늘의 제안 10회를 모두 사용했습니다. 내일 다시 이용해 주세요.',
     addon: 'AI 추가 옵션(월 29,000 VND)',
     upgrade: 'Pro Plus',
@@ -257,4 +266,11 @@ const COPY: Record<Language, AiCopy> = { vi, en, fr, de, it, es, zh, ja, ko };
 
 export function getAiCopy(language: Language): AiCopy {
   return COPY[language] ?? en;
+}
+
+const ADDON_PLANS: readonly string[] = ['solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'lifetime'];
+
+/** The AI add-on is only sold on top of an active Solo/Pro/lifetime plan; the store reports 'free' for anything not active. */
+export function canBuyAiAddon(plan: string, endsAt: string | null, now: number = Date.now()): boolean {
+  return ADDON_PLANS.includes(plan) && (endsAt === null || Date.parse(endsAt) > now);
 }

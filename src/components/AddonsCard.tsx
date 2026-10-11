@@ -8,6 +8,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { formatAddonPrice, getAddonsCopy } from '@/lib/i18n/addons-copy';
 import { formatDate } from '@/lib/i18n/formatters';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
+import { PAYMENT_SUCCESS_EVENT } from '@/lib/billing/payment-client';
 import { ADDON_PRICES, addonVisible } from '@/lib/billing/addon-catalog';
 import { PAID_PLAN_IDS, isPaidPlanId, planTier } from '@/lib/billing/plan-catalog';
 import type { Language, SubscriptionPlan } from '@/types';
@@ -87,8 +88,16 @@ export function AddonsCard() {
   const { currentUser, familyRole, subscriptionPlan, subscriptionEndsAt } = useAppStore();
   const { language } = useTranslation();
   const copy = getAddonsCopy(language);
-  const key = `${currentUser?.id ?? ''}:${subscriptionPlan}:${subscriptionEndsAt ?? ''}`;
+  // Buying an add-on changes neither the plan nor its end date, so a paid checkout bumps this to refetch.
+  const [paidCount, setPaidCount] = useState(0);
+  const key = `${currentUser?.id ?? ''}:${subscriptionPlan}:${subscriptionEndsAt ?? ''}:${paidCount}`;
   const [result, setResult] = useState<{ key: string; data: Entitlement | null; now: number } | null>(null);
+
+  useEffect(() => {
+    const onPaid = () => setPaidCount((count) => count + 1);
+    window.addEventListener(PAYMENT_SUCCESS_EVENT, onPaid);
+    return () => window.removeEventListener(PAYMENT_SUCCESS_EVENT, onPaid);
+  }, []);
 
   useEffect(() => {
     if (!currentUser || familyRole === 'caregiver') return;

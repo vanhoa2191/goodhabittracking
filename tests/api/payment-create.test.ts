@@ -306,6 +306,20 @@ describe('POST /api/payment/create atomic order reservation', () => {
     expect(createPayOSPayment).not.toHaveBeenCalled();
     expect(rpc).toHaveBeenCalledTimes(1);
   });
+  it('answers a lower-rank refusal with 409 higher_plan_active for any plan', async () => {
+    rpc.mockResolvedValue({ data: null, error: { code: 'P0001', message: 'higher_plan_active' } });
+    const response = await post('solo_monthly');
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toMatchObject({ success: false, code: 'higher_plan_active' });
+    expect(createPayOSPayment).not.toHaveBeenCalled();
+  });
+  it('answers printables with the flag off before it reads the session', async () => {
+    flags.printablesSale = false;
+    getParentContext.mockClear();
+    const response = await post('printables');
+    expect(response.status).toBe(404);
+    expect(getParentContext).not.toHaveBeenCalled();
+  });
   it('sells printables when the sale flag is on', async () => {
     flags.printablesSale = true;
     const response = await post('printables');

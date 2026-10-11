@@ -12,7 +12,8 @@ import {
 import { useAppStore } from '@/lib/store';
 import type { PricingPlan } from '@/types';
 import type { PaymentResult } from '@/lib/payos';
-import { createPaymentOrder, readPaymentStatus } from '@/lib/billing/payment-client';
+import { createPaymentOrder, isRefusalCode, PAYMENT_SUCCESS_EVENT, readPaymentStatus } from '@/lib/billing/payment-client';
+import { isAddonId } from '@/lib/billing/addon-catalog';
 import type { PaymentErrorCode } from '@/lib/billing/payment-client';
 import { copyPaymentText } from '@/lib/billing/copy-payment-text';
 import { getPaymentErrorCopy } from '@/lib/i18n/payment-error-copy';
@@ -57,7 +58,9 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
   const [errorCode, setErrorCode] = useState<PaymentErrorCode | null>(null);
   const [statusErrorCode, setStatusErrorCode] = useState<PaymentErrorCode | null>(null);
   const [copyFailed, setCopyFailed] = useState(false);
-  const [hasConfirmedReferral, setHasConfirmedReferral] = useState(false);
+  // A referral code never discounts an add-on, so add-on checkouts skip that step.
+  const skipReferral = plan !== null && isAddonId(plan.id);
+  const [hasConfirmedReferral, setHasConfirmedReferral] = useState(skipReferral);
   // True once the server says this family can still enter a friend's code; only then is the step shown.
   const [referralStepNeeded, setReferralStepNeeded] = useState(false);
   const referralStepNeededRef = useRef(false);
@@ -84,13 +87,13 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
   const handleClose = useCallback(() => {
     setHasAcceptedTerms(false);
     setHasConfirmedTerms(false);
-    setHasConfirmedReferral(false);
+    setHasConfirmedReferral(skipReferral);
     setReferralStepNeeded(false);
     setIsClaimingReferral(false);
     setCopyFailed(false);
     setPaymentData(null);
     onClose();
-  }, [onClose]);
+  }, [onClose, skipReferral]);
 
   // Initialize Payment Request from API
   const initPayment = useCallback(async () => {
@@ -136,6 +139,7 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
         if (result.success) setStatusErrorCode(null);
         if (result.success && result.paid) {
           await syncNow();
+          window.dispatchEvent(new Event(PAYMENT_SUCCESS_EVENT));
           setIsSuccess(true);
           setTimeout(() => {
             handleClose();
@@ -281,12 +285,14 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
                 <span>{errorCopy.title}</span>
               </div>
               <p>{errorCopy.create[errorCode]}</p>
-              <button
-                onClick={initPayment}
-                className="min-h-11 py-2 px-3 rounded-xl bg-rose-600 text-white font-bold cursor-pointer"
-              >
-                {errorCopy.retry}
-              </button>
+              {!isRefusalCode(errorCode) && (
+                <button
+                  onClick={initPayment}
+                  className="min-h-11 py-2 px-3 rounded-xl bg-rose-600 text-white font-bold cursor-pointer"
+                >
+                  {errorCopy.retry}
+                </button>
+              )}
             </div>
           ) : paymentData ? (
             <CheckoutPaymentDetails

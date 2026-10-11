@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useTranslation } from '@/lib/i18n/context';
-import { getAiCopy } from '@/lib/i18n/ai-copy';
+import { canBuyAiAddon, getAiCopy } from '@/lib/i18n/ai-copy';
+import { useAppStore } from '@/lib/store';
 import { aiLanguageOf } from '@/lib/ai/config';
 import type { WeeklySummary } from '@/lib/ai/output-check';
 import type { SummaryInput } from '@/lib/ai/prompts';
@@ -15,6 +16,8 @@ export function WeeklySummaryButton({ counts }: { readonly counts: Omit<SummaryI
   const { language } = useTranslation();
   const copy = getAiCopy(language);
   const { enabled } = useAiConsent();
+  const { subscriptionPlan, subscriptionEndsAt } = useAppStore();
+  const addonSellable = canBuyAiAddon(subscriptionPlan, subscriptionEndsAt);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<WeeklySummary | null>(null);
   const [failure, setFailure] = useState<AiFailure | null>(null);
@@ -41,7 +44,7 @@ export function WeeklySummaryButton({ counts }: { readonly counts: Omit<SummaryI
       </button>
       {failure && (
         <div role={dailyTier ? 'status' : 'alert'} className="space-y-2 text-xs font-bold text-slate-700 dark:text-slate-200">
-          <p>{dailyTier === 'basic' ? copy.quota.basic.split(/(\{addon\}|\{upgrade\})/).map((part, index) =>
+          <p>{dailyTier === 'basic' ? (addonSellable ? copy.quota.basic : copy.quota.basicUpgradeOnly).split(/(\{addon\}|\{upgrade\})/).map((part, index) =>
             part === '{addon}' ? <a key={index} href="/checkout?plan=ai_addon_monthly" className="text-indigo-700 underline dark:text-indigo-300">{copy.quota.addon}</a> :
             part === '{upgrade}' ? <a key={index} href="/checkout?plan=pro_plus_monthly" className="text-indigo-700 underline dark:text-indigo-300">{copy.quota.upgrade}</a> :
             part,

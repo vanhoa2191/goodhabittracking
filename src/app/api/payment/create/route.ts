@@ -17,12 +17,13 @@ export const runtime = 'nodejs';
 
 const REFERRER_NAME_MAX = 40;
 
-/** Errors the order function raises for an add-on that cannot be bought; the message carries the code. */
-const ADDON_REFUSALS = ['addon_requires_plan', 'already_included', 'already_owned'] as const;
-const ADDON_REFUSAL_COPY: Record<(typeof ADDON_REFUSALS)[number], string> = {
+/** Errors the order function raises for an order that cannot be placed; the message carries the code. */
+const REFUSALS = ['addon_requires_plan', 'already_included', 'already_owned', 'higher_plan_active'] as const;
+const REFUSAL_COPY: Record<(typeof REFUSALS)[number], string> = {
   addon_requires_plan: 'Add-on AI cần một gói trả phí đang hoạt động.',
   already_included: 'Gói của bạn đã gồm AI.',
   already_owned: 'Gia đình bạn đã sở hữu mục này.',
+  higher_plan_active: 'Gia đình đang dùng gói cao hơn. Hãy gia hạn đúng gói đang dùng.',
 };
 
 // Best effort: a failed lookup must never block checkout, the line just uses its fallback name.
@@ -53,6 +54,16 @@ async function findReferrerName(admin: ReturnType<typeof createAdminSupabaseClie
 export async function POST(request: NextRequest) {
   const crossSite = rejectCrossSiteRequest(request);
   if (crossSite) return crossSite;
+  const parsed = createPaymentRequestSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json({ success: false, error: 'Invalid payment request.' }, { status: 400 });
+  }
+
+  // Printables is built but hidden: with the flag off it does not exist, so it answers before auth or the database.
+  if (parsed.data.planId === 'printables' && !defaultExperienceFlags.printablesSale) {
+    return NextResponse.json({ success: false, error: 'Not available.', code: 'not_available' }, { status: 404 });
+  }
+
   const parent = await getParentContext();
   if (!parent) {
     return NextResponse.json({ success: false, error: 'Authentication required.' }, { status: 401 });
@@ -61,16 +72,7 @@ export async function POST(request: NextRequest) {
   const locked = await requireParentUnlock(request, parent, await createServerSupabaseClient());
   if (locked) return locked;
 
-  const parsed = createPaymentRequestSchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) {
-    return NextResponse.json({ success: false, error: 'Invalid payment request.' }, { status: 400 });
-  }
-
   const addon = isAddonId(parsed.data.planId);
-  // Printables is built but hidden: with the flag off it does not exist, and nothing touches the database.
-  if (parsed.data.planId === 'printables' && !defaultExperienceFlags.printablesSale) {
-    return NextResponse.json({ success: false, error: 'Not available.', code: 'not_available' }, { status: 404 });
-  }
 
   try {
     const admin = createAdminSupabaseClient();
@@ -135,9 +137,9 @@ export async function POST(request: NextRequest) {
       }
       if (!isUniqueViolation(insertError)) break;
     }
-    const refusal = addon ? ADDON_REFUSALS.find((code) => insertError?.message?.includes(code)) : undefined;
+    const refusal = REFUSALS.find((code) => insertError?.message?.includes(code));
     if (refusal) {
-      return NextResponse.json({ success: false, error: ADDON_REFUSAL_COPY[refusal], code: refusal }, { status: 409 });
+      return NextResponse.json({ success: false, error: REFUSAL_COPY[refusal], code: refusal }, { status: 409 });
     }
     if (insertError) throw insertError;
     // A bounded retry cannot accidentally create a link for an unresolved old reservation.
