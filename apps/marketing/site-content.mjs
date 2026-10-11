@@ -436,8 +436,8 @@ export const publicPages = {
   },
 };
 
-/** The four plans on sale, one entry per plan id, for the price list in the terms (legal-content.mjs). */
-export const plans = ['solo', 'pro'].flatMap((tier) => ['month', 'year'].map((cycle) => {
+/** The six plans on sale, one entry per plan id, for the price list in the terms (legal-content.mjs). */
+export const plans = ['solo', 'pro', 'pro_plus'].flatMap((tier) => ['month', 'year'].map((cycle) => {
   const { id, amount } = pricingTiers[tier][cycle];
   return {
     id,

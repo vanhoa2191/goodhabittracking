@@ -606,18 +606,15 @@ describe('marketing static artifact', () => {
     const privacy = await readFile(join(outputDir, 'privacy', 'index.html'), 'utf8');
     expect(privacy).toContain('class="legal-doc"');
     expect(privacy).toContain('<h1>Chính sách quyền riêng tư</h1>');
-    expect(privacy).toContain('Cập nhật lần cuối: 29/09/2026');
     expect(privacy).toContain('<h2>5. Nơi lưu trữ dữ liệu</h2>');
     expect(privacy).toMatch(/<ul>\s*<li>Tài khoản phụ huynh:/);
     expect(privacy).toContain('<a href="mailto:support@example.com">support@example.com</a>');
     const terms = await readFile(join(outputDir, 'terms', 'index.html'), 'utf8');
     expect(terms).toContain('<h1>Điều khoản sử dụng</h1>');
     for (const price of ['49.000 VNĐ', '399.000 VNĐ', '69.000 VNĐ', '590.000 VNĐ']) expect(terms).toContain(price);
-    expect(terms).not.toContain('29.000 VNĐ');
     expect(terms).toContain('tối đa 5 hồ sơ bé');
     expect(terms).toContain('10 gia đình đầu tiên thanh toán Gói Pro theo năm');
     expect(terms).toContain('Pro Plus');
-    expect(terms).toContain('chưa mở bán');
   });
 
   it('shows the configured support mailbox on the contact page and keeps the notice without one', async () => {

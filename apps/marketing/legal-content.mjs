@@ -3,14 +3,16 @@ import { plans } from './site-content.mjs';
 // Nội dung pháp lý dùng chung cho website giới thiệu và ứng dụng.
 // Mỗi khối là một đoạn văn (chuỗi) hoặc một danh sách (mảng chuỗi).
 
-export const legalVersion = '2026-09-29';
-export const legalUpdatedLabel = '29/09/2026';
+export const legalVersion = '2026-10-11';
+export const legalUpdatedLabel = '11/10/2026';
 
 const planDescriptors = {
   solo_monthly: 'tối đa 1 hồ sơ bé',
   solo_yearly: 'tối đa 1 hồ sơ bé, thanh toán một lần cho 12 tháng',
   monthly: 'tối đa 5 hồ sơ bé',
   yearly: 'tối đa 5 hồ sơ bé, thanh toán một lần cho 12 tháng',
+  pro_plus_monthly: 'mọi quyền lợi Gói Pro (tối đa 5 bé) và gợi ý AI 10 lượt/ngày',
+  pro_plus_yearly: 'mọi quyền lợi Gói Pro (tối đa 5 bé) và gợi ý AI 10 lượt/ngày, thanh toán một lần cho 12 tháng',
 };
 
 function priceLine(plan) {
@@ -191,9 +193,11 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         blocks: [
           'Các gói trả phí hiện có:',
           plans.map(priceLine),
+          'Add-on AI: 29.000đ/tháng, chỉ cho gia đình đang có Gói Cơ bản hoặc Gói Pro còn hạn. Mỗi lần mua cộng 1 tháng, không hoàn tiền tự động ngoài chính sách hoàn tiền chung và không áp dụng mã giới thiệu.',
           'Dùng thử 7 ngày có quyền lợi của Gói Pro, tối đa 5 hồ sơ bé. Giới hạn số bé chỉ chặn khi thêm hồ sơ mới; gia đình đang có nhiều hồ sơ hơn mức của gói vẫn giữ nguyên các hồ sơ hiện có.',
-          'Gói Pro Plus (gồm Gói Pro và Huấn luyện viên thói quen) đang phát triển, chưa mở bán và chưa có ngày ra mắt.',
-          'Ưu đãi ra mắt: 10 gia đình đầu tiên thanh toán Gói Pro theo năm trước khi Pro Plus ra mắt được nâng cấp miễn phí lên Pro Plus cho phần còn lại của năm đã trả. Mỗi gia đình tối đa một suất, tính theo thứ tự thanh toán thành công. Suất bị thu hồi nếu đơn thanh toán đó được hoàn tiền.',
+          'Gói Pro Plus hiện đã mở bán. Mọi phụ huynh đã đồng ý dùng AI được dùng gợi ý AI với giới hạn chung cho cả gia đình là 1 lượt/ngày; Gói Pro Plus hoặc Add-on AI có giới hạn 10 lượt/ngày cho cả gia đình.',
+          'Ưu đãi ra mắt: 10 gia đình đầu tiên thanh toán Gói Pro theo năm được dùng Pro Plus miễn phí trong 1 năm kể từ ngày thanh toán đơn đó. Mỗi gia đình tối đa một suất, tính theo thứ tự thanh toán thành công. Suất bị thu hồi nếu đơn thanh toán đó được hoàn tiền.',
+          'Gia đình không thể mua gói thấp hơn khi gói cao hơn vẫn còn hiệu lực. Thứ tự gói từ cao xuống thấp là Gói Pro Plus > Gói Pro > Gói Cơ bản.',
           'Giá, thời hạn và quyền lợi áp dụng cho đơn được hiển thị trước khi bạn tạo mã thanh toán. Thanh toán bằng VNĐ qua chuyển khoản do PayOS xử lý, hiện phục vụ người dùng tại Việt Nam.',
           'Mỗi khoản thanh toán chỉ áp dụng cho kỳ đã chọn. KidHabit không tự động gia hạn hoặc tự động ghi nợ kỳ tiếp theo; khi hết hạn, bạn chủ động chọn và thanh toán lại nếu muốn tiếp tục.',
           'Gói được kích hoạt sau khi PayOS xác nhận giao dịch. Nếu đã chuyển khoản mà gói chưa được kích hoạt, hãy gửi mã đơn và thời điểm giao dịch tới email hỗ trợ.',
@@ -271,7 +275,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         blocks: [
           'Hoa hồng là 20% số tiền gia đình được giới thiệu thực trả cho mỗi đơn gói Năm hoặc Trọn đời, làm tròn xuống đồng gần nhất, trong 12 tháng đầu từ ngày tạo tài khoản người dùng được giới thiệu, không phải ngày tạo gia đình. Gói tháng không sinh hoa hồng. Dùng thử miễn phí không phát sinh hoa hồng.',
           'Đơn hàng sinh hoa hồng phải thuộc gia đình do người được giới thiệu sở hữu, dù phụ huynh hoặc người giám hộ nào trong gia đình thanh toán. Thanh toán cho gia đình mà người được giới thiệu không sở hữu không sinh hoa hồng.',
-          'Gia đình được giới thiệu (bằng liên kết hoặc nhập mã trong ứng dụng) được giảm 10% khi mua một trong hai gói năm (Gói Cơ bản hoặc Gói Pro) lần đầu. Hoa hồng của bạn tính trên số tiền họ thực trả sau khi giảm.',
+          'Gia đình được giới thiệu (bằng liên kết hoặc nhập mã trong ứng dụng) được giảm 10% (làm tròn xuống nghìn đồng) khi mua một trong các gói năm (Gói Cơ bản, Gói Pro hoặc Gói Pro Plus) lần đầu. Hoa hồng của bạn tính trên số tiền họ thực trả sau khi giảm.',
           'Tên hiển thị của bạn sẽ hiện cho gia đình được giới thiệu khi họ thanh toán.',
           'Việc ghi nhận chỉ áp dụng trong 60 ngày kể từ ngày người được giới thiệu (chủ gia đình) tạo tài khoản người dùng, trước khi các gia đình do tài khoản đó sở hữu có đơn đã thanh toán. Mỗi tài khoản chủ gia đình chỉ gắn với một người giới thiệu; xóa hoặc tạo lại gia đình không đặt lại điều kiện hay thời hạn. Nếu có nhiều liên kết, liên kết được dùng sau cùng trước khi ghi nhận được tính.',
           'Tỉ lệ, thời hạn ghi nhận, thời hạn hưởng và mức rút tối thiểu có thể thay đổi cho các gia đình đăng ký sau thời điểm thay đổi; thay đổi được thông báo trên trang này.',
