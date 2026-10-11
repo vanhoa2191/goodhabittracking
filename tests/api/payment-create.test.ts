@@ -52,6 +52,14 @@ describe('POST /api/payment/create atomic order reservation', () => {
   const eq = vi.fn();
   let discount = 1000;
   let pending: Record<string, unknown> | null = null;
+  let referrerLookup: { owner: unknown; referral: unknown; profile: unknown; error: unknown };
+  const lookupChain = (table: string) => {
+    const result = () => ({ data: table === 'family_memberships' ? referrerLookup.owner : table === 'referrals' ? referrerLookup.referral : referrerLookup.profile, error: referrerLookup.error });
+    const chain: Record<string, unknown> = {};
+    for (const name of ['select', 'eq', 'order', 'limit']) chain[name] = () => chain;
+    chain.maybeSingle = async () => result();
+    return chain;
+  };
   afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
   function post(planId: string) {
     return POST(new NextRequest('http://localhost/api/payment/create', {
@@ -61,12 +69,12 @@ describe('POST /api/payment/create atomic order reservation', () => {
   beforeEach(() => {
     rpc.mockReset(); update.mockReset(); eq.mockReset();
     createPayOSPayment.mockReset(); cancelPayOSPayment.mockReset();
-    discount = 1000; pending = null;
+    discount = 1000; pending = null; referrerLookup = { owner: { user_id: 'owner-1' }, referral: { referrer_user_id: 'ref-1' }, profile: { display_name: 'Lan' }, error: null };
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ code: '00', data: { orderCode: 987, amount: 399000, amountPaid: 0, status: 'PENDING' } }))));
     rpc.mockImplementation(async (_name, args) => {
       const yearly = ['yearly', 'solo_yearly'].includes(args.selected_plan);
-      const price = { monthly: 59000, yearly: 590000, solo_monthly: 39000, solo_yearly: 399000 }[args.selected_plan as 'monthly'];
-      return { data: [{ amount: price * (1 - (yearly ? discount : 0) / 10000), discount_bps: yearly ? discount : 0 }], error: null };
+      const price = { monthly: 69000, yearly: 590000, solo_monthly: 49000, solo_yearly: 399000 }[args.selected_plan as 'monthly'];
+      return { data: [{ amount: Math.floor(price * (1 - (yearly ? discount : 0) / 10000) / 1000) * 1000, discount_bps: yearly ? discount : 0 }], error: null };
     });
     const chain: Record<string, unknown> = {};
     chain.eq = (...args: unknown[]) => { eq(...args); return chain; };
@@ -74,22 +82,65 @@ describe('POST /api/payment/create atomic order reservation', () => {
     chain.maybeSingle = async () => ({ data: pending, error: null });
     chain.then = (resolve: (value: unknown) => void) => resolve({ error: null });
     update.mockReturnValue(chain);
-    createAdminSupabaseClient.mockReturnValue({ rpc, from: () => ({ update, select: () => chain }) });
+    createAdminSupabaseClient.mockReturnValue({ rpc, from: (table: string) => (['family_memberships', 'referrals', 'parent_profiles'].includes(table) ? lookupChain(table) : { update, select: () => chain }) });
     createPayOSPayment.mockImplementation(async (input) => ({ ...input, checkoutUrl: 'https://pay.example/x', paymentLinkId: 'link' }));
     cancelPayOSPayment.mockResolvedValue(undefined);
   });
-  it.each([['yearly', 531000, 590000], ['solo_yearly', 359100, 399000]])('uses the atomic DB price for %s', async (planId, amount, listPrice) => {
+  it.each([['yearly', 531000, 590000], ['solo_yearly', 359000, 399000]])('uses the atomic DB price for %s', async (planId, amount, listPrice) => {
     const response = await post(String(planId));
     expect(response.status).toBe(200);
     expect(rpc).toHaveBeenCalledWith('create_family_payment_order', expect.objectContaining({ target_family: 'family-a', actor_id: 'user-a', selected_plan: planId }));
     expect(createPayOSPayment).toHaveBeenCalledWith(expect.objectContaining({ amount, expiresAt: expect.any(String) }));
-    await expect(response.json()).resolves.toMatchObject({ payment: { amount, listPrice, discountPercent: 10 } });
+    const body = await response.json();
+    expect(body.payment).toMatchObject({ amount, listPrice, discountAmount: listPrice - amount, referrerName: 'Lan' });
+    expect(body.payment).not.toHaveProperty('discountPercent');
   });
-  it.each([['monthly', 59000], ['solo_monthly', 39000], ['yearly', 590000], ['solo_yearly', 399000]])('uses list price when not eligible for %s', async (planId, amount) => {
+  it('reports a referred Solo yearly order as 399000 less 40000 from Lan', async () => {
+    const body = await (await post('solo_yearly')).json();
+    expect(body.payment).toMatchObject({ amount: 359000, listPrice: 399000, discountAmount: 40000, referrerName: 'Lan' });
+  });
+  it('truncates referrer names by code points without splitting an emoji', async () => {
+    const expected = `${'x'.repeat(39)}😀`;
+    referrerLookup.profile = { display_name: ` ${expected}extra ` };
+    const response = await post('solo_yearly');
+    expect(response.status).toBe(200);
+    const { payment } = await response.json();
+    expect(payment.referrerName).not.toMatch(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/);
+    expect(Array.from(payment.referrerName)).toHaveLength(40);
+    expect(payment.referrerName).toBe(expected);
+    expect(update).toHaveBeenCalledWith(expect.objectContaining({ checkout_payment: expect.objectContaining({ referrerName: expected }) }));
+    expect(cancelPayOSPayment).not.toHaveBeenCalled();
+  });
+  it.each([
+    ['lone surrogates and controls', ' \uD800La\u0000n\uDC00\u007F\u0085😀 ', 'Lan😀'],
+    ['only invalid characters', '\uD800\u0000\uDC00', null],
+  ])('strips %s from referrer names before saving checkout', async (_label, displayName, expected) => {
+    referrerLookup.profile = { display_name: displayName };
+    const response = await post('solo_yearly');
+    expect(response.status).toBe(200);
+    const { payment } = await response.json();
+    expect(payment.referrerName).toBe(expected);
+    expect(update).toHaveBeenCalledWith(expect.objectContaining({ checkout_payment: expect.objectContaining({ referrerName: expected }) }));
+  });
+  it.each([
+    ['blank name', { profile: { display_name: '   ' } }, null],
+    ['long name', { profile: { display_name: ` ${'x'.repeat(60)} ` } }, 'x'.repeat(40)],
+    ['no referral row', { referral: null }, null],
+    ['lookup error', { error: { message: 'boom' } }, null],
+  ])('keeps checkout working with %s', async (_label, patch, expected) => {
+    Object.assign(referrerLookup, patch);
+    const response = await post('yearly');
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.payment).toMatchObject({ amount: 531000, discountAmount: 59000, referrerName: expected });
+  });
+  it.each([['monthly', 69000], ['solo_monthly', 49000], ['yearly', 590000], ['solo_yearly', 399000]])('uses list price when not eligible for %s', async (planId, amount) => {
     discount = 0;
     const body = await (await post(String(planId))).json();
     expect(body.payment.amount).toBe(amount);
     expect(body.payment.listPrice).toBeUndefined();
+    expect(body.payment).not.toHaveProperty('discountAmount');
+    expect(body.payment).not.toHaveProperty('referrerName');
   });
   it('refuses a concurrent yearly checkout before opening another provider link', async () => {
     pending = { order_code: 987, family_id: 'family-a', plan_id: 'yearly', amount: 590000, description: 'KIDHABIT 987', status: 'PENDING', expires_at: new Date(Date.now() + 60000).toISOString() };

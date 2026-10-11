@@ -53,8 +53,8 @@ describe('plan catalog', () => {
 
   it('holds the prices and the launch offer', () => {
     expect(PLAN_PRICES).toEqual({
-      solo: { month: 39000, year: 399000 },
-      pro: { month: 59000, year: 590000 },
+      solo: { month: 49000, year: 399000 },
+      pro: { month: 69000, year: 590000 },
       pro_plus: { month: 79000, year: 790000 },
     });
     expect(LAUNCH_OFFER).toEqual({ code: 'pro_plus_founding', slots: 10, planId: 'yearly' });

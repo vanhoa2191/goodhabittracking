@@ -85,7 +85,7 @@ Les codes cadeaux sont créés par l’équipe des opérations. Saisissez-en un 
 <a id="giam-gia"></a>
 ## Réduction pour les familles parrainées
 
-Une famille qui saisit un code de parrainage (via un lien `?ref=` ou manuellement) bénéficie de **10 % de réduction sur son premier forfait annuel**, si elle n’a encore passé aucune commande payante (399,000 VND passe à 359,100 VND). L’écran de paiement affiche « 10 % de réduction grâce au code de parrainage ». Détails : [8. Parrainage](08-gioi-thieu-ban-be.md#giam-10).
+Une famille qui saisit un code de parrainage (via un lien `?ref=` ou manuellement) bénéficie de **10 % de réduction sur son premier forfait annuel**, si elle n’a encore passé aucune commande payante (399,000 VND passe à 359,000 VND, 40,000 VND de réduction). L’écran de paiement affiche : Vous économisez X grâce au parrainage de <nom d'affichage du parrain>. Détails : [8. Parrainage](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Remboursements et annulation

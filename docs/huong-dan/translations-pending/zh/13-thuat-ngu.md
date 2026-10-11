@@ -25,7 +25,7 @@
 | **设备配对** | 使用代码或 QR 码将一台设备关联至一名特定儿童 | [5](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi) |
 | **适龄习惯包** | 一键加载、适用于儿童年龄组的六项入门任务 | [5](05-gia-dinh-va-cai-dat.md#ho-so) |
 | **联赛段位** | 根据累计星星确定的青铜、白银、黄金或钻石段位 | [2](02-man-hinh-be.md#sao-cap-chuoi) |
-| **佣金** | 被推荐家庭实际付款金额的 30% | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
+| **佣金** | 被推荐家庭购买年付计划或终身计划实际付款金额的 20%；月付计划不产生佣金 | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
 | **今天** | 家长区域的第一部分：审批和统计 | [3](03-hom-nay-va-duyet-viec.md) |
 | **徽章** | 达成里程碑后解锁的奖励：5 个基础徽章和 16 枚人物徽章 | [2](02-man-hinh-be.md#huy-hieu) |
 | **47 项习惯框架** | 适用于 0–18 岁、横跨 5 个阶段和 5 个领域的一组习惯 | [6](06-khoa-hoc-thoi-quen.md#khung) |

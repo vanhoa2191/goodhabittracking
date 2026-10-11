@@ -25,7 +25,7 @@ Begriffe, die in der Dokumentation verwendet werden, alphabetisch geordnet und m
 | **Gerätekopplung** | Verknüpft ein Gerät über einen Code oder QR-Code mit einem bestimmten Kind | [5](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi) |
 | **Altersgerechtes Paket** | Eine Auswahl von sechs Startaufgaben, die mit einem Tippen für die Altersgruppe des Kindes geladen werden | [5](05-gia-dinh-va-cai-dat.md#ho-so) |
 | **Ligastufe** | Bronze, Silber, Gold oder Diamant, basierend auf den insgesamt verdienten Sternen | [2](02-man-hinh-be.md#sao-cap-chuoi) |
-| **Provision** | 30 % des tatsächlichen Betrags, den eine geworbene Familie bezahlt hat | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
+| **Provision** | 20 % des tatsächlichen Betrags für jede Bestellung des Jahres- oder Lifetime-Tarifs einer geworbenen Familie. Monatliche Tarife erhalten keine Provision. | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
 | **Heute** | Erster Elternbereich: Bestätigungen und Analysen | [3](03-hom-nay-va-duyet-viec.md) |
 | **Abzeichen** | Eine Belohnung, die bei einem erreichten Meilenstein freigeschaltet wird: 5 einfache und 16 Profilabzeichen | [2](02-man-hinh-be.md#huy-hieu) |
 | **Rahmenwerk mit 47 Gewohnheiten** | Gewohnheiten für das Alter von 0 bis 18 Jahren, aufgeteilt auf 5 Stufen und 5 Bereiche | [6](06-khoa-hoc-thoi-quen.md#khung) |

@@ -82,6 +82,7 @@ describe('blocked affiliate payout actions', () => {
     const panel = await AdminAffiliatePanel({ canSeeFullAccounts: true, adminId: 'admin' });
     hooks.index = 0;
     const html = renderToStaticMarkup(createElement('div', null, panel));
+    expect(html).toContain('Hoa hồng 20% mỗi đơn gói Năm/Trọn đời');
     expect(html).toMatch(/role="alert"[^>]*>[^<]*7654321, 7654322/);
     const renderedButtons = [...html.matchAll(/<button\b([^>]*)>/g)];
     expect(renderedButtons).toHaveLength(2);

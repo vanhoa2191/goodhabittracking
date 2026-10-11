@@ -25,7 +25,7 @@ KidHabit Hero는 부모와 자녀가 매일 작은 행동을 실천하며 좋은
 5. [가족 및 설정](05-gia-dinh-va-cai-dat.md): 자녀 프로필, 기기 연결, 돌봄 제공자, 계정, PIN, 화면 표시, 개인정보, 알림, 앱 설치, 데이터 및 휴식.
 6. [습관 과학](06-khoa-hoc-thoi-quen.md): 원칙, 네 단계, 제안 로직, 16가지 인성 프로필, 나눔의 7가지 실천.
 7. [요금제 및 결제](07-goi-va-thanh-toan.md): 체험, 요금제, PayOS, 활성화, 쿠폰, 환불 및 이메일.
-8. [친구 추천](08-gioi-thieu-ban-be.md): 추천 코드, 10% 할인, 30% 수수료 및 출금.
+8. [친구 추천](08-gioi-thieu-ban-be.md): 추천 코드, 10% 할인, 20% 수수료 및 출금.
 9. [보안 및 개인정보](09-bao-mat-va-rieng-tu.md): PIN, 연결 코드, 동의, 자녀 데이터 및 데이터 삭제.
 10. [관리 및 운영](10-quan-tri-va-van-hanh.md): 관리자 페이지, 역할, 고객 지원, 백그라운드 작업 및 기술 문서.
 11. [웹사이트 및 공개 페이지](11-website-va-trang-cong-khai.md): 시작 페이지, 블로그, 체계, 로드맵, 과학 및 법률 페이지.
@@ -96,7 +96,7 @@ KidHabit Hero에는 각각 별도 주소가 있는 두 공간이 있습니다.
 | 7일 체험 | 부모 | `/start`, 요금, 설정 | 가족당 한 번 | 켜짐 | [7](07-goi-va-thanh-toan.md#dung-thu) |
 | PayOS를 통한 VietQR 결제 | 부모 | 요금, `/checkout` | 로그인 | 켜짐 | [7](07-goi-va-thanh-toan.md#thanh-toan) |
 | 선물 코드(쿠폰) | 부모 | 가족 → 계정 | 유효한 코드 | 켜짐 | [7](07-goi-va-thanh-toan.md#coupon) |
-| 친구 추천, 10% 할인, 30% 수수료 | 부모 | 설정, `?ref=` 링크 | 출금 시 PIN 필요 | 켜짐 | [8](08-gioi-thieu-ban-be.md) |
+| 친구 추천, 10% 할인, 20% 수수료 | 부모 | 설정, `?ref=` 링크 | 출금 시 PIN 필요 | 켜짐 | [8](08-gioi-thieu-ban-be.md) |
 | 라이프사이클 이메일 | 부모 | 받은 편지함 | 이메일 설정 | 설정에 따름 | [7](07-goi-va-thanh-toan.md#email) |
 | 관리자 페이지(6개 섹션) | 관리자 | `/admin` | 역할 및 2단계 인증 | 켜짐 | [10](10-quan-tri-va-van-hanh.md#admin) |
 

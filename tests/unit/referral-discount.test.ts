@@ -1,10 +1,16 @@
 import { describe, expect, it } from 'vitest';
 
 describe('referralDiscountLine', () => {
-  it('names the percentage and the list price in Vietnamese and English', async () => {
+  it('names the discount amount and the referrer in Vietnamese and English', async () => {
     const { referralDiscountLine } = await import('@/lib/i18n/referral-discount-copy');
-    expect(referralDiscountLine('vi', 10, '399.000 ₫')).toBe('Đã giảm 10% nhờ mã giới thiệu (giá gốc 399.000 ₫).');
-    expect(referralDiscountLine('en', 10, '399,000 ₫')).toBe('10% off with your referral code (list price 399,000 ₫).');
-    expect(referralDiscountLine('ja', 10, '399,000 ₫')).toContain('10%');
+    expect(referralDiscountLine('vi', '40.000 ₫', 'Lan')).toBe('Ba/mẹ được giảm 40.000 ₫ thông qua giới thiệu của Lan.');
+    expect(referralDiscountLine('en', '40,000 ₫', 'Lan')).toBe('You save 40,000 ₫ thanks to a referral from Lan.');
+  });
+
+  it('falls back to another parent for a missing or blank name', async () => {
+    const { referralDiscountLine } = await import('@/lib/i18n/referral-discount-copy');
+    expect(referralDiscountLine('vi', '40.000 ₫', null)).toBe('Ba/mẹ được giảm 40.000 ₫ thông qua giới thiệu của một phụ huynh khác.');
+    expect(referralDiscountLine('vi', '40.000 ₫', '  ')).toBe('Ba/mẹ được giảm 40.000 ₫ thông qua giới thiệu của một phụ huynh khác.');
+    expect(referralDiscountLine('en', '40,000 ₫', null)).toBe('You save 40,000 ₫ thanks to a referral from another parent.');
   });
 });

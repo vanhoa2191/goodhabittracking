@@ -25,7 +25,7 @@ Các từ dùng xuyên suốt bộ tài liệu, theo thứ tự chữ cái, kèm
 | **Ghép thiết bị** | Liên kết một máy với đúng một bé bằng mã hoặc QR | [5](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi) |
 | **Gói theo tuổi** | Bộ sáu việc khởi đầu nạp một chạm theo nhóm tuổi của bé | [5](05-gia-dinh-va-cai-dat.md#ho-so) |
 | **Hạng giải đấu** | Đồng, Bạc, Vàng, Kim Cương theo tổng sao đã kiếm | [2](02-man-hinh-be.md#sao-cap-chuoi) |
-| **Hoa hồng** | 30% số tiền thực trả của gia đình được giới thiệu | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
+| **Hoa hồng** | 20% số tiền thực trả cho mỗi đơn gói Năm hoặc Trọn đời của gia đình được giới thiệu. Gói tháng không sinh hoa hồng. | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
 | **Hôm nay** | Khu phụ huynh đầu tiên: Duyệt việc và Thống kê | [3](03-hom-nay-va-duyet-viec.md) |
 | **Huy hiệu** | Phần thưởng mở khi đạt mốc: 5 cơ bản và 16 chân dung | [2](02-man-hinh-be.md#huy-hieu) |
 | **Khung 47 thói quen** | Bộ thói quen 0–18 tuổi, 5 giai đoạn, 5 lĩnh vực | [6](06-khoa-hoc-thoi-quen.md#khung) |

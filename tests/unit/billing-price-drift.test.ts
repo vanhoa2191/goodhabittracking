@@ -5,7 +5,7 @@ import { PAID_PLAN_IDS, PLAN_PRICES, planCycle, planTier } from '@/lib/billing/p
 
 describe('database checkout price catalog', () => {
   it('charges every sellable plan at the same list price as the application catalog', () => {
-    const migration = readFileSync(resolve('supabase/migrations/202610090010_billing_payment_hardening.sql'), 'utf8');
+    const migration = readFileSync(resolve('supabase/migrations/202610100001_money_model_v2.sql'), 'utf8');
     const priceCase = migration.match(/list_price := case selected_plan([\s\S]*?)end;/)?.[1];
     expect(priceCase).toBeDefined();
     const amounts = Object.fromEntries(Array.from(priceCase!.matchAll(/when '([^']+)' then (\d+)/g), ([, plan, amount]) => [plan, Number(amount)]));

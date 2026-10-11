@@ -25,7 +25,7 @@ KidHabit Hero aiuta genitori e bambini a sviluppare buone abitudini attraverso p
 5. [Famiglia e impostazioni](05-gia-dinh-va-cai-dat.md): profili dei bambini, abbinamento dei dispositivi, persone che si prendono cura dei bambini, account, PIN, aspetto, privacy, promemoria, installazione dell'app, dati e pause.
 6. [Scienza delle abitudini](06-khoa-hoc-thoi-quen.md): principi, quattro fasi, logica dei suggerimenti, 16 profili caratteriali e 7 modalità di dare.
 7. [Piani e pagamenti](07-goi-va-thanh-toan.md): prove, piani, PayOS, attivazione, coupon, rimborsi ed e-mail.
-8. [Presenta un amico](08-gioi-thieu-ban-be.md): codici invito, sconti del 10%, commissioni del 30% e prelievi.
+8. [Presenta un amico](08-gioi-thieu-ban-be.md): codici invito, sconti del 10%, commissioni del 20% e prelievi.
 9. [Sicurezza e privacy](09-bao-mat-va-rieng-tu.md): PIN, codici di abbinamento, consenso, dati dei bambini ed eliminazione dei dati.
 10. [Amministrazione e operazioni](10-quan-tri-va-van-hanh.md): pagina di amministrazione, ruoli, assistenza clienti, attività in background e documentazione tecnica.
 11. [Sito web e pagine pubbliche](11-website-va-trang-cong-khai.md): pagina di destinazione, blog, struttura, percorso, scienza e pagine legali.
@@ -96,7 +96,7 @@ La colonna «Stato» indica se una funzione è attiva per tutti gli utenti (**At
 | Prova di 7 giorni | Genitori | `/start`, prezzi, configurazione | Una volta per famiglia | Attiva | [7](07-goi-va-thanh-toan.md#dung-thu) |
 | Pagamento VietQR tramite PayOS | Genitori | Prezzi, `/checkout` | Accesso | Attiva | [7](07-goi-va-thanh-toan.md#thanh-toan) |
 | Codice regalo (coupon) | Genitori | Famiglia → Account | Codice valido | Attiva | [7](07-goi-va-thanh-toan.md#coupon) |
-| Invita un amico, sconto del 10%, commissione del 30% | Genitori | Impostazioni, link `?ref=` | PIN richiesto per prelevare | Attiva | [8](08-gioi-thieu-ban-be.md) |
+| Invita un amico, sconto del 10%, commissione del 20% | Genitori | Impostazioni, link `?ref=` | PIN richiesto per prelevare | Attiva | [8](08-gioi-thieu-ban-be.md) |
 | E-mail relative al ciclo di vita | Genitori | Posta in arrivo | Configurazione e-mail | In base alla configurazione | [7](07-goi-va-thanh-toan.md#email) |
 | Pagina di amministrazione (6 sezioni) | Amministratori | `/admin` | Ruolo e verifica in due passaggi | Attiva | [10](10-quan-tri-va-van-hanh.md#admin) |
 

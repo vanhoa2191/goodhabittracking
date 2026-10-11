@@ -85,7 +85,7 @@ I codici regalo vengono creati dal team operativo. Ne inserisca uno in `Settings
 <a id="giam-gia"></a>
 ## Sconto per le famiglie segnalate
 
-Una famiglia che inserisce un codice di segnalazione (tramite un link `?ref=` oppure inserendolo manualmente) ottiene **il 10% di sconto sul primo piano annuale** (399,000 VND diventano 359,100 VND), solo se non ha ordini pagati precedenti. La schermata di pagamento mostra «Sconto del 10% grazie al codice di segnalazione». Dettagli: [8. Segnalazioni](08-gioi-thieu-ban-be.md#giam-10).
+Una famiglia che inserisce un codice di segnalazione (tramite un link `?ref=` oppure inserendolo manualmente) ottiene **il 10% di sconto sul primo piano annuale** (399,000 VND diventano 359,000 VND, sconto di 40,000 VND), solo se non ha ordini pagati precedenti. La schermata di pagamento mostra: Risparmi X grazie all'invito di <nome visualizzato di chi invita>. Dettagli: [8. Segnalazioni](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Rimborsi e cancellazione

@@ -13,6 +13,33 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export const runtime = 'nodejs';
 
+const REFERRER_NAME_MAX = 40;
+
+// Best effort: a failed lookup must never block checkout, the line just uses its fallback name.
+async function findReferrerName(admin: ReturnType<typeof createAdminSupabaseClient>, familyId: string): Promise<string | null> {
+  try {
+    const { data: owner, error: ownerError } = await admin.from('family_memberships')
+      .select('user_id').eq('family_id', familyId).eq('role', 'owner').maybeSingle();
+    if (ownerError) throw ownerError;
+    if (!owner) return null;
+    const { data: referral, error: referralError } = await admin.from('referrals')
+      .select('referrer_user_id').eq('referred_user_id', owner.user_id)
+      .order('created_at', { ascending: true }).order('id', { ascending: true }).limit(1).maybeSingle();
+    if (referralError) throw referralError;
+    if (!referral) return null;
+    const { data: profile, error: profileError } = await admin.from('parent_profiles')
+      .select('display_name').eq('user_id', referral.referrer_user_id).maybeSingle();
+    if (profileError) throw profileError;
+    // Unicode mode preserves valid surrogate pairs while stripping lone surrogates and controls.
+    const trimmed = typeof profile?.display_name === 'string' ? profile.display_name.replace(/[\p{Cs}\p{Cc}]/gu, '').trim() : '';
+    const name = Array.from(trimmed).slice(0, REFERRER_NAME_MAX).join('').trim();
+    return name || null;
+  } catch (error) {
+    console.warn('Referrer name lookup failed:', error instanceof Error ? error.message : 'unknown');
+    return null;
+  }
+}
+
 export async function POST(request: NextRequest) {
   const crossSite = rejectCrossSiteRequest(request);
   if (crossSite) return crossSite;
@@ -35,7 +62,6 @@ export async function POST(request: NextRequest) {
     const expiresAt = new Date(Date.now() + PAYMENT_LINK_LIFETIME_MS).toISOString();
     let orderCode = 0;
     let amount = 0;
-    let discountBps = 0;
     let reserved = false;
     let insertError: { code?: string; message?: string } | null = null;
     for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -52,7 +78,6 @@ export async function POST(request: NextRequest) {
         const order = Array.isArray(result.data) ? result.data[0] : result.data;
         if (!order || typeof order.amount !== 'number' || typeof order.discount_bps !== 'number') throw new Error('Invalid payment order.');
         amount = order.amount;
-        discountBps = order.discount_bps;
         if (order.existing_order_code) {
           const { data: pending, error: readError } = await admin.from('payment_orders')
             .select('order_code,family_id,user_id,family_owner_user_id,plan_id,amount,description,status,created_at,expires_at,payment_link_id,checkout_payment,checkout_creation_finished_at')
@@ -101,7 +126,9 @@ export async function POST(request: NextRequest) {
     try {
       const payment = await createPayOSPayment({ planId: parsed.data.planId, orderCode, amount, expiresAt });
       const { paymentLinkId, ...publicPayment } = payment;
-      const discount = amount < plan.price ? { listPrice: plan.price, discountPercent: Math.round(discountBps / 100) } : {};
+      const discount = amount < plan.price
+        ? { listPrice: plan.price, discountAmount: plan.price - amount, referrerName: await findReferrerName(admin, parent.familyId) }
+        : {};
       const checkoutPayment = { ...publicPayment, ...discount };
       const { error: updateError } = await admin
         .from('payment_orders')

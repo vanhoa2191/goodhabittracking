@@ -123,7 +123,7 @@ begin
   if result <> 'activated' then raise exception 'Monthly fixture failed'; end if;
   checkout_code := checkout_code + 1;
   select * into checkout from public.create_family_payment_order(fixture.family, fixture.actor, checkout_code, 'solo_yearly', now() - interval '1 minute');
-  if checkout.amount <> 359100 or checkout.discount_bps <> 1000 then raise exception 'Monthly history must not consume yearly discount'; end if;
+  if checkout.amount <> 359000 or checkout.discount_bps <> 1000 then raise exception 'Monthly history must not consume yearly discount'; end if;
   select * into checkout from public.create_family_payment_order(fixture.family, fixture.actor, checkout_code + 1, 'yearly', now() + interval '15 minutes');
   if checkout.existing_order_code is distinct from checkout_code then raise exception 'Concurrent yearly checkout bypassed reservation'; end if;
   if exists (select 1 from public.payment_orders where order_code = checkout_code + 1) then raise exception 'Pending lookup inserted a second order'; end if;
@@ -220,7 +220,7 @@ begin
   delete from public.family_memberships where user_id = payer_fixture.actor;
   insert into public.family_memberships(family_id, user_id, role) values (family_fixture.family, payer_fixture.actor, 'parent');
   select * into checkout from public.create_family_payment_order(family_fixture.family, payer_fixture.actor, 8100000000000033, 'solo_yearly', now() + interval '15 minutes');
-  if checkout.amount <> 359100 then raise exception 'Referred payer must qualify even when the owner is not referred'; end if;
+  if checkout.amount <> 359000 then raise exception 'Referred payer must qualify even when the owner is not referred'; end if;
   update public.payment_orders set status = 'CANCELLED' where order_code = 8100000000000033;
   -- Restore ownership while seeding the historical payment, then move back as co-parent.
   delete from public.family_memberships where user_id = payer_fixture.actor;

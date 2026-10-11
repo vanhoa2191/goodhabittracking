@@ -76,7 +76,7 @@ export async function AdminAffiliatePanel({ canSeeFullAccounts, adminId }: { rea
     <section aria-labelledby="affiliate-admin-title" className="space-y-4 rounded-3xl border border-slate-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
       <div>
         <h2 id="affiliate-admin-title" className="text-lg font-black">Chương trình giới thiệu</h2>
-        <p className="mt-1 text-sm text-slate-500">Hoa hồng 30% mỗi đơn; khoản mới giữ 40 ngày kể từ thanh toán thành công, khoản cũ giữ nguyên ngày có thể rút. Hồ sơ thanh toán hoặc hoàn tiền đang mở sẽ chặn rút và chuyển khoản. Chỉ chuyển khoản khi yêu cầu không bị chặn, rồi ghi mã giao dịch; đơn đã xác nhận hoàn tiền cần từ chối yêu cầu rút trước khi thu hồi hoa hồng.</p>
+        <p className="mt-1 text-sm text-slate-500">Hoa hồng 20% mỗi đơn gói Năm/Trọn đời; khoản mới giữ 40 ngày kể từ thanh toán thành công, khoản cũ giữ nguyên ngày có thể rút. Hồ sơ thanh toán hoặc hoàn tiền đang mở sẽ chặn rút và chuyển khoản. Chỉ chuyển khoản khi yêu cầu không bị chặn, rồi ghi mã giao dịch; đơn đã xác nhận hoàn tiền cần từ chối yêu cầu rút trước khi thu hồi hoa hồng.</p>
       </div>
       <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {cards.map(([label, value]) => (

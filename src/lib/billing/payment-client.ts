@@ -20,7 +20,8 @@ const paymentSchema = z.object({
   checkoutUrl: z.string().url(),
   planId: paidPlanSchema,
   listPrice: z.number().int().positive().optional(),
-  discountPercent: z.number().int().min(1).max(50).optional(),
+  discountAmount: z.number().int().positive().optional(),
+  referrerName: z.string().nullable().optional(),
 });
 
 const createPaymentResponseSchema = z.discriminatedUnion('success', [

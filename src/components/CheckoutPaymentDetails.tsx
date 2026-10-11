@@ -25,6 +25,7 @@ export function CheckoutPaymentDetails({
 }: CheckoutPaymentDetailsProps) {
   const { language, t } = useTranslation();
   const [qrSaved, setQrSaved] = useState(false);
+  const discountAmount = payment.discountAmount ?? Math.max(0, (payment.listPrice ?? payment.amount) - payment.amount);
 
   const downloadQr = async () => {
     try {
@@ -113,9 +114,9 @@ export function CheckoutPaymentDetails({
               <div className="font-mono font-black text-base text-indigo-700 dark:text-indigo-300">
                 {formatCurrency(payment.amount, language)}
               </div>
-              {payment.discountPercent && payment.listPrice ? (
+              {discountAmount > 0 ? (
                 <div className="mt-1 text-xs font-bold text-emerald-700 dark:text-emerald-300">
-                  {referralDiscountLine(language, payment.discountPercent, formatCurrency(payment.listPrice, language))}
+                  {referralDiscountLine(language, formatCurrency(discountAmount, language), payment.referrerName ?? null)}
                 </div>
               ) : null}
             </div>

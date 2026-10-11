@@ -25,7 +25,7 @@ Termes utilisés dans l’ensemble de la documentation, par ordre alphabétique,
 | **Association d’un appareil** | Associe un appareil à un enfant précis avec un code ou un QR code | [5](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi) |
 | **Pack par âge** | Ensemble de six tâches de départ chargé en un geste selon la tranche d’âge de l’enfant | [5](05-gia-dinh-va-cai-dat.md#ho-so) |
 | **Catégorie de ligue** | Bronze, Argent, Or ou Diamant, selon le total d’étoiles gagnées | [2](02-man-hinh-be.md#sao-cap-chuoi) |
-| **Commission** | 30 % du montant effectivement payé par une famille parrainée | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
+| **Commission** | 20 % du montant effectivement payé pour chaque commande d'un forfait annuel ou à vie par une famille parrainée. Les forfaits mensuels ne génèrent pas de commission. | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
 | **Aujourd’hui** | Premier espace parental : Approbations et Statistiques | [3](03-hom-nay-va-duyet-viec.md) |
 | **Badge** | Récompense débloquée à une étape clé : 5 badges de base et 16 badges de portrait | [2](02-man-hinh-be.md#huy-hieu) |
 | **Cadre des 47 habitudes** | Ensemble d’habitudes pour les 0 à 18 ans, réparties en 5 étapes et 5 domaines | [6](06-khoa-hoc-thoi-quen.md#khung) |

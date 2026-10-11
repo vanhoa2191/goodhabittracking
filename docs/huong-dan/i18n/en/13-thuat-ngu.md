@@ -25,7 +25,7 @@ Terms used throughout the documentation, in alphabetical order, with links to de
 | **Device Pairing** | Links one device to one specific child using a code or QR code | [5](05-gia-dinh-va-cai-dat.md#ghep-thiet-bi) |
 | **Age-Based Pack** | A set of six starter tasks loaded with one tap for the child’s age group | [5](05-gia-dinh-va-cai-dat.md#ho-so) |
 | **League Tier** | Bronze, Silver, Gold, or Diamond based on total stars earned | [2](02-man-hinh-be.md#sao-cap-chuoi) |
-| **Commission** | 30% of the actual amount paid by a referred family | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
+| **Commission** | 20% of the actual amount paid on each yearly or lifetime order by a referred family. Monthly plans earn no commission. | [8](08-gioi-thieu-ban-be.md#hoa-hong) |
 | **Today** | The first parent area: Approvals and Analytics | [3](03-hom-nay-va-duyet-viec.md) |
 | **Badge** | A reward unlocked when a milestone is reached: 5 basic badges and 16 portrait badges | [2](02-man-hinh-be.md#huy-hieu) |
 | **47-Habit Framework** | A set of habits for ages 0–18, across 5 stages and 5 areas | [6](06-khoa-hoc-thoi-quen.md#khung) |

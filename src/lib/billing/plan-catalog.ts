@@ -9,8 +9,8 @@ export type PlanTier = 'solo' | 'pro' | 'pro_plus';
 
 /** Prices in VND. Pro Plus is announced, not on sale, so it has no plan id the payment code accepts. */
 export const PLAN_PRICES: Readonly<Record<PlanTier, { readonly month: number; readonly year: number }>> = {
-  solo: { month: 39000, year: 399000 },
-  pro: { month: 59000, year: 590000 },
+  solo: { month: 49000, year: 399000 },
+  pro: { month: 69000, year: 590000 },
   pro_plus: { month: 79000, year: 790000 },
 };
 

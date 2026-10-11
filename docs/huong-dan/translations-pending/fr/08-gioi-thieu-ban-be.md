@@ -13,8 +13,8 @@ Le programme s’adresse à deux parties, reliées par un **code de parrainage d
 
 | Partie | Avantage |
 |---|---|
-| **Parrain** (parent utilisant KidHabit) | **Commission de 30 %** sur le montant effectivement payé par la famille parrainée |
-| **Famille parrainée** | **10 % de réduction** sur le premier achat du forfait annuel (399,000 VND passe à 359,100 VND) |
+| **Parrain** (parent utilisant KidHabit) | **Commission de 20 %** sur le montant effectivement payé pour chaque commande d'un forfait annuel ou à vie de la famille parrainée. Les forfaits mensuels ne génèrent pas de commission. |
+| **Famille parrainée** | **10 % de réduction** sur le premier achat du forfait annuel (399,000 VND passe à 359,000 VND, 40,000 VND de réduction) |
 
 Conditions publiques : page `/gioi-thieu/` du [site web](11-website-va-trang-cong-khai.md#trang-chinh). <!--op-->Règles techniques et opérationnelles : [Programme de parrainage](../affiliate-program.md).<!--/op-->
 
@@ -25,14 +25,14 @@ Conditions publiques : page `/gioi-thieu/` du [site web](11-website-va-trang-con
 2. Copiez ou **partagez** « Votre lien de parrainage ». Vous pouvez envoyer le lien à votre proche ou lui communiquer le code à saisir manuellement.
 3. Suivez le nombre de familles inscrites et ayant payé, et les commissions agrégées en attente, disponibles, demandées et versées.
 
-Pas d’auto-parrainage ni de spam. Seuls les nombres et les commissions agrégées sont visibles, sans historique individuel ni informations sur les familles.
+Pas d’auto-parrainage ni de spam. Seuls les nombres et les commissions agrégées sont visibles, sans historique individuel ni informations sur les familles. Le nom d’affichage du parrain est présenté à la famille parrainée lors du paiement.
 
 <a id="giam-10"></a>
 ## Pour les familles parrainées
 
 - Ouvrez le lien `?ref=` de votre proche, puis connectez-vous et configurez votre famille comme d’habitude ; vous pouvez aussi **saisir le code manuellement** dans le champ « Avez-vous un code de parrainage ? » (dans `Settings` ou directement dans la fenêtre de paiement).
 - Le parrainage est enregistré et le message « Vous bénéficiez de 10 % de réduction sur votre premier forfait annuel » s’affiche.
-- Lors de votre premier achat du **forfait annuel**, le paiement affiche le prix réduit et la mention « 10 % de réduction grâce à votre code de parrainage ». Les forfaits Famille · Mensuel et À vie ne sont pas concernés.
+- Lors de votre premier achat du **forfait annuel**, le paiement affiche le prix réduit et : Vous économisez X grâce au parrainage de <nom d'affichage du parrain>. Les forfaits Famille · Mensuel et À vie ne sont pas concernés.
 - Chaque compte utilisateur ne peut être parrainé qu’une fois, dans les 60 jours suivant sa création et avant toute commande payée. Supprimer ou recréer une famille ne réinitialise ni les conditions ni la période de 12 mois. N’utilisez pas votre propre code.
 
 <a id="ghi-nhan"></a>
@@ -48,7 +48,7 @@ Le résultat s’affiche immédiatement : code enregistré ; code invalide ; vou
 <a id="hoa-hong"></a>
 ## Commissions
 
-- 30 % du montant réellement payé pour chaque paiement pendant les 12 premiers mois à partir de la création du compte utilisateur parrainé, et non de la famille. Par exemple, le paiement réduit de 359,100 VND pour le forfait annuel génère une commission de 107,730 VND.
+- 20 % du montant réellement payé pour chaque commande d'un forfait annuel ou à vie pendant les 12 premiers mois à partir de la création du compte utilisateur parrainé, et non de la famille. Les forfaits mensuels ne génèrent pas de commission. Par exemple, le paiement réduit de 359,000 VND pour le forfait annuel génère une commission de 71,800 VND.
 - Les nouvelles commissions sont retenues 40 jours à partir du paiement réussi pour couvrir le délai de remboursement de 30 jours et le traitement ; les dates de libération existantes restent inchangées. Elles restent gelées tant que la commande fait l’objet d’un dossier de remboursement ou d’assistance à la facturation ouvert. Une commande remboursée annule sa commission ; si elle a déjà été versée, nous contactons le parrain pour convenir du remboursement.
 - Le système crée automatiquement la commission lorsque la commande aboutit ([activation du forfait](07-goi-va-thanh-toan.md#kich-hoat)) ; une erreur à cette étape n’empêche jamais l’activation du forfait du client.
 

@@ -25,7 +25,7 @@ KidHabit Hero là ứng dụng giúp ba mẹ cùng con xây thói quen tốt t�
 5. [Gia đình và cài đặt](05-gia-dinh-va-cai-dat.md): hồ sơ các con, ghép thiết bị, người chăm sóc, tài khoản, PIN, giao diện, riêng tư, nhắc việc, cài ứng dụng, dữ liệu, tạm nghỉ.
 6. [Khoa học thói quen](06-khoa-hoc-thoi-quen.md): các nguyên tắc, bốn pha, logic gợi ý, 16 chân dung và 7 bố thí.
 7. [Gói và thanh toán](07-goi-va-thanh-toan.md): dùng thử, các gói, PayOS, kích hoạt, coupon, hoàn tiền, email.
-8. [Giới thiệu bạn bè](08-gioi-thieu-ban-be.md): mã giới thiệu, giảm 10%, hoa hồng 30%, rút tiền.
+8. [Giới thiệu bạn bè](08-gioi-thieu-ban-be.md): mã giới thiệu, giảm 10%, hoa hồng 20%, rút tiền.
 9. [Bảo mật và riêng tư](09-bao-mat-va-rieng-tu.md): PIN, mã ghép, đồng thuận, dữ liệu của trẻ, xóa dữ liệu.
 10. [Quản trị và vận hành](10-quan-tri-va-van-hanh.md): trang admin, vai trò, hỗ trợ khách, tác vụ nền, tài liệu kỹ thuật.
 11. [Website và trang công khai](11-website-va-trang-cong-khai.md): trang giới thiệu, blog, khung, lộ trình, khoa học, pháp lý.
@@ -96,7 +96,7 @@ Cột "Trạng thái" cho biết tính năng đang bật cho mọi người dùn
 | Dùng thử 7 ngày | Phụ huynh | `/start`, bảng giá, thiết lập | Một lần cho mỗi gia đình | Bật | [7](07-goi-va-thanh-toan.md#dung-thu) |
 | Thanh toán VietQR qua PayOS | Phụ huynh | Bảng giá, `/checkout` | Đăng nhập | Bật | [7](07-goi-va-thanh-toan.md#thanh-toan) |
 | Mã tặng (coupon) | Phụ huynh | Cài đặt → Tài khoản | Mã còn hiệu lực | Bật | [7](07-goi-va-thanh-toan.md#coupon) |
-| Giới thiệu bạn bè, giảm 10%, hoa hồng 30% | Phụ huynh | Cài đặt, liên kết `?ref=` | Có PIN để rút tiền | Bật | [8](08-gioi-thieu-ban-be.md) |
+| Giới thiệu bạn bè, giảm 10%, hoa hồng 20% | Phụ huynh | Cài đặt, liên kết `?ref=` | Có PIN để rút tiền | Bật | [8](08-gioi-thieu-ban-be.md) |
 | Email vòng đời | Phụ huynh | Hộp thư | Cấu hình email | Theo cấu hình | [7](07-goi-va-thanh-toan.md#email) |
 | Trang quản trị (6 mục) | Quản trị viên | `/admin` | Vai trò và xác minh hai bước | Bật | [10](10-quan-tri-va-van-hanh.md#admin) |
 

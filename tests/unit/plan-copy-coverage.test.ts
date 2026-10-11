@@ -43,12 +43,12 @@ describe('plan names and copy', () => {
   });
 
   it('states the new yearly savings and no longer promises unlimited children or removed perks', () => {
-    expect(getPublicPricingCopy('vi').savings).toContain('118.000');
-    expect(getPublicPricingCopy('vi').soloSavings).toContain('69.000');
+    expect(getPublicPricingCopy('vi').savings).toContain('238.000');
+    expect(getPublicPricingCopy('vi').soloSavings).toContain('189.000');
     for (const language of LANGUAGES) {
-      expect(getPublicPricingCopy(language).savings, language).toContain('17');
-      expect(getPublicPricingCopy(language).soloSavings, language).toContain('15');
-      expect(getPublicPricingCopy(language).savings, language).not.toContain('189');
+      expect(getPublicPricingCopy(language).savings, language).toContain('29');
+      expect(getPublicPricingCopy(language).soloSavings, language).toContain('32');
+      expect(getPublicPricingCopy(language).savings, language).not.toContain('118');
       for (const id of PAID_PLAN_IDS) {
         const features = getCheckoutPlanFeatures(id, language).join(' ');
         expect(features, `${id} ${language}`).not.toMatch(/Ebook|ebook|e-book|电子书|電子書籍|전자책|tournament|torneo|Turnier|tournoi|竞赛|大会|대회/);

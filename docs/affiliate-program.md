@@ -1,19 +1,19 @@
 # Chương trình giới thiệu bạn bè
 
-Phụ huynh tham gia trong ứng dụng (Cài đặt, mục Giới thiệu bạn bè), nhận liên kết `https://kidhabithero.com/?ref=<MÃ>` và được hoa hồng **30%** trên mỗi khoản thanh toán của gia đình được giới thiệu. Trang điều khoản công khai: `/gioi-thieu/` trên site marketing.
+Phụ huynh tham gia trong ứng dụng (Cài đặt, mục Giới thiệu bạn bè), nhận liên kết `https://kidhabithero.com/?ref=<MÃ>` và được hoa hồng **20%** trên mỗi đơn gói Năm hoặc Trọn đời của gia đình được giới thiệu. Gói tháng không sinh hoa hồng. Trang điều khoản công khai: `/gioi-thieu/` trên site marketing.
 
 ## Quy tắc mặc định (bảng `affiliate_settings`, đổi bằng SQL, không cần sửa mã)
 
 | Cột | Giá trị | Ý nghĩa |
 |---|---|---|
-| `commission_bps` | 3000 | 30% số tiền thực trả, làm tròn xuống |
+| `commission_bps` | 2000 | 20% số tiền thực trả, làm tròn xuống |
 | `attribution_days` | 60 | tài khoản người dùng phải được tạo trong 60 ngày gần nhất và chưa từng trả tiền mới ghi nhận được; cũng là hạn của cookie |
 | `earning_window_days` | 365 | chỉ đơn trong 12 tháng đầu kể từ ngày tạo tài khoản người dùng được giới thiệu sinh hoa hồng |
 | `hold_days` | 40 | hoa hồng mới giữ 40 ngày từ thanh toán thành công, bao phủ hạn hoàn tiền 30 ngày và thời gian xử lý; ngày hết hạn giữ đã lưu của hoa hồng cũ không đổi |
 | `min_payout_vnd` | 200000 | mức rút tối thiểu |
 | `referred_discount_bps` | 1000 | giảm 10% gói năm đầu tiên của gia đình được giới thiệu (xem bên dưới) |
 | `enabled` | true | tắt thì ẩn thẻ, không ghi nhận, không sinh hoa hồng mới |
-| `terms_version` | `2026-10-09` | người đã tham gia phải đồng ý lại trước khi chia sẻ liên kết hoặc yêu cầu rút |
+| `terms_version` | `2026-10-10` | người đã tham gia phải đồng ý lại trước khi chia sẻ liên kết hoặc yêu cầu rút |
 
 Đổi tỉ lệ chỉ áp dụng cho hoa hồng sinh sau đó (mỗi dòng lưu `rate_bps` của lúc sinh). Khi đổi `terms_version`, `affiliate_overview` trả `termsAccepted = false` cho tài khoản chưa chấp nhận bản mới. Thẻ trong ứng dụng hiện lại điều khoản và ô đồng ý thay cho liên kết và nút rút; `affiliate_enroll(true)` cập nhật `affiliate_accounts.terms_version` cùng `terms_accepted_at`, không đổi mã hoặc earnings. RPC rút tiền trả `terms_required` nếu bản chấp nhận đã cũ.
 
@@ -32,7 +32,7 @@ Phụ huynh tham gia trong ứng dụng (Cài đặt, mục Giới thiệu bạn
 
 ## Ưu đãi cho gia đình được giới thiệu
 
-Gia đình đã được ghi nhận (qua liên kết hoặc nhập mã thủ công) được giảm `referred_discount_bps` (mặc định 10%) khi mua **một trong hai gói năm** (`yearly`, Gói Pro, hoặc `solo_yearly`, Gói Cơ bản) lần đầu, tức khi gia đình chưa có đơn nào `PAID`. Máy chủ quyết định giá: `/api/payment/create` gọi `referral_discount_bps(target_family)` (chỉ `service_role`), tạo đơn PayOS với số tiền đã giảm (Gói Pro · Năm 590.000 đ thành 531.000 đ; Gói Cơ bản · Năm 399.000 đ thành 359.100 đ) và trả về `listPrice`, `discountPercent` để màn thanh toán hiện "Đã giảm 10% nhờ mã giới thiệu". Các gói tháng và trọn đời không giảm. Vì hoa hồng tính trên số tiền thực trả, người giới thiệu nhận 30% số tiền thực trả cho đơn đó: 159.300 đ với Gói Pro · Năm đã giảm (531.000 đ), 107.730 đ với Gói Cơ bản · Năm đã giảm (359.100 đ). Nếu bạn đổi phần trăm trong bảng cài đặt, nhớ đổi cả câu chữ "10%" trong `src/lib/i18n/affiliate-copy.ts` và trang `/gioi-thieu/`.
+Gia đình đã được ghi nhận (qua liên kết hoặc nhập mã thủ công) được giảm `referred_discount_bps` (mặc định 10%) khi mua **một trong hai gói năm** (`yearly`, Gói Pro, hoặc `solo_yearly`, Gói Cơ bản) lần đầu, tức khi gia đình chưa có đơn nào `PAID`. Máy chủ quyết định giá: `/api/payment/create` gọi `referral_discount_bps(target_family)` (chỉ `service_role`), tạo đơn PayOS với số tiền đã giảm (Gói Pro · Năm 590.000 đ thành 531.000 đ; Gói Cơ bản · Năm 399.000 đ thành 359.000 đ) và trả về `listPrice`, `discountAmount`, `referrerName` để màn thanh toán hiện: Ba/mẹ được giảm X đồng thông qua giới thiệu của <tên hiển thị của người giới thiệu>. Tên hiển thị của người giới thiệu hiện cho gia đình được giới thiệu khi thanh toán. Các gói tháng và trọn đời không giảm. Vì hoa hồng tính trên số tiền thực trả, người giới thiệu nhận 20% số tiền thực trả cho đơn đó: 106.200 đ với Gói Pro · Năm đã giảm (531.000 đ), 71.800 đ với Gói Cơ bản · Năm đã giảm (359.000 đ). Nếu bạn đổi phần trăm trong bảng cài đặt, nhớ đổi cả câu chữ "10%" trong `src/lib/i18n/affiliate-copy.ts` và trang `/gioi-thieu/`.
 
 ## Bảo mật và riêng tư
 
@@ -43,11 +43,11 @@ Gia đình đã được ghi nhận (qua liên kết hoặc nhập mã thủ cô
 
 ## Kiểm chứng
 
-`npm run verify:live-affiliate` chạy trên production với dữ liệu tổng hợp tự dọn: đăng ký, tự giới thiệu bị từ chối, gia đình quá hạn, 399.000 đ sinh 119.700 đ, thông báo thanh toán lặp không tính hai lần, giữ hạn, thu hồi, yêu cầu rút, từ chối rồi chi trả, không lộ người được giới thiệu. Chạy lại sau mỗi lần sửa hàm hoặc migration liên quan.
+`npm run verify:live-affiliate` chạy trên production với dữ liệu tổng hợp tự dọn: đăng ký, tự giới thiệu bị từ chối, gia đình quá hạn, 399.000 đ sinh 79.800 đ, thông báo thanh toán lặp không tính hai lần, giữ hạn, thu hồi, yêu cầu rút, từ chối rồi chi trả, không lộ người được giới thiệu. Chạy lại sau mỗi lần sửa hàm hoặc migration liên quan.
 
 ## Giới hạn đã biết
 
-- **Tự giới thiệu qua tài khoản thứ hai.** Một người có thể tạo hai tài khoản và dùng mã của tài khoản này cho tài khoản kia; hệ thống chỉ chặn cùng tài khoản hoặc cùng gia đình. Kết quả là hoàn 30% cho chính họ chứ không có lợi nhuận, và việc chuyển khoản là thủ công nên admin có thể rà soát (ví dụ tên chủ tài khoản nhận tiền trùng tên người trả) trước khi chuyển.
+- **Tự giới thiệu qua tài khoản thứ hai.** Một người có thể tạo hai tài khoản và dùng mã của tài khoản này cho tài khoản kia; hệ thống chỉ chặn cùng tài khoản hoặc cùng gia đình. Kết quả là hoàn 20% cho chính họ chứ không có lợi nhuận, và việc chuyển khoản là thủ công nên admin có thể rà soát (ví dụ tên chủ tài khoản nhận tiền trùng tên người trả) trước khi chuyển.
 - **Tổng tiền lớn.** Mỗi yêu cầu rút bị giới hạn dưới 2.000.000.000 đ (cột số nguyên 32 bit); đạt mức đó thì trả về `amount_too_large` và cần xử lý tay.
 
 ## Chưa làm / cần quyết định

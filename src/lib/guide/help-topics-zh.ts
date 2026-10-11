@@ -55,7 +55,7 @@ export const HELP_TOPICS_ZH: HelpTranslationTable<HelpText> = {
   'settings.account': { title: '客户信息', text: '姓名和电话号码用于账户及支付支持。你可以随时开启或关闭接收优惠。' },
   'settings.coupon': { title: '赠送码', text: '输入赠送码以增加使用天数。每个赠送码每个家庭只能使用一次；错误尝试过多会锁定几分钟。' },
   'settings.referralCode': { title: '推荐码', text: '如果朋友推荐了你，输入8位代码，首次购买年度方案可享9折。仅限家庭仍是新用户且尚未付款时使用。' },
-  'settings.affiliate': { title: '推荐朋友', text: '分享你的链接，新家庭付款后你可获得30%的佣金。新佣金自付款成功起保留40天；该订单有未结案的退款或账单工单时继续冻结。最低提现额为200,000越南盾，并需要PIN码。' },
+  'settings.affiliate': { title: '推荐朋友', text: '分享你的链接，新家庭在前12个月内每笔年度或终身方案订单，你可获得实付金额的20%。月度方案不产生佣金。佣金保留40天；最低提现200,000越南盾，需要PIN码。' },
   'settings.familyData': { title: '家庭数据', text: '下载家庭数据的JSON副本。文件不含PIN码或支付信息，但含有孩子的数据，请妥善保管。' },
   'settings.leaderboardSharing': { title: '排行榜分享', text: '这是全家的开关，默认关闭。开启后，只有你在孩子档案中选择的孩子会以昵称显示，不会显示真实姓名或年龄。' },
   'settings.analytics': { title: '匿名数据统计', text: '允许进行不含姓名或孩子内容的总体数据统计。目前还没有数据接收端，因此不会有任何内容离开设备。默认关闭。' },
@@ -63,7 +63,7 @@ export const HELP_TOPICS_ZH: HelpTranslationTable<HelpText> = {
   'settings.theme': { title: '显示模式', text: '浅色、深色或跟随设备。' },
   'settings.pin': { title: 'PIN码', text: '用于保护家长管理区域的4位数字。正确输入后，此浏览器会保持解锁2小时。审批任务、撤销设备、支付、删除数据和提现推荐佣金都需要PIN码。绝不要告诉孩子。' },
 
-  'payment.plans': { title: '方案', text: '基础套餐：每月39,000 VND或每年399,000 VND（1个孩子）。Pro 套餐：每月59,000 VND或每年590,000 VND（最多5个孩子档案）。Pro Plus 套餐：即将推出。一次性付款，不会自动续费。' },
+  'payment.plans': { title: '方案', text: '基础套餐：每月49,000 VND或每年399,000 VND（1个孩子）。Pro 套餐：每月69,000 VND或每年590,000 VND（最多5个孩子档案）。Pro Plus 套餐：即将推出。一次性付款，不会自动续费。' },
   'payment.trial': { title: '7天免费试用', text: '免费，无需信用卡，不会自动扣费。每个家庭只能试用一次。' },
   'payment.memo': { title: '转账附言', text: '请保持金额和转账附言完全准确，以便系统识别付款。你可以逐项复制，或下载二维码。' },
   'payment.activation': { title: '方案何时开通', text: '系统确认付款后立即开通，通常只需几秒。如果还没看到，请等待几分钟后重新打开；联系支持时请附上订单码。' },
