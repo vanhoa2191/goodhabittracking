@@ -1,5 +1,5 @@
 import { ADDON_IDS, ADDON_PRICES, addonVisible, type AddonId } from '@/lib/billing/addon-catalog';
-import { PLAN_PRICES, planIdFor, type BillingCycle, type PaidPlanId, type PlanTier } from '@/lib/billing/plan-catalog';
+import { PLAN_PRICES, PROMO_PLANS, planIdFor, type BillingCycle, type PaidPlanId, type PlanTier, type PromoPlanId } from '@/lib/billing/plan-catalog';
 
 export type PricingCard = {
   readonly tier: PlanTier;
@@ -51,4 +51,41 @@ export type AddonCard = { readonly id: AddonId; readonly price: number };
 /** Customer-visible add-ons, using the same flag as checkout. */
 export function addonCards(flags: { readonly printablesSale: boolean }): readonly AddonCard[] {
   return ADDON_IDS.filter((id) => addonVisible(id, flags)).map((id) => ({ id, price: ADDON_PRICES[id] }));
+}
+
+export type PricingPromo = { readonly planId: PromoPlanId; readonly remaining: number };
+
+/** Promotions never replace list prices; a yearly card gets an extra action only with a readable, open offer. */
+export function promoForCard(tier: PlanTier, cycle: BillingCycle, offers: readonly unknown[], now = Date.now()): PricingPromo | null {
+  if (cycle !== 'year' || tier === 'solo') return null;
+  const planId = tier === 'pro' ? 'pro_plus_yearly_upsell' : 'pro_plus_yearly_b1g1';
+  const promo = PROMO_PLANS[planId];
+  if (promo.endsAt !== null && Date.parse(promo.endsAt) <= now) return null;
+  for (const entry of offers) {
+    if (!entry || typeof entry !== 'object') continue;
+    const offer = entry as Record<string, unknown>;
+    if (offer.code !== promo.offerCode) continue;
+    if (offer.slots !== promo.slots || typeof offer.remaining !== 'number' || !Number.isInteger(offer.remaining) || offer.remaining <= 0 || offer.remaining > promo.slots) return null;
+    if (offer.endsAt !== null && (typeof offer.endsAt !== 'string' || !Number.isFinite(Date.parse(offer.endsAt)) || Date.parse(offer.endsAt) <= now)) return null;
+    return { planId, remaining: offer.remaining };
+  }
+  return null;
+}
+
+/** Only the Pro yearly checkout can switch to the 690k upgrade offer. */
+export function promoForCheckout(planId: string, offers: readonly unknown[], now = Date.now()): PricingPromo | null {
+  return planId === 'yearly' ? promoForCard('pro', 'year', offers, now) : null;
+}
+
+export type LaunchOfferData = { readonly remaining: number | null; readonly offers: readonly unknown[] };
+
+/** One endpoint serves founding seats and promotions; malformed counts never advertise a promo. */
+export async function readLaunchOffers(signal: AbortSignal): Promise<LaunchOfferData> {
+  const response = await fetch('/api/offers/launch', { signal });
+  if (!response.ok) throw new Error('offer unavailable');
+  const data = await response.json() as { remaining?: unknown; offers?: unknown } | null;
+  return {
+    remaining: typeof data?.remaining === 'number' && Number.isInteger(data.remaining) && data.remaining >= 0 ? data.remaining : null,
+    offers: Array.isArray(data?.offers) ? data.offers : [],
+  };
 }

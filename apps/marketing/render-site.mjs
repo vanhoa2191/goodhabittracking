@@ -3,7 +3,7 @@ import { sessionHintCookie } from './session-hint.mjs';
 import scienceData from '../../src/data/science-content.json' with { type: 'json' };
 import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
 import { maxSavingPercent, priceView, pricingTiers, upgradeDifference } from './pricing.mjs';
-import { faqGroups, faqs, launchOffer, navigation, publicPages, safety, story, storyStages, testimonials } from './site-content.mjs';
+import { faqGroups, faqs, launchOffer, promoOffers, navigation, publicPages, safety, story, storyStages, testimonials } from './site-content.mjs';
 
 const icons = {
   compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>',
@@ -453,6 +453,10 @@ function renderPlanCard(tier, appOrigin, recommended) {
     : '';
   const buttonClass = recommended ? 'btn btn-primary' : 'btn btn-line';
   const checkout = (cycle) => appUrl(appOrigin, `/checkout?plan=${priceView(tier, cycle).planId}`);
+  const promo = promoOffers.find((offer) => offer.tier === tier);
+  const promoLink = promo
+    ? `<a class="upgrade" data-cycle="year" data-promo-offer="${escapeHtml(promo.offerCode)}" data-promo-slots="${promo.slots}" data-promo-ends-at="${escapeHtml(promo.endsAt ?? '')}" data-promo-copy="${escapeHtml(promo.text)}" hidden href="${appUrl(appOrigin, `/checkout?plan=${promo.planId}`)}"></a>`
+    : '';
   return `<article class="plan${recommended ? ' recommended' : ''}" data-plan="${tier}">
         <span class="badge">${escapeHtml(copy.recommendedBadge)}</span>
         <h3>${escapeHtml(plan.name)}</h3>
@@ -460,6 +464,7 @@ function renderPlanCard(tier, appOrigin, recommended) {
         ${amounts}
         <ul>${features}</ul>
         ${upgrade}
+        ${promoLink}
         <a class="${buttonClass}" data-cycle="year" data-plan-cta href="${checkout('year')}">Chọn ${escapeHtml(plan.name)} · năm</a>
         <a class="${buttonClass}" data-cycle="month" data-plan-cta href="${checkout('month')}">Chọn ${escapeHtml(plan.name)} · tháng</a>
         <a class="month-link" data-cycle="year" href="${checkout('month')}">Hoặc trả theo tháng: ${vnd(month.price)}</a>

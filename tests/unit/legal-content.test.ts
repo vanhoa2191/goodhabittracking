@@ -52,6 +52,27 @@ describe('shared legal content', () => {
     expect(termsText).toContain('dùng thử 7 ngày');
   });
 
+  it('discloses each promo price, duration, cap, cutoff, referral exclusion and refund seat revocation', () => {
+    const blocks = terms.sections.flatMap((section) => section.blocks.flat());
+    const upsell = blocks.find((block) => typeof block === 'string' && block.startsWith('Ưu đãi nâng cấp Pro Plus:')) as string;
+    const b1g1 = blocks.find((block) => typeof block === 'string' && block.startsWith('Ưu đãi mua 1 năm tặng 1 năm:')) as string;
+    expect(upsell).toContain('690.000đ');
+    expect(upsell).toContain('1 năm');
+    expect(upsell).toContain('200');
+    expect(upsell).toContain('không có ngày kết thúc');
+    expect(b1g1).toContain('790.000đ');
+    expect(b1g1).toContain('2 năm');
+    expect(b1g1).toContain('100');
+    expect(b1g1).toContain('31/12/2026');
+    expect(b1g1).toContain('Asia/Saigon');
+    for (const block of [upsell, b1g1]) {
+      expect(block).toContain('không cộng dồn');
+      expect(block).toContain('10%');
+      expect(block).toContain('30 ngày');
+      expect(block).toContain('thu hồi');
+    }
+  });
+
   it('shows the support mailbox when configured and falls back to the contact page otherwise', () => {
     expect(privacyText).toContain('support@example.com');
     expect(termsText).toContain('support@example.com');

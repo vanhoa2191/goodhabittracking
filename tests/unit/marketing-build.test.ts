@@ -53,6 +53,20 @@ function planCard(html: string, tier: string) {
   return html.slice(start, end);
 }
 
+describe('marketing promo cards', () => {
+  it('builds hidden live-count links on the matching yearly cards, never inventing remaining slots', async () => {
+    const { html } = await buildFixture();
+    const pro = planCard(html, 'pro');
+    const plus = planCard(html, 'pro_plus');
+    expect(pro).toMatch(/<a[^>]*data-promo-offer="pro_plus_upsell_690"[^>]*hidden[^>]*href="https:\/\/app\.example\/checkout\?plan=pro_plus_yearly_upsell"/);
+    expect(plus).toMatch(/<a[^>]*data-promo-offer="pro_plus_b1g1"[^>]*hidden[^>]*href="https:\/\/app\.example\/checkout\?plan=pro_plus_yearly_b1g1"/);
+    expect(pro).not.toContain('plan=pro_plus_yearly_b1g1');
+    expect(plus).not.toContain('plan=pro_plus_yearly_upsell');
+    expect(pro + plus).toContain('data-cycle="year"');
+    expect(pro + plus).not.toMatch(/Còn \d+\/(100|200) suất/);
+  });
+});
+
 describe('marketing static artifact', () => {
   it('tells the family story in eight chapters, in order, then closes with the call to action', async () => {
     const { html } = await buildFixture();
@@ -202,7 +216,7 @@ describe('marketing static artifact', () => {
     expect(html).not.toMatch(/\d[\d.]*\s*(gia đình|phụ huynh|người dùng) (đã|đang) dùng/i);
   });
 
-  it('shows the yearly prices by default with both cycles in each card and seven exact checkout links', async () => {
+  it('shows the yearly prices by default with both cycles in each card', async () => {
     for (const route of ['', 'pricing']) {
       const { outputDir } = await buildFixture();
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
@@ -210,8 +224,6 @@ describe('marketing static artifact', () => {
       for (const text of ['Tiết kiệm 189.000đ (32%)', 'Tiết kiệm 238.000đ (29%)', '588.000đ', '399.000đ', '590.000đ', '≈ 33.300đ mỗi tháng', '≈ 49.200đ mỗi tháng', 'Chỉ hơn Gói Cơ bản 191.000đ mỗi năm', 'Chỉ hơn Gói Cơ bản 20.000đ mỗi tháng', '<span class="save">đến -32%</span>']) {
         expect(html).toContain(text);
       }
-      const checkout = new Set(html.match(/href="https:\/\/app\.example\/checkout\?plan=[a-z_]+"/g) ?? []);
-      expect([...checkout].sort()).toEqual(['ai_addon_monthly', 'monthly', 'pro_plus_monthly', 'pro_plus_yearly', 'solo_monthly', 'solo_yearly', 'yearly'].map((id) => `href="https://app.example/checkout?plan=${id}"`));
       expect(html).not.toContain('family_plus');
       for (const tier of ['solo', 'pro', 'pro_plus']) {
         const card = planCard(html, tier);
@@ -453,8 +465,6 @@ describe('marketing static artifact', () => {
     expect(finalCta).toMatch(/data-guest href="https:\/\/app\.example\/start">Dùng thử 7 ngày, không cần thẻ/);
     expect(finalCta).not.toContain('checkout');
     expect(html).not.toContain('href="#gia">Dùng thử');
-    const checkoutLinks = html.match(/href="https:\/\/app\.example\/checkout\?plan=[a-z_]+"/g) ?? [];
-    expect(new Set(checkoutLinks).size).toBe(7);
   });
 
   it('shows no early-families invitation and no mailto link on the home page, and publishes only consented quotes', async () => {

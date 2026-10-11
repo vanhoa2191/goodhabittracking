@@ -297,9 +297,10 @@ for (const section of $$('[data-pricing-cycle]')) {
   }
 }
 
-// Launch-offer places left: only ever the number the app reports; any failure leaves the line empty.
+// One live request supplies founding places and promo banners; unavailable counts never show a promo.
 (() => {
   const target = $('[data-offer-remaining]');
+  const promos = $$('[data-promo-offer]');
   const origin = target?.dataset.appOrigin;
   if (!target || !origin || !('fetch' in window)) return;
   const controller = new AbortController();
@@ -307,9 +308,22 @@ for (const section of $$('[data-pricing-cycle]')) {
   fetch(`${origin}/api/offers/launch`, { credentials: 'omit', signal: controller.signal })
     .then((response) => (response.ok ? response.json() : null))
     .then((data) => {
-      const { remaining, slots } = data ?? {};
-      if (!Number.isInteger(remaining) || !Number.isInteger(slots) || remaining < 0 || slots <= 0 || remaining > slots) return;
-      target.textContent = remaining > 0 ? `Còn ${remaining}/${slots} suất` : 'Đã hết suất ưu đãi';
+      const { remaining, slots, offers } = data ?? {};
+      if (Number.isInteger(remaining) && Number.isInteger(slots) && remaining >= 0 && slots > 0 && remaining <= slots) {
+        target.textContent = remaining > 0 ? `Còn ${remaining}/${slots} suất` : 'Đã hết suất ưu đãi';
+      }
+      if (!Array.isArray(offers)) return;
+      for (const link of promos) {
+        const offer = offers.find((entry) => entry?.code === link.dataset.promoOffer);
+        const limit = Number(link.dataset.promoSlots);
+        if (!offer || offer.slots !== limit || !Number.isInteger(offer.remaining) || offer.remaining <= 0 || offer.remaining > limit) continue;
+        const deadline = link.dataset.promoEndsAt;
+        const closesAt = deadline ? Date.parse(deadline) : Infinity;
+        const liveClosesAt = offer.endsAt === null ? Infinity : typeof offer.endsAt === 'string' ? Date.parse(offer.endsAt) : NaN;
+        if (Number.isNaN(closesAt) || Number.isNaN(liveClosesAt) || Math.min(closesAt, liveClosesAt) <= Date.now()) continue;
+        link.textContent = link.dataset.promoCopy.replace('{n}', String(offer.remaining));
+        link.hidden = false;
+      }
     })
     .catch(() => {})
     .finally(() => window.clearTimeout(timer));

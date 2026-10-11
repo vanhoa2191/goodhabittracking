@@ -36,6 +36,12 @@ export const pricingTiers = Object.freeze({
   },
 });
 
+/** Limited offers are separate checkout orders; list-price tier cards stay unchanged. */
+export const pricingPromos = Object.freeze({
+  pro_plus_yearly_upsell: { tier: 'pro', price: 690000, years: 1, offerCode: 'pro_plus_upsell_690', slots: 200, endsAt: null },
+  pro_plus_yearly_b1g1: { tier: 'pro_plus', price: 790000, years: 2, offerCode: 'pro_plus_b1g1', slots: 100, endsAt: '2026-12-31T17:00:00.000Z' },
+});
+
 const cycles = new Set(['month', 'year']);
 
 function roundTo(value, step) {

@@ -1,5 +1,5 @@
 import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
-import { pricingTiers } from './pricing.mjs';
+import { pricingPromos, pricingTiers } from './pricing.mjs';
 
 export const navigation = [
   { href: '/framework/', label: 'Khung thói quen' },
@@ -98,6 +98,15 @@ export const launchOffer = {
   seatsLabel: 'suất còn lại',
   soldOut: 'Đã hết suất',
 };
+
+/** Promo banners stay hidden until the live API supplies a positive remaining count. */
+export const promoOffers = Object.entries(pricingPromos).map(([planId, promo]) => ({
+  ...promo,
+  planId,
+  text: planId === 'pro_plus_yearly_upsell'
+    ? 'Thêm 100.000đ để lên Pro Plus: AI không giới hạn. Còn {n}/200 suất.'
+    : 'Mua 1 năm tặng 1 năm: 790.000đ cho 2 năm Pro Plus. Còn {n}/100 suất, đến hết 31/12/2026.',
+}));
 
 /** Copy for the story-led home page, chapter by chapter. Source: the founder's letter, approved by the owner. */
 export const story = {

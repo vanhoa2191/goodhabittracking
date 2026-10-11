@@ -42,6 +42,10 @@ Bản tháng và bản năm của cùng một gói có quyền lợi giống h�
 
 **Ưu đãi ra mắt.** 10 gia đình đầu tiên thanh toán thành công **Gói Pro theo năm** được nâng cấp miễn phí lên Pro Plus cho phần còn lại của năm đã trả. Mỗi gia đình tối đa 1 suất, tính theo thứ tự thanh toán thành công; hết 10 suất thì trang ghi "Đã hết suất". Suất bị thu hồi nếu đơn đó được hoàn tiền.
 
+**Ưu đãi nâng cấp Pro Plus (690.000đ).** Khi phụ huynh chọn Gói Pro · Năm trên bảng giá hoặc trong màn thanh toán gói năm, hệ thống hiển thị thông báo "Thêm 100.000đ để lên Pro Plus: AI không giới hạn. Còn {n}/200 suất." để chọn mua gói Pro Plus Năm với giá 690.000đ (thay vì 790.000đ, liên kết `/checkout?plan=pro_plus_yearly_upsell`). Ưu đãi mở cho 200 suất thanh toán thành công đầu tiên, mỗi gia đình tối đa 1 suất, không giới hạn ngày kết thúc. Khi hết suất hoặc không đọc được số suất còn lại, thông báo tự ẩn và hệ thống từ chối tạo đơn mới với thông báo "Ưu đãi này đã hết suất hoặc đã kết thúc.". Nếu gia đình đã dùng ưu đãi, đơn tiếp theo bị từ chối với thông báo "Gia đình bạn đã dùng ưu đãi này.". Ưu đãi không cộng dồn với giảm giá giới thiệu 10% (bước nhập mã giới thiệu được bỏ qua). Khi hoàn tiền, suất được tự động giải phóng.
+
+**Ưu đãi mua 1 năm tặng 1 năm (790.000đ cho 2 năm).** Trên thẻ Gói Pro Plus · Năm hiển thị thông báo "Mua 1 năm tặng 1 năm: 790.000đ cho 2 năm Pro Plus. Còn {n}/100 suất, đến hết 31/12/2026." (liên kết `/checkout?plan=pro_plus_yearly_b1g1`). Với 790.000đ, gia đình nhận 2 năm sử dụng Gói Pro Plus (+2 năm thời hạn). Giới hạn 100 suất thanh toán thành công đầu tiên, áp dụng đến hết ngày 31/12/2026 23:59 (giờ Hà Nội). Mỗi gia đình tối đa 1 suất; gia đình đang dùng Pro Plus vẫn mua được để cộng dồn thêm 2 năm. Khi hết suất, hết hạn hoặc không đọc được số suất còn lại, thông báo tự ẩn; sau hạn đóng, hệ thống từ chối tạo đơn mới nhưng các đơn đã tạo trước đó và thanh toán sau hạn vẫn được kích hoạt đủ 2 năm. Ưu đãi không cộng dồn với giảm giá giới thiệu 10% (bước nhập mã giới thiệu được bỏ qua). Khi hoàn tiền, suất được tự động giải phóng.
+
 <a id="noi-mua"></a>
 ## Nơi mua
 
@@ -94,7 +98,7 @@ Mã tặng do đội vận hành tạo. Nhập ở `Cài đặt → Tài khoản
 <a id="giam-gia"></a>
 ## Giảm giá cho gia đình được giới thiệu
 
-Gia đình nhập mã giới thiệu (qua liên kết `?ref=` hoặc nhập tay) được **giảm 10% đơn đầu tiên của một trong các gói năm**: Gói Pro Plus · Năm 790.000đ còn 711.000đ, Gói Pro · Năm 590.000đ còn 531.000đ, Gói Cơ bản · Năm 399.000đ còn 359.000đ (giảm 40.000đ); chỉ khi gia đình chưa có đơn nào đã trả. Gói Pro Plus tháng, các gói tháng khác và Add-on AI không được giảm giá giới thiệu. Màn thanh toán hiện: Ba/mẹ được giảm X đồng thông qua giới thiệu của <tên hiển thị của người giới thiệu>. Chi tiết: [8. Giới thiệu bạn bè](08-gioi-thieu-ban-be.md#giam-10).
+Gia đình nhập mã giới thiệu (qua liên kết `?ref=` hoặc nhập tay) được **giảm 10% đơn đầu tiên của một trong các gói năm**: Gói Pro Plus · Năm 790.000đ còn 711.000đ, Gói Pro · Năm 590.000đ còn 531.000đ, Gói Cơ bản · Năm 399.000đ còn 359.000đ (giảm 40.000đ); chỉ khi gia đình chưa có đơn nào đã trả. Gói Pro Plus tháng, các gói tháng khác, Add-on AI và các gói ưu đãi Pro Plus Năm (ưu đãi nâng cấp 690.000đ và mua 1 tặng 1 790.000đ) không được giảm giá giới thiệu (không cộng dồn ưu đãi; bước nhập mã giới thiệu được bỏ qua). Màn thanh toán hiện: Ba/mẹ được giảm X đồng thông qua giới thiệu của <tên hiển thị của người giới thiệu>. Chi tiết: [8. Giới thiệu bạn bè](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Hoàn tiền và hủy

@@ -14,6 +14,9 @@ import type { PricingPlan } from '@/types';
 import type { PaymentResult } from '@/lib/payos';
 import { createPaymentOrder, isRefusalCode, PAYMENT_SUCCESS_EVENT, readPaymentStatus } from '@/lib/billing/payment-client';
 import { isAddonId } from '@/lib/billing/addon-catalog';
+import { isPromoPlanId } from '@/lib/billing/plan-catalog';
+import { promoForCheckout, readLaunchOffers } from '@/lib/billing/pricing-view';
+import { getPromoCopy } from '@/lib/i18n/promo-copy';
 import type { PaymentErrorCode } from '@/lib/billing/payment-client';
 import { copyPaymentText } from '@/lib/billing/copy-payment-text';
 import { getPaymentErrorCopy } from '@/lib/i18n/payment-error-copy';
@@ -58,8 +61,8 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
   const [errorCode, setErrorCode] = useState<PaymentErrorCode | null>(null);
   const [statusErrorCode, setStatusErrorCode] = useState<PaymentErrorCode | null>(null);
   const [copyFailed, setCopyFailed] = useState(false);
-  // A referral code never discounts an add-on, so add-on checkouts skip that step.
-  const skipReferral = plan !== null && isAddonId(plan.id);
+  // A referral code never discounts an add-on or a promo order, so those checkouts skip that step.
+  const skipReferral = plan !== null && (isAddonId(plan.id) || isPromoPlanId(plan.id));
   const [hasConfirmedReferral, setHasConfirmedReferral] = useState(skipReferral);
   // True once the server says this family can still enter a friend's code; only then is the step shown.
   const [referralStepNeeded, setReferralStepNeeded] = useState(false);
@@ -77,6 +80,18 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
     && familyRole
     && familyRole !== 'caregiver',
   );
+  const [promoOffers, setPromoOffers] = useState<readonly unknown[]>([]);
+  const upsell = plan ? promoForCheckout(plan.id, promoOffers) : null;
+  useEffect(() => {
+    if (!isOpen || plan?.id !== 'yearly') return;
+    const controller = new AbortController();
+    readLaunchOffers(controller.signal)
+      .then((data) => {
+        if (!controller.signal.aborted) setPromoOffers(data.offers);
+      })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, [isOpen, plan?.id]);
 
   // A family with nothing to enter goes straight to the QR; only one that can still enter a code sees the extra step.
   const handleReferralState = useCallback((state: 'loading' | 'eligible' | 'referred' | 'hidden') => {
@@ -218,6 +233,11 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
 
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 scrollbar-thin">
+          {upsell && !isSuccess && (
+            <a href="/checkout?plan=pro_plus_yearly_upsell" className="block rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm font-bold leading-5 text-amber-950 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-100">
+              {getPromoCopy(language).upsell.replace('{n}', String(upsell.remaining))}
+            </a>
+          )}
           {/* Success screen */}
           {!canCreatePayment ? (
             <div role="alert" className="rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm font-semibold leading-6 text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
