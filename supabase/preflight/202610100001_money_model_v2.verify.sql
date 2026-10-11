@@ -22,7 +22,9 @@ begin
   end if;
 
   accrual_definition := pg_catalog.pg_get_functiondef('public.accrue_referral_commission(bigint)'::regprocedure);
-  if strpos(accrual_definition, 'if paid_order.plan_id not in (''solo_yearly'', ''yearly'', ''lifetime'') then return; end if;') = 0
+  -- Accept both the original Money Model boundary and the Pro Plus extension.
+  if (strpos(accrual_definition, 'if paid_order.plan_id not in (''solo_yearly'', ''yearly'', ''lifetime'') then return; end if;') = 0
+    and strpos(accrual_definition, 'if paid_order.plan_id not in (''solo_yearly'', ''yearly'', ''lifetime'', ''pro_plus_yearly'') then return; end if;') = 0)
     or strpos(accrual_definition, 'if paid_order.plan_id not in') > strpos(accrual_definition, 'commission := floor(')
     or strpos(accrual_definition, 'commission := floor(paid_order.amount::numeric * settings.commission_bps / 10000)::integer;') = 0 then
     raise exception 'Money Model v2 commission scope or paid-amount calculation is missing';

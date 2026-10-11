@@ -96,6 +96,32 @@ try {
   }
   if (expectedScenarios.size) throw new Error(`Missing Money Model v2 scenarios: ${[...expectedScenarios].join(', ')}`);
 
+  const customer = load('supabase/migrations/202609210005_customer_admin.sql');
+  const integrity = load('supabase/migrations/202609300005_billing_integrity.sql');
+  await client.query(`create table public.child_profiles (family_id uuid);
+    create table public.activity_logs (family_id uuid, status text, log_date date);
+    ${customer.slice(customer.indexOf('create table if not exists public.coupons'), customer.indexOf('create or replace function public.sync_customer_identity'))}
+    ${customer.slice(customer.indexOf('create table if not exists public.coupon_redemptions'), customer.indexOf('create or replace function public.redeem_family_coupon'))}
+    ${integrity.slice(integrity.indexOf('create table if not exists public.coupon_attempts'), integrity.indexOf('create or replace function public.process_payos_webhook'))}`);
+
+  const addons = '202610110001_pro_plus_and_addons';
+  await client.query(load(`supabase/migrations/${addons}.sql`));
+  await client.query(load('supabase/preflight/202610110001_pro_plus_and_addons.verify.sql'));
+  const addonResults = await client.query(load('tests/integration/migrations/pro-plus-and-addons.scenarios.sql'));
+  const expectedAddons = new Set(['pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
+    'addon_requires_plan', 'addon_then_pro_plus', 'addon_extends', 'addon_duplicate_webhook',
+    'addon_no_commission_no_discount', 'printables_once', 'founding_tier', 'refund_revokes_addon',
+    'snapshot_shape', 'regression_existing_plans']);
+  for (const result of addonResults) {
+    for (const row of result.rows ?? []) {
+      if (!row.scenario) continue;
+      if (!expectedAddons.delete(row.scenario)) throw new Error(`Unexpected or duplicate add-on scenario: ${row.scenario}`);
+      if (row.ok !== true) throw new Error(`Pro Plus/add-on scenario failed: ${row.scenario} (ok=${row.ok})`);
+      out.push(`PASS: ${row.scenario} ok=true`);
+    }
+  }
+  if (expectedAddons.size) throw new Error(`Missing Pro Plus/add-on scenarios: ${[...expectedAddons].join(', ')}`);
+
 } catch(e) { out.push(`FAIL: ${e.message}`); process.exitCode=1; }
 finally { if(database) await database.close(); await stopSqlTestServer(); out.push('Disposable PostgreSQL removed'); console.log(out.join('\n')); }
 

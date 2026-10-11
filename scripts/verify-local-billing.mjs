@@ -38,6 +38,8 @@ try {
     alter table public.family_memberships drop constraint family_memberships_role_check;
     alter table public.family_memberships add constraint family_memberships_role_check check(role in ('owner','parent','guardian','caregiver'));
     create unique index family_memberships_one_family_per_user on public.family_memberships(user_id);
+    create table public.child_profiles (family_id uuid);
+    create table public.activity_logs (family_id uuid, status text, log_date date);
     ${definition(family,'current_family_id')}
     ${definition(family,'can_manage_family')}
     ${section(billing,'alter table public.payment_orders','drop policy if exists subscriptions_insert_family')}
@@ -75,7 +77,26 @@ try {
   }
   console.log('PASS: Money Model v2 monthly checkout 49000/69000 and first-yearly referral checkout 359000/531000');
 
-
+  const addons = '202610110001_pro_plus_and_addons';
+  await db.exec(load(addons));
+  await db.exec(readFileSync('supabase/preflight/202610110001_pro_plus_and_addons.verify.sql', 'utf8'));
+  // Historical preflights must also remain valid against the upgraded function definitions.
+  await db.exec(readFileSync('supabase/preflight/202610100001_money_model_v2.verify.sql', 'utf8'));
+  await db.exec(readFileSync('supabase/preflight/202610090010_billing_payment_hardening.verify.sql', 'utf8'));
+  const addonResults = await db.exec(readFileSync('tests/integration/migrations/pro-plus-and-addons.scenarios.sql', 'utf8'));
+  const expectedAddons = new Set(['pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
+    'addon_requires_plan', 'addon_then_pro_plus', 'addon_extends', 'addon_duplicate_webhook',
+    'addon_no_commission_no_discount', 'printables_once', 'founding_tier', 'refund_revokes_addon',
+    'snapshot_shape', 'regression_existing_plans']);
+  for (const result of addonResults) {
+    for (const row of result.rows ?? []) {
+      if (!row.scenario) continue;
+      if (!expectedAddons.delete(row.scenario)) throw new Error(`Unexpected or duplicate add-on scenario: ${row.scenario}`);
+      if (row.ok !== true) throw new Error(`Pro Plus/add-on scenario failed: ${row.scenario} (ok=${row.ok})`);
+      console.log(`PASS: ${row.scenario} ok=true`);
+    }
+  }
+  if (expectedAddons.size) throw new Error(`Missing Pro Plus/add-on scenarios: ${[...expectedAddons].join(', ')}`);
   const actor = crypto.randomUUID(), familyId = crypto.randomUUID();
   await db.query('insert into auth.users(id) values ($1)',[actor]);
   await db.query('insert into families(id,created_by) values ($1,$2)',[familyId,actor]);
