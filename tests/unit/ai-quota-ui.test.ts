@@ -62,6 +62,17 @@ for (const [surface, render] of surfaces) {
       expect(html.match(/<a\b/g)).toHaveLength(2);
     });
 
+    it.each(['vi', ...languages] as const)('offers only the AI add-on to a lifetime family in %s', async (language) => {
+      state.language = language;
+      state.plan = 'lifetime';
+      const html = await showFailure(render, family('family_month', 'standard'));
+      expect(html).toContain('href="/checkout?plan=ai_addon_monthly"');
+      expect(html).not.toContain('pro_plus_monthly');
+      expect(html.match(/<a\b/g)).toHaveLength(1);
+      expect(html).not.toMatch(/\{addon\}|\{upgrade\}/);
+      if (language === 'vi') expect(text(html)).toContain('Bạn đã dùng hết 20 lượt gợi ý tháng này. Thêm Add-on AI (29.000đ/tháng) để dùng không giới hạn.');
+    });
+
     it.each([['free', null], ['pro_plus_monthly', null], ['monthly', '2000-01-01T00:00:00Z']])('offers only Pro Plus to a standard family on %s ending %s', async (plan, endsAt) => {
       state.plan = plan;
       state.endsAt = endsAt;

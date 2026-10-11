@@ -1,9 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { AI_LIMITS } from '@/lib/ai/config';
+import { AI_LIMITS, AI_POLICY_VERSION } from '@/lib/ai/config';
 
 afterEach(() => vi.unstubAllEnvs());
 
 describe('AI_LIMITS', () => {
+  it('requires consent for the current monthly policy', () => {
+    expect(AI_POLICY_VERSION).toBe('2026-10-11');
+  });
   it('holds the monthly and safety limits from the owner spec', () => {
     expect(AI_LIMITS.perMonth).toEqual({ free: 10, standard: 20 });
     expect(AI_LIMITS.perDaySafety).toBe(100);

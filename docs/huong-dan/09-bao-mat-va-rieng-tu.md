@@ -68,7 +68,7 @@ Tính năng này **đang phát triển**: hiện ứng dụng chỉ cho thấy n
 - **Gợi ý bước nhỏ bằng AI** (trong form thói quen): chỉ gửi **tên thói quen bạn vừa gõ** (đã bỏ đường liên kết, email, số điện thoại) và nhóm tuổi.
 - **Tóm tắt tuần bằng AI**: chỉ gửi **các con số của tuần** (số lần tự làm, cần nhắc, làm cùng, chưa làm), không có tên thói quen hay tên bé.
 
-**Không bao giờ gửi**: tên hay biệt danh của bé, nhật ký, văn bản bé viết, ảnh, email của bạn. Nội dung gửi và kết quả **không được ghi vào nhật ký hệ thống**. Kết quả chỉ là gợi ý có nhãn "do AI soạn": bạn đọc và chọn **Dùng** hoặc **Bỏ qua**; ứng dụng không tự áp gì. Mỗi gia đình có số lượt giới hạn mỗi ngày, và tính năng tạm ngừng khi hết hạn mức chung. Cần mã PIN như các thao tác nhạy cảm. Tắt công tắc là dừng ngay.
+**Không bao giờ gửi**: tên hay biệt danh của bé, nhật ký, văn bản bé viết, ảnh, email của bạn. Nội dung gửi và kết quả **không được ghi vào nhật ký hệ thống**. Kết quả chỉ là gợi ý có nhãn "do AI soạn": bạn đọc và chọn **Dùng** hoặc **Bỏ qua**; ứng dụng không tự áp gì. Số lượt mỗi tháng tùy gói: miễn phí và dùng thử 10, Gói Cơ bản/Pro/Trọn đời 20, Pro Plus, Add-on AI và gia đình sáng lập còn quyền lợi không giới hạn. Mọi gói có giới hạn an toàn 100 lượt/ngày; tính năng tạm ngừng khi hết hạn mức chung. Cần mã PIN như các thao tác nhạy cảm. Tắt công tắc là dừng ngay.
 
 <a id="do-luong"></a>
 ## Đo lường và nhắc việc

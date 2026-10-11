@@ -22,7 +22,7 @@ export function WeeklySummaryButton({ counts }: { readonly counts: Omit<SummaryI
   const [result, setResult] = useState<WeeklySummary | null>(null);
   const [failure, setFailure] = useState<AiFailure | null>(null);
   const aiLanguage = aiLanguageOf(language);
-  const upsell = failure?.code === 'ai_quota' ? quotaTemplate(copy, failure.reason, failure.tier, addonSellable) : null;
+  const upsell = failure?.code === 'ai_quota' ? quotaTemplate(copy, failure.reason, failure.tier, addonSellable, subscriptionPlan === 'lifetime') : null;
 
   if (enabled === null || counts.weeks.length === 0) return null;
   if (!enabled) return <p className="text-xs text-slate-500 dark:text-slate-300">{copy.needConsent}</p>;

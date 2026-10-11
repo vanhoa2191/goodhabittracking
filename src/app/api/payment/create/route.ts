@@ -18,11 +18,12 @@ export const runtime = 'nodejs';
 const REFERRER_NAME_MAX = 40;
 
 /** Errors the order function raises for an order that cannot be placed; the message carries the code. */
-const REFUSALS = ['addon_requires_plan', 'already_included', 'already_owned', 'higher_plan_active'] as const;
+const REFUSALS = ['addon_requires_plan', 'already_included', 'already_owned', 'higher_plan_active', 'lifetime_active'] as const;
 const REFUSAL_COPY: Record<(typeof REFUSALS)[number], string> = {
   addon_requires_plan: 'Add-on AI cần một gói trả phí đang hoạt động.',
   already_included: 'Gói của bạn đã gồm AI.',
   already_owned: 'Gia đình bạn đã sở hữu mục này.',
+  lifetime_active: 'Gói Trọn đời của gia đình đã bao gồm mọi gói; không cần mua thêm gói.',
   higher_plan_active: 'Gia đình đang dùng gói cao hơn. Hãy gia hạn đúng gói đang dùng.',
 };
 

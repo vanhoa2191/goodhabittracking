@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { selectProvider } from '@/lib/ai/providers';
+import { resolveProvider, selectProvider } from '@/lib/ai/providers';
 
 const messages = [{ role: 'system' as const, content: 's' }, { role: 'user' as const, content: 'u' }];
 const schema = { type: 'object' };
@@ -9,6 +9,15 @@ const binding = { run: workersRun };
 afterEach(() => { vi.restoreAllMocks(); workersRun.mockReset(); });
 
 describe('selectProvider', () => {
+  it('resolves availability without asking a model or falling back', () => {
+    expect(resolveProvider({}, { binding }).available).toBe(true);
+    expect(resolveProvider({}, { binding: null }).available).toBe(false);
+    expect(resolveProvider({ AI_PROVIDER: 'deepseek' }, { binding }).available).toBe(false);
+    expect(resolveProvider({ AI_PROVIDER: 'deepseek', DEEPSEEK_API_KEY: 'k' }, { binding: null }).available).toBe(true);
+    expect(resolveProvider({ AI_KILL_SWITCH: 'true', AI_PROVIDER: 'deepseek', DEEPSEEK_API_KEY: 'k' }, { binding }).available).toBe(false);
+    expect(workersRun).not.toHaveBeenCalled();
+  });
+
   it('uses Workers AI by default and for an unknown value', () => {
     expect(selectProvider({}, { binding }).name).toBe('workers');
     expect(selectProvider({ AI_PROVIDER: 'nonsense' }, { binding }).name).toBe('workers');

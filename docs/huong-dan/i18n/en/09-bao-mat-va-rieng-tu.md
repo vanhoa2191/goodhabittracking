@@ -68,7 +68,7 @@ This feature is **in development**: for now the app only shows a **Coming soon**
 - **Suggest small steps with AI** (in the habit form): only **the habit name you just typed** (with links, emails and phone numbers removed) and an age band are sent.
 - **Summarise the week with AI**: only **the week’s counts** (done alone, with a reminder, together, not done) are sent, with no habit names and no child’s name.
 
-**Never sent**: your child’s name or nickname, the journal, anything your child wrote, photos, your email. What is sent and what comes back is **not written to the system logs**. The result is only a suggestion labelled “drafted by AI”: you read it and choose **Use** or **Dismiss**; the app applies nothing by itself. Each family has a limited number of suggestions a day, and the feature pauses when the shared allowance runs out. It needs your PIN like other sensitive actions. Turning the switch off stops it at once.
+**Never sent**: your child’s name or nickname, the journal, anything your child wrote, photos, your email. What is sent and what comes back is **not written to the system logs**. The result is only a suggestion labelled “drafted by AI”: you read it and choose **Use** or **Dismiss**; the app applies nothing by itself. Monthly suggestions depend on the plan: free and trial 10, Solo/Pro/Lifetime 20, unlimited with Pro Plus, the AI add-on or active founding benefits. Every plan has a safety cap of 100 suggestions per day; the feature pauses when the shared allowance runs out. It needs your PIN like other sensitive actions. Turning the switch off stops it at once.
 
 <a id="do-luong"></a>
 ## Analytics and reminders

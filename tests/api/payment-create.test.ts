@@ -297,6 +297,7 @@ describe('POST /api/payment/create atomic order reservation', () => {
     ['addon_requires_plan', 'ai_addon_monthly'],
     ['already_included', 'ai_addon_monthly'],
     ['already_owned', 'printables'],
+    ['lifetime_active', 'pro_plus_monthly'],
   ])('answers %s with 409 and that code, creating no provider link', async (code, planId) => {
     flags.printablesSale = true;
     rpc.mockResolvedValue({ data: null, error: { code: 'P0001', message: code } });

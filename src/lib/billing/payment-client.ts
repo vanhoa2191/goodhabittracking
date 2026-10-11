@@ -46,13 +46,13 @@ export type PaymentRequester = (
 
 export type PaymentErrorCode = 'invalid_plan' | 'create_failed' | 'network' | 'auth_required'
   | 'invalid_request' | 'service_unavailable' | 'status_failed' | 'order_not_found'
-  | 'addon_requires_plan' | 'already_included' | 'already_owned' | 'not_available' | 'higher_plan_active';
+  | 'addon_requires_plan' | 'already_included' | 'already_owned' | 'not_available' | 'higher_plan_active' | 'lifetime_active';
 
 /** Fired on window once a checkout is paid and the store has synced, so cards that read entitlements can refetch. */
 export const PAYMENT_SUCCESS_EVENT = 'goodhabit:payment-success';
 
 /** Refusals the create route names in the body; retrying them can never succeed. */
-export const REFUSAL_CODES = ['addon_requires_plan', 'already_included', 'already_owned', 'not_available', 'higher_plan_active'] as const;
+export const REFUSAL_CODES = ['addon_requires_plan', 'already_included', 'already_owned', 'not_available', 'higher_plan_active', 'lifetime_active'] as const;
 export type RefusalCode = (typeof REFUSAL_CODES)[number];
 
 export function isRefusalCode(value: unknown): value is RefusalCode {

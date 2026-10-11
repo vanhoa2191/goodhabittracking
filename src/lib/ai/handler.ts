@@ -9,6 +9,7 @@ import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { AI_LIMITS, AI_POLICY_VERSION, type AiKind, type AiTier } from './config';
 import type { ChatMessage } from './prompts';
+import { resolveProvider } from './providers';
 import { askModel } from './run';
 
 type Handled<Input, Output> = {
@@ -70,6 +71,12 @@ export async function handleAiRequest<Input, Output>(request: NextRequest, spec:
   const messages = spec.buildMessages(prepared);
   if (!messages) return code(400, 'Invalid request.');
 
+  const { provider, available } = resolveProvider(process.env);
+  if (!available) {
+    log('warn', 'model_disabled', 503);
+    return code(503, 'Suggestion unavailable.', { code: 'ai_disabled' });
+  }
+
   let tier: AiTier = 'free';
   try {
     const entitlement = await createAdminSupabaseClient().rpc('family_ai_tier', { target_family: parent.familyId });
@@ -98,7 +105,7 @@ export async function handleAiRequest<Input, Output>(request: NextRequest, spec:
   const again = await readConsent();
   if (again.error || !again.data || again.data.revoked_at) return code(403, 'The AI suggestion needs the parent’s agreement.', { code: 'ai_consent_required' });
 
-  const reply = await askModel(messages, spec.schema);
+  const reply = await askModel(messages, spec.schema, { provider });
   if (!reply.ok) {
     log(reply.reason === 'error' ? 'error' : 'warn', `model_${reply.reason}`, 503);
     const answer = reply.reason === 'disabled' ? 'ai_disabled' : reply.reason === 'timeout' ? 'ai_timeout' : reply.reason === 'quota' ? 'ai_quota' : 'ai_error';

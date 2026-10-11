@@ -22,12 +22,18 @@ const disabled: AiProvider = { name: 'workers', ask: async () => ({ ok: false, r
  * fails closed and nothing falls back to Workers. Before enabling it: update the CTIA record (a new foreign
  * processor), the privacy notice and `AI_POLICY_VERSION`, so the parent's agreement covers it.
  */
-export function selectProvider(env: ProviderEnv, dependencies: Dependencies = {}): AiProvider {
+export function resolveProvider(env: ProviderEnv, dependencies: Dependencies = {}): { readonly provider: AiProvider; readonly available: boolean } {
+  if (env.AI_KILL_SWITCH === 'true') return { provider: disabled, available: false };
   if (env.AI_PROVIDER === 'deepseek') {
-    return env.DEEPSEEK_API_KEY
+    const provider: AiProvider = env.DEEPSEEK_API_KEY
       ? createDeepSeekProvider({ apiKey: env.DEEPSEEK_API_KEY, baseUrl: env.DEEPSEEK_BASE_URL, model: env.DEEPSEEK_MODEL, fetch: dependencies.fetch })
       : { ...disabled, name: 'deepseek' };
+    return { provider, available: Boolean(env.DEEPSEEK_API_KEY) };
   }
   const binding = dependencies.binding === undefined ? getAiBinding() : dependencies.binding;
-  return binding ? createWorkersProvider(binding) : disabled;
+  return { provider: binding ? createWorkersProvider(binding) : disabled, available: Boolean(binding) };
+}
+
+export function selectProvider(env: ProviderEnv, dependencies: Dependencies = {}): AiProvider {
+  return resolveProvider(env, dependencies).provider;
 }

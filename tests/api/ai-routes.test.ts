@@ -1,13 +1,14 @@
 import { NextRequest } from 'next/server';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getParentContext, rpc, tierRpc, from, requireParentUnlock, run, flags, logOperationalEvent } = vi.hoisted(() => ({
+const { getParentContext, rpc, tierRpc, from, requireParentUnlock, run, binding, flags, logOperationalEvent } = vi.hoisted(() => ({
   getParentContext: vi.fn(),
   rpc: vi.fn(),
   tierRpc: vi.fn(),
   from: vi.fn(),
   requireParentUnlock: vi.fn(),
   run: vi.fn(),
+  binding: { available: true },
   flags: { parentAi: true },
   logOperationalEvent: vi.fn(),
 }));
@@ -16,7 +17,7 @@ vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/supabase/server', () => ({ createServerSupabaseClient: vi.fn(async () => ({ rpc, from })) }));
 vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ rpc: (name: string, args: unknown) => name === 'family_ai_tier' ? tierRpc(name, args) : rpc(name, args) })) }));
 vi.mock('@/lib/security/parent-unlock', () => ({ requireParentUnlock }));
-vi.mock('@/lib/ai/binding', () => ({ getAiBinding: () => ({ run }) }));
+vi.mock('@/lib/ai/binding', () => ({ getAiBinding: () => binding.available ? { run } : null }));
 vi.mock('@/lib/experience-flags', () => ({ defaultExperienceFlags: flags }));
 vi.mock('@/lib/observability/logger', () => ({ createCorrelationId: () => '11111111-1111-4111-8111-111111111111', logOperationalEvent }));
 
@@ -53,9 +54,13 @@ function consentRow(row: { revoked_at: string | null } | null, error: unknown = 
 }
 
 describe('AI suggestion routes', () => {
+  afterEach(() => vi.unstubAllEnvs());
   beforeEach(() => {
     vi.clearAllMocks();
     childNames = [];
+    binding.available = true;
+    vi.stubEnv('AI_PROVIDER', 'workers');
+    vi.stubEnv('AI_KILL_SWITCH', 'false');
     flags.parentAi = true;
     getParentContext.mockResolvedValue({ familyId, user: { id: 'parent-1' } });
     requireParentUnlock.mockResolvedValue(null);
@@ -171,7 +176,19 @@ describe('AI suggestion routes', () => {
     expect(response.status).toBe(503);
     await expect(response.json()).resolves.toMatchObject({ code: 'ai_disabled' });
     expect(run).not.toHaveBeenCalled();
-    vi.unstubAllEnvs();
+    expect(rpc).not.toHaveBeenCalled();
+    expect(tierRpc).not.toHaveBeenCalled();
+  });
+
+  it.each(['kill switch', 'missing binding'])('does not spend quota with a disabled provider: %s', async (reason) => {
+    if (reason === 'kill switch') vi.stubEnv('AI_KILL_SWITCH', 'true');
+    else binding.available = false;
+    const response = await askBreakdown();
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toMatchObject({ code: 'ai_disabled' });
+    expect(rpc).not.toHaveBeenCalled();
+    expect(tierRpc).not.toHaveBeenCalled();
+    expect(run).not.toHaveBeenCalled();
   });
 
   it.each(['system_day', 'too_fast'])('does not turn %s into a family-tier upsell', async (reason) => {

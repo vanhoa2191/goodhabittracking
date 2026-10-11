@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   createPaymentOrder,
+  isRefusalCode,
   readPaymentStatus,
   type PaymentRequester,
 } from '@/lib/billing/payment-client';
@@ -57,10 +58,11 @@ describe('payment client', () => {
 
   it.each([
     [409, 'addon_requires_plan'], [409, 'already_included'], [409, 'already_owned'],
-    [409, 'higher_plan_active'], [404, 'not_available'],
+    [409, 'higher_plan_active'], [409, 'lifetime_active'], [404, 'not_available'],
   ])('reads the %s refusal code %s from the body', async (status, code) => {
     const requester: PaymentRequester = async () => new Response(JSON.stringify({ success: false, error: 'Server copy', code }), { status });
     await expect(createPaymentOrder('ai_addon_monthly', requester)).resolves.toEqual({ success: false, error: code });
+    expect(isRefusalCode(code)).toBe(true);
   });
 
   it('ignores unknown or mismatched codes and falls back to the status mapping', async () => {

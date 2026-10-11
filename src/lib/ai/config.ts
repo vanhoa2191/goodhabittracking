@@ -16,7 +16,7 @@ export const AI_MODEL = '@cf/meta/llama-3.1-8b-instruct';
 export const AI_USES_JSON_MODE = true;
 export const AI_TIMEOUT_MS = 8000;
 /** Changes whenever the text the parent agrees to changes, so an old agreement never covers a new use. */
-export const AI_POLICY_VERSION = '2026-10-04';
+export const AI_POLICY_VERSION = '2026-10-11';
 
 const DEFAULT_SYSTEM_PER_DAY = 5000;
 

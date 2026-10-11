@@ -5,7 +5,7 @@ import { getCheckoutPlanFeatures, PLAN_LOCALIZATION } from '@/lib/i18n/pricing-p
 
 const languages: Language[] = ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'];
 const codes = ['invalid_plan', 'create_failed', 'network', 'auth_required', 'invalid_request', 'service_unavailable', 'status_failed', 'order_not_found',
-  'addon_requires_plan', 'already_included', 'already_owned', 'not_available', 'higher_plan_active'];
+  'addon_requires_plan', 'already_included', 'already_owned', 'not_available', 'higher_plan_active', 'lifetime_active'];
 
 describe('payment translations', () => {
   it.each(languages)('provides complete nonempty copy for %s', (language) => {
@@ -32,6 +32,7 @@ describe('payment translations', () => {
     expect(create.already_included).toBe('Gói của bạn đã gồm gợi ý AI.');
     expect(create.already_owned).toBe('Gia đình bạn đã sở hữu mục này.');
     expect(create.not_available).toBe('Mục này chưa mở bán.');
+    expect(create.lifetime_active).toBe('Gói Trọn đời của gia đình đã bao gồm mọi gói; không cần mua thêm gói.');
     expect(create.higher_plan_active).toBe('Gia đình đang dùng gói cao hơn. Hãy gia hạn đúng gói đang dùng.');
   });
 
