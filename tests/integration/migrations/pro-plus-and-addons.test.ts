@@ -44,7 +44,7 @@ describe('Pro Plus and add-ons migration', () => {
     expect(order).toContain("in ('yearly', 'solo_yearly', 'pro_plus_yearly')");
     expect(definition('referral_discount_bps')).toContain("'pro_plus_yearly'");
     expect(definition('accrue_referral_commission')).toContain("not in ('solo_yearly', 'yearly', 'lifetime', 'pro_plus_yearly')");
-    for (const error of ['addon_requires_plan', 'already_included', 'already_owned']) expect(order).toContain(error);
+    for (const error of ['addon_requires_plan', 'already_included', 'already_owned', 'higher_plan_active']) expect(order).toContain(error);
   });
   it('protects add-on state with RLS and a read-only manager policy', () => {
     expect(migration).toContain('create table public.family_addons');
@@ -72,5 +72,24 @@ describe('Pro Plus and add-ons migration', () => {
     expect(migration.trim()).toMatch(/^begin;[\s\S]*commit;$/);
     expect(preflight.trim()).toMatch(/^begin;[\s\S]*rollback;$/);
     for (const value of ['family_addons', 'family_ai_tier', 'family_addons_snapshot', 'pg_get_functiondef', 'pro_plus_yearly']) expect(preflight).toContain(value);
+  });
+  it('bounds founding inclusion by the original paid year in every inclusion gate', () => {
+    for (const name of ['family_ai_tier', 'family_addons_snapshot', 'create_family_payment_order']) {
+      const body = definition(name);
+      expect(body).toContain('claim.revoked_at is null');
+      expect(body).toContain('claim_order.order_code = claim.order_code');
+      expect(body).toContain("claim_order.paid_at + interval '1 year' > now()");
+    }
+  });
+  it('pins all review regression scenarios in the SQL runner', () => {
+    const scenarios = readFileSync(resolve('tests/integration/migrations/pro-plus-and-addons.scenarios.sql'), 'utf8');
+    const runner = readFileSync(resolve('scripts/verify-local-billing.mjs'), 'utf8');
+    for (const name of ['higher_plan_active', 'printables_pending_reused', 'founding_already_included',
+      'founding_expires_after_year', 'pro_plus_yearly_adds_year', 'pro_plus_yearly_pending_lock',
+      'pro_plus_yearly_prior_paid_no_discount', 'addon_expired_plan_refused', 'addon_allowed_lifetime',
+      'founding_revoked_basic']) {
+      expect(scenarios).toContain(`'${name}'`);
+      expect(runner).toContain(`'${name}'`);
+    }
   });
 });

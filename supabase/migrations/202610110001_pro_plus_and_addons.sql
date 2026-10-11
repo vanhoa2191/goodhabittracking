@@ -55,18 +55,60 @@ begin
   ) then raise exception 'not_authorized'; end if;
   if selected_plan = 'ai_addon_monthly' then
     if exists (
-      select 1 from public.user_subscriptions where family_id = target_family and status = 'active'
-        and plan in ('pro_plus_monthly', 'pro_plus_yearly')
-        and (subscription_ends_at is null or subscription_ends_at > now())
+      select 1 from public.user_subscriptions subscription
+      where subscription.family_id = target_family and subscription.status = 'active'
+        and (
+          (subscription.plan in ('pro_plus_monthly', 'pro_plus_yearly')
+            and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now()))
+          or (
+            (subscription.plan = 'lifetime'
+              or (subscription.plan = 'trial' and subscription.trial_ends_at > now())
+              or (subscription.plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly')
+                and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now())))
+            and exists (select 1 from public.launch_offer_claims claim
+              join public.payment_orders claim_order on claim_order.order_code = claim.order_code
+              where claim.family_id = target_family and claim.offer_code = 'pro_plus_founding' and claim.revoked_at is null
+                and claim_order.paid_at + interval '1 year' > now())
+          )
+        )
     ) then raise exception 'already_included'; end if;
     if not exists (
       select 1 from public.user_subscriptions where family_id = target_family and status = 'active'
         and plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'lifetime')
         and (subscription_ends_at is null or subscription_ends_at > now())
     ) then raise exception 'addon_requires_plan'; end if;
-  elsif selected_plan = 'printables' and exists (
-    select 1 from public.family_addons where family_id = target_family and addon = 'printables'
-  ) then raise exception 'already_owned'; end if;
+  elsif selected_plan = 'printables' then
+    if exists (
+      select 1 from public.family_addons where family_id = target_family and addon = 'printables'
+    ) then raise exception 'already_owned'; end if;
+    -- The family lock serializes reservations across managers and tabs.
+    select * into pending from public.payment_orders
+    where family_id = target_family and plan_id = 'printables' and status = 'PENDING'
+    order by created_at desc, order_code desc limit 1;
+    if found then
+      return query select pending.amount, 0, pending.order_code;
+      return;
+    end if;
+  else
+    -- Paid time may only be extended at the same rank or upgraded. Lifetime already
+    -- includes permanent paid time, so no subscription order can add value to it.
+    if exists (
+      select 1 from public.user_subscriptions subscription
+      where subscription.family_id = target_family and subscription.status = 'active'
+        and subscription.plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'lifetime', 'pro_plus_monthly', 'pro_plus_yearly')
+        and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now())
+        and (subscription.plan = 'lifetime'
+          or case
+            when subscription.plan in ('solo_monthly', 'solo_yearly') then 1
+            when subscription.plan in ('pro_plus_monthly', 'pro_plus_yearly') then 3
+            else 2
+          end > case
+            when selected_plan in ('solo_monthly', 'solo_yearly') then 1
+            when selected_plan in ('pro_plus_monthly', 'pro_plus_yearly') then 3
+            else 2
+          end)
+    ) then raise exception 'higher_plan_active'; end if;
+  end if;
   if selected_plan in ('yearly', 'solo_yearly', 'pro_plus_yearly') then
     -- One yearly link at a time also prevents a full-price link paying before the discounted link.
     select * into pending from public.payment_orders
@@ -704,6 +746,7 @@ begin
 end
 $$;
 
+-- Founding AI access ends at the original paid-year anniversary, even after renewal.
 create or replace function public.family_ai_tier(target_family uuid)
 returns text
 language sql
@@ -723,7 +766,9 @@ as $$
             or (subscription.plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly')
               and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now())))
           and exists (select 1 from public.launch_offer_claims claim
-            where claim.family_id = target_family and claim.offer_code = 'pro_plus_founding' and claim.revoked_at is null)
+            join public.payment_orders claim_order on claim_order.order_code = claim.order_code
+            where claim.family_id = target_family and claim.offer_code = 'pro_plus_founding' and claim.revoked_at is null
+              and claim_order.paid_at + interval '1 year' > now())
         )
       )
   ) or exists (
@@ -755,7 +800,9 @@ begin
             or (subscription.plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly')
               and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now())))
           and exists (select 1 from public.launch_offer_claims claim
-            where claim.family_id = target_family and claim.offer_code = 'pro_plus_founding' and claim.revoked_at is null)
+            join public.payment_orders claim_order on claim_order.order_code = claim.order_code
+            where claim.family_id = target_family and claim.offer_code = 'pro_plus_founding' and claim.revoked_at is null
+              and claim_order.paid_at + interval '1 year' > now())
         )
       )
   ) into included;

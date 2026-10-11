@@ -48,9 +48,22 @@ begin
   body := pg_catalog.pg_get_functiondef('public.create_family_payment_order(uuid,uuid,bigint,text,timestamptz)'::regprocedure);
   if strpos(body,'when ''pro_plus_monthly'' then 79000')=0 or strpos(body,'when ''pro_plus_yearly'' then 790000')=0
     or strpos(body,'when ''ai_addon_monthly'' then 29000')=0 or strpos(body,'when ''printables'' then 99000')=0
-    or strpos(body,'addon_requires_plan')=0 or strpos(body,'already_included')=0 or strpos(body,'already_owned')=0 then
+    or strpos(body,'addon_requires_plan')=0 or strpos(body,'already_included')=0 or strpos(body,'already_owned')=0
+    or strpos(body,'higher_plan_active')=0
+    or strpos(body,'family_id = target_family and plan_id = ''printables'' and status = ''PENDING''')=0 then
     raise exception 'new checkout prices or eligibility missing';
   end if;
+  foreach signature in array array[
+    'public.create_family_payment_order(uuid,uuid,bigint,text,timestamptz)',
+    'public.family_ai_tier(uuid)', 'public.family_addons_snapshot()'
+  ] loop
+    body := pg_catalog.pg_get_functiondef(signature::regprocedure);
+    if strpos(body,'claim.revoked_at is null')=0
+      or strpos(body,'claim_order.order_code = claim.order_code')=0
+      or strpos(body,'claim_order.paid_at + interval ''1 year'' > now()')=0 then
+      raise exception 'founding inclusion must end at original paid-year anniversary: %',signature;
+    end if;
+  end loop;
   body := pg_catalog.pg_get_functiondef('public.referral_discount_bps(uuid,uuid)'::regprocedure);
   if strpos(body,'''pro_plus_yearly''')=0 then raise exception 'Pro Plus yearly discount history missing'; end if;
   body := pg_catalog.pg_get_functiondef('public.accrue_referral_commission(bigint)'::regprocedure);

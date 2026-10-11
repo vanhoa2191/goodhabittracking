@@ -80,14 +80,18 @@ try {
   const addons = '202610110001_pro_plus_and_addons';
   await db.exec(load(addons));
   await db.exec(readFileSync('supabase/preflight/202610110001_pro_plus_and_addons.verify.sql', 'utf8'));
-  // Historical preflights must also remain valid against the upgraded function definitions.
+  // Static price/security checks remain valid after the upgrade. The historical
+  // billing preflight runs above, before this migration: its Pro -> Solo purchase
+  // fixture intentionally conflicts with the new higher_plan_active guard.
   await db.exec(readFileSync('supabase/preflight/202610100001_money_model_v2.verify.sql', 'utf8'));
-  await db.exec(readFileSync('supabase/preflight/202610090010_billing_payment_hardening.verify.sql', 'utf8'));
   const addonResults = await db.exec(readFileSync('tests/integration/migrations/pro-plus-and-addons.scenarios.sql', 'utf8'));
   const expectedAddons = new Set(['pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
     'addon_requires_plan', 'addon_then_pro_plus', 'addon_extends', 'addon_duplicate_webhook',
     'addon_no_commission_no_discount', 'printables_once', 'founding_tier', 'refund_revokes_addon',
-    'snapshot_shape', 'regression_existing_plans']);
+    'snapshot_shape', 'regression_existing_plans', 'higher_plan_active', 'printables_pending_reused',
+    'founding_already_included', 'founding_expires_after_year', 'pro_plus_yearly_adds_year',
+    'pro_plus_yearly_pending_lock', 'pro_plus_yearly_prior_paid_no_discount', 'addon_expired_plan_refused',
+    'addon_allowed_lifetime', 'founding_revoked_basic']);
   for (const result of addonResults) {
     for (const row of result.rows ?? []) {
       if (!row.scenario) continue;
@@ -114,6 +118,18 @@ try {
   assert.equal(second.rows[0].existing_order_code,'700001');
   assert.equal((await db.query('select count(*)::integer as n from payment_orders where family_id=$1',[familyId])).rows[0].n,1);
   console.log('PASS: concurrent yearly reservations reuse one order');
+
+  await db.exec('begin');
+  await db.query(checkout,[familyId,actor,700010,'printables']);
+  const queuedPrintables = other.query(checkout,[familyId,actor,700011,'printables']);
+  await waitForLock(db, other);
+  await db.exec('commit');
+  const secondPrintables = await queuedPrintables;
+  assert.equal(secondPrintables.rows[0].amount,99000);
+  assert.equal(secondPrintables.rows[0].discount_bps,0);
+  assert.equal(secondPrintables.rows[0].existing_order_code,'700010');
+  assert.equal((await db.query("select count(*)::integer as n from payment_orders where family_id=$1 and plan_id='printables'",[familyId])).rows[0].n,1);
+  console.log('PASS: concurrent printables reservations reuse one order');
 
   // A webhook committed while the admin is waiting must make its compare-and-set stale.
   await db.exec('begin');
