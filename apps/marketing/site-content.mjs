@@ -94,10 +94,9 @@ export const launchOffer = {
   slots: 10,
   planId: 'yearly',
   tag: 'Ưu đãi ra mắt',
-  text: '10 gia đình đầu tiên mua Gói Pro theo năm trước khi Pro Plus ra mắt sẽ được nâng cấp miễn phí lên Pro Plus, có Huấn luyện viên thói quen.',
+  text: '10 gia đình đầu tiên mua Gói Pro theo năm sẽ được nâng cấp miễn phí lên Pro Plus, có Huấn luyện viên thói quen.',
   seatsLabel: 'suất còn lại',
   soldOut: 'Đã hết suất',
-  upcomingNote: 'Đang phát triển. Mua Gói Pro năm hôm nay để giữ suất nâng cấp miễn phí.',
 };
 
 /** Copy for the story-led home page, chapter by chapter. Source: the founder's letter, approved by the owner. */
@@ -256,7 +255,7 @@ export const story = {
     ],
     defaultCycle: 'year',
     recommendedBadge: 'Hợp với gia đình mình',
-    soonButton: 'Sắp ra mắt',
+    addonLine: 'Gói Cơ bản/Pro: thêm Add-on AI · 29.000đ/tháng để có 10 lượt gợi ý AI mỗi ngày.',
     pledge: [
       { strong: '7 ngày', text: 'dùng thử đầy đủ' },
       { strong: '0đ', text: 'không cần thẻ' },

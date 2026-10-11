@@ -24,11 +24,11 @@ describe('marketing pricing', () => {
     }
   });
 
-  it('announces Pro Plus without a plan id or a way to buy it', () => {
+  it('sells Pro Plus in both billing cycles', () => {
     const plus = pricingTiers.pro_plus;
-    expect(plus.purchasable).toBe(false);
-    expect(plus.month.id).toBeNull();
-    expect(plus.year.id).toBeNull();
+    expect(plus.purchasable).toBe(true);
+    expect(plus.month.id).toBe('pro_plus_monthly');
+    expect(plus.year.id).toBe('pro_plus_yearly');
     expect(JSON.stringify(plus)).not.toContain('family_plus');
     expect(pricingTiers.solo.purchasable).toBe(true);
     expect(pricingTiers.pro.purchasable).toBe(true);
@@ -48,7 +48,7 @@ describe('marketing pricing', () => {
   it.each([
     ['solo', 'solo_yearly', 399000, 588000, 33300, 1090, 189000, 32, true],
     ['pro', 'yearly', 590000, 828000, 49200, 1620, 238000, 29, true],
-    ['pro_plus', null, 790000, 948000, 65800, 2160, 158000, 17, false],
+    ['pro_plus', 'pro_plus_yearly', 790000, 948000, 65800, 2160, 158000, 17, true],
   ] as const)('shows the yearly %s price per month, per day and what it saves', (tier, planId, price, fullYearPrice, perMonth, perDay, saving, savingPercent, purchasable) => {
     expect(priceView(tier, 'year')).toEqual({ tier, planId, price, fullYearPrice, perMonth, perDay, saving, savingPercent, purchasable });
   });
@@ -56,7 +56,7 @@ describe('marketing pricing', () => {
   it.each([
     ['solo', 'solo_monthly', 49000, 1630, true],
     ['pro', 'monthly', 69000, 2300, true],
-    ['pro_plus', null, 79000, 2630, false],
+    ['pro_plus', 'pro_plus_monthly', 79000, 2630, true],
   ] as const)('shows the monthly %s price per day without a saving', (tier, planId, price, perDay, purchasable) => {
     expect(priceView(tier, 'month')).toEqual({ tier, planId, price, fullYearPrice: null, perMonth: price, perDay, saving: null, savingPercent: null, purchasable });
   });

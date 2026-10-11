@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Language } from '@/types';
 import { PAID_PLAN_IDS } from '@/lib/billing/plan-catalog';
 import { getCheckoutPlanFeatures, PLAN_LOCALIZATION } from '@/lib/i18n/pricing-plan-copy';
-import { getUpcomingPlansCopy } from '@/lib/i18n/upcoming-plans-copy';
+import { getLaunchOfferCopy } from '@/lib/i18n/addons-copy';
 import { getPublicPricingCopy } from '@/lib/i18n/public-pricing-copy';
 import { getAiCopy } from '@/lib/i18n/ai-copy';
 
@@ -32,11 +32,11 @@ describe('plan names and copy', () => {
   });
 
   it('keeps no old Vietnamese plan name anywhere', () => {
-    const upcoming = getUpcomingPlansCopy('vi');
+    const launch = getLaunchOfferCopy('vi');
     const text = [
       ...PAID_PLAN_IDS.flatMap((id) => Object.values(PLAN_LOCALIZATION[id].vi)),
       ...Object.values(getPublicPricingCopy('vi')),
-      upcoming.includes, upcoming.coachFeature, upcoming.offerBody, ...Object.values(upcoming.names), ...upcoming.features,
+      launch.offerBody,
       getAiCopy('vi').soonTitle,
     ].join('\n');
     expect(text).not.toMatch(OLD_VI_NAMES);
@@ -67,22 +67,18 @@ describe('plan names and copy', () => {
     }
   });
 
-  it('announces Pro Plus with the habit coach and the launch offer in every language', () => {
+  it('preserves the launch offer in every language', () => {
     for (const language of LANGUAGES) {
-      const copy = getUpcomingPlansCopy(language);
-      expect(copy.coachFeature.trim().length, language).toBeGreaterThan(0);
+      const copy = getLaunchOfferCopy(language);
       expect(copy.offerTitle.trim().length, language).toBeGreaterThan(0);
       expect(copy.offerBody.trim().length, language).toBeGreaterThan(0);
       expect(copy.offerSoldOut.trim().length, language).toBeGreaterThan(0);
       expect(copy.offerRemaining(3), language).toContain('3');
       expect(copy.offerRemaining(10), language).toContain('10');
     }
-    expect(getUpcomingPlansCopy('vi').coachFeature).toBe('Huấn luyện viên thói quen: gợi ý chia nhỏ thói quen và tóm tắt tuần bằng AI');
-    expect(getUpcomingPlansCopy('vi').offerRemaining(3)).toBe('Còn 3/10 suất');
-    expect(getUpcomingPlansCopy('vi').offerSoldOut).toBe('Đã hết suất ưu đãi');
-    expect(getUpcomingPlansCopy('vi').names.family_plus_yearly).toBe('Gói Pro Plus · Năm');
-    expect(getUpcomingPlansCopy('en').offerTitle).toBe('Launch offer');
-    expect(getUpcomingPlansCopy('en').names.family_plus_monthly).toContain('Pro Plus plan');
+    expect(getLaunchOfferCopy('vi').offerRemaining(3)).toBe('Còn 3/10 suất');
+    expect(getLaunchOfferCopy('vi').offerSoldOut).toBe('Đã hết suất ưu đãi');
+    expect(getLaunchOfferCopy('en').offerTitle).toBe('Launch offer');
   });
 
   it('calls the AI suggestions the habit coach', () => {
@@ -93,13 +89,6 @@ describe('plan names and copy', () => {
 });
 
 describe('each language shows its own wording', () => {
-  it('names the AI suggestions with the same habit-coach term the Pro Plus card starts with', () => {
-    for (const language of LANGUAGES) {
-      const title = getAiCopy(language).soonTitle;
-      expect(getUpcomingPlansCopy(language).coachFeature.startsWith(title), language).toBe(true);
-    }
-  });
-
   it('keeps every script and language-specific term in its own language', () => {
     const hangul = /[ᄀ-ᇿ㄰-㆏가-힯]/u;
     const kana = /[぀-ヿ]/u;
@@ -109,7 +98,7 @@ describe('each language shows its own wording', () => {
       const text = JSON.stringify([
         Object.values(getPublicPricingCopy(language)),
         Object.values(getAiCopy(language)).filter((value) => typeof value === 'string'),
-        Object.values(getUpcomingPlansCopy(language)).map((value) => (typeof value === 'function' ? value(3) : value)),
+        Object.values(getLaunchOfferCopy(language)).map((value) => (typeof value === 'function' ? value(3) : value)),
         PAID_PLAN_IDS.map((id) => PLAN_LOCALIZATION[id][language]),
       ]);
       expect(hangul.test(text), `hangul in ${language}`).toBe(language === 'ko');

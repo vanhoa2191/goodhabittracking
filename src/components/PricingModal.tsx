@@ -167,7 +167,7 @@ export function PricingModal({ isOpen, onClose }: PricingModalProps) {
                   className={`w-full min-h-[48px] py-3 px-4 rounded-2xl font-extrabold text-xs sm:text-sm transition-all shadow-md active:scale-95 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                     isCurrent
                       ? 'bg-slate-100 dark:bg-zinc-800 text-slate-400 cursor-not-allowed shadow-none'
-                      : planId === 'monthly' || planId === 'yearly'
+                      : planId === 'monthly' || planId === 'yearly' || planId === 'pro_plus_monthly' || planId === 'pro_plus_yearly'
                       ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none cursor-pointer'
                       : 'bg-slate-900 hover:bg-slate-800 text-white dark:bg-zinc-800 dark:hover:bg-zinc-700 cursor-pointer'
                   }`}

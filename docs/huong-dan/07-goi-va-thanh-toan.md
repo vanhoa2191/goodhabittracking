@@ -26,17 +26,21 @@
 | **Gói Cơ bản · Năm** | 399.000đ / năm (tiết kiệm 189.000đ, 32% so với trả theo tháng) | 1 bé | Một bé, thanh toán một lần cho 12 tháng |
 | **Gói Pro · Tháng** | 69.000đ / tháng | Tối đa 5 bé | Gia đình có nhiều bé, linh hoạt theo tháng |
 | **Gói Pro · Năm** | 590.000đ / năm (tiết kiệm 238.000đ, 29% so với trả theo tháng) | Tối đa 5 bé | Duy trì đủ lâu để việc nhỏ thành nếp |
+| **Gói Pro Plus · Tháng** | 79.000đ / tháng | Tối đa 5 bé | Gồm mọi quyền lợi Gói Pro và gợi ý AI 10 lượt/ngày |
+| **Gói Pro Plus · Năm** | 790.000đ / năm (tiết kiệm 158.000đ, 17% so với trả theo tháng) | Tối đa 5 bé | Mọi quyền lợi Gói Pro và gợi ý AI 10 lượt/ngày, thanh toán theo năm |
 | **Trọn đời** | Không bán | Không giới hạn | Chỉ do quản trị viên cấp thủ công<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 Bản tháng và bản năm của cùng một gói có quyền lợi giống hệt, chỉ khác giá và thời hạn. Tất cả là **thanh toán một lần**, không tự động gia hạn. Màn hình bảng giá còn liệt kê thêm quyền lợi cho gói trả phí (báo cáo theo dõi hằng tuần, thi đua gia đình, hỗ trợ kỹ thuật nhanh); ebook hiện **chưa phát hành**.
 
-**Tên gọi trên website** giống trong ứng dụng: *Gói Cơ bản* và *Gói Pro* (theo tháng, theo năm), cùng giá.
+**Tên gọi trên website** giống trong ứng dụng: *Gói Cơ bản*, *Gói Pro* và *Gói Pro Plus* (theo tháng, theo năm), cùng giá.
 
-**Số bé theo gói** do cơ sở dữ liệu kiểm tra khi **thêm** hồ sơ bé mới: Gói Cơ bản tối đa 1 bé; Gói Pro và dùng thử tối đa 5 bé; trọn đời không giới hạn; không có gói hiệu lực thì không thêm được hồ sơ bé mới. Gia đình đang có nhiều hồ sơ hơn mức của gói vẫn **giữ nguyên các hồ sơ hiện có**; giới hạn chỉ chặn việc thêm mới.
+**Số bé theo gói** do cơ sở dữ liệu kiểm tra khi **thêm** hồ sơ bé mới: Gói Cơ bản tối đa 1 bé; Gói Pro, Gói Pro Plus và dùng thử tối đa 5 bé; trọn đời không giới hạn; không có gói hiệu lực thì không thêm được hồ sơ bé mới. Gia đình đang có nhiều hồ sơ hơn mức của gói vẫn **giữ nguyên các hồ sơ hiện có**; giới hạn chỉ chặn việc thêm mới.
 
-**Gói Pro Plus và Huấn luyện viên thói quen (đang phát triển).** Gói Pro Plus (79.000đ / tháng hoặc 790.000đ / năm) gồm mọi thứ của Gói Pro cộng **Huấn luyện viên thói quen** (gợi ý bước nhỏ và tóm tắt tuần bằng AI), tối đa 5 bé. Gói này **đang phát triển**: chưa mở bán, không có nút mua và chưa có ngày ra mắt; các gói hiện tại không thay đổi. Xem [Gợi ý bằng AI](09-bao-mat-va-rieng-tu.md#goi-y-ai) để biết dữ liệu nào được gửi.
+**Gói Pro Plus.** Gói Pro Plus (79.000đ / tháng hoặc 790.000đ / năm, tiết kiệm 158.000đ, 17%) gồm mọi quyền lợi Gói Pro (tối đa 5 bé) và gợi ý AI 10 lượt/ngày. Xem [Gợi ý bằng AI](09-bao-mat-va-rieng-tu.md#goi-y-ai) để biết dữ liệu nào được gửi.
 
-**Ưu đãi ra mắt.** 10 gia đình đầu tiên thanh toán thành công **Gói Pro theo năm** trước khi Pro Plus ra mắt được nâng cấp miễn phí lên Pro Plus cho phần còn lại của năm đã trả. Mỗi gia đình tối đa 1 suất, tính theo thứ tự thanh toán thành công; hết 10 suất thì trang ghi "Đã hết suất". Suất bị thu hồi nếu đơn đó được hoàn tiền.
+**Add-on AI.** 29.000đ / tháng, chỉ cho gia đình đang có Gói Cơ bản hoặc Gói Pro còn hạn; mỗi lần mua cộng 1 tháng; Pro Plus đã gồm sẵn nên không cần mua. Mọi phụ huynh (đã đồng ý dùng AI) được 1 lượt gợi ý/ngày; Pro Plus hoặc Add-on AI được 10 lượt/ngày.
+
+**Ưu đãi ra mắt.** 10 gia đình đầu tiên thanh toán thành công **Gói Pro theo năm** được nâng cấp miễn phí lên Pro Plus cho phần còn lại của năm đã trả. Mỗi gia đình tối đa 1 suất, tính theo thứ tự thanh toán thành công; hết 10 suất thì trang ghi "Đã hết suất". Suất bị thu hồi nếu đơn đó được hoàn tiền.
 
 <a id="noi-mua"></a>
 ## Nơi mua
@@ -90,7 +94,7 @@ Mã tặng do đội vận hành tạo. Nhập ở `Cài đặt → Tài khoản
 <a id="giam-gia"></a>
 ## Giảm giá cho gia đình được giới thiệu
 
-Gia đình nhập mã giới thiệu (qua liên kết `?ref=` hoặc nhập tay) được **giảm 10% đơn đầu tiên của một trong hai gói năm**: Gói Pro · Năm 590.000đ còn 531.000đ, Gói Cơ bản · Năm 399.000đ còn 359.000đ (giảm 40.000đ); chỉ khi gia đình chưa có đơn nào đã trả. Màn thanh toán hiện: Ba/mẹ được giảm X đồng thông qua giới thiệu của <tên hiển thị của người giới thiệu>. Chi tiết: [8. Giới thiệu bạn bè](08-gioi-thieu-ban-be.md#giam-10).
+Gia đình nhập mã giới thiệu (qua liên kết `?ref=` hoặc nhập tay) được **giảm 10% đơn đầu tiên của một trong các gói năm**: Gói Pro Plus · Năm 790.000đ còn 711.000đ, Gói Pro · Năm 590.000đ còn 531.000đ, Gói Cơ bản · Năm 399.000đ còn 359.000đ (giảm 40.000đ); chỉ khi gia đình chưa có đơn nào đã trả. Gói Pro Plus tháng, các gói tháng khác và Add-on AI không được giảm giá giới thiệu. Màn thanh toán hiện: Ba/mẹ được giảm X đồng thông qua giới thiệu của <tên hiển thị của người giới thiệu>. Chi tiết: [8. Giới thiệu bạn bè](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Hoàn tiền và hủy

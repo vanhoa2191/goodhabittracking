@@ -281,7 +281,6 @@ for (const section of $$('[data-pricing-cycle]')) {
     radioGroup(kidsGroup, (button) => {
       for (const card of $$('[data-plan]', section)) {
         const on = card.dataset.plan === button.dataset.tier;
-        if (card.dataset.plan === 'pro_plus') continue;
         card.classList.toggle('recommended', on);
         for (const cta of $$('[data-plan-cta]', card)) {
           cta.classList.toggle('btn-primary', on);

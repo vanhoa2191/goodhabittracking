@@ -446,19 +446,8 @@ function renderPlanCard(tier, appOrigin, recommended) {
         <div class="amount" data-cycle="month">
           <div class="now"><strong>${vnd(month.price)}</strong><span>/ tháng</span></div>
           <p class="per">khoảng ${vnd(month.perDay)} mỗi ngày</p>
-          ${plan.purchasable ? `<button class="nudge" type="button" data-cycle-nudge>Trả theo năm tiết kiệm ${vnd(year.saving)} →</button>` : ''}
+          <button class="nudge" type="button" data-cycle-nudge>Trả theo năm tiết kiệm ${vnd(year.saving)} →</button>
         </div>`;
-  if (!plan.purchasable) {
-    return `<article class="plan plan-soon" data-plan="${tier}">
-        <span class="badge badge-soon">${escapeHtml(plan.status)}</span>
-        <h3>${escapeHtml(plan.name)}</h3>
-        <p class="for">${escapeHtml(plan.who)}</p>
-        ${amounts}
-        <ul>${features}</ul>
-        <p class="soon-note">${escapeHtml(launchOffer.upcomingNote)}</p>
-        <button class="btn btn-soon" type="button" disabled>${escapeHtml(copy.soonButton)}</button>
-      </article>`;
-  }
   const upgrade = tier === 'pro'
     ? `<p class="upgrade" data-cycle="year">Chỉ hơn ${escapeHtml(pricingTiers.solo.name)} ${vnd(upgradeDifference('year'))} mỗi năm, dùng cho tối đa 5 bé.</p><p class="upgrade" data-cycle="month">Chỉ hơn ${escapeHtml(pricingTiers.solo.name)} ${vnd(upgradeDifference('month'))} mỗi tháng, dùng cho tối đa 5 bé.</p>`
     : '';
@@ -506,6 +495,7 @@ function renderPlans(appOrigin, { home = false } = {}) {
       <div class="plans">
         ${Object.keys(pricingTiers).map((tier) => renderPlanCard(tier, appOrigin, tier === recommendedTier)).join('')}
       </div>
+      <p class="lead"><a href="${appUrl(appOrigin, '/checkout?plan=ai_addon_monthly')}">${escapeHtml(copy.addonLine)}</a></p>
       <ul class="pledge reveal">${copy.pledge.map((item) => `<li><b>${escapeHtml(item.strong)}</b><span>${escapeHtml(item.text)}</span></li>`).join('')}</ul>
     </div>
   </section>`;

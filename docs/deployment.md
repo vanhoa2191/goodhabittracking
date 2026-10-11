@@ -184,6 +184,14 @@ Migration `supabase/migrations/202610070001_pricing_tiers_launch_offer.sql` thê
 5. Ứng dụng cần biến `NEXT_PUBLIC_MARKETING_URL` (origin của trang marketing, ví dụ `https://kidhabithero.com`): endpoint công khai trả số suất ưu đãi còn lại dùng nó cho CORS. Thiếu biến thì trang marketing không đọc được số suất thật.
 6. Hoàn tiền một đơn Gói Pro năm đang giữ suất ưu đãi do quản trị viên xử lý thủ công trong admin; suất bị thu hồi cùng đơn.
 
+### Pro Plus và Add-ons (`202610110001`)
+
+Migration `supabase/migrations/202610110001_pro_plus_and_addons.sql` thêm các gói `pro_plus_monthly`, `pro_plus_yearly`, bảng `family_addons` cho Add-on AI (`ai_addon_monthly`) và Printable & Ebook (`printables`), cùng hàm `family_ai_tier()` và `family_addons_snapshot()`. Phiên bản schema là `202610110001`.
+
+1. Áp migration `202610110001_pro_plus_and_addons.sql` (`db push`).
+2. Chạy `supabase/preflight/202610110001_pro_plus_and_addons.verify.sql` bằng vai trò `postgres` qua `psql` hoặc Supabase CLI để xác nhận cấu trúc và ràng buộc.
+3. Cờ build `NEXT_PUBLIC_PRINTABLES_SALE` (mặc định `false`): khi `false`, không hiện Printable & Ebook 99.000đ và API từ chối.
+
 ## Staged rollout
 
 - Preview: health endpoint phải `ready`; chạy E2E desktop/mobile và webhook test mode.

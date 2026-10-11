@@ -15,6 +15,7 @@ import { familyPauseCopy } from '@/lib/i18n/family-pause-copy';
 import { ChildDevicesPanel } from '@/components/ChildDevicesPanel';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { AccountProfileCard } from '@/components/AccountProfileCard';
+import { AddonsCard } from '@/components/AddonsCard';
 import { AnalyticsConsentCard } from '@/components/AnalyticsConsentCard';
 // These two cards are only needed once the settings tab is open, so they load on demand.
 const LeaderboardSharingCard = dynamic(() => import('./LeaderboardSharingCard').then((module) => module.LeaderboardSharingCard));
@@ -244,6 +245,7 @@ export function ParentSettingsTab() {
 
       <h4 id="settings-account" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionAccount}</h4>
       {currentUser && <AccountProfileCard />}
+      {currentUser && <AddonsCard />}
       <FamilyDataCard />
       <h4 id="settings-privacy" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionPrivacy}</h4>
       {currentUser && <AnalyticsConsentCard />}

@@ -2,7 +2,7 @@
 // src/lib/billing/plan-catalog.ts (tests/unit/marketing-pricing.test.ts compares the two); this file stays
 // plain ESM so the static build needs no TypeScript.
 
-/** Pro Plus is announced, not on sale: no plan id, so no checkout link can be built for it. */
+/** All three tiers are on sale with monthly and yearly checkout ids. */
 export const pricingTiers = Object.freeze({
   solo: {
     name: 'Gói Cơ bản',
@@ -23,16 +23,16 @@ export const pricingTiers = Object.freeze({
   pro_plus: {
     name: 'Gói Pro Plus',
     who: 'Pro, thêm Huấn luyện viên thói quen',
-    month: { id: null, amount: 79000 },
-    year: { id: null, amount: 790000 },
+    month: { id: 'pro_plus_monthly', amount: 79000 },
+    year: { id: 'pro_plus_yearly', amount: 790000 },
     features: [
-      'Mọi quyền lợi của Gói Pro',
+      'Mọi quyền lợi của Gói Pro, tối đa 5 hồ sơ bé',
+      '10 lượt gợi ý AI mỗi ngày cho cả gia đình',
       'Huấn luyện viên thói quen: gợi ý chia nhỏ thói quen bằng AI',
       'Tóm tắt tuần bằng AI cho ba mẹ',
       'Luôn do ba mẹ quyết định, không gửi tên hay nhật ký của bé',
     ],
-    purchasable: false,
-    status: 'Đang phát triển',
+    purchasable: true,
   },
 });
 

@@ -36,7 +36,7 @@ describe('marketing release verifier', () => {
       directory: await buildFixture(),
       appOrigin: 'https://app.example',
       marketingOrigin: 'https://www.example',
-    })).resolves.toEqual({ routes: 11, plans: 4 });
+    })).resolves.toEqual({ routes: 11, plans: 6 });
   });
 
   it('rejects a home page or pricing page that lacks a public price', async () => {
@@ -139,7 +139,7 @@ describe('marketing release verifier', () => {
       marketingOrigin: 'https://www.example',
       liveOrigin: 'https://preview.example',
       fetchImpl,
-    })).resolves.toEqual({ routes: 11, plans: 4 });
+    })).resolves.toEqual({ routes: 11, plans: 6 });
     expect(fetchImpl).toHaveBeenCalledTimes(11);
   });
 });
