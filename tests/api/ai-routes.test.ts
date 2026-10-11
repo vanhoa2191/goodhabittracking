@@ -1,9 +1,10 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getParentContext, rpc, from, requireParentUnlock, run, flags, logOperationalEvent } = vi.hoisted(() => ({
+const { getParentContext, rpc, tierRpc, from, requireParentUnlock, run, flags, logOperationalEvent } = vi.hoisted(() => ({
   getParentContext: vi.fn(),
   rpc: vi.fn(),
+  tierRpc: vi.fn(),
   from: vi.fn(),
   requireParentUnlock: vi.fn(),
   run: vi.fn(),
@@ -13,7 +14,7 @@ const { getParentContext, rpc, from, requireParentUnlock, run, flags, logOperati
 
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/supabase/server', () => ({ createServerSupabaseClient: vi.fn(async () => ({ rpc, from })) }));
-vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ rpc })) }));
+vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ rpc: (name: string, args: unknown) => name === 'family_ai_tier' ? tierRpc(name, args) : rpc(name, args) })) }));
 vi.mock('@/lib/security/parent-unlock', () => ({ requireParentUnlock }));
 vi.mock('@/lib/ai/binding', () => ({ getAiBinding: () => ({ run }) }));
 vi.mock('@/lib/experience-flags', () => ({ defaultExperienceFlags: flags }));
@@ -60,6 +61,7 @@ describe('AI suggestion routes', () => {
     requireParentUnlock.mockResolvedValue(null);
     consentRow({ revoked_at: null });
     rpc.mockResolvedValue({ data: { allowed: true, remainingToday: 4 }, error: null });
+    tierRpc.mockReset().mockResolvedValue({ data: 'basic', error: null });
     run.mockResolvedValue({ response: JSON.stringify(steps) });
   });
 
@@ -72,7 +74,7 @@ describe('AI suggestion routes', () => {
     expect(sent).toContain('6-12');
     expect(sent).not.toContain('x.example');
     expect(sent).not.toContain('0912345678');
-    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', { actor_user_id: 'parent-1', per_day: 5, system_per_day: 150, min_gap_seconds: 20 });
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', { actor_user_id: 'parent-1', per_day: 1, system_per_day: 150, min_gap_seconds: 20 });
   });
 
   it('refuses a request that comes from another site before anything else', async () => {
@@ -115,11 +117,43 @@ describe('AI suggestion routes', () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 
-  it('stops at the allowance with a reason and does not call the model', async () => {
+  it.each([['plus', 10], ['basic', 1]] as const)('uses the %s family allowance', async (tier, perDay) => {
+    tierRpc.mockResolvedValue({ data: tier, error: null });
+    expect((await askBreakdown()).status).toBe(200);
+    expect(tierRpc).toHaveBeenCalledWith('family_ai_tier', { target_family: familyId });
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', { actor_user_id: 'parent-1', per_day: perDay, system_per_day: 150, min_gap_seconds: 20 });
+  });
+
+  it.each([
+    { data: 'plus', error: { message: 'unavailable' } },
+    { data: null, error: null },
+    { data: 'unknown', error: null },
+  ])('falls back to the basic allowance for an unavailable or invalid tier: %j', async (result) => {
+    tierRpc.mockResolvedValue(result);
+    expect((await askBreakdown()).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', expect.objectContaining({ per_day: 1 }));
+  });
+
+  it('falls back to basic when the tier lookup throws', async () => {
+    tierRpc.mockRejectedValue(new Error('connection failed'));
+    expect((await askBreakdown()).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', expect.objectContaining({ per_day: 1 }));
+  });
+
+  it.each(['basic', 'plus'])('returns the %s tier on a daily family refusal without calling the model', async (tier) => {
+    tierRpc.mockResolvedValue({ data: tier, error: null });
     rpc.mockResolvedValue({ data: { allowed: false, reason: 'family_day' }, error: null });
     const response = await askBreakdown();
     expect(response.status).toBe(429);
-    await expect(response.json()).resolves.toMatchObject({ code: 'ai_quota', reason: 'family_day' });
+    await expect(response.json()).resolves.toMatchObject({ code: 'ai_quota', reason: 'family_day', tier });
+    expect(run).not.toHaveBeenCalled();
+  });
+
+  it.each(['system_day', 'too_fast'])('does not turn %s into a family-tier upsell', async (reason) => {
+    rpc.mockResolvedValue({ data: { allowed: false, reason }, error: null });
+    const response = await askBreakdown();
+    expect(response.status).toBe(429);
+    await expect(response.json()).resolves.toEqual({ success: false, error: 'No suggestions left for now.', code: 'ai_quota', reason });
     expect(run).not.toHaveBeenCalled();
   });
 

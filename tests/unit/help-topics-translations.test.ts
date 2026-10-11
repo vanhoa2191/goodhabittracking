@@ -69,6 +69,21 @@ describe('help topic translations', () => {
       });
     });
   }
+
+  it.each(ALL_LANGUAGES)('explains paid and free AI allowances in %s without advertising hidden products', (language) => {
+    const plans = helpTextFor('payment.plans', HELP_TOPICS['payment.plans'], TRANSLATIONS[language as Translated], language).text;
+    const ai = helpTextFor('ai.consent', HELP_TOPICS['ai.consent'], TRANSLATIONS[language as Translated], language).text;
+    expect(plans).toContain('Pro Plus');
+    expect(plans).toMatch(/79[., ]000/);
+    expect(plans).toMatch(/790[., ]000/);
+    expect(plans).toContain('10');
+    expect(ai).toMatch(/29[., ]000/);
+    expect(ai).toContain('1');
+    expect(ai).toContain('10');
+    expect(plans + ai).not.toMatch(/Printables/i);
+    expect(plans.length).toBeLessThanOrEqual(260);
+    expect(ai.length).toBeLessThanOrEqual(260);
+  });
 });
 
 describe('helpTextFor', () => {

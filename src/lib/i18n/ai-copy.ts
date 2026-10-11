@@ -25,10 +25,17 @@ export type AiCopy = {
   readonly soonBody: string;
   readonly soonBreakdown: string;
   readonly soonSummary: string;
+  readonly quota: { readonly basic: string; readonly plus: string; readonly addon: string; readonly upgrade: string };
   readonly errors: Readonly<Record<AiFailureCode, string>>;
 };
 
 const vi: AiCopy = {
+  quota: {
+    basic: 'Hôm nay bạn đã dùng 1 lượt gợi ý miễn phí. Thêm {addon} hoặc nâng lên {upgrade} để có 10 lượt mỗi ngày.',
+    plus: 'Bạn đã dùng hết 10 lượt hôm nay. Quay lại vào ngày mai nhé.',
+    addon: 'Add-on AI (29.000đ/tháng)',
+    upgrade: 'Pro Plus',
+  },
   soonBadge: 'Sắp ra mắt',
   soonTitle: 'Huấn luyện viên thói quen',
   soonBody: 'Đang phát triển: chia nhỏ một thói quen thành các bước dễ làm và tóm tắt tuần. Sẽ mặc định tắt, chỉ chạy khi bạn đồng ý, và không bao giờ gửi tên hay nhật ký của bé.',
@@ -65,6 +72,12 @@ const vi: AiCopy = {
 };
 
 const en: AiCopy = {
+  quota: {
+    basic: 'You have used your 1 free suggestion today. Add the {addon} or upgrade to {upgrade} for 10 suggestions each day.',
+    plus: 'You have used all 10 suggestions today. Please come back tomorrow.',
+    addon: 'AI add-on (29,000 VND/month)',
+    upgrade: 'Pro Plus',
+  },
   soonBadge: 'Coming soon',
   soonTitle: 'Habit coach',
   soonBody: 'In development: splitting a habit into easy steps and summarising the week. It will be off by default, run only when you agree, and never send your child’s name or journal.',
@@ -101,6 +114,12 @@ const en: AiCopy = {
 };
 
 const fr: AiCopy = {
+  quota: {
+    basic: 'Vous avez utilisé votre suggestion gratuite du jour. Ajoutez l’{addon} ou passez à {upgrade} pour 10 suggestions par jour.',
+    plus: 'Vous avez utilisé vos 10 suggestions du jour. Revenez demain.',
+    addon: 'option IA (29 000 VND/mois)',
+    upgrade: 'Pro Plus',
+  },
   soonBadge: 'Bientôt disponible',
   soonTitle: 'Coach d’habitudes',
   soonBody: 'En développement : découper une habitude en petites étapes et résumer la semaine. Désactivé par défaut, uniquement avec votre accord, sans jamais envoyer le nom ni le journal de votre enfant.',
@@ -115,6 +134,12 @@ const fr: AiCopy = {
 };
 
 const de: AiCopy = {
+  quota: {
+    basic: 'Ihr 1 kostenloser Vorschlag für heute ist aufgebraucht. Mit dem {addon} oder {upgrade} erhalten Sie 10 Vorschläge pro Tag.',
+    plus: 'Sie haben heute alle 10 Vorschläge genutzt. Kommen Sie morgen wieder.',
+    addon: 'KI-Zusatz (29.000 VND/Monat)',
+    upgrade: 'Pro Plus',
+  },
   soonBadge: 'Demnächst verfügbar',
   soonTitle: 'Gewohnheits-Coach',
   soonBody: 'In Entwicklung: eine Gewohnheit in leichte Schritte aufteilen und die Woche zusammenfassen. Standardmäßig aus, nur mit Ihrer Zustimmung, und Name oder Tagebuch Ihres Kindes werden nie gesendet.',
@@ -129,6 +154,12 @@ const de: AiCopy = {
 };
 
 const it: AiCopy = {
+  quota: {
+    basic: 'Ha usato il suggerimento gratuito di oggi. Aggiunga l’{addon} o passi a {upgrade} per 10 suggerimenti al giorno.',
+    plus: 'Ha usato tutti i 10 suggerimenti di oggi. Torni domani.',
+    addon: 'opzione IA (29.000 VND/mese)',
+    upgrade: 'Pro Plus',
+  },
   soonBadge: 'In arrivo',
   soonTitle: 'Coach delle abitudini',
   soonBody: 'In sviluppo: dividere un’abitudine in passi facili e riassumere la settimana. Sarà disattivato per impostazione predefinita, attivo solo con il Suo consenso, e non invierà mai il nome né il diario del bambino.',
@@ -143,6 +174,12 @@ const it: AiCopy = {
 };
 
 const es: AiCopy = {
+  quota: {
+    basic: 'Ha usado su sugerencia gratuita de hoy. Añada el {addon} o cambie a {upgrade} para tener 10 sugerencias al día.',
+    plus: 'Ha usado las 10 sugerencias de hoy. Vuelva mañana.',
+    addon: 'complemento IA (29.000 VND/mes)',
+    upgrade: 'Pro Plus',
+  },
   soonBadge: 'Próximamente',
   soonTitle: 'Coach de hábitos',
   soonBody: 'En desarrollo: dividir un hábito en pasos fáciles y resumir la semana. Estará desactivado por defecto, solo con su consentimiento, y nunca enviará el nombre ni el diario de su hijo o hija.',
@@ -157,6 +194,12 @@ const es: AiCopy = {
 };
 
 const zh: AiCopy = {
+  quota: {
+    basic: '您已用完今天的1次免费建议。购买 {addon}或升级至 {upgrade}，即可每天使用10次。',
+    plus: '您已用完今天的10次建议。请明天再来。',
+    addon: 'AI 附加服务（29,000 VND/月）',
+    upgrade: 'Pro Plus',
+  },
   soonBadge: '即将推出',
   soonTitle: '习惯教练',
   soonBody: '开发中：把一个习惯拆成容易完成的小步骤，并总结一周情况。默认关闭，只有在您同意后才会运行，绝不会发送孩子的姓名或日记。',
@@ -171,6 +214,12 @@ const zh: AiCopy = {
 };
 
 const ja: AiCopy = {
+  quota: {
+    basic: '本日の無料提案1回を利用しました。{addon}を購入するか {upgrade} にアップグレードすると、1日10回利用できます。',
+    plus: '本日の提案10回をすべて利用しました。また明日ご利用ください。',
+    addon: 'AI 追加オプション（月額29,000 VND）',
+    upgrade: 'Pro Plus',
+  },
   soonBadge: '近日公開',
   soonTitle: '習慣コーチ',
   soonBody: '開発中：習慣を取り組みやすい小さなステップに分けたり、1週間をまとめたりします。初期設定はオフで、同意した場合にのみ動作し、お子さまの名前や日記は送信しません。',
@@ -185,6 +234,12 @@ const ja: AiCopy = {
 };
 
 const ko: AiCopy = {
+  quota: {
+    basic: '오늘의 무료 제안 1회를 사용했습니다. {addon}을 구매하거나 {upgrade}로 업그레이드하면 하루 10회를 이용할 수 있습니다.',
+    plus: '오늘의 제안 10회를 모두 사용했습니다. 내일 다시 이용해 주세요.',
+    addon: 'AI 추가 옵션(월 29,000 VND)',
+    upgrade: 'Pro Plus',
+  },
   soonBadge: '곧 출시',
   soonTitle: '습관 코치',
   soonBody: '개발 중: 습관을 쉬운 단계로 나누고 한 주를 요약합니다. 기본값은 꺼짐이며, 동의하신 경우에만 작동하고 자녀의 이름이나 일기는 절대 보내지 않습니다.',

@@ -24,6 +24,23 @@ describe('AI client', () => {
     expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_error' });
   });
 
+  it.each(['basic', 'plus'])('keeps the %s family-day quota details for the screen', async (tier) => {
+    reply(429, { success: false, code: 'ai_quota', reason: 'family_day', tier });
+    expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_quota', reason: 'family_day', tier });
+  });
+
+  it.each(['system_day', 'too_fast'])('keeps %s separate from the family limit', async (reason) => {
+    reply(429, { success: false, code: 'ai_quota', reason });
+    expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_quota', reason });
+  });
+
+  it('ignores unknown quota details without losing the refusal', async () => {
+    reply(429, { success: false, code: 'ai_quota', reason: 'unknown', tier: 'premium' });
+    expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_quota' });
+    reply(429, { success: false, code: 'ai_quota', reason: 'family_day', tier: { value: 'plus' } });
+    expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_quota', reason: 'family_day' });
+  });
+
   it('refuses a success that does not hold exactly three steps, and a failed connection', async () => {
     reply(200, { success: true, result: { steps: [{ text: 'a b c', minutes: 1 }] } });
     expect(await requestBreakdown(input)).toEqual({ ok: false, code: 'ai_invalid_output' });

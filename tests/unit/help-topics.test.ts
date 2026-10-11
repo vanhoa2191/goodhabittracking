@@ -53,6 +53,20 @@ describe('help topics', () => {
     }
   });
 
+  it('explains the available Pro Plus prices, AI add-on, and free daily allowance', () => {
+    const plans = HELP_TOPICS['payment.plans'].vi.text;
+    expect(plans).toContain('Pro Plus');
+    expect(plans).toContain('79.000đ/tháng');
+    expect(plans).toContain('790.000đ/năm');
+    expect(plans).toContain('10 lượt/ngày');
+    const ai = HELP_TOPICS['ai.consent'].vi.text;
+    expect(ai).toContain('1 lượt/ngày miễn phí');
+    expect(ai).toContain('Add-on AI');
+    expect(ai).toContain('29.000đ/tháng');
+    expect(ai).toContain('Cơ bản/Pro');
+    expect(ai).toContain('10 lượt/ngày');
+  });
+
   it('are all shown somewhere, and every ? in the screens names a real topic', () => {
     const known = new Set<string>(HELP_TOPIC_IDS);
     expect([...usedTopics.keys()].filter((id) => !known.has(id))).toEqual([]);

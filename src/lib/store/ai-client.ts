@@ -4,13 +4,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { z } from 'zod';
 import type { Breakdown, WeeklySummary } from '@/lib/ai/output-check';
 import type { SummaryInput } from '@/lib/ai/prompts';
-import type { AiLanguage } from '@/lib/ai/config';
+import type { AiLanguage, AiTier } from '@/lib/ai/config';
 
 export type AiFailureCode = 'ai_consent_required' | 'ai_quota' | 'ai_disabled' | 'ai_timeout' | 'ai_invalid_output' | 'ai_error' | 'pin' | 'network';
-export type AiAnswer<T> = { readonly ok: true; readonly result: T; readonly remainingToday: number | null } | { readonly ok: false; readonly code: AiFailureCode };
+export type AiFailure = { readonly ok: false; readonly code: AiFailureCode; readonly reason?: 'family_day' | 'system_day' | 'too_fast'; readonly tier?: AiTier };
+export type AiAnswer<T> = { readonly ok: true; readonly result: T; readonly remainingToday: number | null } | AiFailure;
 
 const known: ReadonlySet<string> = new Set(['ai_consent_required', 'ai_quota', 'ai_disabled', 'ai_timeout', 'ai_invalid_output', 'ai_error']);
-const answer = z.object({ success: z.boolean(), result: z.unknown().optional(), remainingToday: z.number().nullable().optional(), code: z.string().optional() });
+const answer = z.object({ success: z.boolean(), result: z.unknown().optional(), remainingToday: z.number().nullable().optional(), code: z.string().optional(), reason: z.unknown().optional(), tier: z.unknown().optional() });
 
 async function post<T>(path: string, body: unknown, read: (result: unknown) => T | null): Promise<AiAnswer<T>> {
   try {
@@ -19,7 +20,16 @@ async function post<T>(path: string, body: unknown, read: (result: unknown) => T
     if (response.status === 403 && (raw as { code?: string } | null)?.code === 'parent_pin_required') return { ok: false, code: 'pin' };
     const parsed = answer.safeParse(raw);
     if (!parsed.success) return { ok: false, code: 'ai_error' };
-    if (!response.ok || !parsed.data.success) return { ok: false, code: known.has(parsed.data.code ?? '') ? (parsed.data.code as AiFailureCode) : 'ai_error' };
+    if (!response.ok || !parsed.data.success) {
+      const code: AiFailureCode = known.has(parsed.data.code ?? '') ? (parsed.data.code as AiFailureCode) : 'ai_error';
+      if (code !== 'ai_quota') return { ok: false, code };
+      const { reason, tier } = parsed.data;
+      return {
+        ok: false, code,
+        ...(reason === 'family_day' || reason === 'system_day' || reason === 'too_fast' ? { reason } : {}),
+        ...(tier === 'basic' || tier === 'plus' ? { tier } : {}),
+      };
+    }
     const result = read(parsed.data.result);
     return result ? { ok: true, result, remainingToday: parsed.data.remainingToday ?? null } : { ok: false, code: 'ai_invalid_output' };
   } catch {

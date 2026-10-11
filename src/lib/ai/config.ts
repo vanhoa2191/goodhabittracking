@@ -1,5 +1,6 @@
 export type AiKind = 'breakdown' | 'summary';
 export type AiLanguage = 'vi' | 'en';
+export type AiTier = 'basic' | 'plus';
 
 /** The model is asked in Vietnamese for a Vietnamese parent and in English for everyone else, until other languages are tried. */
 export function aiLanguageOf(language: string): AiLanguage {
@@ -19,7 +20,8 @@ export const AI_POLICY_VERSION = '2026-10-04';
 
 /** The free allowance is shared by the whole account, so the system-wide cap is what really limits use. */
 export const AI_LIMITS = {
-  perFamilyPerDay: 5,
+  perFamilyPerDayBasic: 1,
+  perFamilyPerDayPlus: 10,
   minSecondsBetweenCalls: 20,
   systemPerDay: 150,
 } as const;
