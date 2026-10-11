@@ -89,15 +89,19 @@ begin
       return;
     end if;
   else
-    -- Paid time may only be extended at the same rank or upgraded. Lifetime already
-    -- includes permanent paid time, so no subscription order can add value to it.
+    -- Lifetime includes permanent paid time, so subscription orders cannot extend it.
     if exists (
       select 1 from public.user_subscriptions subscription
       where subscription.family_id = target_family and subscription.status = 'active'
-        and subscription.plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'lifetime', 'pro_plus_monthly', 'pro_plus_yearly')
+        and subscription.plan = 'lifetime'
+    ) then raise exception 'lifetime_active'; end if;
+    -- Other paid time may only be extended at the same rank or upgraded.
+    if exists (
+      select 1 from public.user_subscriptions subscription
+      where subscription.family_id = target_family and subscription.status = 'active'
+        and subscription.plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly')
         and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now())
-        and (subscription.plan = 'lifetime'
-          or case
+        and case
             when subscription.plan in ('solo_monthly', 'solo_yearly') then 1
             when subscription.plan in ('pro_plus_monthly', 'pro_plus_yearly') then 3
             else 2
@@ -105,7 +109,7 @@ begin
             when selected_plan in ('solo_monthly', 'solo_yearly') then 1
             when selected_plan in ('pro_plus_monthly', 'pro_plus_yearly') then 3
             else 2
-          end)
+          end
     ) then raise exception 'higher_plan_active'; end if;
   end if;
   if selected_plan in ('yearly', 'solo_yearly', 'pro_plus_yearly') then
@@ -885,8 +889,7 @@ begin
 end
 $$;
 
-revoke all on function public.consume_ai_quota_monthly(integer, integer, integer, integer) from public, anon, service_role;
-grant execute on function public.consume_ai_quota_monthly(integer, integer, integer, integer) to authenticated;
+revoke all on function public.consume_ai_quota_monthly(integer, integer, integer, integer) from public, anon, authenticated, service_role;
 revoke all on function public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer) from public, anon, authenticated;
 grant execute on function public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer) to service_role;
 

@@ -44,7 +44,7 @@ describe('Pro Plus and add-ons migration', () => {
     expect(order).toContain("in ('yearly', 'solo_yearly', 'pro_plus_yearly')");
     expect(definition('referral_discount_bps')).toContain("'pro_plus_yearly'");
     expect(definition('accrue_referral_commission')).toContain("not in ('solo_yearly', 'yearly', 'lifetime', 'pro_plus_yearly')");
-    for (const error of ['addon_requires_plan', 'already_included', 'already_owned', 'higher_plan_active']) expect(order).toContain(error);
+    for (const error of ['addon_requires_plan', 'already_included', 'already_owned', 'higher_plan_active', 'lifetime_active']) expect(order).toContain(error);
   });
   it('protects add-on state with RLS and a read-only manager policy', () => {
     expect(migration).toContain('create table public.family_addons');
@@ -88,7 +88,7 @@ describe('Pro Plus and add-ons migration', () => {
     }
     expect(tier).not.toContain("'basic'");
   });
-  it('exposes authenticated monthly quota and the service-only actor wrapper', () => {
+  it('closes the monthly quota original and exposes only the service actor wrapper', () => {
     for (const name of ['consume_ai_quota_monthly', 'consume_ai_quota_monthly_as']) {
       const body = definition(name);
       expect(body).toContain('security definer');
@@ -110,8 +110,9 @@ describe('Pro Plus and add-ons migration', () => {
     expect(reasons).toEqual([...reasons].sort((a, b) => a - b));
     expect(definition('consume_ai_quota_monthly_as')).toContain('public.act_as_user(actor_user_id)');
     expect(definition('consume_ai_quota_monthly_as')).toContain('public.consume_ai_quota_monthly(per_month, per_day, system_per_day, min_gap_seconds)');
-    expect(migration).toContain('revoke all on function public.consume_ai_quota_monthly(integer, integer, integer, integer) from public, anon, service_role');
-    expect(migration).toContain('grant execute on function public.consume_ai_quota_monthly(integer, integer, integer, integer) to authenticated');
+    expect(migration).toContain('revoke all on function public.consume_ai_quota_monthly(integer, integer, integer, integer) from public, anon, authenticated, service_role');
+    expect(migration).not.toMatch(/grant\s+execute\s+on\s+function\s+public\.consume_ai_quota_monthly\(/i);
+    expect(preflight).toContain('no API role may execute original function');
     expect(migration).toContain('revoke all on function public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer) from public, anon, authenticated');
     expect(migration).toContain('grant execute on function public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer) to service_role');
   });
@@ -120,20 +121,21 @@ describe('Pro Plus and add-ons migration', () => {
     const runners = ['billing', 'affiliate'].map(name => readFileSync(resolve(`scripts/verify-local-${name}.mjs`), 'utf8'));
     for (const name of ['tier_free_trial_standard_plus', 'monthly_free_10', 'monthly_standard_20',
       'month_boundary', 'plus_unlimited_month', 'plus_daily_safety', 'tier_after_founding', 'system_cap',
-      'monthly_quota_validation', 'monthly_quota_order_and_gap', 'monthly_quota_authorization']) {
+      'monthly_quota_validation', 'monthly_quota_order_and_gap', 'monthly_quota_authorization',
+      'monthly_quota_authenticated_denied']) {
       expect(scenarios).toContain(`'${name}'`);
       for (const runner of runners) expect(runner).toContain(`'${name}'`);
     }
   });
   it('pins all review regression scenarios in the SQL runner', () => {
     const scenarios = readFileSync(resolve('tests/integration/migrations/pro-plus-and-addons.scenarios.sql'), 'utf8');
-    const runner = readFileSync(resolve('scripts/verify-local-billing.mjs'), 'utf8');
-    for (const name of ['higher_plan_active', 'printables_pending_reused', 'founding_already_included',
+    const runners = ['billing', 'affiliate'].map(name => readFileSync(resolve(`scripts/verify-local-${name}.mjs`), 'utf8'));
+    for (const name of ['higher_plan_active', 'lifetime_active', 'printables_pending_reused', 'founding_already_included',
       'founding_expires_after_year', 'pro_plus_yearly_adds_year', 'pro_plus_yearly_pending_lock',
       'pro_plus_yearly_prior_paid_no_discount', 'addon_expired_plan_refused', 'addon_allowed_lifetime',
       'founding_revoked_basic']) {
       expect(scenarios).toContain(`'${name}'`);
-      expect(runner).toContain(`'${name}'`);
+      for (const runner of runners) expect(runner).toContain(`'${name}'`);
     }
   });
 });

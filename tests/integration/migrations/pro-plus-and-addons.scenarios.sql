@@ -214,18 +214,22 @@ insert into addon_results values ('higher_plan_active',
   and pg_temp.order_error(1,112023,'solo_monthly','higher_plan_active')
   and pg_temp.order_error(19,112024,'solo_monthly','higher_plan_active')
   and pg_temp.order_error(19,112025,'solo_yearly','higher_plan_active'));
+insert into addon_results values ('lifetime_active',
+  pg_temp.order_error(18,112029,'pro_plus_monthly','lifetime_active'));
 do $$
 declare item text; code bigint := 112030;
 begin
   foreach item in array array['solo_monthly','solo_yearly','monthly','yearly','pro_plus_monthly','pro_plus_yearly'] loop
-    update addon_results set ok=ok and pg_temp.order_error(18,code,item,'higher_plan_active') where scenario='higher_plan_active';
+    update addon_results set ok=ok and pg_temp.order_error(18,code,item,'lifetime_active') where scenario='lifetime_active';
     code := code+1;
   end loop;
 end $$;
 -- Printables remains purchasable on the same high-tier family.
 select pg_temp.buy(1,112040,'printables');
-update addon_results set ok=ok and not exists(select 1 from public.payment_orders where order_code between 112020 and 112035)
+update addon_results set ok=ok and not exists(select 1 from public.payment_orders where order_code between 112020 and 112025)
   where scenario='higher_plan_active';
+update addon_results set ok=ok and not exists(select 1 from public.payment_orders where order_code between 112029 and 112035)
+  where scenario='lifetime_active';
 -- An expired or inactive higher plan does not block a fresh lower plan purchase.
 insert into public.user_subscriptions(family_id,user_id,plan,status,subscription_ends_at)
   select family_id,owner_id,'pro_plus_monthly','active',now()-interval '1 second' from addon_fixtures where n=20;
@@ -423,13 +427,24 @@ create temporary table addon_quota_roles(value jsonb);
 grant insert on addon_quota_roles to authenticated,service_role;
 select set_config('request.jwt.claim.sub',(select owner_id::text from addon_fixtures where n=31),true);
 set local role authenticated;
-insert into addon_quota_roles select public.consume_ai_quota_monthly(10,100,5000,0);
+do $$
+begin
+  insert into addon_quota_roles select public.consume_ai_quota_monthly(10,100,5000,0);
+exception when insufficient_privilege then
+  insert into addon_quota_roles values (jsonb_build_object('denied',
+    sqlerrm='permission denied for function consume_ai_quota_monthly'));
+end $$;
 reset role;
+insert into addon_results select 'monthly_quota_authenticated_denied',count(*)=1
+  and bool_and(value='{"denied":true}'::jsonb)
+  and not exists(select 1 from public.ai_usage where family_id=(select family_id from addon_fixtures where n=31))
+  from addon_quota_roles;
+truncate addon_quota_roles;
 select set_config('test.quota_actor',(select owner_id::text from addon_fixtures where n=32),true);
 set local role service_role;
 insert into addon_quota_roles select public.consume_ai_quota_monthly_as(current_setting('test.quota_actor')::uuid,10,100,5000,0);
 reset role;
-insert into addon_results select 'monthly_quota_authorization',count(*)=2
+insert into addon_results select 'monthly_quota_authorization',count(*)=1
   and bool_and(value='{"allowed":true,"remainingThisMonth":9}'::jsonb) from addon_quota_roles;
 update public.family_memberships set role='caregiver' where family_id=(select family_id from addon_fixtures where n=33);
 update addon_results set ok=ok and pg_temp.quota_error(33,10,100,5000,0,'family_manage_required')

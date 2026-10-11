@@ -94,12 +94,12 @@ try {
   const expectedAddons = new Set(['pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
     'addon_requires_plan', 'addon_then_pro_plus', 'addon_extends', 'addon_duplicate_webhook',
     'addon_no_commission_no_discount', 'printables_once', 'founding_tier', 'refund_revokes_addon',
-    'snapshot_shape', 'regression_existing_plans', 'higher_plan_active', 'printables_pending_reused',
+    'snapshot_shape', 'regression_existing_plans', 'higher_plan_active', 'lifetime_active', 'printables_pending_reused',
     'founding_already_included', 'founding_expires_after_year', 'pro_plus_yearly_adds_year',
     'pro_plus_yearly_pending_lock', 'pro_plus_yearly_prior_paid_no_discount', 'addon_expired_plan_refused',
     'addon_allowed_lifetime', 'founding_revoked_basic', 'tier_free_trial_standard_plus', 'monthly_free_10', 'monthly_standard_20',
     'month_boundary', 'plus_unlimited_month', 'plus_daily_safety', 'tier_after_founding', 'system_cap',
-    'monthly_quota_validation', 'monthly_quota_order_and_gap', 'monthly_quota_authorization']);
+    'monthly_quota_validation', 'monthly_quota_order_and_gap', 'monthly_quota_authorization', 'monthly_quota_authenticated_denied']);
   for (const result of addonResults) {
     for (const row of result.rows ?? []) {
       if (!row.scenario) continue;
