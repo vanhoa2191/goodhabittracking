@@ -7,6 +7,8 @@ describe('subscription domain', () => {
   it('evaluates entitlement expiry without depending on the system clock', () => {
     expect(checkIsPro('lifetime', null, null, now)).toBe(true);
     expect(checkIsPro('monthly', null, null, now)).toBe(false);
+    expect(checkIsPro('pro_plus_yearly', null, '2026-09-21T00:00:00.000Z', now)).toBe(true);
+    expect(checkIsPro('pro_plus_monthly', null, null, now)).toBe(false);
     expect(checkIsPro('yearly', null, '2026-09-21T00:00:00.000Z', now)).toBe(true);
     expect(checkIsPro('yearly', null, '2026-09-20T00:00:00.000Z', now)).toBe(false);
     expect(checkIsPro('trial', '2026-09-21T00:00:00.000Z', null, now)).toBe(true);
@@ -51,6 +53,8 @@ describe('subscription domain', () => {
     expect(buildSubscriptionCapabilities('solo_yearly', null, '2027-09-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: 1 });
     expect(buildSubscriptionCapabilities('monthly', null, '2026-10-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: 5 });
     expect(buildSubscriptionCapabilities('yearly', null, '2027-09-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: 5 });
+    expect(buildSubscriptionCapabilities('pro_plus_monthly', null, '2026-10-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: 5 });
+    expect(buildSubscriptionCapabilities('pro_plus_yearly', null, '2027-09-20T00:00:00.000Z', now)).toEqual({ canWrite: true, maxChildren: 5 });
     expect(buildSubscriptionCapabilities('trial', '2026-10-20T00:00:00.000Z', null, now)).toEqual({ canWrite: true, maxChildren: 5 });
     expect(buildSubscriptionCapabilities('lifetime', null, null, now)).toEqual({ canWrite: true, maxChildren: null });
   });
@@ -61,6 +65,8 @@ describe('subscription domain', () => {
     expect(buildSubscriptionDetails('solo_yearly', null, ends, true, now).label).toBe('Gói Cơ bản · Năm');
     expect(buildSubscriptionDetails('monthly', null, ends, true, now).label).toBe('Gói Pro · Tháng');
     expect(buildSubscriptionDetails('yearly', null, ends, true, now).label).toBe('Gói Pro · Năm');
+    expect(buildSubscriptionDetails('pro_plus_monthly', null, ends, true, now).label).toBe('Gói Pro Plus · Tháng');
+    expect(buildSubscriptionDetails('pro_plus_yearly', null, ends, true, now).label).toBe('Gói Pro Plus · Năm');
     expect(buildSubscriptionDetails('yearly', null, null, true, now).statusText).toBe('Gói Pro · Năm (Đang hoạt động)');
   });
 });
@@ -72,6 +78,6 @@ describe('free trial offer', () => {
     expect(shouldOfferTrial(false, 'monthly')).toBe(true);
   });
   it('is not shown once a family has a paid plan', () => {
-    for (const plan of ['solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'lifetime'] as const) expect(shouldOfferTrial(true, plan)).toBe(false);
+    for (const plan of ['solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly', 'lifetime'] as const) expect(shouldOfferTrial(true, plan)).toBe(false);
   });
 });

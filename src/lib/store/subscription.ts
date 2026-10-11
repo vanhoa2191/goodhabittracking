@@ -1,5 +1,5 @@
 import { isPaidPlanId, planChildLimit, type PaidPlanId } from '@/lib/billing/plan-catalog';
-import type { SubscriptionPlan } from '@/types';
+import type { FamilyAddons, SubscriptionPlan } from '@/types';
 
 export interface SubscriptionDetails {
   isPro: boolean;
@@ -51,6 +51,8 @@ const PAID_PLAN_LABELS: Readonly<Record<PaidPlanId, string>> = {
   solo_yearly: 'Gói Cơ bản · Năm',
   monthly: 'Gói Pro · Tháng',
   yearly: 'Gói Pro · Năm',
+  pro_plus_monthly: 'Gói Pro Plus · Tháng',
+  pro_plus_yearly: 'Gói Pro Plus · Năm',
 };
 
 function daysUntil(date: string, now: number): number {
@@ -96,4 +98,17 @@ export function buildSubscriptionDetails(
 /** The free trial is an offer for families without a paid plan; a family already on one is not shown it. */
 export function shouldOfferTrial(isPro: boolean, plan: SubscriptionPlan): boolean {
   return !isPro || plan === 'trial';
+}
+
+/** What a family has bought on top of its plan; used until the entitlement API has answered. */
+export const EMPTY_FAMILY_ADDONS: FamilyAddons = { aiUntil: null, aiIncluded: false, printables: false };
+
+/** Reads the `family_addons_snapshot` result, falling back to no add-ons when it is missing or malformed. */
+export function parseFamilyAddons(value: unknown): FamilyAddons {
+  if (typeof value !== 'object' || value === null) return EMPTY_FAMILY_ADDONS;
+  const { aiUntil, aiIncluded, printables } = value as Record<string, unknown>;
+  if ((aiUntil !== null && typeof aiUntil !== 'string') || typeof aiIncluded !== 'boolean' || typeof printables !== 'boolean') {
+    return EMPTY_FAMILY_ADDONS;
+  }
+  return { aiUntil, aiIncluded, printables };
 }

@@ -2,9 +2,10 @@ import { z } from 'zod';
 import type { PaymentResult } from '@/lib/payos';
 import {
   createPaymentRequestSchema,
-  paidPlanSchema,
+  checkoutItemSchema,
   paymentStatusRequestSchema,
 } from '@/lib/billing/schemas';
+import type { AddonId } from '@/lib/billing/addon-catalog';
 import type { SubscriptionPlan } from '@/types';
 
 const paymentSchema = z.object({
@@ -18,7 +19,7 @@ const paymentSchema = z.object({
   qrCode: z.string().min(1),
   vietQrUrl: z.string().min(1),
   checkoutUrl: z.string().url(),
-  planId: paidPlanSchema,
+  planId: checkoutItemSchema,
   listPrice: z.number().int().positive().optional(),
   discountAmount: z.number().int().positive().optional(),
   referrerName: z.string().nullable().optional(),
@@ -67,7 +68,7 @@ export type PaymentStatusResult =
   | { readonly success: false; readonly error: PaymentErrorCode };
 
 export async function createPaymentOrder(
-  planId: SubscriptionPlan,
+  planId: SubscriptionPlan | AddonId,
   requester: PaymentRequester = globalThis.fetch,
 ): Promise<CreatePaymentResult> {
   const request = createPaymentRequestSchema.safeParse({ planId });

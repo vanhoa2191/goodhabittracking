@@ -69,6 +69,10 @@ describe('payOS payment creation', () => {
   it.each([
     ['solo_monthly', 'Gói Cơ bản · Tháng', 49000],
     ['solo_yearly', 'Gói Cơ bản · Năm', 399000],
+    ['pro_plus_monthly', 'Gói Pro Plus · Tháng', 79000],
+    ['pro_plus_yearly', 'Gói Pro Plus · Năm', 790000],
+    ['ai_addon_monthly', 'Add-on AI', 29000],
+    ['printables', 'Printable & Ebook', 99000],
   ] as const)('sends the renamed %s item without changing the bounded payment description', async (planId, name, amount) => {
     vi.stubGlobal('fetch', vi.fn()
       .mockResolvedValueOnce(new Response(JSON.stringify({

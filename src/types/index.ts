@@ -1,3 +1,5 @@
+import type { AddonId } from '@/lib/billing/addon-catalog';
+
 export type Language = 'vi' | 'en' | 'zh' | 'ja' | 'ko' | 'fr' | 'de' | 'it' | 'es';
 
 export type ActivityCategory =
@@ -248,10 +250,18 @@ export interface Kudo {
   sentAt: string;
 }
 
-export type SubscriptionPlan = 'free' | 'trial' | 'solo_monthly' | 'solo_yearly' | 'monthly' | 'yearly' | 'lifetime';
+export type SubscriptionPlan =
+  | 'free' | 'trial' | 'solo_monthly' | 'solo_yearly' | 'monthly' | 'yearly' | 'pro_plus_monthly' | 'pro_plus_yearly' | 'lifetime';
+
+/** What the entitlement API reports about a family's add-ons. */
+export interface FamilyAddons {
+  aiUntil: string | null;
+  aiIncluded: boolean;
+  printables: boolean;
+}
 
 export interface PricingPlan {
-  id: SubscriptionPlan;
+  id: SubscriptionPlan | AddonId;
   name: string;
   badge?: string;
   price: number;

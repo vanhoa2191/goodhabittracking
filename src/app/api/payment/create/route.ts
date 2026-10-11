@@ -4,7 +4,9 @@ import { createOrderCode, isUniqueViolation } from '@/lib/billing/order-code';
 import { createPayOSPayment } from '@/lib/billing/payos-server';
 import { cancelPendingPayOSOrder, reconcileOrderOutcome } from '@/lib/billing/payos-reconcile';
 import { PAYMENT_LINK_LIFETIME_MS, unknownOrderGraceElapsed } from '@/lib/billing/payos-errors';
+import { isAddonId } from '@/lib/billing/addon-catalog';
 import { createPaymentRequestSchema } from '@/lib/billing/schemas';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { getPricingPlan } from '@/lib/payos';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
@@ -14,6 +16,14 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 export const runtime = 'nodejs';
 
 const REFERRER_NAME_MAX = 40;
+
+/** Errors the order function raises for an add-on that cannot be bought; the message carries the code. */
+const ADDON_REFUSALS = ['addon_requires_plan', 'already_included', 'already_owned'] as const;
+const ADDON_REFUSAL_COPY: Record<(typeof ADDON_REFUSALS)[number], string> = {
+  addon_requires_plan: 'Add-on AI cần một gói trả phí đang hoạt động.',
+  already_included: 'Gói của bạn đã gồm AI.',
+  already_owned: 'Gia đình bạn đã sở hữu mục này.',
+};
 
 // Best effort: a failed lookup must never block checkout, the line just uses its fallback name.
 async function findReferrerName(admin: ReturnType<typeof createAdminSupabaseClient>, familyId: string): Promise<string | null> {
@@ -54,6 +64,12 @@ export async function POST(request: NextRequest) {
   const parsed = createPaymentRequestSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ success: false, error: 'Invalid payment request.' }, { status: 400 });
+  }
+
+  const addon = isAddonId(parsed.data.planId);
+  // Printables is built but hidden: with the flag off it does not exist, and nothing touches the database.
+  if (parsed.data.planId === 'printables' && !defaultExperienceFlags.printablesSale) {
+    return NextResponse.json({ success: false, error: 'Not available.', code: 'not_available' }, { status: 404 });
   }
 
   try {
@@ -119,6 +135,10 @@ export async function POST(request: NextRequest) {
       }
       if (!isUniqueViolation(insertError)) break;
     }
+    const refusal = addon ? ADDON_REFUSALS.find((code) => insertError?.message?.includes(code)) : undefined;
+    if (refusal) {
+      return NextResponse.json({ success: false, error: ADDON_REFUSAL_COPY[refusal], code: refusal }, { status: 409 });
+    }
     if (insertError) throw insertError;
     // A bounded retry cannot accidentally create a link for an unresolved old reservation.
     if (!reserved) throw new Error('Could not reserve checkout.');
@@ -126,7 +146,7 @@ export async function POST(request: NextRequest) {
     try {
       const payment = await createPayOSPayment({ planId: parsed.data.planId, orderCode, amount, expiresAt });
       const { paymentLinkId, ...publicPayment } = payment;
-      const discount = amount < plan.price
+      const discount = !addon && amount < plan.price
         ? { listPrice: plan.price, discountAmount: plan.price - amount, referrerName: await findReferrerName(admin, parent.familyId) }
         : {};
       const checkoutPayment = { ...publicPayment, ...discount };

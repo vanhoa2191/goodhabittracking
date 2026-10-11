@@ -1,9 +1,10 @@
+import { ADDON_IDS, ADDON_PRICES, addonVisible, type AddonId } from '@/lib/billing/addon-catalog';
 import { PLAN_PRICES, planIdFor, type BillingCycle, type PaidPlanId, type PlanTier } from '@/lib/billing/plan-catalog';
 
 export type PricingCard = {
   readonly tier: PlanTier;
-  /** The id the payment code accepts; null while the plan is announced and cannot be bought. */
-  readonly planId: PaidPlanId | null;
+  /** The plan id accepted by checkout. */
+  readonly planId: PaidPlanId;
   readonly price: number;
   /** Twelve monthly payments, shown struck through next to the yearly price. */
   readonly fullYearPrice: number | null;
@@ -19,8 +20,8 @@ const roundTo = (value: number, step: number) => Math.round(value / step) * step
 
 function buildCard(tier: PlanTier, cycle: BillingCycle): PricingCard {
   const { month, year } = PLAN_PRICES[tier];
-  const planId = tier === 'pro_plus' ? null : planIdFor(tier, cycle);
-  const base = { tier, planId, purchasable: planId !== null };
+  const planId = planIdFor(tier, cycle);
+  const base = { tier, planId, purchasable: true };
   if (cycle === 'month') {
     return { ...base, price: month, fullYearPrice: null, perMonth: null, perDay: roundTo(month / 30, 10), saving: null, savingPercent: null };
   }
@@ -44,3 +45,10 @@ export function buildPricingView(cycle: BillingCycle): readonly PricingCard[] {
 
 /** The largest yearly saving across the plans, for the "save up to" line. */
 export const MAX_SAVING_PERCENT = Math.max(...buildPricingView('year').map((card) => card.savingPercent ?? 0));
+
+export type AddonCard = { readonly id: AddonId; readonly price: number };
+
+/** Customer-visible add-ons, using the same flag as checkout. */
+export function addonCards(flags: { readonly printablesSale: boolean }): readonly AddonCard[] {
+  return ADDON_IDS.filter((id) => addonVisible(id, flags)).map((id) => ({ id, price: ADDON_PRICES[id] }));
+}

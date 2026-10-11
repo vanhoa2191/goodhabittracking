@@ -18,6 +18,9 @@ vi.mock('@/lib/billing/payos-config', () => ({ requireSafePayOSConfig: () => ({ 
 vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient }));
 vi.mock('@/lib/supabase/server', () => ({ createServerSupabaseClient: vi.fn(async () => ({ rpc: vi.fn() })) }));
 
+const { flags } = vi.hoisted(() => ({ flags: { printablesSale: false } }));
+vi.mock('@/lib/experience-flags', () => ({ defaultExperienceFlags: flags }));
+
 vi.mock('@/lib/security/parent-unlock', () => ({
   requireParentUnlock: vi.fn(async () => null),
 }));
@@ -67,13 +70,13 @@ describe('POST /api/payment/create atomic order reservation', () => {
     }));
   }
   beforeEach(() => {
-    rpc.mockReset(); update.mockReset(); eq.mockReset();
+    rpc.mockReset(); update.mockReset(); eq.mockReset(); flags.printablesSale = false;
     createPayOSPayment.mockReset(); cancelPayOSPayment.mockReset();
     discount = 1000; pending = null; referrerLookup = { owner: { user_id: 'owner-1' }, referral: { referrer_user_id: 'ref-1' }, profile: { display_name: 'Lan' }, error: null };
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ code: '00', data: { orderCode: 987, amount: 399000, amountPaid: 0, status: 'PENDING' } }))));
     rpc.mockImplementation(async (_name, args) => {
-      const yearly = ['yearly', 'solo_yearly'].includes(args.selected_plan);
-      const price = { monthly: 69000, yearly: 590000, solo_monthly: 49000, solo_yearly: 399000 }[args.selected_plan as 'monthly'];
+      const yearly = ['yearly', 'solo_yearly', 'pro_plus_yearly'].includes(args.selected_plan);
+      const price = { monthly: 69000, yearly: 590000, solo_monthly: 49000, solo_yearly: 399000, pro_plus_monthly: 79000, pro_plus_yearly: 790000, ai_addon_monthly: 29000, printables: 99000 }[args.selected_plan as 'monthly'];
       return { data: [{ amount: Math.floor(price * (1 - (yearly ? discount : 0) / 10000) / 1000) * 1000, discount_bps: yearly ? discount : 0 }], error: null };
     });
     const chain: Record<string, unknown> = {};
@@ -94,6 +97,17 @@ describe('POST /api/payment/create atomic order reservation', () => {
     const body = await response.json();
     expect(body.payment).toMatchObject({ amount, listPrice, discountAmount: listPrice - amount, referrerName: 'Lan' });
     expect(body.payment).not.toHaveProperty('discountPercent');
+  });
+  it('reports a referred Pro Plus yearly order as 790000 less 79000 from Lan', async () => {
+    const response = await post('pro_plus_yearly');
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.payment).toMatchObject({ amount: 711000, listPrice: 790000, discountAmount: 79000, referrerName: 'Lan' });
+  });
+  it('sells Pro Plus monthly at list price', async () => {
+    const body = await (await post('pro_plus_monthly')).json();
+    expect(body.payment.amount).toBe(79000);
+    expect(body.payment).not.toHaveProperty('discountAmount');
   });
   it('reports a referred Solo yearly order as 399000 less 40000 from Lan', async () => {
     const body = await (await post('solo_yearly')).json();
@@ -265,8 +279,47 @@ describe('POST /api/payment/create atomic order reservation', () => {
     expect(update).toHaveBeenCalledWith(expect.objectContaining({ status: 'CANCELLED' }));
     expect(eq).toHaveBeenCalledWith('status', 'PENDING');
   });
-  it('does not sell Pro Plus', async () => {
+  it('does not sell the old upcoming Pro Plus ids', async () => {
     expect((await post('family_plus_yearly')).status).toBe(400);
+    expect(createPayOSPayment).not.toHaveBeenCalled();
+  });
+  it('sells the AI add-on with no discount, no referrer lookup and no discount fields', async () => {
+    discount = 1000;
+    const response = await post('ai_addon_monthly');
+    expect(response.status).toBe(200);
+    const { payment } = await response.json();
+    expect(payment).toMatchObject({ amount: 29000, planId: 'ai_addon_monthly' });
+    expect(payment).not.toHaveProperty('listPrice');
+    expect(payment).not.toHaveProperty('discountAmount');
+    expect(payment).not.toHaveProperty('referrerName');
+  });
+  it.each([
+    ['addon_requires_plan', 'ai_addon_monthly'],
+    ['already_included', 'ai_addon_monthly'],
+    ['already_owned', 'printables'],
+  ])('answers %s with 409 and that code, creating no provider link', async (code, planId) => {
+    flags.printablesSale = true;
+    rpc.mockResolvedValue({ data: null, error: { code: 'P0001', message: code } });
+    const response = await post(planId);
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toMatchObject({ success: false, code });
+    expect(createPayOSPayment).not.toHaveBeenCalled();
+    expect(rpc).toHaveBeenCalledTimes(1);
+  });
+  it('sells printables when the sale flag is on', async () => {
+    flags.printablesSale = true;
+    const response = await post('printables');
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('create_family_payment_order', expect.objectContaining({ selected_plan: 'printables' }));
+    expect((await response.json()).payment.amount).toBe(99000);
+  });
+  it('answers 404 not_available for printables with the flag off, without touching the database', async () => {
+    flags.printablesSale = false;
+    const response = await post('printables');
+    expect(response.status).toBe(404);
+    await expect(response.json()).resolves.toMatchObject({ success: false, code: 'not_available' });
+    expect(createAdminSupabaseClient).not.toHaveBeenCalled();
+    expect(rpc).not.toHaveBeenCalled();
     expect(createPayOSPayment).not.toHaveBeenCalled();
   });
 });

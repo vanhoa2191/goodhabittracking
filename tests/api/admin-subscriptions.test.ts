@@ -54,6 +54,13 @@ describe('PATCH /api/admin/subscriptions', () => {
     expect(rpc).toHaveBeenCalledWith('admin_update_family_subscription', expect.objectContaining({ next_plan: 'monthly', next_status: 'active', expected_updated_at: currentRow.updated_at }));
   });
 
+  it.each(['pro_plus_monthly', 'pro_plus_yearly'])('accepts the %s plan', async (plan) => {
+    currentRow = { plan: 'free', status: 'inactive', subscription_ends_at: null, trial_ends_at: null, trial_consumed_at: null, updated_at: '2026-10-01 09:41:43.875+00' };
+    const response = await patch({ plan, expectedUpdatedAt: '2026-10-01 09:41:43.875+00' });
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('admin_update_family_subscription', expect.objectContaining({ next_plan: plan, next_status: 'active' }));
+  });
+
   it('refuses a save made on a stale page, so a payment made meanwhile is not overwritten', async () => {
     currentRow = { plan: 'monthly', status: 'active', subscription_ends_at: '2027-03-01T00:00:00Z', trial_ends_at: null, trial_consumed_at: null, updated_at: '2026-10-01 10:00:00+00' };
     const response = await patch({ expectedUpdatedAt: '2026-10-01 09:41:43.875+00' });

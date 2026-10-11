@@ -10,11 +10,10 @@ import {
   planIdFor,
   planTier,
 } from '@/lib/billing/plan-catalog';
-import { UPCOMING_PLAN_PRICES } from '@/lib/upcoming-plans';
 
 describe('plan catalog', () => {
-  it('lists the four plans on sale', () => {
-    expect(PAID_PLAN_IDS).toEqual(['solo_monthly', 'solo_yearly', 'monthly', 'yearly']);
+  it('lists the six plans on sale', () => {
+    expect(PAID_PLAN_IDS).toEqual(['solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly']);
   });
 
   it('maps tier and cycle to a plan id and back', () => {
@@ -25,6 +24,10 @@ describe('plan catalog', () => {
     for (const id of PAID_PLAN_IDS) expect(planIdFor(planTier(id), planCycle(id))).toBe(id);
     expect(planTier('yearly')).toBe('pro');
     expect(planTier('solo_monthly')).toBe('solo');
+    expect(planIdFor('pro_plus', 'month')).toBe('pro_plus_monthly');
+    expect(planIdFor('pro_plus', 'year')).toBe('pro_plus_yearly');
+    expect(planTier('pro_plus_monthly')).toBe('pro_plus');
+    expect(planTier('pro_plus_yearly')).toBe('pro_plus');
   });
 
   it('sets a period per cycle', () => {
@@ -32,11 +35,17 @@ describe('plan catalog', () => {
     expect(planDurationDays('yearly')).toBe(366);
     expect(planDurationDays('monthly')).toBe(31);
     expect(planDurationDays('solo_monthly')).toBe(31);
+    expect(planDurationDays('pro_plus_yearly')).toBe(366);
+    expect(planDurationDays('pro_plus_monthly')).toBe(31);
+    expect(planCycle('pro_plus_yearly')).toBe('year');
+    expect(planCycle('pro_plus_monthly')).toBe('month');
   });
 
   it('only accepts plans on sale', () => {
     expect(isPaidPlanId('solo_yearly')).toBe(true);
+    expect(isPaidPlanId('pro_plus_yearly')).toBe(true);
     expect(isPaidPlanId('family_plus_yearly')).toBe(false);
+    expect(isPaidPlanId('ai_addon_monthly')).toBe(false);
     expect(isPaidPlanId('lifetime')).toBe(false);
     expect(isPaidPlanId(undefined)).toBe(false);
   });
@@ -46,6 +55,8 @@ describe('plan catalog', () => {
     expect(planChildLimit('solo_yearly')).toBe(1);
     expect(planChildLimit('monthly')).toBe(5);
     expect(planChildLimit('yearly')).toBe(5);
+    expect(planChildLimit('pro_plus_monthly')).toBe(5);
+    expect(planChildLimit('pro_plus_yearly')).toBe(5);
     expect(planChildLimit('trial')).toBe(5);
     expect(planChildLimit('lifetime')).toBeNull();
     expect(planChildLimit('free')).toBe(0);
@@ -60,7 +71,4 @@ describe('plan catalog', () => {
     expect(LAUNCH_OFFER).toEqual({ code: 'pro_plus_founding', slots: 10, planId: 'yearly' });
   });
 
-  it('shows upcoming prices without making them payable', () => {
-    expect(UPCOMING_PLAN_PRICES).toEqual({ family_plus_monthly: 79000, family_plus_yearly: 790000 });
-  });
 });

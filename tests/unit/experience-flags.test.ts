@@ -20,7 +20,12 @@ describe('experience flags', () => {
       independence: false,
       habitCoach: false,
       parentAi: false,
+      printablesSale: false,
     });
+  });
+
+  it('lets the printables sale flag be switched on by override', () => {
+    expect(resolveExperienceFlags({ printablesSale: true }).printablesSale).toBe(true);
   });
 
   it('lets the habit programs flag be switched on by override', () => {
