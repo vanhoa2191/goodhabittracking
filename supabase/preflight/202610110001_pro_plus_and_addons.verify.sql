@@ -22,7 +22,8 @@ begin
     'public.admin_revoke_launch_offer_claim(bigint,text)',
     'public.admin_update_family_subscription(uuid,text,text,timestamptz,timestamptz)',
     'public.admin_resolve_billing_case(uuid,text,text,uuid,text)',
-    'public.family_ai_tier(uuid)'
+    'public.family_ai_tier(uuid)',
+    'public.consume_ai_quota_monthly_as(uuid,integer,integer,integer,integer)'
   ] loop
     if pg_catalog.has_function_privilege('anon',signature,'EXECUTE')
       or pg_catalog.has_function_privilege('authenticated',signature,'EXECUTE')
@@ -35,7 +36,8 @@ begin
   end loop;
   foreach signature in array array[
     'public.family_has_pro_entitlement(uuid)', 'public.family_child_limit(uuid)',
-    'public.activate_family_trial()', 'public.redeem_family_coupon(text)', 'public.family_addons_snapshot()'
+    'public.activate_family_trial()', 'public.redeem_family_coupon(text)', 'public.family_addons_snapshot()',
+    'public.consume_ai_quota_monthly(integer,integer,integer,integer)'
   ] loop
     if not pg_catalog.has_function_privilege('authenticated',signature,'EXECUTE')
       or pg_catalog.has_function_privilege('anon',signature,'EXECUTE') then
@@ -45,6 +47,29 @@ begin
       raise exception 'family function security incorrect: %',signature;
     end if;
   end loop;
+  if pg_catalog.has_function_privilege('service_role','public.consume_ai_quota_monthly(integer,integer,integer,integer)','EXECUTE') then
+    raise exception 'monthly quota must use actor wrapper for service role';
+  end if;
+  body := pg_catalog.pg_get_functiondef('public.consume_ai_quota_monthly_as(uuid,integer,integer,integer,integer)'::regprocedure);
+  if strpos(body,'public.act_as_user(actor_user_id)')=0
+    or strpos(body,'public.consume_ai_quota_monthly(per_month, per_day, system_per_day, min_gap_seconds)')=0 then
+    raise exception 'monthly quota actor wrapper missing';
+  end if;
+  body := pg_catalog.pg_get_functiondef('public.consume_ai_quota_monthly(integer,integer,integer,integer)'::regprocedure);
+  if strpos(body,'per_month is not null')=0 or strpos(body,'per_month not between 1 and 1000')=0
+    or strpos(body,'per_day not between 1 and 1000')=0
+    or strpos(body,'day >= date_trunc(''month'', today)')=0
+    or strpos(body,'remainingThisMonth')=0
+    or not (strpos(body,'''system_day''') < strpos(body,'''family_month''')
+      and strpos(body,'''family_month''') < strpos(body,'''family_day''')
+      and strpos(body,'''family_day''') < strpos(body,'''too_fast''')) then
+    raise exception 'monthly quota limits, UTC month or refusal order incorrect';
+  end if;
+  body := pg_catalog.pg_get_functiondef('public.family_ai_tier(uuid)'::regprocedure);
+  if strpos(body,'''plus''')=0 or strpos(body,'''standard''')=0 or strpos(body,'''free''')=0
+    or strpos(body,'''basic''')>0 or strpos(body,'subscription.plan = ''trial''')>0 then
+    raise exception 'AI tiers must distinguish paid, free/trial and plus';
+  end if;
   body := pg_catalog.pg_get_functiondef('public.create_family_payment_order(uuid,uuid,bigint,text,timestamptz)'::regprocedure);
   if strpos(body,'when ''pro_plus_monthly'' then 79000')=0 or strpos(body,'when ''pro_plus_yearly'' then 790000')=0
     or strpos(body,'when ''ai_addon_monthly'' then 29000')=0 or strpos(body,'when ''printables'' then 99000')=0

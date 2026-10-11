@@ -77,6 +77,12 @@ try {
   }
   console.log('PASS: Money Model v2 monthly checkout 49000/69000 and first-yearly referral checkout 359000/531000');
 
+  const parentAi = load('202610040004_parent_ai');
+  const wrappers = load('202610050001_pin_gated_server_wrappers');
+  await db.exec(`${section(parentAi, 'create table public.ai_usage', 'commit;')}
+    ${definition(wrappers, 'act_as_user')}
+    revoke all on function public.act_as_user(uuid) from public, anon, authenticated, service_role;`);
+
   const addons = '202610110001_pro_plus_and_addons';
   await db.exec(load(addons));
   await db.exec(readFileSync('supabase/preflight/202610110001_pro_plus_and_addons.verify.sql', 'utf8'));
@@ -91,7 +97,9 @@ try {
     'snapshot_shape', 'regression_existing_plans', 'higher_plan_active', 'printables_pending_reused',
     'founding_already_included', 'founding_expires_after_year', 'pro_plus_yearly_adds_year',
     'pro_plus_yearly_pending_lock', 'pro_plus_yearly_prior_paid_no_discount', 'addon_expired_plan_refused',
-    'addon_allowed_lifetime', 'founding_revoked_basic']);
+    'addon_allowed_lifetime', 'founding_revoked_basic', 'tier_free_trial_standard_plus', 'monthly_free_10', 'monthly_standard_20',
+    'month_boundary', 'plus_unlimited_month', 'plus_daily_safety', 'tier_after_founding', 'system_cap',
+    'monthly_quota_validation', 'monthly_quota_order_and_gap', 'monthly_quota_authorization']);
   for (const result of addonResults) {
     for (const row of result.rows ?? []) {
       if (!row.scenario) continue;
@@ -151,7 +159,7 @@ try {
   await db.exec('commit');
   assert.equal((await queuedRefund).rows[0].result.code,'refund_already_confirmed');
   console.log('PASS: concurrent refund cases confirm only one refund');
-} catch(error) { console.error(`FAIL: ${error.message}`); process.exitCode=1; }
+} catch(error) { console.error(`FAIL: ${error.message}${error.detail ? `\n${error.detail}` : ''}${error.where ? `\n${error.where}` : ''}`); process.exitCode=1; }
 finally { if(other) await other.end(); if(db) await db.close(); await stopSqlTestServer(); }
 
 process.exit(process.exitCode ?? 0);

@@ -104,6 +104,20 @@ try {
     ${customer.slice(customer.indexOf('create table if not exists public.coupon_redemptions'), customer.indexOf('create or replace function public.redeem_family_coupon'))}
     ${integrity.slice(integrity.indexOf('create table if not exists public.coupon_attempts'), integrity.indexOf('create or replace function public.process_payos_webhook'))}`);
 
+  const parentAi = load('supabase/migrations/202610040004_parent_ai.sql');
+  const wrappers = load('supabase/migrations/202610050001_pin_gated_server_wrappers.sql');
+  // Replace the historical fixture's setting-based helpers with the production
+  // membership checks before exercising the server's acting-parent wrapper.
+  await client.query(`drop function public.current_family_id(); drop function public.can_manage_family(uuid);
+    alter table public.family_memberships drop constraint family_memberships_role_check;
+    alter table public.family_memberships add constraint family_memberships_role_check
+      check(role in ('owner','parent','guardian','caregiver'));`);
+  await client.query(`${parentAi.slice(parentAi.indexOf('create table public.ai_usage'), parentAi.indexOf('commit;'))}
+    ${definition(family, 'current_family_id')}
+    ${definition(family, 'can_manage_family')}
+    ${definition(wrappers, 'act_as_user')}
+    revoke all on function public.act_as_user(uuid) from public, anon, authenticated, service_role;`);
+
   const addons = '202610110001_pro_plus_and_addons';
   await client.query(load(`supabase/migrations/${addons}.sql`));
   await client.query(load('supabase/preflight/202610110001_pro_plus_and_addons.verify.sql'));
@@ -114,7 +128,9 @@ try {
     'snapshot_shape', 'regression_existing_plans', 'higher_plan_active', 'printables_pending_reused',
     'founding_already_included', 'founding_expires_after_year', 'pro_plus_yearly_adds_year',
     'pro_plus_yearly_pending_lock', 'pro_plus_yearly_prior_paid_no_discount', 'addon_expired_plan_refused',
-    'addon_allowed_lifetime', 'founding_revoked_basic']);
+    'addon_allowed_lifetime', 'founding_revoked_basic', 'tier_free_trial_standard_plus', 'monthly_free_10', 'monthly_standard_20',
+    'month_boundary', 'plus_unlimited_month', 'plus_daily_safety', 'tier_after_founding', 'system_cap',
+    'monthly_quota_validation', 'monthly_quota_order_and_gap', 'monthly_quota_authorization']);
   for (const result of addonResults) {
     for (const row of result.rows ?? []) {
       if (!row.scenario) continue;

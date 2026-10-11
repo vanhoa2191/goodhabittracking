@@ -62,7 +62,6 @@ begin
             and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now()))
           or (
             (subscription.plan = 'lifetime'
-              or (subscription.plan = 'trial' and subscription.trial_ends_at > now())
               or (subscription.plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly')
                 and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now())))
             and exists (select 1 from public.launch_offer_claims claim
@@ -762,7 +761,6 @@ as $$
           and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now()))
         or (
           (subscription.plan = 'lifetime'
-            or (subscription.plan = 'trial' and subscription.trial_ends_at > now())
             or (subscription.plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly')
               and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now())))
           and exists (select 1 from public.launch_offer_claims claim
@@ -773,7 +771,13 @@ as $$
       )
   ) or exists (
     select 1 from public.family_addons where family_id = target_family and addon = 'ai' and active_until > now()
-  ) then 'plus' else 'basic' end
+  ) then 'plus' when exists (
+    select 1 from public.user_subscriptions subscription
+    where subscription.family_id = target_family and subscription.status = 'active'
+      and (subscription.plan = 'lifetime'
+        or (subscription.plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly')
+          and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now())))
+  ) then 'standard' else 'free' end
 $$;
 
 create or replace function public.family_addons_snapshot()
@@ -796,7 +800,6 @@ begin
           and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now()))
         or (
           (subscription.plan = 'lifetime'
-            or (subscription.plan = 'trial' and subscription.trial_ends_at > now())
             or (subscription.plan in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly')
               and (subscription.subscription_ends_at is null or subscription.subscription_ends_at > now())))
           and exists (select 1 from public.launch_offer_claims claim
@@ -813,6 +816,79 @@ begin
   );
 end
 $$;
+
+-- UTC-month allowance, daily safety and shared daily capacity are consumed atomically.
+-- As with the original quota, a later model failure still counts as a spent call.
+create or replace function public.consume_ai_quota_monthly(
+  per_month integer, per_day integer, system_per_day integer, min_gap_seconds integer
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  actor_family_id uuid := public.current_family_id();
+  today date := (now() at time zone 'utc')::date;
+  system_calls integer;
+  family_calls integer;
+  month_calls bigint;
+  last_call timestamptz;
+begin
+  if actor_family_id is null then raise exception 'family_membership_required'; end if;
+  if not public.can_manage_family(actor_family_id) then raise exception 'family_manage_required'; end if;
+  if (per_month is not null and per_month not between 1 and 1000)
+    or per_day is null or per_day not between 1 and 1000
+    or system_per_day is null or system_per_day not between 1 and 100000
+    or min_gap_seconds is null or min_gap_seconds not between 0 and 3600 then
+    raise exception 'invalid_ai_quota';
+  end if;
+
+  insert into public.ai_system_usage (day) values (today) on conflict (day) do nothing;
+  select calls into system_calls from public.ai_system_usage where day = today for update;
+  if system_calls >= system_per_day then return jsonb_build_object('allowed', false, 'reason', 'system_day'); end if;
+
+  -- Also serialize a family's monthly sum when transactions straddle UTC midnight
+  -- and therefore lock different system-day rows.
+  perform pg_advisory_xact_lock(hashtextextended('ai-quota:' || actor_family_id::text, 0));
+  insert into public.ai_usage (family_id, day) values (actor_family_id, today) on conflict (family_id, day) do nothing;
+  select calls, last_call_at into family_calls, last_call
+  from public.ai_usage where family_id = actor_family_id and day = today for update;
+  select coalesce(sum(calls), 0) into month_calls
+  from public.ai_usage where family_id = actor_family_id and day >= date_trunc('month', today);
+  if per_month is not null and month_calls >= per_month then
+    return jsonb_build_object('allowed', false, 'reason', 'family_month');
+  end if;
+  if family_calls >= per_day then return jsonb_build_object('allowed', false, 'reason', 'family_day'); end if;
+  if last_call is not null and now() - last_call < make_interval(secs => min_gap_seconds) then
+    return jsonb_build_object('allowed', false, 'reason', 'too_fast');
+  end if;
+
+  update public.ai_system_usage set calls = calls + 1 where day = today;
+  update public.ai_usage set calls = calls + 1, last_call_at = now() where family_id = actor_family_id and day = today;
+  return jsonb_build_object('allowed', true, 'remainingThisMonth',
+    case when per_month is null then null else per_month - month_calls - 1 end);
+end
+$$;
+
+create or replace function public.consume_ai_quota_monthly_as(
+  actor_user_id uuid, per_month integer, per_day integer, system_per_day integer, min_gap_seconds integer
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  perform public.act_as_user(actor_user_id);
+  return public.consume_ai_quota_monthly(per_month, per_day, system_per_day, min_gap_seconds);
+end
+$$;
+
+revoke all on function public.consume_ai_quota_monthly(integer, integer, integer, integer) from public, anon, service_role;
+grant execute on function public.consume_ai_quota_monthly(integer, integer, integer, integer) to authenticated;
+revoke all on function public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer) from public, anon, authenticated;
+grant execute on function public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer) to service_role;
 
 revoke all on function public.create_family_payment_order(uuid, uuid, bigint, text, timestamptz) from public, anon, authenticated;
 grant execute on function public.create_family_payment_order(uuid, uuid, bigint, text, timestamptz) to service_role;

@@ -7,7 +7,7 @@ declare u uuid; f uuid; ref uuid := gen_random_uuid();
 begin
   insert into auth.users(id) values (ref);
   insert into public.affiliate_accounts(user_id,code,terms_version) values (ref,'ZZZZZZZZ','2026-10-10');
-  for n in 1..21 loop
+  for n in 1..34 loop
     u := gen_random_uuid(); f := gen_random_uuid();
     insert into auth.users(id) values(u);
     insert into public.families(id,created_by) values(f,u);
@@ -79,7 +79,7 @@ insert into addon_results select 'addon_no_commission_no_discount',
 select pg_temp.buy(7,111014,'yearly');
 insert into addon_results select 'founding_tier',public.family_ai_tier(family_id)='plus' from addon_fixtures where n=7;
 update public.user_subscriptions set subscription_ends_at=now()-interval '1 second' where family_id=(select family_id from addon_fixtures where n=7);
-update addon_results set ok=ok and public.family_ai_tier((select family_id from addon_fixtures where n=7))='basic' where scenario='founding_tier';
+update addon_results set ok=ok and public.family_ai_tier((select family_id from addon_fixtures where n=7))='free' where scenario='founding_tier';
 
 -- Refund once, repeat the same resolution, and ensure the subscription is untouched.
 create temporary table addon_refund_before as select s.* from public.user_subscriptions s join addon_fixtures f using(family_id) where n=5;
@@ -154,7 +154,7 @@ insert into addon_results select 'founding_expires_after_year',public.family_ai_
   and (pg_temp.snapshot(13)->>'aiIncluded')::boolean from addon_fixtures where n=13;
 -- At exactly the anniversary it is no longer included.
 update public.payment_orders set paid_at=now()-interval '1 year' where order_code=112004;
-update addon_results set ok=ok and public.family_ai_tier((select family_id from addon_fixtures where n=13))='basic'
+update addon_results set ok=ok and public.family_ai_tier((select family_id from addon_fixtures where n=13))='standard'
   and not (pg_temp.snapshot(13)->>'aiIncluded')::boolean where scenario='founding_expires_after_year';
 select pg_temp.buy(13,112007,'ai_addon_monthly');
 update addon_results set ok=ok and public.family_ai_tier((select family_id from addon_fixtures where n=13))='plus'
@@ -162,7 +162,7 @@ update addon_results set ok=ok and public.family_ai_tier((select family_id from 
 
 select pg_temp.buy(14,112008,'yearly');
 update public.launch_offer_claims set revoked_at=now() where family_id=(select family_id from addon_fixtures where n=14);
-insert into addon_results select 'founding_revoked_basic',public.family_ai_tier(family_id)='basic'
+insert into addon_results select 'founding_revoked_basic',public.family_ai_tier(family_id)='standard'
   and not (pg_temp.snapshot(14)->>'aiIncluded')::boolean from addon_fixtures where n=14;
 select pg_temp.buy(14,112009,'ai_addon_monthly');
 update addon_results set ok=ok and public.family_ai_tier((select family_id from addon_fixtures where n=14))='plus'
@@ -237,5 +237,205 @@ insert into public.user_subscriptions(family_id,user_id,plan,status,subscription
 select pg_temp.buy(21,112042,'monthly');
 update addon_results set ok=ok and (select plan='monthly' from public.user_subscriptions s join addon_fixtures f using(family_id) where n=21)
   where scenario='higher_plan_active';
+-- The monthly tests use fresh families and the production identity wrapper.
+create function pg_temp.quota(n integer, monthly integer, daily integer default 100,
+  system_daily integer default 5000, gap integer default 0) returns jsonb language plpgsql as $$
+declare f addon_fixtures%rowtype;
+begin
+  select * into f from addon_fixtures where addon_fixtures.n = quota.n;
+  return public.consume_ai_quota_monthly_as(f.owner_id,monthly,daily,system_daily,gap);
+end $$;
+create function pg_temp.quota_error(n integer, monthly integer, daily integer,
+  system_daily integer, gap integer, expected text) returns boolean language plpgsql as $$
+begin
+  perform pg_temp.quota(n,monthly,daily,system_daily,gap);
+  return false;
+exception when others then return sqlerrm=expected;
+end $$;
+
+-- Every paid plan, trial, missing/expired/cancelled subscriptions and all plus sources.
+do $$
+declare f addon_fixtures%rowtype; item text; good boolean := true;
+begin
+  select * into f from addon_fixtures where n=22;
+  good := good and public.family_ai_tier(f.family_id)='free';
+  insert into public.user_subscriptions(family_id,user_id,plan,status,trial_ends_at)
+    values(f.family_id,f.owner_id,'trial','active',now()+interval '7 days');
+  good := good and public.family_ai_tier(f.family_id)='free';
+  foreach item in array array['solo_monthly','solo_yearly','monthly','yearly','lifetime'] loop
+    update public.user_subscriptions set plan=item,subscription_ends_at=case when item='lifetime' then null else now()+interval '1 year' end
+      where family_id=f.family_id;
+    good := good and public.family_ai_tier(f.family_id)='standard';
+  end loop;
+  foreach item in array array['pro_plus_monthly','pro_plus_yearly'] loop
+    update public.user_subscriptions set plan=item,subscription_ends_at=now()+interval '1 year' where family_id=f.family_id;
+    good := good and public.family_ai_tier(f.family_id)='plus';
+    update public.user_subscriptions set subscription_ends_at=now() where family_id=f.family_id;
+    good := good and public.family_ai_tier(f.family_id)='free';
+    update public.user_subscriptions set status='cancelled',subscription_ends_at=now()+interval '1 year' where family_id=f.family_id;
+    good := good and public.family_ai_tier(f.family_id)='free';
+    update public.user_subscriptions set status='active' where family_id=f.family_id;
+  end loop;
+  update public.user_subscriptions set plan='monthly',subscription_ends_at=now() where family_id=f.family_id;
+  good := good and public.family_ai_tier(f.family_id)='free';
+  update public.user_subscriptions set plan='free' where family_id=f.family_id;
+  insert into public.family_addons(family_id,addon,active_until,source) values(f.family_id,'ai',now()+interval '1 month','purchase');
+  good := good and public.family_ai_tier(f.family_id)='plus';
+  update public.family_addons set active_until=now() where family_id=f.family_id;
+  good := good and public.family_ai_tier(f.family_id)='free';
+  delete from public.family_addons where family_id=f.family_id;
+  good := good and public.family_ai_tier((select family_id from addon_fixtures where n=11))='plus';
+  -- A founding claim alone cannot elevate a trial, free or expired subscription.
+  update public.user_subscriptions set plan='trial',trial_ends_at=now()+interval '7 days',subscription_ends_at=null
+    where family_id=(select family_id from addon_fixtures where n=7);
+  good := good and public.family_ai_tier((select family_id from addon_fixtures where n=7))='free'
+    and not (pg_temp.snapshot(7)->>'aiIncluded')::boolean
+    and pg_temp.order_error(7,112050,'ai_addon_monthly','addon_requires_plan');
+  update public.user_subscriptions set plan='lifetime' where family_id=(select family_id from addon_fixtures where n=7);
+  good := good and public.family_ai_tier((select family_id from addon_fixtures where n=7))='plus'
+    and (pg_temp.snapshot(7)->>'aiIncluded')::boolean;
+  insert into addon_results values ('tier_free_trial_standard_plus',good);
+end $$;
+
+do $$
+declare result jsonb; good boolean := true;
+begin
+  for i in 1..10 loop
+    result := pg_temp.quota(22,10);
+    good := good and result=jsonb_build_object('allowed',true,'remainingThisMonth',10-i);
+  end loop;
+  good := good and pg_temp.quota(22,10)='{"allowed":false,"reason":"family_month"}'::jsonb
+    and (select calls=10 from public.ai_usage where family_id=(select family_id from addon_fixtures where n=22));
+  insert into addon_results values ('monthly_free_10',good);
+end $$;
+insert into public.user_subscriptions(family_id,user_id,plan,status,subscription_ends_at)
+  select family_id,owner_id,'monthly','active',now()+interval '1 month' from addon_fixtures where n=23;
+do $$
+declare good boolean := true;
+begin
+  good := public.family_ai_tier((select family_id from addon_fixtures where n=23))='standard';
+  for i in 1..20 loop
+    good := good and pg_temp.quota(23,20)=jsonb_build_object('allowed',true,'remainingThisMonth',20-i);
+  end loop;
+  good := good and pg_temp.quota(23,20)='{"allowed":false,"reason":"family_month"}'::jsonb;
+  insert into addon_results values ('monthly_standard_20',good);
+end $$;
+
+-- UTC, even if the session is in a different month near midnight: the last day
+-- of the previous month is excluded, and the first day of this month is included.
+set local time zone 'Pacific/Kiritimati';
+insert into public.ai_usage(family_id,day,calls)
+  select family_id,date_trunc('month',(now() at time zone 'utc')::date)::date-1,10 from addon_fixtures where n=24;
+insert into public.ai_usage(family_id,day,calls)
+  select family_id,date_trunc('month',(now() at time zone 'utc')::date)::date,9 from addon_fixtures where n=24;
+insert into addon_results values ('month_boundary',
+  pg_temp.quota(24,10)='{"allowed":true,"remainingThisMonth":0}'::jsonb
+  and pg_temp.quota(24,10)='{"allowed":false,"reason":"family_month"}'::jsonb);
+set local time zone 'UTC';
+
+insert into public.user_subscriptions(family_id,user_id,plan,status,subscription_ends_at)
+  select family_id,owner_id,'pro_plus_monthly','active',now()+interval '1 month' from addon_fixtures where n in (25,26);
+do $$
+declare good boolean := true; f uuid := (select family_id from addon_fixtures where n=25);
+begin
+  good := public.family_ai_tier(f)='plus';
+  for i in 1..75 loop
+    good := good and pg_temp.quota(25,null)='{"allowed":true,"remainingThisMonth":null}'::jsonb;
+  end loop;
+  -- Preserve the first day's actual calls as yesterday's daily aggregate.
+  update public.ai_usage set day=day-1 where family_id=f;
+  for i in 76..150 loop
+    good := good and pg_temp.quota(25,null)='{"allowed":true,"remainingThisMonth":null}'::jsonb;
+  end loop;
+  good := good and (select sum(calls)=150 and max(calls)=75 from public.ai_usage where family_id=f);
+  insert into addon_results values ('plus_unlimited_month',good);
+end $$;
+do $$
+declare good boolean := true; f uuid := (select family_id from addon_fixtures where n=26);
+begin
+  for i in 1..100 loop
+    good := good and pg_temp.quota(26,null)='{"allowed":true,"remainingThisMonth":null}'::jsonb;
+  end loop;
+  good := good and pg_temp.quota(26,null)='{"allowed":false,"reason":"family_day"}'::jsonb
+    and (select calls=100 from public.ai_usage where family_id=f);
+  -- At the next UTC day the prior daily row persists and a fresh row is allowed.
+  update public.ai_usage set day=day-1 where family_id=f;
+  good := good and pg_temp.quota(26,null)='{"allowed":true,"remainingThisMonth":null}'::jsonb;
+  good := good and (select calls=100 from public.ai_usage where family_id=f and day=(now() at time zone 'utc')::date-1)
+    and (select calls=1 from public.ai_usage where family_id=f and day=(now() at time zone 'utc')::date);
+  insert into addon_results values ('plus_daily_safety',good);
+end $$;
+
+-- On the anniversary the already-active paid family drops to standard, and all
+-- calls from earlier this UTC month immediately count against its 20-call cap.
+insert into public.ai_usage(family_id,day,calls)
+  select family_id,(now() at time zone 'utc')::date,20 from addon_fixtures where n=11;
+update public.payment_orders set paid_at=now()-interval '1 year' where order_code=111018;
+insert into addon_results select 'tier_after_founding',public.family_ai_tier(family_id)='standard'
+  and not (pg_temp.snapshot(11)->>'aiIncluded')::boolean
+  and pg_temp.quota(11,20)='{"allowed":false,"reason":"family_month"}'::jsonb from addon_fixtures where n=11;
+
+update public.ai_system_usage set calls=4999 where day=(now() at time zone 'utc')::date;
+insert into addon_results values ('system_cap',
+  pg_temp.quota(27,10)='{"allowed":true,"remainingThisMonth":9}'::jsonb
+  and pg_temp.quota(28,null)='{"allowed":false,"reason":"system_day"}'::jsonb);
+update addon_results set ok=ok and (select calls=5000 from public.ai_system_usage where day=(now() at time zone 'utc')::date)
+  and not exists(select 1 from public.ai_usage where family_id=(select family_id from addon_fixtures where n=28))
+  where scenario='system_cap';
+update public.ai_system_usage set calls=0 where day=(now() at time zone 'utc')::date;
+
+insert into addon_results values ('monthly_quota_validation',
+  pg_temp.quota_error(29,0,100,5000,20,'invalid_ai_quota')
+  and pg_temp.quota_error(29,-1,100,5000,20,'invalid_ai_quota')
+  and pg_temp.quota_error(29,1001,100,5000,20,'invalid_ai_quota')
+  and pg_temp.quota_error(29,10,null,5000,20,'invalid_ai_quota')
+  and pg_temp.quota_error(29,10,0,5000,20,'invalid_ai_quota')
+  and pg_temp.quota_error(29,10,1001,5000,20,'invalid_ai_quota')
+  and pg_temp.quota_error(29,10,100,null,20,'invalid_ai_quota')
+  and pg_temp.quota_error(29,10,100,0,20,'invalid_ai_quota')
+  and pg_temp.quota_error(29,10,100,100001,20,'invalid_ai_quota')
+  and pg_temp.quota_error(29,10,100,5000,null,'invalid_ai_quota')
+  and pg_temp.quota_error(29,10,100,5000,-1,'invalid_ai_quota')
+  and pg_temp.quota_error(29,10,100,5000,3601,'invalid_ai_quota')
+  and pg_temp.quota(29,1,1,1,0)='{"allowed":true,"remainingThisMonth":0}'::jsonb);
+
+-- All limits are hit simultaneously; peel each away to pin refusal precedence.
+insert into public.ai_usage(family_id,day,calls,last_call_at)
+  select family_id,(now() at time zone 'utc')::date,100,now() from addon_fixtures where n=30;
+update public.ai_system_usage set calls=5000 where day=(now() at time zone 'utc')::date;
+insert into addon_results values ('monthly_quota_order_and_gap',
+  pg_temp.quota(30,10,100,5000,20)='{"allowed":false,"reason":"system_day"}'::jsonb);
+update public.ai_system_usage set calls=0 where day=(now() at time zone 'utc')::date;
+update addon_results set ok=ok and pg_temp.quota(30,10,100,5000,20)='{"allowed":false,"reason":"family_month"}'::jsonb
+  and pg_temp.quota(30,null,100,5000,20)='{"allowed":false,"reason":"family_day"}'::jsonb
+  where scenario='monthly_quota_order_and_gap';
+update public.ai_usage set calls=1 where family_id=(select family_id from addon_fixtures where n=30);
+update addon_results set ok=ok and pg_temp.quota(30,10,100,5000,20)='{"allowed":false,"reason":"too_fast"}'::jsonb
+  and (select calls=1 from public.ai_usage where family_id=(select family_id from addon_fixtures where n=30))
+  and (select calls=0 from public.ai_system_usage where day=(now() at time zone 'utc')::date)
+  where scenario='monthly_quota_order_and_gap';
+update public.ai_usage set last_call_at=now()-interval '20 seconds' where family_id=(select family_id from addon_fixtures where n=30);
+update addon_results set ok=ok and pg_temp.quota(30,10,100,5000,20)='{"allowed":true,"remainingThisMonth":8}'::jsonb
+  where scenario='monthly_quota_order_and_gap';
+
+-- Exercise the role grants, not only the superuser fixture calls.
+create temporary table addon_quota_roles(value jsonb);
+grant insert on addon_quota_roles to authenticated,service_role;
+select set_config('request.jwt.claim.sub',(select owner_id::text from addon_fixtures where n=31),true);
+set local role authenticated;
+insert into addon_quota_roles select public.consume_ai_quota_monthly(10,100,5000,0);
+reset role;
+select set_config('test.quota_actor',(select owner_id::text from addon_fixtures where n=32),true);
+set local role service_role;
+insert into addon_quota_roles select public.consume_ai_quota_monthly_as(current_setting('test.quota_actor')::uuid,10,100,5000,0);
+reset role;
+insert into addon_results select 'monthly_quota_authorization',count(*)=2
+  and bool_and(value='{"allowed":true,"remainingThisMonth":9}'::jsonb) from addon_quota_roles;
+update public.family_memberships set role='caregiver' where family_id=(select family_id from addon_fixtures where n=33);
+update addon_results set ok=ok and pg_temp.quota_error(33,10,100,5000,0,'family_manage_required')
+  where scenario='monthly_quota_authorization';
+delete from public.family_memberships where family_id=(select family_id from addon_fixtures where n=34);
+update addon_results set ok=ok and pg_temp.quota_error(34,10,100,5000,0,'family_membership_required')
+  where scenario='monthly_quota_authorization';
 select scenario,ok from addon_results order by scenario;
 rollback;

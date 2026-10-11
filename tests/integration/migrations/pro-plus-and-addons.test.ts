@@ -81,6 +81,50 @@ describe('Pro Plus and add-ons migration', () => {
       expect(body).toContain("claim_order.paid_at + interval '1 year' > now()");
     }
   });
+  it('distinguishes free, active standard and plus AI tiers', () => {
+    const tier = definition('family_ai_tier');
+    for (const value of ["'free'", "'standard'", "'plus'", "'lifetime'", "'solo_monthly'", "'solo_yearly'", "'monthly'", "'yearly'"]) {
+      expect(tier).toContain(value);
+    }
+    expect(tier).not.toContain("'basic'");
+  });
+  it('exposes authenticated monthly quota and the service-only actor wrapper', () => {
+    for (const name of ['consume_ai_quota_monthly', 'consume_ai_quota_monthly_as']) {
+      const body = definition(name);
+      expect(body).toContain('security definer');
+      expect(body).toContain("set search_path = ''");
+      expect(preflight).toContain(name);
+    }
+    const quota = definition('consume_ai_quota_monthly');
+    expect(quota).toContain('public.current_family_id()');
+    expect(quota).toContain('public.can_manage_family(actor_family_id)');
+    expect(quota).toContain("(now() at time zone 'utc')::date");
+    expect(quota).toContain("date_trunc('month', today)");
+    expect(quota).toContain('sum(calls)');
+    expect(quota).toContain('per_month is not null');
+    expect(quota).toContain('per_month not between 1 and 1000');
+    expect(quota).toContain('per_day not between 1 and 1000');
+    expect(quota).toContain('remainingThisMonth');
+    const reasons = ['system_day', 'family_month', 'family_day', 'too_fast'].map(reason => quota.indexOf(`'${reason}'`));
+    expect(reasons.every(index => index >= 0)).toBe(true);
+    expect(reasons).toEqual([...reasons].sort((a, b) => a - b));
+    expect(definition('consume_ai_quota_monthly_as')).toContain('public.act_as_user(actor_user_id)');
+    expect(definition('consume_ai_quota_monthly_as')).toContain('public.consume_ai_quota_monthly(per_month, per_day, system_per_day, min_gap_seconds)');
+    expect(migration).toContain('revoke all on function public.consume_ai_quota_monthly(integer, integer, integer, integer) from public, anon, service_role');
+    expect(migration).toContain('grant execute on function public.consume_ai_quota_monthly(integer, integer, integer, integer) to authenticated');
+    expect(migration).toContain('revoke all on function public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer) from public, anon, authenticated');
+    expect(migration).toContain('grant execute on function public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer) to service_role');
+  });
+  it('pins monthly quota scenarios in both disposable SQL runners', () => {
+    const scenarios = readFileSync(resolve('tests/integration/migrations/pro-plus-and-addons.scenarios.sql'), 'utf8');
+    const runners = ['billing', 'affiliate'].map(name => readFileSync(resolve(`scripts/verify-local-${name}.mjs`), 'utf8'));
+    for (const name of ['tier_free_trial_standard_plus', 'monthly_free_10', 'monthly_standard_20',
+      'month_boundary', 'plus_unlimited_month', 'plus_daily_safety', 'tier_after_founding', 'system_cap',
+      'monthly_quota_validation', 'monthly_quota_order_and_gap', 'monthly_quota_authorization']) {
+      expect(scenarios).toContain(`'${name}'`);
+      for (const runner of runners) expect(runner).toContain(`'${name}'`);
+    }
+  });
   it('pins all review regression scenarios in the SQL runner', () => {
     const scenarios = readFileSync(resolve('tests/integration/migrations/pro-plus-and-addons.scenarios.sql'), 'utf8');
     const runner = readFileSync(resolve('scripts/verify-local-billing.mjs'), 'utf8');
