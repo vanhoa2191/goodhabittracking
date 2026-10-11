@@ -37,7 +37,7 @@ test('the pricing dialog sells Pro Plus at the price for the chosen cycle', asyn
   await expect(card).not.toContainText('Sắp ra mắt');
   await expect(card).not.toContainText('Chưa mở bán');
   await expect(card).toContainText('790.000');
-  await expect(card).toContainText('Gợi ý AI 10 lượt/ngày');
+  await expect(card).toContainText('Gợi ý AI không giới hạn');
   await expect(card.getByRole('button')).toHaveCount(1);
   await expect(card.getByRole('button')).toBeEnabled();
   await expect(card.getByRole('link')).toHaveCount(0);

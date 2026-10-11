@@ -225,7 +225,6 @@ describe('marketing static artifact', () => {
       expect(plus).not.toMatch(/sắp ra mắt|coming soon|đang phát triển/i);
       expect(plus).toContain('plan=pro_plus_yearly');
       expect(plus).toContain('plan=pro_plus_monthly');
-      expect(plus).toContain('10 lượt');
       expect(html).toContain('Add-on AI');
       expect(html).toContain('29.000đ/tháng');
       expect(html).not.toContain('plan=printables');
@@ -234,6 +233,23 @@ describe('marketing static artifact', () => {
       expect(css).toContain('[data-pricing-cycle="year"] [data-cycle="month"]');
       expect(css).toContain('[data-pricing-cycle="month"] [data-cycle="year"]');
     }
+  });
+
+  it('publishes monthly AI entitlements instead of daily sales limits on pricing and terms', async () => {
+    const { outputDir } = await buildFixture();
+    const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
+    for (const tier of ['solo', 'pro']) {
+      expect(planCard(pricing, tier)).toMatch(/AI[^<]*20[^<]*tháng/);
+    }
+    expect(planCard(pricing, 'pro_plus')).toMatch(/AI[^<]*không giới hạn/);
+    expect(pricing).toMatch(/Add-on AI[^<]*29\.000đ\/tháng[^<]*không giới hạn/);
+    const terms = await readFile(join(outputDir, 'terms', 'index.html'), 'utf8');
+    expect(terms).toMatch(/10[^<]*miễn phí[^<]*mỗi tháng/);
+    expect(terms).toMatch(/20[^<]*tháng/);
+    expect(terms).toMatch(/Pro Plus[^<]*Add-on AI[^<]*không giới hạn/);
+    expect(terms).toMatch(/100[^<]*ngày/);
+    expect(terms).toContain('UTC');
+    expect(pricing + terms).not.toMatch(/(?:1|10) lượt(?:\/ngày| mỗi ngày)/);
   });
 
   it('states the launch offer without a seat count, which only the live database may supply', async () => {

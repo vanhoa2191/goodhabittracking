@@ -49,7 +49,6 @@ describe('pricing plan cards', () => {
       renderAction: (id, text) => createElement('a', { href: `/checkout?plan=${id}` }, text.cta),
     }));
     for (const id of ['solo_yearly', 'yearly', 'pro_plus_yearly']) expect(html).toContain(`href="/checkout?plan=${id}"`);
-    expect(html).toContain('Gợi ý AI 10 lượt/ngày');
     expect(html).toContain('Add-on AI');
     expect(html).not.toMatch(/upcoming-plans|family_plus|sắp ra mắt|coming soon/i);
   });

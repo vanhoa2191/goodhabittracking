@@ -255,7 +255,7 @@ export const story = {
     ],
     defaultCycle: 'year',
     recommendedBadge: 'Hợp với gia đình mình',
-    addonLine: 'Gói Cơ bản/Pro: thêm Add-on AI · 29.000đ/tháng để có 10 lượt gợi ý AI mỗi ngày.',
+    addonLine: 'Gói Cơ bản/Pro: thêm Add-on AI · 29.000đ/tháng để có gợi ý AI không giới hạn.',
     pledge: [
       { strong: '7 ngày', text: 'dùng thử đầy đủ' },
       { strong: '0đ', text: 'không cần thẻ' },

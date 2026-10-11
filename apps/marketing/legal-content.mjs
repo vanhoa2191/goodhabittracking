@@ -7,12 +7,12 @@ export const legalVersion = '2026-10-11';
 export const legalUpdatedLabel = '11/10/2026';
 
 const planDescriptors = {
-  solo_monthly: 'tối đa 1 hồ sơ bé',
-  solo_yearly: 'tối đa 1 hồ sơ bé, thanh toán một lần cho 12 tháng',
-  monthly: 'tối đa 5 hồ sơ bé',
-  yearly: 'tối đa 5 hồ sơ bé, thanh toán một lần cho 12 tháng',
-  pro_plus_monthly: 'mọi quyền lợi Gói Pro (tối đa 5 bé) và gợi ý AI 10 lượt/ngày',
-  pro_plus_yearly: 'mọi quyền lợi Gói Pro (tối đa 5 bé) và gợi ý AI 10 lượt/ngày, thanh toán một lần cho 12 tháng',
+  solo_monthly: 'tối đa 1 hồ sơ bé, Gợi ý AI 20 lượt/tháng',
+  solo_yearly: 'tối đa 1 hồ sơ bé, Gợi ý AI 20 lượt/tháng, thanh toán một lần cho 12 tháng',
+  monthly: 'tối đa 5 hồ sơ bé, Gợi ý AI 20 lượt/tháng',
+  yearly: 'tối đa 5 hồ sơ bé, Gợi ý AI 20 lượt/tháng, thanh toán một lần cho 12 tháng',
+  pro_plus_monthly: 'mọi quyền lợi Gói Pro (tối đa 5 bé) và Gợi ý AI không giới hạn',
+  pro_plus_yearly: 'mọi quyền lợi Gói Pro (tối đa 5 bé) và Gợi ý AI không giới hạn, thanh toán một lần cho 12 tháng',
 };
 
 function priceLine(plan) {
@@ -193,9 +193,9 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         blocks: [
           'Các gói trả phí hiện có:',
           plans.map(priceLine),
-          'Add-on AI: 29.000đ/tháng, chỉ cho gia đình đang có Gói Cơ bản hoặc Gói Pro còn hạn. Mỗi lần mua cộng 1 tháng, không hoàn tiền tự động ngoài chính sách hoàn tiền chung và không áp dụng mã giới thiệu.',
-          'Dùng thử 7 ngày có quyền lợi của Gói Pro, tối đa 5 hồ sơ bé. Giới hạn số bé chỉ chặn khi thêm hồ sơ mới; gia đình đang có nhiều hồ sơ hơn mức của gói vẫn giữ nguyên các hồ sơ hiện có.',
-          'Gói Pro Plus hiện đã mở bán. Mọi phụ huynh đã đồng ý dùng AI được dùng gợi ý AI với giới hạn chung cho cả gia đình là 1 lượt/ngày; Gói Pro Plus hoặc Add-on AI có giới hạn 10 lượt/ngày cho cả gia đình.',
+          'Add-on AI: 29.000đ/tháng, Gợi ý AI không giới hạn, chỉ cho gia đình đang có Gói Cơ bản hoặc Gói Pro còn hạn. Mỗi lần mua cộng 1 tháng, không hoàn tiền tự động ngoài chính sách hoàn tiền chung và không áp dụng mã giới thiệu.',
+          'Dùng thử 7 ngày có quyền lợi cốt lõi của Gói Pro, tối đa 5 hồ sơ bé; riêng AI áp dụng mức miễn phí: 10 lượt gợi ý AI miễn phí mỗi tháng. Giới hạn số bé chỉ chặn khi thêm hồ sơ mới; gia đình đang có nhiều hồ sơ hơn mức của gói vẫn giữ nguyên các hồ sơ hiện có.',
+          'Gợi ý AI chỉ dùng khi phụ huynh đã đồng ý, với hạn mức chung cho cả gia đình trong tháng lịch theo UTC. Miễn phí, dùng thử và gói hết hạn: 10 lượt gợi ý AI miễn phí mỗi tháng. Gói Cơ bản/Pro hoặc trọn đời đang hoạt động: Gợi ý AI 20 lượt/tháng. Gói Pro Plus, Add-on AI đang hoạt động hoặc gia đình còn trong năm ưu đãi ra mắt: Gợi ý AI không giới hạn, không có hạn mức tháng. Mọi gói có mức bảo vệ 100 lượt trong một ngày, tối thiểu 20 giây giữa hai lượt; lượt tháng trước không chuyển sang tháng sau. Giới hạn chung của hệ thống mặc định là 5.000 lượt trong một ngày, có thể được điều chỉnh khi vận hành.',
           'Ưu đãi ra mắt: 10 gia đình đầu tiên thanh toán Gói Pro theo năm được dùng Pro Plus miễn phí trong 1 năm kể từ ngày thanh toán đơn đó. Mỗi gia đình tối đa một suất, tính theo thứ tự thanh toán thành công. Suất bị thu hồi nếu đơn thanh toán đó được hoàn tiền.',
           'Gia đình không thể mua gói thấp hơn khi gói cao hơn vẫn còn hiệu lực. Thứ tự gói từ cao xuống thấp là Gói Pro Plus > Gói Pro > Gói Cơ bản.',
           'Giá, thời hạn và quyền lợi áp dụng cho đơn được hiển thị trước khi bạn tạo mã thanh toán. Thanh toán bằng VNĐ qua chuyển khoản do PayOS xử lý, hiện phục vụ người dùng tại Việt Nam.',

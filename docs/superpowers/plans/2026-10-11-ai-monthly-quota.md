@@ -11,7 +11,7 @@
 ## Global Constraints
 
 - Tiers:
-  - `plus`: active `pro_plus_*` subscription, active `family_addons.ai`, or a founding claim still within its year.
+  - `plus`: active `pro_plus_*` subscription, active `family_addons.ai`, or a founding claim that is not revoked, still within its year **and** whose family has an active paid subscription.
   - `standard`: active `solo_monthly`, `solo_yearly`, `monthly`, `yearly` or `lifetime`.
   - `free`: everything else, including trial, free and expired plans.
 - Limits (`src/lib/ai/config.ts`):

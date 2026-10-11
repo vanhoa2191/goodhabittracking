@@ -161,37 +161,37 @@ export const PLAN_LOCALIZATION: Record<
     },
   },
   pro_plus_monthly: {
-    vi: { name: 'Gói Pro Plus · Tháng', desc: 'Mọi tính năng Pro cùng gợi ý AI mỗi ngày, linh hoạt theo tháng', period: '/ tháng', badge: 'Có AI', cta: 'Chọn Gói Pro Plus · Tháng' },
-    en: { name: 'Pro Plus plan · Monthly', desc: 'Everything in Pro plus daily AI suggestions, billed monthly', period: '/ month', badge: 'With AI', cta: 'Choose Pro Plus plan · Monthly' },
-    fr: { name: 'Forfait Pro Plus · Mensuel', desc: 'Tout Pro, plus des suggestions IA chaque jour, payé au mois', period: '/ mois', badge: 'Avec IA', cta: 'Choisir le forfait Pro Plus · Mensuel' },
-    de: { name: 'Pro-Plus-Paket · Monatlich', desc: 'Alles aus Pro plus tägliche KI-Vorschläge, monatlich bezahlt', period: '/ Monat', badge: 'Mit KI', cta: 'Pro-Plus-Paket · Monatlich wählen' },
-    it: { name: 'Piano Pro Plus · Mensile', desc: 'Tutto Pro più suggerimenti IA ogni giorno, con pagamento mensile', period: '/ mese', badge: 'Con IA', cta: 'Scegli Piano Pro Plus · Mensile' },
-    es: { name: 'Plan Pro Plus · Mensual', desc: 'Todo Pro más sugerencias de IA cada día, con pago mensual', period: '/ mes', badge: 'Con IA', cta: 'Elegir plan Pro Plus · Mensual' },
-    zh: { name: 'Pro Plus 套餐 · 月付', desc: '包含 Pro 全部功能，并每天提供 AI 建议，按月付费', period: '/ 月', badge: '含 AI', cta: '选择 Pro Plus 套餐 · 月付' },
-    ja: { name: 'Pro Plusプラン · 月額', desc: 'Proの全機能に毎日のAI提案をプラス。月ごとのお支払い', period: '/ 月', badge: 'AI付き', cta: 'Pro Plusプラン · 月額を選ぶ' },
-    ko: { name: 'Pro Plus 플랜 · 월간', desc: 'Pro의 모든 기능에 매일 AI 제안을 더한 월간 결제', period: '/ 월', badge: 'AI 포함', cta: 'Pro Plus 플랜 · 월간 선택' },
+    vi: { name: 'Gói Pro Plus · Tháng', desc: 'Mọi tính năng Pro cùng gợi ý AI không giới hạn, linh hoạt theo tháng', period: '/ tháng', badge: 'Có AI', cta: 'Chọn Gói Pro Plus · Tháng' },
+    en: { name: 'Pro Plus plan · Monthly', desc: 'Everything in Pro plus unlimited AI suggestions, billed monthly', period: '/ month', badge: 'With AI', cta: 'Choose Pro Plus plan · Monthly' },
+    fr: { name: 'Forfait Pro Plus · Mensuel', desc: 'Tout Pro, plus des suggestions IA illimitées, payé au mois', period: '/ mois', badge: 'Avec IA', cta: 'Choisir le forfait Pro Plus · Mensuel' },
+    de: { name: 'Pro-Plus-Paket · Monatlich', desc: 'Alles aus Pro plus unbegrenzte KI-Vorschläge, monatlich bezahlt', period: '/ Monat', badge: 'Mit KI', cta: 'Pro-Plus-Paket · Monatlich wählen' },
+    it: { name: 'Piano Pro Plus · Mensile', desc: 'Tutto Pro più suggerimenti IA illimitati, con pagamento mensile', period: '/ mese', badge: 'Con IA', cta: 'Scegli Piano Pro Plus · Mensile' },
+    es: { name: 'Plan Pro Plus · Mensual', desc: 'Todo Pro más sugerencias de IA ilimitadas, con pago mensual', period: '/ mes', badge: 'Con IA', cta: 'Elegir plan Pro Plus · Mensual' },
+    zh: { name: 'Pro Plus 套餐 · 月付', desc: '包含 Pro 全部功能及无限 AI 建议，按月付费', period: '/ 月', badge: '含 AI', cta: '选择 Pro Plus 套餐 · 月付' },
+    ja: { name: 'Pro Plusプラン · 月額', desc: 'Proの全機能に無制限のAI提案をプラス。月ごとのお支払い', period: '/ 月', badge: 'AI付き', cta: 'Pro Plusプラン · 月額を選ぶ' },
+    ko: { name: 'Pro Plus 플랜 · 월간', desc: 'Pro의 모든 기능에 무제한 AI 제안을 더한 월간 결제', period: '/ 월', badge: 'AI 포함', cta: 'Pro Plus 플랜 · 월간 선택' },
   },
   pro_plus_yearly: {
-    vi: { name: 'Gói Pro Plus · Năm', desc: 'Mọi tính năng Pro cùng gợi ý AI mỗi ngày, tiết kiệm hơn cho cả năm', period: '/ năm', badge: 'Có AI, tiết kiệm nhất', cta: 'Chọn Gói Pro Plus · Năm' },
-    en: { name: 'Pro Plus plan · Yearly', desc: 'Everything in Pro plus daily AI suggestions, at a better price for the full year', period: '/ year', badge: 'AI, best savings', cta: 'Choose Pro Plus plan · Yearly' },
-    fr: { name: 'Forfait Pro Plus · Annuel', desc: 'Tout Pro, plus des suggestions IA chaque jour, à un meilleur prix sur l’année', period: '/ an', badge: 'IA, meilleure économie', cta: 'Choisir le forfait Pro Plus · Annuel' },
-    de: { name: 'Pro-Plus-Paket · Jährlich', desc: 'Alles aus Pro plus tägliche KI-Vorschläge, günstiger für das ganze Jahr', period: '/ Jahr', badge: 'KI, beste Ersparnis', cta: 'Pro-Plus-Paket · Jährlich wählen' },
-    it: { name: 'Piano Pro Plus · Annuale', desc: 'Tutto Pro più suggerimenti IA ogni giorno, a un prezzo migliore per tutto l’anno', period: '/ anno', badge: 'IA, miglior risparmio', cta: 'Scegli Piano Pro Plus · Annuale' },
-    es: { name: 'Plan Pro Plus · Anual', desc: 'Todo Pro más sugerencias de IA cada día, a mejor precio durante todo el año', period: '/ año', badge: 'IA, mayor ahorro', cta: 'Elegir plan Pro Plus · Anual' },
-    zh: { name: 'Pro Plus 套餐 · 年付', desc: '包含 Pro 全部功能，并每天提供 AI 建议，全年更划算', period: '/ 年', badge: '含 AI，最省钱', cta: '选择 Pro Plus 套餐 · 年付' },
-    ja: { name: 'Pro Plusプラン · 年額', desc: 'Proの全機能に毎日のAI提案をプラス。1年間をお得な料金で', period: '/ 年', badge: 'AI付きで最もお得', cta: 'Pro Plusプラン · 年額を選ぶ' },
-    ko: { name: 'Pro Plus 플랜 · 연간', desc: 'Pro의 모든 기능에 매일 AI 제안을 더해 1년을 더 알뜰하게', period: '/ 년', badge: 'AI 포함, 최고의 절약', cta: 'Pro Plus 플랜 · 연간 선택' },
+    vi: { name: 'Gói Pro Plus · Năm', desc: 'Mọi tính năng Pro cùng gợi ý AI không giới hạn, tiết kiệm hơn cho cả năm', period: '/ năm', badge: 'Có AI, tiết kiệm nhất', cta: 'Chọn Gói Pro Plus · Năm' },
+    en: { name: 'Pro Plus plan · Yearly', desc: 'Everything in Pro plus unlimited AI suggestions, at a better price for the full year', period: '/ year', badge: 'AI, best savings', cta: 'Choose Pro Plus plan · Yearly' },
+    fr: { name: 'Forfait Pro Plus · Annuel', desc: 'Tout Pro, plus des suggestions IA illimitées, à un meilleur prix sur l’année', period: '/ an', badge: 'IA, meilleure économie', cta: 'Choisir le forfait Pro Plus · Annuel' },
+    de: { name: 'Pro-Plus-Paket · Jährlich', desc: 'Alles aus Pro plus unbegrenzte KI-Vorschläge, günstiger für das ganze Jahr', period: '/ Jahr', badge: 'KI, beste Ersparnis', cta: 'Pro-Plus-Paket · Jährlich wählen' },
+    it: { name: 'Piano Pro Plus · Annuale', desc: 'Tutto Pro più suggerimenti IA illimitati, a un prezzo migliore per tutto l’anno', period: '/ anno', badge: 'IA, miglior risparmio', cta: 'Scegli Piano Pro Plus · Annuale' },
+    es: { name: 'Plan Pro Plus · Anual', desc: 'Todo Pro más sugerencias de IA ilimitadas, a mejor precio durante todo el año', period: '/ año', badge: 'IA, mayor ahorro', cta: 'Elegir plan Pro Plus · Anual' },
+    zh: { name: 'Pro Plus 套餐 · 年付', desc: '包含 Pro 全部功能及无限 AI 建议，全年更划算', period: '/ 年', badge: '含 AI，最省钱', cta: '选择 Pro Plus 套餐 · 年付' },
+    ja: { name: 'Pro Plusプラン · 年額', desc: 'Proの全機能に無制限のAI提案をプラス。1年間をお得な料金で', period: '/ 年', badge: 'AI付きで最もお得', cta: 'Pro Plusプラン · 年額を選ぶ' },
+    ko: { name: 'Pro Plus 플랜 · 연간', desc: 'Pro의 모든 기능에 무제한 AI 제안을 더해 1년을 더 알뜰하게', period: '/ 년', badge: 'AI 포함, 최고의 절약', cta: 'Pro Plus 플랜 · 연간 선택' },
   },
   ai_addon_monthly: {
-    vi: { name: 'Add-on AI', desc: 'Thêm gợi ý AI mỗi ngày cho gói Cơ bản hoặc Pro', period: '/ tháng', badge: 'Thêm AI', cta: 'Thêm Add-on AI' },
-    en: { name: 'AI add-on', desc: 'Add daily AI suggestions to a Basic or Pro plan', period: '/ month', badge: 'Add AI', cta: 'Add the AI add-on' },
-    fr: { name: 'Option IA', desc: 'Ajoutez des suggestions IA quotidiennes à un forfait Essentiel ou Pro', period: '/ mois', badge: 'Ajouter l’IA', cta: 'Ajouter l’option IA' },
-    de: { name: 'KI-Zusatz', desc: 'Tägliche KI-Vorschläge für das Basis- oder Pro-Paket hinzufügen', period: '/ Monat', badge: 'KI hinzufügen', cta: 'KI-Zusatz hinzufügen' },
-    it: { name: 'Componente IA', desc: 'Aggiungi suggerimenti IA quotidiani a un piano Base o Pro', period: '/ mese', badge: 'Aggiungi IA', cta: 'Aggiungi il componente IA' },
-    es: { name: 'Complemento de IA', desc: 'Añade sugerencias de IA diarias a un plan Básico o Pro', period: '/ mes', badge: 'Añadir IA', cta: 'Añadir el complemento de IA' },
-    zh: { name: 'AI 附加包', desc: '为基础或 Pro 套餐添加每日 AI 建议', period: '/ 月', badge: '添加 AI', cta: '添加 AI 附加包' },
-    ja: { name: 'AIアドオン', desc: 'ベーシックまたはProプランに毎日のAI提案を追加', period: '/ 月', badge: 'AIを追加', cta: 'AIアドオンを追加' },
-    ko: { name: 'AI 애드온', desc: '베이직 또는 Pro 플랜에 매일 AI 제안을 추가', period: '/ 월', badge: 'AI 추가', cta: 'AI 애드온 추가' },
+    vi: { name: 'Add-on AI', desc: 'Gợi ý AI không giới hạn', period: '/ tháng', badge: 'Thêm AI', cta: 'Thêm Add-on AI' },
+    en: { name: 'AI add-on', desc: 'Unlimited AI suggestions', period: '/ month', badge: 'Add AI', cta: 'Add the AI add-on' },
+    fr: { name: 'Option IA', desc: 'Suggestions IA illimitées', period: '/ mois', badge: 'Ajouter l’IA', cta: 'Ajouter l’option IA' },
+    de: { name: 'KI-Zusatz', desc: 'Unbegrenzte KI-Vorschläge', period: '/ Monat', badge: 'KI hinzufügen', cta: 'KI-Zusatz hinzufügen' },
+    it: { name: 'Componente IA', desc: 'Suggerimenti IA illimitati', period: '/ mese', badge: 'Aggiungi IA', cta: 'Aggiungi il componente IA' },
+    es: { name: 'Complemento de IA', desc: 'Sugerencias de IA ilimitadas', period: '/ mes', badge: 'Añadir IA', cta: 'Añadir el complemento de IA' },
+    zh: { name: 'AI 附加包', desc: '无限 AI 建议', period: '/ 月', badge: '添加 AI', cta: '添加 AI 附加包' },
+    ja: { name: 'AIアドオン', desc: '無制限のAI提案', period: '/ 月', badge: 'AIを追加', cta: 'AIアドオンを追加' },
+    ko: { name: 'AI 애드온', desc: '무제한 AI 제안', period: '/ 월', badge: 'AI 추가', cta: 'AI 애드온 추가' },
   },
   printables: {
     vi: { name: 'Printable & Ebook', desc: 'Bộ Printable và Ebook, mua một lần dùng mãi', period: 'một lần', badge: 'Mua một lần', cta: 'Mua Printable & Ebook' },
@@ -206,17 +206,29 @@ export const PLAN_LOCALIZATION: Record<
   },
 };
 
-// Strings only the Pro Plus plan and the add-ons use; the shared plan wording lives in public-pricing-copy.
-const AI_PER_DAY: Record<Language, string> = {
-  vi: 'Gợi ý AI 10 lượt/ngày',
-  en: 'AI suggestions, 10 per day',
-  fr: 'Suggestions IA : 10 par jour',
-  de: 'KI-Vorschläge: 10 pro Tag',
-  it: 'Suggerimenti IA: 10 al giorno',
-  es: 'Sugerencias de IA: 10 al día',
-  zh: 'AI 建议每天 10 次',
-  ja: 'AIの提案を1日10回',
-  ko: 'AI 제안 하루 10회',
+// Shared plan wording lives in public-pricing-copy; AI entitlements apply across checkout tiers.
+const AI_UNLIMITED: Record<Language, string> = {
+  vi: 'Gợi ý AI không giới hạn',
+  en: 'Unlimited AI suggestions',
+  fr: 'Suggestions IA illimitées',
+  de: 'Unbegrenzte KI-Vorschläge',
+  it: 'Suggerimenti IA illimitati',
+  es: 'Sugerencias de IA ilimitadas',
+  zh: '无限 AI 建议',
+  ja: '無制限のAI提案',
+  ko: '무제한 AI 제안',
+};
+
+const AI_STANDARD_MONTHLY: Record<Language, string> = {
+  vi: 'Gợi ý AI 20 lượt/tháng',
+  en: '20 AI suggestions per month',
+  fr: '20 suggestions IA par mois',
+  de: '20 KI-Vorschläge pro Monat',
+  it: '20 suggerimenti IA al mese',
+  es: '20 sugerencias de IA al mes',
+  zh: '每月 20 次 AI 建议',
+  ja: 'AIの提案を月20回',
+  ko: 'AI 제안 월 20회',
 };
 
 const PRO_PLUS_YEARLY_SAVINGS: Record<Language, string> = {
@@ -258,13 +270,13 @@ const PAY_ONCE: Record<Language, string> = {
 export function getCheckoutPlanFeatures(planId: SubscriptionPlan | AddonId, language: Language): readonly string[] {
   const common = getPublicPricingCopy(language);
   switch (planId) {
-    case 'solo_monthly': return [common.oneChild, common.sync, common.caregiverInvites, common.library];
-    case 'solo_yearly': return [common.oneChild, common.sync, common.caregiverInvites, common.library, common.soloSavings];
-    case 'monthly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary];
-    case 'yearly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, common.annualPayment, common.savings];
-    case 'pro_plus_monthly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_PER_DAY[language]];
-    case 'pro_plus_yearly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_PER_DAY[language], common.annualPayment, PRO_PLUS_YEARLY_SAVINGS[language]];
-    case 'ai_addon_monthly': return [AI_PER_DAY[language], ADDON_EXTENDS_MONTH[language]];
+    case 'solo_monthly': return [common.oneChild, common.sync, common.caregiverInvites, common.library, AI_STANDARD_MONTHLY[language]];
+    case 'solo_yearly': return [common.oneChild, common.sync, common.caregiverInvites, common.library, AI_STANDARD_MONTHLY[language], common.soloSavings];
+    case 'monthly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_STANDARD_MONTHLY[language]];
+    case 'yearly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_STANDARD_MONTHLY[language], common.annualPayment, common.savings];
+    case 'pro_plus_monthly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_UNLIMITED[language]];
+    case 'pro_plus_yearly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_UNLIMITED[language], common.annualPayment, PRO_PLUS_YEARLY_SAVINGS[language]];
+    case 'ai_addon_monthly': return [AI_UNLIMITED[language], ADDON_EXTENDS_MONTH[language]];
     case 'printables': return [PAY_ONCE[language]];
     default: return [];
   }

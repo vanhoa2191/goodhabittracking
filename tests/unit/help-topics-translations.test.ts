@@ -76,10 +76,7 @@ describe('help topic translations', () => {
     expect(plans).toContain('Pro Plus');
     expect(plans).toMatch(/79[., ]000/);
     expect(plans).toMatch(/790[., ]000/);
-    expect(plans).toContain('10');
     expect(ai).toMatch(/29[., ]000/);
-    expect(ai).toContain('1');
-    expect(ai).toContain('10');
     expect(plans + ai).not.toMatch(/Printables/i);
     expect(plans.length).toBeLessThanOrEqual(260);
     expect(ai.length).toBeLessThanOrEqual(260);

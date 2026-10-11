@@ -26,8 +26,8 @@
 | **Basic Plan · Yearly** | 399,000 VND / year (saves 189,000 VND, 32% compared with paying monthly) | 1 child | One child, paid once for 12 months |
 | **Pro Plan · Monthly** | 69,000 VND / month | Up to 5 children | Families with several children, flexible by the month |
 | **Pro Plan · Yearly** | 590,000 VND / year (saves 238,000 VND, 29% compared with paying monthly) | Up to 5 children | Staying with it long enough for small steps to become habits |
-| **Pro Plus Plan · Monthly** | 79,000 VND / month | Up to 5 children | All Pro benefits and 10 AI suggestions/day |
-| **Pro Plus Plan · Yearly** | 790,000 VND / year (saves 158,000 VND, 17% compared with paying monthly) | Up to 5 children | All Pro benefits and 10 AI suggestions/day, paid yearly |
+| **Pro Plus Plan · Monthly** | 79,000 VND / month | Up to 5 children | All Pro benefits and unlimited AI suggestions |
+| **Pro Plus Plan · Yearly** | 790,000 VND / year (saves 158,000 VND, 17% compared with paying monthly) | Up to 5 children | All Pro benefits and unlimited AI suggestions, paid yearly |
 | **Lifetime** | Not sold | Unlimited | Granted manually by an administrator only<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 The monthly and yearly versions of the same plan include exactly the same benefits and differ only in price and term. All payments are **one-time payments** with no automatic renewal. The pricing screen also lists extra benefits for the paid plans (weekly tracking reports, family competitions, and faster technical support); the ebook is **not yet available**.
@@ -36,9 +36,9 @@ The monthly and yearly versions of the same plan include exactly the same benefi
 
 **The number of children per plan** is checked by the database when you **add** a new child profile: the Basic Plan allows up to 1 child; the Pro Plan, Pro Plus Plan, and the trial allow up to 5; the lifetime plan is unlimited; without an active plan, you cannot add a new child profile. A family that already has more profiles than its plan allows **keeps its existing profiles**; the limit only blocks adding new ones.
 
-**Pro Plus Plan.** The Pro Plus Plan (79,000 VND / month or 790,000 VND / year, saves 158,000 VND, 17%) includes all benefits of the Pro Plan (up to 5 children) and 10 AI suggestions/day. See [AI suggestions](09-bao-mat-va-rieng-tu.md#goi-y-ai) for what data is sent.
+**Pro Plus Plan.** The Pro Plus Plan (79,000 VND / month or 790,000 VND / year, saves 158,000 VND, 17%) includes all benefits of the Pro Plan (up to 5 children) and unlimited AI suggestions. See [AI suggestions](09-bao-mat-va-rieng-tu.md#goi-y-ai) for what data is sent.
 
-**AI add-on.** 29,000 VND / month, only for families with an active Basic or Pro Plan; each purchase adds 1 month; Pro Plus already includes it so no need to purchase. All parents (who agreed to use AI) receive 1 suggestion/day; Pro Plus or the AI add-on receive 10 suggestions/day.
+**AI add-on.** 29,000 VND / month, only for families with an active Basic or Pro Plan; each purchase adds 1 month; Pro Plus already includes it so no need to purchase. Free and trial accounts receive 10 free AI suggestions per month; Basic and Pro receive 20 AI suggestions per month; Pro Plus or the AI add-on receive unlimited AI suggestions (with a 100/day safety cap).
 
 **Launch offer.** The first 10 families to successfully pay for the **Pro Plan yearly** are upgraded to Pro Plus for free for the rest of the year they paid for. Each family gets at most 1 slot, counted in the order of successful payment; when all 10 are taken, the page says “No slots left”. A slot is withdrawn if that order is refunded.
 
