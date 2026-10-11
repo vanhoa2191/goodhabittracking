@@ -7,7 +7,7 @@ declare u uuid; f uuid; ref uuid := gen_random_uuid();
 begin
   insert into auth.users(id) values (ref);
   insert into public.affiliate_accounts(user_id,code,terms_version) values (ref,'ZZZZZZZZ','2026-10-10');
-  for n in 1..34 loop
+  for n in 1..50 loop
     u := gen_random_uuid(); f := gen_random_uuid();
     insert into auth.users(id) values(u);
     insert into public.families(id,created_by) values(f,u);
@@ -452,5 +452,167 @@ update addon_results set ok=ok and pg_temp.quota_error(33,10,100,5000,0,'family_
 delete from public.family_memberships where family_id=(select family_id from addon_fixtures where n=34);
 update addon_results set ok=ok and pg_temp.quota_error(34,10,100,5000,0,'family_membership_required')
   where scenario='monthly_quota_authorization';
+-- Promo fixtures run after the existing founding/add-on/quota regressions.
+-- Every fixture is referred, so promo price checks also exercise non-stacking.
+create function pg_temp.settle(code bigint, price integer) returns boolean language sql as $$
+  select public.process_payos_webhook(code,price,'KIDHABIT '||code,'promo-test-'||code,'local','{}')='activated'
+$$;
+do $$
+declare f addon_fixtures%rowtype; reservation record;
+begin
+  select * into f from addon_fixtures where n=35;
+  select * into reservation from public.create_family_payment_order(f.family_id,f.owner_id,120001,'pro_plus_yearly_upsell',now()+interval '15 minutes');
+  insert into addon_results values ('upsell_referral_no_stack',reservation.amount=690000 and reservation.discount_bps=0
+    and reservation.existing_order_code is null and pg_temp.settle(120001,690000));
+end $$;
+insert into addon_results select 'upsell_price_and_claim',
+  (select plan_id='pro_plus_yearly_upsell' and amount=690000 and status='PAID' from public.payment_orders where order_code=120001)
+  and s.plan='pro_plus_yearly' and s.subscription_ends_at=now()+interval '1 year'
+  and public.family_ai_tier(s.family_id)='plus' and public.family_child_limit(s.family_id)=5
+  and public.family_has_pro_entitlement(s.family_id)
+  and (select count(*)=1 from public.launch_offer_claims where offer_code='pro_plus_upsell_690' and family_id=s.family_id and order_code=120001 and revoked_at is null)
+  and not exists(select 1 from public.launch_offer_claims where offer_code='pro_plus_founding' and order_code=120001)
+  from public.user_subscriptions s join addon_fixtures f using(family_id) where n=35;
+update addon_results set ok=ok and public.referral_discount_bps(
+  (select family_id from addon_fixtures where n=35),(select owner_id from addon_fixtures where n=35))=0
+  and pg_temp.buy(35,120002,'pro_plus_yearly')=790000 where scenario='upsell_referral_no_stack';
+
+select pg_temp.buy(36,120003,'pro_plus_yearly_b1g1');
+insert into addon_results select 'b1g1_two_years',s.plan='pro_plus_yearly'
+  and s.subscription_ends_at=now()+interval '2 years'
+  and (select amount=790000 and plan_id='pro_plus_yearly_b1g1' from public.payment_orders where order_code=120003)
+  and exists(select 1 from public.launch_offer_claims where offer_code='pro_plus_b1g1' and family_id=s.family_id and order_code=120003 and revoked_at is null)
+  and public.family_ai_tier(s.family_id)='plus' from public.user_subscriptions s join addon_fixtures f using(family_id) where n=36;
+select pg_temp.buy(37,120004,'pro_plus_monthly');
+create temporary table promo_plus_before as select s.* from public.user_subscriptions s join addon_fixtures f using(family_id) where n=37;
+select pg_temp.buy(37,120005,'pro_plus_yearly_b1g1');
+insert into addon_results select 'b1g1_extends_pro_plus',s.plan='pro_plus_yearly'
+  and s.subscription_ends_at=b.subscription_ends_at+interval '2 years'
+  from public.user_subscriptions s join promo_plus_before b using(family_id);
+insert into addon_results select 'promo_commission',count(*)=2
+  and bool_and(rate_bps=2000 and base_amount=case order_code when 120001 then 690000 else 790000 end
+    and amount=case order_code when 120001 then 138000 else 158000 end)
+  from public.referral_commissions where order_code in (120001,120003);
+insert into addon_results values ('offer_already_used',
+  pg_temp.order_error(35,120006,'pro_plus_yearly_upsell','offer_already_used')
+  and pg_temp.order_error(36,120007,'pro_plus_yearly_b1g1','offer_already_used'));
+-- Claims are per offer: using the upsell does not consume the B1G1 allowance.
+update addon_results set ok=ok and pg_temp.buy(35,120008,'pro_plus_yearly_b1g1')=790000
+  where scenario='offer_already_used';
+-- Promo checkout respects rank and permanent lifetime protections.
+update addon_results set ok=ok and pg_temp.order_error(35,120009,'yearly','higher_plan_active')
+  where scenario='higher_plan_active';
+update addon_results set ok=ok and pg_temp.order_error(18,120010,'pro_plus_yearly_upsell','lifetime_active')
+  and pg_temp.order_error(18,120011,'pro_plus_yearly_b1g1','lifetime_active') where scenario='lifetime_active';
+
+do $$
+declare f addon_fixtures%rowtype; reserved record; reused record; item text; code bigint:=120020;
+begin
+  insert into addon_results values ('promo_pending_lock',true);
+  foreach item in array array['pro_plus_yearly_upsell','pro_plus_yearly_b1g1'] loop
+    select * into f from addon_fixtures where n=38;
+    select * into reserved from public.create_family_payment_order(f.family_id,f.owner_id,code,item,now()+interval '15 minutes');
+    update addon_results set ok=ok and reserved.discount_bps=0
+      and reserved.amount=case item when 'pro_plus_yearly_upsell' then 690000 else 790000 end
+      and public.referral_discount_bps(f.family_id,f.owner_id)=0 where scenario='promo_pending_lock';
+    foreach item in array array['solo_yearly','yearly','pro_plus_yearly','pro_plus_yearly_upsell','pro_plus_yearly_b1g1'] loop
+      select * into reused from public.create_family_payment_order(f.family_id,f.owner_id,code+1,item,now()+interval '15 minutes');
+      update addon_results set ok=ok and reused.amount=reserved.amount and reused.discount_bps=0
+        and reused.existing_order_code=code where scenario='promo_pending_lock';
+    end loop;
+    update public.payment_orders set status='CANCELLED' where order_code=code;
+    code:=code+2;
+  end loop;
+  select * into f from addon_fixtures where n=39;
+  select * into reserved from public.create_family_payment_order(f.family_id,f.owner_id,120030,'yearly',now()+interval '15 minutes');
+  foreach item in array array['pro_plus_yearly_upsell','pro_plus_yearly_b1g1'] loop
+    select * into reused from public.create_family_payment_order(f.family_id,f.owner_id,120031,item,now()+interval '15 minutes');
+    update addon_results set ok=ok and reserved.amount=531000 and reserved.discount_bps=1000
+      and reused.amount=531000 and reused.discount_bps=0 and reused.existing_order_code=120030
+      where scenario='promo_pending_lock';
+  end loop;
+  update addon_results set ok=ok and (select count(*)=1 from public.payment_orders where family_id=f.family_id)
+    where scenario='promo_pending_lock';
+end $$;
+
+-- Close the offer after reservation: a later webhook must still claim and grant two years.
+do $$
+declare f addon_fixtures%rowtype;
+begin
+  select * into f from addon_fixtures where n=40;
+  perform public.create_family_payment_order(f.family_id,f.owner_id,120040,'pro_plus_yearly_b1g1',now()+interval '15 minutes');
+end $$;
+update public.launch_offers set closed_at=now() where code='pro_plus_b1g1';
+insert into addon_results values ('b1g1_closed_refuses_new',
+  public.launch_offer_remaining('pro_plus_b1g1')=0
+  and pg_temp.order_error(41,120041,'pro_plus_yearly_b1g1','offer_unavailable'));
+insert into addon_results values ('b1g1_closed_after_creation',pg_temp.settle(120040,790000));
+update addon_results set ok=ok
+  and (select plan='pro_plus_yearly' and subscription_ends_at=now()+interval '2 years'
+    from public.user_subscriptions s join addon_fixtures f using(family_id) where n=40)
+  and exists(select 1 from public.launch_offer_claims where order_code=120040 and offer_code='pro_plus_b1g1' and revoked_at is null)
+  where scenario='b1g1_closed_after_creation';
+update public.launch_offers set closed_at='2026-12-31 17:00:00+00' where code='pro_plus_b1g1';
+
+-- Populate 199 claims, then reserve two families against the single remaining slot.
+insert into public.launch_offer_claims(offer_code,family_id,order_code)
+  select 'pro_plus_upsell_690',gen_random_uuid(),121000+n from generate_series(1,198) n;
+do $$
+declare f addon_fixtures%rowtype;
+begin
+  if public.launch_offer_remaining('pro_plus_upsell_690')<>1 then raise exception 'last-slot fixture incorrect'; end if;
+  select * into f from addon_fixtures where n=42;
+  perform public.create_family_payment_order(f.family_id,f.owner_id,120042,'pro_plus_yearly_upsell',now()+interval '15 minutes');
+  select * into f from addon_fixtures where n=43;
+  perform public.create_family_payment_order(f.family_id,f.owner_id,120043,'pro_plus_yearly_upsell',now()+interval '15 minutes');
+end $$;
+insert into addon_results values ('slot_overfill_honoured',pg_temp.settle(120042,690000) and pg_temp.settle(120043,690000));
+update addon_results set ok=ok
+  and (select count(*)=201 from public.launch_offer_claims where offer_code='pro_plus_upsell_690' and revoked_at is null)
+  and (select count(*)=2 and bool_and(plan='pro_plus_yearly' and subscription_ends_at=now()+interval '1 year')
+    from public.user_subscriptions s join addon_fixtures f using(family_id) where n in (42,43))
+  and public.process_payos_webhook(120043,690000,'KIDHABIT 120043','promo-test-120043','local','{}')='duplicate'
+  and public.process_payos_webhook(120043,690000,'KIDHABIT 120043','promo-test-repeat','local','{}')='order_already_paid'
+  where scenario='slot_overfill_honoured';
+insert into addon_results values ('offer_unavailable_when_full',
+  public.launch_offer_remaining('pro_plus_upsell_690')=0
+  and pg_temp.order_error(44,120044,'pro_plus_yearly_upsell','offer_unavailable'));
+-- Exhaust B1G1 independently; regular list-price plans remain buyable.
+insert into public.launch_offer_claims(offer_code,family_id,order_code)
+  select 'pro_plus_b1g1',gen_random_uuid(),122000+n from generate_series(1,
+    public.launch_offer_remaining('pro_plus_b1g1')) n;
+update addon_results set ok=ok and pg_temp.order_error(44,120045,'pro_plus_yearly_b1g1','offer_unavailable')
+  and pg_temp.buy(44,120046,'pro_plus_yearly')=711000 where scenario='offer_unavailable_when_full';
+
+do $$
+declare f addon_fixtures%rowtype; c uuid; remaining_before integer; item_code bigint;
+begin
+  select * into f from addon_fixtures where n=35;
+  insert into addon_results values ('promo_refund_frees_slot',true);
+  foreach item_code in array array[120001::bigint,120008::bigint] loop
+    select public.launch_offer_remaining(offer_code) into remaining_before from public.launch_offer_claims where order_code=item_code;
+    insert into public.billing_support_cases(family_id,user_id,order_code,case_type,reason_code,created_by)
+      values(f.family_id,f.owner_id,item_code,'refund','other',f.owner_id) returning id into c;
+    update addon_results set ok=ok and public.admin_resolve_billing_case(c,'completed','manual_refund_confirmed',f.owner_id,'promo test')->>'code'='updated'
+      where scenario='promo_refund_frees_slot';
+    perform public.admin_resolve_billing_case(c,'completed','manual_refund_confirmed',f.owner_id,'repeat');
+    update addon_results set ok=ok and (select revoked_at is not null and revoked_reason='promo test' from public.launch_offer_claims where order_code=item_code)
+      and (select status='reversed' from public.referral_commissions where order_code=item_code)
+      and (select public.launch_offer_remaining(offer_code)=case when item_code=120001 then 0 else remaining_before+1 end
+        from public.launch_offer_claims where order_code=item_code)
+      where scenario='promo_refund_frees_slot';
+  end loop;
+  -- The upsell was overfilled by one: a second refund makes an actual slot available.
+  select * into f from addon_fixtures where n=42;
+  insert into public.billing_support_cases(family_id,user_id,order_code,case_type,reason_code,created_by)
+    values(f.family_id,f.owner_id,120042,'refund','other',f.owner_id) returning id into c;
+  perform public.admin_resolve_billing_case(c,'completed','manual_refund_confirmed',f.owner_id,'overfill refund');
+  update addon_results set ok=ok and public.launch_offer_remaining('pro_plus_upsell_690')=1
+    where scenario='promo_refund_frees_slot';
+  perform pg_temp.buy(45,120047,'pro_plus_yearly_upsell');
+  update addon_results set ok=ok and public.launch_offer_remaining('pro_plus_upsell_690')=0
+    and (select amount=690000 from public.payment_orders where order_code=120047) where scenario='promo_refund_frees_slot';
+end $$;
+
 select scenario,ok from addon_results order by scenario;
 rollback;

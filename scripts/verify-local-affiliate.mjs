@@ -68,6 +68,7 @@ try {
   const discountEnd = hardening.indexOf('-- The family lock is shared with settlement', discountStart);
   await client.query(hardening.slice(discountStart, discountEnd));
   await client.query(pricing.slice(pricing.indexOf('create table public.launch_offers'), pricing.indexOf('create or replace function public.launch_offer_remaining')));
+  await client.query(definition(pricing, 'launch_offer_remaining'));
   await client.query(definition(pricing, 'claim_launch_offer'));
   await client.query(definition(pricing, 'process_payos_webhook'));
   // Snapshot actual 30% rows and create a referred owner's 59k pending order before deployment.
@@ -122,7 +123,10 @@ try {
   await client.query(load(`supabase/migrations/${addons}.sql`));
   await client.query(load('supabase/preflight/202610110001_pro_plus_and_addons.verify.sql'));
   const addonResults = await client.query(load('tests/integration/migrations/pro-plus-and-addons.scenarios.sql'));
-  const expectedAddons = new Set(['pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
+  const expectedAddons = new Set(['upsell_price_and_claim', 'upsell_referral_no_stack', 'b1g1_two_years',
+    'b1g1_extends_pro_plus', 'slot_overfill_honoured', 'offer_unavailable_when_full',
+    'b1g1_closed_after_creation', 'b1g1_closed_refuses_new', 'offer_already_used',
+    'promo_refund_frees_slot', 'promo_pending_lock', 'promo_commission', 'pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
     'addon_requires_plan', 'addon_then_pro_plus', 'addon_extends', 'addon_duplicate_webhook',
     'addon_no_commission_no_discount', 'printables_once', 'founding_tier', 'refund_revokes_addon',
     'snapshot_shape', 'regression_existing_plans', 'higher_plan_active', 'lifetime_active', 'printables_pending_reused',

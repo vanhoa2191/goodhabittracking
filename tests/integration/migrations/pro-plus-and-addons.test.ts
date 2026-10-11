@@ -41,10 +41,46 @@ describe('Pro Plus and add-ons migration', () => {
     for (const [id, price] of [['pro_plus_monthly', 79000], ['pro_plus_yearly', 790000], ['ai_addon_monthly', 29000], ['printables', 99000]]) {
       expect(order).toContain(`when '${id}' then ${price}`);
     }
-    expect(order).toContain("in ('yearly', 'solo_yearly', 'pro_plus_yearly')");
+    expect(order).toContain("in ('yearly', 'solo_yearly', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1')");
     expect(definition('referral_discount_bps')).toContain("'pro_plus_yearly'");
-    expect(definition('accrue_referral_commission')).toContain("not in ('solo_yearly', 'yearly', 'lifetime', 'pro_plus_yearly')");
+    expect(definition('accrue_referral_commission')).toContain("not in ('solo_yearly', 'yearly', 'lifetime', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1')");
     for (const error of ['addon_requires_plan', 'already_included', 'already_owned', 'higher_plan_active', 'lifetime_active']) expect(order).toContain(error);
+  });
+  it('seeds exact promo capacity and the Saigon-exclusive closing instant', () => {
+    expect(migration).toContain("('pro_plus_upsell_690', 200, null)");
+    expect(migration).toContain("('pro_plus_b1g1', 100, '2026-12-31 17:00:00+00')");
+    expect(migration).not.toMatch(/update\s+public\.launch_offers/i);
+    expect(readFileSync(resolve('supabase/schema.sql'), 'utf8').trim().split('\n')
+      .every(line => line.startsWith('\\ir migrations/'))).toBe(true);
+  });
+  it('guards promo reservations while leaving paid settlement unconditional', () => {
+    const order = definition('create_family_payment_order');
+    for (const [id, price] of [['pro_plus_yearly_upsell', 690000], ['pro_plus_yearly_b1g1', 790000]]) {
+      expect(order).toContain(`when '${id}' then ${price}`);
+      expect(definition('referral_discount_bps')).toContain(`'${id}'`);
+      expect(definition('accrue_referral_commission')).toContain(`'${id}'`);
+    }
+    for (const guard of ['public.launch_offer_remaining(promo_offer)', 'offer_unavailable', 'offer_already_used', 'if promo_offer is null then']) {
+      expect(order).toContain(guard);
+    }
+    const webhook = definition('process_payos_webhook');
+    expect(webhook).toContain("when target_order.plan_id = 'pro_plus_yearly_b1g1' then interval '2 years'");
+    expect(webhook).toContain("then 'pro_plus_yearly'");
+    expect(webhook).toContain('insert into public.launch_offer_claims');
+    expect(webhook).toContain('on conflict (offer_code, family_id) where revoked_at is null do nothing');
+    expect(webhook).not.toContain('public.launch_offer_remaining');
+    expect(definition('admin_resolve_billing_case')).toContain('public.admin_revoke_launch_offer_claim(support_case.order_code, reason)');
+  });
+  it('pins the promo review scenarios in both disposable SQL runners', () => {
+    const scenarios = readFileSync(resolve('tests/integration/migrations/pro-plus-and-addons.scenarios.sql'), 'utf8');
+    const runners = ['billing', 'affiliate'].map(name => readFileSync(resolve(`scripts/verify-local-${name}.mjs`), 'utf8'));
+    for (const name of ['upsell_price_and_claim', 'upsell_referral_no_stack', 'b1g1_two_years',
+      'b1g1_extends_pro_plus', 'slot_overfill_honoured', 'offer_unavailable_when_full',
+      'b1g1_closed_after_creation', 'b1g1_closed_refuses_new', 'offer_already_used',
+      'promo_refund_frees_slot', 'promo_pending_lock', 'promo_commission']) {
+      expect(scenarios).toContain(`'${name}'`);
+      for (const runner of runners) expect(runner).toContain(`'${name}'`);
+    }
   });
   it('protects add-on state with RLS and a read-only manager policy', () => {
     expect(migration).toContain('create table public.family_addons');
@@ -63,7 +99,7 @@ describe('Pro Plus and add-ons migration', () => {
     expect(branch).toBeGreaterThan(webhook.indexOf("return 'order_already_paid'"));
     expect(branch).toBeLessThan(webhook.indexOf('insert into public.user_subscriptions'));
     expect(webhook).toContain("greatest(now(), public.family_addons.active_until) + interval '1 month'");
-    expect(webhook).toContain("when target_order.plan_id in ('pro_plus_monthly', 'pro_plus_yearly') then 3");
+    expect(webhook).toContain("when target_order.plan_id in ('pro_plus_monthly', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1') then 3");
     expect(webhook).toContain("if target_order.plan_id = 'yearly' then");
     expect(definition('admin_resolve_billing_case')).toContain("active_until - interval '1 month'");
     expect(definition('admin_resolve_billing_case')).toContain('delete from public.family_addons');

@@ -49,6 +49,7 @@ try {
     ${section(cases,'create table if not exists public.billing_support_cases','create table if not exists public.billing_support_case_events')}
     ${section(admins,'create table if not exists public.operational_events','create index if not exists operational_events_signal_time_idx')}
     ${section(pricing,'create table public.launch_offers','create or replace function public.launch_offer_remaining')}
+    ${definition(pricing,'launch_offer_remaining')}
     ${definition(pricing,'claim_launch_offer')}
     ${definition(pricing,'admin_revoke_launch_offer_claim')}
     ${definition(pricing,'process_payos_webhook')}`);
@@ -86,12 +87,13 @@ try {
   const addons = '202610110001_pro_plus_and_addons';
   await db.exec(load(addons));
   await db.exec(readFileSync('supabase/preflight/202610110001_pro_plus_and_addons.verify.sql', 'utf8'));
-  // Static price/security checks remain valid after the upgrade. The historical
-  // billing preflight runs above, before this migration: its Pro -> Solo purchase
-  // fixture intentionally conflicts with the new higher_plan_active guard.
-  await db.exec(readFileSync('supabase/preflight/202610100001_money_model_v2.verify.sql', 'utf8'));
+  // Historical billing and money-model preflights run at their migration boundary
+  // above; the current preflight attests the extended promo commission scope.
   const addonResults = await db.exec(readFileSync('tests/integration/migrations/pro-plus-and-addons.scenarios.sql', 'utf8'));
-  const expectedAddons = new Set(['pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
+  const expectedAddons = new Set(['upsell_price_and_claim', 'upsell_referral_no_stack', 'b1g1_two_years',
+    'b1g1_extends_pro_plus', 'slot_overfill_honoured', 'offer_unavailable_when_full',
+    'b1g1_closed_after_creation', 'b1g1_closed_refuses_new', 'offer_already_used',
+    'promo_refund_frees_slot', 'promo_pending_lock', 'promo_commission', 'pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
     'addon_requires_plan', 'addon_then_pro_plus', 'addon_extends', 'addon_duplicate_webhook',
     'addon_no_commission_no_discount', 'printables_once', 'founding_tier', 'refund_revokes_addon',
     'snapshot_shape', 'regression_existing_plans', 'higher_plan_active', 'lifetime_active', 'printables_pending_reused',
@@ -116,6 +118,34 @@ try {
   other = await db.connect();
   await other.query("set statement_timeout='10s'");
   const checkout = 'select * from create_family_payment_order($1,$2,$3,$4,now()+interval \'15 minutes\')';
+  // Both paid reservations for the last promo slot must survive real lock contention.
+  const promoFamilies = [0, 1].map(() => ({ actor: crypto.randomUUID(), family: crypto.randomUUID() }));
+  for (const promo of promoFamilies) {
+    await db.query('insert into auth.users(id) values ($1)', [promo.actor]);
+    await db.query('insert into families(id,created_by) values ($1,$2)', [promo.family, promo.actor]);
+    await db.query("insert into family_memberships(family_id,user_id,role) values ($1,$2,'owner')", [promo.family, promo.actor]);
+  }
+  await db.exec("insert into launch_offer_claims(offer_code,family_id,order_code) select 'pro_plus_upsell_690',gen_random_uuid(),730100+n from generate_series(1,199) n");
+  for (const [index, promo] of promoFamilies.entries()) {
+    const reserved = await db.query(checkout, [promo.family, promo.actor, 730001+index, 'pro_plus_yearly_upsell']);
+    assert.equal(reserved.rows[0].amount, 690000);
+    assert.equal(reserved.rows[0].discount_bps, 0);
+  }
+  assert.equal((await db.query("select launch_offer_remaining('pro_plus_upsell_690') as remaining")).rows[0].remaining, 1);
+  await db.exec('begin');
+  const firstPromo = await db.query("select process_payos_webhook(730001,690000,'KIDHABIT 730001','concurrent-promo-1','local','{}') as result");
+  assert.equal(firstPromo.rows[0].result, 'activated');
+  const queuedPromo = other.query("select process_payos_webhook(730002,690000,'KIDHABIT 730002','concurrent-promo-2','local','{}') as result");
+  await waitForLock(db, other);
+  await db.exec('commit');
+  assert.equal((await queuedPromo).rows[0].result, 'activated');
+  const overfill = await db.query("select count(*)::integer as claims, launch_offer_remaining('pro_plus_upsell_690') as remaining from launch_offer_claims where offer_code='pro_plus_upsell_690' and revoked_at is null");
+  assert.deepEqual(overfill.rows[0], { claims: 201, remaining: 0 });
+  const activated = await db.query("select count(*)::integer as n, bool_and(s.plan='pro_plus_yearly' and s.status='active' and s.subscription_ends_at=p.paid_at+interval '1 year') as ok from user_subscriptions s join payment_orders p using(family_id) where p.order_code in (730001,730002)");
+  assert.deepEqual(activated.rows[0], { n: 2, ok: true });
+  await assert.rejects(db.query(checkout, [familyId, actor, 730003, 'pro_plus_yearly_upsell']), /offer_unavailable/);
+  console.log('PASS: concurrent last-slot promo payments both activate and claim; 201 claims refuse new orders');
+
   // A second connection must wait for the first reservation to commit, then reuse it.
   await db.exec('begin');
   await db.query(checkout,[familyId,actor,700001,'yearly']);

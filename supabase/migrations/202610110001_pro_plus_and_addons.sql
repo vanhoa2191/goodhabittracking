@@ -1,5 +1,11 @@
 begin;
 
+-- Promo order ids settle to the standard Pro Plus yearly subscription.
+-- Closing and capacity block reservations only; every paid reservation is honoured.
+insert into public.launch_offers (code, slots, closed_at) values
+  ('pro_plus_upsell_690', 200, null),
+  ('pro_plus_b1g1', 100, '2026-12-31 17:00:00+00');
+
 -- Add-ons are independent of subscription entitlements and readable only by family managers.
 create table public.family_addons (
   family_id uuid references public.families(id) on delete cascade,
@@ -33,13 +39,18 @@ declare
   pending public.payment_orders%rowtype;
   owner_id uuid;
   lock_user uuid;
+  promo_offer text;
 begin
   list_price := case selected_plan
     when 'solo_monthly' then 49000 when 'solo_yearly' then 399000
     when 'monthly' then 69000 when 'yearly' then 590000
     when 'pro_plus_monthly' then 79000 when 'pro_plus_yearly' then 790000
+    when 'pro_plus_yearly_upsell' then 690000 when 'pro_plus_yearly_b1g1' then 790000
     when 'ai_addon_monthly' then 29000 when 'printables' then 99000 end;
   if list_price is null then raise exception 'invalid_plan'; end if;
+  promo_offer := case selected_plan
+    when 'pro_plus_yearly_upsell' then 'pro_plus_upsell_690'
+    when 'pro_plus_yearly_b1g1' then 'pro_plus_b1g1' end;
   select user_id into owner_id from public.family_memberships
   where family_id = target_family and role = 'owner' limit 1;
   -- Lock both attribution identities in a stable order: co-parent and owner payments must queue
@@ -107,12 +118,18 @@ begin
             else 2
           end > case
             when selected_plan in ('solo_monthly', 'solo_yearly') then 1
-            when selected_plan in ('pro_plus_monthly', 'pro_plus_yearly') then 3
+            when selected_plan in ('pro_plus_monthly', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1') then 3
             else 2
           end
     ) then raise exception 'higher_plan_active'; end if;
   end if;
-  if selected_plan in ('yearly', 'solo_yearly', 'pro_plus_yearly') then
+  if promo_offer is not null then
+    if exists (select 1 from public.launch_offer_claims claim
+      where claim.offer_code = promo_offer and claim.family_id = target_family and claim.revoked_at is null
+    ) then raise exception 'offer_already_used'; end if;
+    if public.launch_offer_remaining(promo_offer) = 0 then raise exception 'offer_unavailable'; end if;
+  end if;
+  if selected_plan in ('yearly', 'solo_yearly', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1') then
     -- One yearly link at a time also prevents a full-price link paying before the discounted link.
     select * into pending from public.payment_orders
     where (family_id = target_family or user_id in (actor_id, owner_id)
@@ -121,13 +138,16 @@ begin
       where owner_membership.family_id = payment_orders.family_id
         and owner_membership.role = 'owner' and owner_membership.user_id in (actor_id, owner_id)
     ))
-      and plan_id in ('yearly', 'solo_yearly', 'pro_plus_yearly') and status = 'PENDING'
+      and plan_id in ('yearly', 'solo_yearly', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1') and status = 'PENDING'
     order by created_at desc, order_code desc limit 1;
     if found then
       return query select pending.amount, 0, pending.order_code;
       return;
     end if;
-    discount := coalesce(public.referral_discount_bps(target_family, actor_id), 0);
+    -- Promo prices already include their offer; the referral reduction cannot stack.
+    if promo_offer is null then
+      discount := coalesce(public.referral_discount_bps(target_family, actor_id), 0);
+    end if;
   end if;
   charged := greatest(1, list_price - floor(list_price::numeric * discount / 10000)::integer);
   if discount > 0 then charged := greatest(1000, (charged / 1000) * 1000); end if;
@@ -160,7 +180,7 @@ as $$
             and owner_membership.user_id = eligible.user_id and owner_membership.role = 'owner'
         ))
           and payment_order.status in ('PAID', 'PENDING')
-          and payment_order.plan_id in ('yearly', 'solo_yearly', 'pro_plus_yearly'))
+          and payment_order.plan_id in ('yearly', 'solo_yearly', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1'))
   )
     then settings.referred_discount_bps else 0 end
   from public.affiliate_settings settings where settings.singleton
@@ -188,6 +208,7 @@ declare
   order_rank integer;
   next_plan text;
   entitlement_end timestamptz;
+  promo_offer text;
 begin
   select * into target_order
   from public.payment_orders payment_order
@@ -199,7 +220,7 @@ begin
   if target_order.amount <> incoming_amount then return 'amount_mismatch'; end if;
   if target_order.description <> incoming_description then return 'description_mismatch'; end if;
   if target_order.family_id is null or target_order.user_id is null then return 'owner_missing'; end if;
-  if target_order.plan_id not in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly', 'lifetime', 'ai_addon_monthly', 'printables') then return 'invalid_plan'; end if;
+  if target_order.plan_id not in ('solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1', 'lifetime', 'ai_addon_monthly', 'printables') then return 'invalid_plan'; end if;
 
   if target_order.status = 'PAID' then
     if target_order.provider_reference = incoming_reference then return 'duplicate'; end if;
@@ -254,14 +275,20 @@ begin
     next_plan := 'lifetime';
     entitlement_end := null;
   else
-    order_rank := case when target_order.plan_id in ('solo_monthly', 'solo_yearly') then 1 when target_order.plan_id in ('pro_plus_monthly', 'pro_plus_yearly') then 3 else 2 end;
+    order_rank := case when target_order.plan_id in ('solo_monthly', 'solo_yearly') then 1 when target_order.plan_id in ('pro_plus_monthly', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1') then 3 else 2 end;
     current_rank := case when has_paid_time then case when current_subscription.plan in ('solo_monthly', 'solo_yearly') then 1 when current_subscription.plan in ('pro_plus_monthly', 'pro_plus_yearly') then 3 else 2 end else 0 end;
-    next_plan := case when current_rank > order_rank then current_subscription.plan else target_order.plan_id end;
+    next_plan := case
+      when current_rank > order_rank then current_subscription.plan
+      when target_order.plan_id in ('pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1') then 'pro_plus_yearly'
+      else target_order.plan_id end;
     entitlement_end := case
         when has_paid_time then current_subscription.subscription_ends_at
         when has_trial_time then current_subscription.trial_ends_at
         else now()
-      end + case when target_order.plan_id in ('yearly', 'solo_yearly', 'pro_plus_yearly') then interval '1 year' else interval '1 month' end;
+      end + case
+        when target_order.plan_id = 'pro_plus_yearly_b1g1' then interval '2 years'
+        when target_order.plan_id in ('yearly', 'solo_yearly', 'pro_plus_yearly', 'pro_plus_yearly_upsell') then interval '1 year'
+        else interval '1 month' end;
   end if;
 
   update public.payment_orders
@@ -290,6 +317,18 @@ begin
         subscription_ends_at = excluded.subscription_ends_at,
         trial_ends_at = null,
         updated_at = now();
+
+  promo_offer := case target_order.plan_id
+    when 'pro_plus_yearly_upsell' then 'pro_plus_upsell_690'
+    when 'pro_plus_yearly_b1g1' then 'pro_plus_b1g1' end;
+  if promo_offer is not null then
+    -- Same offer lock as refunds. Deliberately do not recheck capacity or closing:
+    -- two paid reservations for the last slot both activate and both count.
+    perform 1 from public.launch_offers where code = promo_offer for update;
+    insert into public.launch_offer_claims (offer_code, family_id, order_code)
+    values (promo_offer, target_order.family_id, target_order.order_code)
+    on conflict (offer_code, family_id) where revoked_at is null do nothing;
+  end if;
 
   if target_order.plan_id = 'yearly' then
     begin
@@ -324,7 +363,7 @@ begin
 
   select * into paid_order from public.payment_orders where order_code = target_order_code and status = 'PAID';
   if not found or paid_order.family_id is null then return; end if;
-  if paid_order.plan_id not in ('solo_yearly', 'yearly', 'lifetime', 'pro_plus_yearly') then return; end if;
+  if paid_order.plan_id not in ('solo_yearly', 'yearly', 'lifetime', 'pro_plus_yearly', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1') then return; end if;
 
   select attribution.* into referral
   from public.referrals attribution
@@ -720,6 +759,7 @@ begin
     if referral_result is null or referral_result not in ('reversed', 'already_reversed', 'no_commission', 'in_payout', 'already_paid') then
       raise exception 'referral_reversal_failed';
     end if;
+    -- Revokes founding or promo claims by order, releasing capacity for the matching offer.
     perform public.admin_revoke_launch_offer_claim(support_case.order_code, reason);
     launch_result := case when exists (select 1 from public.launch_offer_claims
       where order_code = support_case.order_code and revoked_at is not null) then 'revoked' else 'not_found' end;
