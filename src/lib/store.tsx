@@ -25,6 +25,7 @@ import {
   DEFAULT_BADGES,
 } from './constants';
 import type { AddonId } from './billing/addon-catalog';
+import type { PromoPlanId } from './billing/plan-catalog';
 import { getPricingPlan } from './payos';
 import { sounds } from './sound';
 import { emptyExperienceState, mergeHabitPrograms, parseChildWishlist, parseDeferredTask, setDeferredTask as updateDeferredTask } from './experience-state';
@@ -134,7 +135,7 @@ interface AppStoreContextType {
   setIsCheckoutModalOpen: (open: boolean) => void;
   checkoutPlan: PricingPlan | null;
   openPricingModal: () => void;
-  openCheckoutModal: (planId: SubscriptionPlan | AddonId) => void;
+  openCheckoutModal: (planId: SubscriptionPlan | PromoPlanId | AddonId) => void;
   closeCheckoutModal: () => void;
 
   storageMode: 'local' | 'cloud';
@@ -1244,7 +1245,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     setIsPricingModalOpen(true);
   };
 
-  const openCheckoutModal = (planId: SubscriptionPlan | AddonId) => {
+  const openCheckoutModal = (planId: SubscriptionPlan | PromoPlanId | AddonId) => {
     sounds.playClick();
     const plan = getPricingPlan(planId);
     setCheckoutPlan(plan);

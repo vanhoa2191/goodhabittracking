@@ -1,11 +1,11 @@
 import { z } from 'zod';
 import { ADDON_IDS } from '@/lib/billing/addon-catalog';
-import { PAID_PLAN_IDS } from '@/lib/billing/plan-catalog';
+import { PAID_PLAN_IDS, PROMO_PLAN_IDS } from '@/lib/billing/plan-catalog';
 
 export const paidPlanSchema = z.enum(PAID_PLAN_IDS);
 
-/** Everything the payment API can charge for: a plan or an add-on. */
-export const checkoutItemSchema = z.enum([...PAID_PLAN_IDS, ...ADDON_IDS]);
+/** Everything the payment API can charge for: a plan, a promo order or an add-on. */
+export const checkoutItemSchema = z.enum([...PAID_PLAN_IDS, ...PROMO_PLAN_IDS, ...ADDON_IDS]);
 
 export const createPaymentRequestSchema = z
   .object({

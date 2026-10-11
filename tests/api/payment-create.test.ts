@@ -76,7 +76,7 @@ describe('POST /api/payment/create atomic order reservation', () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ code: '00', data: { orderCode: 987, amount: 399000, amountPaid: 0, status: 'PENDING' } }))));
     rpc.mockImplementation(async (_name, args) => {
       const yearly = ['yearly', 'solo_yearly', 'pro_plus_yearly'].includes(args.selected_plan);
-      const price = { monthly: 69000, yearly: 590000, solo_monthly: 49000, solo_yearly: 399000, pro_plus_monthly: 79000, pro_plus_yearly: 790000, ai_addon_monthly: 29000, printables: 99000 }[args.selected_plan as 'monthly'];
+      const price = { monthly: 69000, yearly: 590000, solo_monthly: 49000, solo_yearly: 399000, pro_plus_monthly: 79000, pro_plus_yearly: 790000, pro_plus_yearly_upsell: 690000, pro_plus_yearly_b1g1: 790000, ai_addon_monthly: 29000, printables: 99000 }[args.selected_plan as 'monthly'];
       return { data: [{ amount: Math.floor(price * (1 - (yearly ? discount : 0) / 10000) / 1000) * 1000, discount_bps: yearly ? discount : 0 }], error: null };
     });
     const chain: Record<string, unknown> = {};
@@ -298,6 +298,8 @@ describe('POST /api/payment/create atomic order reservation', () => {
     ['already_included', 'ai_addon_monthly'],
     ['already_owned', 'printables'],
     ['lifetime_active', 'pro_plus_monthly'],
+    ['offer_unavailable', 'pro_plus_yearly_upsell'],
+    ['offer_already_used', 'pro_plus_yearly_b1g1'],
   ])('answers %s with 409 and that code, creating no provider link', async (code, planId) => {
     flags.printablesSale = true;
     rpc.mockResolvedValue({ data: null, error: { code: 'P0001', message: code } });
@@ -306,6 +308,17 @@ describe('POST /api/payment/create atomic order reservation', () => {
     await expect(response.json()).resolves.toMatchObject({ success: false, code });
     expect(createPayOSPayment).not.toHaveBeenCalled();
     expect(rpc).toHaveBeenCalledTimes(1);
+  });
+  it.each([['pro_plus_yearly_upsell', 690000], ['pro_plus_yearly_b1g1', 790000]])('sells %s at its own price with no discount fields', async (planId, amount) => {
+    const response = await post(planId);
+    expect(response.status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('create_family_payment_order', expect.objectContaining({ selected_plan: planId }));
+    expect(createPayOSPayment).toHaveBeenCalledWith(expect.objectContaining({ planId, amount }));
+    const { payment } = await response.json();
+    expect(payment).toMatchObject({ amount, planId });
+    expect(payment).not.toHaveProperty('listPrice');
+    expect(payment).not.toHaveProperty('discountAmount');
+    expect(payment).not.toHaveProperty('referrerName');
   });
   it('answers a lower-rank refusal with 409 higher_plan_active for any plan', async () => {
     rpc.mockResolvedValue({ data: null, error: { code: 'P0001', message: 'higher_plan_active' } });

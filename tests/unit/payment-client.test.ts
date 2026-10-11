@@ -59,6 +59,7 @@ describe('payment client', () => {
   it.each([
     [409, 'addon_requires_plan'], [409, 'already_included'], [409, 'already_owned'],
     [409, 'higher_plan_active'], [409, 'lifetime_active'], [404, 'not_available'],
+    [409, 'offer_unavailable'], [409, 'offer_already_used'],
   ])('reads the %s refusal code %s from the body', async (status, code) => {
     const requester: PaymentRequester = async () => new Response(JSON.stringify({ success: false, error: 'Server copy', code }), { status });
     await expect(createPaymentOrder('ai_addon_monthly', requester)).resolves.toEqual({ success: false, error: code });

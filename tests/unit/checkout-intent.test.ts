@@ -10,7 +10,7 @@ vi.mock('@/lib/supabase/browser', () => ({
 afterEach(() => vi.unstubAllGlobals());
 
 describe('checkout intent', () => {
-  it.each(['solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly', 'ai_addon_monthly', 'printables'])('accepts checkout item %s', (value) => {
+  it.each(['solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly', 'ai_addon_monthly', 'printables', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1'])('accepts checkout item %s', (value) => {
     expect(auth).toHaveProperty('parseCheckoutPlan');
     expect(auth.parseCheckoutPlan(value)).toBe(value);
   });

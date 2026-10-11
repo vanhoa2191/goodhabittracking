@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
   LAUNCH_OFFER,
+  PROMO_PLANS,
+  PROMO_PLAN_IDS,
+  isPromoPlanId,
+  promoBasePlan,
   PAID_PLAN_IDS,
   PLAN_PRICES,
   isPaidPlanId,
@@ -48,6 +52,19 @@ describe('plan catalog', () => {
     expect(isPaidPlanId('ai_addon_monthly')).toBe(false);
     expect(isPaidPlanId('lifetime')).toBe(false);
     expect(isPaidPlanId(undefined)).toBe(false);
+  });
+
+  it('holds the two Pro Plus promo orders', () => {
+    expect(PROMO_PLAN_IDS).toEqual(['pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1']);
+    expect(PROMO_PLANS.pro_plus_yearly_upsell).toEqual({ price: 690000, years: 1, offerCode: 'pro_plus_upsell_690', slots: 200, endsAt: null });
+    expect(PROMO_PLANS.pro_plus_yearly_b1g1).toEqual({ price: 790000, years: 2, offerCode: 'pro_plus_b1g1', slots: 100, endsAt: '2026-12-31T17:00:00.000Z' });
+    for (const id of PROMO_PLAN_IDS) {
+      expect(isPromoPlanId(id)).toBe(true);
+      expect(promoBasePlan(id)).toBe('pro_plus_yearly');
+      expect(isPaidPlanId(id)).toBe(false);
+    }
+    expect(isPromoPlanId('pro_plus_yearly')).toBe(false);
+    expect(isPromoPlanId(null)).toBe(false);
   });
 
   it('limits children per plan', () => {

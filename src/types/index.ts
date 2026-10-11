@@ -1,4 +1,5 @@
 import type { AddonId } from '@/lib/billing/addon-catalog';
+import type { PromoPlanId } from '@/lib/billing/plan-catalog';
 
 export type Language = 'vi' | 'en' | 'zh' | 'ja' | 'ko' | 'fr' | 'de' | 'it' | 'es';
 
@@ -261,7 +262,7 @@ export interface FamilyAddons {
 }
 
 export interface PricingPlan {
-  id: SubscriptionPlan | AddonId;
+  id: SubscriptionPlan | PromoPlanId | AddonId;
   name: string;
   badge?: string;
   price: number;

@@ -5,7 +5,7 @@ import { getCheckoutPlanFeatures, PLAN_LOCALIZATION } from '@/lib/i18n/pricing-p
 
 const languages: Language[] = ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'];
 const codes = ['invalid_plan', 'create_failed', 'network', 'auth_required', 'invalid_request', 'service_unavailable', 'status_failed', 'order_not_found',
-  'addon_requires_plan', 'already_included', 'already_owned', 'not_available', 'higher_plan_active', 'lifetime_active'];
+  'addon_requires_plan', 'already_included', 'already_owned', 'not_available', 'higher_plan_active', 'lifetime_active', 'offer_unavailable', 'offer_already_used'];
 
 describe('payment translations', () => {
   it.each(languages)('provides complete nonempty copy for %s', (language) => {
@@ -34,6 +34,23 @@ describe('payment translations', () => {
     expect(create.not_available).toBe('Mục này chưa mở bán.');
     expect(create.lifetime_active).toBe('Gói Trọn đời của gia đình đã bao gồm mọi gói; không cần mua thêm gói.');
     expect(create.higher_plan_active).toBe('Gia đình đang dùng gói cao hơn. Hãy gia hạn đúng gói đang dùng.');
+  });
+
+  it('gives Vietnamese refusal copy for the promo offers', () => {
+    const { create } = getPaymentErrorCopy('vi');
+    expect(create.offer_unavailable).toBe('Ưu đãi này đã hết suất hoặc đã kết thúc.');
+    expect(create.offer_already_used).toBe('Gia đình bạn đã dùng ưu đãi này.');
+  });
+
+  it.each(languages)('labels the promo checkouts in %s', (language) => {
+    for (const id of ['pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1']) {
+      expect(PLAN_LOCALIZATION[id][language].name.trim().length).toBeGreaterThan(0);
+    }
+  });
+
+  it('labels the promo checkouts in Vietnamese', () => {
+    expect(PLAN_LOCALIZATION.pro_plus_yearly_upsell.vi.name).toBe('Pro Plus · Năm (ưu đãi nâng cấp)');
+    expect(PLAN_LOCALIZATION.pro_plus_yearly_b1g1.vi.name).toBe('Pro Plus · 2 năm (mua 1 tặng 1)');
   });
 
   it('never reassures a status failure that money has not been debited', () => {

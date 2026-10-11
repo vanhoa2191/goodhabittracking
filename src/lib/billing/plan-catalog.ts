@@ -17,6 +17,29 @@ export const PLAN_PRICES: Readonly<Record<PlanTier, { readonly month: number; re
 /** The first families to pay for a yearly Pro plan get Pro Plus for the rest of the paid year. */
 export const LAUNCH_OFFER = { code: 'pro_plus_founding', slots: 10, planId: 'yearly' } as const;
 
+/**
+ * Limited Pro Plus Năm offers. Each is its own order id; the subscription it creates is always `pro_plus_yearly`,
+ * for `years` years. `endsAt` stops new orders only; a paid order is always honoured.
+ */
+export const PROMO_PLAN_IDS = ['pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1'] as const;
+export type PromoPlanId = (typeof PROMO_PLAN_IDS)[number];
+
+export const PROMO_PLANS: Readonly<Record<PromoPlanId, { readonly price: number; readonly years: 1 | 2; readonly offerCode: string; readonly slots: number; readonly endsAt: string | null }>> = {
+  pro_plus_yearly_upsell: { price: 690000, years: 1, offerCode: 'pro_plus_upsell_690', slots: 200, endsAt: null },
+  // 01/01/2027 00:00 Asia/Saigon.
+  pro_plus_yearly_b1g1: { price: 790000, years: 2, offerCode: 'pro_plus_b1g1', slots: 100, endsAt: '2026-12-31T17:00:00.000Z' },
+};
+
+export function isPromoPlanId(value: unknown): value is PromoPlanId {
+  return typeof value === 'string' && (PROMO_PLAN_IDS as readonly string[]).includes(value);
+}
+
+/** The plan a promo order activates. */
+export function promoBasePlan(id: PromoPlanId): PaidPlanId {
+  const base: Record<PromoPlanId, PaidPlanId> = { pro_plus_yearly_upsell: 'pro_plus_yearly', pro_plus_yearly_b1g1: 'pro_plus_yearly' };
+  return base[id];
+}
+
 export function isPaidPlanId(value: unknown): value is PaidPlanId {
   return typeof value === 'string' && (PAID_PLAN_IDS as readonly string[]).includes(value);
 }
