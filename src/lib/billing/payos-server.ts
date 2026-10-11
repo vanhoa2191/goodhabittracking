@@ -7,7 +7,7 @@ import {
   verifyPayOSWebhook as verifyPayOSData,
 } from '@/lib/billing/payos-signature';
 import { getPricingPlan, type PaymentResult } from '@/lib/payos';
-import type { PaidPlan } from '@/lib/billing/schemas';
+import type { CheckoutItem } from '@/lib/billing/schemas';
 import { requireSafePayOSConfig } from '@/lib/billing/payos-config';
 import { resolveVietQrBankName } from '@/lib/billing/vietqr-bank-directory';
 import { getAppOrigin } from '@/lib/site';
@@ -51,7 +51,7 @@ export function verifyPayOSWebhook(
 }
 
 export async function createPayOSPayment(input: {
-  planId: PaidPlan;
+  planId: CheckoutItem;
   orderCode: number;
   /** The amount to charge when it differs from the list price (a referral discount); defaults to the plan price. */
   amount?: number;

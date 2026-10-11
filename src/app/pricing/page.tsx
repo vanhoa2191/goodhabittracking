@@ -5,7 +5,7 @@ import { publicPageMetadata } from '@/lib/site';
 
 export const metadata: Metadata = publicPageMetadata({
   title: 'Bảng giá KidHabit Hero',
-  description: 'Ba gói rõ ràng cho một bé hoặc cả gia đình, kèm 7 ngày trải nghiệm trước khi quyết định.',
+  description: 'Chọn Gói Cơ bản, Pro hoặc Pro Plus với gợi ý AI không giới hạn. Thêm Add-on AI cho Gói Cơ bản hoặc Pro.',
   path: '/pricing',
 });
 

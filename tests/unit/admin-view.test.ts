@@ -5,6 +5,7 @@ import {
   describeExpiry,
   matchesFilter,
   matchesQuery,
+  PLAN_LABELS,
   pageOf,
   planChangePatch,
   parseAdminTab,
@@ -83,6 +84,17 @@ describe('customer filters', () => {
   });
 });
 
+describe('plan labels', () => {
+  it('names the Pro Plus plans', () => {
+    expect(PLAN_LABELS.pro_plus_monthly).toBe('Gói Pro Plus · Tháng');
+    expect(PLAN_LABELS.pro_plus_yearly).toBe('Gói Pro Plus · Năm');
+  });
+  it('counts an active Pro Plus subscription as paying', () => {
+    const plus20 = customer('p', subscription({ plan: 'pro_plus_yearly', subscription_ends_at: plus(200) }));
+    expect(matchesFilter(plus20, 'paying', now)).toBe(true);
+  });
+});
+
 describe('planChangePatch', () => {
   it('turns a chosen paid plan on and starts a full period from today', () => {
     const monthly = planChangePatch('monthly', now);
@@ -90,6 +102,8 @@ describe('planChangePatch', () => {
     expect(Date.parse(monthly.subscription_ends_at!) - now.getTime()).toBe(31 * 86_400_000);
     expect(Date.parse(planChangePatch('yearly', now).subscription_ends_at!) - now.getTime()).toBe(366 * 86_400_000);
     expect(planChangePatch('solo_monthly', now).status).toBe('active');
+    expect(Date.parse(planChangePatch('pro_plus_yearly', now).subscription_ends_at!) - now.getTime()).toBe(366 * 86_400_000);
+    expect(Date.parse(planChangePatch('pro_plus_monthly', now).subscription_ends_at!) - now.getTime()).toBe(31 * 86_400_000);
   });
   it('puts a trial end on the trial and not on the paid end', () => {
     const trial = planChangePatch('trial', now);

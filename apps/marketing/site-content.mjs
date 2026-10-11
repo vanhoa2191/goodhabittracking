@@ -1,5 +1,5 @@
 import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
-import { pricingTiers } from './pricing.mjs';
+import { pricingPromos, pricingTiers } from './pricing.mjs';
 
 export const navigation = [
   { href: '/framework/', label: 'Khung thói quen' },
@@ -94,11 +94,19 @@ export const launchOffer = {
   slots: 10,
   planId: 'yearly',
   tag: 'Ưu đãi ra mắt',
-  text: '10 gia đình đầu tiên mua Gói Pro theo năm trước khi Pro Plus ra mắt sẽ được nâng cấp miễn phí lên Pro Plus, có Huấn luyện viên thói quen.',
+  text: '10 gia đình đầu tiên mua Gói Pro theo năm sẽ được nâng cấp miễn phí lên Pro Plus, có Huấn luyện viên thói quen.',
   seatsLabel: 'suất còn lại',
   soldOut: 'Đã hết suất',
-  upcomingNote: 'Đang phát triển. Mua Gói Pro năm hôm nay để giữ suất nâng cấp miễn phí.',
 };
+
+/** Promo banners stay hidden until the live API supplies a positive remaining count. */
+export const promoOffers = Object.entries(pricingPromos).map(([planId, promo]) => ({
+  ...promo,
+  planId,
+  text: planId === 'pro_plus_yearly_upsell'
+    ? 'Thêm 100.000đ để lên Pro Plus: AI không giới hạn. Còn {n}/200 suất.'
+    : 'Mua 1 năm tặng 1 năm: 790.000đ cho 2 năm Pro Plus. Còn {n}/100 suất, đến hết 31/12/2026.',
+}));
 
 /** Copy for the story-led home page, chapter by chapter. Source: the founder's letter, approved by the owner. */
 export const story = {
@@ -256,7 +264,7 @@ export const story = {
     ],
     defaultCycle: 'year',
     recommendedBadge: 'Hợp với gia đình mình',
-    soonButton: 'Sắp ra mắt',
+    addonLine: 'Gói Cơ bản/Pro: thêm Add-on AI · 29.000đ/tháng để có gợi ý AI không giới hạn.',
     pledge: [
       { strong: '7 ngày', text: 'dùng thử đầy đủ' },
       { strong: '0đ', text: 'không cần thẻ' },
@@ -437,8 +445,8 @@ export const publicPages = {
   },
 };
 
-/** The four plans on sale, one entry per plan id, for the price list in the terms (legal-content.mjs). */
-export const plans = ['solo', 'pro'].flatMap((tier) => ['month', 'year'].map((cycle) => {
+/** The six plans on sale, one entry per plan id, for the price list in the terms (legal-content.mjs). */
+export const plans = ['solo', 'pro', 'pro_plus'].flatMap((tier) => ['month', 'year'].map((cycle) => {
   const { id, amount } = pricingTiers[tier][cycle];
   return {
     id,

@@ -4,7 +4,9 @@ import { createOrderCode, isUniqueViolation } from '@/lib/billing/order-code';
 import { createPayOSPayment } from '@/lib/billing/payos-server';
 import { cancelPendingPayOSOrder, reconcileOrderOutcome } from '@/lib/billing/payos-reconcile';
 import { PAYMENT_LINK_LIFETIME_MS, unknownOrderGraceElapsed } from '@/lib/billing/payos-errors';
+import { isAddonId } from '@/lib/billing/addon-catalog';
 import { createPaymentRequestSchema } from '@/lib/billing/schemas';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { getPricingPlan } from '@/lib/payos';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
@@ -14,6 +16,18 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 export const runtime = 'nodejs';
 
 const REFERRER_NAME_MAX = 40;
+
+/** Errors the order function raises for an order that cannot be placed; the message carries the code. */
+const REFUSALS = ['addon_requires_plan', 'already_included', 'already_owned', 'higher_plan_active', 'lifetime_active', 'offer_unavailable', 'offer_already_used'] as const;
+const REFUSAL_COPY: Record<(typeof REFUSALS)[number], string> = {
+  addon_requires_plan: 'Add-on AI cần một gói trả phí đang hoạt động.',
+  already_included: 'Gói của bạn đã gồm AI.',
+  already_owned: 'Gia đình bạn đã sở hữu mục này.',
+  lifetime_active: 'Gói Trọn đời của gia đình đã bao gồm mọi gói; không cần mua thêm gói.',
+  higher_plan_active: 'Gia đình đang dùng gói cao hơn. Hãy gia hạn đúng gói đang dùng.',
+  offer_unavailable: 'Ưu đãi này đã hết suất hoặc đã kết thúc.',
+  offer_already_used: 'Gia đình bạn đã dùng ưu đãi này.',
+};
 
 // Best effort: a failed lookup must never block checkout, the line just uses its fallback name.
 async function findReferrerName(admin: ReturnType<typeof createAdminSupabaseClient>, familyId: string): Promise<string | null> {
@@ -43,6 +57,16 @@ async function findReferrerName(admin: ReturnType<typeof createAdminSupabaseClie
 export async function POST(request: NextRequest) {
   const crossSite = rejectCrossSiteRequest(request);
   if (crossSite) return crossSite;
+  const parsed = createPaymentRequestSchema.safeParse(await request.json().catch(() => null));
+  if (!parsed.success) {
+    return NextResponse.json({ success: false, error: 'Invalid payment request.' }, { status: 400 });
+  }
+
+  // Printables is built but hidden: with the flag off it does not exist, so it answers before auth or the database.
+  if (parsed.data.planId === 'printables' && !defaultExperienceFlags.printablesSale) {
+    return NextResponse.json({ success: false, error: 'Not available.', code: 'not_available' }, { status: 404 });
+  }
+
   const parent = await getParentContext();
   if (!parent) {
     return NextResponse.json({ success: false, error: 'Authentication required.' }, { status: 401 });
@@ -51,10 +75,7 @@ export async function POST(request: NextRequest) {
   const locked = await requireParentUnlock(request, parent, await createServerSupabaseClient());
   if (locked) return locked;
 
-  const parsed = createPaymentRequestSchema.safeParse(await request.json().catch(() => null));
-  if (!parsed.success) {
-    return NextResponse.json({ success: false, error: 'Invalid payment request.' }, { status: 400 });
-  }
+  const addon = isAddonId(parsed.data.planId);
 
   try {
     const admin = createAdminSupabaseClient();
@@ -119,6 +140,10 @@ export async function POST(request: NextRequest) {
       }
       if (!isUniqueViolation(insertError)) break;
     }
+    const refusal = REFUSALS.find((code) => insertError?.message?.includes(code));
+    if (refusal) {
+      return NextResponse.json({ success: false, error: REFUSAL_COPY[refusal], code: refusal }, { status: 409 });
+    }
     if (insertError) throw insertError;
     // A bounded retry cannot accidentally create a link for an unresolved old reservation.
     if (!reserved) throw new Error('Could not reserve checkout.');
@@ -126,7 +151,7 @@ export async function POST(request: NextRequest) {
     try {
       const payment = await createPayOSPayment({ planId: parsed.data.planId, orderCode, amount, expiresAt });
       const { paymentLinkId, ...publicPayment } = payment;
-      const discount = amount < plan.price
+      const discount = !addon && amount < plan.price
         ? { listPrice: plan.price, discountAmount: plan.price - amount, referrerName: await findReferrerName(admin, parent.familyId) }
         : {};
       const checkoutPayment = { ...publicPayment, ...discount };

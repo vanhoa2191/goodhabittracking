@@ -11,13 +11,15 @@ export type PaymentErrorCopy = {
 };
 
 type Messages = readonly [string, string, string, string, string, string, string, string];
-function errors(messages: Messages): Record<PaymentErrorCode, string> {
+type Refusals = readonly [string, string, string, string, string, string, string, string];
+function errors(messages: Messages, refusals: Refusals): Record<PaymentErrorCode, string> {
   const [invalid_plan, create_failed, network, auth_required, invalid_request, service_unavailable, status_failed, order_not_found] = messages;
-  return { invalid_plan, create_failed, network, auth_required, invalid_request, service_unavailable, status_failed, order_not_found };
+  const [addon_requires_plan, already_included, already_owned, not_available, higher_plan_active, lifetime_active, offer_unavailable, offer_already_used] = refusals;
+  return { invalid_plan, create_failed, network, auth_required, invalid_request, service_unavailable, status_failed, order_not_found, addon_requires_plan, already_included, already_owned, not_available, higher_plan_active, lifetime_active, offer_unavailable, offer_already_used };
 }
 
-function copy(title: string, retry: string, clipboardFailure: string, beforeQr: string, messages: Messages, createNetwork: string): PaymentErrorCopy {
-  const status = errors(messages);
+function copy(title: string, retry: string, clipboardFailure: string, beforeQr: string, messages: Messages, createNetwork: string, refusals: Refusals): PaymentErrorCopy {
+  const status = errors(messages, refusals);
   return { title, retry, clipboardFailure, beforeQr, status, create: { ...status, network: createNetwork } };
 }
 
@@ -29,7 +31,7 @@ const COPY: Record<Language, PaymentErrorCopy> = {
     'Hệ thống thanh toán tạm thời chưa sẵn sàng. Bạn vui lòng thử lại sau ít phút.',
     'Chưa kiểm tra được trạng thái thanh toán. Bạn vui lòng chờ; hệ thống vẫn tiếp tục kiểm tra.',
     'Chưa tìm thấy đơn thanh toán. Nếu đã chuyển khoản, bạn vui lòng liên hệ hỗ trợ kèm mã đơn.',
-  ], 'Chưa kết nối được hệ thống thanh toán. Chưa có khoản nào bị trừ qua thao tác này. Bạn vui lòng thử lại.'),
+  ], 'Chưa kết nối được hệ thống thanh toán. Chưa có khoản nào bị trừ qua thao tác này. Bạn vui lòng thử lại.', ['Add-on AI cần Gói Cơ bản hoặc Gói Pro đang hoạt động.', 'Gói của bạn đã gồm gợi ý AI.', 'Gia đình bạn đã sở hữu mục này.', 'Mục này chưa mở bán.', 'Gia đình đang dùng gói cao hơn. Hãy gia hạn đúng gói đang dùng.', 'Gói Trọn đời của gia đình đã bao gồm mọi gói; không cần mua thêm gói.', 'Ưu đãi này đã hết suất hoặc đã kết thúc.', 'Gia đình bạn đã dùng ưu đãi này.']),
   en: copy('Something went wrong', 'Try again', 'Could not copy. Press and hold to select the text.', 'If you have a referral code, apply it before creating the QR. The amount is calculated when the order is created.', [
     'This plan is not valid. Please choose a plan again.', 'We could not create the payment order. Please try again.',
     'We could not connect to check your payment. Please try again; automatic checks will continue.',
@@ -37,7 +39,7 @@ const COPY: Record<Language, PaymentErrorCopy> = {
     'The payment service is temporarily unavailable. Please try again in a few minutes.',
     'We could not check the payment status. Please wait; automatic checks will continue.',
     'We could not find the payment order. If you have transferred, contact support with the order code.',
-  ], 'We could not connect to the payment service. This action has not charged you. Please try again.'),
+  ], 'We could not connect to the payment service. This action has not charged you. Please try again.', ['The AI add-on needs an active Solo or Pro plan.', 'Your plan already includes AI suggestions.', 'Your family already owns this item.', 'This item is not on sale yet.', 'Your family is on a higher plan. Please renew the plan you are using.', 'Your family’s Lifetime plan already includes every plan; there is no need to buy another plan.', 'This offer has run out of places or has ended.', 'Your family has already used this offer.']),
   fr: copy('Une erreur est survenue', 'Réessayer', 'Copie impossible. Appuyez longuement pour sélectionner le texte.', 'Si vous avez un code de parrainage, appliquez-le avant de créer le QR. Le montant est calculé à la création de la commande.', [
     'Ce forfait est invalide. Veuillez choisir à nouveau.', 'La commande de paiement n’a pas pu être créée. Veuillez réessayer.',
     'Connexion impossible pour vérifier le paiement. Réessayez ; les vérifications automatiques continuent.',
@@ -45,7 +47,7 @@ const COPY: Record<Language, PaymentErrorCopy> = {
     'Le service de paiement est temporairement indisponible. Réessayez dans quelques minutes.',
     'Le statut du paiement n’a pas pu être vérifié. Patientez ; les vérifications automatiques continuent.',
     'Commande de paiement introuvable. Si vous avez effectué le virement, contactez l’assistance avec le numéro de commande.',
-  ], 'Connexion au service de paiement impossible. Cette action n’a entraîné aucun débit. Veuillez réessayer.'),
+  ], 'Connexion au service de paiement impossible. Cette action n’a entraîné aucun débit. Veuillez réessayer.', ['L’option IA nécessite un forfait Solo ou Pro actif.', 'Votre forfait inclut déjà les suggestions par IA.', 'Votre famille possède déjà cet article.', 'Cet article n’est pas encore en vente.', 'Votre famille utilise un forfait supérieur. Renouvelez le forfait en cours.', 'Le forfait à vie de votre famille inclut déjà tous les forfaits ; inutile d’en acheter un autre.', 'Cette offre n’a plus de places ou est terminée.', 'Votre famille a déjà utilisé cette offre.']),
   de: copy('Ein Fehler ist aufgetreten', 'Erneut versuchen', 'Kopieren nicht möglich. Halte den Text gedrückt und wähle ihn aus.', 'Wende deinen Empfehlungscode vor dem Erstellen des QR-Codes an. Der Betrag wird beim Erstellen der Bestellung berechnet.', [
     'Dieses Paket ist ungültig. Bitte wähle erneut.', 'Die Zahlungsbestellung konnte nicht erstellt werden. Bitte versuche es erneut.',
     'Keine Verbindung zur Zahlungsprüfung. Bitte versuche es erneut; automatische Prüfungen laufen weiter.',
@@ -53,7 +55,7 @@ const COPY: Record<Language, PaymentErrorCopy> = {
     'Der Zahlungsdienst ist vorübergehend nicht verfügbar. Bitte versuche es in einigen Minuten erneut.',
     'Der Zahlungsstatus konnte nicht geprüft werden. Bitte warte; automatische Prüfungen laufen weiter.',
     'Die Zahlungsbestellung wurde nicht gefunden. Wenn du überwiesen hast, kontaktiere den Support mit der Bestellnummer.',
-  ], 'Keine Verbindung zum Zahlungsdienst. Durch diese Aktion wurde nichts abgebucht. Bitte versuche es erneut.'),
+  ], 'Keine Verbindung zum Zahlungsdienst. Durch diese Aktion wurde nichts abgebucht. Bitte versuche es erneut.', ['Der KI-Zusatz braucht ein aktives Solo- oder Pro-Paket.', 'Dein Paket enthält KI-Vorschläge bereits.', 'Deine Familie besitzt diesen Artikel bereits.', 'Dieser Artikel ist noch nicht im Verkauf.', 'Deine Familie nutzt ein höheres Paket. Verlängere bitte das genutzte Paket.', 'Das lebenslange Paket Ihrer Familie umfasst bereits alle Pakete; Sie brauchen kein weiteres Paket zu kaufen.', 'Dieses Angebot ist ausgebucht oder beendet.', 'Deine Familie hat dieses Angebot bereits genutzt.']),
   it: copy('Si è verificato un errore', 'Riprova', 'Copia non riuscita. Tieni premuto per selezionare il testo.', 'Se hai un codice invito, applicalo prima di creare il QR. L’importo viene calcolato alla creazione dell’ordine.', [
     'Questo piano non è valido. Scegli di nuovo.', 'Non è stato possibile creare l’ordine di pagamento. Riprova.',
     'Connessione non riuscita per verificare il pagamento. Riprova; i controlli automatici continuano.',
@@ -61,7 +63,7 @@ const COPY: Record<Language, PaymentErrorCopy> = {
     'Il servizio di pagamento non è disponibile al momento. Riprova tra qualche minuto.',
     'Non è stato possibile verificare il pagamento. Attendi; i controlli automatici continuano.',
     'Ordine di pagamento non trovato. Se hai effettuato il bonifico, contatta l’assistenza con il codice ordine.',
-  ], 'Connessione al servizio di pagamento non riuscita. Questa azione non ha addebitato nulla. Riprova.'),
+  ], 'Connessione al servizio di pagamento non riuscita. Questa azione non ha addebitato nulla. Riprova.', ['L’opzione IA richiede un piano Solo o Pro attivo.', 'Il tuo piano include già i suggerimenti con IA.', 'La tua famiglia possiede già questo articolo.', 'Questo articolo non è ancora in vendita.', 'La tua famiglia usa un piano superiore. Rinnova il piano in uso.', 'Il piano a vita della Sua famiglia include già tutti i piani; non occorre acquistarne un altro.', 'Questa offerta ha esaurito i posti o è terminata.', 'La tua famiglia ha già usato questa offerta.']),
   es: copy('Ha ocurrido un error', 'Reintentar', 'No se pudo copiar. Mantén pulsado para seleccionar el texto.', 'Si tienes un código de referido, aplícalo antes de crear el QR. El importe se calcula al crear el pedido.', [
     'Este plan no es válido. Elige de nuevo.', 'No pudimos crear el pedido de pago. Inténtalo de nuevo.',
     'No pudimos conectar para comprobar el pago. Reintenta; las comprobaciones automáticas continúan.',
@@ -69,12 +71,12 @@ const COPY: Record<Language, PaymentErrorCopy> = {
     'El servicio de pago no está disponible temporalmente. Reintenta en unos minutos.',
     'No pudimos comprobar el estado del pago. Espera; las comprobaciones automáticas continúan.',
     'No encontramos el pedido de pago. Si ya transferiste, contacta con soporte indicando el código del pedido.',
-  ], 'No pudimos conectar con el servicio de pago. Esta acción no ha realizado ningún cobro. Inténtalo de nuevo.'),
+  ], 'No pudimos conectar con el servicio de pago. Esta acción no ha realizado ningún cobro. Inténtalo de nuevo.', ['El complemento IA necesita un plan Solo o Pro activo.', 'Tu plan ya incluye las sugerencias con IA.', 'Tu familia ya tiene este artículo.', 'Este artículo aún no está a la venta.', 'Tu familia usa un plan superior. Renueva el plan que estás usando.', 'El plan de por vida de su familia ya incluye todos los planes; no necesita comprar otro.', 'Esta oferta se ha agotado o ha terminado.', 'Tu familia ya ha usado esta oferta.']),
   zh: copy('出现了问题', '重试', '无法复制，请长按并选择内容。', '如有推荐码，请在生成二维码前输入并应用。金额在创建订单时计算。', [
     '所选方案无效，请重新选择。', '暂时无法创建支付订单，请重试。', '暂时无法连接以检查付款，请重试；系统会继续自动检查。',
     '请使用家长账户重新登录。', '暂时无法处理请求，请检查信息后重试。', '支付服务暂时不可用，请稍后重试。',
     '暂时无法检查付款状态，请稍等；系统会继续自动检查。', '未找到支付订单。如果已转账，请提供订单号联系支持。',
-  ], '暂时无法连接支付系统。此操作没有扣款，请重试。'),
+  ], '暂时无法连接支付系统。此操作没有扣款，请重试。', ['AI 附加服务需要有效的 Solo 或 Pro 方案。', '您的方案已包含 AI 建议。', '您的家庭已拥有此项目。', '此项目尚未开售。', '您的家庭正在使用更高级的方案，请续订当前使用的方案。', '您家庭的终身方案已包含所有方案，无需再购买其他方案。', '此优惠名额已满或已结束。', '您的家庭已使用过此优惠。']),
   ja: copy('エラーが発生しました', '再試行', 'コピーできません。長押しして内容を選択してください。', '紹介コードがある場合は、QRコードを作成する前に適用してください。金額は注文作成時に計算されます。', [
     '選択したプランは無効です。選び直してください。', '支払い注文を作成できませんでした。再試行してください。',
     '支払い確認のため接続できませんでした。再試行してください。自動確認は続きます。',
@@ -82,7 +84,7 @@ const COPY: Record<Language, PaymentErrorCopy> = {
     '決済サービスは一時的に利用できません。数分後に再試行してください。',
     '支払い状況を確認できませんでした。お待ちください。自動確認は続きます。',
     '支払い注文が見つかりません。振込済みの場合は注文番号を添えてサポートに連絡してください。',
-  ], '決済システムに接続できませんでした。この操作による引き落としはありません。再試行してください。'),
+  ], '決済システムに接続できませんでした。この操作による引き落としはありません。再試行してください。', ['AI 追加オプションには、有効な Solo または Pro プランが必要です。', 'お使いのプランには AI の提案がすでに含まれています。', 'ご家族はすでにこの項目をお持ちです。', 'この項目はまだ販売していません。', 'ご家族はより上位のプランをご利用中です。ご利用中のプランを更新してください。', 'ご家族の買い切りプランにはすべてのプランが含まれているため、別のプランを購入する必要はありません。', 'この特典は定員に達したか、終了しました。', 'ご家族はすでにこの特典をご利用済みです。']),
   ko: copy('오류가 발생했어요', '다시 시도', '복사할 수 없어요. 길게 눌러 내용을 선택해 주세요.', '추천 코드가 있다면 QR을 만들기 전에 적용해 주세요. 금액은 주문을 만들 때 계산돼요.', [
     '선택한 플랜이 유효하지 않아요. 다시 선택해 주세요.', '결제 주문을 만들지 못했어요. 다시 시도해 주세요.',
     '결제를 확인하기 위해 연결하지 못했어요. 다시 시도해 주세요. 자동 확인은 계속돼요.',
@@ -90,7 +92,7 @@ const COPY: Record<Language, PaymentErrorCopy> = {
     '결제 서비스를 일시적으로 이용할 수 없어요. 잠시 후 다시 시도해 주세요.',
     '결제 상태를 확인하지 못했어요. 기다려 주세요. 자동 확인은 계속돼요.',
     '결제 주문을 찾지 못했어요. 이미 이체했다면 주문 번호와 함께 지원팀에 문의해 주세요.',
-  ], '결제 시스템에 연결하지 못했어요. 이 작업으로 출금된 금액은 없어요. 다시 시도해 주세요.'),
+  ], '결제 시스템에 연결하지 못했어요. 이 작업으로 출금된 금액은 없어요. 다시 시도해 주세요.', ['AI 추가 옵션은 이용 중인 Solo 또는 Pro 플랜이 필요해요.', '현재 플랜에 AI 제안이 이미 포함되어 있어요.', '가족이 이미 이 항목을 가지고 있어요.', '이 항목은 아직 판매하지 않아요.', '가족이 더 높은 플랜을 이용 중이에요. 이용 중인 플랜을 갱신해 주세요.', '가족의 평생 플랜에 모든 플랜이 이미 포함되어 있어 다른 플랜을 구매할 필요가 없어요.', '이 혜택은 마감되었거나 종료되었어요.', '가족이 이미 이 혜택을 이용했어요.']),
 };
 
 export function getPaymentErrorCopy(language: Language): PaymentErrorCopy {

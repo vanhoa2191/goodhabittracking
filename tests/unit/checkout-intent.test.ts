@@ -10,12 +10,12 @@ vi.mock('@/lib/supabase/browser', () => ({
 afterEach(() => vi.unstubAllGlobals());
 
 describe('checkout intent', () => {
-  it.each(['solo_monthly', 'solo_yearly', 'monthly', 'yearly'])('accepts paid plan %s', (value) => {
+  it.each(['solo_monthly', 'solo_yearly', 'monthly', 'yearly', 'pro_plus_monthly', 'pro_plus_yearly', 'ai_addon_monthly', 'printables', 'pro_plus_yearly_upsell', 'pro_plus_yearly_b1g1'])('accepts checkout item %s', (value) => {
     expect(auth).toHaveProperty('parseCheckoutPlan');
     expect(auth.parseCheckoutPlan(value)).toBe(value);
   });
 
-  it.each([null, '', 'trial', 'free', 'lifetime', 'unknown', 'Monthly', ' monthly', 'monthly,yearly', 'monthly&plan=yearly', 'family_plus_yearly'])('rejects %s', (value) => {
+  it.each([null, '', 'trial', 'free', 'lifetime', 'unknown', 'Monthly', ' monthly', 'monthly,yearly', 'monthly&plan=yearly', 'family_plus_yearly', 'ai_addon_yearly', 'printables '])('rejects %s', (value) => {
     expect(auth).toHaveProperty('parseCheckoutPlan');
     expect(auth.parseCheckoutPlan(value)).toBeNull();
   });
@@ -26,6 +26,8 @@ describe('Google OAuth return path', () => {
     ['/checkout?plan=solo_monthly', '/checkout?plan=solo_monthly'],
     ['/checkout?plan=monthly', '/checkout?plan=monthly'],
     ['/checkout?plan=yearly', '/checkout?plan=yearly'],
+    ['/checkout?plan=pro_plus_monthly', '/checkout?plan=pro_plus_monthly'],
+    ['/checkout?plan=ai_addon_monthly', '/checkout?plan=ai_addon_monthly'],
     [undefined, '/'],
     ['', '/'],
     ['https://evil.example/checkout', '/'],

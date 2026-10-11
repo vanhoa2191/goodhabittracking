@@ -1,14 +1,16 @@
 'use client';
 
-import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
-import { CheckCircle2 } from 'lucide-react';
-import { buildPricingView, MAX_SAVING_PERCENT, type PricingCard } from '@/lib/billing/pricing-view';
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { CheckCircle2, Gift } from 'lucide-react';
+import { buildPricingView, MAX_SAVING_PERCENT, promoForCard, readLaunchOffers, type LaunchOfferData, type PricingCard } from '@/lib/billing/pricing-view';
 import type { BillingCycle, PaidPlanId } from '@/lib/billing/plan-catalog';
-import { PLAN_LOCALIZATION } from '@/lib/i18n/pricing-plan-copy';
+import { getCheckoutPlanFeatures, PLAN_LOCALIZATION } from '@/lib/i18n/pricing-plan-copy';
 import { getPublicPricingCopy } from '@/lib/i18n/public-pricing-copy';
 import { formatCurrency } from '@/lib/i18n/formatters';
 import { useTranslation } from '@/lib/i18n/context';
-import { LaunchOfferStrip, ProPlusCard } from './UpcomingPlans';
+import { getAddonsCopy, getLaunchOfferCopy } from '@/lib/i18n/addons-copy';
+import { getPromoCopy } from '@/lib/i18n/promo-copy';
+import { ADDON_PRICES } from '@/lib/billing/addon-catalog';
 
 const CYCLES: readonly BillingCycle[] = ['month', 'year'];
 
@@ -20,7 +22,7 @@ interface PricingPlansProps {
   readonly isCurrent?: (planId: PaidPlanId) => boolean;
 }
 
-/** Monthly or yearly for every plan, the launch offer, and three cards: one child, Pro, and the Pro Plus preview. */
+/** Monthly or yearly for every plan, the launch offer, and three cards: one child, Pro, and Pro Plus. */
 export function PricingPlans({ renderAction, isCurrent }: PricingPlansProps) {
   const { language } = useTranslation();
   const copy = getPublicPricingCopy(language);
@@ -30,6 +32,18 @@ export function PricingPlans({ renderAction, isCurrent }: PricingPlansProps) {
   const money = (value: number) => formatCurrency(value, language, market);
   const cards = buildPricingView(cycle);
   const labels: Record<BillingCycle, string> = { month: copy.cycleMonth, year: copy.cycleYear };
+  const promoCopy = getPromoCopy(language);
+  const [offerData, setOfferData] = useState<LaunchOfferData>({ remaining: null, offers: [] });
+
+  useEffect(() => {
+    const controller = new AbortController();
+    readLaunchOffers(controller.signal)
+      .then((data) => {
+        if (!controller.signal.aborted) setOfferData(data);
+      })
+      .catch(() => undefined);
+    return () => controller.abort();
+  }, []);
 
   const select = (next: BillingCycle) => {
     setCycle(next);
@@ -43,11 +57,12 @@ export function PricingPlans({ renderAction, isCurrent }: PricingPlansProps) {
   };
 
   const buyable = (card: PricingCard) => {
-    const planId = card.planId as PaidPlanId;
+    const planId = card.planId;
     const text: PlanText = PLAN_LOCALIZATION[planId]?.[language] ?? PLAN_LOCALIZATION[planId].vi;
     const popular = card.tier === 'pro';
-    const benefits = [card.tier === 'solo' ? copy.oneChild : copy.upToFive, copy.sync, copy.caregiverInvites, card.tier === 'solo' ? copy.library : copy.fullLibrary, ...(cycle === 'year' ? [copy.annualPayment] : [])];
+    const benefits = getCheckoutPlanFeatures(planId, language);
     const yearly = buildPricingView('year').find((candidate) => candidate.tier === card.tier);
+    const promo = promoForCard(card.tier, cycle, offerData.offers);
     return (
       <div key={card.tier} data-plan={planId} className={`relative flex flex-col justify-between rounded-3xl p-5 ${popular ? 'border-2 border-indigo-600 bg-white shadow-xl dark:bg-zinc-900' : 'border border-slate-200 bg-white shadow-sm dark:border-zinc-800 dark:bg-zinc-900'}`}>
         <div className="space-y-3">
@@ -70,6 +85,11 @@ export function PricingPlans({ renderAction, isCurrent }: PricingPlansProps) {
               <li key={benefit} className="flex items-start gap-2"><CheckCircle2 aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" /><span className="leading-5">{benefit}</span></li>
             ))}
           </ul>
+          {promo && (
+            <a href={`/checkout?plan=${promo.planId}`} className="block rounded-2xl border border-amber-300 bg-amber-50 p-3 text-sm font-bold leading-5 text-amber-950 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-100">
+              {(promo.planId === 'pro_plus_yearly_upsell' ? promoCopy.upsell : promoCopy.b1g1).replace('{n}', String(promo.remaining))}
+            </a>
+          )}
         </div>
         <div className="mt-4 border-t border-slate-100 pt-4 dark:border-zinc-800" data-current={isCurrent?.(planId) ? 'true' : undefined}>{renderAction(planId, text)}</div>
       </div>
@@ -97,10 +117,35 @@ export function PricingPlans({ renderAction, isCurrent }: PricingPlansProps) {
         </div>
         <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{copy.saveUpTo.replace('[percent]', String(MAX_SAVING_PERCENT))}</p>
       </div>
-      <LaunchOfferStrip />
+      <LaunchOfferStrip remaining={offerData.remaining} />
       <div data-testid="paid-plan-grid" className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 lg:grid-cols-3">
-        {cards.map((card) => (card.purchasable ? buyable(card) : <ProPlusCard key={card.tier} card={card} cycle={cycle} />))}
+        {cards.map(buyable)}
       </div>
+      <p className="mx-auto max-w-6xl text-sm text-slate-700 dark:text-slate-200">{getAddonsCopy(language).aiPricingLine.replace('{price}', money(ADDON_PRICES.ai_addon_monthly))}</p>
     </div>
+  );
+}
+
+/** The launch offer line. The count is the real one from the server; if it cannot be read the sentence shows no number. */
+function LaunchOfferStrip({ remaining }: { readonly remaining: number | null }) {
+  const { language } = useTranslation();
+  const copy = getLaunchOfferCopy(language);
+
+  const soldOut = remaining === 0;
+  return (
+    <section data-testid="launch-offer" aria-label={copy.offerTitle} className="mx-auto flex w-full max-w-6xl items-start gap-3 rounded-2xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-100">
+      <Gift aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 text-amber-700 dark:text-amber-300" />
+      <div className="space-y-1">
+        <h3 className="font-black">{copy.offerTitle}</h3>
+        {soldOut ? (
+          <p data-testid="launch-offer-status" className="font-bold">{copy.offerSoldOut}</p>
+        ) : (
+          <>
+            <p className="font-medium leading-5">{copy.offerBody}</p>
+            {remaining !== null && <p data-testid="launch-offer-status" className="font-black">{copy.offerRemaining(remaining)}</p>}
+          </>
+        )}
+      </div>
+    </section>
   );
 }

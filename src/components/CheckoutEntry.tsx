@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { ArrowLeft, Check, CreditCard, LogIn, ShieldCheck } from 'lucide-react';
 import { CheckoutModal } from '@/components/CheckoutModal';
 import { PaymentReturnNotice } from '@/components/PaymentReturnNotice';
+import { addonVisible, isAddonId } from '@/lib/billing/addon-catalog';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { getPricingPlan } from '@/lib/payos';
 import { getMarketingOrigin } from '@/lib/site';
 import { parseCheckoutPlan, signInWithGoogle } from '@/lib/supabase';
@@ -23,7 +25,9 @@ interface CheckoutEntryProps {
 export function CheckoutEntry({ planValues, paymentReturnKind = null }: CheckoutEntryProps) {
   const { language } = useTranslation();
   const copy = getCheckoutEntryCopy(language);
-  const planId = planValues.length === 1 ? parseCheckoutPlan(planValues[0] ?? null) : null;
+  const requestedPlanId = planValues.length === 1 ? parseCheckoutPlan(planValues[0] ?? null) : null;
+  // A hidden add-on (printables with the sale flag off) is treated like an unknown plan.
+  const planId = requestedPlanId && isAddonId(requestedPlanId) && !addonVisible(requestedPlanId, defaultExperienceFlags) ? null : requestedPlanId;
   const plan = useMemo(() => planId ? getPricingPlan(planId) : null, [planId]);
   const openedPlan = useRef<string | null>(null);
   const {

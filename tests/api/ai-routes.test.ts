@@ -1,21 +1,23 @@
 import { NextRequest } from 'next/server';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getParentContext, rpc, from, requireParentUnlock, run, flags, logOperationalEvent } = vi.hoisted(() => ({
+const { getParentContext, rpc, tierRpc, from, requireParentUnlock, run, binding, flags, logOperationalEvent } = vi.hoisted(() => ({
   getParentContext: vi.fn(),
   rpc: vi.fn(),
+  tierRpc: vi.fn(),
   from: vi.fn(),
   requireParentUnlock: vi.fn(),
   run: vi.fn(),
+  binding: { available: true },
   flags: { parentAi: true },
   logOperationalEvent: vi.fn(),
 }));
 
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/supabase/server', () => ({ createServerSupabaseClient: vi.fn(async () => ({ rpc, from })) }));
-vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ rpc })) }));
+vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ rpc: (name: string, args: unknown) => name === 'family_ai_tier' ? tierRpc(name, args) : rpc(name, args) })) }));
 vi.mock('@/lib/security/parent-unlock', () => ({ requireParentUnlock }));
-vi.mock('@/lib/ai/binding', () => ({ getAiBinding: () => ({ run }) }));
+vi.mock('@/lib/ai/binding', () => ({ getAiBinding: () => binding.available ? { run } : null }));
 vi.mock('@/lib/experience-flags', () => ({ defaultExperienceFlags: flags }));
 vi.mock('@/lib/observability/logger', () => ({ createCorrelationId: () => '11111111-1111-4111-8111-111111111111', logOperationalEvent }));
 
@@ -52,27 +54,32 @@ function consentRow(row: { revoked_at: string | null } | null, error: unknown = 
 }
 
 describe('AI suggestion routes', () => {
+  afterEach(() => vi.unstubAllEnvs());
   beforeEach(() => {
     vi.clearAllMocks();
     childNames = [];
+    binding.available = true;
+    vi.stubEnv('AI_PROVIDER', 'workers');
+    vi.stubEnv('AI_KILL_SWITCH', 'false');
     flags.parentAi = true;
     getParentContext.mockResolvedValue({ familyId, user: { id: 'parent-1' } });
     requireParentUnlock.mockResolvedValue(null);
     consentRow({ revoked_at: null });
-    rpc.mockResolvedValue({ data: { allowed: true, remainingToday: 4 }, error: null });
+    rpc.mockResolvedValue({ data: { allowed: true, remainingThisMonth: 4 }, error: null });
+    tierRpc.mockReset().mockResolvedValue({ data: 'free', error: null });
     run.mockResolvedValue({ response: JSON.stringify(steps) });
   });
 
   it('turns a habit title into three steps and sends the model only the cleaned title and an age band', async () => {
     const response = await askBreakdown({ title: 'Đọc sách https://x.example gọi 0912345678', ageYears: 8, language: 'vi' });
     expect(response.status).toBe(200);
-    await expect(response.json()).resolves.toEqual({ success: true, result: steps, remainingToday: 4 });
+    await expect(response.json()).resolves.toEqual({ success: true, result: steps, remainingThisMonth: 4 });
     const sent = JSON.stringify(run.mock.calls[0]?.[1]);
     expect(sent).toContain('Đọc sách');
     expect(sent).toContain('6-12');
     expect(sent).not.toContain('x.example');
     expect(sent).not.toContain('0912345678');
-    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_as', { actor_user_id: 'parent-1', per_day: 5, system_per_day: 150, min_gap_seconds: 20 });
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_monthly_as', { actor_user_id: 'parent-1', per_month: 10, per_day: 100, system_per_day: 5000, min_gap_seconds: 20 });
   });
 
   it('refuses a request that comes from another site before anything else', async () => {
@@ -115,11 +122,80 @@ describe('AI suggestion routes', () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 
-  it('stops at the allowance with a reason and does not call the model', async () => {
+  it.each([['plus', null], ['standard', 20], ['free', 10]] as const)('uses the %s monthly allowance', async (tier, perMonth) => {
+    tierRpc.mockResolvedValue({ data: tier, error: null });
+    expect((await askBreakdown()).status).toBe(200);
+    expect(tierRpc).toHaveBeenCalledWith('family_ai_tier', { target_family: familyId });
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_monthly_as', { actor_user_id: 'parent-1', per_month: perMonth, per_day: 100, system_per_day: 5000, min_gap_seconds: 20 });
+  });
+
+  it.each([
+    { data: 'plus', error: { message: 'unavailable' } },
+    { data: null, error: null },
+    { data: 'unknown', error: null },
+  ])('falls back to the free allowance for an unavailable or invalid tier: %j', async (result) => {
+    tierRpc.mockResolvedValue(result);
+    expect((await askBreakdown()).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_monthly_as', expect.objectContaining({ per_month: 10 }));
+  });
+
+  it('falls back to free when the tier lookup throws', async () => {
+    tierRpc.mockRejectedValue(new Error('connection failed'));
+    expect((await askBreakdown()).status).toBe(200);
+    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_monthly_as', expect.objectContaining({ per_month: 10 }));
+  });
+
+  it.each(['free', 'standard', 'plus'])('returns the %s tier on a daily family refusal without calling the model', async (tier) => {
+    tierRpc.mockResolvedValue({ data: tier, error: null });
     rpc.mockResolvedValue({ data: { allowed: false, reason: 'family_day' }, error: null });
     const response = await askBreakdown();
     expect(response.status).toBe(429);
-    await expect(response.json()).resolves.toMatchObject({ code: 'ai_quota', reason: 'family_day' });
+    await expect(response.json()).resolves.toMatchObject({ code: 'ai_quota', reason: 'family_day', tier });
+    expect(run).not.toHaveBeenCalled();
+  });
+
+  it.each(['free', 'standard'])('returns the %s tier on a monthly refusal without calling the model', async (tier) => {
+    tierRpc.mockResolvedValue({ data: tier, error: null });
+    rpc.mockResolvedValue({ data: { allowed: false, reason: 'family_month' }, error: null });
+    const response = await askBreakdown();
+    expect(response.status).toBe(429);
+    await expect(response.json()).resolves.toMatchObject({ code: 'ai_quota', reason: 'family_month', tier });
+    expect(run).not.toHaveBeenCalled();
+  });
+
+  it('reports remainingThisMonth as null for an unlimited family', async () => {
+    tierRpc.mockResolvedValue({ data: 'plus', error: null });
+    rpc.mockResolvedValue({ data: { allowed: true, remainingThisMonth: null }, error: null });
+    await expect((await askBreakdown()).json()).resolves.toMatchObject({ success: true, remainingThisMonth: null });
+  });
+
+  it('answers ai_disabled and never calls Workers when DeepSeek is chosen without a key', async () => {
+    vi.stubEnv('AI_PROVIDER', 'deepseek');
+    vi.stubEnv('DEEPSEEK_API_KEY', '');
+    const response = await askBreakdown();
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toMatchObject({ code: 'ai_disabled' });
+    expect(run).not.toHaveBeenCalled();
+    expect(rpc).not.toHaveBeenCalled();
+    expect(tierRpc).not.toHaveBeenCalled();
+  });
+
+  it.each(['kill switch', 'missing binding'])('does not spend quota with a disabled provider: %s', async (reason) => {
+    if (reason === 'kill switch') vi.stubEnv('AI_KILL_SWITCH', 'true');
+    else binding.available = false;
+    const response = await askBreakdown();
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toMatchObject({ code: 'ai_disabled' });
+    expect(rpc).not.toHaveBeenCalled();
+    expect(tierRpc).not.toHaveBeenCalled();
+    expect(run).not.toHaveBeenCalled();
+  });
+
+  it.each(['system_day', 'too_fast'])('does not turn %s into a family-tier upsell', async (reason) => {
+    rpc.mockResolvedValue({ data: { allowed: false, reason }, error: null });
+    const response = await askBreakdown();
+    expect(response.status).toBe(429);
+    await expect(response.json()).resolves.toEqual({ success: false, error: 'No suggestions left for now.', code: 'ai_quota', reason });
     expect(run).not.toHaveBeenCalled();
   });
 

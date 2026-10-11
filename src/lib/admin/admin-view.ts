@@ -34,6 +34,8 @@ export const PLAN_LABELS: Readonly<Record<SubscriptionView['plan'], string>> = {
   solo_yearly: 'Gói Cơ bản · Năm',
   monthly: 'Gói Pro · Tháng',
   yearly: 'Gói Pro · Năm',
+  pro_plus_monthly: 'Gói Pro Plus · Tháng',
+  pro_plus_yearly: 'Gói Pro Plus · Năm',
   lifetime: 'Trọn đời',
 };
 

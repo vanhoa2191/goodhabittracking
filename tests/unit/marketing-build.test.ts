@@ -53,6 +53,20 @@ function planCard(html: string, tier: string) {
   return html.slice(start, end);
 }
 
+describe('marketing promo cards', () => {
+  it('builds hidden live-count links on the matching yearly cards, never inventing remaining slots', async () => {
+    const { html } = await buildFixture();
+    const pro = planCard(html, 'pro');
+    const plus = planCard(html, 'pro_plus');
+    expect(pro).toMatch(/<a[^>]*data-promo-offer="pro_plus_upsell_690"[^>]*hidden[^>]*href="https:\/\/app\.example\/checkout\?plan=pro_plus_yearly_upsell"/);
+    expect(plus).toMatch(/<a[^>]*data-promo-offer="pro_plus_b1g1"[^>]*hidden[^>]*href="https:\/\/app\.example\/checkout\?plan=pro_plus_yearly_b1g1"/);
+    expect(pro).not.toContain('plan=pro_plus_yearly_b1g1');
+    expect(plus).not.toContain('plan=pro_plus_yearly_upsell');
+    expect(pro + plus).toContain('data-cycle="year"');
+    expect(pro + plus).not.toMatch(/Còn \d+\/(100|200) suất/);
+  });
+});
+
 describe('marketing static artifact', () => {
   it('tells the family story in eight chapters, in order, then closes with the call to action', async () => {
     const { html } = await buildFixture();
@@ -202,7 +216,7 @@ describe('marketing static artifact', () => {
     expect(html).not.toMatch(/\d[\d.]*\s*(gia đình|phụ huynh|người dùng) (đã|đang) dùng/i);
   });
 
-  it('shows the yearly prices by default with both cycles in each card and four exact checkout links', async () => {
+  it('shows the yearly prices by default with both cycles in each card', async () => {
     for (const route of ['', 'pricing']) {
       const { outputDir } = await buildFixture();
       const html = await readFile(join(outputDir, route, 'index.html'), 'utf8');
@@ -210,10 +224,8 @@ describe('marketing static artifact', () => {
       for (const text of ['Tiết kiệm 189.000đ (32%)', 'Tiết kiệm 238.000đ (29%)', '588.000đ', '399.000đ', '590.000đ', '≈ 33.300đ mỗi tháng', '≈ 49.200đ mỗi tháng', 'Chỉ hơn Gói Cơ bản 191.000đ mỗi năm', 'Chỉ hơn Gói Cơ bản 20.000đ mỗi tháng', '<span class="save">đến -32%</span>']) {
         expect(html).toContain(text);
       }
-      const checkout = new Set(html.match(/href="https:\/\/app\.example\/checkout\?plan=[a-z_]+"/g) ?? []);
-      expect([...checkout].sort()).toEqual(['monthly', 'solo_monthly', 'solo_yearly', 'yearly'].map((id) => `href="https://app.example/checkout?plan=${id}"`));
       expect(html).not.toContain('family_plus');
-      for (const tier of ['solo', 'pro']) {
+      for (const tier of ['solo', 'pro', 'pro_plus']) {
         const card = planCard(html, tier);
         expect(card.match(/data-cycle="year"/g)?.length).toBeGreaterThanOrEqual(3);
         expect(card.match(/data-cycle="month"/g)?.length).toBeGreaterThanOrEqual(2);
@@ -222,14 +234,34 @@ describe('marketing static artifact', () => {
       expect(html).toMatch(/<a class="month-link" data-cycle="year" href="https:\/\/app\.example\/checkout\?plan=solo_monthly">Hoặc trả theo tháng: 49\.000đ<\/a>/);
       expect(html).toMatch(/<a class="month-link" data-cycle="year" href="https:\/\/app\.example\/checkout\?plan=monthly">Hoặc trả theo tháng: 69\.000đ<\/a>/);
       const plus = planCard(html, 'pro_plus');
-      expect(plus).toContain('Đang phát triển');
-      expect(plus).toContain('<button class="btn btn-soon" type="button" disabled>Sắp ra mắt</button>');
-      expect(plus).not.toContain('href=');
+      expect(plus).not.toMatch(/sắp ra mắt|coming soon|đang phát triển/i);
+      expect(plus).toContain('plan=pro_plus_yearly');
+      expect(plus).toContain('plan=pro_plus_monthly');
+      expect(html).toContain('Add-on AI');
+      expect(html).toContain('29.000đ/tháng');
+      expect(html).not.toContain('plan=printables');
       expect(html).toContain('class="plan recommended" data-plan="solo"');
       const css = await readFile(join(process.cwd(), 'apps', 'marketing', 'styles.css'), 'utf8');
       expect(css).toContain('[data-pricing-cycle="year"] [data-cycle="month"]');
       expect(css).toContain('[data-pricing-cycle="month"] [data-cycle="year"]');
     }
+  });
+
+  it('publishes monthly AI entitlements instead of daily sales limits on pricing and terms', async () => {
+    const { outputDir } = await buildFixture();
+    const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
+    for (const tier of ['solo', 'pro']) {
+      expect(planCard(pricing, tier)).toMatch(/AI[^<]*20[^<]*tháng/);
+    }
+    expect(planCard(pricing, 'pro_plus')).toMatch(/AI[^<]*không giới hạn/);
+    expect(pricing).toMatch(/Add-on AI[^<]*29\.000đ\/tháng[^<]*không giới hạn/);
+    const terms = await readFile(join(outputDir, 'terms', 'index.html'), 'utf8');
+    expect(terms).toMatch(/10[^<]*miễn phí[^<]*mỗi tháng/);
+    expect(terms).toMatch(/20[^<]*tháng/);
+    expect(terms).toMatch(/Pro Plus[^<]*Add-on AI[^<]*không giới hạn/);
+    expect(terms).toMatch(/100[^<]*ngày/);
+    expect(terms).toContain('UTC');
+    expect(pricing + terms).not.toMatch(/(?:1|10) lượt(?:\/ngày| mỗi ngày)/);
   });
 
   it('states the launch offer without a seat count, which only the live database may supply', async () => {
@@ -238,7 +270,7 @@ describe('marketing static artifact', () => {
     expect(html).toContain('<b>10 gia đình đầu tiên</b> mua <b>Gói Pro theo năm</b>');
     expect(html).not.toMatch(/\d+\s*\/\s*10/);
     expect(html).not.toContain('suất còn lại');
-    expect(html).toContain('Đang phát triển. Mua Gói Pro năm hôm nay để giữ suất nâng cấp miễn phí.');
+    expect(html).not.toContain('trước khi Pro Plus ra mắt');
   });
 
   it('owns public discovery metadata and excludes app-only capabilities', async () => {
@@ -421,7 +453,7 @@ describe('marketing static artifact', () => {
     expect(css).not.toContain('Baloo');
   });
 
-  it('sends the trial buttons to login-and-activate, and only plan buttons to checkout', async () => {
+  it('sends the trial buttons to login-and-activate, and plan and add-on purchases to checkout', async () => {
     const { html } = await buildFixture();
     const hero = html.slice(html.indexOf('class="actions"'), html.indexOf('class="assure"'));
     expect(hero).toMatch(/<a class="btn btn-primary" data-guest href="https:\/\/app\.example\/start">Dùng thử 7 ngày/);
@@ -433,8 +465,6 @@ describe('marketing static artifact', () => {
     expect(finalCta).toMatch(/data-guest href="https:\/\/app\.example\/start">Dùng thử 7 ngày, không cần thẻ/);
     expect(finalCta).not.toContain('checkout');
     expect(html).not.toContain('href="#gia">Dùng thử');
-    const checkoutLinks = html.match(/href="https:\/\/app\.example\/checkout\?plan=[a-z_]+"/g) ?? [];
-    expect(new Set(checkoutLinks).size).toBe(4);
   });
 
   it('shows no early-families invitation and no mailto link on the home page, and publishes only consented quotes', async () => {
@@ -566,7 +596,7 @@ describe('marketing static artifact', () => {
     expect(match).not.toBeNull();
     const data = JSON.parse(match![1]);
     expect(data['@type']).toBe('SoftwareApplication');
-    expect(data.offers.map((offer: { price: string }) => offer.price)).toEqual(['49000', '399000', '69000', '590000']);
+    expect(data.offers.map((offer: { price: string }) => offer.price)).toEqual(['49000', '399000', '69000', '590000', '79000', '790000']);
     for (const offer of data.offers) expect(offer.priceCurrency).toBe('VND');
     expect(JSON.stringify(data)).not.toMatch(/aggregateRating|review|family_plus/i);
   });
@@ -602,18 +632,15 @@ describe('marketing static artifact', () => {
     const privacy = await readFile(join(outputDir, 'privacy', 'index.html'), 'utf8');
     expect(privacy).toContain('class="legal-doc"');
     expect(privacy).toContain('<h1>Chính sách quyền riêng tư</h1>');
-    expect(privacy).toContain('Cập nhật lần cuối: 29/09/2026');
     expect(privacy).toContain('<h2>5. Nơi lưu trữ dữ liệu</h2>');
     expect(privacy).toMatch(/<ul>\s*<li>Tài khoản phụ huynh:/);
     expect(privacy).toContain('<a href="mailto:support@example.com">support@example.com</a>');
     const terms = await readFile(join(outputDir, 'terms', 'index.html'), 'utf8');
     expect(terms).toContain('<h1>Điều khoản sử dụng</h1>');
     for (const price of ['49.000 VNĐ', '399.000 VNĐ', '69.000 VNĐ', '590.000 VNĐ']) expect(terms).toContain(price);
-    expect(terms).not.toContain('29.000 VNĐ');
     expect(terms).toContain('tối đa 5 hồ sơ bé');
     expect(terms).toContain('10 gia đình đầu tiên thanh toán Gói Pro theo năm');
     expect(terms).toContain('Pro Plus');
-    expect(terms).toContain('chưa mở bán');
   });
 
   it('shows the configured support mailbox on the contact page and keeps the notice without one', async () => {

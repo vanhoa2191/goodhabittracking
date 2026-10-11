@@ -2,9 +2,11 @@ import { z } from 'zod';
 import type { PaymentResult } from '@/lib/payos';
 import {
   createPaymentRequestSchema,
-  paidPlanSchema,
+  checkoutItemSchema,
   paymentStatusRequestSchema,
 } from '@/lib/billing/schemas';
+import type { AddonId } from '@/lib/billing/addon-catalog';
+import type { PromoPlanId } from '@/lib/billing/plan-catalog';
 import type { SubscriptionPlan } from '@/types';
 
 const paymentSchema = z.object({
@@ -18,7 +20,7 @@ const paymentSchema = z.object({
   qrCode: z.string().min(1),
   vietQrUrl: z.string().min(1),
   checkoutUrl: z.string().url(),
-  planId: paidPlanSchema,
+  planId: checkoutItemSchema,
   listPrice: z.number().int().positive().optional(),
   discountAmount: z.number().int().positive().optional(),
   referrerName: z.string().nullable().optional(),
@@ -44,10 +46,25 @@ export type PaymentRequester = (
 ) => Promise<Response>;
 
 export type PaymentErrorCode = 'invalid_plan' | 'create_failed' | 'network' | 'auth_required'
-  | 'invalid_request' | 'service_unavailable' | 'status_failed' | 'order_not_found';
+  | 'invalid_request' | 'service_unavailable' | 'status_failed' | 'order_not_found'
+  | 'addon_requires_plan' | 'already_included' | 'already_owned' | 'not_available' | 'higher_plan_active' | 'lifetime_active'
+  | 'offer_unavailable' | 'offer_already_used';
+
+/** Fired on window once a checkout is paid and the store has synced, so cards that read entitlements can refetch. */
+export const PAYMENT_SUCCESS_EVENT = 'goodhabit:payment-success';
+
+/** Refusals the create route names in the body; retrying them can never succeed. */
+export const REFUSAL_CODES = ['addon_requires_plan', 'already_included', 'already_owned', 'not_available', 'higher_plan_active', 'lifetime_active', 'offer_unavailable', 'offer_already_used'] as const;
+export type RefusalCode = (typeof REFUSAL_CODES)[number];
+
+export function isRefusalCode(value: unknown): value is RefusalCode {
+  return REFUSAL_CODES.some((code) => code === value);
+}
 
 function paymentError(status: number, input: unknown, step: 'create' | 'status'): PaymentErrorCode {
   const message = typeof input === 'object' && input !== null && 'error' in input ? input.error : null;
+  const code = typeof input === 'object' && input !== null && 'code' in input ? input.code : null;
+  if (step === 'create' && (status === 409 || status === 404) && isRefusalCode(code)) return code;
   if (status === 401 || message === 'Authentication required.') return 'auth_required';
   if (status === 400 || status === 403 || message === 'Invalid payment request.' || message === 'Invalid status request.') return 'invalid_request';
   if (status === 404 || message === 'Payment order not found.') return 'order_not_found';
@@ -67,7 +84,7 @@ export type PaymentStatusResult =
   | { readonly success: false; readonly error: PaymentErrorCode };
 
 export async function createPaymentOrder(
-  planId: SubscriptionPlan,
+  planId: SubscriptionPlan | PromoPlanId | AddonId,
   requester: PaymentRequester = globalThis.fetch,
 ): Promise<CreatePaymentResult> {
   const request = createPaymentRequestSchema.safeParse({ planId });

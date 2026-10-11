@@ -38,6 +38,8 @@ try {
     alter table public.family_memberships drop constraint family_memberships_role_check;
     alter table public.family_memberships add constraint family_memberships_role_check check(role in ('owner','parent','guardian','caregiver'));
     create unique index family_memberships_one_family_per_user on public.family_memberships(user_id);
+    create table public.child_profiles (family_id uuid);
+    create table public.activity_logs (family_id uuid, status text, log_date date);
     ${definition(family,'current_family_id')}
     ${definition(family,'can_manage_family')}
     ${section(billing,'alter table public.payment_orders','drop policy if exists subscriptions_insert_family')}
@@ -47,6 +49,7 @@ try {
     ${section(cases,'create table if not exists public.billing_support_cases','create table if not exists public.billing_support_case_events')}
     ${section(admins,'create table if not exists public.operational_events','create index if not exists operational_events_signal_time_idx')}
     ${section(pricing,'create table public.launch_offers','create or replace function public.launch_offer_remaining')}
+    ${definition(pricing,'launch_offer_remaining')}
     ${definition(pricing,'claim_launch_offer')}
     ${definition(pricing,'admin_revoke_launch_offer_claim')}
     ${definition(pricing,'process_payos_webhook')}`);
@@ -75,7 +78,40 @@ try {
   }
   console.log('PASS: Money Model v2 monthly checkout 49000/69000 and first-yearly referral checkout 359000/531000');
 
+  const parentAi = load('202610040004_parent_ai');
+  const wrappers = load('202610050001_pin_gated_server_wrappers');
+  await db.exec(`${section(parentAi, 'create table public.ai_usage', 'commit;')}
+    ${definition(wrappers, 'act_as_user')}
+    revoke all on function public.act_as_user(uuid) from public, anon, authenticated, service_role;`);
 
+  const addons = '202610110001_pro_plus_and_addons';
+  await db.exec(load(addons));
+  await db.exec(readFileSync('supabase/preflight/202610110001_pro_plus_and_addons.verify.sql', 'utf8'));
+  // Historical billing and money-model preflights run at their migration boundary
+  // above; the current preflight attests the extended promo commission scope.
+  const addonResults = await db.exec(readFileSync('tests/integration/migrations/pro-plus-and-addons.scenarios.sql', 'utf8'));
+  const expectedAddons = new Set(['upsell_price_and_claim', 'upsell_referral_no_stack', 'b1g1_two_years',
+    'b1g1_extends_pro_plus', 'slot_overfill_honoured', 'offer_unavailable_when_full',
+    'b1g1_closed_after_creation', 'b1g1_closed_refuses_new', 'offer_already_used',
+    'promo_pending_reused_when_closed', 'promo_pending_reused_when_full', 'promo_refund_cannot_rebuy',
+    'promo_refund_frees_slot', 'promo_pending_lock', 'promo_commission', 'pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
+    'addon_requires_plan', 'addon_then_pro_plus', 'addon_extends', 'addon_duplicate_webhook',
+    'addon_no_commission_no_discount', 'printables_once', 'founding_tier', 'refund_revokes_addon',
+    'snapshot_shape', 'regression_existing_plans', 'higher_plan_active', 'lifetime_active', 'printables_pending_reused',
+    'founding_already_included', 'founding_expires_after_year', 'pro_plus_yearly_adds_year',
+    'pro_plus_yearly_pending_lock', 'pro_plus_yearly_prior_paid_no_discount', 'addon_expired_plan_refused',
+    'addon_allowed_lifetime', 'founding_revoked_basic', 'tier_free_trial_standard_plus', 'monthly_free_10', 'monthly_standard_20',
+    'month_boundary', 'plus_unlimited_month', 'plus_daily_safety', 'tier_after_founding', 'system_cap',
+    'monthly_quota_validation', 'monthly_quota_order_and_gap', 'monthly_quota_authorization', 'monthly_quota_authenticated_denied']);
+  for (const result of addonResults) {
+    for (const row of result.rows ?? []) {
+      if (!row.scenario) continue;
+      if (!expectedAddons.delete(row.scenario)) throw new Error(`Unexpected or duplicate add-on scenario: ${row.scenario}`);
+      if (row.ok !== true) throw new Error(`Pro Plus/add-on scenario failed: ${row.scenario} (ok=${row.ok})`);
+      console.log(`PASS: ${row.scenario} ok=true`);
+    }
+  }
+  if (expectedAddons.size) throw new Error(`Missing Pro Plus/add-on scenarios: ${[...expectedAddons].join(', ')}`);
   const actor = crypto.randomUUID(), familyId = crypto.randomUUID();
   await db.query('insert into auth.users(id) values ($1)',[actor]);
   await db.query('insert into families(id,created_by) values ($1,$2)',[familyId,actor]);
@@ -83,6 +119,34 @@ try {
   other = await db.connect();
   await other.query("set statement_timeout='10s'");
   const checkout = 'select * from create_family_payment_order($1,$2,$3,$4,now()+interval \'15 minutes\')';
+  // Both paid reservations for the last promo slot must survive real lock contention.
+  const promoFamilies = [0, 1].map(() => ({ actor: crypto.randomUUID(), family: crypto.randomUUID() }));
+  for (const promo of promoFamilies) {
+    await db.query('insert into auth.users(id) values ($1)', [promo.actor]);
+    await db.query('insert into families(id,created_by) values ($1,$2)', [promo.family, promo.actor]);
+    await db.query("insert into family_memberships(family_id,user_id,role) values ($1,$2,'owner')", [promo.family, promo.actor]);
+  }
+  await db.exec("insert into launch_offer_claims(offer_code,family_id,order_code) select 'pro_plus_upsell_690',gen_random_uuid(),730100+n from generate_series(1,199) n");
+  for (const [index, promo] of promoFamilies.entries()) {
+    const reserved = await db.query(checkout, [promo.family, promo.actor, 730001+index, 'pro_plus_yearly_upsell']);
+    assert.equal(reserved.rows[0].amount, 690000);
+    assert.equal(reserved.rows[0].discount_bps, 0);
+  }
+  assert.equal((await db.query("select launch_offer_remaining('pro_plus_upsell_690') as remaining")).rows[0].remaining, 1);
+  await db.exec('begin');
+  const firstPromo = await db.query("select process_payos_webhook(730001,690000,'KIDHABIT 730001','concurrent-promo-1','local','{}') as result");
+  assert.equal(firstPromo.rows[0].result, 'activated');
+  const queuedPromo = other.query("select process_payos_webhook(730002,690000,'KIDHABIT 730002','concurrent-promo-2','local','{}') as result");
+  await waitForLock(db, other);
+  await db.exec('commit');
+  assert.equal((await queuedPromo).rows[0].result, 'activated');
+  const overfill = await db.query("select count(*)::integer as claims, launch_offer_remaining('pro_plus_upsell_690') as remaining from launch_offer_claims where offer_code='pro_plus_upsell_690' and revoked_at is null");
+  assert.deepEqual(overfill.rows[0], { claims: 201, remaining: 0 });
+  const activated = await db.query("select count(*)::integer as n, bool_and(s.plan='pro_plus_yearly' and s.status='active' and s.subscription_ends_at=p.paid_at+interval '1 year') as ok from user_subscriptions s join payment_orders p using(family_id) where p.order_code in (730001,730002)");
+  assert.deepEqual(activated.rows[0], { n: 2, ok: true });
+  await assert.rejects(db.query(checkout, [familyId, actor, 730003, 'pro_plus_yearly_upsell']), /offer_unavailable/);
+  console.log('PASS: concurrent last-slot promo payments both activate and claim; 201 claims refuse new orders');
+
   // A second connection must wait for the first reservation to commit, then reuse it.
   await db.exec('begin');
   await db.query(checkout,[familyId,actor,700001,'yearly']);
@@ -93,6 +157,18 @@ try {
   assert.equal(second.rows[0].existing_order_code,'700001');
   assert.equal((await db.query('select count(*)::integer as n from payment_orders where family_id=$1',[familyId])).rows[0].n,1);
   console.log('PASS: concurrent yearly reservations reuse one order');
+
+  await db.exec('begin');
+  await db.query(checkout,[familyId,actor,700010,'printables']);
+  const queuedPrintables = other.query(checkout,[familyId,actor,700011,'printables']);
+  await waitForLock(db, other);
+  await db.exec('commit');
+  const secondPrintables = await queuedPrintables;
+  assert.equal(secondPrintables.rows[0].amount,99000);
+  assert.equal(secondPrintables.rows[0].discount_bps,0);
+  assert.equal(secondPrintables.rows[0].existing_order_code,'700010');
+  assert.equal((await db.query("select count(*)::integer as n from payment_orders where family_id=$1 and plan_id='printables'",[familyId])).rows[0].n,1);
+  console.log('PASS: concurrent printables reservations reuse one order');
 
   // A webhook committed while the admin is waiting must make its compare-and-set stale.
   await db.exec('begin');
@@ -114,7 +190,7 @@ try {
   await db.exec('commit');
   assert.equal((await queuedRefund).rows[0].result.code,'refund_already_confirmed');
   console.log('PASS: concurrent refund cases confirm only one refund');
-} catch(error) { console.error(`FAIL: ${error.message}`); process.exitCode=1; }
+} catch(error) { console.error(`FAIL: ${error.message}${error.detail ? `\n${error.detail}` : ''}${error.where ? `\n${error.where}` : ''}`); process.exitCode=1; }
 finally { if(other) await other.end(); if(db) await db.close(); await stopSqlTestServer(); }
 
 process.exit(process.exitCode ?? 0);

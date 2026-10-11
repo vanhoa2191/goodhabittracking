@@ -26,17 +26,25 @@
 | **Basic Plan · Yearly** | 399,000 VND / year (saves 189,000 VND, 32% compared with paying monthly) | 1 child | One child, paid once for 12 months |
 | **Pro Plan · Monthly** | 69,000 VND / month | Up to 5 children | Families with several children, flexible by the month |
 | **Pro Plan · Yearly** | 590,000 VND / year (saves 238,000 VND, 29% compared with paying monthly) | Up to 5 children | Staying with it long enough for small steps to become habits |
+| **Pro Plus Plan · Monthly** | 79,000 VND / month | Up to 5 children | All Pro benefits and unlimited AI suggestions |
+| **Pro Plus Plan · Yearly** | 790,000 VND / year (saves 158,000 VND, 17% compared with paying monthly) | Up to 5 children | All Pro benefits and unlimited AI suggestions, paid yearly |
 | **Lifetime** | Not sold | Unlimited | Granted manually by an administrator only<!--op--> ([10](10-quan-tri-va-van-hanh.md#khach-hang))<!--/op--> |
 
 The monthly and yearly versions of the same plan include exactly the same benefits and differ only in price and term. All payments are **one-time payments** with no automatic renewal. The pricing screen also lists extra benefits for the paid plans (weekly tracking reports, family competitions, and faster technical support); the ebook is **not yet available**.
 
-**Names on the website** are the same as in the app: *Basic Plan* and *Pro Plan* (monthly and yearly), at the same prices.
+**Names on the website** are the same as in the app: *Basic Plan*, *Pro Plan*, and *Pro Plus Plan* (monthly and yearly), at the same prices.
 
-**The number of children per plan** is checked by the database when you **add** a new child profile: the Basic Plan allows up to 1 child; the Pro Plan and the trial allow up to 5; the lifetime plan is unlimited; without an active plan, you cannot add a new child profile. A family that already has more profiles than its plan allows **keeps its existing profiles**; the limit only blocks adding new ones.
+**The number of children per plan** is checked by the database when you **add** a new child profile: the Basic Plan allows up to 1 child; the Pro Plan, Pro Plus Plan, and the trial allow up to 5; the lifetime plan is unlimited; without an active plan, you cannot add a new child profile. A family that already has more profiles than its plan allows **keeps its existing profiles**; the limit only blocks adding new ones.
 
-**Pro Plus Plan and the Habit Coach (in development).** The Pro Plus Plan (79,000 VND / month or 790,000 VND / year) includes everything in the Pro Plan plus the **Habit Coach** (AI small-step suggestions and a weekly summary), for up to 5 children. This plan is **in development**: it cannot be bought, has no buy button and has no launch date; the current plans do not change. See [AI suggestions](09-bao-mat-va-rieng-tu.md#goi-y-ai) for what data is sent.
+**Pro Plus Plan.** The Pro Plus Plan (79,000 VND / month or 790,000 VND / year, saves 158,000 VND, 17%) includes all benefits of the Pro Plan (up to 5 children) and unlimited AI suggestions. See [AI suggestions](09-bao-mat-va-rieng-tu.md#goi-y-ai) for what data is sent.
 
-**Launch offer.** The first 10 families to successfully pay for the **Pro Plan yearly** before Pro Plus launches are upgraded to Pro Plus for free for the rest of the year they paid for. Each family gets at most 1 slot, counted in the order of successful payment; when all 10 are taken, the page says “No slots left”. A slot is withdrawn if that order is refunded.
+**AI add-on.** 29,000 VND / month, only for families with an active Basic or Pro Plan; each purchase adds 1 month; Pro Plus already includes it so no need to purchase. Free and trial accounts receive 10 free AI suggestions per month; Basic and Pro receive 20 AI suggestions per month; Pro Plus or the AI add-on receive unlimited AI suggestions (with a 100/day safety cap).
+
+**Launch offer.** The first 10 families to successfully pay for the **Pro Plan yearly** are upgraded to Pro Plus for free for the rest of the year they paid for. Each family gets at most 1 slot, counted in the order of successful payment; when all 10 are taken, the page says “No slots left”. A slot is withdrawn if that order is refunded.
+
+**Pro Plus upgrade offer (690,000 VND).** When a parent chooses the Pro Plan · Yearly on the pricing sheet or in yearly checkout, the system displays the notice “Add 100,000 VND to upgrade to Pro Plus: unlimited AI. {n}/200 slots left.” to purchase Pro Plus Yearly at 690,000 VND (instead of 790,000 VND, link `/checkout?plan=pro_plus_yearly_upsell`). The upgrade notice is shown only after all 10 founding places are taken and is not shown in checkout for orders with a referral discount. The offer is open to the first 200 successfully paid orders, at most 1 slot per family, with no end date. When all slots are taken or the count cannot be read, the notice is hidden and new orders are refused with “This offer is full or has ended.”. If a family has already used the offer, subsequent orders are refused with “Your family has already used this offer.”. The offer does not stack with the 10% referral discount (the referral code step is skipped). When refunded, the slot is automatically released.
+
+**Buy 1 get 1 offer (790,000 VND for 2 years).** On the Pro Plus Plan · Yearly card, a notice displays “Buy 1 year get 1 year free: 790,000 VND for 2 years of Pro Plus. {n}/100 slots left, until 31/12/2026.” (link `/checkout?plan=pro_plus_yearly_b1g1`). For 790,000 VND, the family receives 2 years of Pro Plus (+2 years added to the term). Limited to the first 100 successfully paid orders, running until 31/12/2026 at 23:59 (Asia/Saigon). At most 1 slot per family; families already on Pro Plus can still purchase to extend by 2 years. When full, expired, or when the count cannot be read, the notice is hidden; after closing, new orders are refused but orders created before the deadline and paid after are honoured for the full 2 years. The offer does not stack with the 10% referral discount (the referral code step is skipped). When refunded, the slot is automatically released.
 
 <a id="noi-mua"></a>
 ## Where to buy
@@ -90,7 +98,7 @@ Gift codes are created by the operations team. Enter one in `Settings → Accoun
 <a id="giam-gia"></a>
 ## Discount for referred families
 
-A family that enters a referral code (through a `?ref=` link or by entering it manually) gets **10% off its first order of either yearly plan**: Pro Plan · Yearly 590,000 VND becomes 531,000 VND, and Basic Plan · Yearly 399,000 VND becomes 359,000 VND (saves 40,000 VND); only if the family has no previously paid order. The payment screen shows: You save X thanks to a referral from <referrer display name>. Details: [8. Referrals](08-gioi-thieu-ban-be.md#giam-10).
+A family that enters a referral code (through a `?ref=` link or by entering it manually) gets **10% off its first order of any yearly plan**: Pro Plus Plan · Yearly 790,000 VND becomes 711,000 VND, Pro Plan · Yearly 590,000 VND becomes 531,000 VND, and Basic Plan · Yearly 399,000 VND becomes 359,000 VND (saves 40,000 VND); only if the family has no previously paid order. Pro Plus monthly, other monthly plans, add-ons, and promotional Pro Plus Yearly offers (the 690,000 VND upgrade offer and the 790,000 VND buy-1-get-1 offer) do not receive a referral discount (offers do not stack; the referral code step is skipped). The payment screen shows: You save X thanks to a referral from <referrer display name>. Details: [8. Referrals](08-gioi-thieu-ban-be.md#giam-10).
 
 <a id="hoan-tien"></a>
 ## Refunds and cancellation

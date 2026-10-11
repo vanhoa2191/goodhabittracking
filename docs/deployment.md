@@ -59,7 +59,7 @@ Site marketing gửi tiêu đề bảo mật qua tệp `_headers` do bản dựn
 
 Các lệnh Cloudflare luôn loại server secret khỏi môi trường build để chúng chỉ tồn tại dưới dạng Worker secrets lúc chạy. Không đặt `PAYOS_*`, `SUPABASE_SERVICE_ROLE_KEY` hoặc `PAIRING_RATE_LIMIT_SECRET` trong `.env.local`; wrapper sẽ chặn build nếu phát hiện giá trị.
 4. Khai báo public variables `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_MARKETING_URL` và `NEXT_PUBLIC_DEPLOY_TARGET=app` trong **môi trường build app**. Marketing build chỉ nhận `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_MARKETING_URL` và `NEXT_PUBLIC_DEPLOY_TARGET=marketing`.
-5. Khai báo encrypted secrets: `SUPABASE_SERVICE_ROLE_KEY`, `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`, `PAIRING_RATE_LIMIT_SECRET`, `PARENT_UNLOCK_SECRET`, và khi bật lifecycle email: `RESEND_API_KEY`, `LIFECYCLE_EMAIL_FROM`, `CRON_SECRET`.
+5. Khai báo encrypted secrets: `SUPABASE_SERVICE_ROLE_KEY`, `PAYOS_CLIENT_ID`, `PAYOS_API_KEY`, `PAYOS_CHECKSUM_KEY`, `PAIRING_RATE_LIMIT_SECRET`, `PARENT_UNLOCK_SECRET`, và khi bật lifecycle email: `RESEND_API_KEY`, `LIFECYCLE_EMAIL_FROM`, `CRON_SECRET`, và khi dùng DeepSeek: `DEEPSEEK_API_KEY`.
 
 Trang `/admin` và mọi API quản trị lấy quyền từ `admin_memberships`, áp dụng vai trò, ngày hết hạn, thu hồi tức thời và AAL2. Thao tác ghi bắt buộc có lý do và tạo audit bất biến đã tối thiểu dữ liệu. `ADMIN_EMAILS` không cấp quyền vận hành thông thường: chỉ dùng khôi phục khẩn cấp cùng `ADMIN_BOOTSTRAP_EXPIRES_AT`, tối đa 24 giờ, cho email đã xác minh và chỉ để tài khoản đó tự tạo DB membership có hạn qua `/admin/security`. Sau đó phải xóa hai biến bootstrap. Không dùng parent PIN thay MFA.
 
@@ -184,6 +184,14 @@ Migration `supabase/migrations/202610070001_pricing_tiers_launch_offer.sql` thê
 5. Ứng dụng cần biến `NEXT_PUBLIC_MARKETING_URL` (origin của trang marketing, ví dụ `https://kidhabithero.com`): endpoint công khai trả số suất ưu đãi còn lại dùng nó cho CORS. Thiếu biến thì trang marketing không đọc được số suất thật.
 6. Hoàn tiền một đơn Gói Pro năm đang giữ suất ưu đãi do quản trị viên xử lý thủ công trong admin; suất bị thu hồi cùng đơn.
 
+### Pro Plus và Add-ons (`202610110001`)
+
+Migration `supabase/migrations/202610110001_pro_plus_and_addons.sql` thêm các gói `pro_plus_monthly`, `pro_plus_yearly`, bảng `family_addons` cho Add-on AI (`ai_addon_monthly`) và Printable & Ebook (`printables`), cùng hàm `family_ai_tier()` và `family_addons_snapshot()`. Phiên bản schema là `202610110001`.
+
+1. Áp migration `202610110001_pro_plus_and_addons.sql` (`db push`).
+2. Chạy `supabase/preflight/202610110001_pro_plus_and_addons.verify.sql` bằng vai trò `postgres` qua `psql` hoặc Supabase CLI để xác nhận cấu trúc và ràng buộc.
+3. Cờ build `NEXT_PUBLIC_PRINTABLES_SALE` (mặc định `false`): khi `false`, không hiện Printable & Ebook 99.000đ và API từ chối.
+
 ## Staged rollout
 
 - Preview: health endpoint phải `ready`; chạy E2E desktop/mobile và webhook test mode.
@@ -195,9 +203,29 @@ Migration `supabase/migrations/202610070001_pricing_tiers_launch_offer.sql` thê
 
 PayOS credentials từng xuất hiện trong hội thoại đã được thay bằng channel production mới ngày 2026-09-21. Runtime và release preflight tiếp tục từ chối fingerprint của bộ khóa đã lộ. Với lần rotation tiếp theo, cập nhật Worker secrets và webhook verification, deploy, smoke test, rồi revoke key cũ.
 
-## Gợi ý bằng AI (Cloudflare Workers AI)
+## Gợi ý bằng AI (Cloudflare Workers AI và DeepSeek)
 
-Cờ build `NEXT_PUBLIC_PARENT_AI=true` (mặc định tắt; biến repository cùng tên, đặt rồi chạy lại CI trên `main`). Cần: binding `AI` trong `wrangler.jsonc` (đã có), migration `202610040004_parent_ai.sql` đã áp (chạy `supabase/preflight/202610040004_parent_ai.verify.sql` sau khi áp; hoàn tác ở `supabase/rollbacks/`). Tên mô hình ở `src/lib/ai/config.ts` (`AI_MODEL`); hạn mức theo gia đình và toàn hệ thống ở `AI_LIMITS` (gói miễn phí chỉ có 10.000 Neurons/ngày cho cả tài khoản, nên `systemPerDay` là giới hạn thật).
+Cờ build `NEXT_PUBLIC_PARENT_AI=true` (mặc định tắt; biến repository cùng tên, đặt rồi chạy lại CI trên `main`). Cần: binding `AI` trong `wrangler.jsonc` (đã có), migration `202610040004_parent_ai.sql` và `202610110001_pro_plus_and_addons.sql` đã áp (chạy file verify tương ứng sau khi áp; hoàn tác ở `supabase/rollbacks/`). Tên mô hình ở `src/lib/ai/config.ts` (`AI_MODEL`); hạn mức theo gia đình và toàn hệ thống ở `AI_LIMITS`:
+
+- **Hạn mức theo gia đình trong tháng** (hàm `consume_ai_quota_monthly` tính theo tháng UTC từ các dòng ngày trong `ai_usage`):
+  - Gói miễn phí và dùng thử 7 ngày: 10 lượt gợi ý AI miễn phí mỗi tháng (`AI_LIMITS.perMonth.free = 10`);
+  - Gói Cơ bản, Gói Pro và trọn đời: Gợi ý AI 20 lượt/tháng (`AI_LIMITS.perMonth.standard = 20`);
+  - Gói Pro Plus, Add-on AI và gia đình trong năm ưu đãi ra mắt: Gợi ý AI không giới hạn, không có hạn mức tháng (`null`);
+  - Mức bảo vệ an toàn theo ngày: tối đa 100 lượt/ngày (`AI_LIMITS.perDaySafety = 100`) áp dụng cho mọi gói;
+  - Khoảng cách tối thiểu giữa hai lượt gọi: 20 giây (`AI_LIMITS.minSecondsBetweenCalls = 20`).
+- **Mức trần toàn hệ thống**: biến môi trường `AI_SYSTEM_PER_DAY` đặt giới hạn cho tất cả gia đình trong một ngày (`AI_LIMITS.systemPerDay`). Nhận số nguyên từ 1 đến 100.000, mặc định là `5000` (khi để trống hoặc giá trị không hợp lệ như chuỗi, 0, số âm).
+
+**Nhà cung cấp AI (`AI_PROVIDER`)**:
+- Biến môi trường `AI_PROVIDER` nhận `workers` (mặc định) hoặc `deepseek`.
+- Nhà cung cấp DeepSeek được chuẩn bị sẵn nhưng giữ tắt. DeepSeek chỉ chạy khi `AI_PROVIDER=deepseek` **và** secret `DEEPSEEK_API_KEY` được thiết lập; nếu thiếu key, hệ thống fail closed (từ chối với lý do `disabled`) và không tự chuyển sang Workers AI.
+- Các biến cấu hình DeepSeek:
+  - `DEEPSEEK_API_KEY`: API key của DeepSeek (secret mã hóa).
+  - `DEEPSEEK_BASE_URL`: Điểm cuối API, mặc định `https://api.deepseek.com` (gọi đường dẫn `/chat/completions`).
+  - `DEEPSEEK_MODEL`: Tên mô hình, mặc định `deepseek-chat`, định dạng body tương thích OpenAI, định dạng phản hồi JSON, và áp dụng thời gian chờ (timeout) hiện có.
+- **Cảnh báo bắt buộc trước khi bật DeepSeek**: Bật DeepSeek sẽ gửi dữ liệu người dùng tới bên xử lý dữ liệu nước ngoài mới (foreign processor). Trước khi kích hoạt `AI_PROVIDER=deepseek`, bắt buộc phải hoàn thành:
+  1. Cập nhật hồ sơ chuyển giao dữ liệu ra nước ngoài (CTIA);
+  2. Cập nhật chính sách quyền riêng tư (privacy notice) và danh sách bên xử lý dữ liệu;
+  3. Tăng phiên bản chính sách đồng thuận `AI_POLICY_VERSION` để mọi phụ huynh phải đồng ý lại trước khi sử dụng.
 
 - **Tắt khẩn cấp không cần build**: đặt biến Worker `AI_KILL_SWITCH=true` (dashboard Cloudflare hoặc `wrangler secret put AI_KILL_SWITCH`); mọi route AI trả 503 `ai_disabled`. Gỡ biến để bật lại.
 - **Trước khi bật cho người dùng thật** phải xong: xác minh điều khoản Cloudflare về dữ liệu gửi qua Workers AI (ghi ngày và đường dẫn vào `docs/security-privacy.md`), cập nhật chính sách riêng tư và danh sách bên xử lý, duyệt văn bản đồng ý (đổi `AI_POLICY_VERSION` khi đổi văn bản để mọi người đồng ý lại). Thử chọn mô hình với bảng 20 thói quen mẫu vi/en.

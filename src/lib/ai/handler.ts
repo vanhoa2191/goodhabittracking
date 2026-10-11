@@ -5,9 +5,11 @@ import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { requireParentUnlock } from '@/lib/security/parent-unlock';
 import { callParentRpc } from '@/lib/security/parent-rpc';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
-import { AI_LIMITS, AI_POLICY_VERSION, type AiKind } from './config';
+import { AI_LIMITS, AI_POLICY_VERSION, type AiKind, type AiTier } from './config';
 import type { ChatMessage } from './prompts';
+import { resolveProvider } from './providers';
 import { askModel } from './run';
 
 type Handled<Input, Output> = {
@@ -27,7 +29,7 @@ const code = (status: number, error: string, extra: Record<string, unknown> = {}
 
 /**
  * One path for every AI suggestion, after the route has refused cross-site requests: signed-in parent, feature on, PIN, the parent's own
- * agreement, a free allowance left, then the model, then a strict check of what it said. Nothing the child or the
+ * agreement, a monthly allowance by tier left, then the model, then a strict check of what it said. Nothing the child or the
  * parent wrote is ever logged here; the logger keeps only codes.
  */
 export async function handleAiRequest<Input, Output>(request: NextRequest, spec: Handled<Input, Output>): Promise<NextResponse> {
@@ -69,8 +71,23 @@ export async function handleAiRequest<Input, Output>(request: NextRequest, spec:
   const messages = spec.buildMessages(prepared);
   if (!messages) return code(400, 'Invalid request.');
 
-  const quota = await callParentRpc(parent.user.id, 'consume_ai_quota', {
-    per_day: AI_LIMITS.perFamilyPerDay,
+  const { provider, available } = resolveProvider(process.env);
+  if (!available) {
+    log('warn', 'model_disabled', 503);
+    return code(503, 'Suggestion unavailable.', { code: 'ai_disabled' });
+  }
+
+  let tier: AiTier = 'free';
+  try {
+    const entitlement = await createAdminSupabaseClient().rpc('family_ai_tier', { target_family: parent.familyId });
+    if (!entitlement.error && (entitlement.data === 'plus' || entitlement.data === 'standard')) tier = entitlement.data;
+  } catch {
+    // A failed entitlement lookup never grants the paid allowance.
+  }
+
+  const quota = await callParentRpc(parent.user.id, 'consume_ai_quota_monthly', {
+    per_month: tier === 'plus' ? null : AI_LIMITS.perMonth[tier],
+    per_day: AI_LIMITS.perDaySafety,
     system_per_day: AI_LIMITS.systemPerDay,
     min_gap_seconds: AI_LIMITS.minSecondsBetweenCalls,
   });
@@ -78,17 +95,17 @@ export async function handleAiRequest<Input, Output>(request: NextRequest, spec:
     log('error', 'quota_unavailable', 503);
     return code(503, 'Suggestion unavailable.', { code: 'ai_error' });
   }
-  const verdict = quota.data as { allowed?: unknown; reason?: unknown; remainingToday?: unknown };
+  const verdict = quota.data as { allowed?: unknown; reason?: unknown; remainingThisMonth?: unknown };
   if (verdict.allowed !== true) {
     log('info', `quota_${String(verdict.reason ?? 'refused').replace(/[^a-z_]/g, '')}`, 429);
-    return code(429, 'No suggestions left for now.', { code: 'ai_quota', reason: verdict.reason });
+    return code(429, 'No suggestions left for now.', { code: 'ai_quota', reason: verdict.reason, ...(verdict.reason === 'family_month' || verdict.reason === 'family_day' ? { tier } : {}) });
   }
 
   // Withdrawing the agreement takes effect even for a request that was already waiting on the allowance.
   const again = await readConsent();
   if (again.error || !again.data || again.data.revoked_at) return code(403, 'The AI suggestion needs the parent’s agreement.', { code: 'ai_consent_required' });
 
-  const reply = await askModel(messages, spec.schema);
+  const reply = await askModel(messages, spec.schema, { provider });
   if (!reply.ok) {
     log(reply.reason === 'error' ? 'error' : 'warn', `model_${reply.reason}`, 503);
     const answer = reply.reason === 'disabled' ? 'ai_disabled' : reply.reason === 'timeout' ? 'ai_timeout' : reply.reason === 'quota' ? 'ai_quota' : 'ai_error';
@@ -100,5 +117,5 @@ export async function handleAiRequest<Input, Output>(request: NextRequest, spec:
     return code(503, 'Suggestion unavailable.', { code: 'ai_invalid_output' });
   }
   log('info', 'suggestion_made', 200);
-  return NextResponse.json({ success: true, result: output, remainingToday: typeof verdict.remainingToday === 'number' ? verdict.remainingToday : null });
+  return NextResponse.json({ success: true, result: output, remainingThisMonth: typeof verdict.remainingThisMonth === 'number' ? verdict.remainingThisMonth : null });
 }

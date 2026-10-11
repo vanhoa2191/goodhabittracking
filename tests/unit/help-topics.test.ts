@@ -53,6 +53,7 @@ describe('help topics', () => {
     }
   });
 
+
   it('are all shown somewhere, and every ? in the screens names a real topic', () => {
     const known = new Set<string>(HELP_TOPIC_IDS);
     expect([...usedTopics.keys()].filter((id) => !known.has(id))).toEqual([]);

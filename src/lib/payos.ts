@@ -1,4 +1,7 @@
-import { PLAN_PRICES } from '@/lib/billing/plan-catalog';
+import { ADDON_PRICES } from '@/lib/billing/addon-catalog';
+import { PLAN_PRICES, PROMO_PLANS } from '@/lib/billing/plan-catalog';
+import type { AddonId } from '@/lib/billing/addon-catalog';
+import type { PromoPlanId } from '@/lib/billing/plan-catalog';
 import { PricingPlan, SubscriptionPlan } from '@/types';
 
 export const PRICING_PLANS: PricingPlan[] = [
@@ -61,9 +64,73 @@ export const PRICING_PLANS: PricingPlan[] = [
     features: [],
     ctaText: 'Chọn Gói Pro · Năm',
   },
+  {
+    id: 'pro_plus_monthly',
+    name: 'Gói Pro Plus · Tháng',
+    badge: 'Có AI',
+    price: PLAN_PRICES.pro_plus.month,
+    periodLabel: '/ tháng',
+    dailyEquivalent: '~2.630đ / ngày',
+    description: 'Mọi tính năng Pro cùng Gợi ý AI không giới hạn',
+    features: [],
+    ctaText: 'Chọn Gói Pro Plus · Tháng',
+  },
+  {
+    id: 'pro_plus_yearly',
+    name: 'Gói Pro Plus · Năm',
+    badge: 'Có AI, tiết kiệm nhất',
+    price: PLAN_PRICES.pro_plus.year,
+    originalPrice: PLAN_PRICES.pro_plus.month * 12,
+    savings: 'Tiết kiệm 158.000đ (17%)',
+    periodLabel: '/ năm',
+    dailyEquivalent: '~65.800đ / tháng (~2.160đ/ngày)',
+    description: 'Cả năm có AI đồng hành cùng gia đình với giá tốt hơn trả từng tháng',
+    features: [],
+    ctaText: 'Chọn Gói Pro Plus · Năm',
+  },
+  {
+    id: 'pro_plus_yearly_upsell',
+    name: 'Pro Plus · Năm (ưu đãi nâng cấp)',
+    badge: 'Ưu đãi giới hạn',
+    price: PROMO_PLANS.pro_plus_yearly_upsell.price,
+    originalPrice: PLAN_PRICES.pro_plus.year,
+    periodLabel: '/ năm',
+    description: 'Mọi tính năng Pro cùng Gợi ý AI không giới hạn, giá ưu đãi cho suất đầu tiên',
+    features: [],
+    ctaText: 'Chọn ưu đãi nâng cấp Pro Plus',
+  },
+  {
+    id: 'pro_plus_yearly_b1g1',
+    name: 'Pro Plus · 2 năm (mua 1 tặng 1)',
+    badge: 'Mua 1 tặng 1',
+    price: PROMO_PLANS.pro_plus_yearly_b1g1.price,
+    originalPrice: PLAN_PRICES.pro_plus.year * 2,
+    periodLabel: '/ 2 năm',
+    description: 'Mua 1 năm Pro Plus, tặng thêm 1 năm',
+    features: [],
+    ctaText: 'Chọn ưu đãi mua 1 tặng 1',
+  },
+  {
+    id: 'ai_addon_monthly',
+    name: 'Add-on AI',
+    price: ADDON_PRICES.ai_addon_monthly,
+    periodLabel: '/ tháng',
+    description: 'Gợi ý AI không giới hạn cho gói Cơ bản hoặc Pro',
+    features: [],
+    ctaText: 'Thêm Add-on AI',
+  },
+  {
+    id: 'printables',
+    name: 'Printable & Ebook',
+    price: ADDON_PRICES.printables,
+    periodLabel: 'một lần',
+    description: 'Bộ Printable và Ebook, mua một lần dùng mãi',
+    features: [],
+    ctaText: 'Mua Printable & Ebook',
+  },
 ];
 
-export function getPricingPlan(planId: SubscriptionPlan): PricingPlan {
+export function getPricingPlan(planId: SubscriptionPlan | PromoPlanId | AddonId): PricingPlan {
   const plan = PRICING_PLANS.find((candidate) => candidate.id === planId);
   if (!plan) throw new Error('Unsupported pricing plan.');
   return plan;

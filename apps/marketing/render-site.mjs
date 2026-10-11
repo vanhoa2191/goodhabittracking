@@ -3,7 +3,7 @@ import { sessionHintCookie } from './session-hint.mjs';
 import scienceData from '../../src/data/science-content.json' with { type: 'json' };
 import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
 import { maxSavingPercent, priceView, pricingTiers, upgradeDifference } from './pricing.mjs';
-import { faqGroups, faqs, launchOffer, navigation, publicPages, safety, story, storyStages, testimonials } from './site-content.mjs';
+import { faqGroups, faqs, launchOffer, promoOffers, navigation, publicPages, safety, story, storyStages, testimonials } from './site-content.mjs';
 
 const icons = {
   compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>',
@@ -446,24 +446,17 @@ function renderPlanCard(tier, appOrigin, recommended) {
         <div class="amount" data-cycle="month">
           <div class="now"><strong>${vnd(month.price)}</strong><span>/ tháng</span></div>
           <p class="per">khoảng ${vnd(month.perDay)} mỗi ngày</p>
-          ${plan.purchasable ? `<button class="nudge" type="button" data-cycle-nudge>Trả theo năm tiết kiệm ${vnd(year.saving)} →</button>` : ''}
+          <button class="nudge" type="button" data-cycle-nudge>Trả theo năm tiết kiệm ${vnd(year.saving)} →</button>
         </div>`;
-  if (!plan.purchasable) {
-    return `<article class="plan plan-soon" data-plan="${tier}">
-        <span class="badge badge-soon">${escapeHtml(plan.status)}</span>
-        <h3>${escapeHtml(plan.name)}</h3>
-        <p class="for">${escapeHtml(plan.who)}</p>
-        ${amounts}
-        <ul>${features}</ul>
-        <p class="soon-note">${escapeHtml(launchOffer.upcomingNote)}</p>
-        <button class="btn btn-soon" type="button" disabled>${escapeHtml(copy.soonButton)}</button>
-      </article>`;
-  }
   const upgrade = tier === 'pro'
     ? `<p class="upgrade" data-cycle="year">Chỉ hơn ${escapeHtml(pricingTiers.solo.name)} ${vnd(upgradeDifference('year'))} mỗi năm, dùng cho tối đa 5 bé.</p><p class="upgrade" data-cycle="month">Chỉ hơn ${escapeHtml(pricingTiers.solo.name)} ${vnd(upgradeDifference('month'))} mỗi tháng, dùng cho tối đa 5 bé.</p>`
     : '';
   const buttonClass = recommended ? 'btn btn-primary' : 'btn btn-line';
   const checkout = (cycle) => appUrl(appOrigin, `/checkout?plan=${priceView(tier, cycle).planId}`);
+  const promo = promoOffers.find((offer) => offer.tier === tier);
+  const promoLink = promo
+    ? `<a class="upgrade" data-cycle="year" data-promo-offer="${escapeHtml(promo.offerCode)}" data-promo-slots="${promo.slots}" data-promo-ends-at="${escapeHtml(promo.endsAt ?? '')}" data-promo-copy="${escapeHtml(promo.text)}"${promo.planId === 'pro_plus_yearly_upsell' ? ' data-promo-requires-founding-sold-out="true"' : ''} hidden href="${appUrl(appOrigin, `/checkout?plan=${promo.planId}`)}"></a>`
+    : '';
   return `<article class="plan${recommended ? ' recommended' : ''}" data-plan="${tier}">
         <span class="badge">${escapeHtml(copy.recommendedBadge)}</span>
         <h3>${escapeHtml(plan.name)}</h3>
@@ -471,6 +464,7 @@ function renderPlanCard(tier, appOrigin, recommended) {
         ${amounts}
         <ul>${features}</ul>
         ${upgrade}
+        ${promoLink}
         <a class="${buttonClass}" data-cycle="year" data-plan-cta href="${checkout('year')}">Chọn ${escapeHtml(plan.name)} · năm</a>
         <a class="${buttonClass}" data-cycle="month" data-plan-cta href="${checkout('month')}">Chọn ${escapeHtml(plan.name)} · tháng</a>
         <a class="month-link" data-cycle="year" href="${checkout('month')}">Hoặc trả theo tháng: ${vnd(month.price)}</a>
@@ -506,6 +500,7 @@ function renderPlans(appOrigin, { home = false } = {}) {
       <div class="plans">
         ${Object.keys(pricingTiers).map((tier) => renderPlanCard(tier, appOrigin, tier === recommendedTier)).join('')}
       </div>
+      <p class="lead"><a href="${appUrl(appOrigin, '/checkout?plan=ai_addon_monthly')}">${escapeHtml(copy.addonLine)}</a></p>
       <ul class="pledge reveal">${copy.pledge.map((item) => `<li><b>${escapeHtml(item.strong)}</b><span>${escapeHtml(item.text)}</span></li>`).join('')}</ul>
     </div>
   </section>`;

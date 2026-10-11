@@ -1,5 +1,6 @@
 import { getBrowserSupabase, isSupabaseConfigured } from '@/lib/supabase/browser';
-import { isPaidPlanId, type PaidPlanId } from '@/lib/billing/plan-catalog';
+import { isAddonId, type AddonId } from '@/lib/billing/addon-catalog';
+import { isPaidPlanId, isPromoPlanId, type PaidPlanId, type PromoPlanId } from '@/lib/billing/plan-catalog';
 
 export { isSupabaseConfigured };
 
@@ -12,8 +13,9 @@ export function getSupabase() {
 // ==============================================================================
 export type PaidPlan = PaidPlanId;
 
-export function parseCheckoutPlan(value: string | null): PaidPlan | null {
-  return isPaidPlanId(value) ? value : null;
+/** The checkout link names a plan, a promo order or an add-on. */
+export function parseCheckoutPlan(value: string | null): PaidPlan | PromoPlanId | AddonId | null {
+  return isPaidPlanId(value) || isPromoPlanId(value) || isAddonId(value) ? value : null;
 }
 
 function sanitizeReturnPath(returnPath?: string): string {

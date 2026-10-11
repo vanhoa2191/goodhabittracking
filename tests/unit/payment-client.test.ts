@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   createPaymentOrder,
+  isRefusalCode,
   readPaymentStatus,
   type PaymentRequester,
 } from '@/lib/billing/payment-client';
@@ -53,6 +54,23 @@ describe('payment client', () => {
     const requester: PaymentRequester = async () => new Response('<html>unavailable</html>', { status });
     await expect(createPaymentOrder('monthly', requester)).resolves.toEqual({ success: false, error: createCode });
     await expect(readPaymentStatus(123456, requester)).resolves.toEqual({ success: false, error: statusCode });
+  });
+
+  it.each([
+    [409, 'addon_requires_plan'], [409, 'already_included'], [409, 'already_owned'],
+    [409, 'higher_plan_active'], [409, 'lifetime_active'], [404, 'not_available'],
+    [409, 'offer_unavailable'], [409, 'offer_already_used'],
+  ])('reads the %s refusal code %s from the body', async (status, code) => {
+    const requester: PaymentRequester = async () => new Response(JSON.stringify({ success: false, error: 'Server copy', code }), { status });
+    await expect(createPaymentOrder('ai_addon_monthly', requester)).resolves.toEqual({ success: false, error: code });
+    expect(isRefusalCode(code)).toBe(true);
+  });
+
+  it('ignores unknown or mismatched codes and falls back to the status mapping', async () => {
+    const unknown: PaymentRequester = async () => new Response(JSON.stringify({ success: false, error: 'x', code: 'yearly_checkout_pending' }), { status: 409 });
+    await expect(createPaymentOrder('yearly', unknown)).resolves.toEqual({ success: false, error: 'create_failed' });
+    const plain404: PaymentRequester = async () => new Response(JSON.stringify({ success: false, error: 'Payment order not found.' }), { status: 404 });
+    await expect(createPaymentOrder('monthly', plain404)).resolves.toEqual({ success: false, error: 'order_not_found' });
   });
 
   it('rejects invalid inputs without calling the server', async () => {

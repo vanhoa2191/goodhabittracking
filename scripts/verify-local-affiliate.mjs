@@ -68,6 +68,7 @@ try {
   const discountEnd = hardening.indexOf('-- The family lock is shared with settlement', discountStart);
   await client.query(hardening.slice(discountStart, discountEnd));
   await client.query(pricing.slice(pricing.indexOf('create table public.launch_offers'), pricing.indexOf('create or replace function public.launch_offer_remaining')));
+  await client.query(definition(pricing, 'launch_offer_remaining'));
   await client.query(definition(pricing, 'claim_launch_offer'));
   await client.query(definition(pricing, 'process_payos_webhook'));
   // Snapshot actual 30% rows and create a referred owner's 59k pending order before deployment.
@@ -95,6 +96,55 @@ try {
     }
   }
   if (expectedScenarios.size) throw new Error(`Missing Money Model v2 scenarios: ${[...expectedScenarios].join(', ')}`);
+
+  const customer = load('supabase/migrations/202609210005_customer_admin.sql');
+  const integrity = load('supabase/migrations/202609300005_billing_integrity.sql');
+  await client.query(`create table public.child_profiles (family_id uuid);
+    create table public.activity_logs (family_id uuid, status text, log_date date);
+    ${customer.slice(customer.indexOf('create table if not exists public.coupons'), customer.indexOf('create or replace function public.sync_customer_identity'))}
+    ${customer.slice(customer.indexOf('create table if not exists public.coupon_redemptions'), customer.indexOf('create or replace function public.redeem_family_coupon'))}
+    ${integrity.slice(integrity.indexOf('create table if not exists public.coupon_attempts'), integrity.indexOf('create or replace function public.process_payos_webhook'))}`);
+
+  const parentAi = load('supabase/migrations/202610040004_parent_ai.sql');
+  const wrappers = load('supabase/migrations/202610050001_pin_gated_server_wrappers.sql');
+  // Replace the historical fixture's setting-based helpers with the production
+  // membership checks before exercising the server's acting-parent wrapper.
+  await client.query(`drop function public.current_family_id(); drop function public.can_manage_family(uuid);
+    alter table public.family_memberships drop constraint family_memberships_role_check;
+    alter table public.family_memberships add constraint family_memberships_role_check
+      check(role in ('owner','parent','guardian','caregiver'));`);
+  await client.query(`${parentAi.slice(parentAi.indexOf('create table public.ai_usage'), parentAi.indexOf('commit;'))}
+    ${definition(family, 'current_family_id')}
+    ${definition(family, 'can_manage_family')}
+    ${definition(wrappers, 'act_as_user')}
+    revoke all on function public.act_as_user(uuid) from public, anon, authenticated, service_role;`);
+
+  const addons = '202610110001_pro_plus_and_addons';
+  await client.query(load(`supabase/migrations/${addons}.sql`));
+  await client.query(load('supabase/preflight/202610110001_pro_plus_and_addons.verify.sql'));
+  const addonResults = await client.query(load('tests/integration/migrations/pro-plus-and-addons.scenarios.sql'));
+  const expectedAddons = new Set(['upsell_price_and_claim', 'upsell_referral_no_stack', 'b1g1_two_years',
+    'b1g1_extends_pro_plus', 'slot_overfill_honoured', 'offer_unavailable_when_full',
+    'b1g1_closed_after_creation', 'b1g1_closed_refuses_new', 'offer_already_used',
+    'promo_pending_reused_when_closed', 'promo_pending_reused_when_full', 'promo_refund_cannot_rebuy',
+    'promo_refund_frees_slot', 'promo_pending_lock', 'promo_commission', 'pro_plus_prices', 'pro_plus_commission', 'pro_plus_child_limit', 'pro_to_pro_plus',
+    'addon_requires_plan', 'addon_then_pro_plus', 'addon_extends', 'addon_duplicate_webhook',
+    'addon_no_commission_no_discount', 'printables_once', 'founding_tier', 'refund_revokes_addon',
+    'snapshot_shape', 'regression_existing_plans', 'higher_plan_active', 'lifetime_active', 'printables_pending_reused',
+    'founding_already_included', 'founding_expires_after_year', 'pro_plus_yearly_adds_year',
+    'pro_plus_yearly_pending_lock', 'pro_plus_yearly_prior_paid_no_discount', 'addon_expired_plan_refused',
+    'addon_allowed_lifetime', 'founding_revoked_basic', 'tier_free_trial_standard_plus', 'monthly_free_10', 'monthly_standard_20',
+    'month_boundary', 'plus_unlimited_month', 'plus_daily_safety', 'tier_after_founding', 'system_cap',
+    'monthly_quota_validation', 'monthly_quota_order_and_gap', 'monthly_quota_authorization', 'monthly_quota_authenticated_denied']);
+  for (const result of addonResults) {
+    for (const row of result.rows ?? []) {
+      if (!row.scenario) continue;
+      if (!expectedAddons.delete(row.scenario)) throw new Error(`Unexpected or duplicate add-on scenario: ${row.scenario}`);
+      if (row.ok !== true) throw new Error(`Pro Plus/add-on scenario failed: ${row.scenario} (ok=${row.ok})`);
+      out.push(`PASS: ${row.scenario} ok=true`);
+    }
+  }
+  if (expectedAddons.size) throw new Error(`Missing Pro Plus/add-on scenarios: ${[...expectedAddons].join(', ')}`);
 
 } catch(e) { out.push(`FAIL: ${e.message}`); process.exitCode=1; }
 finally { if(database) await database.close(); await stopSqlTestServer(); out.push('Disposable PostgreSQL removed'); console.log(out.join('\n')); }

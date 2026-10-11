@@ -2,14 +2,14 @@
 // src/lib/billing/plan-catalog.ts (tests/unit/marketing-pricing.test.ts compares the two); this file stays
 // plain ESM so the static build needs no TypeScript.
 
-/** Pro Plus is announced, not on sale: no plan id, so no checkout link can be built for it. */
+/** All three tiers are on sale with monthly and yearly checkout ids. */
 export const pricingTiers = Object.freeze({
   solo: {
     name: 'Gói Cơ bản',
     who: 'Cho nhà có một bé',
     month: { id: 'solo_monthly', amount: 49000 },
     year: { id: 'solo_yearly', amount: 399000 },
-    features: ['1 hồ sơ bé', 'Khung 47 thói quen theo tuổi', 'Nhiệm vụ, sao và phần thưởng', 'Đồng bộ trên nhiều thiết bị', 'Mời người thân cùng theo dõi'],
+    features: ['1 hồ sơ bé', 'Khung 47 thói quen theo tuổi', 'Nhiệm vụ, sao và phần thưởng', 'Đồng bộ trên nhiều thiết bị', 'Mời người thân cùng theo dõi', 'Gợi ý AI 20 lượt/tháng'],
     purchasable: true,
   },
   pro: {
@@ -17,23 +17,29 @@ export const pricingTiers = Object.freeze({
     who: 'Cho nhà có tối đa 5 bé',
     month: { id: 'monthly', amount: 69000 },
     year: { id: 'yearly', amount: 590000 },
-    features: ['Tối đa 5 hồ sơ bé, mỗi bé một lộ trình', 'Mời người thân cùng theo dõi', 'Toàn bộ khung thói quen và lộ trình', 'Theo dõi tiến bộ cả nhà'],
+    features: ['Tối đa 5 hồ sơ bé, mỗi bé một lộ trình', 'Mời người thân cùng theo dõi', 'Toàn bộ khung thói quen và lộ trình', 'Theo dõi tiến bộ cả nhà', 'Gợi ý AI 20 lượt/tháng'],
     purchasable: true,
   },
   pro_plus: {
     name: 'Gói Pro Plus',
     who: 'Pro, thêm Huấn luyện viên thói quen',
-    month: { id: null, amount: 79000 },
-    year: { id: null, amount: 790000 },
+    month: { id: 'pro_plus_monthly', amount: 79000 },
+    year: { id: 'pro_plus_yearly', amount: 790000 },
     features: [
-      'Mọi quyền lợi của Gói Pro',
+      'Mọi quyền lợi của Gói Pro, tối đa 5 hồ sơ bé',
+      'Gợi ý AI không giới hạn',
       'Huấn luyện viên thói quen: gợi ý chia nhỏ thói quen bằng AI',
       'Tóm tắt tuần bằng AI cho ba mẹ',
       'Luôn do ba mẹ quyết định, không gửi tên hay nhật ký của bé',
     ],
-    purchasable: false,
-    status: 'Đang phát triển',
+    purchasable: true,
   },
+});
+
+/** Limited offers are separate checkout orders; list-price tier cards stay unchanged. */
+export const pricingPromos = Object.freeze({
+  pro_plus_yearly_upsell: { tier: 'pro', price: 690000, years: 1, offerCode: 'pro_plus_upsell_690', slots: 200, endsAt: null },
+  pro_plus_yearly_b1g1: { tier: 'pro_plus', price: 790000, years: 2, offerCode: 'pro_plus_b1g1', slots: 100, endsAt: '2026-12-31T17:00:00.000Z' },
 });
 
 const cycles = new Set(['month', 'year']);
