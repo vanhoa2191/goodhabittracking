@@ -455,7 +455,7 @@ function renderPlanCard(tier, appOrigin, recommended) {
   const checkout = (cycle) => appUrl(appOrigin, `/checkout?plan=${priceView(tier, cycle).planId}`);
   const promo = promoOffers.find((offer) => offer.tier === tier);
   const promoLink = promo
-    ? `<a class="upgrade" data-cycle="year" data-promo-offer="${escapeHtml(promo.offerCode)}" data-promo-slots="${promo.slots}" data-promo-ends-at="${escapeHtml(promo.endsAt ?? '')}" data-promo-copy="${escapeHtml(promo.text)}" hidden href="${appUrl(appOrigin, `/checkout?plan=${promo.planId}`)}"></a>`
+    ? `<a class="upgrade" data-cycle="year" data-promo-offer="${escapeHtml(promo.offerCode)}" data-promo-slots="${promo.slots}" data-promo-ends-at="${escapeHtml(promo.endsAt ?? '')}" data-promo-copy="${escapeHtml(promo.text)}"${promo.planId === 'pro_plus_yearly_upsell' ? ' data-promo-requires-founding-sold-out="true"' : ''} hidden href="${appUrl(appOrigin, `/checkout?plan=${promo.planId}`)}"></a>`
     : '';
   return `<article class="plan${recommended ? ' recommended' : ''}" data-plan="${tier}">
         <span class="badge">${escapeHtml(copy.recommendedBadge)}</span>

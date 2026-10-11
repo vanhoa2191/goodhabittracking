@@ -66,6 +66,7 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
   const [hasConfirmedReferral, setHasConfirmedReferral] = useState(skipReferral);
   // True once the server says this family can still enter a friend's code; only then is the step shown.
   const [referralStepNeeded, setReferralStepNeeded] = useState(false);
+  const [referralState, setReferralState] = useState<'loading' | 'eligible' | 'referred' | 'hidden'>('loading');
   const referralStepNeededRef = useRef(false);
   useEffect(() => { referralStepNeededRef.current = referralStepNeeded; }, [referralStepNeeded]);
   const [isClaimingReferral, setIsClaimingReferral] = useState(false);
@@ -81,7 +82,7 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
     && familyRole !== 'caregiver',
   );
   const [promoOffers, setPromoOffers] = useState<readonly unknown[]>([]);
-  const upsell = plan ? promoForCheckout(plan.id, promoOffers) : null;
+  const upsell = plan ? promoForCheckout(plan.id, promoOffers, { discountAmount: paymentData?.discountAmount, referralState }) : null;
   useEffect(() => {
     if (!isOpen || plan?.id !== 'yearly') return;
     const controller = new AbortController();
@@ -95,6 +96,7 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
 
   // A family with nothing to enter goes straight to the QR; only one that can still enter a code sees the extra step.
   const handleReferralState = useCallback((state: 'loading' | 'eligible' | 'referred' | 'hidden') => {
+    setReferralState(state);
     if (state === 'eligible') setReferralStepNeeded(true);
     else if (state !== 'loading') setHasConfirmedReferral((confirmed) => confirmed || !referralStepNeededRef.current);
   }, []);

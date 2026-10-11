@@ -22,6 +22,7 @@ import { getPromoCopy } from '@/lib/i18n/promo-copy';
 const offers = [
   { code: 'pro_plus_upsell_690', slots: 200, remaining: 17, endsAt: null },
   { code: 'pro_plus_b1g1', slots: 100, remaining: 8, endsAt: '2026-12-31T17:00:00Z' },
+  { code: 'pro_plus_founding', slots: 10, remaining: 0, endsAt: null },
 ];
 const render = () => {
   state.index = 0;
@@ -53,7 +54,7 @@ afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); });
 
 describe('live pricing promotions', () => {
   it('shows the available promotion only on its matching yearly card, keeping list-price purchases', async () => {
-    const html = await load({ remaining: 3, offers });
+    const html = await load({ remaining: 0, offers });
     expect(card(html, 'yearly')).toContain('href="/checkout?plan=pro_plus_yearly_upsell"');
     expect(card(html, 'yearly')).toContain('Thêm 100.000đ để lên Pro Plus: AI không giới hạn. Còn 17/200 suất.');
     expect(card(html, 'pro_plus_yearly')).toContain('href="/checkout?plan=pro_plus_yearly_b1g1"');
@@ -61,6 +62,21 @@ describe('live pricing promotions', () => {
     expect(card(html, 'solo_yearly')).not.toContain('plan=pro_plus_yearly_upsell');
     for (const id of ['solo_yearly', 'yearly', 'pro_plus_yearly']) expect(html).toContain(`href="/checkout?plan=${id}"`);
     expect(fetch).toHaveBeenCalledTimes(1);
+  });
+  it.each([1, 10, null, undefined, '0', -1, 0.5])('hides the paid upsell while founding is available or unreadable: %j', async (remaining) => {
+    const data = { offers: offers.map((offer) => offer.code === 'pro_plus_founding' ? { ...offer, remaining } : offer) };
+    const html = await load(data);
+    expect(card(html, 'yearly')).not.toContain('plan=pro_plus_yearly_upsell');
+    expect(card(html, 'yearly')).toContain('href="/checkout?plan=yearly"');
+    expect(card(html, 'pro_plus_yearly')).toContain('plan=pro_plus_yearly_b1g1');
+    expect(promoForCheckout('yearly', data.offers)).toBeNull();
+  });
+  it('hides the paid upsell when the founding offer is missing, without hiding B1G1', async () => {
+    const data = { offers: offers.filter((offer) => offer.code !== 'pro_plus_founding') };
+    const html = await load(data);
+    expect(html).not.toContain('plan=pro_plus_yearly_upsell');
+    expect(html).toContain('plan=pro_plus_yearly_b1g1');
+    expect(promoForCheckout('yearly', data.offers)).toBeNull();
   });
   it.each([{}, { offers: [] }, { offers: offers.map((offer) => ({ ...offer, remaining: 0 })) }, { offers: offers.map((offer) => ({ ...offer, remaining: '10' })) }])('hides unreadable or sold-out promotions: %j', async (data) => {
     const html = await load(data);
@@ -84,8 +100,8 @@ describe('live pricing promotions', () => {
     expect(promoForCard('pro', 'month', offers)).toBeNull();
     expect(promoForCard('solo', 'year', offers)).toBeNull();
     expect(promoForCard('pro_plus', 'year', [{ ...offers[1], endsAt: 'invalid' }])).toBeNull();
-    expect(promoForCard('pro', 'year', [{ ...offers[0], remaining: -1 }])).toBeNull();
-    expect(promoForCard('pro', 'year', [{ ...offers[0], remaining: 0.5 }])).toBeNull();
+    expect(promoForCard('pro', 'year', [{ ...offers[0], remaining: -1 }, offers[2]])).toBeNull();
+    expect(promoForCard('pro', 'year', [{ ...offers[0], remaining: 0.5 }, offers[2]])).toBeNull();
   });
   it.each(['vi', 'en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'] as const)('renders translated counts, amounts and dates in %s', async (language) => {
     state.language = language;
@@ -107,7 +123,19 @@ describe('checkout promo selection', () => {
   });
   it('hides the checkout upsell when exhausted, unreadable or closed', () => {
     expect(promoForCheckout('yearly', [])).toBeNull();
-    expect(promoForCheckout('yearly', [{ ...offers[0], remaining: 0 }])).toBeNull();
-    expect(promoForCheckout('yearly', [{ ...offers[0], endsAt: '2026-10-01T00:00:00Z' }])).toBeNull();
+    expect(promoForCheckout('yearly', [{ ...offers[0], remaining: 0 }, offers[2]])).toBeNull();
+    expect(promoForCheckout('yearly', [{ ...offers[0], endsAt: '2026-10-01T00:00:00Z' }, offers[2]])).toBeNull();
+  });
+  it('waits for referral eligibility rather than flashing an upsell before the claim response', () => {
+    expect(promoForCheckout('yearly', offers, { referralState: 'loading' })).toBeNull();
+  });
+  it.each(['eligible', 'referred'] as const)('hides the upsell for referral claim state %s before payment exists', (referralState) => {
+    expect(promoForCheckout('yearly', offers, { referralState })).toBeNull();
+  });
+  it.each(['hidden', 'referred', 'eligible'] as const)('a payment discount hides the upsell regardless of referral state %s', (referralState) => {
+    expect(promoForCheckout('yearly', offers, { discountAmount: 59000, referralState })).toBeNull();
+  });
+  it('keeps the upsell for an undiscounted yearly order with no referral eligibility', () => {
+    expect(promoForCheckout('yearly', offers, { discountAmount: 0, referralState: 'hidden' })).toMatchObject({ planId: 'pro_plus_yearly_upsell', remaining: 17 });
   });
 });

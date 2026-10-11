@@ -1,5 +1,5 @@
 import { ADDON_IDS, ADDON_PRICES, addonVisible, type AddonId } from '@/lib/billing/addon-catalog';
-import { PLAN_PRICES, PROMO_PLANS, planIdFor, type BillingCycle, type PaidPlanId, type PlanTier, type PromoPlanId } from '@/lib/billing/plan-catalog';
+import { LAUNCH_OFFER, PLAN_PRICES, PROMO_PLANS, planIdFor, type BillingCycle, type PaidPlanId, type PlanTier, type PromoPlanId } from '@/lib/billing/plan-catalog';
 
 export type PricingCard = {
   readonly tier: PlanTier;
@@ -58,6 +58,13 @@ export type PricingPromo = { readonly planId: PromoPlanId; readonly remaining: n
 /** Promotions never replace list prices; a yearly card gets an extra action only with a readable, open offer. */
 export function promoForCard(tier: PlanTier, cycle: BillingCycle, offers: readonly unknown[], now = Date.now()): PricingPromo | null {
   if (cycle !== 'year' || tier === 'solo') return null;
+  if (tier === 'pro') {
+    const founding = offers.find((entry): entry is Record<string, unknown> => (
+      entry !== null && typeof entry === 'object' && 'code' in entry && entry.code === LAUNCH_OFFER.code
+    ));
+    // Pro yearly already includes the upgrade while founding seats remain; unknown is not sold out.
+    if (founding?.slots !== LAUNCH_OFFER.slots || founding.remaining !== 0) return null;
+  }
   const planId = tier === 'pro' ? 'pro_plus_yearly_upsell' : 'pro_plus_yearly_b1g1';
   const promo = PROMO_PLANS[planId];
   if (promo.endsAt !== null && Date.parse(promo.endsAt) <= now) return null;
@@ -72,9 +79,15 @@ export function promoForCard(tier: PlanTier, cycle: BillingCycle, offers: readon
   return null;
 }
 
-/** Only the Pro yearly checkout can switch to the 690k upgrade offer. */
-export function promoForCheckout(planId: string, offers: readonly unknown[], now = Date.now()): PricingPromo | null {
-  return planId === 'yearly' ? promoForCard('pro', 'year', offers, now) : null;
+export type CheckoutPromoContext = {
+  readonly discountAmount?: number;
+  readonly referralState?: 'loading' | 'eligible' | 'referred' | 'hidden';
+};
+
+/** The 100k upgrade is accurate only for Pro yearly without a referral discount or eligibility. */
+export function promoForCheckout(planId: string, offers: readonly unknown[], context: CheckoutPromoContext = {}, now = Date.now()): PricingPromo | null {
+  if (planId !== 'yearly' || (context.discountAmount ?? 0) > 0 || context.referralState === 'eligible' || context.referralState === 'referred' || context.referralState === 'loading') return null;
+  return promoForCard('pro', 'year', offers, now);
 }
 
 export type LaunchOfferData = { readonly remaining: number | null; readonly offers: readonly unknown[] };

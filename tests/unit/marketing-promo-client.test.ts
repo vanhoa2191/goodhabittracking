@@ -12,7 +12,7 @@ const offers = [
 async function visit(data: unknown, { ok = true, now = Date.parse('2026-10-11T12:00:00Z'), rejected = false } = {}) {
   const founding = { dataset: { appOrigin: 'https://app.example' }, textContent: '' };
   const links = promoOffers.map((offer) => ({
-    dataset: { promoOffer: offer.offerCode, promoSlots: String(offer.slots), promoEndsAt: offer.endsAt ?? '', promoCopy: offer.text },
+    dataset: { promoOffer: offer.offerCode, promoSlots: String(offer.slots), promoEndsAt: offer.endsAt ?? '', promoCopy: offer.text, promoRequiresFoundingSoldOut: offer.planId === 'pro_plus_yearly_upsell' ? 'true' : undefined },
     hidden: true,
     textContent: '',
   }));
@@ -30,12 +30,20 @@ async function visit(data: unknown, { ok = true, now = Date.parse('2026-10-11T12
 
 describe('marketing live promo banners', () => {
   it('uses one request for all offers and shows exact promo text only with a live positive count', async () => {
-    const { founding, links, fetch } = await visit({ remaining: 3, slots: 10, offers });
-    expect(founding.textContent).toBe('Còn 3/10 suất');
+    const { founding, links, fetch } = await visit({ remaining: 0, slots: 10, offers });
+    expect(founding.textContent).toBe('Đã hết suất ưu đãi');
     expect(links.map((link) => link.hidden)).toEqual([false, false]);
     expect(links[0].textContent).toBe('Thêm 100.000đ để lên Pro Plus: AI không giới hạn. Còn 17/200 suất.');
     expect(links[1].textContent).toBe('Mua 1 năm tặng 1 năm: 790.000đ cho 2 năm Pro Plus. Còn 8/100 suất, đến hết 31/12/2026.');
     expect(fetch).toHaveBeenCalledTimes(1);
+  });
+  it.each([1, 10, null, undefined, '0', -1, 0.5])('hides only the upsell while founding is available or unreadable: %j', async (remaining) => {
+    const { links } = await visit({ remaining, slots: 10, offers });
+    expect(links.map((link) => link.hidden)).toEqual([true, false]);
+  });
+  it('requires a readable founding slot total before showing the upsell', async () => {
+    const { links } = await visit({ remaining: 0, slots: '10', offers });
+    expect(links.map((link) => link.hidden)).toEqual([true, false]);
   });
   it.each([null, {}, { remaining: 4, slots: 10 }, { offers: offers.map((offer) => ({ ...offer, remaining: 0 })) }, { offers: offers.map((offer) => ({ ...offer, remaining: '1' })) }])('keeps promo banners hidden without available counts: %j', async (data) => {
     const { links } = await visit(data);
@@ -48,7 +56,7 @@ describe('marketing live promo banners', () => {
     expect(links.map((link) => link.hidden)).toEqual([true, true]);
   });
   it('hides B1G1 at the Saigon cutoff even if a stale API response says it is open', async () => {
-    const { links } = await visit({ offers }, { now: Date.parse('2026-12-31T17:00:00Z') });
+    const { links } = await visit({ remaining: 0, slots: 10, offers }, { now: Date.parse('2026-12-31T17:00:00Z') });
     expect(links.map((link) => link.hidden)).toEqual([false, true]);
   });
   it('rejects malformed expiry and counts independently of a readable founding count', async () => {

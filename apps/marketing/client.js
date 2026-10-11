@@ -309,11 +309,13 @@ for (const section of $$('[data-pricing-cycle]')) {
     .then((response) => (response.ok ? response.json() : null))
     .then((data) => {
       const { remaining, slots, offers } = data ?? {};
-      if (Number.isInteger(remaining) && Number.isInteger(slots) && remaining >= 0 && slots > 0 && remaining <= slots) {
+      const foundingReadable = Number.isInteger(remaining) && Number.isInteger(slots) && remaining >= 0 && slots > 0 && remaining <= slots;
+      if (foundingReadable) {
         target.textContent = remaining > 0 ? `Còn ${remaining}/${slots} suất` : 'Đã hết suất ưu đãi';
       }
       if (!Array.isArray(offers)) return;
       for (const link of promos) {
+        if (link.dataset.promoRequiresFoundingSoldOut === 'true' && (!foundingReadable || remaining !== 0)) continue;
         const offer = offers.find((entry) => entry?.code === link.dataset.promoOffer);
         const limit = Number(link.dataset.promoSlots);
         if (!offer || offer.slots !== limit || !Number.isInteger(offer.remaining) || offer.remaining <= 0 || offer.remaining > limit) continue;
