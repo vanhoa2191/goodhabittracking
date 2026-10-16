@@ -40,22 +40,22 @@
     "test:sql": "node scripts/verify-local-billing.mjs && node scripts/verify-local-affiliate.mjs && node tests/integration/migrations/family-operations-runtime.mjs"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "1.20.7",
+    "@opennextjs/cloudflare": "1.20.10",
     "@supabase/ssr": "^0.12.7",
-    "@supabase/supabase-js": "^2.117.2",
+    "@supabase/supabase-js": "^2.117.3",
     "canvas-confetti": "^1.9.4",
-    "lucide-react": "^1.48.0",
-    "next": "16.3.8",
+    "lucide-react": "^1.56.0",
+    "next": "16.4.0",
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "zod": "^4.6.5"
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@libpg-query/parser": "^17.6.10",
-    "@playwright/test": "^1.63.0",
+    "@playwright/test": "^1.64.0",
     "@tailwindcss/postcss": "^4",
     "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
@@ -65,7 +65,7 @@
     "@vitest/coverage-v8": "^4.1.11",
     "esbuild": "^0.28.2",
     "eslint": "^9",
-    "eslint-config-next": "16.3.8",
+    "eslint-config-next": "16.4.0",
     "pg": "8.23.1",
     "tailwindcss": "^4",
     "typescript": "^5",
