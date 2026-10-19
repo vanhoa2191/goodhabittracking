@@ -163,7 +163,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
               : 'bg-parent-surface/95 border-sand-200 before:bg-transparent dark:bg-zinc-950/90 dark:border-zinc-800'
         }`}
       >
-        <div className="mx-auto flex h-16 w-full max-w-[1536px] items-center justify-between gap-1.5 px-3 sm:gap-2 sm:px-6 xl:h-auto xl:min-h-16 xl:py-2">
+        <div className="mx-auto flex h-16 w-full max-w-[1536px] items-center justify-between gap-1.5 px-3 sm:gap-2 sm:px-6 md:h-auto md:min-h-16 md:py-2">
           {/* Left: Logo & Slogan */}
           <Link
             href={marketingHomeUrl}
@@ -219,7 +219,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
           )}
 
           {/* Right Action Controls */}
-          <div className="flex items-center gap-1 sm:gap-2 xl:min-w-0 xl:flex-wrap xl:justify-end xl:[&>*]:shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 md:min-w-0 md:flex-wrap md:justify-end md:[&>*]:shrink-0">
             <Link href={docsUrl} aria-label={chromeCopy.docs} title={chromeCopy.docs} className="hidden min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl px-2.5 text-sm font-bold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-zinc-800 lg:flex 2xl:px-3"><BookOpen aria-hidden="true" className="h-4 w-4" /><span className="hidden whitespace-nowrap 2xl:inline">{chromeCopy.docs}</span></Link>
             <div className="hidden 2xl:block">
               <ThemeSelector compact />
