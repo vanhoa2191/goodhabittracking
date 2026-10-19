@@ -20,7 +20,7 @@ export async function askModel(
   schema: object,
   dependencies: Dependencies = {},
 ): Promise<ModelReply> {
-  if (process.env.AI_KILL_SWITCH === 'true') return { ok: false, reason: 'disabled' };
+  if (/^(?:true|1)$/i.test(String(process.env.AI_KILL_SWITCH ?? '').trim())) return { ok: false, reason: 'disabled' };
   const provider = dependencies.provider ?? selectProvider(process.env, { binding: dependencies.binding });
   return provider.ask(messages, { schema, timeoutMs: dependencies.timeoutMs });
 }

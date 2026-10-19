@@ -3,8 +3,8 @@ import { plans } from './site-content.mjs';
 // Nội dung pháp lý dùng chung cho website giới thiệu và ứng dụng.
 // Mỗi khối là một đoạn văn (chuỗi) hoặc một danh sách (mảng chuỗi).
 
-export const legalVersion = '2026-10-11';
-export const legalUpdatedLabel = '11/10/2026';
+export const legalVersion = '2026-10-20';
+export const legalUpdatedLabel = '20/10/2026';
 
 const planDescriptors = {
   solo_monthly: 'tối đa 1 hồ sơ bé, Gợi ý AI 20 lượt/tháng',
@@ -45,7 +45,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         blocks: [
           [
             'Tài khoản phụ huynh: email và tên hiển thị từ tài khoản Google dùng để đăng nhập, số điện thoại nếu bạn tự nhập, cùng các lựa chọn nhận thông tin.',
-            'Hồ sơ bé: tên hoặc biệt danh, năm sinh, nhân vật đồng hành hoặc ảnh đại diện và màu hiển thị. Bạn nên dùng biệt danh thay vì họ tên đầy đủ của bé.',
+            'Hồ sơ bé: tên hoặc biệt danh, năm sinh (nhóm tuổi suy ra từ năm sinh chỉ rời hệ thống của KidHabit khi bạn dùng Gợi ý bằng AI), nhân vật đồng hành hoặc ảnh đại diện và màu hiển thị. Bạn nên dùng biệt danh thay vì họ tên đầy đủ của bé.',
             'Hoạt động của gia đình: thói quen, nhiệm vụ, tiến độ, điểm, phần thưởng, huy hiệu và lời khen. Nếu gia đình bật thêm, còn có nhật ký một câu của bé, danh sách ước và thành phố ước mơ.',
             'Thiết bị của bé: khi ghép thiết bị, hệ thống tạo phiên đăng nhập cho đúng hồ sơ bé trên thiết bị đó. Mã ghép chỉ được lưu ở dạng đã mã hóa một chiều, không lưu mã gốc dưới dạng đọc được.',
             'Gói và thanh toán: gói đã chọn, trạng thái kích hoạt, mã đơn, số tiền và trạng thái thanh toán. KidHabit không thu thập mật khẩu hay thông tin đăng nhập ngân hàng của bạn.',
@@ -76,6 +76,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
             'Google, để xác thực khi bạn chọn đăng nhập bằng tài khoản Google.',
             'PayOS, để tạo và xác nhận giao dịch chuyển khoản khi bạn mua gói. PayOS nhận thông tin cần cho giao dịch, không nhận dữ liệu hồ sơ hay hoạt động của bé.',
             'Nhà cung cấp hạ tầng đám mây, để lưu trữ dữ liệu và chạy ứng dụng. Họ chỉ xử lý dữ liệu theo yêu cầu của KidHabit để cung cấp dịch vụ.',
+            'Cloudflare Workers AI, khi phụ huynh bật Gợi ý bằng AI và bấm tạo gợi ý: nhận tên một thói quen bạn vừa gõ (ứng dụng xóa tên các bé trong gia đình khỏi chuỗi này, liên kết, email, số điện thoại) cùng nhóm tuổi của bé (ví dụ 6-8), hoặc các số đếm hoàn thành theo tuần. Không gửi tên hay biệt danh hồ sơ, nhật ký, ảnh, email. Theo tài liệu của Cloudflare, nội dung này không dùng để huấn luyện mô hình và không được giữ lại sau khi xử lý; KidHabit không ghi nội dung này vào log. Việc xử lý có thể diễn ra ngoài Úc và ngoài Việt Nam.',
             'Cơ quan nhà nước có thẩm quyền, khi pháp luật yêu cầu.',
           ],
         ],
@@ -83,7 +84,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
       {
         title: '5. Nơi lưu trữ dữ liệu',
         blocks: [
-          'Dữ liệu tài khoản và gia đình được lưu trên hạ tầng đám mây đặt ngoài Việt Nam, hiện ở khu vực Sydney (Úc). Ứng dụng và trang web được phân phối qua mạng lưới toàn cầu nên dữ liệu kỹ thuật của yêu cầu truy cập có thể đi qua máy chủ ở nhiều quốc gia.',
+          'Dữ liệu tài khoản và gia đình được lưu trên hạ tầng đám mây đặt ngoài Việt Nam, hiện ở khu vực Sydney (Úc). Ứng dụng và trang web được phân phối qua mạng lưới toàn cầu nên dữ liệu kỹ thuật của yêu cầu truy cập có thể đi qua máy chủ ở nhiều quốc gia. Riêng Gợi ý bằng AI được xử lý bởi Cloudflare Workers AI tại trung tâm dữ liệu do Cloudflare chọn, không cố định ở Sydney.',
           'Dữ liệu của chế độ demo nằm trên thiết bị của bạn và không được chuyển đi.',
         ],
       },
@@ -112,7 +113,7 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         blocks: [
           [
             'Xem và chỉnh sửa hồ sơ phụ huynh và hồ sơ bé ngay trong ứng dụng.',
-            'Bật hoặc tắt đo lường ẩn danh, nhắc việc và nhận thông tin tiếp thị ở từng mục riêng, và rút lại đồng ý bất cứ lúc nào. Một số tính năng có thể không dùng được nếu thiếu dữ liệu tương ứng.',
+            'Bật hoặc tắt đo lường ẩn danh, nhắc việc, nhận thông tin tiếp thị và Gợi ý bằng AI ở từng mục riêng, và rút lại đồng ý bất cứ lúc nào. Một số tính năng có thể không dùng được nếu thiếu dữ liệu tương ứng.',
             'Xuất nhật ký của bé thành tệp CSV khi tính năng nhật ký được bật; yêu cầu bản sao các dữ liệu khác, chỉnh sửa hoặc xóa qua email hỗ trợ.',
             'Thu hồi thiết bị đã ghép hoặc xóa toàn bộ dữ liệu gia đình bằng bước xác nhận dành cho chủ gia đình.',
             'Nếu cho rằng dữ liệu bị xử lý sai, hãy liên hệ KidHabit trước; bạn cũng có quyền khiếu nại tới cơ quan nhà nước có thẩm quyền.',
@@ -120,14 +121,20 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         ],
       },
       {
-        title: '9. Dữ liệu của trẻ em',
+        title: '9. Gợi ý bằng AI',
+        blocks: [
+          'Tính năng tắt theo mặc định và chỉ phụ huynh bật (Cài đặt → Quyền riêng tư). Bạn có thể rút lại đồng ý bất cứ lúc nào; từ lúc đó KidHabit không gửi thêm dữ liệu, nhưng nội dung đã gửi không thể thu hồi. Gợi ý do AI soạn có thể sai, hãy đọc kỹ; đây không phải tư vấn y tế hay tâm lý. Khi chúng tôi đổi văn bản này, bạn được hỏi đồng ý lại (phiên bản chính sách AI).',
+        ],
+      },
+      {
+        title: '10. Dữ liệu của trẻ em',
         blocks: [
           'Trẻ không tự nhập email, số điện thoại hay thông tin thanh toán. Mọi thiết lập về hồ sơ, thiết bị và thanh toán do phụ huynh quản lý.',
           'Chia sẻ lên bảng xếp hạng công khai mặc định tắt. Chỉ khi phụ huynh bật cho gia đình và hồ sơ của bé được đánh dấu tham gia thì bé mới xuất hiện, bằng biệt danh và hình đại diện; tên thật, tuổi và mã hồ sơ không bao giờ được hiển thị. Nếu bạn nghĩ một trẻ đã nhập thông tin không phù hợp, hãy liên hệ để KidHabit hỗ trợ xóa.',
         ],
       },
       {
-        title: '10. Cookie và lưu trữ trên thiết bị',
+        title: '11. Cookie và lưu trữ trên thiết bị',
         blocks: [
           'KidHabit dùng cookie và bộ nhớ cục bộ cần thiết để giữ phiên đăng nhập, phiên thiết bị của bé, ngôn ngữ và giao diện. KidHabit không dùng cookie quảng cáo.',
           'Khi phụ huynh đăng nhập, KidHabit đặt thêm một cookie báo hiệu “đã đăng nhập” dùng chung giữa trang giới thiệu và ứng dụng để hiển thị nút phù hợp. Cookie này không chứa thông tin cá nhân hay phiên đăng nhập, hết hạn sau 7 ngày và bị xóa khi bạn đăng xuất.',
@@ -136,13 +143,13 @@ export function buildLegalPages({ supportEmail = '' } = {}) {
         ],
       },
       {
-        title: '11. Thay đổi chính sách',
+        title: '12. Thay đổi chính sách',
         blocks: [
           `Phiên bản hiện tại có hiệu lực từ ${legalUpdatedLabel}. Khi thay đổi đáng kể cách xử lý dữ liệu, KidHabit sẽ cập nhật ngày hiệu lực và thông báo trong ứng dụng trước khi yêu cầu bạn đồng ý lại.`,
         ],
       },
       {
-        title: '12. Liên hệ',
+        title: '13. Liên hệ',
         blocks: [contactBlock(supportEmail, 'Nếu có câu hỏi hoặc yêu cầu về dữ liệu, gồm xem, chỉnh sửa, xuất hoặc xóa dữ liệu,')],
       },
     ],

@@ -25,6 +25,14 @@ describe('shared legal content', () => {
     }
   });
 
+  it('discloses the AI processor, the age band, withdrawal limits and no region or certification claim', () => {
+    for (const phrase of ['Cloudflare Workers AI', 'Theo tài liệu của Cloudflare', 'nhóm tuổi của bé', 'không cố định ở Sydney', 'Gợi ý bằng AI', 'không thể thu hồi', 'không phải tư vấn y tế hay tâm lý']) {
+      expect(privacyText).toContain(phrase);
+    }
+    expect(privacyText).toContain('rút lại đồng ý bất cứ lúc nào');
+    expect(privacyText).not.toMatch(/Cloudflare[^.]*(SOC|ISO|HIPAA|COPPA|GDPR)/);
+  });
+
   it('discloses the identity-free sign-in cookie shared by the site and the app', () => {
     expect(privacyText).toContain('cookie báo hiệu “đã đăng nhập”');
     expect(privacyText).toContain('không chứa thông tin cá nhân hay phiên đăng nhập');

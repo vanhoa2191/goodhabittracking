@@ -25,7 +25,9 @@ const surfaces = [
   ['breakdown', () => BreakdownButton({ title: 'Đọc sách', ageYears: 8, onUse: () => undefined })],
   ['summary', () => WeeklySummaryButton({ counts })],
 ] as const;
-const languages: readonly Language[] = ['en', 'fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'];
+// The model and its safety checks only know Vietnamese and English, so the buttons are offered in those languages only.
+const languages: readonly Language[] = ['en'];
+const unsupportedLanguages: readonly Language[] = ['fr', 'de', 'it', 'es', 'zh', 'ja', 'ko'];
 
 async function showFailure(render: () => ReactNode, failure: unknown) {
   state.request.mockResolvedValue(failure);
@@ -38,10 +40,26 @@ async function showFailure(render: () => ReactNode, failure: unknown) {
   return renderToStaticMarkup(createElement('div', null, render()));
 }
 
+for (const [surface, render] of surfaces) {
+  it.each(unsupportedLanguages)(`${surface} is not offered in %s`, (language) => {
+    state.language = language;
+    state.index = 0;
+    expect(render()).toBeNull();
+  });
+}
+
 beforeEach(() => { state.index = 0; state.values = []; state.language = 'vi'; state.plan = 'monthly'; state.endsAt = null; state.request.mockReset(); });
 
 const family = (reason: string, tier: string) => ({ ok: false, code: 'ai_quota', reason, tier });
 const text = (html: string) => html.replace(/<[^>]+>/g, '');
+
+for (const [surface, render] of surfaces) {
+  it(`${surface} asks to wait a few seconds after a too-fast tap, without selling anything`, async () => {
+    const html = await showFailure(render, family('too_fast', 'plus'));
+    expect(text(html)).toContain('Bạn thao tác hơi nhanh. Chờ vài giây rồi thử lại nhé.');
+    expect(html).not.toContain('/checkout?');
+  });
+}
 
 for (const [surface, render] of surfaces) {
   describe(`${surface} monthly quota`, () => {
@@ -111,7 +129,7 @@ for (const [surface, render] of surfaces) {
       expect(all).not.toMatch(/[ăĂơƠưƯđĐĩĨũŨẠ-ỹ]/u);
     });
 
-    it.each(['system_day', 'too_fast', undefined])('does not upsell a non-family refusal (%s)', async (reason) => {
+    it.each(['system_day', undefined])('does not upsell a non-family refusal (%s)', async (reason) => {
       const html = await showFailure(render, { ok: false, code: 'ai_quota', reason, tier: 'free' });
       expect(html).toContain('role="alert"');
       expect(html).not.toContain('/checkout?');

@@ -24,10 +24,12 @@ export function WeeklySummaryButton({ counts }: { readonly counts: Omit<SummaryI
   const aiLanguage = aiLanguageOf(language);
   const upsell = failure?.code === 'ai_quota' ? quotaTemplate(copy, failure.reason, failure.tier, addonSellable, subscriptionPlan === 'lifetime') : null;
 
-  if (enabled === null || counts.weeks.length === 0) return null;
+  // The model and the safety checks only know Vietnamese and English.
+  if (enabled === null || counts.weeks.length === 0 || (language !== 'vi' && language !== 'en')) return null;
   if (!enabled) return <p className="text-xs text-slate-500 dark:text-slate-300">{copy.needConsent}</p>;
 
   const ask = async () => {
+    if (busy) return;
     setBusy(true);
     setFailure(null);
     setResult(null);

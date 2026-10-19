@@ -41,3 +41,7 @@ Published policy: a customer who is not satisfied may request a refund within 30
 5. Only after verification, set status `completed` with `manual_refund_confirmed`.
 
 Every state change writes an immutable case event and queues a generic customer status email. Do not put child names, activity details, pairing codes, bank account details or free-form sensitive notes in the case or email metadata.
+
+## Refunding a Pro Plus order also ends its AI access
+
+Completing a refund case does not cancel the family's subscription. `family_ai_tier` keeps returning `plus` (unlimited AI) until the subscription end date, which is up to 2 years for the 790.000đ buy-1-get-1 plan. For a refunded Pro Plus monthly, yearly, 690k upsell or buy-1-get-1 order, also open a `subscription_cancelled` case for the same family, or end the subscription from the admin family page, in the same working session. Verify afterwards that the family no longer receives unlimited AI.
