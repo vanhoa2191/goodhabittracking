@@ -1,3 +1,4 @@
+import { commandErrorStatus } from '@/lib/api/command-error-status';
 import { NextRequest, NextResponse } from 'next/server';
 import { getParentContext } from '@/lib/auth/parent-context';
 import { domainCommandSchema, type DomainCommand } from '@/lib/domain/commands';
@@ -88,8 +89,9 @@ export async function POST(request: NextRequest) {
     ? await callParentRpc(parent.user.id, rpc.name, rpc.args)
     : await supabase.rpc(rpc.name, rpc.args);
   if (error) {
-    logOperationalEvent('error', { operation: parsed.data.type, reasonCode: error.code || 'command_failed', correlationId, route: request.nextUrl.pathname, status: 409 });
-    return NextResponse.json({ success: false, error: 'The change could not be saved.', correlationId }, { status: 409 });
+    const status = commandErrorStatus(error);
+    logOperationalEvent('error', { operation: parsed.data.type, reasonCode: error.code || 'command_failed', correlationId, route: request.nextUrl.pathname, status });
+    return NextResponse.json({ success: false, error: 'The change could not be saved.', correlationId }, { status });
   }
   return NextResponse.json({ success: true, result: data });
 }

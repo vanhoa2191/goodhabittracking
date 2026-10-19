@@ -89,3 +89,19 @@ describe('child device command API', () => {
     expect(invalid.headers.get('set-cookie')).toContain('kidhabit_child_session=;');
   });
 });
+
+describe('child command failure status', () => {
+  it('answers 409 when the database rolled the command back', async () => {
+    cookieGet.mockReturnValue({ value: 'opaque-child-session' });
+    rpc.mockResolvedValue({ data: null, error: { code: 'P0001', message: 'reward_not_found' } });
+    const response = await POST(request({ type: 'undoHabit', logId: '33333333-3333-4333-8333-333333333333' }));
+    expect(response.status).toBe(409);
+  });
+
+  it('answers 503 when no database answer arrived so commit state is unknown', async () => {
+    cookieGet.mockReturnValue({ value: 'opaque-child-session' });
+    rpc.mockResolvedValue({ data: null, error: { code: '', message: 'TypeError: fetch failed' } });
+    const response = await POST(request({ type: 'undoHabit', logId: '33333333-3333-4333-8333-333333333333' }));
+    expect(response.status).toBe(503);
+  });
+});
