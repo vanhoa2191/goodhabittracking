@@ -15,6 +15,7 @@ import { AnalyticsConsentProvider } from "@/lib/analytics-consent-context";
 import { ParentReminderProvider } from "@/lib/parent-reminder-context";
 import { getSiteOrigin } from "@/lib/site";
 import { PwaRuntime } from "@/components/PwaRuntime";
+import { PwaInstallBanner } from "@/components/PwaInstallBanner";
 import { SessionHintSync } from "@/components/SessionHintSync";
 
 const displayFont = Fraunces({
@@ -99,7 +100,7 @@ export default async function RootLayout({
         <PwaRuntime />
         <AppearanceProvider>
           <I18nProvider initialLanguage={initialLanguage}>
-            <AnalyticsConsentProvider><ParentReminderProvider>{children}<SessionHintSync /></ParentReminderProvider></AnalyticsConsentProvider>
+            <AnalyticsConsentProvider><ParentReminderProvider>{children}<PwaInstallBanner /><SessionHintSync /></ParentReminderProvider></AnalyticsConsentProvider>
           </I18nProvider>
         </AppearanceProvider>
       </body>
