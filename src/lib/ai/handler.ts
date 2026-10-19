@@ -77,12 +77,16 @@ export async function handleAiRequest<Input, Output>(request: NextRequest, spec:
     return code(503, 'Suggestion unavailable.', { code: 'ai_disabled' });
   }
 
+  // A failed entitlement lookup must neither grant the paid allowance nor charge a paying family the free one:
+  // answer before the allowance is touched so nothing is spent and no upsell is shown to someone who already pays.
   let tier: AiTier = 'free';
   try {
     const entitlement = await createAdminSupabaseClient().rpc('family_ai_tier', { target_family: parent.familyId });
-    if (!entitlement.error && (entitlement.data === 'plus' || entitlement.data === 'standard')) tier = entitlement.data;
+    if (entitlement.error) throw new Error('entitlement_unavailable');
+    if (entitlement.data === 'plus' || entitlement.data === 'standard') tier = entitlement.data;
   } catch {
-    // A failed entitlement lookup never grants the paid allowance.
+    log('error', 'entitlement_unavailable', 503);
+    return code(503, 'Suggestion unavailable.', { code: 'ai_error' });
   }
 
   const quota = await callParentRpc(parent.user.id, 'consume_ai_quota_monthly', {

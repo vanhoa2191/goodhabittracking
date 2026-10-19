@@ -27,7 +27,7 @@ export const pricingTiers = Object.freeze({
     year: { id: 'pro_plus_yearly', amount: 790000 },
     features: [
       'Mọi quyền lợi của Gói Pro, tối đa 5 hồ sơ bé',
-      'Gợi ý AI không giới hạn',
+      'Gợi ý AI không giới hạn theo tháng (tối đa 100 lượt mỗi ngày)',
       'Huấn luyện viên thói quen: gợi ý chia nhỏ thói quen bằng AI',
       'Tóm tắt tuần bằng AI cho ba mẹ',
       'Luôn do ba mẹ quyết định, không gửi tên hay nhật ký của bé',

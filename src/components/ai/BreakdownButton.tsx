@@ -18,22 +18,26 @@ export function BreakdownButton({ title, ageYears, onUse }: { readonly title: st
   const { subscriptionPlan, subscriptionEndsAt } = useAppStore();
   const addonSellable = canBuyAiAddon(subscriptionPlan, subscriptionEndsAt);
   const [busy, setBusy] = useState(false);
-  const [result, setResult] = useState<Breakdown | null>(null);
+  const [answer, setAnswer] = useState<{ readonly title: string; readonly result: Breakdown } | null>(null);
+  // A new title is a new habit: an old suggestion would describe something else.
+  const result = answer && answer.title === title ? answer.result : null;
   const [failure, setFailure] = useState<AiFailure | null>(null);
   const aiLanguage = aiLanguageOf(language);
   const upsell = failure?.code === 'ai_quota' ? quotaTemplate(copy, failure.reason, failure.tier, addonSellable, subscriptionPlan === 'lifetime') : null;
 
-  if (enabled === null) return null;
+  // The model and the safety checks only know Vietnamese and English; other languages would get English text in their habit.
+  if (enabled === null || (language !== 'vi' && language !== 'en')) return null;
   if (!enabled) return <p className="text-xs text-slate-500 dark:text-slate-300">{copy.needConsent}</p>;
 
   const ask = async () => {
+    if (busy) return;
     setBusy(true);
     setFailure(null);
-    setResult(null);
-    const answer = await requestBreakdown({ title, ageYears, language: aiLanguage });
+    setAnswer(null);
+    const reply = await requestBreakdown({ title, ageYears: Math.min(18, Math.max(0, Math.round(ageYears))), language: aiLanguage });
     setBusy(false);
-    if (answer.ok) setResult(answer.result);
-    else setFailure(answer);
+    if (reply.ok) setAnswer({ title, result: reply.result });
+    else setFailure(reply);
   };
 
   return (
@@ -54,11 +58,11 @@ export function BreakdownButton({ title, ageYears, onUse }: { readonly title: st
         <div role="status" className="space-y-2 rounded-2xl border border-indigo-100 bg-indigo-50/60 p-3 dark:border-indigo-900/50 dark:bg-indigo-950/20">
           <p className="text-xs font-bold text-slate-700 dark:text-slate-200">{copy.breakdownTitle} · <span className="font-medium">{copy.aiLabel}</span></p>
           <ol className="list-decimal space-y-1 pl-5 text-sm text-slate-800 dark:text-slate-100">
-            {result.steps.map((step) => <li key={step.text}>{step.text} ({copy.minutes(step.minutes)})</li>)}
+            {result.steps.map((step, index) => <li key={index}>{step.text} ({copy.minutes(step.minutes)})</li>)}
           </ol>
           <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={() => { onUse(result.steps.map((step, index) => `${index + 1}. ${step.text}`)); setResult(null); }} className={`${button} border-indigo-600 bg-indigo-600 text-white hover:bg-indigo-700`}>{copy.use}</button>
-            <button type="button" onClick={() => setResult(null)} className={`${button} border-slate-200 bg-white text-slate-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-200`}>{copy.dismiss}</button>
+            <button type="button" onClick={() => { onUse(result.steps.map((step, index) => `${index + 1}. ${step.text}`)); setAnswer(null); }} className={`${button} border-indigo-600 bg-indigo-600 text-white hover:bg-indigo-700`}>{copy.use}</button>
+            <button type="button" onClick={() => setAnswer(null)} className={`${button} border-slate-200 bg-white text-slate-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-slate-200`}>{copy.dismiss}</button>
           </div>
         </div>
       )}

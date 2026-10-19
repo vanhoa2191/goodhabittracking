@@ -31,10 +31,19 @@ begin
     raise exception 'consume_ai_quota must be a definer with an empty search_path';
   end if;
 
-  if not pg_catalog.has_function_privilege('authenticated', signature, 'EXECUTE')
+  -- Since 202610050002 the originals are closed to every API role; the server calls the service-role-only `_as` wrappers.
+  if pg_catalog.has_function_privilege('authenticated', signature, 'EXECUTE')
     or pg_catalog.has_function_privilege('anon', signature, 'EXECUTE')
     or pg_catalog.has_function_privilege('service_role', signature, 'EXECUTE') then
-    raise exception 'consume_ai_quota must be executable by signed-in parents only';
+    raise exception 'consume_ai_quota must not be executable by API roles after 202610050002';
+  end if;
+
+  if to_regprocedure('public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer)') is not null then
+    if not pg_catalog.has_function_privilege('service_role', 'public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer)'::regprocedure, 'EXECUTE')
+      or pg_catalog.has_function_privilege('anon', 'public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer)'::regprocedure, 'EXECUTE')
+      or pg_catalog.has_function_privilege('authenticated', 'public.consume_ai_quota_monthly_as(uuid, integer, integer, integer, integer)'::regprocedure, 'EXECUTE') then
+      raise exception 'consume_ai_quota_monthly_as must be executable by service_role only';
+    end if;
   end if;
 
   if pg_catalog.pg_get_functiondef(signature) not like '%public.can_manage_family(actor_family_id)%'

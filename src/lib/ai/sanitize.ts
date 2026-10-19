@@ -27,7 +27,8 @@ export function cleanHabitTitle(raw: string): string | null {
 }
 
 // A habit name never needs these words; a title that has them is trying to talk to the model, so it is not sent at all.
-const LOOKS_LIKE_INSTRUCTION = /(?:ignore|disregard|system|prompt|instruction|jailbreak|bỏ qua|hệ thống|quy tắc|lời nhắc|hướng dẫn trên|in ra|tiết lộ|reveal|override)/i;
+// Matched as whole words so ordinary titles ("Tuân thủ quy tắc gia đình", "eco-system", "promptly") are not refused.
+const LOOKS_LIKE_INSTRUCTION = /(?<![\p{L}\p{N}])(?:ignore|disregard|system prompt|prompt|instructions?|jailbreak|bỏ qua|lời nhắc|hướng dẫn trên|in ra|tiết lộ|reveal|override)(?![\p{L}\p{N}])/iu;
 
 const TITLES_BEFORE_NAMES: ReadonlySet<string> = new Set(['bé', 'con', 'em', 'cậu', 'cô', 'anh', 'chị']);
 

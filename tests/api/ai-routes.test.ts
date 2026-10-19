@@ -130,19 +130,24 @@ describe('AI suggestion routes', () => {
   });
 
   it.each([
-    { data: 'plus', error: { message: 'unavailable' } },
     { data: null, error: null },
     { data: 'unknown', error: null },
-  ])('falls back to the free allowance for an unavailable or invalid tier: %j', async (result) => {
+  ])('falls back to the free allowance for an invalid tier: %j', async (result) => {
     tierRpc.mockResolvedValue(result);
     expect((await askBreakdown()).status).toBe(200);
     expect(rpc).toHaveBeenCalledWith('consume_ai_quota_monthly_as', expect.objectContaining({ per_month: 10 }));
   });
 
-  it('falls back to free when the tier lookup throws', async () => {
-    tierRpc.mockRejectedValue(new Error('connection failed'));
-    expect((await askBreakdown()).status).toBe(200);
-    expect(rpc).toHaveBeenCalledWith('consume_ai_quota_monthly_as', expect.objectContaining({ per_month: 10 }));
+  it.each([
+    ['an error', () => tierRpc.mockResolvedValue({ data: 'plus', error: { message: 'unavailable' } })],
+    ['a throw', () => tierRpc.mockRejectedValue(new Error('connection failed'))],
+  ] as const)('answers 503 without spending the allowance when the tier lookup fails with %s', async (_label, fail) => {
+    fail();
+    const response = await askBreakdown();
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toMatchObject({ code: 'ai_error' });
+    expect(rpc).not.toHaveBeenCalled();
+    expect(run).not.toHaveBeenCalled();
   });
 
   it.each(['free', 'standard', 'plus'])('returns the %s tier on a daily family refusal without calling the model', async (tier) => {
