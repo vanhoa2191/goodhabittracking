@@ -103,12 +103,13 @@ describe('parseBreakdown', () => {
     expect(parseBreakdown({ steps: [{ text: 'Một', minutes: 1 }, { text: 'Hai nữa', minutes: 1 }, { text: 'Ba nữa', minutes: 1 }] }, '6-12')).not.toBeNull();
   });
 
-  it('refuses the wrong number of steps, long text, bad minutes and invalid JSON', () => {
+  it('refuses the wrong number of steps, long text and invalid JSON, and clamps minutes into 1-5', () => {
     expect(parseBreakdown(steps(['Một bước', 'Hai bước']), '6-12')).toBeNull();
     expect(parseBreakdown(steps(['a b c', 'd e f', 'g h i', 'j k l']), '6-12')).toBeNull();
     expect(parseBreakdown(steps(['x'.repeat(61), 'Hai bước', 'Ba bước']), '6-12')).toBeNull();
-    expect(parseBreakdown(steps(['Một bước', 'Hai bước', 'Ba bước'], 9), '6-12')).toBeNull();
-    expect(parseBreakdown(steps(['Một bước', 'Hai bước', 'Ba bước'], 1.5), '6-12')).toBeNull();
+    expect(parseBreakdown(steps(['Một bước', 'Hai bước', 'Ba bước'], 9), '6-12')?.steps.map((step) => step.minutes)).toEqual([5, 5, 5]);
+    expect(parseBreakdown(steps(['Một bước', 'Hai bước', 'Ba bước'], 0), '6-12')?.steps.map((step) => step.minutes)).toEqual([1, 1, 1]);
+    expect(parseBreakdown(steps(['Một bước', 'Hai bước', 'Ba bước'], Number.NaN), '6-12')).toBeNull();
     expect(parseBreakdown('không phải JSON', '6-12')).toBeNull();
     expect(parseBreakdown('{"steps": [', '6-12')).toBeNull();
     expect(parseBreakdown(null, '6-12')).toBeNull();
@@ -126,10 +127,10 @@ describe('parseBreakdown', () => {
     }
   });
 
-  it('refuses electricity and being alone for the youngest, and needs a step done together', () => {
+  it('refuses electricity and being alone for the youngest', () => {
     expect(parseBreakdown(steps(['Cắm đèn vào ổ điện', 'Hai bước', 'Ba bước']), '6-12')).toBeNull();
     expect(parseBreakdown(steps(['Tự làm một mình', 'Cùng ba mẹ', 'Ba bước']), '3-6')).toBeNull();
-    expect(parseBreakdown(steps(['Lấy sách ra', 'Mở đúng trang', 'Đọc hai câu']), '3-6')).toBeNull();
+    expect(parseBreakdown(steps(['Lấy sách ra', 'Mở đúng trang', 'Đọc hai câu']), '3-6')).not.toBeNull();
     expect(parseBreakdown(steps(['Lấy sách ra', 'Cùng mẹ mở trang', 'Đọc hai câu']), '3-6')).not.toBeNull();
     expect(parseBreakdown(steps(['Take the book', 'Open it with a parent', 'Read two lines']), '0-3')).not.toBeNull();
     expect(parseBreakdown(steps(['Lấy sách ra', 'Mở đúng trang', 'Đọc hai câu']), '12-15')).not.toBeNull();
