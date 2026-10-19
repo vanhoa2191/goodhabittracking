@@ -1,29 +1,35 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, RotateCcw, X, CheckCircle2 } from 'lucide-react';
+import { Play, Pause, RotateCcw, X, CheckCircle2, Brush, BookOpen } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import type { HabitActivity } from '@/types';
 import { useTranslation } from '@/lib/i18n/context';
 import { getSmallModalsCopy } from '@/lib/i18n/small-modals-copy';
 import { sounds } from '@/lib/sound';
 import { ModalShell } from '@/components/ui/ModalShell';
+import { getKidQuestCopy } from '@/lib/i18n/kid-quest-copy';
 
 interface HabitTimerModalProps {
   activity: HabitActivity | null;
   isOpen: boolean;
   onClose: () => void;
-  onComplete: () => void;
+  onComplete: () => Promise<boolean>;
 }
 
 export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: HabitTimerModalProps) {
   const { t, language } = useTranslation();
   const modalCopy = getSmallModalsCopy(language);
+  const questCopy = getKidQuestCopy(language);
   const initialSeconds = (activity?.durationMinutes || 2) * 60;
   const [timeLeft, setTimeLeft] = useState(initialSeconds);
   const [isRunning, setIsRunning] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const saveInFlight = useRef(false);
+  const saveButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
 
   useEffect(() => {
     if (!activity) return;
@@ -33,6 +39,7 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
       setTimeLeft(secs);
       setIsRunning(false);
       setIsFinished(false);
+      setSaveError(false);
     }, 0);
 
     return () => clearTimeout(resetTimer);
@@ -57,6 +64,10 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
     };
   }, [isRunning, timeLeft]);
 
+  useEffect(() => {
+    if (isOpen && isFinished) saveButtonRef.current?.focus();
+  }, [isOpen, isFinished]);
+
   if (!isOpen || !activity) return null;
 
   const totalSeconds = (activity.durationMinutes || 2) * 60;
@@ -78,9 +89,26 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
     setTimeLeft(totalSeconds);
   };
 
-  const handleFinishAndClose = () => {
-    onComplete();
-    onClose();
+  const handleFinishAndClose = async () => {
+    if (saveInFlight.current) return;
+    saveInFlight.current = true;
+    setIsSaving(true);
+    setSaveError(false);
+    let saved = false;
+    try {
+      saved = await onComplete();
+    } catch (error: unknown) {
+      console.error('Saving timed practice failed:', error);
+    } finally {
+      saveInFlight.current = false;
+      setIsSaving(false);
+    }
+    if (saved) onClose();
+    else {
+      setSaveError(true);
+      // The same button survives the state change; focus it once enabled again.
+      requestAnimationFrame(() => saveButtonRef.current?.focus());
+    }
   };
 
   // SVG circular radius
@@ -89,25 +117,27 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
   const strokeDashoffset = circumference - (progressPercent / 100) * circumference;
 
   return (
-    <ModalShell isOpen={isOpen} onClose={onClose} label={modalCopy.timerLabel} maxWidth="sm" mobileSheet={false} className="text-center">
+    <ModalShell isOpen={isOpen} onClose={() => { if (!saveInFlight.current) onClose(); }} label={modalCopy.timerLabel} maxWidth="sm" mobileSheet={false} className="text-center">
         {/* Header */}
         <div className="shrink-0 p-4 sm:p-5 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between text-left">
           <div className="flex items-center gap-2.5 min-w-0 flex-1 mr-2">
             <span className="text-2xl sm:text-3xl shrink-0 p-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/50">
-              {activity.icon}
+              {activity.icon === '🪥' ? <Brush aria-hidden="true" className="h-8 w-8" />
+                : activity.icon === '📚' ? <BookOpen aria-hidden="true" className="h-8 w-8" /> : activity.icon}
             </span>
             <div className="min-w-0 flex-1">
-              <h3 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 truncate leading-tight">
+              <h2 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-slate-100 truncate leading-tight">
                 {activity.title}
-              </h3>
+              </h2>
               <p className="text-xs text-slate-400 mt-0.5 truncate">
                 {activity.description || modalCopy.minutesOfPractice(activity.durationMinutes || 2)}
               </p>
             </div>
           </div>
           <button
-            onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shrink-0"
+            onClick={() => { if (!saveInFlight.current) onClose(); }}
+            disabled={isSaving}
+            className="min-h-11 min-w-11 flex items-center justify-center p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors shrink-0"
             aria-label={t.close}
           >
             <X className="w-5 h-5" />
@@ -148,14 +178,15 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
 
             {/* Time digits in center */}
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              {isFinished ? (
-                <div className="animate-bounce flex flex-col items-center">
+              <div role="status" aria-atomic="true">
+                {isFinished && <div className="animate-bounce flex flex-col items-center">
                   <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-500 mb-1" />
                   <span className="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400">
                     {t.timerFinish}
                   </span>
-                </div>
-              ) : (
+                </div>}
+              </div>
+              {!isFinished && (
                 <>
                   <span className="text-3xl sm:text-4xl font-extrabold text-slate-800 dark:text-slate-100 tracking-tight font-mono">
                     {formattedTime}
@@ -170,22 +201,26 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
         </div>
 
         {/* Fixed Footer */}
-        <div className="shrink-0 p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/70 flex items-center justify-center gap-3 pb-safe">
+        <div className="shrink-0 p-4 border-t border-slate-100 dark:border-zinc-800 bg-slate-50/70 dark:bg-zinc-900/70 flex flex-wrap items-center justify-center gap-3 pb-safe">
+          {saveError && <p role="alert" className="w-full text-sm font-bold text-rose-700 dark:text-rose-300">{questCopy.saveError}</p>}
           {isFinished ? (
             <button
+              ref={saveButtonRef}
               type="button"
               onClick={handleFinishAndClose}
-              className="w-full py-3 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+              disabled={isSaving}
+              aria-busy={isSaving}
+              className="min-h-11 w-full py-3 px-6 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
             >
               <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
-              {t.tickDone} &amp; {t.close}
+              {isSaving ? questCopy.saving : saveError ? questCopy.retry : `${t.tickDone} & ${t.close}`}
             </button>
           ) : (
             <>
               <button
                 type="button"
                 onClick={handleReset}
-                className="p-3 sm:p-3.5 rounded-2xl bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors active:scale-95 shrink-0"
+                className="min-h-11 min-w-11 flex items-center justify-center p-3 sm:p-3.5 rounded-2xl bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors active:scale-95 shrink-0"
                 title={t.timerReset}
               >
                 <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -193,9 +228,9 @@ export function HabitTimerModal({ activity, isOpen, onClose, onComplete }: Habit
               <button
                 type="button"
                 onClick={toggleRun}
-                className={`flex-1 py-3 sm:py-3.5 px-6 rounded-2xl font-bold text-xs sm:text-sm text-white shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 ${
+                className={`min-h-11 flex-1 py-3 sm:py-3.5 px-6 rounded-2xl font-bold text-xs sm:text-sm text-white shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 ${
                   isRunning
-                    ? 'bg-amber-500 hover:bg-amber-600'
+                    ? 'bg-amber-700 hover:bg-amber-800'
                     : 'bg-indigo-600 hover:bg-indigo-700'
                 }`}
               >
