@@ -1,0 +1,26 @@
+# Phase 06b — Font Settings Slice — handoff
+
+- Status: accepted as an isolated appearance/i18n slice; whole06 remains pending (see `../execution/phase06b-root-acceptance.md`)
+- Producer / reviewer / next owner: OpenCode (slice) / coordinator / coordinator merge into 06 and 07
+- Orca Run / Task / Dispatch / terminal: phase06b-opencode (isolated 06b appearance-i18n slice)
+- Input phase acceptance + base commit/diff identity: 02a/03 accepted and 04a partial accepted per dispatch; full 04/05 NOT accepted. Canonical base `83b118367fead8a79f7918c928e4f92dbdd0590e`; no commits/resets.
+- Scope + exact file ownership released: this slice only — `src/components/FontSettingsModal.tsx` (modified), `src/lib/i18n/font-settings-copy.ts` (new), `tests/unit/font-settings-copy.test.ts` (new). `appearance-context.tsx` inspected but unchanged. No Header / ThemeSelector / timer / globals / KidDashboard / store / parent / child / inclusive-spec edits.
+- Changes + simplifications + preserved behavior:
+  - Localized font option names/previews and full size labels via a scoped 9-locale copy module keyed by the existing stable option ids; `split(' ')[0]` removed.
+  - Modal heading `<h2>`; size/family real `<h3>` section headings; font sample line `role="note"`; `truncate` → `break-words` so full names/previews wrap (no clipping).
+  - Close `min-h-11 min-w-11`, footer `min-h-11`, option buttons `min-h-11` (≥44×44); Escape/focus-restore unchanged via `ModalShell`/`useModalFocus`.
+  - Preserved: `FONT_OPTIONS`/`FONT_SIZE_SCALES` ids, cssFonts, scales, exports/callers and `kidhabit_font_family` / `kidhabit_font_size` storage keys; selected values and reload behavior unchanged. No new deps, no font downloads, no invented locale IDs.
+- Audit IDs closed / remaining: A08 both appearance cases closed (green). Timer V02 remaining for 06a2. Whole-06 not accepted.
+- Tests: exact command, flags, locale, viewport, engine, exit code, log path:
+  - `npx eslint <4 files> --max-warnings=0` → exit 0.
+  - `npm run typecheck` → exit 0.
+  - `npm test -- tests/unit/appearance-preference.test.ts tests/unit/font-settings-copy.test.ts` → exit 0, 7 passed.
+  - `PLAYWRIGHT_BASE_URL=http://localhost:3107 playwright test tests/e2e/appearance.spec.ts --project=chromium --workers=1` → exit 0 (PASS 1, theme preservation), `.omx/ui-execution/appearance-20261019-080531.log`.
+  - `PLAYWRIGHT_BASE_URL=http://localhost:3107 playwright test tests/e2e/ui-audit-inclusive.spec.ts --grep A08 --project=chromium --workers=1 --output=.omx/ui-execution/inclusive-a08-opencode-20261019-080921` → exit 0 (PASS 2 / FAIL 0, 105978ms), `.omx/ui-execution/phase06b-opencode-inclusive-a08.log`.
+- Visual evidence: before/after screenshots + bounded verdict: not produced by this slice; coordinator owns final captures. Interim connection-refused runs were dev-server downtime during rebuild, not product failures.
+- Regression baseline versus introduced failure: pre-06 baseline had A08 red (VI size truncation + non-VI untranslated font copy). After this slice both A08 cases are green with assertions unchanged; no assertion weakened, no fixme/skip.
+- Open risks / product decisions / external gates: coordinator must verify at 100/108/118% (bounding boxes) and 200%-zoom reflow; non-Chromium engines and screen-reader claims out of scope. Meaningful category patterns may need editorial coordination for any future semantic rename.
+- Blocking decisions / nonblocking decisions / approved surface scope: none blocking. Approved DESIGN identity and PRODUCT/surface brief preserved.
+- Rollback: revert `FontSettingsModal.tsx` to prior revision and delete the two new files; no data/schema impact; storage keys untouched.
+- Reviewer verdict + date + evidence: accepted by coordinator 2026-10-19; root focused units 7/7, scoped lint, current full typecheck0; slice Chromium A08/theme logs retained above. Final whole-inclusive and visual evidence remain phase07 gates.
+- Next owner: coordinator integrates into whole06 after phase04/05 and owns final captures/acceptance.
