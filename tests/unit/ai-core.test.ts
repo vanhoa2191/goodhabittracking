@@ -202,3 +202,32 @@ describe('instruction filter on ordinary titles', () => {
     }
   });
 });
+
+describe('safety filters on model output', () => {
+  const summary = (tryNext: string) => ({ praise: 'Tuần này bé đã cố gắng rất nhiều.', notice: 'Có vài ngày bé chưa kịp làm xong.', tryNext });
+
+  it.each([
+    'Cho bé tự dùng dao gọt hoa quả một mình.',
+    'Để bé tự bắc bếp nấu ăn cùng nhau.',
+    'Nhắc bé tự uống thuốc cảm mỗi sáng.',
+    'Let the child use a knife with a parent.',
+    'Cho bé tự sang đường đi học nhé.',
+    'Bé nên đi khám bác sĩ về chuyện này.',
+    'Ask your doctor about medication for the child.',
+    'The child may have anxiety this week.',
+  ])('refuses an unsafe or medical weekly summary line: %s', (line) => {
+    expect(parseSummary(summary(line))).toBeNull();
+  });
+
+  it('accepts ordinary summary lines that merely contain short word fragments', () => {
+    expect(parseSummary(summary('Hãy tìm nguồn động viên cho bé và đưa bé đến bệnh viện thăm ông.'))).not.toBeNull();
+    expect(parseSummary(summary('Cùng bé cất điện thoại trước giờ đi ngủ mỗi tối.'))).not.toBeNull();
+  });
+
+  it('refuses a breakdown step that hands a young child medicine or stairs', () => {
+    const steps = (text: string) => ({ steps: [{ text, minutes: 2 }, { text: 'Cùng mẹ làm bước hai', minutes: 2 }, { text: 'Cùng mẹ làm bước ba', minutes: 2 }] });
+    expect(parseBreakdown(steps('Uống thuốc ho'), '3-6')).toBeNull();
+    expect(parseBreakdown(steps('Đi xuống cầu thang'), '3-6')).toBeNull();
+    expect(parseBreakdown(steps('Cùng mẹ xếp sách'), '3-6')).not.toBeNull();
+  });
+});

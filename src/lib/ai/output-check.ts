@@ -7,15 +7,19 @@ export type WeeklySummary = { readonly praise: string; readonly notice: string; 
 
 // Words that judge or label a child, name a condition, or promise a result, in Vietnamese and English.
 const NEVER = [
-  'lười', 'hư hỏng', 'hư đốn', 'ngu', 'dốt', 'chẩn đoán', 'bệnh', 'rối loạn', 'tăng động', 'tự kỷ', 'trầm cảm',
+  'lười', 'hư hỏng', 'hư đốn', 'chẩn đoán', 'rối loạn', 'tăng động', 'tự kỷ', 'trầm cảm',
   'đảm bảo', 'chắc chắn', 'cam kết', 'bảo đảm',
+  'thuốc', 'bác sĩ', 'điều trị', 'trị liệu', 'hội chứng',
   'lazy', 'naughty', 'bad child', 'stupid', 'diagnos', 'disorder', 'adhd', 'autis', 'depress', 'guarantee', 'definitely', 'proven',
+  'medicine', 'medication', 'doctor', 'therapy', 'treatment', 'syndrome', 'anxiety',
 ];
+// Short words that sit inside ordinary ones ("nguồn", "bệnh viện") only count as whole words.
+const NEVER_WHOLE_WORD = /(?<![\p{L}\p{N}])(?:ngu|dốt|bệnh(?! viện))(?![\p{L}\p{N}])/u;
 const LEAKS = /(?:\bjson\b|system prompt|instruction|\bprompt\b|ignore (?:all|the|previous)|bỏ qua)/i;
 const LINK_OR_CONTACT = /(?:https?:\/\/|www\.|\S+@\S+\.\S+|\d[\d\s().-]{6,}\d)/i;
 const MARKUP = /[{}<>[\]`\\]/;
 // Things a young child must not be told to do on their own, even as a "small step".
-const RISKY_FOR_YOUNG = /(?:\bdao\b|\bkéo\b|\bbếp\b|\blửa\b|nước sôi|ổ điện|ổ cắm|cắm điện|\bđiện\b|\bknife\b|\bknives\b|\bscissors\b|\bstove\b|\bfire\b|boiling|\bsocket\b|\bplug\b|electric)/i;
+const RISKY_FOR_YOUNG = /(?:\bdao\b|\bkéo\b|\bbếp\b|\blửa\b|nước sôi|ổ điện|ổ cắm|cắm điện|\bđiện\b(?! thoại)|thuốc|\bpill|medicine|medication|cầu thang|\bstairs\b|sang đường|cross the road|\bsông\b|hóa chất|chemical|bleach|\bdiêm\b|\bmatch(?:es)?\b|lighter|ban công|\bknife\b|\bknives\b|\bscissors\b|\bstove\b|\bfire\b|boiling|\bsocket\b|\bplug\b|electric)/i;
 // For the youngest children every step must be done with someone, so a step that sends them off alone is refused.
 const ALONE = /(?:một mình|tự mình|\bby (?:yourself|themselves)\b|\bon (?:your|their) own\b|\balone\b)/i;
 const WITH_ADULT = /(?:cùng|ba mẹ|bố mẹ|người lớn|\bmẹ\b|\bbố\b|\bba\b|\bwith\b|\btogether\b|\bparent|\badult|\bgrown-up)/i;
@@ -26,7 +30,7 @@ function fold(text: string): string {
 
 function isClean(text: string): boolean {
   const lowered = fold(text);
-  if (NEVER.some((word) => lowered.includes(word))) return false;
+  if (NEVER.some((word) => lowered.includes(word)) || NEVER_WHOLE_WORD.test(lowered)) return false;
   return !LEAKS.test(text) && !LINK_OR_CONTACT.test(text) && !MARKUP.test(text);
 }
 
@@ -72,7 +76,8 @@ export function parseSummary(raw: unknown): WeeklySummary | null {
     const value = data[key];
     if (typeof value !== 'string') return null;
     const text = value.replace(/\s+/g, ' ').trim();
-    return text.length >= 10 && text.length <= SUMMARY_MAX_CHARS && isClean(text) ? text : null;
+    // A summary carries no child age, so it is held to the strictest reading: nothing risky, nothing a child does alone.
+    return text.length >= 10 && text.length <= SUMMARY_MAX_CHARS && isClean(text) && !RISKY_FOR_YOUNG.test(text) && !ALONE.test(text) ? text : null;
   };
   const praise = read('praise');
   const notice = read('notice');
