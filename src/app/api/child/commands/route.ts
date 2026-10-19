@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import { commandErrorStatus } from '@/lib/api/command-error-status';
 import { NextRequest, NextResponse } from 'next/server';
 import {
   childDomainCommandSchema,
@@ -65,16 +66,17 @@ export async function POST(request: NextRequest) {
   const rpc = rpcFor(parsed.data, await sha256Hex(token));
   const { data, error } = await supabase.rpc(rpc.name, rpc.args);
   if (error) {
+    const status = commandErrorStatus(error);
     logOperationalEvent('error', {
       operation: `child_${parsed.data.type}`,
       reasonCode: error.code || 'command_failed',
       correlationId,
       route: request.nextUrl.pathname,
-      status: 409,
+      status,
     });
     return NextResponse.json(
       { success: false, error: 'The child action could not be saved.', correlationId },
-      { status: 409 },
+      { status },
     );
   }
   if (data?.status === 'session_invalid') {

@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "ai-color-palette",
+        "value": "*",
+        "files": [
+          "src/components/KidDashboard.tsx"
+        ],
+        "createdAt": "2026-10-18T18:09:39.966Z",
+        "reason": "Coordinator accepted preservation scope: PRODUCT.md, DESIGN.md and phase03 child brief retain the incumbent purple caregiver branch; phase04a must preserve its identity."
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/app/globals.css"
+        ],
+        "createdAt": "2026-10-18T18:09:40.416Z",
+        "reason": "Agent triage: the only matched declaration is .guide-prose blockquote, a semantic documentation quotation marker rather than a decorative card side-tab; preserve this existing documentation styling."
+      }
+    ]
+  }
+}

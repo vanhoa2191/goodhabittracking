@@ -1,0 +1,3 @@
+#04a ownership correction19Oct2026
+
+Coordinator's initial04a dispatch mistakenly included child A01 changes in the same testfile that01owned forparent regressions. Detected before01madeitsownsource/testpatch. Stopped/fenced exactdispatchctx_9d66816e6e0b thenclosedexactcustomterminalterm_e45df88e-1378-4599-8c3a-0d61ffb4bfc8. Allpartialchangespreserved; currentregressionspecsnapshottedunder.omx. No resets orunrelatedprocesses. FreshOrca taskresumesexactCodexsession01a1501d-2465-7fd2-9624-bf1a0d486200 with explicitwholefileexclusionfirst.01remainssolewriterofregressionspec; childhelper/newchildspecs andUI04aowned. Rootwillreconcilepreservedpairedcaseafter01ifneeded. No phase acceptancefrominterruptedworker.

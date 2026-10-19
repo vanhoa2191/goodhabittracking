@@ -73,6 +73,16 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 - Controls must reflow without horizontal scrolling at 375px. Intrinsic mechanics such as `min-width`, `minmax()`, percentages, and wrapping remain local to the component.
 - Touch targets for primary actions should be at least 44px high where the screen allows; compact icon actions must keep a clear accessible name and adequate separation.
 
+### Approved daily-task structure (Phase03 contract; implementation pending)
+
+The approved remediation preserves the identity above. Child daily practice uses a compact greeting/identity and honest fire/status, then day context and the first useful scheduled practice/action before secondary achievements or optional letter/journal. Rewards, history, guidance and mascot choices remain reachable through existing navigation and progressive disclosure. No new recommendation logic or factual content rewrite is implied.
+
+For child self-use, the first task title and primary button must fit fully in the usable 375×812 viewport at default 108% font, clear of header and bottom navigation. Preserve the caregiver-led stored `0-3` branch: measure caregiver context and the useful practice/recording action, never infant self-action. Unknown age retains existing fallback; ageTheme and other optional experiences keep their current gates. Text scaling and zoom favor reflow over forced above-fold placement.
+
+Parent Today places the explicitly all-family review inbox before the per-child summary. The child selector lives inside that later summary section and changes summary only; queue counts, rows, selection IDs and inline/bulk/reward mutations retain the all-family contract. Existing navigation, PIN and pairing boundaries remain intact.
+
+The development-only surface briefs under `.impeccable/surfaces/` carry actor/state maps and acceptance details. This structural contract is authorized by the approved plan and 18Oct implementation request; it does not certify that the UI has been implemented or accepted.
+
 ## 5. Components
 
 ### Primary action
@@ -105,7 +115,7 @@ Spacing follows Tailwind's 4px base scale. Repeated intent maps to these steps: 
 - Variants: neutral record card, indigo-purple guidance panel, status callout.
 - Layout: stack or wrapping cluster; one column on narrow screens.
 - States: normal, empty, warning, and error content must be explicit rather than color-only.
-- The morning letter is a warm amber card below the child hero, not a blocking popup. Its heading and date precede three readable sentences; read state is a text-and-icon badge, and the confirmation button is at least 44px high. On narrow screens the badge moves below the heading rather than compressing it.
+- The morning letter is a warm amber card after the first useful practice/action in normal flow, not a blocking popup or prerequisite to practice. Its heading and date precede three readable sentences; read state is a text-and-icon badge, and the confirmation button is at least 44px high. On narrow screens the badge moves below the heading rather than compressing it.
 - Child quest cards retain their visible completion button and add a labelled `Để sau` / `Làm ngay` control. Deferred cards move to a clearly named group for the selected day; they remain in that day's total and never earn points. Pending approval and completed cards cannot be deferred.
 - Parent reminders are opt-in guidance, never advertising. The setting explains in-app versus device delivery, requests browser permission only from an explicit button, and keeps the actionable Today reminder in normal document flow.
 

@@ -76,7 +76,7 @@ export function KidIndependence({ childId }: { readonly childId: string }) {
       {cheer && (
         <div role="status" data-testid="kid-cheer" className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-bold text-emerald-900 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-100">
           <span>🌟 {cheer.text}</span>
-          <button type="button" onClick={() => { const next = new Set(seen).add(cheer.key); rememberSeen(next); setSeen(next); }} className="min-h-11 shrink-0 rounded-xl bg-emerald-600 px-4 text-sm font-bold text-white hover:bg-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">OK</button>
+          <button type="button" onClick={() => { const next = new Set(seen).add(cheer.key); rememberSeen(next); setSeen(next); }} className="min-h-11 shrink-0 rounded-xl bg-emerald-700 px-4 text-sm font-bold text-white hover:bg-emerald-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">OK</button>
         </div>
       )}
       {practising.length > 0 && (

@@ -8,7 +8,9 @@ const vietnameseCharacters = /[ăơưđĂƠƯĐ\u1EA0-\u1EF9]/u;
 
 function copyValues(copy: ParentTodayCopy): string[] {
   return [
-    copy.chooseChild,
+    copy.overviewOfChild,
+    copy.summaryTitle,
+    copy.summaryScopeNote,
     copy.todayOf('Mina'),
     copy.doneOfTotal(2, 5),
     copy.noTasksToday,
@@ -45,7 +47,14 @@ describe('parent today copy', () => {
       const copy = getParentTodayCopy(language);
       expect(Object.keys(copy).sort(), language).toEqual(englishKeys);
       expect(copyValues(copy).every((value) => value.trim().length > 0), language).toBe(true);
+      expect(copy.summaryTitle.trim().length, language).toBeGreaterThan(0);
+      expect(copy.summaryScopeNote.trim().length, language).toBeGreaterThan(0);
     }
+  });
+
+  it('names the per-child summary without implying a queue filter', () => {
+    expect(getParentTodayCopy('vi').summaryTitle).toBe('Tổng quan từng bé');
+    expect(getParentTodayCopy('vi').summaryScopeNote).toContain('Chỉ đổi phần tổng quan');
   });
 
   it('keeps parameters in parameterized copy', () => {

@@ -21,7 +21,7 @@ export function LeaderboardTable({ entries, error, highFiveSuccessId, onSendHigh
 
   return <div className="space-y-3 rounded-3xl border border-slate-100 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900 sm:p-6">
     {error && <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300">{error}</p>}
-    <h4 className="px-2 text-xs font-bold uppercase tracking-wider text-slate-400">{t.rank} &amp; {t.topRankings}</h4>
+    <h3 className="px-2 text-xs font-bold uppercase tracking-wider text-slate-400">{t.rank} &amp; {t.topRankings}</h3>
     <div className="space-y-2">{entries.map((entry) => {
       const isHighFived = entry.childId !== null && highFiveSuccessId === entry.childId;
       const isSending = entry.childId !== null && sendingKudoId === entry.childId;

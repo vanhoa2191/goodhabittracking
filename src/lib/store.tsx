@@ -37,11 +37,11 @@ import type { User } from '@supabase/supabase-js';
 import { createActivityActions } from './store/activity-actions';
 import type { TryKind, TryOutcome } from '@/lib/habit-programs/coach';
 import type { ChildSession } from './store/pairing-client';
-import { createHabitActions, type BatchReviewOutcome } from './store/habit-actions';
+import { createHabitActions, type BatchReviewOutcome, type ChildOperationState, type ChildToggleOutcome } from './store/habit-actions';
 import { resolveActiveChildId } from './store/active-child';
 import { createProfileActions } from './store/profile-actions';
 import type { CreateProfileOptions, ProfileCreateResult } from './store/profile-actions';
-import { createRewardActions } from './store/reward-actions';
+import { createRewardActions, type RedemptionOutcome } from './store/reward-actions';
 import { createSocialActions } from './store/social-actions';
 import { createFamilyPauseAction } from './store/family-pause-actions';
 import { markLocalLetterRead, openLocalLetter } from './store/local-letter-actions';
@@ -180,7 +180,8 @@ interface AppStoreContextType {
   deleteActivity: (id: string) => Promise<boolean>;
 
   logs: ActivityLog[];
-  toggleActivity: (activityId: string, dateStr: string) => Promise<boolean>;
+  getToggleOutcome: (activityId: string, date: string) => ChildToggleOutcome | null;
+  toggleActivity: (activityId: string, dateStr: string, completing?: boolean) => Promise<boolean>;
   approveLog: (logId: string) => void;
   rejectLog: (logId: string) => void;
   reviewLogs: (logIds: readonly string[], decision: 'approve' | 'reject') => Promise<BatchReviewOutcome | null>;
@@ -192,9 +193,9 @@ interface AppStoreContextType {
 
   redemptions: Redemption[];
   claimReward: (rewardId: string) => Promise<boolean>;
-  approveRedemption: (redemptionId: string) => void;
-  deliverRedemption: (redemptionId: string) => void;
-  rejectRedemption: (redemptionId: string) => void;
+  approveRedemption: (redemptionId: string) => Promise<RedemptionOutcome>;
+  deliverRedemption: (redemptionId: string) => Promise<RedemptionOutcome>;
+  rejectRedemption: (redemptionId: string) => Promise<RedemptionOutcome>;
 
   badges: Badge[];
   childBadges: ChildBadge[];
@@ -215,7 +216,11 @@ interface AppStoreContextType {
 
   cloudSyncActive: boolean;
   lastSyncTime: string | null;
-  syncNow: () => Promise<void>;
+  syncNow: () => Promise<boolean>;
+  parentReviewSelection: ReadonlySet<string>;
+  setParentReviewSelection: React.Dispatch<React.SetStateAction<ReadonlySet<string>>>;
+  isReviewBlocked: (id: string) => boolean;
+  isRedemptionBlocked: (id: string) => boolean;
 
   // Family Device Pairing Code (Per-Child)
   familyId: string | null;
@@ -255,6 +260,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const [isPairingReady, setIsPairingReady] = useState(false);
   const [mode, setModeState] = useState<'kid' | 'parent'>('kid');
   const [isParentUnlocked, setIsParentUnlocked] = useState(false);
+  const [parentReviewSelection, setParentReviewSelection] = useState<ReadonlySet<string>>(new Set());
   const [parentPin, setParentPin] = useState<string | null>(null);
   const [parentPinConfigured, setParentPinConfigured] = useState<boolean | null>(false);
 
@@ -269,6 +275,27 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [rewards, setRewards] = useState<Reward[]>([]);
   const [redemptions, setRedemptions] = useState<Redemption[]>([]);
+  // Snapshot setters publish synchronously for recovery, before the next render.
+  const childSnapshot = useRef({ logs, redemptions });
+  useLayoutEffect(() => { childSnapshot.current = { logs, redemptions }; }, [logs, redemptions]);
+  const readChildLogs = useCallback(() => childSnapshot.current.logs, []);
+  const readChildRedemptions = useCallback(() => childSnapshot.current.redemptions, []);
+  const receiveChildLogs = useCallback<typeof setLogs>((value) => {
+    const next = typeof value === 'function' ? value(childSnapshot.current.logs) : value;
+    childSnapshot.current = { ...childSnapshot.current, logs: next };
+    setLogs(next);
+  }, []);
+  const receiveChildRedemptions = useCallback<typeof setRedemptions>((value) => {
+    const next = typeof value === 'function' ? value(childSnapshot.current.redemptions) : value;
+    childSnapshot.current = { ...childSnapshot.current, redemptions: next };
+    setRedemptions(next);
+  }, []);
+  const childOperationsRef = useRef<ChildOperationState | null>(null);
+  const [childSessionEpoch, setChildSessionEpoch] = useState(0);
+  const invalidateChildOperations = useCallback(() => {
+    if (childOperationsRef.current) childOperationsRef.current.active = false;
+    setChildSessionEpoch((epoch) => epoch + 1);
+  }, []);
   const [badges] = useState<Badge[]>(DEFAULT_BADGES);
   const [childBadges, setChildBadges] = useState<ChildBadge[]>([]);
 
@@ -378,7 +405,8 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const openConnectModal = () => setIsConnectModalOpen(true);
   const closeConnectModal = () => setIsConnectModalOpen(false);
 
-  const resetFamilyScope = useCallback(() => {
+  const resetFamilyScope = useCallback((preserveChildOperations = false) => {
+    if (!preserveChildOperations) invalidateChildOperations();
     identityModeInitializedRef.current = false;
     journalScopeVersion.current += 1;
     cityScopeVersion.current += 1;
@@ -388,6 +416,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     localCityBalances.current.clear();
     setModeState('kid');
     setIsParentUnlocked(false);
+    setParentReviewSelection(new Set());
     setParentPin(null);
     setParentPinConfigured(false);
     setProfiles([]);
@@ -417,7 +446,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     if (typeof window !== 'undefined') {
       clearFamilyScopedStorage(localStorage);
     }
-  }, []);
+  }, [invalidateChildOperations]);
 
 
 
@@ -428,7 +457,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     loginWithGoogle,
     logout,
     syncCloudFamily: syncFromSupabase,
-    syncNow,
+    syncNow: syncIdentityNow,
   } = useCloudFamilyIdentity({
     currentUser,
     onIdentityReady,
@@ -448,16 +477,46 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       setGroups,
       setKudos,
       setLastSyncTime,
-      setLogs,
+      setLogs: receiveChildLogs,
       setProfiles,
       setExperience,
-      setRedemptions,
+      setRedemptions: receiveChildRedemptions,
       setRewards,
       setSubscriptionEndsAt,
       setSubscriptionPlan,
       setTrialEndsAt,
     },
   });
+
+  const childOperations = useMemo<ChildOperationState>(() => ({
+    active: true, habits: new Map(), rewards: new Map(),
+    // Identity/session changes discard retry IDs; ordinary snapshot refresh does not.
+    scope: `${currentUser?.id ?? ''}:${familyId ?? ''}:${isFamilyConnected}:${isDemoSession}:${childSessionEpoch}`,
+  }), [currentUser?.id, familyId, isFamilyConnected, isDemoSession, childSessionEpoch]);
+  useLayoutEffect(() => {
+    childOperationsRef.current = childOperations;
+    childOperationsRef.current.active = true;
+    return () => {
+      if (childOperationsRef.current === childOperations) childOperationsRef.current.active = false;
+    };
+  }, [childOperations]);
+  const getChildOperations = () => childOperationsRef.current ?? childOperations;
+  const resetPairingSnapshot = useCallback(() => resetFamilyScope(true), [resetFamilyScope]);
+
+  // Stable within one family scope, including queue remounts and action recreation.
+  const parentOperations = useMemo(() => ({
+    scope: `${currentUser?.id ?? ''}:${familyId ?? ''}`,
+    reviews: { busy: new Set<string>(), blocked: new Set<string>() },
+    redemptions: { busy: new Set<string>(), blocked: new Set<string>() },
+  }), [currentUser?.id, familyId]);
+  const syncNow = useCallback(async (): Promise<boolean> => {
+    const synced = await syncFromSupabase(currentUser);
+    if (synced) {
+      parentOperations.reviews.blocked.clear();
+      parentOperations.redemptions.blocked.clear();
+    }
+    return synced;
+  }, [currentUser, syncFromSupabase, parentOperations]);
 
   const {
     startDemoSession: beginDemoSession,
@@ -499,7 +558,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
       setRewards,
       setStorageMode: setStorageModeState,
     },
-    syncNow,
+    syncNow: syncIdentityNow,
   });
 
   const startDemoSession = () => {
@@ -584,8 +643,8 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   };
 
   const {
-    connectWithFamilyCode,
-    disconnectFamilyCode,
+    connectWithFamilyCode: connectChildWithFamilyCode,
+    disconnectFamilyCode: disconnectChildWithFamilyCode,
     generateChildCodes,
     refreshChildSession,
     regenerateChildCode,
@@ -598,22 +657,31 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     mode,
     onHydrateChildSession: noteChildSessionHydrated,
     profiles,
-    resetFamilyScope,
+    resetFamilyScope: resetPairingSnapshot,
     setters: {
       setActivities,
       setActiveChildId: setActiveChildIdState,
       setChildCodes,
       setIsFamilyConnected,
-      setLogs,
+      setLogs: receiveChildLogs,
       setMode: setModeState,
       setPairedFamilyPausedAt,
       setPairedFamilyPausePeriods,
       setProfiles,
-      setRedemptions,
+      setRedemptions: receiveChildRedemptions,
       setRewards,
       setStorageMode: setStorageModeState,
     },
   });
+  const connectWithFamilyCode: typeof connectChildWithFamilyCode = async (...args) => {
+    invalidateChildOperations();
+    return connectChildWithFamilyCode(...args);
+  };
+  const disconnectFamilyCode = () => {
+    invalidateChildOperations();
+    disconnectChildWithFamilyCode();
+  };
+
 
   // Active Child
   const activeChild = profiles.find((p) => p.id === activeChildId) || profiles[0] || null;
@@ -938,6 +1006,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   };
 
   const setActiveChildId = (id: string) => {
+    if (id !== activeChildId) invalidateChildOperations();
     setActiveChildIdState(id);
     sounds.playClick();
   };
@@ -1029,7 +1098,12 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     syncCloudFamily: syncFromSupabase,
   });
 
-  const { approveLog, rejectLog, reviewLogs, toggleActivity } = createHabitActions({
+  // These getters run only after an action starts; they read the current post-refresh session snapshot.
+  // eslint-disable-next-line react-hooks/refs -- The factory stores getters and invokes them from async user actions, never during render.
+  const { approveLog, rejectLog, reviewLogs, toggleActivity, getToggleOutcome } = createHabitActions({
+    childOperations: getChildOperations,
+    childLogs: readChildLogs,
+    reviewOperations: () => parentOperations.reviews,
     cloud: {
       currentUser,
       familyId,
@@ -1053,7 +1127,11 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     analyticsSink: guardedAnalyticsSink,
   });
 
+  // eslint-disable-next-line react-hooks/refs -- The factory stores getters and invokes them from async user actions, never during render.
   const rewardActions = createRewardActions({
+    childOperations: getChildOperations,
+    childRedemptions: readChildRedemptions,
+    redemptionOperations: () => parentOperations.redemptions,
     activeChildId,
     currentUser,
     familyId,
@@ -1344,6 +1422,7 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
 
         logs,
         toggleActivity,
+        getToggleOutcome,
         approveLog,
         rejectLog,
         reviewLogs,
@@ -1376,6 +1455,10 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         cloudSyncActive,
         lastSyncTime,
         syncNow,
+        parentReviewSelection,
+        setParentReviewSelection,
+        isReviewBlocked: (id) => parentOperations.reviews.blocked.has(id) || parentOperations.reviews.busy.has(id),
+        isRedemptionBlocked: (id) => parentOperations.redemptions.blocked.has(id) || parentOperations.redemptions.busy.has(id),
 
         // Family Device Pairing Code
         familyId,

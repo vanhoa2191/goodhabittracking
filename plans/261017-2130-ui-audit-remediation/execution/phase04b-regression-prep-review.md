@@ -1,0 +1,3 @@
+# Coordinator accepts04b regression preparation
+
+Actual new test source and detailed report reviewed:6scenarios expanded across cloud andpaired, realcommandclient/strictoutgoingHTTPschema, snapshot/getter/setterfixtures, actualSQL-style duplicate withoutinventedlogID.10assertionreds/2accepted-but-stalepasses reflect realcurrentdefects; no mock/type/harness failure. Existing8demo casespass, ESLint/typecheck0 reported. Newtests do notprovefactoryrecreation/sessionisolation/successfulreconcile retry; implementationmustadd thosemeaningfulchecks. No source04b acceptance. Newtestfile free for04b after01 accepted/released. Exactresumablesession01a15195-fd11-7f73-b7ec-bbf1e9794822.

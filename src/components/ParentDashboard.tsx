@@ -302,36 +302,34 @@ export function ParentDashboard() {
     setChildSaveError(failureMessage || profileCopy.saveError);
   };
 
-  // Approvals items
+  // Approvals items. Approved-but-undelivered rewards still wait on a parent, so they count as actionable.
   const pendingLogs = logs.filter((l) => l.status === 'pending_approval');
-  const pendingRedemptions = redemptions.filter((r) => r.status === 'pending');
+  const queueRedemptions = redemptions.filter((r) => r.status === 'pending' || r.status === 'approved');
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6 sm:py-8 space-y-6 animate-fade-in">
+    <div className="max-w-5xl mx-auto px-4 py-4 sm:py-8 space-y-4 sm:space-y-6 animate-fade-in">
       {/* Top Banner: Parent Mode Title & Lock Action */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-3xl bg-slate-900 text-white shadow-lg">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-bold">
-            <ShieldCheck className="w-6 h-6" />
+      <div className="flex items-center justify-between gap-3 p-3 sm:p-4 rounded-3xl bg-slate-900 text-white shadow-lg">
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="w-10 h-10 shrink-0 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-bold">
+            <ShieldCheck className="w-5 h-5" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="font-black text-lg tracking-tight">{t.parentMode}</h2>
-            </div>
-            <p className="text-xs text-slate-300">{t.appSlogan}</p>
+          <div className="min-w-0">
+            <h1 className="truncate font-black text-lg tracking-tight">{t.parentMode}</h1>
+            <p className="truncate text-xs text-slate-300">{t.appSlogan}</p>
           </div>
         </div>
 
         <button
           onClick={lockParent}
-          className="self-start sm:self-auto py-2.5 px-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-2 active:scale-95 border border-white/15"
+          className="shrink-0 py-2 px-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-2 active:scale-95 border border-white/15"
         >
           <Lock className="w-4 h-4 text-amber-400" />
           {t.kidMode}
         </button>
       </div>
 
-      <ParentNavigation activeSection={activeTab} onSelectSection={setActiveTab} pendingCount={pendingLogs.length + pendingRedemptions.length}>
+      <ParentNavigation activeSection={activeTab} onSelectSection={setActiveTab} pendingCount={pendingLogs.length + queueRedemptions.length}>
 
       {activeTab === 'approvals' && <ParentApprovalsTab onOpenHabits={() => setActiveTab('habits')} />}
 
@@ -960,7 +958,7 @@ export function ParentDashboard() {
                     setAdjustError(true);
                   }
                 }}
-                className="py-2.5 px-6 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all shadow-md active:scale-95"
+                className="py-2.5 px-6 rounded-xl bg-amber-700 hover:bg-amber-800 text-white text-xs font-bold transition-all shadow-md active:scale-95"
               >
                 {t.confirm}
               </button>
