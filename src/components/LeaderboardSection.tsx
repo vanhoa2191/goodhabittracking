@@ -91,7 +91,7 @@ export function LeaderboardSection() {
       )}
       {global?.status === 'ready' && leaderboardEntries.length === 0 && (
         <div data-testid="leaderboard-empty" className="rounded-3xl border border-slate-100 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-          <h4 className="text-base font-extrabold text-slate-800 dark:text-slate-100">{copy.globalEmptyTitle}</h4>
+          <h3 className="text-base font-extrabold text-slate-800 dark:text-slate-100">{copy.globalEmptyTitle}</h3>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{copy.globalEmptyBody}</p>
         </div>
       )}

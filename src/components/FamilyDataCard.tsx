@@ -70,7 +70,7 @@ export function FamilyDataCard() {
         <div role="alertdialog" aria-labelledby="family-data-confirm" data-testid="family-data-confirm" className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/30">
           <p id="family-data-confirm" className="text-sm font-semibold text-slate-800 dark:text-slate-100">{copy.importWarning}</p>
           <div className="mt-3 flex flex-wrap gap-2">
-            <button type="button" data-testid="family-data-confirm-yes" onClick={() => void restore()} className="min-h-11 rounded-xl bg-amber-600 px-4 text-sm font-bold text-white hover:bg-amber-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">{copy.importConfirm}</button>
+            <button type="button" data-testid="family-data-confirm-yes" onClick={() => void restore()} className="min-h-11 rounded-xl bg-amber-700 px-4 text-sm font-bold text-white hover:bg-amber-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">{copy.importConfirm}</button>
             <button type="button" onClick={() => { setPendingFile(null); if (fileInput.current) fileInput.current.value = ''; }} className="min-h-11 rounded-xl border border-slate-300 px-4 text-sm font-bold dark:border-zinc-600">{copy.importCancel}</button>
           </div>
         </div>

@@ -15,6 +15,8 @@ type CloudFamilyFixtureOptions = {
   readonly profiles?: readonly Record<string, unknown>[];
   readonly activities?: readonly Record<string, unknown>[];
   readonly rewards?: readonly Record<string, unknown>[];
+  readonly logs?: readonly Record<string, unknown>[];
+  readonly redemptions?: readonly Record<string, unknown>[];
   readonly subscription?: Record<string, unknown>;
 };
 
@@ -147,6 +149,8 @@ export async function installCloudFamilyFixture(
     else if (path.endsWith('/child_profiles')) payload = options.profiles ?? [defaultCloudProfile];
     else if (path.endsWith('/habit_activities')) payload = options.activities ?? [];
     else if (path.endsWith('/rewards')) payload = options.rewards ?? [];
+    else if (path.endsWith('/activity_logs')) payload = options.logs ?? [];
+    else if (path.endsWith('/redemptions')) payload = options.redemptions ?? [];
     else if (path.endsWith('/user_subscriptions')) {
       payload = options.subscription ?? { plan: 'trial', status: 'active', trial_ends_at: '2099-01-01T00:00:00.000Z', subscription_ends_at: null };
     } else if (path.endsWith('/family_engagement_settings')) payload = null;
