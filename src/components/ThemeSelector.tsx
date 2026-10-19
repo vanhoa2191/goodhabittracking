@@ -28,7 +28,7 @@ export function ThemeSelector({ compact = false }: { compact?: boolean }) {
             aria-label={label}
             aria-pressed={theme === value}
             onClick={() => setTheme(value)}
-            className={`flex min-h-11 items-center justify-center gap-1.5 rounded-xl px-3 text-sm font-bold transition-colors ${theme === value ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-700 dark:text-indigo-200' : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'}`}
+            className={`flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl px-3 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${theme === value ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-700 dark:text-indigo-200' : 'text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white'}`}
           >
             <Icon className="h-4 w-4" aria-hidden="true" />
             {!compact && <span>{label}</span>}

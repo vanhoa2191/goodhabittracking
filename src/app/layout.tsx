@@ -95,7 +95,7 @@ export default async function RootLayout({
       <head>
         <script nonce={nonce} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: appearanceScript }} />
       </head>
-      <body className="min-h-full flex flex-col bg-app-surface dark:bg-zinc-950 text-ink dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
+      <body className="min-h-full flex flex-col bg-app-surface text-ink selection:bg-indigo-500 selection:text-white">
         <PwaRuntime />
         <AppearanceProvider>
           <I18nProvider initialLanguage={initialLanguage}>
