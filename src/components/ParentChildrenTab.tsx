@@ -166,7 +166,7 @@ export function ParentChildrenTab({ onAdjustPoints, onOpenChild }: ParentChildre
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h4 className="font-extrabold text-base text-slate-800 dark:text-slate-100 truncate">{child.name}</h4>
-                  {child.ageStage && <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300">{kidCopy.stageLabels[child.ageStage]} ({child.age !== undefined ? `${child.age} ${kidCopy.ageUnit}` : onboarding.stageLabels[child.ageStage]})</span>}
+                  {child.ageStage && <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 dark:bg-amber-950/60 dark:text-amber-300">{kidCopy.stageLabels[child.ageStage]}{child.age !== undefined ? ` · ${child.age} ${kidCopy.ageUnit}` : ''}</span>}
                   {child.nickname && <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300">🛡️ {child.nickname}</span>}
                 </div>
                 <div className="flex items-center gap-3 mt-1 text-xs text-slate-400">
