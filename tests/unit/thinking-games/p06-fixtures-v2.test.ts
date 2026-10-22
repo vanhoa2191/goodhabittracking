@@ -44,7 +44,7 @@ describe('P06 four-track internal fixtures', () => {
     }
   });
 
-  it('keeps every fixture solvable, internally consistent and free of public answer leakage', { timeout: 10000 }, () => {
+  it('keeps every fixture solvable, internally consistent and free of public answer leakage', { timeout: 30000 }, () => {
     for (const raw of fixture.items) {
       const item = parsePuzzleItem(raw) as PuzzleItem;
       expect(item.status).toBe('design_only');

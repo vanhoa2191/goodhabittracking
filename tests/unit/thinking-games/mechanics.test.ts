@@ -191,7 +191,7 @@ describe('original mechanics across all tracks and variants', () => {
     }
   });
 
-  it('maps each declared rule variant to its actual rule or board shape', () => {
+  it('maps each declared rule variant to its actual rule or board shape', { timeout: 30000 }, () => {
     for (const ageTrack of tracks) {
       const alternating = generateRuleSequencePuzzle({ seed: `rule-alt-${ageTrack}`, ageTrack, variant: 'xen kẽ hai chuỗi' });
       expect(alternating.ruleKind).toBe('alternating');

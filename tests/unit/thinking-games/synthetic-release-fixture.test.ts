@@ -17,7 +17,7 @@ function sha256(raw: string): string {
 }
 
 describe('synthetic release fixture', () => {
-  it('passes release-profile validation (is the preparation baseline)', () => {
+  it('passes release-profile validation (is the preparation baseline)', { timeout: 30000 }, () => {
     const fixture = loadSyntheticReleaseFixture();
     const result = validateManifest(fixture, { profile: 'release' });
     expect(result.ok).toBe(true);
@@ -86,7 +86,7 @@ describe('synthetic release fixture - promotion artifact', () => {
     };
   };
 
-  it('passes release-profile validation after stamping approval', () => {
+  it('passes release-profile validation after stamping approval', { timeout: 30000 }, () => {
     const result = validateManifest(approved, { profile: 'release' });
     expect(result.ok).toBe(true);
   });

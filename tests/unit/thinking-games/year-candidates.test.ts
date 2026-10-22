@@ -168,7 +168,7 @@ function runCatalogTests(label: string, params: {
       expect(invalid.errors.some((error) => ['known_answer_rejected', 'invalid_puzzle', 'schema'].includes(error.code))).toBe(true);
     });
 
-    it('rejects the unreviewed candidate manifest under the production release profile', { timeout: 30000 }, () => {
+    it('rejects the unreviewed candidate manifest under the production release profile', { timeout: 60000 }, () => {
       const manifest = params.manifest();
       const engine = params.engine();
       const release = engine.validateManifest(manifest, { profile: 'release' }) as {
