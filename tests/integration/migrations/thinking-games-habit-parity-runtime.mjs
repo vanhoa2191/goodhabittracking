@@ -53,11 +53,14 @@ try {
     [approval, ids.children.alpha, today, approvalLog],
   );
   if (pending.result.status !== 'pending_approval' || pending.result.pointsAwarded !== 0) throw new Error('approval completion parity');
-  const batch = await fixture.one(`select public.review_habits_command($1,'approve') result`, [[approvalLog]]);
+  await fixture.resetAuthContext(); // superuser/postgres can call _as wrappers
+  const batch = await fixture.one(`select public.review_habits_command_as($1,$2,'approve') result`, [ids.users.parentAlpha, [approvalLog]]);
   const batchItem = batch.result.results?.[0];
   if (batchItem?.status !== 'approved' || batchItem.logId !== approvalLog || batchItem.pointsAwarded !== 13) {
     throw new Error('batch review response parity');
   }
+
+  await fixture.applyAuthContext({ role: 'authenticated', claims: { sub: ids.users.parentAlpha, role: 'authenticated' } });
 
   // --- Regression: parent completion stores user_id = auth.uid() ---
   const parentLogCheck = await fixture.one(
@@ -156,8 +159,8 @@ try {
   );
   if (childAfterUndo.result.status !== 'not_found') throw new Error('child undo not_found parity');
 
-  // --- Regression: review_habit_command approve/reject payload keys ---
-  await fixture.applyAuthContext({ role: 'authenticated', claims: { sub: ids.users.parentAlpha, role: 'authenticated' } });
+  // --- Regression: review_habit_command approve/reject payload keys (via _as wrapper, as production does) ---
+  await fixture.resetAuthContext(); // superuser/postgres can call _as wrappers
   // Create a new pending approval log for review test (different date)
   await fixture.query(
     `insert into public.activity_logs(id,family_id,user_id,activity_id,child_id,log_date,status,points_awarded)
@@ -165,11 +168,11 @@ try {
     [parentLog1, ids.families.alpha, ids.users.parentAlpha, approval, ids.children.alpha, tomorrow]
   );
   const approveResult = await fixture.one(
-    `select public.review_habit_command($1,'approve') result`,
-    [parentLog1]
+    `select public.review_habit_command_as($1,$2,'approve') result`,
+    [ids.users.parentAlpha, parentLog1]
   );
   if (approveResult.result.status !== 'approved' || typeof approveResult.result.pointsAwarded !== 'number') {
-    throw new Error('review_habit_command approve payload parity');
+    throw new Error('review_habit_command_as approve payload parity');
   }
 
   await fixture.query(
@@ -178,14 +181,14 @@ try {
     [parentLog2, ids.families.alpha, ids.users.parentAlpha, approval, ids.children.alpha, dayAfter]
   );
   const rejectResult = await fixture.one(
-    `select public.review_habit_command($1,'reject') result`,
-    [parentLog2]
+    `select public.review_habit_command_as($1,$2,'reject') result`,
+    [ids.users.parentAlpha, parentLog2]
   );
   if (rejectResult.result.status !== 'rejected' || rejectResult.result.pointsAwarded !== undefined) {
-    throw new Error('review_habit_command reject payload parity');
+    throw new Error('review_habit_command_as reject payload parity');
   }
 
-  // --- Regression: review_habits_command batch result shape ---
+  // --- Regression: review_habits_command batch result shape (via _as wrapper, as production does) ---
   await fixture.query(
     `insert into public.activity_logs(id,family_id,user_id,activity_id,child_id,log_date,status,points_awarded)
        values ($1,$2,$3,$4,$5,$6,'pending_approval',0),
@@ -193,8 +196,8 @@ try {
     [parentLog3, ids.families.alpha, ids.users.parentAlpha, plain, ids.children.alpha, tomorrow, parentLog4, dayAfter]
   );
   const batchReview = await fixture.one(
-    `select public.review_habits_command($1,'approve') result`,
-    [[parentLog3, parentLog4]]
+    `select public.review_habits_command_as($1,$2,'approve') result`,
+    [ids.users.parentAlpha, [parentLog3, parentLog4]]
   );
   if (batchReview.result.status !== 'reviewed' || !Array.isArray(batchReview.result.results) || batchReview.result.results.length !== 2) {
     throw new Error('review_habits_command batch shape parity');
@@ -204,6 +207,56 @@ try {
       throw new Error('review_habits_command batch item shape parity');
     }
   }
+
+  // --- Regression: batch approve keeps total_earned/level updates and closes direct ACL ---
+  const levelActivity1 = '11111111-1111-4111-8111-111111111101';
+  const levelActivity2 = '11111111-1111-4111-8111-111111111102';
+  const levelLog1 = '11111111-1111-4111-8111-111111111111';
+  const levelLog2 = '11111111-1111-4111-8111-111111111112';
+  const levelDay1 = new Date(Date.now() + 4 * 86400000).toISOString().slice(0, 10);
+  const levelDay2 = new Date(Date.now() + 5 * 86400000).toISOString().slice(0, 10);
+  await fixture.query(
+    `insert into public.habit_activities(id,family_id,child_id,title,points,requires_approval,created_at)
+       values ($1,$2,$3,'Parity level 60a',60,true,now()),($4,$2,$3,'Parity level 60b',60,true,now())`,
+    [levelActivity1, ids.families.alpha, ids.children.alpha, levelActivity2],
+  );
+  await fixture.query(
+    `update public.child_profiles set points=50,total_earned=50,level=1 where id=$1`,
+    [ids.children.alpha],
+  );
+  await fixture.query(
+    `insert into public.activity_logs(id,family_id,user_id,activity_id,child_id,log_date,status,points_awarded)
+       values ($1,$2,$3,$4,$5,$6,'pending_approval',0),
+              ($7,$2,$3,$8,$5,$9,'pending_approval',0)`,
+    [levelLog1, ids.families.alpha, ids.users.parentAlpha, levelActivity1, ids.children.alpha, levelDay1,
+      levelLog2, levelActivity2, levelDay2],
+  );
+  const levelBatch = await fixture.one(
+    `select public.review_habits_command_as($1,$2,'approve') result`,
+    [ids.users.parentAlpha, [levelLog1, levelLog2]]
+  );
+  const levelResults = levelBatch.result.results;
+  if (!Array.isArray(levelResults) || levelResults.length !== 2) {
+    throw new Error('level batch approve shape parity');
+  }
+  for (const item of levelResults) {
+    if (item.status !== 'approved' || item.pointsAwarded !== 60) {
+      throw new Error(`level batch approve item parity: ${JSON.stringify(item)}`);
+    }
+  }
+  const leveledChild = await fixture.one(
+    `select points,total_earned,level from public.child_profiles where id=$1`,
+    [ids.children.alpha]
+  );
+  if (leveledChild.total_earned !== 170 || leveledChild.level !== 2 || leveledChild.points !== 170) {
+    throw new Error(`level batch total_earned/level/points parity: ${JSON.stringify(leveledChild)}`);
+  }
+  const directAcl = await fixture.scalar(
+    `select has_function_privilege('authenticated','public.review_habits_command(uuid[],text)','EXECUTE')`
+  );
+  if (directAcl !== false) throw new Error(`review_habits_command must not be executable by authenticated, got ${directAcl}`);
+
+  await fixture.applyAuthContext({ role: 'authenticated', claims: { sub: ids.users.parentAlpha, role: 'authenticated' } });
 
   console.log(JSON.stringify({
     verdict: 'PASS',
@@ -218,9 +271,11 @@ try {
       'duplicate-completion',
       'parent-undo-not_found',
       'child-undo-not_found',
-      'review-approve-payload',
-      'review-reject-payload',
-      'batch-review-shape'
+      'review-habit-command-as-approve-payload',
+      'review-habit-command-as-reject-payload',
+      'batch-review-as-shape',
+      'batch-approve-total-earned-level',
+      'review-habits-command-direct-acl-closed'
     ],
     database: fixture.databaseName,
   }));

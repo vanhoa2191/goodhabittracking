@@ -63,7 +63,8 @@ try {
     [approvalActivityId, ids.children.alpha, today, reviewLogId],
   );
   if (pending.result.status !== 'pending_approval') throw new Error('pending approval regression');
-  const reviewed = await fixture.one(`select public.review_habit_command($1,'approve') result`, [reviewLogId]);
+  await fixture.resetAuthContext(); // superuser/postgres can call _as wrappers
+  const reviewed = await fixture.one(`select public.review_habit_command_as($1,$2,'approve') result`, [ids.users.parentAlpha, reviewLogId]);
   if (reviewed.result.status !== 'approved') throw new Error('single review regression');
   const receipt = await fixture.one(`select * from public.test_receipt($1)`, [reviewLogId]);
   if (!receipt.received_at || !receipt.reviewed_at || receipt.review_status !== 'approved') throw new Error('receipt review audit regression');

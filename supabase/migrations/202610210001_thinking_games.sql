@@ -1139,6 +1139,8 @@ create or replace function public.review_habits_command(target_log_ids uuid[], d
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare fid uuid:=public.current_family_id(); ids uuid[]; children uuid[]; current_id uuid; l public.activity_logs%rowtype; day date;
   results jsonb:='[]'::jsonb;
+  l_status text;
+  l_points integer;
 begin
   if fid is null then raise exception 'family_membership_required'; end if;
   if not public.can_manage_family(fid) then raise exception 'family_manage_required'; end if;
@@ -1156,12 +1158,11 @@ begin
     select * into l from public.activity_logs where activity_logs.id=current_id and family_id=fid;
     if not found then results:=results||jsonb_build_array(jsonb_build_object('logId',current_id,'status','not_found'));
     elsif l.status <> 'pending_approval' then results:=results||jsonb_build_array(jsonb_build_object('logId',current_id,'status','already_reviewed'));
-    elsif decision='reject' then update public.activity_logs set status='rejected',points_awarded=0 where activity_logs.id=current_id;
-      results:=results||jsonb_build_array(jsonb_build_object('logId',current_id,'status','rejected'));
-    else update public.activity_logs set status='approved',points_awarded=(select points from public.habit_activities where habit_activities.id=l.activity_id) where activity_logs.id=current_id;
-      update public.child_profiles set points=points+(select points from public.habit_activities where habit_activities.id=l.activity_id), total_earned=total_earned+(select points from public.habit_activities where habit_activities.id=l.activity_id)
-        where child_profiles.id=l.child_id and child_profiles.family_id=fid;
-      results:=results||jsonb_build_array(jsonb_build_object('logId',current_id,'status','approved','pointsAwarded',(select points from public.habit_activities where habit_activities.id=l.activity_id)));
+    else
+      -- Delegate to review_habit_command for consistent level calculation and audit trail
+      perform public.review_habit_command(current_id, decision);
+      select status, points_awarded into l_status, l_points from public.activity_logs where id=current_id;
+      results:=results||jsonb_build_array(jsonb_build_object('logId',current_id,'status',l_status,'pointsAwarded',l_points));
     end if;
   end loop;
   if decision='approve' then
@@ -1175,11 +1176,11 @@ begin
   return jsonb_build_object('status','reviewed','results',results);
 end $$;
 
-revoke all on function public.complete_habit_command(uuid,uuid,date,uuid),public.complete_child_habit_command(text,uuid,date,uuid),
-  public.undo_habit_command(uuid),public.undo_child_habit_command(text,uuid),public.review_habit_command(uuid,text),
-  public.review_habits_command(uuid[],text) from public,anon,service_role;
-grant execute on function public.complete_habit_command(uuid,uuid,date,uuid),public.undo_habit_command(uuid),
-  public.review_habit_command(uuid,text),public.review_habits_command(uuid[],text) to authenticated;
-grant execute on function public.complete_child_habit_command(text,uuid,date,uuid),public.undo_child_habit_command(text,uuid) to anon,authenticated;
+-- NOTE: No revoke/grant block for the six legacy habit RPCs.
+-- CREATE OR REPLACE preserves existing privileges. Production ACLs (set by 202610050002_close_pin_gated_originals.sql)
+-- keep review_habit_command/review_habits_command callable only by postgres (owner), with access via
+-- review_habit_command_as/review_habits_command_as (service_role only). The other four functions retain
+-- their existing grants (complete/undo_habit_command: postgres,authenticated,service_role;
+-- complete/undo_child_habit_command: postgres,anon,authenticated,service_role).
 
 commit;

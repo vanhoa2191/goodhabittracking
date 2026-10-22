@@ -414,6 +414,250 @@ grant select on public.families, public.family_memberships, public.child_profile
   public.parent_profiles, public.parent_settings, public.habit_activities, public.activity_logs,
   public.child_task_deferrals, public.family_engagement_settings to authenticated;
 grant insert, update, delete on public.child_profiles, public.habit_activities, public.activity_logs to authenticated;
+
+-- ==== PRODUCTION HABIT RPCs (pre-existing, from 202610090030_family_operations_hardening.sql) ====
+-- These are the six authoritative habit command paths. The migration CREATE OR REPLACEs them.
+-- ACLs match production after 202610050002_close_pin_gated_originals.sql:
+--   review_habit_command, review_habits_command: only postgres (owner) can execute directly.
+--   Access is via review_habit_command_as, review_habits_command_as (service_role only).
+--   complete_habit_command, undo_habit_command: postgres, authenticated, service_role.
+--   complete_child_habit_command, undo_child_habit_command: postgres, anon, authenticated, service_role.
+
+-- act_as_user helper (from 202610050001_pin_gated_server_wrappers.sql)
+create or replace function public.act_as_user(actor_user_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if actor_user_id is null then raise exception 'actor_required'; end if;
+  if not exists (select 1 from auth.users where id = actor_user_id) then raise exception 'actor_not_found'; end if;
+  perform set_config('request.jwt.claim.sub', actor_user_id::text, true);
+  perform set_config(
+    'request.jwt.claims',
+    json_build_object('sub', actor_user_id, 'role', 'authenticated')::text,
+    true
+  );
+end
+$$;
+
+-- Server-only wrappers (from 202610050001_pin_gated_server_wrappers.sql)
+-- Only service_role can call these; they run as the acting parent and delegate to the originals.
+create or replace function public.review_habit_command_as(actor_user_id uuid, target_log_id uuid, decision text)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  perform public.act_as_user(actor_user_id);
+  return public.review_habit_command(target_log_id, decision);
+end
+$$;
+
+create or replace function public.review_habits_command_as(actor_user_id uuid, target_log_ids uuid[], decision text)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  perform public.act_as_user(actor_user_id);
+  return public.review_habits_command(target_log_ids, decision);
+end
+$$;
+-- Six legacy habit RPCs (from 202610090030_family_operations_hardening.sql)
+create or replace function public.complete_habit_command(
+  target_activity_id uuid, target_child_id uuid, target_log_date date, command_id uuid
+) returns jsonb language plpgsql security definer set search_path = '' as $$
+declare fid uuid := public.current_family_id(); activity public.habit_activities%rowtype;
+  awarded integer; next_status text; inserted boolean;
+begin
+  if fid is null then raise exception 'family_membership_required'; end if;
+  if not public.can_manage_family(fid) then raise exception 'family_manage_required'; end if;
+  if target_log_date is null or target_log_date not between current_date - 2 and current_date + 1 then raise exception 'log_date_out_of_range'; end if;
+  select * into activity from public.habit_activities where id=target_activity_id and family_id=fid and is_active for share;
+  if not found then raise exception 'activity_not_found'; end if;
+  if activity.child_id is not null and activity.child_id <> target_child_id then raise exception 'activity_child_mismatch'; end if;
+  perform 1 from public.child_profiles where id=target_child_id and family_id=fid for update;
+  if not found then raise exception 'child_not_found'; end if;
+  next_status := case when activity.requires_approval then 'pending_approval' else 'completed' end;
+  awarded := case when activity.requires_approval then 0 else activity.points end;
+  insert into public.activity_logs(id,family_id,user_id,activity_id,child_id,log_date,status,points_awarded)
+    values(command_id,fid,auth.uid(),target_activity_id,target_child_id,target_log_date,next_status,awarded)
+    on conflict (activity_id,child_id,log_date) do nothing;
+  inserted := found;
+  if not inserted then return jsonb_build_object('status','duplicate'); end if;
+  if awarded > 0 then update public.child_profiles set points=points+awarded,total_earned=total_earned+awarded,
+    level=greatest(1,floor((total_earned+awarded)/100.0)::integer+1) where id=target_child_id and family_id=fid; end if;
+  perform public.recompute_child_streak(target_child_id);
+  return jsonb_build_object('status',next_status,'logId',command_id,'pointsAwarded',awarded);
+end $$;
+
+create or replace function public.complete_child_habit_command(
+  session_token_hash text, target_activity_id uuid, target_log_date date, command_id uuid
+) returns jsonb language plpgsql security definer set search_path = '' as $$
+declare s public.device_sessions%rowtype; activity public.habit_activities%rowtype;
+  awarded integer; next_status text;
+begin
+  select * into s from public.device_sessions where token_hash=session_token_hash and revoked_at is null
+    and expires_at>now() and 'child:complete'=any(capabilities)
+  for update;
+  if not found then return jsonb_build_object('status','session_invalid'); end if;
+  if target_log_date is null or target_log_date not between current_date - 2 and current_date + 1 then raise exception 'log_date_out_of_range'; end if;
+  select * into activity from public.habit_activities where id=target_activity_id and family_id=s.family_id and is_active for share;
+  if not found then raise exception 'activity_not_found'; end if;
+  if activity.child_id is not null and activity.child_id <> s.child_id then raise exception 'activity_child_mismatch'; end if;
+  perform pg_advisory_xact_lock(public.thinking_game_lock_key(s.child_id));
+  next_status := case when activity.requires_approval then 'pending_approval' else 'completed' end;
+  awarded := case when activity.requires_approval then 0 else activity.points end;
+  insert into public.activity_logs(id,family_id,user_id,activity_id,child_id,log_date,status,points_awarded)
+    values(command_id,s.family_id,null,target_activity_id,s.child_id,target_log_date,next_status,awarded)
+    on conflict (activity_id,child_id,log_date) do update set status=next_status,points_awarded=awarded
+    where activity_logs.status='pending_approval' returning id into command_id;
+  if awarded > 0 then update public.child_profiles set points=points+awarded,total_earned=total_earned+awarded,
+    level=greatest(1,floor((total_earned+awarded)/100.0)::integer+1) where id=s.child_id and family_id=s.family_id; end if;
+  perform public.recompute_child_streak(s.child_id);
+  return jsonb_build_object('status',next_status,'logId',command_id,'pointsAwarded',awarded);
+end $$;
+
+create or replace function public.undo_habit_command(target_log_id uuid)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare fid uuid:=public.current_family_id(); l public.activity_logs%rowtype; c public.child_profiles%rowtype;
+begin
+  if fid is null then raise exception 'family_membership_required'; end if;
+  if not public.can_manage_family(fid) then raise exception 'family_manage_required'; end if;
+  select * into l from public.activity_logs where id=target_log_id and family_id=fid for update;
+  if not found then raise exception 'log_not_found'; end if;
+  if l.status='pending_approval' then update public.activity_logs set status='cancelled' where id=l.id;
+    return jsonb_build_object('status','cancelled'); end if;
+  if l.status='rejected' then return jsonb_build_object('status','already_rejected'); end if;
+  if l.status='cancelled' then return jsonb_build_object('status','already_cancelled'); end if;
+  if l.points_awarded>0 then
+    select * into c from public.child_profiles where id=l.child_id and family_id=fid for update;
+    if c.points < l.points_awarded then raise exception 'points_already_spent'; end if;
+    update public.child_profiles set points=points-l.points_awarded,total_earned=total_earned-l.points_awarded,
+      level=greatest(1,floor((total_earned-l.points_awarded)/100.0)::integer+1) where id=l.child_id and family_id=fid;
+  end if;
+  update public.activity_logs set status='undone',points_awarded=0 where id=l.id;
+  perform public.recompute_child_streak(l.child_id);
+  return jsonb_build_object('status','undone');
+end $$;
+create or replace function public.undo_child_habit_command(session_token_hash text,target_log_id uuid)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare s public.device_sessions%rowtype; l public.activity_logs%rowtype; c public.child_profiles%rowtype;
+begin
+  select * into s from public.device_sessions where token_hash=session_token_hash and revoked_at is null
+    and expires_at>now() and 'child:complete'=any(capabilities) for update;
+  if not found then return jsonb_build_object('status','session_invalid'); end if;
+  select * into l from public.activity_logs where id=target_log_id and child_id=s.child_id and family_id=s.family_id for update;
+  if not found then return jsonb_build_object('status','not_found'); end if;
+  if l.status='pending_approval' then update public.activity_logs set status='cancelled' where id=l.id;
+    return jsonb_build_object('status','cancelled'); end if;
+  if l.status in ('rejected','cancelled','undone') then return jsonb_build_object('status',l.status); end if;
+  if l.points_awarded>0 then
+    select * into c from public.child_profiles where id=l.child_id and family_id=s.family_id for update;
+    if c.points < l.points_awarded then raise exception 'points_already_spent'; end if;
+    update public.child_profiles set points=points-l.points_awarded,total_earned=total_earned-l.points_awarded,
+      level=greatest(1,floor((total_earned-l.points_awarded)/100.0)::integer+1) where id=l.child_id and family_id=s.family_id;
+  end if;
+  update public.activity_logs set status='undone',points_awarded=0 where id=l.id;
+  perform public.recompute_child_streak(l.child_id);
+  return jsonb_build_object('status','undone');
+end $$;
+
+create or replace function public.review_habit_command(target_log_id uuid, decision text)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare fid uuid:=public.current_family_id(); l public.activity_logs%rowtype; award integer;
+begin
+  if fid is null then raise exception 'family_membership_required'; end if;
+  if not public.can_manage_family(fid) then raise exception 'family_manage_required'; end if;
+  if decision not in ('approve','reject') then raise exception 'invalid_decision'; end if;
+  select * into l from public.activity_logs where id=target_log_id and family_id=fid for update;
+  if not found then raise exception 'log_not_found'; end if;
+  if l.status <> 'pending_approval' then return jsonb_build_object('status','already_reviewed'); end if;
+  if decision='reject' then update public.activity_logs set status='rejected',points_awarded=0 where id=l.id;
+    return jsonb_build_object('status','rejected');
+  else
+    select points into award from public.habit_activities where id=l.activity_id and family_id=fid;
+    update public.activity_logs set status='approved',points_awarded=award where id=l.id;
+    update public.child_profiles set points=points+award,total_earned=total_earned+award,
+      level=greatest(1,floor((total_earned+award)/100.0)::integer+1) where id=l.child_id and family_id=fid;
+    perform public.recompute_child_streak(l.child_id);
+    return jsonb_build_object('status','approved','pointsAwarded',award);
+  end if;
+end $$;
+create or replace function public.review_habits_command(target_log_ids uuid[], decision text)
+returns jsonb language plpgsql security definer set search_path = '' as $$
+declare
+  actor_family_id uuid := public.current_family_id();
+  ordered_ids uuid[];
+  current_id uuid;
+  outcome jsonb;
+  results jsonb := '[]'::jsonb;
+  l_status text;
+  l_points integer;
+begin
+  if actor_family_id is null then raise exception 'family_membership_required'; end if;
+  if not public.can_manage_family(actor_family_id) then raise exception 'family_manage_required'; end if;
+  if decision not in ('approve','reject') then raise exception 'invalid_decision'; end if;
+  if target_log_ids is null or cardinality(target_log_ids) = 0 then raise exception 'no_logs'; end if;
+
+  select coalesce(array_agg(id order by id), '{}'::uuid[]) into ordered_ids
+  from (select distinct unnest(target_log_ids) as id) ids;
+  if cardinality(ordered_ids) > 50 then raise exception 'too_many_logs'; end if;
+
+  perform 1 from public.activity_logs
+  where id = any(ordered_ids) and family_id = actor_family_id
+  order by id for update;
+  perform 1 from public.child_profiles
+  where family_id = actor_family_id
+    and id in (select child_id from public.activity_logs where id = any(ordered_ids) and family_id = actor_family_id)
+  order by id for update;
+
+  foreach current_id in array ordered_ids loop
+    if not exists (
+      select 1 from public.activity_logs where id = current_id and family_id = actor_family_id
+    ) then
+      results := results || jsonb_build_object('logId', current_id, 'status', 'not_found');
+    else
+      -- Delegate to review_habit_command for consistent level calculation and audit trail
+      perform public.review_habit_command(current_id, decision);
+      select status, points_awarded into l_status, l_points from public.activity_logs where id = current_id;
+      results := results || jsonb_build_object('logId', current_id, 'status', l_status, 'pointsAwarded', l_points);
+    end if;
+  end loop;
+
+  return jsonb_build_object('status', 'reviewed', 'results', results);
+end $$;
+
+-- Production ACLs (matching 202610050002_close_pin_gated_originals.sql + wrapper grants from 202610050001)
+-- review_habit_command and review_habits_command: ONLY postgres (owner) can execute directly.
+-- Access is via _as wrappers granted to service_role only.
+revoke all on function public.review_habit_command(uuid, text) from public, anon, authenticated, service_role;
+revoke all on function public.review_habits_command(uuid[], text) from public, anon, authenticated, service_role;
+
+revoke all on function public.review_habit_command_as(uuid, uuid, text) from public, anon, authenticated;
+revoke all on function public.review_habits_command_as(uuid, uuid[], text) from public, anon, authenticated;
+grant execute on function public.review_habit_command_as(uuid, uuid, text) to service_role;
+grant execute on function public.review_habits_command_as(uuid, uuid[], text) to service_role;
+
+-- complete_habit_command, undo_habit_command: postgres (owner), authenticated, service_role
+revoke all on function public.complete_habit_command(uuid,uuid,date,uuid) from public, anon;
+revoke all on function public.undo_habit_command(uuid) from public, anon;
+grant execute on function public.complete_habit_command(uuid,uuid,date,uuid) to authenticated, service_role;
+grant execute on function public.undo_habit_command(uuid) to authenticated, service_role;
+
+-- complete_child_habit_command, undo_child_habit_command: postgres (owner), anon, authenticated, service_role
+revoke all on function public.complete_child_habit_command(text,uuid,date,uuid) from public;
+revoke all on function public.undo_child_habit_command(text,uuid) from public;
+grant execute on function public.complete_child_habit_command(text,uuid,date,uuid) to anon, authenticated, service_role;
+grant execute on function public.undo_child_habit_command(text,uuid) to anon, authenticated, service_role;
+
+-- act_as_user: no grants to any role (internal helper only)
+revoke all on function public.act_as_user(uuid) from public, anon, authenticated, service_role;
+
 -- ==== END MINIMUM BASELINE ====
 `;
 

@@ -671,7 +671,7 @@ try {
   // Approving after the cutoff still grants the bonus: timeliness uses received_at.
   const logId = await fixture.scalar(`select id from public.activity_logs where activity_id = $1 and child_id = $2`,
     [ACTIVITY.approval, child.child]);
-  const reviewed = await callRpc(parent, `select public.review_habit_command($1,'approve') as result`, [logId]);
+  const reviewed = await callRpc(gameService, `select public.review_habit_command_as($1,$2,'approve') as result`, [USER.parentAlpha, logId]);
   expect(reviewed?.status === 'approved', `the review must approve, got ${reviewed?.status}`);
   const receipt = await fixture.one(
     `select received_at, reviewed_at, review_status from public.thinking_game_habit_receipts where log_id = $1`, [logId]);
@@ -741,7 +741,7 @@ try {
     [ACTIVITY.bonusApproval, child.child, SERVER_DAY, randomUUID()]);
   const logId = await fixture.scalar(`select id from public.activity_logs where activity_id = $1 and child_id = $2`,
     [ACTIVITY.bonusApproval, child.child]);
-  await callRpc(parent, `select public.review_habit_command($1,'approve') as result`, [logId]);
+  await callRpc(gameService, `select public.review_habit_command_as($1,$2,'approve') as result`, [USER.parentAlpha, logId]);
   const granted = await fixture.one(
     `select id, state, journey_day_index, content_id from public.thinking_game_entitlements
       where child_id = $1 and local_day = $2 and slot_type = 'bonus'`, [child.child, SERVER_DAY]);
@@ -886,18 +886,22 @@ try {
   const mixedLogId = mixedLog.logId;
 
   const results = await raceAcrossClients(20, async (client, index) => {
-    // The protected game RPC and the six habit RPCs have DISJOINT grants: the game
-    // RPC is `service_role` only, the habit RPCs are `authenticated` only. Each
-    // participant therefore has to present the role that owns the RPC it calls.
+    // The protected game RPC and the habit RPCs have DISJOINT grants:
+    // - thinking_game_start: service_role only
+    // - review_habit_command_as/review_habits_command_as: service_role only (via _as wrappers)
+    // - undo_habit_command: authenticated, service_role
+    // - complete_habit_command: authenticated, service_role
+    // Each participant presents the role that owns the RPC it calls.
     const isGameCall = index % 4 === 2;
-    await client.query(`set role ${isGameCall ? 'service_role' : 'authenticated'}`);
-    await setClaims(client, USER.parentAlpha, isGameCall ? 'service_role' : 'authenticated');
+    const isReviewCall = index % 4 === 0 || index % 4 === 3;
+    await client.query(`set role ${isGameCall || isReviewCall ? 'service_role' : 'authenticated'}`);
+    await setClaims(client, USER.parentAlpha, isGameCall || isReviewCall ? 'service_role' : 'authenticated');
     switch (index % 4) {
-      case 0: return callRpc(client, `select public.review_habit_command($1,'approve') as result`, [approvalLogId]);
+      case 0: return callRpc(client, `select public.review_habit_command_as($1,$2,'approve') as result`, [USER.parentAlpha, approvalLogId]);
       case 1: return callRpc(client, `select public.undo_habit_command($1) as result`, [mixedLogId]);
       case 2: return callRpc(client, `select public.thinking_game_start($1, 'main', $2, gen_random_uuid()) as result`,
         [child.token, SERVER_DAY]);
-      default: return callRpc(client, `select public.review_habit_command($1,'reject') as result`, [approvalLogId]);
+      default: return callRpc(client, `select public.review_habit_command_as($1,$2,'reject') as result`, [USER.parentAlpha, approvalLogId]);
     }
   });
   const failures = results.filter(r => !r.ok);
@@ -951,12 +955,13 @@ try {
   const descending = [...ids].reverse();
 
   const results = await raceAcrossClients(4, async (client, index) => {
-    await client.query('set role authenticated');
-    await setClaims(client, USER.parentAlpha);
+    // review_habits_command_as is granted to service_role only
+    await client.query('set role service_role');
+    await setClaims(client, USER.parentAlpha, 'service_role');
     if (index < 2) {
-      return callRpc(client, `select public.review_habits_command($1,'approve') as result`, [ascending]);
+      return callRpc(client, `select public.review_habits_command_as($1,$2,'approve') as result`, [USER.parentAlpha, ascending]);
     }
-    return callRpc(client, `select public.review_habits_command($1,'approve') as result`, [descending]);
+    return callRpc(client, `select public.review_habits_command_as($1,$2,'approve') as result`, [USER.parentAlpha, descending]);
   });
   const failures = results.filter(r => !r.ok);
   const deadlocks = failures.filter(r => isDeadlock(r.error));
@@ -1170,7 +1175,6 @@ try {
   startCase('AR-16', 'A review received after local midnight does not unlock the previous local day',
     ['contracts §7.1', 'GWT-10', 'GWT-11', 'T07']);
   const child = CHILD.bonusRace;
-  const parent = parentClient;
   const yesterday = await fixture.one(`select ((now() at time zone $1)::date - 1)::text as day`, [TZ]);
   // A snapshot that existed for the previous day, with its own cutoff.
   await fixture.query(
@@ -1188,7 +1192,7 @@ try {
   const receipt = await fixture.one(
     `select received_at, reviewed_at from public.thinking_game_habit_receipts where log_id = $1`, [logId]);
   expect(receipt, 'the previous-day completion must own a receipt');
-  const reviewed = await callRpc(parent, `select public.review_habit_command($1,'approve') as result`, [logId]);
+  const reviewed = await callRpc(gameService, `select public.review_habit_command_as($1,$2,'approve') as result`, [USER.parentAlpha, logId]);
   expect(reviewed?.status === 'approved', `the review must still approve the habit, got ${reviewed?.status}`, { reviewed });
   const yesterdayBonus = await fixture.scalar(
     `select count(*)::int from public.thinking_game_entitlements where child_id = $1 and local_day = $2 and slot_type = 'bonus'`,

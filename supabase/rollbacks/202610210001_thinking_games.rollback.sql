@@ -169,6 +169,8 @@ declare
   current_id uuid;
   outcome jsonb;
   results jsonb := '[]'::jsonb;
+  l_status text;
+  l_points integer;
 begin
   if actor_family_id is null then raise exception 'family_membership_required'; end if;
   if not public.can_manage_family(actor_family_id) then raise exception 'family_manage_required'; end if;
@@ -193,25 +195,21 @@ begin
     ) then
       results := results || jsonb_build_object('logId', current_id, 'status', 'not_found');
     else
-      outcome := public.review_habit_command(current_id, decision);
-      results := results || jsonb_build_object(outcome || jsonb_build_object('logId', current_id));
+      -- Delegate to review_habit_command for consistent level calculation and audit trail
+      perform public.review_habit_command(current_id, decision);
+      select status, points_awarded into l_status, l_points from public.activity_logs where id = current_id;
+      results := results || jsonb_build_object('logId', current_id, 'status', l_status, 'pointsAwarded', l_points);
     end if;
   end loop;
 
   return jsonb_build_object('status', 'reviewed', 'results', results);
 end $$;
 
-revoke all on function public.complete_habit_command(uuid,uuid,date,uuid) from public, anon, service_role;
-revoke all on function public.undo_habit_command(uuid) from public, anon, service_role;
-revoke all on function public.review_habit_command(uuid,text) from public, anon, service_role;
-revoke all on function public.review_habits_command(uuid[],text) from public, anon, service_role;
-revoke all on function public.complete_child_habit_command(text,uuid,date,uuid) from public, anon, service_role;
-revoke all on function public.undo_child_habit_command(text,uuid) from public, anon, service_role;
-grant execute on function public.complete_habit_command(uuid,uuid,date,uuid) to authenticated;
-grant execute on function public.undo_habit_command(uuid) to authenticated;
-grant execute on function public.review_habit_command(uuid,text) to authenticated;
-grant execute on function public.review_habits_command(uuid[],text) to authenticated;
-grant execute on function public.complete_child_habit_command(text,uuid,date,uuid) to anon, authenticated;
-grant execute on function public.undo_child_habit_command(text,uuid) to anon, authenticated;
+-- NOTE: No revoke/grant block for the six legacy habit RPCs.
+-- CREATE OR REPLACE preserves existing privileges. Production ACLs (set by 202610050002_close_pin_gated_originals.sql)
+-- keep review_habit_command/review_habits_command callable only by postgres (owner), with access via
+-- review_habit_command_as/review_habits_command_as (service_role only). The other four functions retain
+-- their existing grants (complete/undo_habit_command: postgres,authenticated,service_role;
+-- complete/undo_child_habit_command: postgres,anon,authenticated,service_role).
 
 commit;

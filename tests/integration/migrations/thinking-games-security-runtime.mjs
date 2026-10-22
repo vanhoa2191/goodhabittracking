@@ -36,11 +36,26 @@ try {
   `, [tables]);
   if (foreignPolicies.rows.some((row) => row.qual?.includes('true'))) throw new Error('permissive game policy');
   const acl = await fixture.query(`
-    select has_function_privilege('anon','public.thinking_game_parent_start_as(uuid,uuid,text,date,uuid)','execute') as anon_parent,
-           has_function_privilege('authenticated','public.thinking_game_parent_start_as(uuid,uuid,text,date,uuid)','execute') as auth_parent,
-           has_function_privilege('anon','public.thinking_game_finish_verified(text,uuid,boolean,jsonb,uuid)','execute') as anon_finish
+    select
+      has_function_privilege('anon','public.thinking_game_parent_start_as(uuid,uuid,text,date,uuid)','execute') as anon_parent,
+      has_function_privilege('authenticated','public.thinking_game_parent_start_as(uuid,uuid,text,date,uuid)','execute') as auth_parent,
+      has_function_privilege('anon','public.thinking_game_finish_verified(text,uuid,boolean,jsonb,uuid)','execute') as anon_finish,
+      -- Legacy habit RPC ACLs (production parity)
+      has_function_privilege('authenticated','public.review_habit_command(uuid,text)','execute') as auth_review_habit,
+      has_function_privilege('authenticated','public.review_habits_command(uuid[],text)','execute') as auth_review_habits,
+      has_function_privilege('service_role','public.complete_habit_command(uuid,uuid,date,uuid)','execute') as svc_complete_habit,
+      has_function_privilege('service_role','public.undo_habit_command(uuid)','execute') as svc_undo_habit,
+      has_function_privilege('anon','public.complete_child_habit_command(text,uuid,date,uuid)','execute') as anon_complete_child,
+      has_function_privilege('anon','public.undo_child_habit_command(text,uuid)','execute') as anon_undo_child
   `);
   if (acl.rows[0].anon_parent || acl.rows[0].auth_parent || acl.rows[0].anon_finish) throw new Error('protected RPC ACL exposed');
+  // Legacy habit RPC ACLs must match production after 202610050002
+  if (acl.rows[0].auth_review_habit) throw new Error('authenticated must NOT execute review_habit_command directly (PIN bypass)');
+  if (acl.rows[0].auth_review_habits) throw new Error('authenticated must NOT execute review_habits_command directly (PIN bypass)');
+  if (!acl.rows[0].svc_complete_habit) throw new Error('service_role must execute complete_habit_command');
+  if (!acl.rows[0].svc_undo_habit) throw new Error('service_role must execute undo_habit_command');
+  if (!acl.rows[0].anon_complete_child) throw new Error('anon must execute complete_child_habit_command');
+  if (!acl.rows[0].anon_undo_child) throw new Error('anon must execute undo_child_habit_command');
 
   await fixture.resetAuthContext();
   await fixture.query('alter table public.thinking_game_journeys disable row level security');
@@ -58,7 +73,7 @@ try {
   console.log(JSON.stringify({
     verdict: 'PASS',
     evidence: 'real-postgresql',
-    cases: ['all-game-tables-rls-force', 'nonpermissive-policies', 'protected-rpc-acl', 'unsafe-preflight-rejection', 'rollback-preserves-habits'],
+    cases: ['all-game-tables-rls-force', 'nonpermissive-policies', 'protected-rpc-acl', 'unsafe-preflight-rejection', 'rollback-preserves-habits', 'legacy-habit-rpc-acl-parity'],
     database: fixture.databaseName,
   }));
 } finally {

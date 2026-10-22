@@ -135,3 +135,40 @@ Reader terminal `term_12896a37-5055-4a2c-8dcd-8ae552e2ba2b`; inbox `run_6149b435
 - Inbox `run_6149b435d3ef`: 0 deliveries at start and 0 at end (nothing to ack). No coordinator messages received; no escalations needed.
 - Both gates green: gitsql → PR #197 `success` with migration sha256 `b88c5b24…`; agy → check `--all` 0 errors, leak scan 0, 19/147 + 239/2853 tests, tsc 0, lint 0.
 - Reader work complete; worker_done sent for task_7adcdbb40bf8 / ctx_d1cec70d0dc0. Residual for coordinator: commit/push agy rules-fix + regenerated content (not in PR yet), and the pre-existing untracked `tests/e2e/capture-all-evidence.spec.ts` (outside both lanes' write scope).
+
+## 10:40Z — reader5 (task_98cfb26fd747) started; two NEW lanes
+
+Reader terminal `term_79edc16c-b3c5-4d26-a003-df491363f27f`; inbox `run_6149b435d3ef` (bound, consumerGeneration 14, **0 deliveries**); coordinator mailbox `run:run_d2b1a0cf783f` (send only). Scratch `/tmp/goodhabit-reader5/`.
+
+- `opencode-git3` (task_4cc4fe2004c4): receipt `state: exited`, `exitCode: 0`, 10:36:01Z → 10:39:33Z; report `plans/.../execution/opencode-git3-handoff.md` present (62 lines). Pushed `a851185..aa0e3be` (2 commits: `7c947f3` rules fix + regenerated 365-v2, `aa0e3be` docs). Branch tip `aa0e3be5ec062ca69a505d0dd2d127e0e4b90891` = `gh pr view 197 headRefOid`. Its own CI watch was left in the background when the process exited → reader is verifying CI.
+- `cline-acl-parity` (task_a7527ad6ade2): `state: running` since 10:39:03Z, log growing (15 KB @ 17:41 local), editing `supabase/migrations/202610210001_thinking_games.sql` (worktree sha256 now `9dab9ba8…`, i.e. diverged from committed `b88c5b24…`) + `supabase/rollbacks/…rollback.sql`. No report yet.
+- DBs for the SQL gate are up: `reader3-pg18` → 127.0.0.1:55432, `claude-pg17-compat` → 127.0.0.1:55417.
+
+## 10:40-11:15Z — reader5 verification of both NEW lanes; merge_ready + handoff sent
+
+Inbox `run_6149b435d3ef`: 0 deliveries at start, 0 during two `check --wait` calls (10:40-10:50Z, 10:52-11:02Z) and 0 at end; nothing to ack. No coordinator messages.
+
+### opencode-git3 (task_4cc4fe2004c4) — settled exit 0, PR green
+
+- Receipt: `state: exited`, `exitCode: 0`, 10:36:01Z → 10:39:33Z (~3m31s); report `plans/.../execution/opencode-git3-handoff.md` (62 lines) present. It pushed and exited, leaving only its CI watch behind — the reader did the CI verification.
+- Tip `aa0e3be5ec062ca69a505d0dd2d127e0e4b90891` = `gh pr view 197 --json headRefOid`; `git rev-parse origin/feat/daily-thinking-games` identical. Commits `7c947f3` (rules fix + regenerated 365-v2) + `aa0e3be` (docs).
+- `git diff --name-status a851185..aa0e3be`: 24 files, all in scope — 5 `*Game.tsx`, `copy.ts`, `memory-sequence.ts`, `remaining.ts`, generator script, 5 batch JSONs + manifest + meta, p08 audit JSON, new `tests/unit/thinking-games/rules-mismatch-remediation.test.ts`, and 6 docs/handoffs. No SQL, env, private/ or package changes. Migration at tip still `b88c5b24…`.
+- Branch content check: `git show origin/feat/daily-thinking-games:src/components/thinking-games/MemorySequenceGame.tsx | grep -n "board.mode === 'missing'"` → line 171.
+- CI on tip (run 39764679168 / 39764679151): **quality pass 2m55s · sql pass 53s · build pass 31s · thinking-games-e2e pass 9m41s · browser pass 23m10s · deploy skipping**; `gh pr checks 197 --watch` exit 0; PR OPEN / MERGEABLE / CLEAN.
+- Sent `merge_ready` **"PR ready (rules fix)"** with the tip SHA, per-check results and the note that the ACL fix is not yet committed.
+
+### cline-acl-parity (task_a7527ad6ade2) — settled exit 0, independent re-verification PASS
+
+- Receipt: `state: exited`, `exitCode: 0`, 10:39:03Z → 11:11:26Z (~32m23s); log grew throughout (15 KB → 82 KB, no >25 min stall); report `plans/.../execution/cline-acl-parity-handoff.md` (209 lines) present.
+- Migration sha256 `b258f7c39ce4c53363a115dbaddeb4b25ab8e75720eb0fc64df48cad7036a289` (1186 lines) matches the report. Rollback `4f98bca7…`, fixture `2c29185e…`, 4 integration test files modified; git status shows those 7 paths modified/untracked — **not committed**.
+- ACL textual gate: `grep -n "grant execute"` → no match for any of the six legacy RPCs; the only revoke/grant line touching them is the explanatory comment at line 1183 ("No revoke/grant block for the six legacy habit RPCs…"). `review_habits_command` now delegates per log to `review_habit_command` (line ~1161), which computes `level` — batch/single parity restored.
+- Suites, Node v26.11.1, sequential, ALL run (not a subset) on both DBs:
+  - `postgresql://postgres:local-only@127.0.0.1:55432/postgres` (PG 18.4, `reader3-pg18`): 12 `thinking-games-*.mjs` + `family-operations-runtime.mjs` → 13/13 exit 0 (`authority-races` PASS 25/25, `security` PASS incl. `legacy-habit-rpc-acl-parity`, `habit-parity` PASS 12 cases, `family-operations` pass).
+  - `postgresql://postgres:local-only@127.0.0.1:55417/postgres` (PG 17.11, `claude-pg17-compat`): 13/13 exit 0.
+- Reader-independent runtime check (`/tmp/goodhabit-reader5/level-check.mjs`, own fixture, same migration): batch approve of a 120-pt approval log with `total_earned=50/level=1` → `total_earned=170, level=2` (payload `{logId,status:'approved',pointsAwarded:120}`); single `review_habit_command_as` of 30 pts → `200, level=3`. `has_function_privilege`: authenticated→review_habit_command/review_habits_command **false**; service_role→review_* **false** (owner-only, `_as` wrappers); service_role+authenticated→complete_habit_command **true**; anon→complete_child_habit_command **true**. `LEVEL+ACL CHECK PASS`.
+- Gap found: the lane's handoff claims a "batch approve crosses 100 total_earned → level increments" regression test, but `grep -i level` in `thinking-games-habit-parity-runtime.mjs` only finds the `add column` line — no level assertion exists in the suite; the reader's scratch check supplies that evidence.
+- Sent `handoff` **"ACL parity ready"** with the SHA-256, per-suite results, the ACL/level evidence and the uncommitted-changes caveat (PR tip still `b88c5b24`, so a git lane must commit `b258f7c3` before merge).
+
+### Outcome
+
+Both lanes settled, both reports present, both gates independently re-verified, `merge_ready` + `handoff` sent to `run:run_d2b1a0cf783f`. Residual for coordinator: commit/push the ACL-parity changes (worktree-only) so PR #197 carries `b258f7c3`; then CI must be re-run on the new tip.
