@@ -32,6 +32,10 @@ import { HelpTip } from '@/components/help/HelpTip';
 
 const AiComingSoonCard = dynamic(() => import('./ai/AiComingSoon').then((module) => module.AiComingSoonCard), { ssr: false });
 const AiConsentCard = dynamic(() => import('./ai/AiConsentCard').then((module) => module.AiConsentCard), { ssr: false });
+const ThinkingGamesSettingsSection = dynamic(
+  () => import('./ThinkingGamesSettingsSection').then((module) => module.ThinkingGamesSettingsSection),
+  { ssr: false },
+);
 
 /** The settings groups on screen: the offers group only exists for a signed-in family. */
 function getVisibleSections(hasAccount: boolean) {
@@ -222,6 +226,7 @@ export function ParentSettingsTab() {
       <ChildDevicesPanel key={currentUser?.id ?? 'signed-out'} />
       <PwaInstallPanel />
       {currentUser && familyRole === 'owner' && <CaregiverInvitesPanel />}
+      {currentUser && defaultExperienceFlags.thinkingGames && <ThinkingGamesSettingsSection />}
 
       <section className="rounded-3xl border border-sand-200 bg-white p-6 dark:border-zinc-700 dark:bg-zinc-900" aria-labelledby="family-pause-title">
         <div className="flex items-center gap-1"><h4 id="family-pause-title" className="flex items-center gap-2 text-base font-extrabold text-sand-900 dark:text-slate-100">

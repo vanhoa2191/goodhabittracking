@@ -74,6 +74,11 @@ import { useAgeTheme } from './useAgeTheme';
 import { getAgeThemeCopy } from '@/lib/i18n/age-theme-copy';
 import { getKidHistoryCopy } from '@/lib/i18n/kid-history-copy';
 import { canStepKidDay, clampKidDay, isEditableDay, parseDayKey, shiftDayKey } from '@/lib/kid-day-window';
+// Loaded only when the thinkingGames flag is on, so the first download stays lean for families that do not use it.
+const ThinkingGameCard = dynamic(
+  () => import('./ThinkingGameCard').then((module) => module.ThinkingGameCard),
+  { ssr: false },
+);
 
 // The lock is synchronous: a second event in the same turn cannot start a
 // duplicate operation while React is still rendering its disabled controls.
@@ -107,6 +112,10 @@ export function KidDashboard() {
     badges,
     childBadges,
     setIsPortraitModalOpen,
+    currentUser,
+    storageMode,
+    isDemoSession,
+    isFamilyConnected,
   } = useAppStore();
 
   const { t, language } = useTranslation();
@@ -147,6 +156,13 @@ export function KidDashboard() {
   const contentTopRef = useRef<HTMLDivElement | null>(null);
   const [contentTopInView, setContentTopInView] = useState(true);
   const activeChildId = activeChild?.id;
+  const thinkingGameMode = storageMode === 'local' || isDemoSession
+    ? 'local'
+    : currentUser
+      ? 'parent'
+      : isFamilyConnected
+        ? 'paired'
+        : 'local';
   // Track the task anchor so the bottom bar can bring practice back into view.
   useEffect(() => {
     const target = contentTopRef.current;
@@ -458,6 +474,11 @@ export function KidDashboard() {
             </div>
           )}
         </div>}
+        {activeChild && isToday && !isFamilyPaused && defaultExperienceFlags.thinkingGames && (
+          <div className="mt-4">
+            <ThinkingGameCard key={`${activeChild.id}:${dateStr}:${thinkingGameMode}`} childId={activeChild.id} localDay={dateStr} mode={thinkingGameMode} />
+          </div>
+        )}
       </div>
 
       {/* Main Tab Navigation */}

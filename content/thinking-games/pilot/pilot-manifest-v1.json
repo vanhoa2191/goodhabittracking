@@ -1,0 +1,1973 @@
+{
+  "manifestVersion": "pilot-manifest-v1",
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-21T00:00:00.000Z",
+  "isPilotFixture": true,
+  "minFormatSpacingDays": 1,
+  "spacingException": {
+    "reason": "Internal 7-day/3-format pilot cannot meet the release spacing rule; production remains gated.",
+    "approvedBy": "P01 R2 contract + root pilot scope",
+    "approvedAt": "2026-10-21",
+    "appliesTo": "pilot-only",
+    "productionManifestRequired": true
+  },
+  "locales": [
+    "vi"
+  ],
+  "ageTracks": [
+    "age_6_8",
+    "age_9_12"
+  ],
+  "items": [
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D001-main-68",
+      "dayIndex": 1,
+      "slotType": "main",
+      "skillGroup": "rule",
+      "gameTypeId": "g01-t1",
+      "ruleVariantId": "g01-t1:lặp một thuộc tính",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Điền phần tiếp theo",
+      "invitation": "Mình có một chuỗi đang chờ bạn đoán tiếp. Bạn thử nhé?",
+      "tutorial": "Nhìn kỹ nhịp lặp hoặc bước tăng, rồi chọn phần tiếp theo.",
+      "explanation": "Phần tiếp theo hợp với nhịp của chuỗi là lá.",
+      "boardData": {
+        "kind": "rule-sequence",
+        "sequence": [
+          "lá",
+          "mây",
+          "lá",
+          "mây"
+        ],
+        "options": [
+          "hoa",
+          "quả",
+          "lá"
+        ],
+        "ruleKind": "alternating"
+      },
+      "solution": "lá",
+      "validSolutionPredicate": "rule-sequence-v1",
+      "hints": [
+        "Nhìn xem các từ lặp lại theo nhịp nào.",
+        "Thử đọc to chuỗi theo từng cặp."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 60,
+      "status": "design_only",
+      "fingerprint": "e181d6cfc1b7b2a9",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D001-main-912",
+      "dayIndex": 1,
+      "slotType": "main",
+      "skillGroup": "rule",
+      "gameTypeId": "g01-t1",
+      "ruleVariantId": "g01-t1:tăng số phần tử",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Điền phần tiếp theo",
+      "invitation": "Mình có một chuỗi đang chờ bạn đoán tiếp. Bạn thử nhé?",
+      "tutorial": "Nhìn kỹ nhịp lặp hoặc bước tăng, rồi chọn phần tiếp theo.",
+      "explanation": "Quy luật là mỗi số tăng thêm 3. Số tiếp theo là 20.",
+      "boardData": {
+        "kind": "rule-sequence",
+        "sequence": [
+          "2",
+          "5",
+          "8",
+          "11",
+          "14",
+          "17"
+        ],
+        "options": [
+          "23",
+          "21",
+          "20",
+          "17"
+        ],
+        "ruleKind": "increment"
+      },
+      "solution": "20",
+      "validSolutionPredicate": "rule-sequence-v1",
+      "hints": [
+        "Nhìn xem mỗi số tăng thêm bao nhiêu.",
+        "Thử tính khoảng cách giữa hai số liền nhau."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "260f98ccfbb0f463",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D001-bonus-68",
+      "dayIndex": 1,
+      "slotType": "bonus",
+      "skillGroup": "planning",
+      "gameTypeId": "g06-t1",
+      "ruleVariantId": "g06-t1:đến đích tránh chướng ngại",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Tìm đường",
+      "invitation": "Mình cần bạn chỉ một đường đến đích. Bạn thử nhé?",
+      "tutorial": "Đi từ ô bắt đầu đến ô đích, tránh tường và ghé điểm cần qua.",
+      "explanation": "Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (4,0) → (4,1) → (4,2) → (4,3) → (4,4).",
+      "boardData": {
+        "kind": "path-planning",
+        "width": 5,
+        "height": 5,
+        "start": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 4,
+          "y": 4
+        },
+        "walls": [
+          {
+            "x": 1,
+            "y": 2
+          }
+        ],
+        "waypoints": []
+      },
+      "solution": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 1
+        },
+        {
+          "x": 4,
+          "y": 2
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 4
+        }
+      ],
+      "validSolutionPredicate": "path-planning-v1",
+      "hints": [
+        "Đi từng ô một, đừng nhảy qua tường.",
+        "Nếu có điểm cần qua, ghé điểm đó trước khi tới đích."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "08f8a47fd3e1348f",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D001-bonus-912",
+      "dayIndex": 1,
+      "slotType": "bonus",
+      "skillGroup": "planning",
+      "gameTypeId": "g06-t1",
+      "ruleVariantId": "g06-t1:đi qua một điểm bắt buộc",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Tìm đường",
+      "invitation": "Mình cần bạn chỉ một đường đến đích. Bạn thử nhé?",
+      "tutorial": "Đi từ ô bắt đầu đến ô đích, tránh tường và ghé điểm cần qua.",
+      "explanation": "Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (3,1) → (3,2) → (3,3) → (4,3) → (5,3) → (6,3) → (6,4) → (6,5) → (6,6).",
+      "boardData": {
+        "kind": "path-planning",
+        "width": 7,
+        "height": 7,
+        "start": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 6,
+          "y": 6
+        },
+        "walls": [
+          {
+            "x": 6,
+            "y": 0
+          },
+          {
+            "x": 1,
+            "y": 2
+          },
+          {
+            "x": 2,
+            "y": 1
+          },
+          {
+            "x": 6,
+            "y": 2
+          }
+        ],
+        "waypoints": [
+          {
+            "id": "w1",
+            "x": 3,
+            "y": 3
+          }
+        ]
+      },
+      "solution": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 1
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 5,
+          "y": 3
+        },
+        {
+          "x": 6,
+          "y": 3
+        },
+        {
+          "x": 6,
+          "y": 4
+        },
+        {
+          "x": 6,
+          "y": 5
+        },
+        {
+          "x": 6,
+          "y": 6
+        }
+      ],
+      "validSolutionPredicate": "path-planning-v1",
+      "hints": [
+        "Đi từng ô một, đừng nhảy qua tường.",
+        "Nếu có điểm cần qua, ghé điểm đó trước khi tới đích."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 120,
+      "status": "design_only",
+      "fingerprint": "8785f881f6504889",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D002-main-68",
+      "dayIndex": 2,
+      "slotType": "main",
+      "skillGroup": "memory",
+      "gameTypeId": "g03-t1",
+      "ruleVariantId": "g03-t1:nhắc lại cùng chiều",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Nhớ thứ tự",
+      "invitation": "Mình vừa xếp một dãy. Bạn nhớ lại thứ tự nhé?",
+      "tutorial": "Nhìn dãy thật kỹ; khi dãy ẩn đi, bạn xếp lại đúng thứ tự.",
+      "explanation": "Thứ tự đúng là thuyền → cá → mưa.",
+      "boardData": {
+        "kind": "memory-sequence",
+        "sequence": [
+          "thuyền",
+          "cá",
+          "mưa"
+        ],
+        "options": [
+          "cá",
+          "thuyền",
+          "mưa"
+        ],
+        "displayMs": 1200
+      },
+      "solution": [
+        "thuyền",
+        "cá",
+        "mưa"
+      ],
+      "validSolutionPredicate": "memory-sequence-v1",
+      "hints": [
+        "Nhớ nhóm đầu tiên trước.",
+        "Đọc lại theo nhịp, đừng vội."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 60,
+      "status": "design_only",
+      "fingerprint": "6cb3e97c0cc5371a",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D002-main-912",
+      "dayIndex": 2,
+      "slotType": "main",
+      "skillGroup": "memory",
+      "gameTypeId": "g03-t1",
+      "ruleVariantId": "g03-t1:nhắc lại theo nhóm",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Nhớ thứ tự",
+      "invitation": "Mình vừa xếp một dãy. Bạn nhớ lại thứ tự nhé?",
+      "tutorial": "Nhìn dãy thật kỹ; khi dãy ẩn đi, bạn xếp lại đúng thứ tự.",
+      "explanation": "Thứ tự đúng là trăng → cá → táo → bóng → thuyền.",
+      "boardData": {
+        "kind": "memory-sequence",
+        "sequence": [
+          "trăng",
+          "cá",
+          "táo",
+          "bóng",
+          "thuyền"
+        ],
+        "options": [
+          "cá",
+          "bóng",
+          "mèo",
+          "trăng",
+          "táo",
+          "thuyền"
+        ],
+        "displayMs": 1600
+      },
+      "solution": [
+        "trăng",
+        "cá",
+        "táo",
+        "bóng",
+        "thuyền"
+      ],
+      "validSolutionPredicate": "memory-sequence-v1",
+      "hints": [
+        "Nhớ nhóm đầu tiên trước.",
+        "Đọc lại theo nhịp, đừng vội."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "1804f184d7b166e2",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D002-bonus-68",
+      "dayIndex": 2,
+      "slotType": "bonus",
+      "skillGroup": "rule",
+      "gameTypeId": "g01-t1",
+      "ruleVariantId": "g01-t1:lặp một thuộc tính",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Điền phần tiếp theo",
+      "invitation": "Mình có một chuỗi đang chờ bạn đoán tiếp. Bạn thử nhé?",
+      "tutorial": "Nhìn kỹ nhịp lặp hoặc bước tăng, rồi chọn phần tiếp theo.",
+      "explanation": "Phần tiếp theo hợp với nhịp của chuỗi là mây.",
+      "boardData": {
+        "kind": "rule-sequence",
+        "sequence": [
+          "nắng",
+          "mây",
+          "nắng",
+          "mây",
+          "nắng"
+        ],
+        "options": [
+          "hoa",
+          "lá",
+          "mây"
+        ],
+        "ruleKind": "alternating"
+      },
+      "solution": "mây",
+      "validSolutionPredicate": "rule-sequence-v1",
+      "hints": [
+        "Nhìn xem các từ lặp lại theo nhịp nào.",
+        "Thử đọc to chuỗi theo từng cặp."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 60,
+      "status": "design_only",
+      "fingerprint": "d6deb65715b9f0fc",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D002-bonus-912",
+      "dayIndex": 2,
+      "slotType": "bonus",
+      "skillGroup": "rule",
+      "gameTypeId": "g01-t1",
+      "ruleVariantId": "g01-t1:tăng số phần tử",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Điền phần tiếp theo",
+      "invitation": "Mình có một chuỗi đang chờ bạn đoán tiếp. Bạn thử nhé?",
+      "tutorial": "Nhìn kỹ nhịp lặp hoặc bước tăng, rồi chọn phần tiếp theo.",
+      "explanation": "Quy luật là mỗi số tăng thêm 3. Số tiếp theo là 22.",
+      "boardData": {
+        "kind": "rule-sequence",
+        "sequence": [
+          "4",
+          "7",
+          "10",
+          "13",
+          "16",
+          "19"
+        ],
+        "options": [
+          "19",
+          "23",
+          "22",
+          "25"
+        ],
+        "ruleKind": "increment"
+      },
+      "solution": "22",
+      "validSolutionPredicate": "rule-sequence-v1",
+      "hints": [
+        "Nhìn xem mỗi số tăng thêm bao nhiêu.",
+        "Thử tính khoảng cách giữa hai số liền nhau."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "a3603b90281ac3d4",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D003-main-68",
+      "dayIndex": 3,
+      "slotType": "main",
+      "skillGroup": "planning",
+      "gameTypeId": "g06-t1",
+      "ruleVariantId": "g06-t1:đến đích tránh chướng ngại",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Tìm đường",
+      "invitation": "Mình cần bạn chỉ một đường đến đích. Bạn thử nhé?",
+      "tutorial": "Đi từ ô bắt đầu đến ô đích, tránh tường và ghé điểm cần qua.",
+      "explanation": "Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (4,0) → (4,1) → (4,2) → (4,3) → (4,4).",
+      "boardData": {
+        "kind": "path-planning",
+        "width": 5,
+        "height": 5,
+        "start": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 4,
+          "y": 4
+        },
+        "walls": [
+          {
+            "x": 0,
+            "y": 2
+          }
+        ],
+        "waypoints": []
+      },
+      "solution": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 1
+        },
+        {
+          "x": 4,
+          "y": 2
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 4
+        }
+      ],
+      "validSolutionPredicate": "path-planning-v1",
+      "hints": [
+        "Đi từng ô một, đừng nhảy qua tường.",
+        "Nếu có điểm cần qua, ghé điểm đó trước khi tới đích."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "b2e2309b26b33d3a",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D003-main-912",
+      "dayIndex": 3,
+      "slotType": "main",
+      "skillGroup": "planning",
+      "gameTypeId": "g06-t1",
+      "ruleVariantId": "g06-t1:đi qua một điểm bắt buộc",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Tìm đường",
+      "invitation": "Mình cần bạn chỉ một đường đến đích. Bạn thử nhé?",
+      "tutorial": "Đi từ ô bắt đầu đến ô đích, tránh tường và ghé điểm cần qua.",
+      "explanation": "Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (3,1) → (3,2) → (3,3) → (4,3) → (5,3) → (6,3) → (6,4) → (6,5) → (6,6).",
+      "boardData": {
+        "kind": "path-planning",
+        "width": 7,
+        "height": 7,
+        "start": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 6,
+          "y": 6
+        },
+        "walls": [
+          {
+            "x": 4,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 0
+          },
+          {
+            "x": 2,
+            "y": 6
+          },
+          {
+            "x": 6,
+            "y": 1
+          }
+        ],
+        "waypoints": [
+          {
+            "id": "w1",
+            "x": 3,
+            "y": 3
+          }
+        ]
+      },
+      "solution": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 1
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 5,
+          "y": 3
+        },
+        {
+          "x": 6,
+          "y": 3
+        },
+        {
+          "x": 6,
+          "y": 4
+        },
+        {
+          "x": 6,
+          "y": 5
+        },
+        {
+          "x": 6,
+          "y": 6
+        }
+      ],
+      "validSolutionPredicate": "path-planning-v1",
+      "hints": [
+        "Đi từng ô một, đừng nhảy qua tường.",
+        "Nếu có điểm cần qua, ghé điểm đó trước khi tới đích."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 120,
+      "status": "design_only",
+      "fingerprint": "a5e7db53053d8d14",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D003-bonus-68",
+      "dayIndex": 3,
+      "slotType": "bonus",
+      "skillGroup": "memory",
+      "gameTypeId": "g03-t1",
+      "ruleVariantId": "g03-t1:nhắc lại cùng chiều",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Nhớ thứ tự",
+      "invitation": "Mình vừa xếp một dãy. Bạn nhớ lại thứ tự nhé?",
+      "tutorial": "Nhìn dãy thật kỹ; khi dãy ẩn đi, bạn xếp lại đúng thứ tự.",
+      "explanation": "Thứ tự đúng là bóng → mưa → táo → cá.",
+      "boardData": {
+        "kind": "memory-sequence",
+        "sequence": [
+          "bóng",
+          "mưa",
+          "táo",
+          "cá"
+        ],
+        "options": [
+          "mưa",
+          "cá",
+          "táo",
+          "bóng"
+        ],
+        "displayMs": 1200
+      },
+      "solution": [
+        "bóng",
+        "mưa",
+        "táo",
+        "cá"
+      ],
+      "validSolutionPredicate": "memory-sequence-v1",
+      "hints": [
+        "Nhớ nhóm đầu tiên trước.",
+        "Đọc lại theo nhịp, đừng vội."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 60,
+      "status": "design_only",
+      "fingerprint": "f6678da68a48dede",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D003-bonus-912",
+      "dayIndex": 3,
+      "slotType": "bonus",
+      "skillGroup": "memory",
+      "gameTypeId": "g03-t1",
+      "ruleVariantId": "g03-t1:nhắc lại theo nhóm",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Nhớ thứ tự",
+      "invitation": "Mình vừa xếp một dãy. Bạn nhớ lại thứ tự nhé?",
+      "tutorial": "Nhìn dãy thật kỹ; khi dãy ẩn đi, bạn xếp lại đúng thứ tự.",
+      "explanation": "Thứ tự đúng là cây → mèo → thuyền → trăng → táo.",
+      "boardData": {
+        "kind": "memory-sequence",
+        "sequence": [
+          "cây",
+          "mèo",
+          "thuyền",
+          "trăng",
+          "táo"
+        ],
+        "options": [
+          "mèo",
+          "trăng",
+          "táo",
+          "cá",
+          "cây",
+          "thuyền"
+        ],
+        "displayMs": 1600
+      },
+      "solution": [
+        "cây",
+        "mèo",
+        "thuyền",
+        "trăng",
+        "táo"
+      ],
+      "validSolutionPredicate": "memory-sequence-v1",
+      "hints": [
+        "Nhớ nhóm đầu tiên trước.",
+        "Đọc lại theo nhịp, đừng vội."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "422f7f1d8a3014ce",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D004-main-68",
+      "dayIndex": 4,
+      "slotType": "main",
+      "skillGroup": "rule",
+      "gameTypeId": "g01-t1",
+      "ruleVariantId": "g01-t1:lặp một thuộc tính",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Điền phần tiếp theo",
+      "invitation": "Mình có một chuỗi đang chờ bạn đoán tiếp. Bạn thử nhé?",
+      "tutorial": "Nhìn kỹ nhịp lặp hoặc bước tăng, rồi chọn phần tiếp theo.",
+      "explanation": "Phần tiếp theo hợp với nhịp của chuỗi là quả.",
+      "boardData": {
+        "kind": "rule-sequence",
+        "sequence": [
+          "quả",
+          "lá",
+          "quả",
+          "lá"
+        ],
+        "options": [
+          "quả",
+          "nắng",
+          "hoa"
+        ],
+        "ruleKind": "alternating"
+      },
+      "solution": "quả",
+      "validSolutionPredicate": "rule-sequence-v1",
+      "hints": [
+        "Nhìn xem các từ lặp lại theo nhịp nào.",
+        "Thử đọc to chuỗi theo từng cặp."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 60,
+      "status": "design_only",
+      "fingerprint": "0d6f96434e997dd2",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D004-main-912",
+      "dayIndex": 4,
+      "slotType": "main",
+      "skillGroup": "rule",
+      "gameTypeId": "g01-t1",
+      "ruleVariantId": "g01-t1:tăng số phần tử",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Điền phần tiếp theo",
+      "invitation": "Mình có một chuỗi đang chờ bạn đoán tiếp. Bạn thử nhé?",
+      "tutorial": "Nhìn kỹ nhịp lặp hoặc bước tăng, rồi chọn phần tiếp theo.",
+      "explanation": "Quy luật là mỗi số tăng thêm 3. Số tiếp theo là 18.",
+      "boardData": {
+        "kind": "rule-sequence",
+        "sequence": [
+          "3",
+          "6",
+          "9",
+          "12",
+          "15"
+        ],
+        "options": [
+          "18",
+          "15",
+          "19",
+          "21"
+        ],
+        "ruleKind": "increment"
+      },
+      "solution": "18",
+      "validSolutionPredicate": "rule-sequence-v1",
+      "hints": [
+        "Nhìn xem mỗi số tăng thêm bao nhiêu.",
+        "Thử tính khoảng cách giữa hai số liền nhau."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "372b4ee51f13b748",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D004-bonus-68",
+      "dayIndex": 4,
+      "slotType": "bonus",
+      "skillGroup": "memory",
+      "gameTypeId": "g03-t1",
+      "ruleVariantId": "g03-t1:nhắc lại cùng chiều",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Nhớ thứ tự",
+      "invitation": "Mình vừa xếp một dãy. Bạn nhớ lại thứ tự nhé?",
+      "tutorial": "Nhìn dãy thật kỹ; khi dãy ẩn đi, bạn xếp lại đúng thứ tự.",
+      "explanation": "Thứ tự đúng là mèo → bóng → mưa → cá.",
+      "boardData": {
+        "kind": "memory-sequence",
+        "sequence": [
+          "mèo",
+          "bóng",
+          "mưa",
+          "cá"
+        ],
+        "options": [
+          "cá",
+          "mưa",
+          "mèo",
+          "bóng"
+        ],
+        "displayMs": 1200
+      },
+      "solution": [
+        "mèo",
+        "bóng",
+        "mưa",
+        "cá"
+      ],
+      "validSolutionPredicate": "memory-sequence-v1",
+      "hints": [
+        "Nhớ nhóm đầu tiên trước.",
+        "Đọc lại theo nhịp, đừng vội."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 60,
+      "status": "design_only",
+      "fingerprint": "1fb844e4fb786902",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D004-bonus-912",
+      "dayIndex": 4,
+      "slotType": "bonus",
+      "skillGroup": "memory",
+      "gameTypeId": "g03-t1",
+      "ruleVariantId": "g03-t1:nhắc lại theo nhóm",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Nhớ thứ tự",
+      "invitation": "Mình vừa xếp một dãy. Bạn nhớ lại thứ tự nhé?",
+      "tutorial": "Nhìn dãy thật kỹ; khi dãy ẩn đi, bạn xếp lại đúng thứ tự.",
+      "explanation": "Thứ tự đúng là cá → thuyền → táo → mưa → mèo.",
+      "boardData": {
+        "kind": "memory-sequence",
+        "sequence": [
+          "cá",
+          "thuyền",
+          "táo",
+          "mưa",
+          "mèo"
+        ],
+        "options": [
+          "thuyền",
+          "mèo",
+          "mưa",
+          "cá",
+          "táo",
+          "bóng"
+        ],
+        "displayMs": 1600
+      },
+      "solution": [
+        "cá",
+        "thuyền",
+        "táo",
+        "mưa",
+        "mèo"
+      ],
+      "validSolutionPredicate": "memory-sequence-v1",
+      "hints": [
+        "Nhớ nhóm đầu tiên trước.",
+        "Đọc lại theo nhịp, đừng vội."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "e9af721cbf72a32a",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D005-main-68",
+      "dayIndex": 5,
+      "slotType": "main",
+      "skillGroup": "memory",
+      "gameTypeId": "g03-t1",
+      "ruleVariantId": "g03-t1:nhắc lại cùng chiều",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Nhớ thứ tự",
+      "invitation": "Mình vừa xếp một dãy. Bạn nhớ lại thứ tự nhé?",
+      "tutorial": "Nhìn dãy thật kỹ; khi dãy ẩn đi, bạn xếp lại đúng thứ tự.",
+      "explanation": "Thứ tự đúng là mèo → trăng → bóng.",
+      "boardData": {
+        "kind": "memory-sequence",
+        "sequence": [
+          "mèo",
+          "trăng",
+          "bóng"
+        ],
+        "options": [
+          "bóng",
+          "trăng",
+          "mèo"
+        ],
+        "displayMs": 1200
+      },
+      "solution": [
+        "mèo",
+        "trăng",
+        "bóng"
+      ],
+      "validSolutionPredicate": "memory-sequence-v1",
+      "hints": [
+        "Nhớ nhóm đầu tiên trước.",
+        "Đọc lại theo nhịp, đừng vội."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 60,
+      "status": "design_only",
+      "fingerprint": "e808b64a910c8f5c",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D005-main-912",
+      "dayIndex": 5,
+      "slotType": "main",
+      "skillGroup": "memory",
+      "gameTypeId": "g03-t1",
+      "ruleVariantId": "g03-t1:nhắc lại theo nhóm",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Nhớ thứ tự",
+      "invitation": "Mình vừa xếp một dãy. Bạn nhớ lại thứ tự nhé?",
+      "tutorial": "Nhìn dãy thật kỹ; khi dãy ẩn đi, bạn xếp lại đúng thứ tự.",
+      "explanation": "Thứ tự đúng là bóng → táo → thuyền → mèo → cá.",
+      "boardData": {
+        "kind": "memory-sequence",
+        "sequence": [
+          "bóng",
+          "táo",
+          "thuyền",
+          "mèo",
+          "cá"
+        ],
+        "options": [
+          "cá",
+          "táo",
+          "mưa",
+          "bóng",
+          "thuyền",
+          "mèo"
+        ],
+        "displayMs": 1600
+      },
+      "solution": [
+        "bóng",
+        "táo",
+        "thuyền",
+        "mèo",
+        "cá"
+      ],
+      "validSolutionPredicate": "memory-sequence-v1",
+      "hints": [
+        "Nhớ nhóm đầu tiên trước.",
+        "Đọc lại theo nhịp, đừng vội."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "2a2ff8ed16bfdd2e",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D005-bonus-68",
+      "dayIndex": 5,
+      "slotType": "bonus",
+      "skillGroup": "planning",
+      "gameTypeId": "g06-t1",
+      "ruleVariantId": "g06-t1:đến đích tránh chướng ngại",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Tìm đường",
+      "invitation": "Mình cần bạn chỉ một đường đến đích. Bạn thử nhé?",
+      "tutorial": "Đi từ ô bắt đầu đến ô đích, tránh tường và ghé điểm cần qua.",
+      "explanation": "Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (4,0) → (4,1) → (4,2) → (4,3) → (4,4).",
+      "boardData": {
+        "kind": "path-planning",
+        "width": 5,
+        "height": 5,
+        "start": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 4,
+          "y": 4
+        },
+        "walls": [
+          {
+            "x": 3,
+            "y": 4
+          }
+        ],
+        "waypoints": []
+      },
+      "solution": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 1
+        },
+        {
+          "x": 4,
+          "y": 2
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 4
+        }
+      ],
+      "validSolutionPredicate": "path-planning-v1",
+      "hints": [
+        "Đi từng ô một, đừng nhảy qua tường.",
+        "Nếu có điểm cần qua, ghé điểm đó trước khi tới đích."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "93be27a6f8a37d63",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D005-bonus-912",
+      "dayIndex": 5,
+      "slotType": "bonus",
+      "skillGroup": "planning",
+      "gameTypeId": "g06-t1",
+      "ruleVariantId": "g06-t1:đi qua một điểm bắt buộc",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Tìm đường",
+      "invitation": "Mình cần bạn chỉ một đường đến đích. Bạn thử nhé?",
+      "tutorial": "Đi từ ô bắt đầu đến ô đích, tránh tường và ghé điểm cần qua.",
+      "explanation": "Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (3,1) → (3,2) → (3,3) → (3,4) → (4,4) → (5,4) → (6,4) → (6,5) → (6,6).",
+      "boardData": {
+        "kind": "path-planning",
+        "width": 7,
+        "height": 7,
+        "start": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 6,
+          "y": 6
+        },
+        "walls": [
+          {
+            "x": 0,
+            "y": 4
+          },
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 2
+          },
+          {
+            "x": 4,
+            "y": 3
+          }
+        ],
+        "waypoints": [
+          {
+            "id": "w1",
+            "x": 3,
+            "y": 3
+          }
+        ]
+      },
+      "solution": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 1
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 3
+        },
+        {
+          "x": 3,
+          "y": 4
+        },
+        {
+          "x": 4,
+          "y": 4
+        },
+        {
+          "x": 5,
+          "y": 4
+        },
+        {
+          "x": 6,
+          "y": 4
+        },
+        {
+          "x": 6,
+          "y": 5
+        },
+        {
+          "x": 6,
+          "y": 6
+        }
+      ],
+      "validSolutionPredicate": "path-planning-v1",
+      "hints": [
+        "Đi từng ô một, đừng nhảy qua tường.",
+        "Nếu có điểm cần qua, ghé điểm đó trước khi tới đích."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 120,
+      "status": "design_only",
+      "fingerprint": "7710bf2c7e13031a",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D006-main-68",
+      "dayIndex": 6,
+      "slotType": "main",
+      "skillGroup": "planning",
+      "gameTypeId": "g06-t1",
+      "ruleVariantId": "g06-t1:đến đích tránh chướng ngại",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Tìm đường",
+      "invitation": "Mình cần bạn chỉ một đường đến đích. Bạn thử nhé?",
+      "tutorial": "Đi từ ô bắt đầu đến ô đích, tránh tường và ghé điểm cần qua.",
+      "explanation": "Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (4,0) → (4,1) → (4,2) → (4,3) → (4,4).",
+      "boardData": {
+        "kind": "path-planning",
+        "width": 5,
+        "height": 5,
+        "start": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 4,
+          "y": 4
+        },
+        "walls": [
+          {
+            "x": 0,
+            "y": 1
+          }
+        ],
+        "waypoints": []
+      },
+      "solution": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 1
+        },
+        {
+          "x": 4,
+          "y": 2
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 4
+        }
+      ],
+      "validSolutionPredicate": "path-planning-v1",
+      "hints": [
+        "Đi từng ô một, đừng nhảy qua tường.",
+        "Nếu có điểm cần qua, ghé điểm đó trước khi tới đích."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "0ead1b044d4b1cc9",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D006-main-912",
+      "dayIndex": 6,
+      "slotType": "main",
+      "skillGroup": "planning",
+      "gameTypeId": "g06-t1",
+      "ruleVariantId": "g06-t1:đi qua một điểm bắt buộc",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Tìm đường",
+      "invitation": "Mình cần bạn chỉ một đường đến đích. Bạn thử nhé?",
+      "tutorial": "Đi từ ô bắt đầu đến ô đích, tránh tường và ghé điểm cần qua.",
+      "explanation": "Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (3,1) → (3,2) → (3,3) → (4,3) → (4,4) → (4,5) → (5,5) → (5,6) → (6,6).",
+      "boardData": {
+        "kind": "path-planning",
+        "width": 7,
+        "height": 7,
+        "start": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 6,
+          "y": 6
+        },
+        "walls": [
+          {
+            "x": 6,
+            "y": 5
+          },
+          {
+            "x": 5,
+            "y": 4
+          },
+          {
+            "x": 1,
+            "y": 6
+          },
+          {
+            "x": 0,
+            "y": 1
+          }
+        ],
+        "waypoints": [
+          {
+            "id": "w1",
+            "x": 3,
+            "y": 3
+          }
+        ]
+      },
+      "solution": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 1
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 4
+        },
+        {
+          "x": 4,
+          "y": 5
+        },
+        {
+          "x": 5,
+          "y": 5
+        },
+        {
+          "x": 5,
+          "y": 6
+        },
+        {
+          "x": 6,
+          "y": 6
+        }
+      ],
+      "validSolutionPredicate": "path-planning-v1",
+      "hints": [
+        "Đi từng ô một, đừng nhảy qua tường.",
+        "Nếu có điểm cần qua, ghé điểm đó trước khi tới đích."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 120,
+      "status": "design_only",
+      "fingerprint": "e14782aa7a8ed753",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D006-bonus-68",
+      "dayIndex": 6,
+      "slotType": "bonus",
+      "skillGroup": "rule",
+      "gameTypeId": "g01-t1",
+      "ruleVariantId": "g01-t1:lặp một thuộc tính",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Điền phần tiếp theo",
+      "invitation": "Mình có một chuỗi đang chờ bạn đoán tiếp. Bạn thử nhé?",
+      "tutorial": "Nhìn kỹ nhịp lặp hoặc bước tăng, rồi chọn phần tiếp theo.",
+      "explanation": "Phần tiếp theo hợp với nhịp của chuỗi là quả.",
+      "boardData": {
+        "kind": "rule-sequence",
+        "sequence": [
+          "nắng",
+          "quả",
+          "nắng",
+          "quả",
+          "nắng"
+        ],
+        "options": [
+          "quả",
+          "lá",
+          "hoa"
+        ],
+        "ruleKind": "alternating"
+      },
+      "solution": "quả",
+      "validSolutionPredicate": "rule-sequence-v1",
+      "hints": [
+        "Nhìn xem các từ lặp lại theo nhịp nào.",
+        "Thử đọc to chuỗi theo từng cặp."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 60,
+      "status": "design_only",
+      "fingerprint": "d5921955ec11a4cb",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D006-bonus-912",
+      "dayIndex": 6,
+      "slotType": "bonus",
+      "skillGroup": "rule",
+      "gameTypeId": "g01-t1",
+      "ruleVariantId": "g01-t1:tăng số phần tử",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Điền phần tiếp theo",
+      "invitation": "Mình có một chuỗi đang chờ bạn đoán tiếp. Bạn thử nhé?",
+      "tutorial": "Nhìn kỹ nhịp lặp hoặc bước tăng, rồi chọn phần tiếp theo.",
+      "explanation": "Quy luật là mỗi số tăng thêm 1. Số tiếp theo là 6.",
+      "boardData": {
+        "kind": "rule-sequence",
+        "sequence": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ],
+        "options": [
+          "6",
+          "7",
+          "5"
+        ],
+        "ruleKind": "increment"
+      },
+      "solution": "6",
+      "validSolutionPredicate": "rule-sequence-v1",
+      "hints": [
+        "Nhìn xem mỗi số tăng thêm bao nhiêu.",
+        "Thử tính khoảng cách giữa hai số liền nhau."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "5dff8713aea42888",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D007-main-68",
+      "dayIndex": 7,
+      "slotType": "main",
+      "skillGroup": "rule",
+      "gameTypeId": "g01-t1",
+      "ruleVariantId": "g01-t1:lặp một thuộc tính",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Điền phần tiếp theo",
+      "invitation": "Mình có một chuỗi đang chờ bạn đoán tiếp. Bạn thử nhé?",
+      "tutorial": "Nhìn kỹ nhịp lặp hoặc bước tăng, rồi chọn phần tiếp theo.",
+      "explanation": "Phần tiếp theo hợp với nhịp của chuỗi là sao.",
+      "boardData": {
+        "kind": "rule-sequence",
+        "sequence": [
+          "sao",
+          "hoa",
+          "sao",
+          "hoa"
+        ],
+        "options": [
+          "lá",
+          "sao",
+          "quả"
+        ],
+        "ruleKind": "alternating"
+      },
+      "solution": "sao",
+      "validSolutionPredicate": "rule-sequence-v1",
+      "hints": [
+        "Nhìn xem các từ lặp lại theo nhịp nào.",
+        "Thử đọc to chuỗi theo từng cặp."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 60,
+      "status": "design_only",
+      "fingerprint": "f76938484dd6a1f0",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D007-main-912",
+      "dayIndex": 7,
+      "slotType": "main",
+      "skillGroup": "rule",
+      "gameTypeId": "g01-t1",
+      "ruleVariantId": "g01-t1:tăng số phần tử",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Điền phần tiếp theo",
+      "invitation": "Mình có một chuỗi đang chờ bạn đoán tiếp. Bạn thử nhé?",
+      "tutorial": "Nhìn kỹ nhịp lặp hoặc bước tăng, rồi chọn phần tiếp theo.",
+      "explanation": "Quy luật là mỗi số tăng thêm 2. Số tiếp theo là 13.",
+      "boardData": {
+        "kind": "rule-sequence",
+        "sequence": [
+          "3",
+          "5",
+          "7",
+          "9",
+          "11"
+        ],
+        "options": [
+          "11",
+          "15",
+          "14",
+          "13"
+        ],
+        "ruleKind": "increment"
+      },
+      "solution": "13",
+      "validSolutionPredicate": "rule-sequence-v1",
+      "hints": [
+        "Nhìn xem mỗi số tăng thêm bao nhiêu.",
+        "Thử tính khoảng cách giữa hai số liền nhau."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "9ad9f476e9f232d6",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D007-bonus-68",
+      "dayIndex": 7,
+      "slotType": "bonus",
+      "skillGroup": "planning",
+      "gameTypeId": "g06-t1",
+      "ruleVariantId": "g06-t1:đến đích tránh chướng ngại",
+      "ageTrack": "age_6_8",
+      "locale": "vi",
+      "title": "Tìm đường",
+      "invitation": "Mình cần bạn chỉ một đường đến đích. Bạn thử nhé?",
+      "tutorial": "Đi từ ô bắt đầu đến ô đích, tránh tường và ghé điểm cần qua.",
+      "explanation": "Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (4,0) → (4,1) → (4,2) → (4,3) → (4,4).",
+      "boardData": {
+        "kind": "path-planning",
+        "width": 5,
+        "height": 5,
+        "start": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 4,
+          "y": 4
+        },
+        "walls": [
+          {
+            "x": 2,
+            "y": 4
+          }
+        ],
+        "waypoints": []
+      },
+      "solution": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 0
+        },
+        {
+          "x": 4,
+          "y": 1
+        },
+        {
+          "x": 4,
+          "y": 2
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 4
+        }
+      ],
+      "validSolutionPredicate": "path-planning-v1",
+      "hints": [
+        "Đi từng ô một, đừng nhảy qua tường.",
+        "Nếu có điểm cần qua, ghé điểm đó trước khi tới đích."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 90,
+      "status": "design_only",
+      "fingerprint": "a3ae2797653ccbe2",
+      "source": null,
+      "editorial": null
+    },
+    {
+      "schemaVersion": 1,
+      "contentVersion": "pilot-2026-10-21",
+      "id": "D007-bonus-912",
+      "dayIndex": 7,
+      "slotType": "bonus",
+      "skillGroup": "planning",
+      "gameTypeId": "g06-t1",
+      "ruleVariantId": "g06-t1:đi qua một điểm bắt buộc",
+      "ageTrack": "age_9_12",
+      "locale": "vi",
+      "title": "Tìm đường",
+      "invitation": "Mình cần bạn chỉ một đường đến đích. Bạn thử nhé?",
+      "tutorial": "Đi từ ô bắt đầu đến ô đích, tránh tường và ghé điểm cần qua.",
+      "explanation": "Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (3,1) → (3,2) → (3,3) → (4,3) → (5,3) → (6,3) → (6,4) → (6,5) → (6,6).",
+      "boardData": {
+        "kind": "path-planning",
+        "width": 7,
+        "height": 7,
+        "start": {
+          "x": 0,
+          "y": 0
+        },
+        "goal": {
+          "x": 6,
+          "y": 6
+        },
+        "walls": [
+          {
+            "x": 2,
+            "y": 2
+          },
+          {
+            "x": 6,
+            "y": 1
+          },
+          {
+            "x": 2,
+            "y": 3
+          },
+          {
+            "x": 2,
+            "y": 6
+          }
+        ],
+        "waypoints": [
+          {
+            "id": "w1",
+            "x": 3,
+            "y": 3
+          }
+        ]
+      },
+      "solution": [
+        {
+          "x": 0,
+          "y": 0
+        },
+        {
+          "x": 1,
+          "y": 0
+        },
+        {
+          "x": 2,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 0
+        },
+        {
+          "x": 3,
+          "y": 1
+        },
+        {
+          "x": 3,
+          "y": 2
+        },
+        {
+          "x": 3,
+          "y": 3
+        },
+        {
+          "x": 4,
+          "y": 3
+        },
+        {
+          "x": 5,
+          "y": 3
+        },
+        {
+          "x": 6,
+          "y": 3
+        },
+        {
+          "x": 6,
+          "y": 4
+        },
+        {
+          "x": 6,
+          "y": 5
+        },
+        {
+          "x": 6,
+          "y": 6
+        }
+      ],
+      "validSolutionPredicate": "path-planning-v1",
+      "hints": [
+        "Đi từng ô một, đừng nhảy qua tường.",
+        "Nếu có điểm cần qua, ghé điểm đó trước khi tới đích."
+      ],
+      "praiseKeys": {
+        "correct": "thinkingGames.praise.correct",
+        "retry": "thinkingGames.praise.tryAgain"
+      },
+      "targetSeconds": 120,
+      "status": "design_only",
+      "fingerprint": "befd3328a3e71281",
+      "source": null,
+      "editorial": null
+    }
+  ],
+  "status": "pilot_fixture_pending_human_review"
+}

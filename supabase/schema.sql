@@ -70,3 +70,4 @@
 \ir migrations/202610090040_affiliate_commission_unfreeze.sql
 \ir migrations/202610100001_money_model_v2.sql
 \ir migrations/202610110001_pro_plus_and_addons.sql
+\ir migrations/202610210001_thinking_games.sql

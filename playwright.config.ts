@@ -9,6 +9,13 @@ const e2eSupabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'e2e-ano
 const marketingPort = 4321;
 const marketingURL = `http://127.0.0.1:${marketingPort}`;
 const marketingSpec = /marketing-home\.spec\.ts/;
+// The thinking-games specs are the slowest suite (one of them copies the repo and starts its own dev servers), so CI
+// runs them in a dedicated job. This switch keeps the long-lived browser job on its pre-thinking-games baseline.
+const thinkingGamesSpec = /thinking-games-.*\.spec\.ts/;
+const appSpecIgnore =
+  process.env.PLAYWRIGHT_SKIP_THINKING_GAMES === '1'
+    ? [marketingSpec, thinkingGamesSpec]
+    : marketingSpec;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -67,12 +74,12 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      testIgnore: marketingSpec,
+      testIgnore: appSpecIgnore,
       use: { ...devices['Desktop Chrome'], channel: localBrowserChannel },
     },
     {
       name: 'mobile-chromium',
-      testIgnore: marketingSpec,
+      testIgnore: appSpecIgnore,
       use: { ...devices['Pixel 7'], channel: localBrowserChannel },
     },
     // Its server only exists for `npm run test:e2e:marketing` (PLAYWRIGHT_MARKETING=1), so the project is gated the same way.
@@ -88,12 +95,12 @@ export default defineConfig({
     // Safari engines: run nightly on a focused set of specs (see .github/workflows/webkit-nightly.yml), not on every PR.
     {
       name: 'webkit',
-      testIgnore: marketingSpec,
+      testIgnore: appSpecIgnore,
       use: { ...devices['Desktop Safari'] },
     },
     {
       name: 'mobile-safari',
-      testIgnore: marketingSpec,
+      testIgnore: appSpecIgnore,
       use: { ...devices['iPhone 15'] },
     },
   ],
