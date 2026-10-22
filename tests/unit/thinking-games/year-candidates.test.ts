@@ -35,8 +35,8 @@ beforeAll(async () => {
 });
 
 afterAll(() => {
-  loadedV1.cleanup();
-  loadedV2.cleanup();
+  loadedV1?.cleanup?.();
+  loadedV2?.cleanup?.();
 });
 
 function runCatalogTests(label: string, params: {
