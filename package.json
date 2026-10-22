@@ -37,7 +37,9 @@
     "deploy:cloudflare": "node scripts/run-cloudflare.mjs deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "ci": "npm run lint && npm run typecheck && npm run test && npm run verify:habit-framework && npm run verify:habit-framework-translation && npm run check:secrets && npm run check:audit && npm run build:cloudflare && npm run check:performance",
-    "test:sql": "node scripts/verify-local-billing.mjs && node scripts/verify-local-affiliate.mjs && node tests/integration/migrations/family-operations-runtime.mjs"
+    "test:sql": "node scripts/verify-local-billing.mjs && node scripts/verify-local-affiliate.mjs && node tests/integration/migrations/family-operations-runtime.mjs && SQL_TEST_DATABASE_URL=postgresql://postgres:local-only@127.0.0.1:55432/postgres node tests/integration/migrations/thinking-games-security-runtime.mjs",
+    "generate:synthetic-release-fixture": "node scripts/generate-synthetic-release-fixture.mjs",
+    "promote:thinking-games-release": "node scripts/promote-thinking-games-release.mjs"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.20.7",
