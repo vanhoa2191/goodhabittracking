@@ -5,9 +5,9 @@
   "contentVersion": "p08-candidates-365-v2",
   "batch": 4,
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-3b077094c402bc2e",
-  "engineHash": "3b077094c402bc2e1097bca82e7e1e628572274086dc9676b4d01dde924c446a",
-  "inputSha256": "b9ab3b4f4d0b865cbc4fa8045a31c4c34803b4f17bad65f8174e8df306edec9d",
+  "engineVersion": "engine-a0dee1ddaef34f48",
+  "engineHash": "a0dee1ddaef34f48a6ae746e23db6f380077a04e9d903de47e09a644bd8ef7e2",
+  "inputSha256": "7887c2d37c3e37d1c74fb8a9d7ee9756969dae766d5ded6a166d90344f205562",
   "csvSha256": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
   "metrics": {
     "itemCount": 728,
@@ -18,8 +18,8 @@
     "malformedPass": 728,
     "alternateApplicable": 36,
     "alternatePass": 36,
-    "uniqueFingerprints": 712,
-    "uniqueNormalized": 672,
+    "uniqueFingerprints": 715,
+    "uniqueNormalized": 675,
     "tracks": {
       "age_3_5": 182,
       "age_6_8": 182,
@@ -800,11 +800,6 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D271-main-vi35",
-      "other": "D188-bonus-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D206-main-vi35",
       "other": "D195-bonus-vi35"
     },
@@ -817,11 +812,6 @@
       "code": "duplicate_fingerprint",
       "id": "D210-bonus-vi912",
       "other": "D197-main-vi912"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D212-bonus-vi35",
-      "other": "D199-main-vi35"
     },
     {
       "code": "duplicate_fingerprint",
@@ -864,11 +854,6 @@
       "other": "D245-main-vi13p"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D260-bonus-vi35",
-      "other": "D247-main-vi35"
-    },
-    {
       "code": "normalized_skin_duplicate",
       "id": "D267-main-vi35",
       "other": "D184-bonus-vi35"
@@ -897,11 +882,6 @@
       "code": "normalized_skin_duplicate",
       "id": "D269-main-vi68",
       "other": "D186-bonus-vi68"
-    },
-    {
-      "code": "normalized_skin_duplicate",
-      "id": "D271-main-vi35",
-      "other": "D188-bonus-vi35"
     },
     {
       "code": "normalized_skin_duplicate",
@@ -1012,11 +992,6 @@
       "code": "normalized_skin_duplicate",
       "id": "D210-bonus-vi912",
       "other": "D197-main-vi912"
-    },
-    {
-      "code": "normalized_skin_duplicate",
-      "id": "D212-bonus-vi35",
-      "other": "D199-main-vi35"
     },
     {
       "code": "normalized_skin_duplicate",
@@ -1142,11 +1117,6 @@
       "code": "normalized_skin_duplicate",
       "id": "D258-bonus-vi13p",
       "other": "D245-main-vi13p"
-    },
-    {
-      "code": "normalized_skin_duplicate",
-      "id": "D260-bonus-vi35",
-      "other": "D247-main-vi35"
     }
   ],
   "status": "pass_with_review_warnings"

@@ -250,7 +250,7 @@ export function describePathBoard(board: PathBoard): {
     return {
       hints: [
         'Bạn đếm số bước của từng ngả đường để so sánh nhé.',
-        'Đường ngắn nhất sẽ đi thẳng về đích, không rẽ vòng qua các ô thừa.',
+        'Đường ngắn nhất không đi vòng qua những ô thừa, mỗi bước đều tiến gần đích hơn.',
       ],
       explanation: `Đường ngắn nhất đưa bạn nhỏ về đích cần đúng ${steps} bước di chuyển an toàn.`,
     };
@@ -258,19 +258,19 @@ export function describePathBoard(board: PathBoard): {
   if (board.waypointOrder === 'ordered') {
     return {
       hints: [
-        'Bạn quan sát xem trên đường đi có món đồ nào cần ghé lấy trước khi mở cửa không.',
-        'Hãy tìm đường ghé qua chiếc chìa khóa trước, sau đó mới tiến về phía cửa đích nhé.',
+        'Bạn nhìn xem trên bảng có hai ngôi sao đánh số 1 và 2, cần ghé theo đúng số thứ tự nhé.',
+        'Hãy tìm đường ghé ngôi sao số 1 trước, rồi ngôi sao số 2, sau đó mới về đích nhé.',
       ],
-      explanation: 'Một đường đi hợp lệ đưa bạn ghé qua các điểm theo đúng thứ tự rồi mới về đích an toàn.',
+      explanation: 'Đường đi đúng ghé ngôi sao số 1 trước, rồi ngôi sao số 2, sau đó mới về đích mà không chạm tường.',
     };
   }
   if (board.waypoints.length > 0) {
     return {
       hints: [
         'Bạn hãy đi từng bước một cẩn thận và tránh xa các bức tường nhé.',
-        'Nhớ tìm đường đi qua điểm mốc bắt buộc trước khi tiến về ô đích nha.',
+        'Nhớ đi qua ngôi sao trước khi tiến về ô đích nha.',
       ],
-      explanation: 'Một đường đi hợp lệ giúp bạn ghé đủ các điểm mốc cần thiết trước khi về đích an toàn.',
+      explanation: 'Đường đi đúng ghé qua ngôi sao trên bảng rồi mới về đích, không chạm tường.',
     };
   }
   return {

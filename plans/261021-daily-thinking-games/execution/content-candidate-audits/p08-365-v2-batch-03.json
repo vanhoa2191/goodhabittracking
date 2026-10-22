@@ -5,9 +5,9 @@
   "contentVersion": "p08-candidates-365-v2",
   "batch": 3,
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-3b077094c402bc2e",
-  "engineHash": "3b077094c402bc2e1097bca82e7e1e628572274086dc9676b4d01dde924c446a",
-  "inputSha256": "effb1bbbcf7f82d798cec5e5e1b85b08c2a8898c78f1c12355ef14a528168f05",
+  "engineVersion": "engine-a0dee1ddaef34f48",
+  "engineHash": "a0dee1ddaef34f48a6ae746e23db6f380077a04e9d903de47e09a644bd8ef7e2",
+  "inputSha256": "ef433dad72b126b703c27c3ae7ed992d202f16e0a9dd8f23ca7fba3d688ae674",
   "csvSha256": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
   "metrics": {
     "itemCount": 728,
@@ -18,8 +18,8 @@
     "malformedPass": 728,
     "alternateApplicable": 36,
     "alternatePass": 36,
-    "uniqueFingerprints": 713,
-    "uniqueNormalized": 671,
+    "uniqueFingerprints": 717,
+    "uniqueNormalized": 675,
     "tracks": {
       "age_3_5": 182,
       "age_6_8": 182,
@@ -790,11 +790,6 @@
   "warnings": [
     {
       "code": "duplicate_fingerprint",
-      "id": "D175-main-vi35",
-      "other": "D092-bonus-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D110-main-vi35",
       "other": "D099-bonus-vi35"
     },
@@ -815,11 +810,6 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D116-bonus-vi35",
-      "other": "D103-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D134-main-vi35",
       "other": "D123-bonus-vi35"
     },
@@ -835,11 +825,6 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D140-bonus-vi35",
-      "other": "D127-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D158-main-vi35",
       "other": "D147-bonus-vi35"
     },
@@ -850,11 +835,6 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D164-bonus-vi35",
-      "other": "D151-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D180-bonus-vi35",
       "other": "D156-bonus-vi35"
     },
@@ -862,11 +842,6 @@
       "code": "duplicate_fingerprint",
       "id": "D182-main-vi35",
       "other": "D171-bonus-vi35"
-    },
-    {
-      "code": "normalized_skin_duplicate",
-      "id": "D175-main-vi35",
-      "other": "D092-bonus-vi35"
     },
     {
       "code": "normalized_skin_duplicate",
@@ -985,11 +960,6 @@
     },
     {
       "code": "normalized_skin_duplicate",
-      "id": "D116-bonus-vi35",
-      "other": "D103-main-vi35"
-    },
-    {
-      "code": "normalized_skin_duplicate",
       "id": "D134-bonus-vi35",
       "other": "D121-main-vi35"
     },
@@ -1050,11 +1020,6 @@
     },
     {
       "code": "normalized_skin_duplicate",
-      "id": "D140-bonus-vi35",
-      "other": "D127-main-vi35"
-    },
-    {
-      "code": "normalized_skin_duplicate",
       "id": "D160-bonus-vi35",
       "other": "D147-main-vi35"
     },
@@ -1097,11 +1062,6 @@
       "code": "normalized_skin_duplicate",
       "id": "D162-bonus-vi35",
       "other": "D149-main-vi35"
-    },
-    {
-      "code": "normalized_skin_duplicate",
-      "id": "D164-bonus-vi35",
-      "other": "D151-main-vi35"
     },
     {
       "code": "normalized_skin_duplicate",

@@ -5,9 +5,9 @@
   "contentVersion": "p08-candidates-365-v2",
   "batch": 2,
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-3b077094c402bc2e",
-  "engineHash": "3b077094c402bc2e1097bca82e7e1e628572274086dc9676b4d01dde924c446a",
-  "inputSha256": "85b1f4fb758ccf5b55cf5f43473cda9f050fa74332574ecd57fab49579ee9f80",
+  "engineVersion": "engine-a0dee1ddaef34f48",
+  "engineHash": "a0dee1ddaef34f48a6ae746e23db6f380077a04e9d903de47e09a644bd8ef7e2",
+  "inputSha256": "f7a1d8129b4738fe59d8574d99793795a4575f444da5af85c8d6e453a584dd15",
   "csvSha256": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
   "metrics": {
     "itemCount": 504,
@@ -18,8 +18,8 @@
     "malformedPass": 504,
     "alternateApplicable": 28,
     "alternatePass": 28,
-    "uniqueFingerprints": 500,
-    "uniqueNormalized": 478,
+    "uniqueFingerprints": 502,
+    "uniqueNormalized": 480,
     "tracks": {
       "age_3_5": 126,
       "age_6_8": 126,
@@ -566,28 +566,13 @@
   "warnings": [
     {
       "code": "duplicate_fingerprint",
-      "id": "D044-bonus-vi35",
-      "other": "D031-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D062-main-vi35",
       "other": "D051-bonus-vi35"
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D068-bonus-vi35",
-      "other": "D055-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D086-main-vi35",
       "other": "D075-bonus-vi35"
-    },
-    {
-      "code": "normalized_skin_duplicate",
-      "id": "D044-bonus-vi35",
-      "other": "D031-main-vi35"
     },
     {
       "code": "normalized_skin_duplicate",
@@ -648,11 +633,6 @@
       "code": "normalized_skin_duplicate",
       "id": "D062-main-vi13p",
       "other": "D051-bonus-vi13p"
-    },
-    {
-      "code": "normalized_skin_duplicate",
-      "id": "D068-bonus-vi35",
-      "other": "D055-main-vi35"
     },
     {
       "code": "normalized_skin_duplicate",

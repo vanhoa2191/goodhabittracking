@@ -5,9 +5,9 @@
   "contentVersion": "p08-candidates-365-v2",
   "batch": 1,
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-3b077094c402bc2e",
-  "engineHash": "3b077094c402bc2e1097bca82e7e1e628572274086dc9676b4d01dde924c446a",
-  "inputSha256": "bf54040261353a68e0faa61715999d13a683295b8c0f9a0036a1e8db05262ca7",
+  "engineVersion": "engine-a0dee1ddaef34f48",
+  "engineHash": "a0dee1ddaef34f48a6ae746e23db6f380077a04e9d903de47e09a644bd8ef7e2",
+  "inputSha256": "e7dd2d3ef2548e0264285542199f2132abac5277d0a8bdae4713c9e753c6e9de",
   "csvSha256": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
   "metrics": {
     "itemCount": 224,
@@ -18,8 +18,8 @@
     "malformedPass": 224,
     "alternateApplicable": 8,
     "alternatePass": 8,
-    "uniqueFingerprints": 222,
-    "uniqueNormalized": 211,
+    "uniqueFingerprints": 223,
+    "uniqueNormalized": 212,
     "tracks": {
       "age_3_5": 56,
       "age_6_8": 56,
@@ -290,11 +290,6 @@
       "other": "D003-bonus-vi35"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D020-bonus-vi35",
-      "other": "D007-main-vi35"
-    },
-    {
       "code": "normalized_skin_duplicate",
       "id": "D014-bonus-vi35",
       "other": "D001-main-vi35"
@@ -353,11 +348,6 @@
       "code": "normalized_skin_duplicate",
       "id": "D014-main-vi13p",
       "other": "D003-bonus-vi13p"
-    },
-    {
-      "code": "normalized_skin_duplicate",
-      "id": "D020-bonus-vi35",
-      "other": "D007-main-vi35"
     }
   ],
   "status": "pass_with_review_warnings"

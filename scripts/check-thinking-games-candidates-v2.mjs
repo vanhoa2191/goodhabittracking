@@ -276,6 +276,50 @@ const ENGLISH_STOPWORDS = [
 ];
 const ENGLISH_STOPWORD_REGEX = new RegExp(`\\b(${ENGLISH_STOPWORDS.join('|')})\\b`, 'i');
 
+// Letters or digits around "_" mean an internal token like "kích_cỡ" leaked into child text.
+const UNDERSCORE_TOKEN_REGEX = /[\p{L}\p{N}]_[\p{L}\p{N}]/u;
+// Function words that are never legitimately doubled in Vietnamese child copy ("ở ở", "và và").
+const DUPLICATE_WORD_REGEX = /(?:^|\s)(ở|và|là|của|các|một|những|thì|để|với|trong|cho|nên)\s+\1(?=[\s.,!?;:]|$)/iu;
+
+export const POSITION_BIAS_MAX_SHARE = 0.6;
+export const POSITION_BIAS_MIN_ITEMS = 20;
+
+export function correctOptionIndex(item) {
+  const options = item.boardData?.options;
+  if (!Array.isArray(options) || options.length < 2) return null;
+  if (typeof item.solution !== 'string' && typeof item.solution !== 'number') return null;
+  const index = options.findIndex((option) => (option !== null && typeof option === 'object' && 'id' in option ? option.id : option) === item.solution);
+  return index < 0 ? null : index;
+}
+
+// Per gameType, no single option slot may hold more than 60% of the correct answers.
+export function positionBiasErrors(items) {
+  const byType = new Map();
+  for (const item of items) {
+    const index = correctOptionIndex(item);
+    if (index === null) continue;
+    const stats = byType.get(item.gameTypeId) ?? { total: 0, positions: new Map() };
+    stats.total += 1;
+    stats.positions.set(index, (stats.positions.get(index) ?? 0) + 1);
+    byType.set(item.gameTypeId, stats);
+  }
+  const errors = [];
+  for (const [gameTypeId, { total, positions }] of byType) {
+    if (total < POSITION_BIAS_MIN_ITEMS) continue;
+    for (const [position, count] of positions) {
+      if (count / total > POSITION_BIAS_MAX_SHARE) {
+        errors.push({
+          code: 'answer_position_bias',
+          id: gameTypeId,
+          gameTypeId,
+          message: `${gameTypeId}: correct answer is option #${position + 1} in ${count}/${total} items (> ${POSITION_BIAS_MAX_SHARE * 100}%)`,
+        });
+      }
+    }
+  }
+  return errors;
+}
+
 export function copyAuditErrors(item) {
   const errors = [];
   const childTexts = [
@@ -309,6 +353,26 @@ export function copyAuditErrors(item) {
         code: 'copy_raw_json',
         path,
         message: `Raw JSON/bracket/coord token "${jsonMatch[0]}" found in child text`,
+        snippet: value.slice(0, 120),
+      });
+    }
+
+    const underscoreMatch = value.match(UNDERSCORE_TOKEN_REGEX);
+    if (underscoreMatch) {
+      errors.push({
+        code: 'copy_underscore_token',
+        path,
+        message: `Underscore token "${underscoreMatch[0]}" found in child text`,
+        snippet: value.slice(0, 120),
+      });
+    }
+
+    const duplicateMatch = value.match(DUPLICATE_WORD_REGEX);
+    if (duplicateMatch) {
+      errors.push({
+        code: 'copy_duplicate_word',
+        path,
+        message: `Duplicated word "${duplicateMatch[1]} ${duplicateMatch[1]}" found in child text`,
         snippet: value.slice(0, 120),
       });
     }
@@ -535,6 +599,7 @@ async function checkBatch(batch, { write = true } = {}) {
     }
     audit.metrics.uniqueFingerprints = fingerprints.size;
     audit.metrics.uniqueNormalized = normalized.size;
+    for (const error of positionBiasErrors(items)) pushIssue(audit.errors, error);
     for (const ids of fingerprints.values()) {
       if (ids.length > 1) {
         audit.metrics.duplicateFingerprints += ids.length - 1;
@@ -784,6 +849,7 @@ async function checkAll({ write = true } = {}) {
     }
     audit.metrics.uniqueFingerprints = fingerprints.size;
     audit.metrics.uniqueNormalized = normalized.size;
+    for (const error of positionBiasErrors(allItems)) pushIssue(audit.errors, error);
     for (const ids of fingerprints.values()) {
       if (ids.length > 1) {
         audit.metrics.duplicateFingerprints += ids.length - 1;
@@ -987,6 +1053,7 @@ export function auditItems(items, { engine }) {
       }
     }
   }
+  errors.push(...positionBiasErrors(items));
   // Minimal metrics to satisfy V1 auditItems type compatibility
   const metrics = {
     itemCount: items.length,

@@ -1,7 +1,6 @@
 import { ageRank, targetSecondsForAge } from '../age';
 import {
   DIRECTION_SHORT_VI,
-  DIRECTION_VI,
   getNaturalTutorial,
   VIETNAMESE_COORDINATE,
 } from '../content/copy';
@@ -71,6 +70,11 @@ const PRAISE_KEYS = { correct: 'thinking-games.praise.specific', retry: 'thinkin
 
 function randomFor(input: GenerateInput, salt: string): () => number {
   return createSeededRandom(stableSeedKey([input.seed, input.ageTrack, input.variant, salt]));
+}
+
+// Option order is shuffled per item seed so the correct slot is not predictable.
+function shuffledOptions<T>(input: GenerateInput, salt: string, options: readonly T[]): T[] {
+  return shuffleDeterministic(randomFor(input, `${salt}-option-order`), options);
 }
 
 function variantIndex(gameTypeId: GameTypeId, variant: string): number {
@@ -348,8 +352,8 @@ definitions.push({
       { id: 'shape-e', cells: extra },
     ].filter((option, index, list) => list.findIndex((entry) => samePointSet(entry.cells, option.cells)) === index);
     const optionCount = Math.min(allOptions.length, 3 + (rank >= 1 ? 1 : 0) + (rank === 3 ? 1 : 0));
-    const options = allOptions.slice(0, Math.max(2, optionCount));
-    const solution = options[0]?.id as string;
+    const options = shuffledOptions(input, 'g02-t1', allOptions.slice(0, Math.max(2, optionCount)));
+    const solution = 'shape-a';
     const targetIdx = options.findIndex((opt) => opt.id === solution);
     const targetLabel = String.fromCharCode(65 + Math.max(0, targetIdx));
     const hints: readonly [string, string] = [
@@ -404,8 +408,8 @@ definitions.push({
       { id: 'turn-e', cells: reflectCells(shape, 'horizontal') },
     ].filter((option, index, list) => list.findIndex((entry) => samePointSet(entry.cells, option.cells)) === index);
     const optionCount = Math.min(allOptions.length, 3 + (rank >= 1 ? 1 : 0) + (rank === 3 ? 1 : 0));
-    const options = allOptions.slice(0, Math.max(2, optionCount));
-    const solution = options[0]?.id as string;
+    const options = shuffledOptions(input, 'g02-t2', allOptions.slice(0, Math.max(2, optionCount)));
+    const solution = 'turn-a';
     const targetIdx = options.findIndex((opt) => opt.id === solution);
     const targetLabel = String.fromCharCode(65 + Math.max(0, targetIdx));
     const hints: readonly [string, string] = [
@@ -665,8 +669,9 @@ definitions.push({
         ]
       : [solution, tokens[0]!, tokens[1] ?? 'lá', ...extraTokens, 'không có gì thay đổi'];
     const optionCount = 3 + rank;
-    const options = [...new Set(optionPool)].slice(0, optionCount);
-    if (!options.includes(solution)) options[0] = solution;
+    const trimmed = [...new Set(optionPool)].slice(0, optionCount);
+    if (!trimmed.includes(solution)) trimmed[0] = solution;
+    const options = shuffledOptions(input, 'g03-t3', trimmed);
     let changeExplanation = `Đã có một sự thay đổi ở cảnh sau: ${solution}.`;
     if (change === 'removed') changeExplanation = `Ở cảnh sau, ${solution} đã biến mất khỏi khung hình.`;
     else if (change === 'added') changeExplanation = `Ở cảnh sau, ${solution} vừa mới được thêm vào.`;
@@ -722,7 +727,7 @@ definitions.push({
       if (index === 0) {
         return {
           id: `candidate-1`,
-          traits: { màu: targetColor, hình: targetShape, kích_cỡ: targetSize },
+          traits: { màu: targetColor, hình: targetShape, 'kích cỡ': targetSize },
         };
       }
       return {
@@ -730,7 +735,7 @@ definitions.push({
         traits: {
           màu: variant === 2 ? colors[1]! : colors[(index % (colors.length - 1)) + 1]!,
           hình: shapes[(index % (shapes.length - 1)) + 1]!,
-          kích_cỡ: sizes[index % 2]!,
+          'kích cỡ': sizes[index % 2]!,
         },
       };
     });
@@ -740,7 +745,7 @@ definitions.push({
         ? [{ trait: 'màu', value: targetColor, negate: false }, { trait: 'hình', value: targetShape, negate: false }]
         : variant === 2
           ? [{ trait: 'màu', value: colors[1]!, negate: true }]
-          : [{ trait: 'màu', value: targetColor, negate: false }, { trait: 'hình', value: targetShape, negate: false }, { trait: 'kích_cỡ', value: targetSize, negate: false }];
+          : [{ trait: 'màu', value: targetColor, negate: false }, { trait: 'hình', value: targetShape, negate: false }, { trait: 'kích cỡ', value: targetSize, negate: false }];
     const options = shuffleDeterministic(rng, candidates.map((candidate) => candidate.id));
     const solution = candidates[0]!.id;
     const candIndex = candidates.findIndex((c) => c.id === solution);
@@ -885,13 +890,13 @@ definitions.push({
       traits: {
         màu: colors[index % colors.length]!,
         hình: shapes[index % shapes.length]!,
-        kích_cỡ: sizes[index % sizes.length]!,
-        ...(rank === 3 ? { vị_trí: positions[index % positions.length]! } : {}),
+        'kích cỡ': sizes[index % sizes.length]!,
+        ...(rank === 3 ? { 'vị trí': positions[index % positions.length]! } : {}),
       },
     }));
     const target = candidates[0]!;
     candidates[1]!.traits['màu'] = target.traits['màu']!;
-    candidates[1]!.traits['kích_cỡ'] = target.traits['kích_cỡ']!;
+    candidates[1]!.traits['kích cỡ'] = target.traits['kích cỡ']!;
     candidates[1]!.traits['hình'] = shapes.find((s) => s !== target.traits['hình'])!;
     for (let i = 2; i < count; i += 1) {
       if (candidates[i]!.traits['màu'] === target.traits['màu']) {
@@ -899,7 +904,7 @@ definitions.push({
       }
     }
     const known = rank >= 2
-      ? [{ trait: 'màu', value: target.traits['màu']! }, { trait: 'kích_cỡ', value: target.traits['kích_cỡ']! }]
+      ? [{ trait: 'màu', value: target.traits['màu']! }, { trait: 'kích cỡ', value: target.traits['kích cỡ']! }]
       : [{ trait: 'màu', value: target.traits['màu']! }];
     const questionTrait = 'hình';
     const targetId = target.id;
@@ -907,7 +912,7 @@ definitions.push({
       { id: 'fact-a', trait: 'hình', value: target.traits['hình']! },
       { id: 'fact-b', trait: 'hình', value: candidates[1]!.traits['hình']! },
       { id: 'fact-c', trait: 'màu', value: colors.find((c) => c !== target.traits['màu'])! },
-      ...(rank >= 2 ? [{ id: 'fact-d', trait: 'kích_cỡ', value: sizes.find((s) => s !== target.traits['kích_cỡ'])! }] : []),
+      ...(rank >= 2 ? [{ id: 'fact-d', trait: 'kích cỡ', value: sizes.find((s) => s !== target.traits['kích cỡ'])! }] : []),
     ];
     const solution = 'fact-a';
     const solOpt = options.find((opt) => opt.id === solution);
@@ -1009,8 +1014,9 @@ definitions.push({
     const base = { kind: 'quantity-balance' as const, left, right, mode, unknownSide, replaceId, options: [] };
     const answer = balanceAnswer(base) ?? expected;
     const optionCount = 3 + (rank >= 2 ? 1 : 0);
-    const options = [...new Set([answer, answer + 1, Math.max(0, answer - 1), answer + 2, answer + 3])].sort((a, b) => a - b).slice(0, optionCount);
-    if (!options.includes(answer)) options[0] = answer;
+    // Consecutive numbers in ascending order; the correct one sits at a seeded slot.
+    const answerSlot = Math.min(answer, Math.floor(randomFor(input, 'g05-t1-option-order')() * optionCount));
+    const options = Array.from({ length: optionCount }, (_, i) => answer - answerSlot + i);
     const board = { ...base, options };
     const replaceTarget = quantityBalanceReplaceTarget(board);
     const hints: readonly [string, string] = mode === 'replace'
@@ -1392,9 +1398,9 @@ definitions.push({
     const colors = shuffleDeterministic(rng, ['đỏ', 'xanh', 'vàng', 'tím', 'cam']);
     const sizes = ['to', 'nhỏ'] as const;
     const positions = ['trên', 'dưới'] as const;
-    const traits = ['hình', 'màu', 'kích_cỡ', 'vị_trí'] as const;
-    const trait = traits[variantIndex('g07-t1', input.variant) % traits.length] as 'hình' | 'màu' | 'kích_cỡ' | 'vị_trí';
-    const targetValue = trait === 'hình' ? shapes[0]! : trait === 'màu' ? colors[0]! : trait === 'kích_cỡ' ? sizes[0]! : positions[0]!;
+    const traits = ['hình', 'màu', 'kích cỡ', 'vị trí'] as const;
+    const trait = traits[variantIndex('g07-t1', input.variant) % traits.length] as 'hình' | 'màu' | 'kích cỡ' | 'vị trí';
+    const targetValue = trait === 'hình' ? shapes[0]! : trait === 'màu' ? colors[0]! : trait === 'kích cỡ' ? sizes[0]! : positions[0]!;
     const matchCount = Math.max(1, Math.min(count - 1, 1 + Math.floor(rng() * (count - 2))));
     const rawItems: TraitItem[] = Array.from({ length: count }, (_, index) => {
       const isMatch = index < matchCount;
@@ -1403,9 +1409,9 @@ definitions.push({
         traits: {
           hình: trait === 'hình' ? (isMatch ? targetValue : shapes[1 + (index % (shapes.length - 1))]!) : shapes[index % shapes.length]!,
           màu: trait === 'màu' ? (isMatch ? targetValue : colors[1 + (index % (colors.length - 1))]!) : colors[index % colors.length]!,
-          ...(rank >= 1 || trait === 'kích_cỡ' ? { kích_cỡ: trait === 'kích_cỡ' ? (isMatch ? targetValue : sizes[1]!) : sizes[index % 2]! } : {}),
-          ...(rank === 3 || trait === 'vị_trí' ? { vị_trí: trait === 'vị_trí' ? (isMatch ? targetValue : positions[1]!) : positions[index % 2]! } : {}),
-          ...(rank === 3 ? { trọng_lượng: (index % 2 === 0 ? 'nặng' : 'nhẹ')! } : {}),
+          ...(rank >= 1 || trait === 'kích cỡ' ? { 'kích cỡ': trait === 'kích cỡ' ? (isMatch ? targetValue : sizes[1]!) : sizes[index % 2]! } : {}),
+          ...(rank === 3 || trait === 'vị trí' ? { 'vị trí': trait === 'vị trí' ? (isMatch ? targetValue : positions[1]!) : positions[index % 2]! } : {}),
+          ...(rank === 3 ? { 'trọng lượng': (index % 2 === 0 ? 'nặng' : 'nhẹ')! } : {}),
         },
       };
     });
@@ -1465,13 +1471,18 @@ definitions.push({
     const facings = ['north', 'east', 'south', 'west'] as const;
     const facing = facings[variantIndex('g07-t2', input.variant) % facings.length] as typeof facings[number];
     const viewer = { x: 1 + Math.floor(rng() * Math.max(1, width - 2)), y: 1 + Math.floor(rng() * Math.max(1, height - 2)), facing };
-    const target = facing === 'north' ? { x: viewer.x, y: Math.max(0, viewer.y - 1) }
-      : facing === 'south' ? { x: viewer.x, y: Math.min(height - 1, viewer.y + 1) }
-        : facing === 'east' ? { x: Math.min(width - 1, viewer.x + 1), y: viewer.y }
-          : { x: Math.max(0, viewer.x - 1), y: viewer.y };
+    // The wanted direction (ahead/behind/left/right of the viewer) is seeded so answers vary;
+    // the viewer stays off the border so the object is always exactly one step away in that direction.
+    const wanted = (['ahead', 'right', 'behind', 'left'] as const)[Math.floor(randomFor(input, 'g07-t2-direction')() * 4)] as RelativeDirection;
+    const forward = facing === 'north' ? { x: 0, y: -1 } : facing === 'south' ? { x: 0, y: 1 } : facing === 'east' ? { x: 1, y: 0 } : { x: -1, y: 0 };
+    const rightVec = { x: -forward.y, y: forward.x };
+    const step = wanted === 'ahead' ? forward
+      : wanted === 'behind' ? { x: -forward.x, y: -forward.y }
+        : wanted === 'right' ? rightVec : { x: -rightVec.x, y: -rightVec.y };
+    const target = { x: viewer.x + step.x, y: viewer.y + step.y };
     const board = { kind: 'flexibility-perspective' as const, width, height, viewer, target, options: ['left', 'right', 'ahead', 'behind'] as RelativeDirection[] };
     const solution = relativeDirection(board) as RelativeDirection;
-    const solLabel = DIRECTION_VI[solution] ?? solution;
+    const solLabel = DIRECTION_SHORT_VI[solution] ?? solution;
     const facingNames: Record<string, string> = {
       north: 'hướng lên trên',
       south: 'hướng xuống dưới',
@@ -1662,11 +1673,11 @@ definitions.push({
     const positions = ['trên', 'dưới'] as const;
     const traitPairs: [
       { trait: 'hình'; value: string },
-      { trait: 'màu' | 'kích_cỡ' | 'vị_trí'; value: string }
+      { trait: 'màu' | 'kích cỡ' | 'vị trí'; value: string }
     ][] = [
-      [{ trait: 'hình', value: shapes[0]! }, { trait: 'kích_cỡ', value: sizes[0]! }],
+      [{ trait: 'hình', value: shapes[0]! }, { trait: 'kích cỡ', value: sizes[0]! }],
       [{ trait: 'hình', value: shapes[0]! }, { trait: 'màu', value: colors[0]! }],
-      [{ trait: 'hình', value: shapes[0]! }, { trait: 'vị_trí', value: positions[0]! }],
+      [{ trait: 'hình', value: shapes[0]! }, { trait: 'vị trí', value: positions[0]! }],
       [{ trait: 'hình', value: shapes[1]! }, { trait: 'màu', value: colors[1]! }],
     ];
     const criteria = traitPairs[variantIndex('g08-t2', input.variant) % traitPairs.length]!;
@@ -1678,9 +1689,9 @@ definitions.push({
         traits: {
           hình: isMatch ? criteria[0].value : shapes[1 + (index % (shapes.length - 1))]!,
           màu: isMatch && criteria[1].trait === 'màu' ? criteria[1].value : colors[(index + 1) % colors.length]!,
-          kích_cỡ: isMatch && criteria[1].trait === 'kích_cỡ' ? criteria[1].value : sizes[(index + 1) % 2]!,
-          ...(rank >= 1 || criteria[1].trait === 'vị_trí' ? { vị_trí: isMatch && criteria[1].trait === 'vị_trí' ? criteria[1].value : positions[(index + 1) % 2]! } : {}),
-          ...(rank === 3 ? { trọng_lượng: (index % 2 === 0 ? 'nặng' : 'nhẹ')! } : {}),
+          'kích cỡ': isMatch && criteria[1].trait === 'kích cỡ' ? criteria[1].value : sizes[(index + 1) % 2]!,
+          ...(rank >= 1 || criteria[1].trait === 'vị trí' ? { 'vị trí': isMatch && criteria[1].trait === 'vị trí' ? criteria[1].value : positions[(index + 1) % 2]! } : {}),
+          ...(rank === 3 ? { 'trọng lượng': (index % 2 === 0 ? 'nặng' : 'nhẹ')! } : {}),
         },
       };
     });

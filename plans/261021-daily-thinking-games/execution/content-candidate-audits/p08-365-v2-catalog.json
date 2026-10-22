@@ -4,8 +4,8 @@
   "generatedAt": "2026-10-22T00:00:00.000Z",
   "contentVersion": "p08-candidates-365-v2",
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-78897b4b2c249aa6",
-  "inputSha256": "2c2a7b1c76e34c91a2560796929bf7dee11a57a98e7cc17f596fd4c57cf4a78a",
+  "engineVersion": "engine-a0dee1ddaef34f48",
+  "inputSha256": "1df0049f4aa4ae2ded45289ebcff55277c4a90400828d6d075887bfb0b1e293c",
   "csvSha256": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
   "metrics": {
     "itemCount": 2920,
@@ -16,8 +16,8 @@
     "malformedPass": 2920,
     "alternateApplicable": 148,
     "alternatePass": 148,
-    "uniqueFingerprints": 2753,
-    "uniqueNormalized": 2456,
+    "uniqueFingerprints": 2783,
+    "uniqueNormalized": 2486,
     "tracks": {
       "age_3_5": 730,
       "age_6_8": 730,
@@ -32284,46 +32284,6 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D020-bonus-vi35",
-      "other": "D007-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D103-main-vi35",
-      "other": "D007-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D116-bonus-vi35",
-      "other": "D007-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D199-main-vi35",
-      "other": "D007-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D212-bonus-vi35",
-      "other": "D007-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D295-main-vi35",
-      "other": "D007-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D308-bonus-vi35",
-      "other": "D007-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D199-main-vi68",
-      "other": "D007-main-vi68"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D197-main-vi35",
       "other": "D018-bonus-vi35"
     },
@@ -32389,8 +32349,13 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D212-bonus-vi68",
-      "other": "D020-bonus-vi68"
+      "id": "D199-main-vi35",
+      "other": "D020-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D308-bonus-vi35",
+      "other": "D020-bonus-vi35"
     },
     {
       "code": "duplicate_fingerprint",
@@ -32469,36 +32434,6 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D044-bonus-vi35",
-      "other": "D031-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D127-main-vi35",
-      "other": "D031-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D140-bonus-vi35",
-      "other": "D031-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D223-main-vi35",
-      "other": "D031-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D236-bonus-vi35",
-      "other": "D031-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D319-main-vi35",
-      "other": "D031-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D332-bonus-vi35",
       "other": "D031-main-vi35"
     },
@@ -32549,23 +32484,8 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D223-main-vi68",
-      "other": "D044-bonus-vi68"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D319-main-vi68",
-      "other": "D044-bonus-vi68"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D191-main-vi35",
       "other": "D047-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D349-main-vi35",
-      "other": "D050-bonus-vi35"
     },
     {
       "code": "duplicate_fingerprint",
@@ -32629,53 +32549,8 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D068-bonus-vi35",
-      "other": "D055-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D151-main-vi35",
-      "other": "D055-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D164-bonus-vi35",
-      "other": "D055-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D247-main-vi35",
-      "other": "D055-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D260-bonus-vi35",
       "other": "D055-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D343-main-vi35",
-      "other": "D055-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D356-bonus-vi35",
-      "other": "D055-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D247-main-vi68",
-      "other": "D055-main-vi68"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D242-bonus-vi35",
-      "other": "D061-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D338-bonus-vi35",
-      "other": "D061-main-vi35"
     },
     {
       "code": "duplicate_fingerprint",
@@ -32794,38 +32669,8 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D092-bonus-vi35",
-      "other": "D079-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D175-main-vi35",
-      "other": "D079-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D188-bonus-vi35",
-      "other": "D079-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D271-main-vi35",
-      "other": "D079-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D284-bonus-vi35",
       "other": "D079-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D271-main-vi68",
-      "other": "D079-main-vi68"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D284-bonus-vi68",
-      "other": "D079-main-vi68"
     },
     {
       "code": "duplicate_fingerprint",
@@ -32879,13 +32724,13 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D295-main-vi68",
-      "other": "D116-bonus-vi68"
+      "id": "D212-bonus-vi35",
+      "other": "D116-bonus-vi35"
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D308-bonus-vi68",
-      "other": "D116-bonus-vi68"
+      "id": "D295-main-vi35",
+      "other": "D116-bonus-vi35"
     },
     {
       "code": "duplicate_fingerprint",
@@ -32909,8 +32754,18 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D236-bonus-vi68",
-      "other": "D127-main-vi68"
+      "id": "D223-main-vi35",
+      "other": "D127-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D236-bonus-vi35",
+      "other": "D127-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D319-main-vi35",
+      "other": "D127-main-vi35"
     },
     {
       "code": "duplicate_fingerprint",
@@ -32939,11 +32794,6 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D332-bonus-vi68",
-      "other": "D140-bonus-vi68"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D204-bonus-vi35",
       "other": "D143-main-vi35"
     },
@@ -32959,8 +32809,13 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D343-main-vi68",
-      "other": "D151-main-vi68"
+      "id": "D247-main-vi35",
+      "other": "D151-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D343-main-vi35",
+      "other": "D151-main-vi35"
     },
     {
       "code": "duplicate_fingerprint",
@@ -32976,11 +32831,6 @@
       "code": "duplicate_fingerprint",
       "id": "D287-main-vi35",
       "other": "D156-bonus-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D253-main-vi35",
-      "other": "D157-main-vi35"
     },
     {
       "code": "duplicate_fingerprint",
@@ -33004,13 +32854,8 @@
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D260-bonus-vi68",
-      "other": "D164-bonus-vi68"
-    },
-    {
-      "code": "duplicate_fingerprint",
-      "id": "D356-bonus-vi68",
-      "other": "D164-bonus-vi68"
+      "id": "D356-bonus-vi35",
+      "other": "D164-bonus-vi35"
     },
     {
       "code": "duplicate_fingerprint",
@@ -33021,6 +32866,11 @@
       "code": "duplicate_fingerprint",
       "id": "D282-bonus-vi912",
       "other": "D173-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D271-main-vi35",
+      "other": "D175-main-vi35"
     },
     {
       "code": "duplicate_fingerprint",
@@ -33441,6 +33291,156 @@
       "code": "normalized_skin_duplicate",
       "id": "D099-main-vi13p",
       "other": "D003-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D112-bonus-vi13p",
+      "other": "D003-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D195-main-vi13p",
+      "other": "D003-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D208-bonus-vi13p",
+      "other": "D003-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D291-main-vi13p",
+      "other": "D003-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D304-bonus-vi13p",
+      "other": "D003-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D014-main-vi35",
+      "other": "D003-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D099-bonus-vi35",
+      "other": "D003-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D110-main-vi35",
+      "other": "D003-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D195-bonus-vi35",
+      "other": "D003-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-main-vi35",
+      "other": "D003-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D291-bonus-vi35",
+      "other": "D003-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D302-main-vi35",
+      "other": "D003-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D014-main-vi68",
+      "other": "D003-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D099-bonus-vi68",
+      "other": "D003-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D110-main-vi68",
+      "other": "D003-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D195-bonus-vi68",
+      "other": "D003-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-main-vi68",
+      "other": "D003-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D291-bonus-vi68",
+      "other": "D003-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D302-main-vi68",
+      "other": "D003-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D014-main-vi912",
+      "other": "D003-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D099-bonus-vi912",
+      "other": "D003-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D110-main-vi912",
+      "other": "D003-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D195-bonus-vi912",
+      "other": "D003-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-main-vi912",
+      "other": "D003-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D291-bonus-vi912",
+      "other": "D003-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D302-main-vi912",
+      "other": "D003-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D014-main-vi13p",
+      "other": "D003-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D099-bonus-vi13p",
+      "other": "D003-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D110-main-vi13p",
+      "other": "D003-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D195-bonus-vi13p",
+      "other": "D003-bonus-vi13p"
     }
   ],
   "status": "pass_with_review_warnings"

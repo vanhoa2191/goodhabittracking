@@ -2,13 +2,13 @@
   "contentVersion": "p08-candidates-365-v2",
   "generatedAt": "2026-10-22T00:00:00.000Z",
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-78897b4b2c249aa6",
-  "engineHash": "78897b4b2c249aa631291d5d27aff61f39ee5f17c71adb808da2ed74adfd6ea3",
+  "engineVersion": "engine-a0dee1ddaef34f48",
+  "engineHash": "a0dee1ddaef34f48a6ae746e23db6f380077a04e9d903de47e09a644bd8ef7e2",
   "seedPolicy": "contentVersion|slotId|ageTrack|locale|gameTypeId|ruleVariant",
   "source": {
     "repo": "vanhoa2191/goodhabittracking",
     "url": "https://github.com/vanhoa2191/goodhabittracking",
-    "commit": "78897b4b2c249aa631291d5d27aff61f39ee5f17c71adb808da2ed74adfd6ea3",
+    "commit": "a0dee1ddaef34f48a6ae746e23db6f380077a04e9d903de47e09a644bd8ef7e2",
     "license": "UNLICENSED",
     "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
   },

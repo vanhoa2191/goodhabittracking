@@ -14,7 +14,8 @@ function numericValues(sequence: readonly string[]): number[] | null {
   return values.every((value) => Number.isFinite(value)) ? values : null;
 }
 
-function interleavedStep(sequence: readonly string[]): number | null {
+// Steps of the two interleaved tracks: `first` = positions 1,3,5..., `second` = positions 2,4,6...
+function interleavedSteps(sequence: readonly string[]): { first: number; second: number } | null {
   const values = numericValues(sequence);
   if (!values || values.length < 4) return null;
   const even = values.filter((_, index) => index % 2 === 0);
@@ -25,7 +26,13 @@ function interleavedStep(sequence: readonly string[]): number | null {
   if (evenStep <= 0 || oddStep <= 0) return null;
   if (even.some((value, index) => index > 0 && value - even[index - 1]! !== evenStep)) return null;
   if (odd.some((value, index) => index > 0 && value - odd[index - 1]! !== oddStep)) return null;
-  return sequence.length % 2 === 0 ? evenStep : oddStep;
+  return { first: evenStep, second: oddStep };
+}
+
+function interleavedStep(sequence: readonly string[]): number | null {
+  const steps = interleavedSteps(sequence);
+  if (!steps) return null;
+  return sequence.length % 2 === 0 ? steps.first : steps.second;
 }
 
 function expectedToken(board: RuleSequenceBoard): string | null {
@@ -191,14 +198,16 @@ export function describeRuleSequenceBoard(board: RuleSequenceBoard): {
     };
   }
   if (board.ruleKind === 'alternating') {
-    const step = interleavedStep(board.sequence);
-    if (step !== null) {
+    const steps = interleavedSteps(board.sequence);
+    if (steps !== null) {
+      const nextStep = board.sequence.length % 2 === 0 ? steps.first : steps.second;
+      const nextTrack = board.sequence.length % 2 === 0 ? 'lẻ' : 'chẵn';
       return {
         hints: [
           'Bạn thử nhìn các số cách nhau một vị trí xem có bước tăng nào quen thuộc không nhé.',
           'Ở đây có hai nhịp số cùng tăng đều đan xen; bạn tìm số tiếp theo của nhịp đang tới nhé.',
         ],
-        explanation: `Hai nhịp số tăng đều đan xen, mỗi nhịp tăng thêm ${step}. Số tiếp theo là ${answer ?? '?'}.`,
+        explanation: `Hai nhịp số đan xen: các số ở vị trí 1, 3, 5... tăng thêm ${steps.first}, các số ở vị trí 2, 4, 6... tăng thêm ${steps.second}. Vị trí tiếp theo thuộc nhịp ${nextTrack}, nên lấy số cùng nhịp liền trước cộng ${nextStep}, ra ${answer ?? '?'}.`,
       };
     }
     return {
