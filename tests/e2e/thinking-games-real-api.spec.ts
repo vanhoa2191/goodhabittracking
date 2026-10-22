@@ -53,6 +53,12 @@ async function dismissFinishDialog(page: Page) {
 }
 
 test.describe('Real Fullstack Integration: Browser UI -> Next APIs -> Supabase SDK -> PostgREST -> PostgreSQL 18.4', () => {
+  // This suite drives a real Supabase/GoTrue/PostgREST stack, which CI does not provision. Local full-stack runs are
+  // unaffected; a CI job that does provide the stack can opt in with PLAYWRIGHT_REAL_STACK=1.
+  test.skip(
+    Boolean(process.env.CI) && process.env.PLAYWRIGHT_REAL_STACK !== '1',
+    'Requires the local Supabase/GoTrue/PostgREST stack, which CI does not provision.'
+  );
   test.describe.configure({ mode: 'serial' });
   test.setTimeout(90_000);
 
