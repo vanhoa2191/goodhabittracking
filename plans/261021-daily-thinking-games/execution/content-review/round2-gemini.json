@@ -1,0 +1,3159 @@
+{
+  "itemsInScope": 1460,
+  "itemsReadInFull": 1460,
+  "flags": [
+    {
+      "id": "D007-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D007-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D020-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D020-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D031-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D031-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D044-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D044-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D055-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D055-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D068-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D068-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D079-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D079-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D092-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D092-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D103-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D103-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D116-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D116-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D127-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D127-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D140-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D140-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D151-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D151-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D164-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D164-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D175-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D175-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D188-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D188-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D199-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D199-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D212-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D212-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D223-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D223-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D236-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D236-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D247-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D247-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D260-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D260-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D271-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D271-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D284-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D284-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D295-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D295-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D308-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D308-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D319-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D319-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D332-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D332-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D343-main-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D343-main-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D356-bonus-vi68",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D356-bonus-vi912",
+      "severity": "block",
+      "category": "explanation",
+      "problem": "Lặp từ nối \"ở ở\" trong câu giải thích; đồng thời cơ chế sinh bị lỗi cố định nghiệm luôn là \"ahead\" (phía trước) cho 100% bài.",
+      "evidence": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ở ngay phía trước.",
+      "suggestedFix": "Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở ngay phía trước."
+    },
+    {
+      "id": "D001-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D001-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu hồng, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu hồng, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D008-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tròn và kích_cỡ là to) là: hình 1, hình 4, hình 5.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tròn và kích cỡ là to) là: hình 1, hình 4, hình 5."
+    },
+    {
+      "id": "D008-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tam giác và kích_cỡ là to) là: hình 1, hình 3, hình 4, hình 5.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tam giác và kích cỡ là to) là: hình 1, hình 3, hình 4, hình 5."
+    },
+    {
+      "id": "D012-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D012-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu hồng, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu hồng, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D021-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là sao và kích_cỡ là to) là: hình 4.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là sao và kích cỡ là to) là: hình 4."
+    },
+    {
+      "id": "D021-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là thoi và kích_cỡ là to) là: hình 1.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là thoi và kích cỡ là to) là: hình 1."
+    },
+    {
+      "id": "D025-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D025-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D036-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D036-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D049-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D049-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D052-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 2, hình 4.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 2, hình 4."
+    },
+    {
+      "id": "D052-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 2, hình 5.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 2, hình 5."
+    },
+    {
+      "id": "D056-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị_trí là trên) là: hình 1.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị trí là trên) là: hình 1."
+    },
+    {
+      "id": "D056-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là vuông và vị_trí là trên) là: hình 1, hình 2, hình 3.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là vuông và vị trí là trên) là: hình 1, hình 2, hình 3."
+    },
+    {
+      "id": "D060-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D060-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D063-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 3.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 3."
+    },
+    {
+      "id": "D063-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 1.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 1."
+    },
+    {
+      "id": "D069-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là sao và vị_trí là trên) là: hình 5.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là sao và vị trí là trên) là: hình 5."
+    },
+    {
+      "id": "D069-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là sao và vị_trí là trên) là: hình 4, hình 6.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là sao và vị trí là trên) là: hình 4, hình 6."
+    },
+    {
+      "id": "D073-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D073-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D076-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 1, hình 4, hình 5.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 1, hình 4, hình 5."
+    },
+    {
+      "id": "D076-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 1, hình 5, hình 6.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 1, hình 5, hình 6."
+    },
+    {
+      "id": "D084-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D084-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tròn, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tròn, kích cỡ to)."
+    },
+    {
+      "id": "D087-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 1, hình 4.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 1, hình 4."
+    },
+    {
+      "id": "D087-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 1.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 1."
+    },
+    {
+      "id": "D097-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D097-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D104-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là sao và kích_cỡ là to) là: hình 1, hình 2, hình 3.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là sao và kích cỡ là to) là: hình 1, hình 2, hình 3."
+    },
+    {
+      "id": "D104-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là vuông và kích_cỡ là to) là: hình 1, hình 5.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là vuông và kích cỡ là to) là: hình 1, hình 5."
+    },
+    {
+      "id": "D108-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu xanh, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu xanh, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D108-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu xanh, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu xanh, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D117-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là thoi và kích_cỡ là to) là: hình 2.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là thoi và kích cỡ là to) là: hình 2."
+    },
+    {
+      "id": "D117-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là thoi và kích_cỡ là to) là: hình 1.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là thoi và kích cỡ là to) là: hình 1."
+    },
+    {
+      "id": "D121-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu xanh, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu xanh, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D121-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tròn, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tròn, kích cỡ to)."
+    },
+    {
+      "id": "D132-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu xanh, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu xanh, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D132-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D145-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D145-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D148-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 1, hình 4, hình 5.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 1, hình 4, hình 5."
+    },
+    {
+      "id": "D148-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 5.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 5."
+    },
+    {
+      "id": "D152-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tam giác và vị_trí là trên) là: hình 3.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tam giác và vị trí là trên) là: hình 3."
+    },
+    {
+      "id": "D152-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tam giác và vị_trí là trên) là: hình 2, hình 3, hình 5, hình 6.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tam giác và vị trí là trên) là: hình 2, hình 3, hình 5, hình 6."
+    },
+    {
+      "id": "D156-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D156-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D159-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 1, hình 2.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 1, hình 2."
+    },
+    {
+      "id": "D159-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 2.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 2."
+    },
+    {
+      "id": "D165-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị_trí là trên) là: hình 2, hình 4.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị trí là trên) là: hình 2, hình 4."
+    },
+    {
+      "id": "D165-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tam giác và vị_trí là trên) là: hình 4, hình 6.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tam giác và vị trí là trên) là: hình 4, hình 6."
+    },
+    {
+      "id": "D169-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D169-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D172-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 5.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 5."
+    },
+    {
+      "id": "D172-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 4, hình 6.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 4, hình 6."
+    },
+    {
+      "id": "D180-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D180-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D183-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 3, hình 4.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 3, hình 4."
+    },
+    {
+      "id": "D183-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 5, hình 6.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 5, hình 6."
+    },
+    {
+      "id": "D193-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D193-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tròn, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tròn, kích cỡ to)."
+    },
+    {
+      "id": "D200-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là sao và kích_cỡ là to) là: hình 2.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là sao và kích cỡ là to) là: hình 2."
+    },
+    {
+      "id": "D200-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là vuông và kích_cỡ là to) là: hình 3, hình 6.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là vuông và kích cỡ là to) là: hình 3, hình 6."
+    },
+    {
+      "id": "D204-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tròn, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tròn, kích cỡ to)."
+    },
+    {
+      "id": "D204-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D213-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là vuông và kích_cỡ là to) là: hình 1.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là vuông và kích cỡ là to) là: hình 1."
+    },
+    {
+      "id": "D213-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là thoi và kích_cỡ là to) là: hình 5.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là thoi và kích cỡ là to) là: hình 5."
+    },
+    {
+      "id": "D217-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu xanh, hình tròn, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu xanh, hình tròn, kích cỡ to)."
+    },
+    {
+      "id": "D217-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu hồng, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu hồng, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D228-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D228-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D241-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D241-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D244-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 1, hình 2, hình 4.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 1, hình 2, hình 4."
+    },
+    {
+      "id": "D244-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 1, hình 2, hình 3.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 1, hình 2, hình 3."
+    },
+    {
+      "id": "D248-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là vuông và vị_trí là trên) là: hình 3, hình 4.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là vuông và vị trí là trên) là: hình 3, hình 4."
+    },
+    {
+      "id": "D248-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là thoi và vị_trí là trên) là: hình 6.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là thoi và vị trí là trên) là: hình 6."
+    },
+    {
+      "id": "D252-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D252-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D255-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 1, hình 4, hình 5.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 1, hình 4, hình 5."
+    },
+    {
+      "id": "D255-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 2, hình 3, hình 6.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 2, hình 3, hình 6."
+    },
+    {
+      "id": "D261-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị_trí là trên) là: hình 1, hình 4.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị trí là trên) là: hình 1, hình 4."
+    },
+    {
+      "id": "D261-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị_trí là trên) là: hình 1, hình 2, hình 4, hình 6.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị trí là trên) là: hình 1, hình 2, hình 4, hình 6."
+    },
+    {
+      "id": "D265-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D265-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D268-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 4.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 4."
+    },
+    {
+      "id": "D268-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 1, hình 4.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 1, hình 4."
+    },
+    {
+      "id": "D276-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D276-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D279-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 5.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 5."
+    },
+    {
+      "id": "D279-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 1, hình 3, hình 4.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 1, hình 3, hình 4."
+    },
+    {
+      "id": "D289-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D289-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D296-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tam giác và kích_cỡ là to) là: hình 1.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tam giác và kích cỡ là to) là: hình 1."
+    },
+    {
+      "id": "D296-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là sao và kích_cỡ là to) là: hình 1, hình 4, hình 5.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là sao và kích cỡ là to) là: hình 1, hình 4, hình 5."
+    },
+    {
+      "id": "D300-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu hồng, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu hồng, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D300-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D309-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là vuông và kích_cỡ là to) là: hình 2, hình 4.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là vuông và kích cỡ là to) là: hình 2, hình 4."
+    },
+    {
+      "id": "D309-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là thoi và kích_cỡ là to) là: hình 2, hình 3, hình 4, hình 6.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là thoi và kích cỡ là to) là: hình 2, hình 3, hình 4, hình 6."
+    },
+    {
+      "id": "D313-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tròn, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tròn, kích cỡ to)."
+    },
+    {
+      "id": "D313-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu hồng, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu hồng, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D324-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình sao, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình sao, kích cỡ to)."
+    },
+    {
+      "id": "D324-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D337-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D337-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tròn, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu vàng, hình tròn, kích cỡ to)."
+    },
+    {
+      "id": "D340-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 1, hình 3.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 1, hình 3."
+    },
+    {
+      "id": "D340-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 2, hình 5.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 2, hình 5."
+    },
+    {
+      "id": "D344-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là vuông và vị_trí là trên) là: hình 4.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là vuông và vị trí là trên) là: hình 4."
+    },
+    {
+      "id": "D344-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị_trí là trên) là: hình 2, hình 6.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị trí là trên) là: hình 2, hình 6."
+    },
+    {
+      "id": "D348-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu tím, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D348-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình vuông, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình vuông, kích cỡ to)."
+    },
+    {
+      "id": "D351-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 1, hình 4.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 1, hình 4."
+    },
+    {
+      "id": "D351-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (kích_cỡ là \"to\"), các hình phù hợp là: hình 1, hình 2, hình 4, hình 5.",
+      "suggestedFix": "Theo quy tắc mới (kích cỡ là \"to\"), các hình phù hợp là: hình 1, hình 2, hình 4, hình 5."
+    },
+    {
+      "id": "D357-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị_trí là trên) là: hình 1, hình 3.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tròn và vị trí là trên) là: hình 1, hình 3."
+    },
+    {
+      "id": "D357-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Các hình có đủ cả hai đặc điểm (hình là tam giác và vị_trí là trên) là: hình 1.",
+      "suggestedFix": "Các hình có đủ cả hai đặc điểm (hình là tam giác và vị trí là trên) là: hình 1."
+    },
+    {
+      "id": "D361-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình thoi, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình thoi, kích cỡ to)."
+    },
+    {
+      "id": "D361-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích_cỡ to).",
+      "suggestedFix": "Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích cỡ to)."
+    },
+    {
+      "id": "D364-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 2, hình 5.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 2, hình 5."
+    },
+    {
+      "id": "D364-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Rò rỉ dấu gạch dưới trong từ ghép tiếng Việt (kích_cỡ, vị_trí) vào văn bản hiển thị cho trẻ.",
+      "evidence": "Theo quy tắc mới (vị_trí là \"trên\"), các hình phù hợp là: hình 1, hình 2, hình 3, hình 5.",
+      "suggestedFix": "Theo quy tắc mới (vị trí là \"trên\"), các hình phù hợp là: hình 1, hình 2, hình 3, hình 5."
+    },
+    {
+      "id": "D004-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.",
+      "suggestedFix": "Dò theo từng mắt xích Nếu - Thì từ điều đã biết để tìm kết luận chắc chắn đúng."
+    },
+    {
+      "id": "D007-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"hệ quy chiếu của nhân vật quan sát trong không gian\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.",
+      "suggestedFix": "Phân tích tọa độ vị trí theo hướng nhìn của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải."
+    },
+    {
+      "id": "D008-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông.",
+      "suggestedFix": "Nhớ vị trí các điểm sáng trên bảng lưới ô vuông và chọn lại thật chính xác."
+    },
+    {
+      "id": "D017-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.",
+      "suggestedFix": "Dựa vào các điều đã biết và luật Nếu - Thì để tìm ra kết quả đúng."
+    },
+    {
+      "id": "D020-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"hệ quy chiếu của nhân vật quan sát trong không gian\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.",
+      "suggestedFix": "Phân tích tọa độ vị trí theo hướng nhìn của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải."
+    },
+    {
+      "id": "D021-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn.",
+      "suggestedFix": "Tìm những hình có đủ cả hai đặc điểm mà đề bài yêu cầu."
+    },
+    {
+      "id": "D028-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.",
+      "suggestedFix": "Dò theo từng mắt xích Nếu - Thì từ điều đã biết để tìm kết luận chắc chắn đúng."
+    },
+    {
+      "id": "D028-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D031-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D032-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn.",
+      "suggestedFix": "Tìm những hình có đủ cả hai đặc điểm mà đề bài yêu cầu."
+    },
+    {
+      "id": "D032-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông.",
+      "suggestedFix": "Nhớ vị trí các điểm sáng trên bảng lưới ô vuông và chọn lại thật chính xác."
+    },
+    {
+      "id": "D036-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.",
+      "suggestedFix": "Đọc từng manh mối để loại bớt các bạn không phù hợp và tìm ra bạn đúng nhất."
+    },
+    {
+      "id": "D039-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D044-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D052-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.",
+      "suggestedFix": "Dựa vào các điều đã biết và luật Nếu - Thì để tìm ra kết quả đúng."
+    },
+    {
+      "id": "D052-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D055-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"hệ quy chiếu của nhân vật quan sát trong không gian\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.",
+      "suggestedFix": "Phân tích tọa độ vị trí theo hướng nhìn của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải."
+    },
+    {
+      "id": "D076-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.",
+      "suggestedFix": "Dựa vào các điều đã biết và luật Nếu - Thì để tìm ra kết quả đúng."
+    },
+    {
+      "id": "D076-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D079-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"hệ quy chiếu của nhân vật quan sát trong không gian\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.",
+      "suggestedFix": "Phân tích tọa độ vị trí theo hướng nhìn của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải."
+    },
+    {
+      "id": "D080-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn.",
+      "suggestedFix": "Tìm những hình có đủ cả hai đặc điểm mà đề bài yêu cầu."
+    },
+    {
+      "id": "D087-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D092-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D093-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn.",
+      "suggestedFix": "Tìm những hình có đủ cả hai đặc điểm mà đề bài yêu cầu."
+    },
+    {
+      "id": "D100-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.",
+      "suggestedFix": "Dò theo từng mắt xích Nếu - Thì từ điều đã biết để tìm kết luận chắc chắn đúng."
+    },
+    {
+      "id": "D103-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D108-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.",
+      "suggestedFix": "Đọc từng manh mối để loại bớt các bạn không phù hợp và tìm ra bạn đúng nhất."
+    },
+    {
+      "id": "D111-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D113-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.",
+      "suggestedFix": "Dò theo từng mắt xích Nếu - Thì từ điều đã biết để tìm kết luận chắc chắn đúng."
+    },
+    {
+      "id": "D115-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông.",
+      "suggestedFix": "Nhớ vị trí các điểm sáng trên bảng lưới ô vuông và chọn lại thật chính xác."
+    },
+    {
+      "id": "D116-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"hệ quy chiếu của nhân vật quan sát trong không gian\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.",
+      "suggestedFix": "Phân tích tọa độ vị trí theo hướng nhìn của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải."
+    },
+    {
+      "id": "D117-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn.",
+      "suggestedFix": "Tìm những hình có đủ cả hai đặc điểm mà đề bài yêu cầu."
+    },
+    {
+      "id": "D124-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.",
+      "suggestedFix": "Dựa vào các điều đã biết và luật Nếu - Thì để tìm ra kết quả đúng."
+    },
+    {
+      "id": "D124-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D139-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông.",
+      "suggestedFix": "Nhớ vị trí các điểm sáng trên bảng lưới ô vuông và chọn lại thật chính xác."
+    },
+    {
+      "id": "D140-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"hệ quy chiếu của nhân vật quan sát trong không gian\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.",
+      "suggestedFix": "Phân tích tọa độ vị trí theo hướng nhìn của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải."
+    },
+    {
+      "id": "D141-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn.",
+      "suggestedFix": "Tìm những hình có đủ cả hai đặc điểm mà đề bài yêu cầu."
+    },
+    {
+      "id": "D148-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.",
+      "suggestedFix": "Dò theo từng mắt xích Nếu - Thì từ điều đã biết để tìm kết luận chắc chắn đúng."
+    },
+    {
+      "id": "D152-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn.",
+      "suggestedFix": "Tìm những hình có đủ cả hai đặc điểm mà đề bài yêu cầu."
+    },
+    {
+      "id": "D164-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"hệ quy chiếu của nhân vật quan sát trong không gian\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.",
+      "suggestedFix": "Phân tích tọa độ vị trí theo hướng nhìn của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải."
+    },
+    {
+      "id": "D172-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D175-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D180-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.",
+      "suggestedFix": "Đọc từng manh mối để loại bớt các bạn không phù hợp và tìm ra bạn đúng nhất."
+    },
+    {
+      "id": "D185-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.",
+      "suggestedFix": "Dựa vào các điều đã biết và luật Nếu - Thì để tìm ra kết quả đúng."
+    },
+    {
+      "id": "D188-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D193-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.",
+      "suggestedFix": "Đọc từng manh mối để loại bớt các bạn không phù hợp và tìm ra bạn đúng nhất."
+    },
+    {
+      "id": "D196-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.",
+      "suggestedFix": "Dò theo từng mắt xích Nếu - Thì từ điều đã biết để tìm kết luận chắc chắn đúng."
+    },
+    {
+      "id": "D199-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D207-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D209-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.",
+      "suggestedFix": "Dựa vào các điều đã biết và luật Nếu - Thì để tìm ra kết quả đúng."
+    },
+    {
+      "id": "D217-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.",
+      "suggestedFix": "Đọc từng manh mối để loại bớt các bạn không phù hợp và tìm ra bạn đúng nhất."
+    },
+    {
+      "id": "D220-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D224-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông.",
+      "suggestedFix": "Nhớ vị trí các điểm sáng trên bảng lưới ô vuông và chọn lại thật chính xác."
+    },
+    {
+      "id": "D231-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D233-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.",
+      "suggestedFix": "Dò theo từng mắt xích Nếu - Thì từ điều đã biết để tìm kết luận chắc chắn đúng."
+    },
+    {
+      "id": "D235-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông.",
+      "suggestedFix": "Nhớ vị trí các điểm sáng trên bảng lưới ô vuông và chọn lại thật chính xác."
+    },
+    {
+      "id": "D244-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.",
+      "suggestedFix": "Dựa vào các điều đã biết và luật Nếu - Thì để tìm ra kết quả đúng."
+    },
+    {
+      "id": "D247-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D257-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.",
+      "suggestedFix": "Dựa vào các điều đã biết và luật Nếu - Thì để tìm ra kết quả đúng."
+    },
+    {
+      "id": "D260-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"hệ quy chiếu của nhân vật quan sát trong không gian\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.",
+      "suggestedFix": "Phân tích tọa độ vị trí theo hướng nhìn của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải."
+    },
+    {
+      "id": "D261-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn.",
+      "suggestedFix": "Tìm những hình có đủ cả hai đặc điểm mà đề bài yêu cầu."
+    },
+    {
+      "id": "D265-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.",
+      "suggestedFix": "Đọc từng manh mối để loại bớt các bạn không phù hợp và tìm ra bạn đúng nhất."
+    },
+    {
+      "id": "D268-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D276-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.",
+      "suggestedFix": "Đọc từng manh mối để loại bớt các bạn không phù hợp và tìm ra bạn đúng nhất."
+    },
+    {
+      "id": "D284-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D285-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn.",
+      "suggestedFix": "Tìm những hình có đủ cả hai đặc điểm mà đề bài yêu cầu."
+    },
+    {
+      "id": "D292-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.",
+      "suggestedFix": "Dò theo từng mắt xích Nếu - Thì từ điều đã biết để tìm kết luận chắc chắn đúng."
+    },
+    {
+      "id": "D295-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D296-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông.",
+      "suggestedFix": "Nhớ vị trí các điểm sáng trên bảng lưới ô vuông và chọn lại thật chính xác."
+    },
+    {
+      "id": "D300-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.",
+      "suggestedFix": "Đọc từng manh mối để loại bớt các bạn không phù hợp và tìm ra bạn đúng nhất."
+    },
+    {
+      "id": "D308-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D313-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.",
+      "suggestedFix": "Đọc từng manh mối để loại bớt các bạn không phù hợp và tìm ra bạn đúng nhất."
+    },
+    {
+      "id": "D316-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.",
+      "suggestedFix": "Dựa vào các điều đã biết và luật Nếu - Thì để tìm ra kết quả đúng."
+    },
+    {
+      "id": "D316-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.",
+      "suggestedFix": "Tập trung vào quy tắc phân loại mới để chọn các hình phù hợp."
+    },
+    {
+      "id": "D319-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"hệ quy chiếu của nhân vật quan sát trong không gian\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.",
+      "suggestedFix": "Phân tích tọa độ vị trí theo hướng nhìn của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải."
+    },
+    {
+      "id": "D320-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông.",
+      "suggestedFix": "Nhớ vị trí các điểm sáng trên bảng lưới ô vuông và chọn lại thật chính xác."
+    },
+    {
+      "id": "D324-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.",
+      "suggestedFix": "Đọc từng manh mối để loại bớt các bạn không phù hợp và tìm ra bạn đúng nhất."
+    },
+    {
+      "id": "D329-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.",
+      "suggestedFix": "Dò theo từng mắt xích Nếu - Thì từ điều đã biết để tìm kết luận chắc chắn đúng."
+    },
+    {
+      "id": "D331-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông.",
+      "suggestedFix": "Nhớ vị trí các điểm sáng trên bảng lưới ô vuông và chọn lại thật chính xác."
+    },
+    {
+      "id": "D332-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.",
+      "suggestedFix": "Đặt mình vào vị trí của bạn nhỏ để xác định xem đồ vật nằm ở hướng nào."
+    },
+    {
+      "id": "D343-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"hệ quy chiếu của nhân vật quan sát trong không gian\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.",
+      "suggestedFix": "Phân tích tọa độ vị trí theo hướng nhìn của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải."
+    },
+    {
+      "id": "D353-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.",
+      "suggestedFix": "Dựa vào các điều đã biết và luật Nếu - Thì để tìm ra kết quả đúng."
+    },
+    {
+      "id": "D364-main-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "Cách diễn đạt mang tính học thuật cao (dùng cụm từ \"Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ\"), quá trừu tượng và không tự nhiên đối với trẻ em 9-12 tuổi.",
+      "evidence": "Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.",
+      "suggestedFix": "Dò theo từng mắt xích Nếu - Thì từ điều đã biết để tìm kết luận chắc chắn đúng."
+    },
+    {
+      "id": "D002-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D002-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D007-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D007-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D015-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D015-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D018-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D018-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D026-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D026-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D031-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D031-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D039-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D039-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D042-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D042-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D050-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D050-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D055-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D055-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D063-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D063-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D066-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D066-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D074-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D074-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D079-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D079-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D087-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D087-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D090-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D090-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D098-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D098-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D103-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D103-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D111-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D111-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D114-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D114-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D122-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D122-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D127-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D127-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D135-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D135-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D138-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D138-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D146-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D146-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D151-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D151-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D159-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D159-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D162-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D162-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D170-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D170-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D175-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D175-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D183-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D183-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D186-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D186-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D194-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D194-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D199-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D199-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D207-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D207-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D210-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D210-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D218-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D218-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D223-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D223-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D231-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D231-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D234-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D234-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D242-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D242-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D247-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D247-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D255-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D255-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D258-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D258-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D266-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D266-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D271-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D271-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D279-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D279-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D282-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D282-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D290-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D290-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D295-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D295-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D303-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D303-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D306-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D306-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D314-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D314-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D319-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D319-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D327-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D327-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D330-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D330-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D338-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D338-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D343-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D343-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D351-bonus-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D351-bonus-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D354-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D354-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các hình xoay để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D362-main-vi68",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    },
+    {
+      "id": "D362-main-vi912",
+      "severity": "nit",
+      "category": "monotony",
+      "problem": "Đáp án đúng luôn luôn rơi vào Hình A (lựa chọn đầu tiên) trong 100% số bài của cả năm.",
+      "evidence": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+      "suggestedFix": "Xáo trộn thứ tự các phương án bóng để đáp án trải đều giữa Hình A, B, C, D."
+    }
+  ],
+  "round1Regressions": [],
+  "stats": {
+    "totalInScope": 1460,
+    "itemsReadInFull": 1460,
+    "totalFlags": 389,
+    "uniqueFlaggedItems": 348,
+    "cleanItemsCount": 1112,
+    "cleanItemsPercent": 76.16,
+    "bySeverity": {
+      "block": 60,
+      "fix": 207,
+      "nit": 122
+    },
+    "byCategory": {
+      "explanation": 60,
+      "copy": 124,
+      "age": 83,
+      "monotony": 122
+    },
+    "byGameType": {
+      "g02-t1": 62,
+      "g02-t2": 60,
+      "g03-t2": 9,
+      "g04-t1": 72,
+      "g04-t2": 20,
+      "g07-t1": 43,
+      "g07-t2": 82,
+      "g08-t2": 41
+    },
+    "byBatch": {
+      "batch-01-days-001-028.json": 32,
+      "batch-02-days-029-091.json": 68,
+      "batch-03-days-092-182.json": 95,
+      "batch-04-days-183-273.json": 98,
+      "batch-05-days-274-365.json": 96
+    },
+    "byAgeTrack": {
+      "age_6_8": 153,
+      "age_9_12": 236
+    }
+  }
+}
