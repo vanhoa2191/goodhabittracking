@@ -309,6 +309,7 @@ const preflightSql = await readFile('supabase/preflight/202610210001_thinking_ga
 const BRIDGE_SQL = `
   alter table public.child_profiles add column if not exists total_earned integer not null default 0;
   alter table public.child_profiles add column if not exists level integer not null default 1;
+  alter table public.activity_logs add column if not exists user_id uuid;
   create or replace function public.recompute_child_streak(target_child_id uuid)
   returns void language sql security definer set search_path = '' as $$ select null::void $$;
   create or replace function public.act_as_user(actor_user_id uuid)

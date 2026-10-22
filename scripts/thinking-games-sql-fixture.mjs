@@ -317,6 +317,7 @@ create table if not exists public.habit_activities (
 create table if not exists public.activity_logs (
   id uuid primary key,
   family_id uuid not null references public.families(id) on delete cascade,
+  user_id uuid default auth.uid(),
   child_id uuid not null,
   activity_id uuid not null,
   log_date date not null,
