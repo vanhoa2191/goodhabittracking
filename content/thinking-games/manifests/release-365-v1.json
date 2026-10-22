@@ -1,0 +1,23 @@
+{
+  "manifestVersion": "release-365-v1",
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-21T00:00:00.000Z",
+  "isPilotFixture": false,
+  "minFormatSpacingDays": 7,
+  "locales": [
+    "vi"
+  ],
+  "ageTracks": [
+    "age_6_8",
+    "age_9_12"
+  ],
+  "items": [],
+  "coverage": {
+    "dayCount": 365,
+    "slotsPerDay": 2,
+    "typeIds": 24,
+    "variantPairs": 96
+  },
+  "editorialApproval": null,
+  "status": "not_ready"
+}
