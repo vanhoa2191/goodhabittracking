@@ -5,9 +5,9 @@
   "contentVersion": "p08-candidates-365-v2",
   "batch": 1,
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-a0dee1ddaef34f48",
-  "engineHash": "a0dee1ddaef34f48a6ae746e23db6f380077a04e9d903de47e09a644bd8ef7e2",
-  "inputSha256": "e7dd2d3ef2548e0264285542199f2132abac5277d0a8bdae4713c9e753c6e9de",
+  "engineVersion": "engine-ab1e420ff2a665d9",
+  "engineHash": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+  "inputSha256": "e752dcb54987c1bcc9b26d93463206f459025bd03a4dd5d3dae1658b2a670095",
   "csvSha256": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
   "metrics": {
     "itemCount": 224,
@@ -259,6 +259,157 @@
       "g08-t3:vật sai nhóm đã định nghĩa|age_9_12:24"
     ],
     "provenance": true,
+    "difficulty": {
+      "pairs": 56,
+      "notHarder": 0,
+      "clearlyHarder": 56,
+      "perType": {
+        "g01-t1": {
+          "pairs": 3,
+          "avgYoung": 6.5,
+          "avgOlder": 8,
+          "harderShare": 1
+        },
+        "g01-t2": {
+          "pairs": 2,
+          "avgYoung": 5,
+          "avgOlder": 6,
+          "harderShare": 1
+        },
+        "g01-t3": {
+          "pairs": 2,
+          "avgYoung": 6,
+          "avgOlder": 7,
+          "harderShare": 1
+        },
+        "g02-t1": {
+          "pairs": 3,
+          "avgYoung": 7,
+          "avgOlder": 8.75,
+          "harderShare": 1
+        },
+        "g02-t2": {
+          "pairs": 2,
+          "avgYoung": 7,
+          "avgOlder": 8.75,
+          "harderShare": 1
+        },
+        "g02-t3": {
+          "pairs": 2,
+          "avgYoung": 6.83,
+          "avgOlder": 10.33,
+          "harderShare": 1
+        },
+        "g03-t1": {
+          "pairs": 3,
+          "avgYoung": 4,
+          "avgOlder": 5.5,
+          "harderShare": 1
+        },
+        "g03-t2": {
+          "pairs": 2,
+          "avgYoung": 11.7,
+          "avgOlder": 16.35,
+          "harderShare": 1
+        },
+        "g03-t3": {
+          "pairs": 2,
+          "avgYoung": 7,
+          "avgOlder": 8.5,
+          "harderShare": 1
+        },
+        "g04-t1": {
+          "pairs": 3,
+          "avgYoung": 5.33,
+          "avgOlder": 6.33,
+          "harderShare": 1
+        },
+        "g04-t2": {
+          "pairs": 3,
+          "avgYoung": 5,
+          "avgOlder": 7,
+          "harderShare": 1
+        },
+        "g04-t3": {
+          "pairs": 2,
+          "avgYoung": 6.5,
+          "avgOlder": 7.5,
+          "harderShare": 1
+        },
+        "g05-t1": {
+          "pairs": 3,
+          "avgYoung": 4.5,
+          "avgOlder": 7,
+          "harderShare": 1
+        },
+        "g05-t2": {
+          "pairs": 2,
+          "avgYoung": 6.25,
+          "avgOlder": 10.38,
+          "harderShare": 1
+        },
+        "g05-t3": {
+          "pairs": 2,
+          "avgYoung": 5,
+          "avgOlder": 6.5,
+          "harderShare": 1
+        },
+        "g06-t1": {
+          "pairs": 3,
+          "avgYoung": 7.5,
+          "avgOlder": 15.75,
+          "harderShare": 1
+        },
+        "g06-t2": {
+          "pairs": 2,
+          "avgYoung": 5.5,
+          "avgOlder": 7,
+          "harderShare": 1
+        },
+        "g06-t3": {
+          "pairs": 2,
+          "avgYoung": 7.5,
+          "avgOlder": 8.5,
+          "harderShare": 1
+        },
+        "g07-t1": {
+          "pairs": 3,
+          "avgYoung": 6.5,
+          "avgOlder": 8,
+          "harderShare": 1
+        },
+        "g07-t2": {
+          "pairs": 2,
+          "avgYoung": 5,
+          "avgOlder": 6,
+          "harderShare": 1
+        },
+        "g07-t3": {
+          "pairs": 2,
+          "avgYoung": 6,
+          "avgOlder": 7.5,
+          "harderShare": 1
+        },
+        "g08-t1": {
+          "pairs": 2,
+          "avgYoung": 8.58,
+          "avgOlder": 12.83,
+          "harderShare": 1
+        },
+        "g08-t2": {
+          "pairs": 2,
+          "avgYoung": 7,
+          "avgOlder": 8,
+          "harderShare": 1
+        },
+        "g08-t3": {
+          "pairs": 2,
+          "avgYoung": 4,
+          "avgOlder": 5,
+          "harderShare": 1
+        }
+      }
+    },
     "duplicateFingerprints": null,
     "normalizedCollisions": null,
     "structuralReusePairs": null

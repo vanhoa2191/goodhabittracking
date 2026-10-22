@@ -4,6 +4,7 @@ import {
   getNaturalTutorial,
   VIETNAMESE_COORDINATE,
 } from '../content/copy';
+import { getTrackHints } from '../content/hints';
 import { getGameMechanic } from '../registry';
 import {
   ruleErrorBoardSchema,
@@ -234,10 +235,7 @@ definitions.push({
     const { sequence, ruleKind, period, errorIndex } = ruleErrorSequence(input, rng);
     const board = { kind: 'rule-error' as const, sequence, ruleKind, ...(period ? { period } : {}) };
     const errorToken = sequence[errorIndex] ?? '';
-    const hints: readonly [string, string] = [
-      'Bạn thử đọc to chuỗi theo nhịp điệu để cảm nhận xem chỗ nào bị vấp nhé.',
-      'So sánh xem phần tử nào ở đây không cùng quy luật tăng hoặc bước lặp với các phần còn lại.',
-    ];
+    const hints = getTrackHints('g01-t2', input.ageTrack, input.seed, ruleKind);
     return {
       board,
       solution: errorIndex,
@@ -296,14 +294,11 @@ definitions.push({
     const distractors = numeric === null
       ? [transformValue('reverse', expected) as string, `${expected}0`, `${expected}1`]
       : [String(numeric + 1), String(Math.max(0, numeric - 1)), String(numeric + 2), String(numeric + 3)];
-    const optionCount = 3 + (rank >= 2 ? 1 : 0);
+    const optionCount = 3 + (rank >= 2 ? 1 : 0) + (rank === 3 ? 1 : 0);
     const options = shuffleDeterministic(rng, [...new Set([expected, ...distractors])]).slice(0, optionCount);
     if (!options.includes(expected)) options[0] = expected;
     const transformDesc = transform === 'add' ? 'cộng thêm 1' : transform === 'subtract' ? 'trừ đi 1' : transform === 'double' ? 'gấp đôi giá trị' : 'đảo ngược thứ tự các chữ số';
-    const hints: readonly [string, string] = [
-      'Bạn thử so sánh số đầu vào và số đầu ra ở các ví dụ mẫu nhé.',
-      'Quan sát xem chữ số được tăng thêm, giảm đi hay đổi chỗ cho nhau.',
-    ];
+    const hints = getTrackHints('g01-t3', input.ageTrack, input.seed);
     return {
       board: { kind: 'rule-transform', examples, query, options, transform },
       solution: expected,
@@ -351,15 +346,12 @@ definitions.push({
       { id: 'shape-d', cells: missing },
       { id: 'shape-e', cells: extra },
     ].filter((option, index, list) => list.findIndex((entry) => samePointSet(entry.cells, option.cells)) === index);
-    const optionCount = Math.min(allOptions.length, 3 + (rank >= 1 ? 1 : 0) + (rank === 3 ? 1 : 0));
+    const optionCount = Math.min(allOptions.length, 3 + Math.min(rank, 2));
     const options = shuffledOptions(input, 'g02-t1', allOptions.slice(0, Math.max(2, optionCount)));
     const solution = 'shape-a';
     const targetIdx = options.findIndex((opt) => opt.id === solution);
     const targetLabel = String.fromCharCode(65 + Math.max(0, targetIdx));
-    const hints: readonly [string, string] = [
-      'Bạn hãy đếm số lượng ô và nhìn kỹ các góc nhọn của hình mẫu nhé.',
-      'Loại dần những hình có số lượng ô hoặc cấu trúc không trùng khớp với hình mẫu.',
-    ];
+    const hints = getTrackHints('g02-t1', input.ageTrack, input.seed);
     return {
       board: { kind: 'spatial-silhouette', target, options },
       solution,
@@ -407,15 +399,12 @@ definitions.push({
       { id: 'turn-d', cells: rotateCells(shape, 'quarter-mirror') },
       { id: 'turn-e', cells: reflectCells(shape, 'horizontal') },
     ].filter((option, index, list) => list.findIndex((entry) => samePointSet(entry.cells, option.cells)) === index);
-    const optionCount = Math.min(allOptions.length, 3 + (rank >= 1 ? 1 : 0) + (rank === 3 ? 1 : 0));
+    const optionCount = Math.min(allOptions.length, 3 + Math.min(rank, 2));
     const options = shuffledOptions(input, 'g02-t2', allOptions.slice(0, Math.max(2, optionCount)));
     const solution = 'turn-a';
     const targetIdx = options.findIndex((opt) => opt.id === solution);
     const targetLabel = String.fromCharCode(65 + Math.max(0, targetIdx));
-    const hints: readonly [string, string] = [
-      'Bạn hãy chọn một góc nổi bật của hình mẫu làm điểm mốc để theo dõi khi xoay nhé.',
-      'Chú ý chiều xoay và góc quay để không bị nhầm với trường hợp lật đối xứng.',
-    ];
+    const hints = getTrackHints('g02-t2', input.ageTrack, input.seed, turn === 'quarter' || turn === 'half' ? 'rotate' : 'flip');
     return {
       board: { kind: 'spatial-rotation', shape, turn, options },
       solution,
@@ -474,7 +463,7 @@ definitions.push({
   generate: (input) => {
     const rng = randomFor(input, 'g02-t3');
     const rank = ageRank(input.ageTrack);
-    const width = 3 + (rank >= 1 ? 1 : 0) + (rank === 3 ? 1 : 0);
+    const width = 3 + Math.min(rank, 2);
     const height = width;
     const symbols = ['lá', 'hoa', 'quả', 'sao', 'mây'];
     const mode = variantIndex('g02-t3', input.variant) % 2 === 0 ? 'fill' : 'find-break';
@@ -506,7 +495,7 @@ definitions.push({
       grid[chosen.y]![chosen.x] = symbols.find((symbol) => symbol !== (grid[chosen.y]![chosen.x] as string)) as string;
       solution = pointKey(chosen) < pointKey(mirror) ? chosen : mirror;
     }
-    const distractorCount = 2 + (rank >= 2 ? 1 : 0);
+    const distractorCount = 2 + (rank >= 2 ? 1 : 0) + (rank === 3 ? 1 : 0);
     // Filter out BOTH points of the symmetry-breaking pair to ensure unique answer
     // (checker accepts either point in the pair, so both must be excluded from distractors)
     const breakPairKeys = new Set([pointKey(chosen), pointKey(mirror)]);
@@ -515,10 +504,7 @@ definitions.push({
       solution,
       ...shuffleDeterministic(rng, otherCandidates).slice(0, distractorCount),
     ]);
-    const hints: readonly [string, string] = [
-      'Bạn hãy đối chiếu từng ô qua đường trục ở giữa nhé.',
-      'Quan sát xem ô nào ở vị trí đối xứng còn đang bị thiếu hoặc chưa cân đối.',
-    ];
+    const hints = getTrackHints('g02-t3', input.ageTrack, input.seed, mode);
     return {
       board: { kind: 'spatial-symmetry', grid, axis, mode, options },
       solution,
@@ -557,7 +543,7 @@ definitions.push({
   generate: (input) => {
     const rng = randomFor(input, 'g03-t2');
     const rank = ageRank(input.ageTrack);
-    const width = 3 + (rank >= 1 ? 1 : 0) + (rank === 3 ? 1 : 0);
+    const width = 3 + Math.min(rank, 2);
     const height = width;
     const count = 2 + rank;
     const targets: PathStep[] = [];
@@ -578,10 +564,7 @@ definitions.push({
     const distractors = shuffleDeterministic(rng, allPoints).slice(0, Math.max(0, optionCount - targets.length));
     const options = shuffleDeterministic(rng, [...targets, ...distractors]);
     const posVi = solution.map(VIETNAMESE_COORDINATE).join(' và ');
-    const hints: readonly [string, string] = [
-      'Bạn hãy dùng các góc và đường viền của bảng làm điểm mốc để nhớ vị trí nhé.',
-      'Ghi nhớ các ô sáng đèn theo thứ tự từ trên xuống dưới để không bỏ sót.',
-    ];
+    const hints = getTrackHints('g03-t2', input.ageTrack, input.seed, mode);
     const board = { kind: 'memory-position' as const, width, height, targets, revealed, mode, displayMs: input.ageTrack === 'age_6_8' ? 1400 : 1200, options };
     return {
       board,
@@ -677,10 +660,7 @@ definitions.push({
     else if (change === 'added') changeExplanation = `Ở cảnh sau, ${solution} vừa mới được thêm vào.`;
     else if (change === 'swapped') changeExplanation = `Hai bạn ${solution.split('|').join(' và ')} đã đổi chỗ cho nhau.`;
     else if (change === 'property') changeExplanation = `Ở cảnh sau, đối tượng đã đổi màu thành ${solution}.`;
-    const hints: readonly [string, string] = [
-      'Bạn hãy đối chiếu từng vị trí giữa cảnh trước và cảnh sau theo thứ tự nhé.',
-      'Quan sát xem có bạn nào đổi màu sắc, đổi vị trí hay vừa xuất hiện thêm không.',
-    ];
+    const hints = getTrackHints('g03-t3', input.ageTrack, input.seed, change);
     return {
       board: { kind: 'memory-change', before, after, change, options },
       solution,
@@ -751,10 +731,7 @@ definitions.push({
     const candIndex = candidates.findIndex((c) => c.id === solution);
     const targetCandidate = candidates[candIndex];
     const targetTraitsVi = targetCandidate ? Object.entries(targetCandidate.traits).map(([k, v]) => `${k} ${v}`).join(', ') : '';
-    const hints: readonly [string, string] = [
-      'Bạn hãy đọc từng manh mối và tìm dấu hiệu chắc chắn nhất trước nhé.',
-      'Gạch bớt những bạn có đặc điểm không khớp với manh mối đã cho.',
-    ];
+    const hints = getTrackHints('g04-t1', input.ageTrack, input.seed);
     return {
       board: { kind: 'reasoning-elimination', candidates, clues, options },
       solution,
@@ -835,10 +812,7 @@ definitions.push({
     const distractors = shuffleDeterministic(rng, distractorPool).slice(0, 2 + rank);
     // Options: exactly ONE derivable fact (the solution) + distractors
     const options = shuffleDeterministic(rng, [solution, ...distractors]).slice(0, 3 + rank);
-    const hints: readonly [string, string] = [
-      'Bạn hãy bắt đầu từ điều chúng mình đã biết chắc chắn nhé.',
-      'Tìm luật Nếu - Thì có điều kiện mở đầu trùng với điều đã biết để suy ra kết quả tiếp theo.',
-    ];
+    const hints = getTrackHints('g04-t2', input.ageTrack, input.seed);
     return {
       board: { kind: 'reasoning-if-then', rules, facts, options },
       solution,
@@ -917,10 +891,7 @@ definitions.push({
     const solution = 'fact-a';
     const solOpt = options.find((opt) => opt.id === solution);
     const factDesc = solOpt ? `${solOpt.trait} là ${solOpt.value}` : 'manh mối còn thiếu';
-    const hints: readonly [string, string] = [
-      'Bạn hãy so sánh các bạn nhỏ xem đặc điểm nào giúp phân biệt được bạn cần tìm nhé.',
-      'Tìm manh mối chỉ đúng với bạn mục tiêu mà những bạn khác không có.',
-    ];
+    const hints = getTrackHints('g04-t3', input.ageTrack, input.seed);
     return {
       board: {
         kind: 'reasoning-missing-info',
@@ -986,7 +957,7 @@ definitions.push({
     const rng = randomFor(input, 'g05-t1');
     const rank = ageRank(input.ageTrack);
     const mode = (['missing', 'replace', 'compare', 'unknown'] as const)[variantIndex('g05-t1', input.variant) % 4] as 'missing' | 'replace' | 'compare' | 'unknown';
-    const leftCount = 1 + (rank >= 1 ? 1 : 0) + (rank === 3 ? 1 : 0);
+    const leftCount = 1 + Math.min(rank, 2);
     const rightCount = 1 + (rank >= 2 ? 1 : 0);
     const maxW = 3 + rank * 3;
     const expected = 1 + Math.floor(rng() * maxW);
@@ -1013,26 +984,13 @@ definitions.push({
     });
     const base = { kind: 'quantity-balance' as const, left, right, mode, unknownSide, replaceId, options: [] };
     const answer = balanceAnswer(base) ?? expected;
-    const optionCount = 3 + (rank >= 2 ? 1 : 0);
+    const optionCount = 3 + (rank >= 2 ? 1 : 0) + (rank === 3 ? 1 : 0);
     // Consecutive numbers in ascending order; the correct one sits at a seeded slot.
     const answerSlot = Math.min(answer, Math.floor(randomFor(input, 'g05-t1-option-order')() * optionCount));
     const options = Array.from({ length: optionCount }, (_, i) => answer - answerSlot + i);
     const board = { ...base, options };
     const replaceTarget = quantityBalanceReplaceTarget(board);
-    const hints: readonly [string, string] = mode === 'replace'
-      ? [
-        'Bạn hãy cộng tổng số cân ở cả hai đĩa nhé.',
-        'Quả cân được đánh dấu sẽ bị thay bằng quả mới; tìm số cân của quả mới đó.',
-      ]
-      : mode === 'compare'
-        ? [
-          'Bạn hãy cộng tổng số cân ở cả hai đĩa rồi so sánh xem đĩa nào nặng hơn nhé.',
-          'Hiệu số giữa hai đĩa chính là số cân cần thêm vào đĩa nhẹ hơn.',
-        ]
-        : [
-          'Bạn hãy tính tổng số cân ở đĩa cân đã biết đủ các quả nhé.',
-          'Lấy tổng số cân đó trừ đi phần đã có ở bên đĩa còn lại để tìm số cân còn thiếu.',
-        ];
+    const hints = getTrackHints('g05-t1', input.ageTrack, input.seed, mode === 'replace' || mode === 'compare' ? mode : 'missing');
     const explanation = mode === 'replace' && replaceTarget
       ? `Thay quả cân thứ ${replaceTarget.index + 1} ở đĩa ${replaceTarget.side === 'left' ? 'Trái' : 'Phải'} bằng quả cân nặng ${answer} thì hai đĩa cân sẽ cân bằng.`
       : mode === 'compare'
@@ -1098,10 +1056,7 @@ definitions.push({
     else if (mode === 'remainder') groupExp = `Sau khi chia thành các nhóm ${groupSize}, phần còn dư ra là ${expected}.`;
     else if (mode === 'floor') groupExp = `Số nhóm trọn vẹn gom được là ${expected} nhóm.`;
     else if (mode === 'needed') groupExp = `Để gom đủ thêm một nhóm ${groupSize} nữa, ta cần thêm ${expected} phần.`;
-    const hints: readonly [string, string] = [
-      'Bạn hãy thử gom các phần lại theo từng nhóm đều nhau xem được bao nhiêu nhóm nhé.',
-      'Lấy tổng số phần chia đều cho kích cỡ mỗi nhóm để tìm số nhóm hoặc phần còn dư.',
-    ];
+    const hints = getTrackHints('g05-t2', input.ageTrack, input.seed, mode === 'remainder' || mode === 'needed' ? mode : 'groups');
     return {
       board: { ...base, options },
       solution: expected,
@@ -1181,25 +1136,7 @@ definitions.push({
     const solution = (subsets[0] ?? [items[0]!.id]) as string[];
     const solValues = solution.map((id) => items.find((item) => item.id === id)?.value).filter((v): v is number => typeof v === 'number');
     const solSum = solValues.reduce((sum, value) => sum + value, 0);
-    const hints: readonly [string, string] = mode === 'fewest'
-      ? [
-        'Bạn hãy tìm cách dùng thật ít món mà vẫn đủ mục tiêu nhé.',
-        `Cộng các số lại rồi xem món nào là thừa, bỏ đi thì có còn đúng mục tiêu ${target} không nhé.`,
-      ]
-      : mode === 'exact-two'
-        ? [
-          'Bạn chỉ chọn đúng hai món thôi nhé.',
-          `Tìm hai số cộng lại đúng bằng mục tiêu ${target}.`,
-        ]
-        : mode === 'not-over'
-          ? [
-            `Bạn hãy thử chọn số lớn nhất có thể trước mà không làm vượt quá mục tiêu ${target} nhé.`,
-            `Tìm thêm các số nhỏ hơn để cộng dồn vào cho vừa khít với mục tiêu ${target}.`,
-          ]
-          : [
-            `Chọn các món sao cho tổng đúng bằng mục tiêu ${target} nhé.`,
-            `Bạn chỉ được chọn tối đa ${maxItems} món thôi nha.`,
-          ];
+    const hints = getTrackHints('g05-t3', input.ageTrack, input.seed, mode, { target, max: maxItems });
     const explanation = mode === 'fewest'
       ? `Chọn ${solution.length} món (${solValues.join(' và ')}) để đạt tổng đúng bằng ${target} với số món ít nhất.`
       : mode === 'exact-two'
@@ -1277,10 +1214,7 @@ definitions.push({
     const board = { kind: 'planning-command-order' as const, commands, before };
     const solution = solveCommandOrder(board) as string[];
     const commandTexts = solution.map((id) => commands.find((cmd) => cmd.id === id)?.text).filter(Boolean);
-    const hints: readonly [string, string] = [
-      'Bạn hãy tìm việc nào cần làm đầu tiên trong các hành động thường ngày nhé.',
-      'Kiểm tra các cặp bước: bước nào là điều kiện để làm được bước tiếp theo.',
-    ];
+    const hints = getTrackHints('g06-t2', input.ageTrack, input.seed);
     return {
       board,
       solution,
@@ -1358,10 +1292,7 @@ definitions.push({
     const solOption = options.find((entry) => entry.id === solution);
     const dirVi = solOption ? DIRECTION_SHORT_VI[solOption.command] ?? solOption.command : '';
     const stepIndex = solOption ? solOption.index + 1 : 1;
-    const hints: readonly [string, string] = [
-      'Bạn hãy di chuyển thử theo từng bước lệnh xem robot đi chệch đường ở bước nào nhé.',
-      'Tìm bước khiến robot đi xa khỏi đích hoặc đâm vào tường để đổi hướng cho bước đó.',
-    ];
+    const hints = getTrackHints('g06-t3', input.ageTrack, input.seed);
     return {
       board,
       solution,
@@ -1410,7 +1341,7 @@ definitions.push({
           hình: trait === 'hình' ? (isMatch ? targetValue : shapes[1 + (index % (shapes.length - 1))]!) : shapes[index % shapes.length]!,
           màu: trait === 'màu' ? (isMatch ? targetValue : colors[1 + (index % (colors.length - 1))]!) : colors[index % colors.length]!,
           ...(rank >= 1 || trait === 'kích cỡ' ? { 'kích cỡ': trait === 'kích cỡ' ? (isMatch ? targetValue : sizes[1]!) : sizes[index % 2]! } : {}),
-          ...(rank === 3 || trait === 'vị trí' ? { 'vị trí': trait === 'vị trí' ? (isMatch ? targetValue : positions[1]!) : positions[index % 2]! } : {}),
+          ...(rank >= 2 || trait === 'vị trí' ? { 'vị trí': trait === 'vị trí' ? (isMatch ? targetValue : positions[1]!) : positions[index % 2]! } : {}),
           ...(rank === 3 ? { 'trọng lượng': (index % 2 === 0 ? 'nặng' : 'nhẹ')! } : {}),
         },
       };
@@ -1425,10 +1356,7 @@ definitions.push({
       .map((item, idx) => ({ item, index: idx + 1 }))
       .filter(({ item }) => item.traits[trait] === targetValue)
       .map(({ index }) => `hình ${index}`);
-    const hints: readonly [string, string] = [
-      'Bạn hãy nhìn kỹ quy tắc mới để biết mình cần chọn theo đặc điểm nào nhé.',
-      `Quan sát từng hình và chỉ chọn những hình có đúng ${trait} là "${targetValue}".`,
-    ];
+    const hints = getTrackHints('g07-t1', input.ageTrack, input.seed, 'default', { trait });
     return {
       board,
       solution,
@@ -1490,10 +1418,7 @@ definitions.push({
       west: 'hướng sang trái',
     };
     const facingDesc = facingNames[board.viewer.facing] ?? board.viewer.facing;
-    const hints: readonly [string, string] = [
-      'Bạn hãy tưởng tượng mình đang đứng ở vị trí bạn nhỏ và nhìn theo hướng mũi tên nhé.',
-      'Xác định xem đồ vật nằm ở phía trước mặt, sau lưng hay bên tay trái, tay phải của bạn nhỏ.',
-    ];
+    const hints = getTrackHints('g07-t2', input.ageTrack, input.seed);
     return {
       board,
       solution,
@@ -1571,10 +1496,7 @@ definitions.push({
     }
     const wallCount = 1 + rank;
     const walls = shuffleDeterministic(rng, interiorCells).slice(0, Math.min(wallCount, interiorCells.length));
-    const hints: readonly [string, string] = [
-      'Bạn hãy tìm một lối đi khác từ điểm xuất phát mà không đi trùng vào đường màu xám nhé.',
-      'Thử rẽ sang hướng khác ngay từ điểm xuất phát và đi men theo các ô trống không có vật cản.',
-    ];
+    const hints = getTrackHints('g07-t3', input.ageTrack, input.seed);
     return {
       board: { kind: 'flexibility-alternative' as const, width, height, start, goal, walls, knownPath },
       solution,
@@ -1631,10 +1553,7 @@ definitions.push({
     const distractors = shuffleDeterministic(rng, distractorCandidates).slice(0, Math.max(0, optionCount - changed.length));
     const options = uniquePoints(shuffleDeterministic(rng, [...changed, ...distractors]));
     const diffCoords = changed.map((pt) => VIETNAMESE_COORDINATE(pt)).join(' và ');
-    const hints: readonly [string, string] = [
-      'Bạn hãy so sánh từng hàng từ trên xuống dưới giữa hai bức hình nhé.',
-      'Quan sát kỹ từng biểu tượng ở hàng và cột tương ứng để tìm ra ô bị thay đổi.',
-    ];
+    const hints = getTrackHints('g08-t1', input.ageTrack, input.seed);
     return {
       board: { kind: 'observation-difference', left, right, options },
       solution: changed,
@@ -1706,10 +1625,7 @@ definitions.push({
       .filter(({ item }) => criteria.every((criterion) => item.traits[criterion.trait] === criterion.value))
       .map(({ index }) => `hình ${index}`);
     const critDesc = criteria.map((c) => `${c.trait} là ${c.value}`).join(' và ');
-    const hints: readonly [string, string] = [
-      'Bạn hãy kiểm tra đặc điểm thứ nhất trước để loại bớt các hình không phù hợp nhé.',
-      'Trong các hình còn lại, tìm hình có thêm đặc điểm thứ hai để chọn.',
-    ];
+    const hints = getTrackHints('g08-t2', input.ageTrack, input.seed);
     return {
       board,
       solution,
@@ -1806,10 +1722,7 @@ definitions.push({
     const badIdx = scene.findIndex((entry) => entry.id === solution);
     const badNum = badIdx >= 0 ? badIdx + 1 : 1;
     const badTraitVal = scene[badIdx]?.traits[ruleTrait] ?? '';
-    const hints: readonly [string, string] = [
-      'Bạn hãy đối chiếu từng tình huống với quy tắc chuẩn ở phần hướng dẫn nhé.',
-      'Tìm tình huống có hành động hoặc đồ vật không khớp với quy tắc chuẩn.',
-    ];
+    const hints = getTrackHints('g08-t3', input.ageTrack, input.seed);
     return {
       board,
       solution,

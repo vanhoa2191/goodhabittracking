@@ -320,6 +320,126 @@ export function positionBiasErrors(items) {
   return errors;
 }
 
+export const DIFFICULTY_MAX_NOT_HARDER_SHARE = 0.05;
+// 9-12 must not only be harder but clearly harder: average score at least 10% above 6-8 per game type.
+export const DIFFICULTY_MIN_TYPE_RATIO = 1.1;
+const YOUNG_TRACK = 'age_6_8';
+const OLDER_TRACK = 'age_9_12';
+
+function pairedByDaySlot(items) {
+  const pairs = new Map();
+  for (const item of items) {
+    if (item.ageTrack !== YOUNG_TRACK && item.ageTrack !== OLDER_TRACK) continue;
+    const key = `${item.dayIndex}|${item.slotType}`;
+    const entry = pairs.get(key) ?? {};
+    entry[item.ageTrack] = item;
+    pairs.set(key, entry);
+  }
+  return [...pairs.entries()].filter(([, entry]) => entry[YOUNG_TRACK] && entry[OLDER_TRACK]);
+}
+
+// The 6-8 and 9-12 versions of the same (day, slot) must not share a hint text.
+export function crossTrackHintErrors(items) {
+  const errors = [];
+  for (const [key, entry] of pairedByDaySlot(items)) {
+    const young = entry[YOUNG_TRACK];
+    const older = entry[OLDER_TRACK];
+    const shared = [0, 1].filter((index) => young.hints?.[index] !== undefined && young.hints[index] === older.hints?.[index]);
+    if (shared.length > 0) {
+      errors.push({
+        code: 'hints_identical_across_tracks',
+        id: older.id,
+        other: young.id,
+        message: `${key}: hint ${shared.map((index) => index + 1).join(' and ')} is the same text for ${YOUNG_TRACK} and ${OLDER_TRACK}`,
+      });
+    }
+  }
+  return errors;
+}
+
+// A title may not repeat on the next day (nor twice on one day) within an age track.
+export function titleRepeatErrors(items) {
+  const errors = [];
+  const byTrack = new Map();
+  for (const item of items) {
+    const days = byTrack.get(item.ageTrack) ?? new Map();
+    const titles = days.get(item.dayIndex) ?? [];
+    titles.push({ title: item.title, id: item.id });
+    days.set(item.dayIndex, titles);
+    byTrack.set(item.ageTrack, days);
+  }
+  for (const [ageTrack, days] of byTrack) {
+    for (const [day, titles] of days) {
+      if (new Set(titles.map((entry) => entry.title)).size < titles.length) {
+        errors.push({ code: 'title_repeated_same_day', id: titles[0].id, message: `${ageTrack} day ${day}: same title twice` });
+      }
+      const next = days.get(day + 1);
+      if (!next) continue;
+      const nextTitles = new Set(next.map((entry) => entry.title));
+      for (const entry of titles) {
+        if (nextTitles.has(entry.title)) {
+          errors.push({ code: 'title_repeated_consecutive_days', id: entry.id, message: `${ageTrack}: "${entry.title}" on days ${day} and ${day + 1}` });
+        }
+      }
+    }
+  }
+  return errors;
+}
+
+export function difficultyReport(items, engine) {
+  const pairs = pairedByDaySlot(items);
+  const byType = new Map();
+  let notHarder = 0;
+  let clear = 0;
+  for (const [, entry] of pairs) {
+    const young = engine.difficultyScore(entry[YOUNG_TRACK].boardData);
+    const older = engine.difficultyScore(entry[OLDER_TRACK].boardData);
+    if (older <= young) notHarder += 1;
+    if (older >= young * DIFFICULTY_MIN_TYPE_RATIO) clear += 1;
+    const stats = byType.get(entry[OLDER_TRACK].gameTypeId) ?? { pairs: 0, young: 0, older: 0, harder: 0 };
+    stats.pairs += 1;
+    stats.young += young;
+    stats.older += older;
+    if (older > young) stats.harder += 1;
+    byType.set(entry[OLDER_TRACK].gameTypeId, stats);
+  }
+  const perType = {};
+  for (const [gameTypeId, stats] of [...byType.entries()].sort()) {
+    perType[gameTypeId] = {
+      pairs: stats.pairs,
+      avgYoung: Number((stats.young / stats.pairs).toFixed(2)),
+      avgOlder: Number((stats.older / stats.pairs).toFixed(2)),
+      harderShare: Number((stats.harder / stats.pairs).toFixed(3)),
+    };
+  }
+  return { pairs: pairs.length, notHarder, clearlyHarder: clear, perType };
+}
+
+// 9-12 must score strictly above 6-8 for every game type and for all but 5% of the pairs.
+export function difficultyGapErrors(items, engine) {
+  const report = difficultyReport(items, engine);
+  const errors = [];
+  if (report.pairs > 0 && report.notHarder / report.pairs > DIFFICULTY_MAX_NOT_HARDER_SHARE) {
+    errors.push({
+      code: 'difficulty_gap',
+      id: 'difficulty',
+      message: `${report.notHarder}/${report.pairs} (day, slot) pairs have a 9-12 difficulty score <= 6-8 (> ${DIFFICULTY_MAX_NOT_HARDER_SHARE * 100}%)`,
+    });
+  }
+  for (const [gameTypeId, stats] of Object.entries(report.perType)) {
+    if (stats.avgOlder <= stats.avgYoung) {
+      errors.push({ code: 'difficulty_gap_type', id: gameTypeId, message: `${gameTypeId}: average 9-12 score ${stats.avgOlder} <= 6-8 score ${stats.avgYoung}` });
+    } else if (stats.avgOlder < stats.avgYoung * DIFFICULTY_MIN_TYPE_RATIO) {
+      errors.push({ code: 'difficulty_gap_type', id: gameTypeId, message: `${gameTypeId}: 9-12 score ${stats.avgOlder} is less than ${DIFFICULTY_MIN_TYPE_RATIO}x the 6-8 score ${stats.avgYoung}` });
+    }
+  }
+  return errors;
+}
+
+export function crossTrackErrors(items, engine) {
+  return [...crossTrackHintErrors(items), ...titleRepeatErrors(items), ...difficultyGapErrors(items, engine)];
+}
+
 export function copyAuditErrors(item) {
   const errors = [];
   const childTexts = [
@@ -600,6 +720,8 @@ async function checkBatch(batch, { write = true } = {}) {
     audit.metrics.uniqueFingerprints = fingerprints.size;
     audit.metrics.uniqueNormalized = normalized.size;
     for (const error of positionBiasErrors(items)) pushIssue(audit.errors, error);
+    for (const error of crossTrackErrors(items, engine)) pushIssue(audit.errors, error);
+    audit.metrics.difficulty = difficultyReport(items, engine);
     for (const ids of fingerprints.values()) {
       if (ids.length > 1) {
         audit.metrics.duplicateFingerprints += ids.length - 1;
@@ -850,6 +972,8 @@ async function checkAll({ write = true } = {}) {
     audit.metrics.uniqueFingerprints = fingerprints.size;
     audit.metrics.uniqueNormalized = normalized.size;
     for (const error of positionBiasErrors(allItems)) pushIssue(audit.errors, error);
+    for (const error of crossTrackErrors(allItems, engine)) pushIssue(audit.errors, error);
+    audit.metrics.difficulty = difficultyReport(allItems, engine);
     for (const ids of fingerprints.values()) {
       if (ids.length > 1) {
         audit.metrics.duplicateFingerprints += ids.length - 1;

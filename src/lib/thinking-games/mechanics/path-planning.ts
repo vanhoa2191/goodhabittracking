@@ -1,4 +1,5 @@
 import { ageRank } from '../age';
+import { getTrackHints, type HintContext } from '../content/hints';
 import { pathBoardSchema } from '../schema';
 import { createSeededRandom, shuffleDeterministic, stableSeedKey } from '../seeded';
 import type { GameAgeTrack, PathBoard, PathStep } from '../types';
@@ -240,7 +241,13 @@ export function generatePathPuzzle(input: {
   return buildBoard(random, width, width, 0, waypoints, extra);
 }
 
-export function describePathBoard(board: PathBoard): {
+function pathHintMode(board: PathBoard): string {
+  if (board.shortestPathOnly === true) return 'shortest';
+  if (board.waypointOrder === 'ordered') return 'ordered';
+  return board.waypoints.length > 0 ? 'waypoint' : 'reach';
+}
+
+function describePathBoardLegacy(board: PathBoard): {
   hints: readonly [string, string];
   explanation: string;
 } {
@@ -280,4 +287,13 @@ export function describePathBoard(board: PathBoard): {
     ],
     explanation: 'Một đường đi hợp lệ giúp bạn di chuyển an toàn từ ô xuất phát về đích mà không chạm tường.',
   };
+}
+
+export function describePathBoard(
+  board: PathBoard,
+  context?: HintContext,
+): ReturnType<typeof describePathBoardLegacy> {
+  const described = describePathBoardLegacy(board);
+  if (!context) return described;
+  return { ...described, hints: getTrackHints('g06-t1', context.ageTrack, context.seed, pathHintMode(board)) };
 }

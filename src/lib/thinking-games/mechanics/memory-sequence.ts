@@ -1,4 +1,5 @@
 import { ageRank } from '../age';
+import { getTrackHints, type HintContext } from '../content/hints';
 import { memorySequenceBoardSchema } from '../schema';
 import { createSeededRandom, shuffleDeterministic, stableSeedKey } from '../seeded';
 import type { GameAgeTrack, MemorySequenceBoard } from '../types';
@@ -84,7 +85,11 @@ export function generateMemorySequencePuzzle(input: {
   };
 }
 
-export function describeMemorySequenceBoard(board: MemorySequenceBoard): {
+function memorySequenceHintMode(board: MemorySequenceBoard): string {
+  return board.mode ?? 'recall';
+}
+
+function describeMemorySequenceBoardLegacy(board: MemorySequenceBoard): {
   hints: readonly [string, string];
   explanation: string;
 } {
@@ -125,4 +130,13 @@ export function describeMemorySequenceBoard(board: MemorySequenceBoard): {
     ],
     explanation: `Thứ tự đúng là ${answer.join(' → ')}.`,
   };
+}
+
+export function describeMemorySequenceBoard(
+  board: MemorySequenceBoard,
+  context?: HintContext,
+): ReturnType<typeof describeMemorySequenceBoardLegacy> {
+  const described = describeMemorySequenceBoardLegacy(board);
+  if (!context) return described;
+  return { ...described, hints: getTrackHints('g03-t1', context.ageTrack, context.seed, memorySequenceHintMode(board)) };
 }

@@ -1,4 +1,5 @@
 import { ageRank } from '../age';
+import { getTrackHints, type HintContext } from '../content/hints';
 import { ruleSequenceBoardSchema } from '../schema';
 import { createSeededRandom, pickOne, shuffleDeterministic, stableSeedKey } from '../seeded';
 import type { GameAgeTrack, RuleSequenceBoard } from '../types';
@@ -181,7 +182,13 @@ export function generateRuleSequencePuzzle(input: {
   return repeatBoard(random, length, 3, rank);
 }
 
-export function describeRuleSequenceBoard(board: RuleSequenceBoard): {
+function ruleSequenceHintMode(board: RuleSequenceBoard): string {
+  if (board.ruleKind === 'increment') return 'increment';
+  if (board.ruleKind === 'alternating') return interleavedSteps(board.sequence) !== null ? 'interleaved' : 'alternating';
+  return 'repeat';
+}
+
+function describeRuleSequenceBoardLegacy(board: RuleSequenceBoard): {
   hints: readonly [string, string];
   explanation: string;
 } {
@@ -225,4 +232,13 @@ export function describeRuleSequenceBoard(board: RuleSequenceBoard): {
     ],
     explanation: `Chuỗi lặp lại theo nhóm ${board.period ?? 0} phần tử nên phần tiếp theo là ${answer ?? '?'}.`,
   };
+}
+
+export function describeRuleSequenceBoard(
+  board: RuleSequenceBoard,
+  context?: HintContext,
+): ReturnType<typeof describeRuleSequenceBoardLegacy> {
+  const described = describeRuleSequenceBoardLegacy(board);
+  if (!context) return described;
+  return { ...described, hints: getTrackHints('g01-t1', context.ageTrack, context.seed, ruleSequenceHintMode(board)) };
 }
