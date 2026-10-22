@@ -1010,8 +1010,8 @@ begin
   if not found then raise exception 'child_not_found'; end if;
   next_status := case when activity.requires_approval then 'pending_approval' else 'completed' end;
   awarded := case when activity.requires_approval then 0 else activity.points end;
-  insert into public.activity_logs(id,family_id,activity_id,child_id,log_date,status,points_awarded)
-    values(command_id,fid,target_activity_id,target_child_id,target_log_date,next_status,awarded)
+  insert into public.activity_logs(id,family_id,user_id,activity_id,child_id,log_date,status,points_awarded)
+    values(command_id,fid,auth.uid(),target_activity_id,target_child_id,target_log_date,next_status,awarded)
     on conflict (activity_id,child_id,log_date) do nothing;
   inserted := found;
   if not inserted then return jsonb_build_object('status','duplicate'); end if;
@@ -1029,7 +1029,8 @@ declare s public.device_sessions%rowtype; activity public.habit_activities%rowty
   awarded integer; next_status text;
 begin
   select * into s from public.device_sessions where token_hash=session_token_hash and revoked_at is null
-    and expires_at>now() and 'child:complete'=any(capabilities);
+    and expires_at>now() and 'child:complete'=any(capabilities)
+  for update;
   if not found then return jsonb_build_object('status','session_invalid'); end if;
   perform pg_advisory_xact_lock(public.thinking_game_lock_key(s.child_id));
   if target_log_date is null or target_log_date not between current_date - 2 and current_date + 1 then raise exception 'log_date_out_of_range'; end if;
@@ -1047,8 +1048,8 @@ begin
   if not found then raise exception 'child_not_found'; end if;
   next_status:=case when activity.requires_approval then 'pending_approval' else 'completed' end;
   awarded:=case when activity.requires_approval then 0 else activity.points end;
-  insert into public.activity_logs(id,family_id,activity_id,child_id,log_date,status,points_awarded)
-    values(command_id,s.family_id,activity.id,s.child_id,target_log_date,next_status,awarded)
+  insert into public.activity_logs(id,family_id,user_id,activity_id,child_id,log_date,status,points_awarded)
+    values(command_id,s.family_id,null,activity.id,s.child_id,target_log_date,next_status,awarded)
     on conflict (activity_id,child_id,log_date) do nothing;
   if not found then return jsonb_build_object('status','duplicate'); end if;
   if awarded>0 then update public.child_profiles set points=points+awarded,total_earned=total_earned+awarded,
@@ -1085,7 +1086,8 @@ create or replace function public.undo_child_habit_command(session_token_hash te
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare s public.device_sessions%rowtype; l public.activity_logs%rowtype; c public.child_profiles%rowtype;
 begin
-  select * into s from public.device_sessions where token_hash=session_token_hash and revoked_at is null and expires_at>now() and 'child:complete'=any(capabilities);
+  select * into s from public.device_sessions where token_hash=session_token_hash and revoked_at is null and expires_at>now() and 'child:complete'=any(capabilities)
+  for update;
   if not found then return jsonb_build_object('status','session_invalid'); end if;
   select child_id into c.id from public.activity_logs where id=target_log_id and family_id=s.family_id and child_id=s.child_id;
   if c.id is null then return jsonb_build_object('status','not_found'); end if;
@@ -1118,16 +1120,19 @@ begin
   if not found then raise exception 'log_not_found'; end if;
   if l.status <> 'pending_approval' then return jsonb_build_object('status','already_reviewed'); end if;
   perform 1 from public.child_profiles where id=l.child_id and family_id=fid for update;
-  if decision='reject' then update public.activity_logs set status='rejected',points_awarded=0 where id=l.id;
-  else select points into award from public.habit_activities where id=l.activity_id and family_id=fid;
+  if decision='reject' then
+    update public.activity_logs set status='rejected',points_awarded=0 where id=l.id;
+    perform public.sync_thinking_game_bonus_for_child(l.child_id,l.log_date);
+    return jsonb_build_object('status','rejected');
+  else
+    select points into award from public.habit_activities where id=l.activity_id and family_id=fid;
     update public.activity_logs set status='approved',points_awarded=award where id=l.id;
     update public.child_profiles set points=points+award,total_earned=total_earned+award,
       level=greatest(1,floor((total_earned+award)/100.0)::integer+1) where id=l.child_id and family_id=fid;
+    perform public.recompute_child_streak(l.child_id);
+    perform public.sync_thinking_game_bonus_for_child(l.child_id,l.log_date);
+    return jsonb_build_object('status','approved','pointsAwarded',award);
   end if;
-  perform public.recompute_child_streak(l.child_id);
-  perform public.sync_thinking_game_bonus_for_child(l.child_id,l.log_date);
-  return case when decision='reject' then jsonb_build_object('status','rejected')
-    else jsonb_build_object('status','approved','pointsAwarded',award) end;
 end $$;
 
 create or replace function public.review_habits_command(target_log_ids uuid[], decision text)
@@ -1159,7 +1164,9 @@ begin
       results:=results||jsonb_build_array(jsonb_build_object('logId',current_id,'status','approved','pointsAwarded',(select points from public.habit_activities where habit_activities.id=l.activity_id)));
     end if;
   end loop;
-  foreach current_id in array children loop perform public.recompute_child_streak(current_id); end loop;
+  if decision='approve' then
+    foreach current_id in array children loop perform public.recompute_child_streak(current_id); end loop;
+  end if;
   for current_id, day in select distinct log_row.child_id, log_row.log_date from public.activity_logs log_row
     where log_row.id=any(ids) and log_row.family_id=fid
   loop

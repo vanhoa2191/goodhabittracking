@@ -87,4 +87,47 @@ begin
       )
     group by pronamespace having count(*) = 6
   ) then raise exception 'thinking_games_habit_functions_missing'; end if;
+
+  -- Parity checks for the 6 habit RPCs (production behavior must be preserved)
+  -- complete_habit_command: must INSERT into activity_logs with user_id column
+  if not exists (
+    select 1 from pg_proc
+    where pronamespace='public'::regnamespace
+      and proname='complete_habit_command'
+      and prosrc ILIKE '%activity_logs%'
+      and prosrc ILIKE '%user_id%'
+  ) then raise exception 'complete_habit_command_user_id_missing'; end if;
+
+  -- complete_child_habit_command and undo_child_habit_command: must SELECT device_sessions FOR UPDATE
+  if not exists (
+    select 1 from pg_proc
+    where pronamespace='public'::regnamespace
+      and proname in ('complete_child_habit_command','undo_child_habit_command')
+      and prosrc ILIKE '%device_sessions%'
+      and prosrc ILIKE '%for update%'
+  ) then raise exception 'child_habit_commands_device_sessions_for_update_missing'; end if;
+
+  -- review_habit_command: must call recompute_child_streak (only on approve path)
+  if not exists (
+    select 1 from pg_proc
+    where pronamespace='public'::regnamespace
+      and proname='review_habit_command'
+      and prosrc ILIKE '%recompute_child_streak%'
+  ) then raise exception 'review_habit_command_recompute_streak_ref_missing'; end if;
+
+  -- review_habits_command: must call recompute_child_streak (only on approve path)
+  if not exists (
+    select 1 from pg_proc
+    where pronamespace='public'::regnamespace
+      and proname='review_habits_command'
+      and prosrc ILIKE '%recompute_child_streak%'
+  ) then raise exception 'review_habits_command_recompute_streak_ref_missing'; end if;
+
+  -- review_habit_command and review_habits_command: must call sync_thinking_game_bonus_for_child
+  if not exists (
+    select 1 from pg_proc
+    where pronamespace='public'::regnamespace
+      and proname in ('review_habit_command','review_habits_command')
+      and prosrc ILIKE '%sync_thinking_game_bonus_for_child%'
+  ) then raise exception 'review_habit_commands_sync_bonus_ref_missing'; end if;
 end $$;
