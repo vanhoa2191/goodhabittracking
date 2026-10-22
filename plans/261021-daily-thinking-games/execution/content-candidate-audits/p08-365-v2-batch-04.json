@@ -1,0 +1,2404 @@
+{
+  "auditVersion": "p08-candidate-audit-v2",
+  "scope": "batch",
+  "generatedAt": "2026-10-22T00:00:00.000Z",
+  "contentVersion": "p08-candidates-365-v2",
+  "batch": 4,
+  "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
+  "engineVersion": "engine-f73040613fef8f99",
+  "engineHash": "f73040613fef8f9919af424fe592b13919cc7cd562624eb6613b54a535de6d05",
+  "inputSha256": "5ae2d80f56581c00d52308fcb4f316ecefbca36df69f41a405f4e9372206dcb8",
+  "csvSha256": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
+  "metrics": {
+    "itemCount": 728,
+    "schemaPass": 728,
+    "knownPass": 728,
+    "solvePass": 728,
+    "wrongPass": 728,
+    "malformedPass": 728,
+    "alternateApplicable": 36,
+    "alternatePass": 36,
+    "uniqueFingerprints": 712,
+    "uniqueNormalized": 672,
+    "tracks": {
+      "age_3_5": 182,
+      "age_6_8": 182,
+      "age_9_12": 182,
+      "age_13_plus": 182
+    },
+    "initialTracks": 364,
+    "experimentalTracks": 364,
+    "types": 24,
+    "variants": 96,
+    "skills": 8,
+    "minTypeSpacing": 11,
+    "structuralReuseWarnings": [
+      "g01-t1:lặp một thuộc tính|age_13_plus:193",
+      "g01-t1:lặp một thuộc tính|age_13_plus:206",
+      "g01-t1:lặp một thuộc tính|age_3_5:193",
+      "g01-t1:lặp một thuộc tính|age_3_5:206",
+      "g01-t1:lặp một thuộc tính|age_6_8:193",
+      "g01-t1:lặp một thuộc tính|age_6_8:206",
+      "g01-t1:lặp một thuộc tính|age_9_12:193",
+      "g01-t1:lặp một thuộc tính|age_9_12:206",
+      "g01-t1:suy ngược phần đầu|age_13_plus:265",
+      "g01-t1:suy ngược phần đầu|age_3_5:265",
+      "g01-t1:suy ngược phần đầu|age_6_8:265",
+      "g01-t1:suy ngược phần đầu|age_9_12:265",
+      "g01-t1:tăng số phần tử|age_13_plus:217",
+      "g01-t1:tăng số phần tử|age_13_plus:230",
+      "g01-t1:tăng số phần tử|age_3_5:217",
+      "g01-t1:tăng số phần tử|age_3_5:230",
+      "g01-t1:tăng số phần tử|age_6_8:217",
+      "g01-t1:tăng số phần tử|age_6_8:230",
+      "g01-t1:tăng số phần tử|age_9_12:217",
+      "g01-t1:tăng số phần tử|age_9_12:230",
+      "g01-t1:xen kẽ hai chuỗi|age_13_plus:241",
+      "g01-t1:xen kẽ hai chuỗi|age_13_plus:254",
+      "g01-t1:xen kẽ hai chuỗi|age_3_5:241",
+      "g01-t1:xen kẽ hai chuỗi|age_3_5:254",
+      "g01-t1:xen kẽ hai chuỗi|age_6_8:241",
+      "g01-t1:xen kẽ hai chuỗi|age_6_8:254",
+      "g01-t1:xen kẽ hai chuỗi|age_9_12:241",
+      "g01-t1:xen kẽ hai chuỗi|age_9_12:254",
+      "g01-t2:một bước sai độ lớn|age_13_plus:222",
+      "g01-t2:một bước sai độ lớn|age_13_plus:233",
+      "g01-t2:một bước sai độ lớn|age_3_5:222",
+      "g01-t2:một bước sai độ lớn|age_3_5:233",
+      "g01-t2:một bước sai độ lớn|age_6_8:222",
+      "g01-t2:một bước sai độ lớn|age_6_8:233",
+      "g01-t2:một bước sai độ lớn|age_9_12:222",
+      "g01-t2:một bước sai độ lớn|age_9_12:233",
+      "g01-t2:một hình sai vị trí|age_13_plus:198",
+      "g01-t2:một hình sai vị trí|age_13_plus:209",
+      "g01-t2:một hình sai vị trí|age_3_5:198",
+      "g01-t2:một hình sai vị trí|age_3_5:209",
+      "g01-t2:một hình sai vị trí|age_6_8:198",
+      "g01-t2:một hình sai vị trí|age_6_8:209",
+      "g01-t2:một hình sai vị trí|age_9_12:198",
+      "g01-t2:một hình sai vị trí|age_9_12:209",
+      "g01-t2:một nhánh phá nhịp|age_13_plus:246",
+      "g01-t2:một nhánh phá nhịp|age_13_plus:257",
+      "g01-t2:một nhánh phá nhịp|age_3_5:246",
+      "g01-t2:một nhánh phá nhịp|age_3_5:257",
+      "g01-t2:một nhánh phá nhịp|age_6_8:246",
+      "g01-t2:một nhánh phá nhịp|age_6_8:257",
+      "g01-t2:một nhánh phá nhịp|age_9_12:246",
+      "g01-t2:một nhánh phá nhịp|age_9_12:257",
+      "g01-t2:phát hiện lỗi giữa hai chuỗi|age_13_plus:185",
+      "g01-t2:phát hiện lỗi giữa hai chuỗi|age_13_plus:270",
+      "g01-t2:phát hiện lỗi giữa hai chuỗi|age_3_5:185",
+      "g01-t2:phát hiện lỗi giữa hai chuỗi|age_3_5:270",
+      "g01-t2:phát hiện lỗi giữa hai chuỗi|age_6_8:185",
+      "g01-t2:phát hiện lỗi giữa hai chuỗi|age_6_8:270",
+      "g01-t2:phát hiện lỗi giữa hai chuỗi|age_9_12:185",
+      "g01-t2:phát hiện lỗi giữa hai chuỗi|age_9_12:270",
+      "g01-t3:hai đầu vào một kết quả|age_13_plus:249",
+      "g01-t3:hai đầu vào một kết quả|age_13_plus:262",
+      "g01-t3:hai đầu vào một kết quả|age_3_5:249",
+      "g01-t3:hai đầu vào một kết quả|age_3_5:262",
+      "g01-t3:hai đầu vào một kết quả|age_6_8:249",
+      "g01-t3:hai đầu vào một kết quả|age_6_8:262",
+      "g01-t3:hai đầu vào một kết quả|age_9_12:249",
+      "g01-t3:hai đầu vào một kết quả|age_9_12:262",
+      "g01-t3:suy ra đầu vào từ đầu ra|age_13_plus:190",
+      "g01-t3:suy ra đầu vào từ đầu ra|age_13_plus:273",
+      "g01-t3:suy ra đầu vào từ đầu ra|age_3_5:190",
+      "g01-t3:suy ra đầu vào từ đầu ra|age_3_5:273",
+      "g01-t3:suy ra đầu vào từ đầu ra|age_6_8:190",
+      "g01-t3:suy ra đầu vào từ đầu ra|age_6_8:273",
+      "g01-t3:suy ra đầu vào từ đầu ra|age_9_12:190",
+      "g01-t3:suy ra đầu vào từ đầu ra|age_9_12:273",
+      "g01-t3:thêm hoặc bớt phần tử|age_13_plus:225",
+      "g01-t3:thêm hoặc bớt phần tử|age_13_plus:238",
+      "g01-t3:thêm hoặc bớt phần tử|age_3_5:225",
+      "g01-t3:thêm hoặc bớt phần tử|age_3_5:238",
+      "g01-t3:thêm hoặc bớt phần tử|age_6_8:225",
+      "g01-t3:thêm hoặc bớt phần tử|age_6_8:238",
+      "g01-t3:thêm hoặc bớt phần tử|age_9_12:225",
+      "g01-t3:thêm hoặc bớt phần tử|age_9_12:238",
+      "g01-t3:đổi một thuộc tính|age_13_plus:201",
+      "g01-t3:đổi một thuộc tính|age_13_plus:214",
+      "g01-t3:đổi một thuộc tính|age_3_5:201",
+      "g01-t3:đổi một thuộc tính|age_3_5:214",
+      "g01-t3:đổi một thuộc tính|age_6_8:201",
+      "g01-t3:đổi một thuộc tính|age_6_8:214",
+      "g01-t3:đổi một thuộc tính|age_9_12:201",
+      "g01-t3:đổi một thuộc tính|age_9_12:214",
+      "g02-t1:ghép từ hai mảnh|age_13_plus:183",
+      "g02-t1:ghép từ hai mảnh|age_13_plus:266",
+      "g02-t1:ghép từ hai mảnh|age_3_5:183",
+      "g02-t1:ghép từ hai mảnh|age_3_5:266",
+      "g02-t1:ghép từ hai mảnh|age_6_8:183",
+      "g02-t1:ghép từ hai mảnh|age_6_8:266",
+      "g02-t1:ghép từ hai mảnh|age_9_12:183",
+      "g02-t1:ghép từ hai mảnh|age_9_12:266",
+      "g02-t1:khớp khi bỏ chi tiết|age_13_plus:218",
+      "g02-t1:khớp khi bỏ chi tiết|age_13_plus:231",
+      "g02-t1:khớp khi bỏ chi tiết|age_3_5:218",
+      "g02-t1:khớp khi bỏ chi tiết|age_3_5:231",
+      "g02-t1:khớp khi bỏ chi tiết|age_6_8:218",
+      "g02-t1:khớp khi bỏ chi tiết|age_6_8:231",
+      "g02-t1:khớp khi bỏ chi tiết|age_9_12:218",
+      "g02-t1:khớp khi bỏ chi tiết|age_9_12:231",
+      "g02-t1:khớp đường viền|age_13_plus:194",
+      "g02-t1:khớp đường viền|age_13_plus:207",
+      "g02-t1:khớp đường viền|age_3_5:194",
+      "g02-t1:khớp đường viền|age_3_5:207",
+      "g02-t1:khớp đường viền|age_6_8:194",
+      "g02-t1:khớp đường viền|age_6_8:207",
+      "g02-t1:khớp đường viền|age_9_12:194",
+      "g02-t1:khớp đường viền|age_9_12:207",
+      "g02-t1:phân biệt bóng gần giống|age_13_plus:242",
+      "g02-t1:phân biệt bóng gần giống|age_13_plus:255",
+      "g02-t1:phân biệt bóng gần giống|age_3_5:242",
+      "g02-t1:phân biệt bóng gần giống|age_3_5:255",
+      "g02-t1:phân biệt bóng gần giống|age_6_8:242",
+      "g02-t1:phân biệt bóng gần giống|age_6_8:255",
+      "g02-t1:phân biệt bóng gần giống|age_9_12:242",
+      "g02-t1:phân biệt bóng gần giống|age_9_12:255",
+      "g02-t2:phân biệt xoay và lật|age_13_plus:247",
+      "g02-t2:phân biệt xoay và lật|age_13_plus:258",
+      "g02-t2:phân biệt xoay và lật|age_3_5:247",
+      "g02-t2:phân biệt xoay và lật|age_3_5:258",
+      "g02-t2:phân biệt xoay và lật|age_6_8:247",
+      "g02-t2:phân biệt xoay và lật|age_6_8:258",
+      "g02-t2:phân biệt xoay và lật|age_9_12:247",
+      "g02-t2:phân biệt xoay và lật|age_9_12:258",
+      "g02-t2:suy ra hướng trước khi xoay|age_13_plus:186",
+      "g02-t2:suy ra hướng trước khi xoay|age_13_plus:271",
+      "g02-t2:suy ra hướng trước khi xoay|age_3_5:186",
+      "g02-t2:suy ra hướng trước khi xoay|age_3_5:271",
+      "g02-t2:suy ra hướng trước khi xoay|age_6_8:186",
+      "g02-t2:suy ra hướng trước khi xoay|age_6_8:271",
+      "g02-t2:suy ra hướng trước khi xoay|age_9_12:186",
+      "g02-t2:suy ra hướng trước khi xoay|age_9_12:271",
+      "g02-t2:xoay một phần tư vòng|age_13_plus:199",
+      "g02-t2:xoay một phần tư vòng|age_13_plus:210",
+      "g02-t2:xoay một phần tư vòng|age_3_5:199",
+      "g02-t2:xoay một phần tư vòng|age_3_5:210",
+      "g02-t2:xoay một phần tư vòng|age_6_8:199",
+      "g02-t2:xoay một phần tư vòng|age_6_8:210",
+      "g02-t2:xoay một phần tư vòng|age_9_12:199",
+      "g02-t2:xoay một phần tư vòng|age_9_12:210",
+      "g02-t2:xoay nửa vòng|age_13_plus:223",
+      "g02-t2:xoay nửa vòng|age_13_plus:234",
+      "g02-t2:xoay nửa vòng|age_3_5:223",
+      "g02-t2:xoay nửa vòng|age_3_5:234",
+      "g02-t2:xoay nửa vòng|age_6_8:223",
+      "g02-t2:xoay nửa vòng|age_6_8:234",
+      "g02-t2:xoay nửa vòng|age_9_12:223",
+      "g02-t2:xoay nửa vòng|age_9_12:234",
+      "g02-t3:bổ sung ô thiếu|age_13_plus:250",
+      "g02-t3:bổ sung ô thiếu|age_13_plus:263",
+      "g02-t3:bổ sung ô thiếu|age_3_5:250",
+      "g02-t3:bổ sung ô thiếu|age_3_5:263",
+      "g02-t3:bổ sung ô thiếu|age_6_8:250",
+      "g02-t3:bổ sung ô thiếu|age_6_8:263",
+      "g02-t3:bổ sung ô thiếu|age_9_12:250",
+      "g02-t3:bổ sung ô thiếu|age_9_12:263",
+      "g02-t3:gương dọc|age_13_plus:202",
+      "g02-t3:gương dọc|age_13_plus:215",
+      "g02-t3:gương dọc|age_3_5:202",
+      "g02-t3:gương dọc|age_3_5:215",
+      "g02-t3:gương dọc|age_6_8:202",
+      "g02-t3:gương dọc|age_6_8:215",
+      "g02-t3:gương dọc|age_9_12:202",
+      "g02-t3:gương dọc|age_9_12:215",
+      "g02-t3:gương ngang|age_13_plus:226",
+      "g02-t3:gương ngang|age_13_plus:239",
+      "g02-t3:gương ngang|age_3_5:226",
+      "g02-t3:gương ngang|age_3_5:239",
+      "g02-t3:gương ngang|age_6_8:226",
+      "g02-t3:gương ngang|age_6_8:239",
+      "g02-t3:gương ngang|age_9_12:226",
+      "g02-t3:gương ngang|age_9_12:239",
+      "g02-t3:tìm ô làm mất đối xứng|age_13_plus:191",
+      "g02-t3:tìm ô làm mất đối xứng|age_3_5:191",
+      "g02-t3:tìm ô làm mất đối xứng|age_6_8:191",
+      "g02-t3:tìm ô làm mất đối xứng|age_9_12:191",
+      "g03-t1:chọn phần tử còn thiếu|age_13_plus:219",
+      "g03-t1:chọn phần tử còn thiếu|age_13_plus:232",
+      "g03-t1:chọn phần tử còn thiếu|age_3_5:219",
+      "g03-t1:chọn phần tử còn thiếu|age_3_5:232",
+      "g03-t1:chọn phần tử còn thiếu|age_6_8:219",
+      "g03-t1:chọn phần tử còn thiếu|age_6_8:232",
+      "g03-t1:chọn phần tử còn thiếu|age_9_12:219",
+      "g03-t1:chọn phần tử còn thiếu|age_9_12:232",
+      "g03-t1:nhắc lại cùng chiều|age_13_plus:195",
+      "g03-t1:nhắc lại cùng chiều|age_13_plus:208",
+      "g03-t1:nhắc lại cùng chiều|age_3_5:195",
+      "g03-t1:nhắc lại cùng chiều|age_3_5:208",
+      "g03-t1:nhắc lại cùng chiều|age_6_8:195",
+      "g03-t1:nhắc lại cùng chiều|age_6_8:208",
+      "g03-t1:nhắc lại cùng chiều|age_9_12:195",
+      "g03-t1:nhắc lại cùng chiều|age_9_12:208",
+      "g03-t1:nhắc lại theo nhóm|age_13_plus:243",
+      "g03-t1:nhắc lại theo nhóm|age_13_plus:256",
+      "g03-t1:nhắc lại theo nhóm|age_3_5:243",
+      "g03-t1:nhắc lại theo nhóm|age_3_5:256",
+      "g03-t1:nhắc lại theo nhóm|age_6_8:243",
+      "g03-t1:nhắc lại theo nhóm|age_6_8:256",
+      "g03-t1:nhắc lại theo nhóm|age_9_12:243",
+      "g03-t1:nhắc lại theo nhóm|age_9_12:256",
+      "g03-t1:tìm cặp bị đổi thứ tự|age_13_plus:184",
+      "g03-t1:tìm cặp bị đổi thứ tự|age_13_plus:267",
+      "g03-t1:tìm cặp bị đổi thứ tự|age_3_5:184",
+      "g03-t1:tìm cặp bị đổi thứ tự|age_3_5:267",
+      "g03-t1:tìm cặp bị đổi thứ tự|age_6_8:184",
+      "g03-t1:tìm cặp bị đổi thứ tự|age_6_8:267",
+      "g03-t1:tìm cặp bị đổi thứ tự|age_9_12:184",
+      "g03-t1:tìm cặp bị đổi thứ tự|age_9_12:267",
+      "g03-t2:chọn vị trí vừa thấy|age_13_plus:200",
+      "g03-t2:chọn vị trí vừa thấy|age_13_plus:211",
+      "g03-t2:chọn vị trí vừa thấy|age_3_5:200",
+      "g03-t2:chọn vị trí vừa thấy|age_3_5:211",
+      "g03-t2:chọn vị trí vừa thấy|age_6_8:200",
+      "g03-t2:chọn vị trí vừa thấy|age_6_8:211",
+      "g03-t2:chọn vị trí vừa thấy|age_9_12:200",
+      "g03-t2:chọn vị trí vừa thấy|age_9_12:211",
+      "g03-t2:nhớ vị trí theo một dấu mốc|age_13_plus:187",
+      "g03-t2:nhớ vị trí theo một dấu mốc|age_13_plus:272",
+      "g03-t2:nhớ vị trí theo một dấu mốc|age_3_5:187",
+      "g03-t2:nhớ vị trí theo một dấu mốc|age_3_5:272",
+      "g03-t2:nhớ vị trí theo một dấu mốc|age_6_8:187",
+      "g03-t2:nhớ vị trí theo một dấu mốc|age_6_8:272",
+      "g03-t2:nhớ vị trí theo một dấu mốc|age_9_12:187",
+      "g03-t2:nhớ vị trí theo một dấu mốc|age_9_12:272",
+      "g03-t2:tìm vị trí còn thiếu|age_13_plus:248",
+      "g03-t2:tìm vị trí còn thiếu|age_13_plus:259",
+      "g03-t2:tìm vị trí còn thiếu|age_3_5:248",
+      "g03-t2:tìm vị trí còn thiếu|age_3_5:259",
+      "g03-t2:tìm vị trí còn thiếu|age_6_8:248",
+      "g03-t2:tìm vị trí còn thiếu|age_6_8:259",
+      "g03-t2:tìm vị trí còn thiếu|age_9_12:248",
+      "g03-t2:tìm vị trí còn thiếu|age_9_12:259",
+      "g03-t2:đặt lại hai đồ vật|age_13_plus:224",
+      "g03-t2:đặt lại hai đồ vật|age_13_plus:235",
+      "g03-t2:đặt lại hai đồ vật|age_3_5:224",
+      "g03-t2:đặt lại hai đồ vật|age_3_5:235",
+      "g03-t2:đặt lại hai đồ vật|age_6_8:224",
+      "g03-t2:đặt lại hai đồ vật|age_6_8:235",
+      "g03-t2:đặt lại hai đồ vật|age_9_12:224",
+      "g03-t2:đặt lại hai đồ vật|age_9_12:235",
+      "g03-t3:hai vật đổi chỗ|age_13_plus:251",
+      "g03-t3:hai vật đổi chỗ|age_13_plus:264",
+      "g03-t3:hai vật đổi chỗ|age_3_5:251",
+      "g03-t3:hai vật đổi chỗ|age_3_5:264",
+      "g03-t3:hai vật đổi chỗ|age_6_8:251",
+      "g03-t3:hai vật đổi chỗ|age_6_8:264",
+      "g03-t3:hai vật đổi chỗ|age_9_12:251",
+      "g03-t3:hai vật đổi chỗ|age_9_12:264",
+      "g03-t3:một thuộc tính thay đổi|age_13_plus:192",
+      "g03-t3:một thuộc tính thay đổi|age_3_5:192",
+      "g03-t3:một thuộc tính thay đổi|age_6_8:192",
+      "g03-t3:một thuộc tính thay đổi|age_9_12:192",
+      "g03-t3:một vật biến mất|age_13_plus:203",
+      "g03-t3:một vật biến mất|age_13_plus:216",
+      "g03-t3:một vật biến mất|age_3_5:203",
+      "g03-t3:một vật biến mất|age_3_5:216",
+      "g03-t3:một vật biến mất|age_6_8:203",
+      "g03-t3:một vật biến mất|age_6_8:216",
+      "g03-t3:một vật biến mất|age_9_12:203",
+      "g03-t3:một vật biến mất|age_9_12:216",
+      "g03-t3:một vật được thêm|age_13_plus:227",
+      "g03-t3:một vật được thêm|age_13_plus:240",
+      "g03-t3:một vật được thêm|age_3_5:227",
+      "g03-t3:một vật được thêm|age_3_5:240",
+      "g03-t3:một vật được thêm|age_6_8:227",
+      "g03-t3:một vật được thêm|age_6_8:240",
+      "g03-t3:một vật được thêm|age_9_12:227",
+      "g03-t3:một vật được thêm|age_9_12:240",
+      "g04-t1:ghép manh mối theo thứ tự|age_13_plus:265",
+      "g04-t1:ghép manh mối theo thứ tự|age_3_5:265",
+      "g04-t1:ghép manh mối theo thứ tự|age_6_8:265",
+      "g04-t1:ghép manh mối theo thứ tự|age_9_12:265",
+      "g04-t1:hai điều kiện đồng thời|age_13_plus:217",
+      "g04-t1:hai điều kiện đồng thời|age_13_plus:228",
+      "g04-t1:hai điều kiện đồng thời|age_3_5:217",
+      "g04-t1:hai điều kiện đồng thời|age_3_5:228",
+      "g04-t1:hai điều kiện đồng thời|age_6_8:217",
+      "g04-t1:hai điều kiện đồng thời|age_6_8:228",
+      "g04-t1:hai điều kiện đồng thời|age_9_12:217",
+      "g04-t1:hai điều kiện đồng thời|age_9_12:228",
+      "g04-t1:manh mối phủ định|age_13_plus:241",
+      "g04-t1:manh mối phủ định|age_13_plus:252",
+      "g04-t1:manh mối phủ định|age_3_5:241",
+      "g04-t1:manh mối phủ định|age_3_5:252",
+      "g04-t1:manh mối phủ định|age_6_8:241",
+      "g04-t1:manh mối phủ định|age_6_8:252",
+      "g04-t1:manh mối phủ định|age_9_12:241",
+      "g04-t1:manh mối phủ định|age_9_12:252",
+      "g04-t1:một manh mối trực tiếp|age_13_plus:193",
+      "g04-t1:một manh mối trực tiếp|age_13_plus:204",
+      "g04-t1:một manh mối trực tiếp|age_3_5:193",
+      "g04-t1:một manh mối trực tiếp|age_3_5:204",
+      "g04-t1:một manh mối trực tiếp|age_6_8:193",
+      "g04-t1:một manh mối trực tiếp|age_6_8:204",
+      "g04-t1:một manh mối trực tiếp|age_9_12:193",
+      "g04-t1:một manh mối trực tiếp|age_9_12:204",
+      "g04-t2:chọn ngoại lệ được nêu|age_13_plus:220",
+      "g04-t2:chọn ngoại lệ được nêu|age_13_plus:233",
+      "g04-t2:chọn ngoại lệ được nêu|age_3_5:220",
+      "g04-t2:chọn ngoại lệ được nêu|age_3_5:233",
+      "g04-t2:chọn ngoại lệ được nêu|age_6_8:220",
+      "g04-t2:chọn ngoại lệ được nêu|age_6_8:233",
+      "g04-t2:chọn ngoại lệ được nêu|age_9_12:220",
+      "g04-t2:chọn ngoại lệ được nêu|age_9_12:233",
+      "g04-t2:phối hợp hai điều kiện|age_13_plus:244",
+      "g04-t2:phối hợp hai điều kiện|age_13_plus:257",
+      "g04-t2:phối hợp hai điều kiện|age_3_5:244",
+      "g04-t2:phối hợp hai điều kiện|age_3_5:257",
+      "g04-t2:phối hợp hai điều kiện|age_6_8:244",
+      "g04-t2:phối hợp hai điều kiện|age_6_8:257",
+      "g04-t2:phối hợp hai điều kiện|age_9_12:244",
+      "g04-t2:phối hợp hai điều kiện|age_9_12:257",
+      "g04-t2:suy ra kết quả qua hai bước|age_13_plus:185",
+      "g04-t2:suy ra kết quả qua hai bước|age_13_plus:268",
+      "g04-t2:suy ra kết quả qua hai bước|age_3_5:185",
+      "g04-t2:suy ra kết quả qua hai bước|age_3_5:268",
+      "g04-t2:suy ra kết quả qua hai bước|age_6_8:185",
+      "g04-t2:suy ra kết quả qua hai bước|age_6_8:268",
+      "g04-t2:suy ra kết quả qua hai bước|age_9_12:185",
+      "g04-t2:suy ra kết quả qua hai bước|age_9_12:268",
+      "g04-t2:áp dụng một quy tắc|age_13_plus:196",
+      "g04-t2:áp dụng một quy tắc|age_13_plus:209",
+      "g04-t2:áp dụng một quy tắc|age_3_5:196",
+      "g04-t2:áp dụng một quy tắc|age_3_5:209",
+      "g04-t2:áp dụng một quy tắc|age_6_8:196",
+      "g04-t2:áp dụng một quy tắc|age_6_8:209",
+      "g04-t2:áp dụng một quy tắc|age_9_12:196",
+      "g04-t2:áp dụng một quy tắc|age_9_12:209",
+      "g04-t3:chọn câu hỏi phân biệt|age_13_plus:201",
+      "g04-t3:chọn câu hỏi phân biệt|age_13_plus:212",
+      "g04-t3:chọn câu hỏi phân biệt|age_3_5:201",
+      "g04-t3:chọn câu hỏi phân biệt|age_3_5:212",
+      "g04-t3:chọn câu hỏi phân biệt|age_6_8:201",
+      "g04-t3:chọn câu hỏi phân biệt|age_6_8:212",
+      "g04-t3:chọn câu hỏi phân biệt|age_9_12:201",
+      "g04-t3:chọn câu hỏi phân biệt|age_9_12:212",
+      "g04-t3:chọn dữ kiện đủ dùng|age_13_plus:225",
+      "g04-t3:chọn dữ kiện đủ dùng|age_13_plus:236",
+      "g04-t3:chọn dữ kiện đủ dùng|age_3_5:225",
+      "g04-t3:chọn dữ kiện đủ dùng|age_3_5:236",
+      "g04-t3:chọn dữ kiện đủ dùng|age_6_8:225",
+      "g04-t3:chọn dữ kiện đủ dùng|age_6_8:236",
+      "g04-t3:chọn dữ kiện đủ dùng|age_9_12:225",
+      "g04-t3:chọn dữ kiện đủ dùng|age_9_12:236",
+      "g04-t3:loại dữ kiện không liên quan|age_13_plus:249",
+      "g04-t3:loại dữ kiện không liên quan|age_13_plus:260",
+      "g04-t3:loại dữ kiện không liên quan|age_3_5:249",
+      "g04-t3:loại dữ kiện không liên quan|age_3_5:260",
+      "g04-t3:loại dữ kiện không liên quan|age_6_8:249",
+      "g04-t3:loại dữ kiện không liên quan|age_6_8:260",
+      "g04-t3:loại dữ kiện không liên quan|age_9_12:249",
+      "g04-t3:loại dữ kiện không liên quan|age_9_12:260",
+      "g04-t3:nhận ra chưa đủ bằng chứng|age_13_plus:188",
+      "g04-t3:nhận ra chưa đủ bằng chứng|age_13_plus:273",
+      "g04-t3:nhận ra chưa đủ bằng chứng|age_3_5:188",
+      "g04-t3:nhận ra chưa đủ bằng chứng|age_3_5:273",
+      "g04-t3:nhận ra chưa đủ bằng chứng|age_6_8:188",
+      "g04-t3:nhận ra chưa đủ bằng chứng|age_6_8:273",
+      "g04-t3:nhận ra chưa đủ bằng chứng|age_9_12:188",
+      "g04-t3:nhận ra chưa đủ bằng chứng|age_9_12:273",
+      "g05-t1:bổ sung số lượng thiếu|age_13_plus:194",
+      "g05-t1:bổ sung số lượng thiếu|age_13_plus:205",
+      "g05-t1:bổ sung số lượng thiếu|age_3_5:194",
+      "g05-t1:bổ sung số lượng thiếu|age_3_5:205",
+      "g05-t1:bổ sung số lượng thiếu|age_6_8:194",
+      "g05-t1:bổ sung số lượng thiếu|age_6_8:205",
+      "g05-t1:bổ sung số lượng thiếu|age_9_12:194",
+      "g05-t1:bổ sung số lượng thiếu|age_9_12:205",
+      "g05-t1:so sánh tổng hai nhóm|age_13_plus:242",
+      "g05-t1:so sánh tổng hai nhóm|age_13_plus:253",
+      "g05-t1:so sánh tổng hai nhóm|age_3_5:242",
+      "g05-t1:so sánh tổng hai nhóm|age_3_5:253",
+      "g05-t1:so sánh tổng hai nhóm|age_6_8:242",
+      "g05-t1:so sánh tổng hai nhóm|age_6_8:253",
+      "g05-t1:so sánh tổng hai nhóm|age_9_12:242",
+      "g05-t1:so sánh tổng hai nhóm|age_9_12:253",
+      "g05-t1:suy ra giá trị vật chưa biết|age_13_plus:266",
+      "g05-t1:suy ra giá trị vật chưa biết|age_3_5:266",
+      "g05-t1:suy ra giá trị vật chưa biết|age_6_8:266",
+      "g05-t1:suy ra giá trị vật chưa biết|age_9_12:266",
+      "g05-t1:thay một vật cho cân|age_13_plus:218",
+      "g05-t1:thay một vật cho cân|age_13_plus:229",
+      "g05-t1:thay một vật cho cân|age_3_5:218",
+      "g05-t1:thay một vật cho cân|age_3_5:229",
+      "g05-t1:thay một vật cho cân|age_6_8:218",
+      "g05-t1:thay một vật cho cân|age_6_8:229",
+      "g05-t1:thay một vật cho cân|age_9_12:218",
+      "g05-t1:thay một vật cho cân|age_9_12:229",
+      "g05-t2:chia có phần dư được nêu|age_13_plus:245",
+      "g05-t2:chia có phần dư được nêu|age_13_plus:258",
+      "g05-t2:chia có phần dư được nêu|age_3_5:245",
+      "g05-t2:chia có phần dư được nêu|age_3_5:258",
+      "g05-t2:chia có phần dư được nêu|age_6_8:245",
+      "g05-t2:chia có phần dư được nêu|age_6_8:258",
+      "g05-t2:chia có phần dư được nêu|age_9_12:245",
+      "g05-t2:chia có phần dư được nêu|age_9_12:258",
+      "g05-t2:chia theo hai kích cỡ|age_13_plus:221",
+      "g05-t2:chia theo hai kích cỡ|age_13_plus:234",
+      "g05-t2:chia theo hai kích cỡ|age_3_5:221",
+      "g05-t2:chia theo hai kích cỡ|age_3_5:234",
+      "g05-t2:chia theo hai kích cỡ|age_6_8:221",
+      "g05-t2:chia theo hai kích cỡ|age_6_8:234",
+      "g05-t2:chia theo hai kích cỡ|age_9_12:221",
+      "g05-t2:chia theo hai kích cỡ|age_9_12:234",
+      "g05-t2:chia đều không dư|age_13_plus:197",
+      "g05-t2:chia đều không dư|age_13_plus:210",
+      "g05-t2:chia đều không dư|age_3_5:197",
+      "g05-t2:chia đều không dư|age_3_5:210",
+      "g05-t2:chia đều không dư|age_6_8:197",
+      "g05-t2:chia đều không dư|age_6_8:210",
+      "g05-t2:chia đều không dư|age_9_12:197",
+      "g05-t2:chia đều không dư|age_9_12:210",
+      "g05-t2:chọn cách chia thỏa ràng buộc|age_13_plus:186",
+      "g05-t2:chọn cách chia thỏa ràng buộc|age_13_plus:269",
+      "g05-t2:chọn cách chia thỏa ràng buộc|age_3_5:186",
+      "g05-t2:chọn cách chia thỏa ràng buộc|age_3_5:269",
+      "g05-t2:chọn cách chia thỏa ràng buộc|age_6_8:186",
+      "g05-t2:chọn cách chia thỏa ràng buộc|age_6_8:269",
+      "g05-t2:chọn cách chia thỏa ràng buộc|age_9_12:186",
+      "g05-t2:chọn cách chia thỏa ràng buộc|age_9_12:269",
+      "g05-t3:chọn hai phần vừa đủ|age_13_plus:202",
+      "g05-t3:chọn hai phần vừa đủ|age_13_plus:213",
+      "g05-t3:chọn hai phần vừa đủ|age_3_5:202",
+      "g05-t3:chọn hai phần vừa đủ|age_3_5:213",
+      "g05-t3:chọn hai phần vừa đủ|age_6_8:202",
+      "g05-t3:chọn hai phần vừa đủ|age_6_8:213",
+      "g05-t3:chọn hai phần vừa đủ|age_9_12:202",
+      "g05-t3:chọn hai phần vừa đủ|age_9_12:213",
+      "g05-t3:chọn số phần ít nhất|age_13_plus:226",
+      "g05-t3:chọn số phần ít nhất|age_13_plus:237",
+      "g05-t3:chọn số phần ít nhất|age_3_5:226",
+      "g05-t3:chọn số phần ít nhất|age_3_5:237",
+      "g05-t3:chọn số phần ít nhất|age_6_8:226",
+      "g05-t3:chọn số phần ít nhất|age_6_8:237",
+      "g05-t3:chọn số phần ít nhất|age_9_12:226",
+      "g05-t3:chọn số phần ít nhất|age_9_12:237",
+      "g05-t3:loại phần làm vượt mục tiêu|age_13_plus:250",
+      "g05-t3:loại phần làm vượt mục tiêu|age_13_plus:261",
+      "g05-t3:loại phần làm vượt mục tiêu|age_3_5:250",
+      "g05-t3:loại phần làm vượt mục tiêu|age_3_5:261",
+      "g05-t3:loại phần làm vượt mục tiêu|age_6_8:250",
+      "g05-t3:loại phần làm vượt mục tiêu|age_6_8:261",
+      "g05-t3:loại phần làm vượt mục tiêu|age_9_12:250",
+      "g05-t3:loại phần làm vượt mục tiêu|age_9_12:261",
+      "g05-t3:tìm hai tổ hợp cùng tổng|age_13_plus:189",
+      "g05-t3:tìm hai tổ hợp cùng tổng|age_3_5:189",
+      "g05-t3:tìm hai tổ hợp cùng tổng|age_6_8:189",
+      "g05-t3:tìm hai tổ hợp cùng tổng|age_9_12:189",
+      "g06-t1:chọn đường ít bước trong bàn nhỏ|age_13_plus:267",
+      "g06-t1:chọn đường ít bước trong bàn nhỏ|age_3_5:267",
+      "g06-t1:chọn đường ít bước trong bàn nhỏ|age_6_8:267",
+      "g06-t1:chọn đường ít bước trong bàn nhỏ|age_9_12:267",
+      "g06-t1:lấy chìa trước khi tới cửa|age_13_plus:243",
+      "g06-t1:lấy chìa trước khi tới cửa|age_13_plus:254",
+      "g06-t1:lấy chìa trước khi tới cửa|age_3_5:243",
+      "g06-t1:lấy chìa trước khi tới cửa|age_3_5:254",
+      "g06-t1:lấy chìa trước khi tới cửa|age_6_8:243",
+      "g06-t1:lấy chìa trước khi tới cửa|age_6_8:254",
+      "g06-t1:lấy chìa trước khi tới cửa|age_9_12:243",
+      "g06-t1:lấy chìa trước khi tới cửa|age_9_12:254",
+      "g06-t1:đi qua một điểm bắt buộc|age_13_plus:219",
+      "g06-t1:đi qua một điểm bắt buộc|age_13_plus:230",
+      "g06-t1:đi qua một điểm bắt buộc|age_3_5:219",
+      "g06-t1:đi qua một điểm bắt buộc|age_3_5:230",
+      "g06-t1:đi qua một điểm bắt buộc|age_6_8:219",
+      "g06-t1:đi qua một điểm bắt buộc|age_6_8:230",
+      "g06-t1:đi qua một điểm bắt buộc|age_9_12:219",
+      "g06-t1:đi qua một điểm bắt buộc|age_9_12:230",
+      "g06-t1:đến đích tránh chướng ngại|age_13_plus:195",
+      "g06-t1:đến đích tránh chướng ngại|age_13_plus:206",
+      "g06-t1:đến đích tránh chướng ngại|age_3_5:195",
+      "g06-t1:đến đích tránh chướng ngại|age_3_5:206",
+      "g06-t1:đến đích tránh chướng ngại|age_6_8:195",
+      "g06-t1:đến đích tránh chướng ngại|age_6_8:206",
+      "g06-t1:đến đích tránh chướng ngại|age_9_12:195",
+      "g06-t1:đến đích tránh chướng ngại|age_9_12:206",
+      "g06-t2:chèn một lệnh thiếu|age_13_plus:222",
+      "g06-t2:chèn một lệnh thiếu|age_13_plus:235",
+      "g06-t2:chèn một lệnh thiếu|age_3_5:222",
+      "g06-t2:chèn một lệnh thiếu|age_3_5:235",
+      "g06-t2:chèn một lệnh thiếu|age_6_8:222",
+      "g06-t2:chèn một lệnh thiếu|age_6_8:235",
+      "g06-t2:chèn một lệnh thiếu|age_9_12:222",
+      "g06-t2:chèn một lệnh thiếu|age_9_12:235",
+      "g06-t2:rút ngắn một đoạn lệnh lặp|age_13_plus:187",
+      "g06-t2:rút ngắn một đoạn lệnh lặp|age_13_plus:270",
+      "g06-t2:rút ngắn một đoạn lệnh lặp|age_3_5:187",
+      "g06-t2:rút ngắn một đoạn lệnh lặp|age_3_5:270",
+      "g06-t2:rút ngắn một đoạn lệnh lặp|age_6_8:187",
+      "g06-t2:rút ngắn một đoạn lệnh lặp|age_6_8:270",
+      "g06-t2:rút ngắn một đoạn lệnh lặp|age_9_12:187",
+      "g06-t2:rút ngắn một đoạn lệnh lặp|age_9_12:270",
+      "g06-t2:xếp ba bước đúng thứ tự|age_13_plus:198",
+      "g06-t2:xếp ba bước đúng thứ tự|age_13_plus:211",
+      "g06-t2:xếp ba bước đúng thứ tự|age_3_5:198",
+      "g06-t2:xếp ba bước đúng thứ tự|age_3_5:211",
+      "g06-t2:xếp ba bước đúng thứ tự|age_6_8:198",
+      "g06-t2:xếp ba bước đúng thứ tự|age_6_8:211",
+      "g06-t2:xếp ba bước đúng thứ tự|age_9_12:198",
+      "g06-t2:xếp ba bước đúng thứ tự|age_9_12:211",
+      "g06-t2:đổi thứ tự để tới đích|age_13_plus:246",
+      "g06-t2:đổi thứ tự để tới đích|age_13_plus:259",
+      "g06-t2:đổi thứ tự để tới đích|age_3_5:246",
+      "g06-t2:đổi thứ tự để tới đích|age_3_5:259",
+      "g06-t2:đổi thứ tự để tới đích|age_6_8:246",
+      "g06-t2:đổi thứ tự để tới đích|age_6_8:259",
+      "g06-t2:đổi thứ tự để tới đích|age_9_12:246",
+      "g06-t2:đổi thứ tự để tới đích|age_9_12:259",
+      "g06-t3:chọn chỗ đặt bước còn thiếu|age_13_plus:190",
+      "g06-t3:chọn chỗ đặt bước còn thiếu|age_3_5:190",
+      "g06-t3:chọn chỗ đặt bước còn thiếu|age_6_8:190",
+      "g06-t3:chọn chỗ đặt bước còn thiếu|age_9_12:190",
+      "g06-t3:sửa hướng rẽ đầu tiên|age_13_plus:203",
+      "g06-t3:sửa hướng rẽ đầu tiên|age_13_plus:214",
+      "g06-t3:sửa hướng rẽ đầu tiên|age_3_5:203",
+      "g06-t3:sửa hướng rẽ đầu tiên|age_3_5:214",
+      "g06-t3:sửa hướng rẽ đầu tiên|age_6_8:203",
+      "g06-t3:sửa hướng rẽ đầu tiên|age_6_8:214",
+      "g06-t3:sửa hướng rẽ đầu tiên|age_9_12:203",
+      "g06-t3:sửa hướng rẽ đầu tiên|age_9_12:214",
+      "g06-t3:thay một lệnh sai|age_13_plus:227",
+      "g06-t3:thay một lệnh sai|age_13_plus:238",
+      "g06-t3:thay một lệnh sai|age_3_5:227",
+      "g06-t3:thay một lệnh sai|age_3_5:238",
+      "g06-t3:thay một lệnh sai|age_6_8:227",
+      "g06-t3:thay một lệnh sai|age_6_8:238",
+      "g06-t3:thay một lệnh sai|age_9_12:227",
+      "g06-t3:thay một lệnh sai|age_9_12:238",
+      "g06-t3:tìm bước thừa|age_13_plus:251",
+      "g06-t3:tìm bước thừa|age_13_plus:262",
+      "g06-t3:tìm bước thừa|age_3_5:251",
+      "g06-t3:tìm bước thừa|age_3_5:262",
+      "g06-t3:tìm bước thừa|age_6_8:251",
+      "g06-t3:tìm bước thừa|age_6_8:262",
+      "g06-t3:tìm bước thừa|age_9_12:251",
+      "g06-t3:tìm bước thừa|age_9_12:262",
+      "g07-t1:đổi theo ký hiệu hướng dẫn|age_13_plus:183",
+      "g07-t1:đổi theo ký hiệu hướng dẫn|age_13_plus:268",
+      "g07-t1:đổi theo ký hiệu hướng dẫn|age_3_5:183",
+      "g07-t1:đổi theo ký hiệu hướng dẫn|age_3_5:268",
+      "g07-t1:đổi theo ký hiệu hướng dẫn|age_6_8:183",
+      "g07-t1:đổi theo ký hiệu hướng dẫn|age_6_8:268",
+      "g07-t1:đổi theo ký hiệu hướng dẫn|age_9_12:183",
+      "g07-t1:đổi theo ký hiệu hướng dẫn|age_9_12:268",
+      "g07-t1:đổi từ chất liệu sang công dụng|age_13_plus:244",
+      "g07-t1:đổi từ chất liệu sang công dụng|age_13_plus:255",
+      "g07-t1:đổi từ chất liệu sang công dụng|age_3_5:244",
+      "g07-t1:đổi từ chất liệu sang công dụng|age_3_5:255",
+      "g07-t1:đổi từ chất liệu sang công dụng|age_6_8:244",
+      "g07-t1:đổi từ chất liệu sang công dụng|age_6_8:255",
+      "g07-t1:đổi từ chất liệu sang công dụng|age_9_12:244",
+      "g07-t1:đổi từ chất liệu sang công dụng|age_9_12:255",
+      "g07-t1:đổi từ hình sang màu có nhãn|age_13_plus:196",
+      "g07-t1:đổi từ hình sang màu có nhãn|age_13_plus:207",
+      "g07-t1:đổi từ hình sang màu có nhãn|age_3_5:196",
+      "g07-t1:đổi từ hình sang màu có nhãn|age_3_5:207",
+      "g07-t1:đổi từ hình sang màu có nhãn|age_6_8:196",
+      "g07-t1:đổi từ hình sang màu có nhãn|age_6_8:207",
+      "g07-t1:đổi từ hình sang màu có nhãn|age_9_12:196",
+      "g07-t1:đổi từ hình sang màu có nhãn|age_9_12:207",
+      "g07-t1:đổi từ kích cỡ sang số lượng|age_13_plus:220",
+      "g07-t1:đổi từ kích cỡ sang số lượng|age_13_plus:231",
+      "g07-t1:đổi từ kích cỡ sang số lượng|age_3_5:220",
+      "g07-t1:đổi từ kích cỡ sang số lượng|age_3_5:231",
+      "g07-t1:đổi từ kích cỡ sang số lượng|age_6_8:220",
+      "g07-t1:đổi từ kích cỡ sang số lượng|age_6_8:231",
+      "g07-t1:đổi từ kích cỡ sang số lượng|age_9_12:220",
+      "g07-t1:đổi từ kích cỡ sang số lượng|age_9_12:231",
+      "g07-t2:chọn lời tả từ vị trí mới|age_13_plus:223",
+      "g07-t2:chọn lời tả từ vị trí mới|age_13_plus:236",
+      "g07-t2:chọn lời tả từ vị trí mới|age_3_5:223",
+      "g07-t2:chọn lời tả từ vị trí mới|age_3_5:236",
+      "g07-t2:chọn lời tả từ vị trí mới|age_6_8:223",
+      "g07-t2:chọn lời tả từ vị trí mới|age_6_8:236",
+      "g07-t2:chọn lời tả từ vị trí mới|age_9_12:223",
+      "g07-t2:chọn lời tả từ vị trí mới|age_9_12:236",
+      "g07-t2:xem cùng vật từ phía khác|age_13_plus:199",
+      "g07-t2:xem cùng vật từ phía khác|age_13_plus:212",
+      "g07-t2:xem cùng vật từ phía khác|age_3_5:199",
+      "g07-t2:xem cùng vật từ phía khác|age_3_5:212",
+      "g07-t2:xem cùng vật từ phía khác|age_6_8:199",
+      "g07-t2:xem cùng vật từ phía khác|age_6_8:212",
+      "g07-t2:xem cùng vật từ phía khác|age_9_12:199",
+      "g07-t2:xem cùng vật từ phía khác|age_9_12:212",
+      "g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_13_plus:247",
+      "g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_13_plus:260",
+      "g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_3_5:247",
+      "g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_3_5:260",
+      "g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_6_8:247",
+      "g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_6_8:260",
+      "g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_9_12:247",
+      "g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_9_12:260",
+      "g07-t2:đổi tiêu chí để so sánh|age_13_plus:188",
+      "g07-t2:đổi tiêu chí để so sánh|age_13_plus:271",
+      "g07-t2:đổi tiêu chí để so sánh|age_3_5:188",
+      "g07-t2:đổi tiêu chí để so sánh|age_3_5:271",
+      "g07-t2:đổi tiêu chí để so sánh|age_6_8:188",
+      "g07-t2:đổi tiêu chí để so sánh|age_6_8:271",
+      "g07-t2:đổi tiêu chí để so sánh|age_9_12:188",
+      "g07-t2:đổi tiêu chí để so sánh|age_9_12:271",
+      "g07-t3:chia cùng tổng theo cách khác|age_13_plus:252",
+      "g07-t3:chia cùng tổng theo cách khác|age_13_plus:263",
+      "g07-t3:chia cùng tổng theo cách khác|age_3_5:252",
+      "g07-t3:chia cùng tổng theo cách khác|age_3_5:263",
+      "g07-t3:chia cùng tổng theo cách khác|age_6_8:252",
+      "g07-t3:chia cùng tổng theo cách khác|age_6_8:263",
+      "g07-t3:chia cùng tổng theo cách khác|age_9_12:252",
+      "g07-t3:chia cùng tổng theo cách khác|age_9_12:263",
+      "g07-t3:chọn phương án thay thế hợp lệ|age_13_plus:191",
+      "g07-t3:chọn phương án thay thế hợp lệ|age_3_5:191",
+      "g07-t3:chọn phương án thay thế hợp lệ|age_6_8:191",
+      "g07-t3:chọn phương án thay thế hợp lệ|age_9_12:191",
+      "g07-t3:tìm cách ghép khác|age_13_plus:228",
+      "g07-t3:tìm cách ghép khác|age_13_plus:239",
+      "g07-t3:tìm cách ghép khác|age_3_5:228",
+      "g07-t3:tìm cách ghép khác|age_3_5:239",
+      "g07-t3:tìm cách ghép khác|age_6_8:228",
+      "g07-t3:tìm cách ghép khác|age_6_8:239",
+      "g07-t3:tìm cách ghép khác|age_9_12:228",
+      "g07-t3:tìm cách ghép khác|age_9_12:239",
+      "g07-t3:tìm đường thứ hai|age_13_plus:204",
+      "g07-t3:tìm đường thứ hai|age_13_plus:215",
+      "g07-t3:tìm đường thứ hai|age_3_5:204",
+      "g07-t3:tìm đường thứ hai|age_3_5:215",
+      "g07-t3:tìm đường thứ hai|age_6_8:204",
+      "g07-t3:tìm đường thứ hai|age_6_8:215",
+      "g07-t3:tìm đường thứ hai|age_9_12:204",
+      "g07-t3:tìm đường thứ hai|age_9_12:215",
+      "g08-t1:chi tiết số lượng|age_13_plus:245",
+      "g08-t1:chi tiết số lượng|age_13_plus:256",
+      "g08-t1:chi tiết số lượng|age_3_5:245",
+      "g08-t1:chi tiết số lượng|age_3_5:256",
+      "g08-t1:chi tiết số lượng|age_6_8:245",
+      "g08-t1:chi tiết số lượng|age_6_8:256",
+      "g08-t1:chi tiết số lượng|age_9_12:245",
+      "g08-t1:chi tiết số lượng|age_9_12:256",
+      "g08-t1:chi tiết vị trí|age_13_plus:221",
+      "g08-t1:chi tiết vị trí|age_13_plus:232",
+      "g08-t1:chi tiết vị trí|age_3_5:221",
+      "g08-t1:chi tiết vị trí|age_3_5:232",
+      "g08-t1:chi tiết vị trí|age_6_8:221",
+      "g08-t1:chi tiết vị trí|age_6_8:232",
+      "g08-t1:chi tiết vị trí|age_9_12:221",
+      "g08-t1:chi tiết vị trí|age_9_12:232",
+      "g08-t1:hai thay đổi trong hình nhỏ|age_13_plus:184",
+      "g08-t1:hai thay đổi trong hình nhỏ|age_13_plus:269",
+      "g08-t1:hai thay đổi trong hình nhỏ|age_3_5:184",
+      "g08-t1:hai thay đổi trong hình nhỏ|age_3_5:269",
+      "g08-t1:hai thay đổi trong hình nhỏ|age_6_8:184",
+      "g08-t1:hai thay đổi trong hình nhỏ|age_6_8:269",
+      "g08-t1:hai thay đổi trong hình nhỏ|age_9_12:184",
+      "g08-t1:hai thay đổi trong hình nhỏ|age_9_12:269",
+      "g08-t1:một chi tiết hình dạng|age_13_plus:197",
+      "g08-t1:một chi tiết hình dạng|age_13_plus:208",
+      "g08-t1:một chi tiết hình dạng|age_3_5:197",
+      "g08-t1:một chi tiết hình dạng|age_3_5:208",
+      "g08-t1:một chi tiết hình dạng|age_6_8:197",
+      "g08-t1:một chi tiết hình dạng|age_6_8:208",
+      "g08-t1:một chi tiết hình dạng|age_9_12:197",
+      "g08-t1:một chi tiết hình dạng|age_9_12:208",
+      "g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_13_plus:189",
+      "g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_13_plus:272",
+      "g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_3_5:189",
+      "g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_3_5:272",
+      "g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_6_8:189",
+      "g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_6_8:272",
+      "g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_9_12:189",
+      "g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_9_12:272",
+      "g08-t2:hình dạng và kích cỡ|age_13_plus:200",
+      "g08-t2:hình dạng và kích cỡ|age_13_plus:213",
+      "g08-t2:hình dạng và kích cỡ|age_3_5:200",
+      "g08-t2:hình dạng và kích cỡ|age_3_5:213",
+      "g08-t2:hình dạng và kích cỡ|age_6_8:200",
+      "g08-t2:hình dạng và kích cỡ|age_6_8:213",
+      "g08-t2:hình dạng và kích cỡ|age_9_12:200",
+      "g08-t2:hình dạng và kích cỡ|age_9_12:213",
+      "g08-t2:hướng và đường viền|age_13_plus:248",
+      "g08-t2:hướng và đường viền|age_13_plus:261",
+      "g08-t2:hướng và đường viền|age_3_5:248",
+      "g08-t2:hướng và đường viền|age_3_5:261",
+      "g08-t2:hướng và đường viền|age_6_8:248",
+      "g08-t2:hướng và đường viền|age_6_8:261",
+      "g08-t2:hướng và đường viền|age_9_12:248",
+      "g08-t2:hướng và đường viền|age_9_12:261",
+      "g08-t2:vị trí và số lượng|age_13_plus:224",
+      "g08-t2:vị trí và số lượng|age_13_plus:237",
+      "g08-t2:vị trí và số lượng|age_3_5:224",
+      "g08-t2:vị trí và số lượng|age_3_5:237",
+      "g08-t2:vị trí và số lượng|age_6_8:224",
+      "g08-t2:vị trí và số lượng|age_6_8:237",
+      "g08-t2:vị trí và số lượng|age_9_12:224",
+      "g08-t2:vị trí và số lượng|age_9_12:237",
+      "g08-t3:bước không phù hợp mục tiêu|age_13_plus:229",
+      "g08-t3:bước không phù hợp mục tiêu|age_13_plus:240",
+      "g08-t3:bước không phù hợp mục tiêu|age_3_5:229",
+      "g08-t3:bước không phù hợp mục tiêu|age_3_5:240",
+      "g08-t3:bước không phù hợp mục tiêu|age_6_8:229",
+      "g08-t3:bước không phù hợp mục tiêu|age_6_8:240",
+      "g08-t3:bước không phù hợp mục tiêu|age_9_12:229",
+      "g08-t3:bước không phù hợp mục tiêu|age_9_12:240",
+      "g08-t3:chi tiết trái với quy tắc đã nêu|age_13_plus:192",
+      "g08-t3:chi tiết trái với quy tắc đã nêu|age_3_5:192",
+      "g08-t3:chi tiết trái với quy tắc đã nêu|age_6_8:192",
+      "g08-t3:chi tiết trái với quy tắc đã nêu|age_9_12:192",
+      "g08-t3:quan hệ vật lý đơn giản bị sai|age_13_plus:253",
+      "g08-t3:quan hệ vật lý đơn giản bị sai|age_13_plus:264",
+      "g08-t3:quan hệ vật lý đơn giản bị sai|age_3_5:253",
+      "g08-t3:quan hệ vật lý đơn giản bị sai|age_3_5:264",
+      "g08-t3:quan hệ vật lý đơn giản bị sai|age_6_8:253",
+      "g08-t3:quan hệ vật lý đơn giản bị sai|age_6_8:264",
+      "g08-t3:quan hệ vật lý đơn giản bị sai|age_9_12:253",
+      "g08-t3:quan hệ vật lý đơn giản bị sai|age_9_12:264",
+      "g08-t3:vật sai nhóm đã định nghĩa|age_13_plus:205",
+      "g08-t3:vật sai nhóm đã định nghĩa|age_13_plus:216",
+      "g08-t3:vật sai nhóm đã định nghĩa|age_3_5:205",
+      "g08-t3:vật sai nhóm đã định nghĩa|age_3_5:216",
+      "g08-t3:vật sai nhóm đã định nghĩa|age_6_8:205",
+      "g08-t3:vật sai nhóm đã định nghĩa|age_6_8:216",
+      "g08-t3:vật sai nhóm đã định nghĩa|age_9_12:205",
+      "g08-t3:vật sai nhóm đã định nghĩa|age_9_12:216"
+    ],
+    "provenance": true,
+    "duplicateFingerprints": null,
+    "normalizedCollisions": null,
+    "structuralReusePairs": null
+  },
+  "checks": {
+    "schema": true,
+    "knownAnswer": true,
+    "solver": true,
+    "wrongAnswerRejected": true,
+    "malformedRejected": true,
+    "alternateWhereApplicable": true,
+    "copy": true,
+    "provenance": true,
+    "fingerprintsUnique": false,
+    "normalizedUnique": false
+  },
+  "quality": {
+    "duplicateFingerprints": 0,
+    "normalizedCollisions": 0,
+    "ageComplexityWarnings": 0,
+    "structuralReusePairs": 0,
+    "blocked": false
+  },
+  "errors": [
+    {
+      "code": "track_days",
+      "path": "age_3_5",
+      "message": "expected 365 days, found 91"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day1",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day2",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day3",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day4",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day5",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day6",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day7",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day8",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day9",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day10",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day11",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day12",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day13",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day14",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day15",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day16",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day17",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day18",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day19",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day20",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day21",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day22",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day23",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day24",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day25",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day26",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day27",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day28",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day29",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day30",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day31",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day32",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day33",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day34",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day35",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day36",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day37",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day38",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day39",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day40",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day41",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day42",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day43",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day44",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day45",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day46",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day47",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day48",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day49",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day50",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day51",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day52",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day53",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day54",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day55",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day56",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day57",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day58",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day59",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day60",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day61",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day62",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day63",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day64",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day65",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day66",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day67",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day68",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day69",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day70",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day71",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day72",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day73",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day74",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day75",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day76",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day77",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day78",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day79",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day80",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day81",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day82",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day83",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day84",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day85",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day86",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day87",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day88",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day89",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day90",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day91",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day92",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day93",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day94",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day95",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day96",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day97",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day98",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day99",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day100",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day101",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day102",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day103",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day104",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day105",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day106",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day107",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day108",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day109",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day110",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day111",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day112",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day113",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day114",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day115",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day116",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day117",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day118",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day119",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day120",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day121",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day122",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day123",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day124",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day125",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day126",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day127",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day128",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day129",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day130",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day131",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day132",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day133",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day134",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day135",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day136",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day137",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day138",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day139",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day140",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day141",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day142",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day143",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day144",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day145",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day146",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day147",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day148",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day149",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day150",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day151",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day152",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day153",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day154",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day155",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day156",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day157",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day158",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day159",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day160",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day161",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day162",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day163",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day164",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day165",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day166",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day167",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day168",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day169",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day170",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day171",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day172",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day173",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day174",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day175",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day176",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day177",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day178",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day179",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day180",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day181",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day182",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day274",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day275",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day276",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day277",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day278",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day279",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day280",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day281",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day282",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day283",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day284",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day285",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day286",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day287",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day288",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day289",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day290",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day291",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day292",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day293",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day294",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day295",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day296",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day297",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day298",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day299",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day300",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day301",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day302",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day303",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day304",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day305",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day306",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day307",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day308",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day309",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day310",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day311",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day312",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day313",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day314",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day315",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day316",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day317",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day318",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day319",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day320",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day321",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day322",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day323",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day324",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day325",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day326",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day327",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day328",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day329",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day330",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day331",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day332",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day333",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day334",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day335",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day336",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day337",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day338",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day339",
+      "message": "missing day"
+    },
+    {
+      "code": "day_coverage",
+      "path": "age_3_5.day340",
+      "message": "missing day"
+    }
+  ],
+  "warnings": [
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D269-main-vi35",
+      "other": "D186-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D269-main-vi68",
+      "other": "D186-bonus-vi68"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D271-main-vi35",
+      "other": "D188-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D206-main-vi35",
+      "other": "D195-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D210-bonus-vi68",
+      "other": "D197-main-vi68"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D210-bonus-vi912",
+      "other": "D197-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D212-bonus-vi35",
+      "other": "D199-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D215-main-vi35",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D230-main-vi35",
+      "other": "D219-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D234-bonus-vi35",
+      "other": "D221-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D234-bonus-vi68",
+      "other": "D221-main-vi68"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D234-bonus-vi912",
+      "other": "D221-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D236-bonus-vi35",
+      "other": "D223-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D254-main-vi35",
+      "other": "D243-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D258-bonus-vi13p",
+      "other": "D245-main-vi13p"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D260-bonus-vi35",
+      "other": "D247-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D267-main-vi35",
+      "other": "D184-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D267-main-vi68",
+      "other": "D184-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D267-main-vi912",
+      "other": "D184-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D267-main-vi13p",
+      "other": "D184-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D269-main-vi35",
+      "other": "D186-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D269-main-vi68",
+      "other": "D186-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D271-main-vi35",
+      "other": "D188-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-bonus-vi35",
+      "other": "D193-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D241-main-vi35",
+      "other": "D193-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D254-bonus-vi35",
+      "other": "D193-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-bonus-vi68",
+      "other": "D193-main-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D241-main-vi68",
+      "other": "D193-main-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D254-bonus-vi68",
+      "other": "D193-main-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-bonus-vi912",
+      "other": "D193-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D241-main-vi912",
+      "other": "D193-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D254-bonus-vi912",
+      "other": "D193-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-bonus-vi13p",
+      "other": "D193-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D241-main-vi13p",
+      "other": "D193-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D254-bonus-vi13p",
+      "other": "D193-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D208-bonus-vi35",
+      "other": "D195-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D208-bonus-vi68",
+      "other": "D195-main-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D208-bonus-vi912",
+      "other": "D195-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D208-bonus-vi13p",
+      "other": "D195-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-main-vi35",
+      "other": "D195-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-main-vi68",
+      "other": "D195-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-main-vi912",
+      "other": "D195-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-main-vi13p",
+      "other": "D195-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D210-bonus-vi68",
+      "other": "D197-main-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D210-bonus-vi912",
+      "other": "D197-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D212-bonus-vi35",
+      "other": "D199-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D215-main-vi35",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D230-bonus-vi68",
+      "other": "D217-main-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D230-bonus-vi912",
+      "other": "D217-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D230-bonus-vi13p",
+      "other": "D217-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D232-bonus-vi35",
+      "other": "D219-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D232-bonus-vi68",
+      "other": "D219-main-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D232-bonus-vi912",
+      "other": "D219-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D232-bonus-vi13p",
+      "other": "D219-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D230-main-vi35",
+      "other": "D219-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D230-main-vi68",
+      "other": "D219-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D230-main-vi912",
+      "other": "D219-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D230-main-vi13p",
+      "other": "D219-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D234-bonus-vi35",
+      "other": "D221-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D234-bonus-vi68",
+      "other": "D221-main-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D234-bonus-vi912",
+      "other": "D221-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D236-bonus-vi35",
+      "other": "D223-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D256-bonus-vi35",
+      "other": "D243-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D256-bonus-vi68",
+      "other": "D243-main-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D256-bonus-vi912",
+      "other": "D243-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D256-bonus-vi13p",
+      "other": "D243-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D254-main-vi35",
+      "other": "D243-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D254-main-vi68",
+      "other": "D243-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D254-main-vi912",
+      "other": "D243-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D254-main-vi13p",
+      "other": "D243-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D258-bonus-vi13p",
+      "other": "D245-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D260-bonus-vi35",
+      "other": "D247-main-vi35"
+    }
+  ],
+  "status": "fail"
+}

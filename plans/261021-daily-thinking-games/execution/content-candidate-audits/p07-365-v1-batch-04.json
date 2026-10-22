@@ -1,0 +1,1679 @@
+{
+  "auditVersion": "p07-candidate-audit-v1",
+  "scope": "batch",
+  "batch": 4,
+  "days": {
+    "start": 183,
+    "end": 273
+  },
+  "generatedAt": "2026-10-21T00:00:00.000Z",
+  "contentVersion": "p07-candidates-365-v1",
+  "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
+  "engineVersion": "engine-0f7da85273374e83",
+  "inputSha256": "a7c3bf18187f2f533103daeb7f087b549f23e3044287c427448c0a0b2a54541f",
+  "manifestSha256": "f3393309edaf8ecc244f134cc3989cc7cf7981fb979f3cfb0e2e55dc93f9be67",
+  "metrics": {
+    "itemCount": 728,
+    "schemaPass": 728,
+    "knownPass": 728,
+    "solvePass": 728,
+    "wrongPass": 728,
+    "malformedPass": 728,
+    "alternateApplicable": 87,
+    "alternatePass": 87,
+    "uniqueFingerprints": 608,
+    "uniqueNormalized": 602,
+    "tracks": {
+      "age_3_5": 182,
+      "age_6_8": 182,
+      "age_9_12": 182,
+      "age_13_plus": 182
+    },
+    "initialTracks": 364,
+    "experimentalTracks": 364,
+    "types": 24,
+    "variants": 96,
+    "skills": 8,
+    "minTypeSpacing": 11,
+    "structuralReuseWarnings": [
+      "g07-t1|g07-t1:đổi theo ký hiệu hướng dẫn|age_3_5",
+      "g07-t1|g07-t1:đổi theo ký hiệu hướng dẫn|age_6_8",
+      "g07-t1|g07-t1:đổi theo ký hiệu hướng dẫn|age_9_12",
+      "g07-t1|g07-t1:đổi theo ký hiệu hướng dẫn|age_13_plus",
+      "g06-t2|g06-t2:rút ngắn một đoạn lệnh lặp|age_3_5",
+      "g06-t2|g06-t2:rút ngắn một đoạn lệnh lặp|age_6_8",
+      "g06-t2|g06-t2:rút ngắn một đoạn lệnh lặp|age_9_12",
+      "g06-t2|g06-t2:rút ngắn một đoạn lệnh lặp|age_13_plus",
+      "g05-t3|g05-t3:tìm hai tổ hợp cùng tổng|age_3_5",
+      "g05-t3|g05-t3:tìm hai tổ hợp cùng tổng|age_6_8",
+      "g05-t3|g05-t3:tìm hai tổ hợp cùng tổng|age_9_12",
+      "g05-t3|g05-t3:tìm hai tổ hợp cùng tổng|age_13_plus",
+      "g08-t2|g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_3_5",
+      "g08-t2|g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_6_8",
+      "g08-t2|g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_9_12",
+      "g08-t2|g08-t2:chọn mọi vật thỏa hai dấu hiệu|age_13_plus",
+      "g06-t3|g06-t3:chọn chỗ đặt bước còn thiếu|age_3_5",
+      "g06-t3|g06-t3:chọn chỗ đặt bước còn thiếu|age_6_8",
+      "g06-t3|g06-t3:chọn chỗ đặt bước còn thiếu|age_9_12",
+      "g06-t3|g06-t3:chọn chỗ đặt bước còn thiếu|age_13_plus",
+      "g07-t3|g07-t3:chọn phương án thay thế hợp lệ|age_3_5",
+      "g07-t3|g07-t3:chọn phương án thay thế hợp lệ|age_6_8",
+      "g07-t3|g07-t3:chọn phương án thay thế hợp lệ|age_9_12",
+      "g07-t3|g07-t3:chọn phương án thay thế hợp lệ|age_13_plus",
+      "g02-t3|g02-t3:tìm ô làm mất đối xứng|age_3_5",
+      "g02-t3|g02-t3:tìm ô làm mất đối xứng|age_6_8",
+      "g02-t3|g02-t3:tìm ô làm mất đối xứng|age_9_12",
+      "g02-t3|g02-t3:tìm ô làm mất đối xứng|age_13_plus",
+      "g08-t3|g08-t3:chi tiết trái với quy tắc đã nêu|age_3_5",
+      "g08-t3|g08-t3:chi tiết trái với quy tắc đã nêu|age_6_8",
+      "g08-t3|g08-t3:chi tiết trái với quy tắc đã nêu|age_9_12",
+      "g08-t3|g08-t3:chi tiết trái với quy tắc đã nêu|age_13_plus",
+      "g03-t3|g03-t3:một thuộc tính thay đổi|age_3_5",
+      "g03-t3|g03-t3:một thuộc tính thay đổi|age_6_8",
+      "g03-t3|g03-t3:một thuộc tính thay đổi|age_9_12",
+      "g03-t3|g03-t3:một thuộc tính thay đổi|age_13_plus",
+      "g06-t1|g06-t1:đến đích tránh chướng ngại|age_3_5",
+      "g04-t2|g04-t2:áp dụng một quy tắc|age_9_12",
+      "g07-t1|g07-t1:đổi từ hình sang màu có nhãn|age_3_5",
+      "g07-t1|g07-t1:đổi từ hình sang màu có nhãn|age_6_8",
+      "g07-t1|g07-t1:đổi từ hình sang màu có nhãn|age_9_12",
+      "g07-t1|g07-t1:đổi từ hình sang màu có nhãn|age_13_plus",
+      "g06-t2|g06-t2:xếp ba bước đúng thứ tự|age_3_5",
+      "g06-t2|g06-t2:xếp ba bước đúng thứ tự|age_6_8",
+      "g06-t2|g06-t2:xếp ba bước đúng thứ tự|age_9_12",
+      "g06-t2|g06-t2:xếp ba bước đúng thứ tự|age_13_plus",
+      "g08-t2|g08-t2:hình dạng và kích cỡ|age_3_5",
+      "g08-t2|g08-t2:hình dạng và kích cỡ|age_6_8",
+      "g08-t2|g08-t2:hình dạng và kích cỡ|age_9_12",
+      "g08-t2|g08-t2:hình dạng và kích cỡ|age_13_plus"
+    ]
+  },
+  "checks": {
+    "schema": true,
+    "knownAnswer": true,
+    "solver": true,
+    "wrongAnswerRejected": true,
+    "malformedRejected": true,
+    "alternateWhereApplicable": true,
+    "copy": true,
+    "provenance": true,
+    "fingerprintsUnique": false,
+    "normalizedUnique": false
+  },
+  "quality": {
+    "duplicateFingerprints": 120,
+    "normalizedCollisions": 126,
+    "ageComplexityWarnings": 84,
+    "structuralReusePairs": 50,
+    "blocked": true
+  },
+  "batchChecks": {
+    "ok": true,
+    "errors": []
+  },
+  "releaseRejection": null,
+  "errors": [],
+  "warnings": [
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D183-main-vi68",
+      "other": "D183-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D183-main-vi68",
+      "other": "D183-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D183-main-vi13p",
+      "other": "D183-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D183-main-vi13p",
+      "other": "D183-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D187-bonus-vi68",
+      "other": "D187-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D187-bonus-vi68",
+      "other": "D187-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D187-bonus-vi912",
+      "other": "D187-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D187-bonus-vi13p",
+      "other": "D187-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D187-bonus-vi13p",
+      "other": "D187-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D188-bonus-vi912",
+      "other": "D188-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D188-bonus-vi912",
+      "other": "D188-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D189-bonus-vi68",
+      "other": "D189-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D189-bonus-vi68",
+      "other": "D189-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D189-bonus-vi13p",
+      "other": "D189-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D189-bonus-vi13p",
+      "other": "D189-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D191-main-vi912",
+      "other": "D191-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D191-main-vi912",
+      "other": "D191-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D191-main-vi13p",
+      "other": "D191-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D191-main-vi13p",
+      "other": "D191-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D196-main-vi13p",
+      "other": "D196-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D196-main-vi13p",
+      "other": "D196-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D196-bonus-vi68",
+      "other": "D196-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D196-bonus-vi68",
+      "other": "D196-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D196-bonus-vi13p",
+      "other": "D196-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D196-bonus-vi13p",
+      "other": "D196-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D198-main-vi68",
+      "other": "D198-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D198-main-vi68",
+      "other": "D198-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D198-main-vi13p",
+      "other": "D198-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D198-main-vi13p",
+      "other": "D198-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D200-main-vi68",
+      "other": "D200-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D200-main-vi68",
+      "other": "D200-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D200-main-vi13p",
+      "other": "D200-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D200-main-vi13p",
+      "other": "D200-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D204-bonus-vi912",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D204-bonus-vi912",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D204-bonus-vi13p",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D204-bonus-vi13p",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D206-main-vi35",
+      "other": "D195-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D206-main-vi35",
+      "other": "D195-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D207-main-vi35",
+      "other": "D196-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D207-main-vi35",
+      "other": "D196-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D207-main-vi68",
+      "other": "D196-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D207-main-vi68",
+      "other": "D196-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D207-main-vi912",
+      "other": "D196-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D207-main-vi912",
+      "other": "D196-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D207-main-vi13p",
+      "other": "D196-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D207-main-vi13p",
+      "other": "D196-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D209-bonus-vi35",
+      "other": "D196-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D209-bonus-vi35",
+      "other": "D196-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D209-bonus-vi912",
+      "other": "D196-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D209-bonus-vi912",
+      "other": "D196-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D211-bonus-vi35",
+      "other": "D198-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D211-bonus-vi35",
+      "other": "D198-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D211-bonus-vi68",
+      "other": "D198-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D211-bonus-vi68",
+      "other": "D198-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D211-bonus-vi912",
+      "other": "D198-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D211-bonus-vi912",
+      "other": "D198-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D211-bonus-vi13p",
+      "other": "D198-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D211-bonus-vi13p",
+      "other": "D198-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D212-main-vi35",
+      "other": "D201-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D212-main-vi35",
+      "other": "D201-bonus-vi68"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D212-main-vi912",
+      "other": "D201-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D212-main-vi912",
+      "other": "D201-bonus-vi13p"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D212-main-vi13p",
+      "other": "D212-main-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D212-main-vi13p",
+      "other": "D212-main-vi68"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D212-bonus-vi13p",
+      "other": "D212-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D212-bonus-vi13p",
+      "other": "D212-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D213-bonus-vi35",
+      "other": "D200-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D213-bonus-vi35",
+      "other": "D200-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D213-bonus-vi68",
+      "other": "D200-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D213-bonus-vi68",
+      "other": "D200-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D213-bonus-vi912",
+      "other": "D200-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D213-bonus-vi912",
+      "other": "D200-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D213-bonus-vi13p",
+      "other": "D200-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D213-bonus-vi13p",
+      "other": "D200-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D215-main-vi35",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D215-main-vi35",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D215-main-vi68",
+      "other": "D204-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D215-main-vi68",
+      "other": "D204-bonus-vi68"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D215-main-vi912",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D215-main-vi912",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D215-main-vi13p",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D215-main-vi13p",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D220-bonus-vi68",
+      "other": "D220-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D220-bonus-vi68",
+      "other": "D220-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D220-bonus-vi13p",
+      "other": "D220-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D220-bonus-vi13p",
+      "other": "D220-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D222-main-vi68",
+      "other": "D222-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D222-main-vi68",
+      "other": "D222-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D222-main-vi13p",
+      "other": "D222-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D222-main-vi13p",
+      "other": "D222-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D224-main-vi68",
+      "other": "D224-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D224-main-vi68",
+      "other": "D224-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D224-main-vi13p",
+      "other": "D224-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D224-main-vi13p",
+      "other": "D224-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D225-bonus-vi68",
+      "other": "D225-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D225-bonus-vi68",
+      "other": "D225-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D225-bonus-vi13p",
+      "other": "D225-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D225-bonus-vi13p",
+      "other": "D225-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D228-main-vi13p",
+      "other": "D217-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D228-main-vi13p",
+      "other": "D217-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D228-bonus-vi35",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D228-bonus-vi68",
+      "other": "D204-bonus-vi68"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D228-bonus-vi912",
+      "other": "D228-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D228-bonus-vi912",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D228-bonus-vi13p",
+      "other": "D228-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D228-bonus-vi13p",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D230-main-vi35",
+      "other": "D219-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D230-main-vi35",
+      "other": "D219-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D231-main-vi35",
+      "other": "D220-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D231-main-vi35",
+      "other": "D220-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D231-main-vi68",
+      "other": "D220-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D231-main-vi68",
+      "other": "D220-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D231-main-vi912",
+      "other": "D220-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D231-main-vi912",
+      "other": "D220-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D231-main-vi13p",
+      "other": "D220-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D231-main-vi13p",
+      "other": "D220-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D235-bonus-vi35",
+      "other": "D222-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D235-bonus-vi35",
+      "other": "D222-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D235-bonus-vi68",
+      "other": "D222-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D235-bonus-vi68",
+      "other": "D222-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D235-bonus-vi912",
+      "other": "D222-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D235-bonus-vi912",
+      "other": "D222-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D235-bonus-vi13p",
+      "other": "D222-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D235-bonus-vi13p",
+      "other": "D222-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D236-main-vi35",
+      "other": "D225-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D236-main-vi35",
+      "other": "D225-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D236-main-vi68",
+      "other": "D225-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D236-main-vi68",
+      "other": "D225-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D236-main-vi13p",
+      "other": "D225-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D236-main-vi13p",
+      "other": "D225-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D236-bonus-vi35",
+      "other": "D223-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D236-bonus-vi35",
+      "other": "D223-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D237-bonus-vi35",
+      "other": "D224-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D237-bonus-vi35",
+      "other": "D224-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D237-bonus-vi68",
+      "other": "D224-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D237-bonus-vi68",
+      "other": "D224-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D237-bonus-vi912",
+      "other": "D224-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D237-bonus-vi912",
+      "other": "D224-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D237-bonus-vi13p",
+      "other": "D224-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D237-bonus-vi13p",
+      "other": "D224-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D239-main-vi35",
+      "other": "D228-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D239-main-vi35",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D239-main-vi68",
+      "other": "D228-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D239-main-vi68",
+      "other": "D204-bonus-vi68"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D239-main-vi912",
+      "other": "D228-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D239-main-vi912",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D239-main-vi13p",
+      "other": "D228-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D239-main-vi13p",
+      "other": "D204-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D244-bonus-vi68",
+      "other": "D244-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D244-bonus-vi68",
+      "other": "D244-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D244-bonus-vi13p",
+      "other": "D244-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D244-bonus-vi13p",
+      "other": "D244-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D246-main-vi35",
+      "other": "D198-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D246-main-vi68",
+      "other": "D246-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D246-main-vi68",
+      "other": "D198-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D246-main-vi13p",
+      "other": "D246-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D246-main-vi13p",
+      "other": "D246-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D248-main-vi68",
+      "other": "D248-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D248-main-vi68",
+      "other": "D248-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D248-main-vi13p",
+      "other": "D248-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D248-main-vi13p",
+      "other": "D248-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D249-bonus-vi68",
+      "other": "D249-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D249-bonus-vi68",
+      "other": "D249-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D249-bonus-vi912",
+      "other": "D249-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D249-bonus-vi912",
+      "other": "D249-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D252-bonus-vi35",
+      "other": "D191-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D252-bonus-vi68",
+      "other": "D191-main-vi68"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D252-bonus-vi912",
+      "other": "D252-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D252-bonus-vi912",
+      "other": "D191-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D252-bonus-vi13p",
+      "other": "D252-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D252-bonus-vi13p",
+      "other": "D191-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D254-main-vi35",
+      "other": "D243-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D254-main-vi35",
+      "other": "D243-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D255-main-vi35",
+      "other": "D244-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D255-main-vi35",
+      "other": "D244-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D255-main-vi68",
+      "other": "D244-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D255-main-vi68",
+      "other": "D244-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D255-main-vi912",
+      "other": "D244-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D255-main-vi912",
+      "other": "D244-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D255-main-vi13p",
+      "other": "D244-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D255-main-vi13p",
+      "other": "D244-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D259-bonus-vi35",
+      "other": "D246-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D259-bonus-vi35",
+      "other": "D198-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D259-bonus-vi68",
+      "other": "D246-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D259-bonus-vi68",
+      "other": "D198-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D259-bonus-vi912",
+      "other": "D246-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D259-bonus-vi912",
+      "other": "D246-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D259-bonus-vi13p",
+      "other": "D246-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D259-bonus-vi13p",
+      "other": "D246-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D260-main-vi35",
+      "other": "D249-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D260-main-vi35",
+      "other": "D249-bonus-vi13p"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D260-main-vi13p",
+      "other": "D260-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D260-main-vi13p",
+      "other": "D260-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D260-bonus-vi13p",
+      "other": "D247-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D260-bonus-vi13p",
+      "other": "D247-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D261-bonus-vi35",
+      "other": "D248-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D261-bonus-vi35",
+      "other": "D248-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D261-bonus-vi68",
+      "other": "D248-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D261-bonus-vi68",
+      "other": "D248-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D261-bonus-vi912",
+      "other": "D248-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D261-bonus-vi912",
+      "other": "D248-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D261-bonus-vi13p",
+      "other": "D248-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D261-bonus-vi13p",
+      "other": "D248-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D263-main-vi35",
+      "other": "D252-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D263-main-vi35",
+      "other": "D191-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D263-main-vi68",
+      "other": "D252-bonus-vi68"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D263-main-vi68",
+      "other": "D191-main-vi68"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D263-main-vi912",
+      "other": "D252-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D263-main-vi912",
+      "other": "D191-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D263-main-vi13p",
+      "other": "D252-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D263-main-vi13p",
+      "other": "D191-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D268-bonus-vi35",
+      "other": "D183-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D268-bonus-vi35",
+      "other": "D183-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D268-bonus-vi68",
+      "other": "D183-main-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D268-bonus-vi68",
+      "other": "D183-main-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D268-bonus-vi912",
+      "other": "D183-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D268-bonus-vi912",
+      "other": "D183-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D268-bonus-vi13p",
+      "other": "D183-main-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D268-bonus-vi13p",
+      "other": "D183-main-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D270-main-vi35",
+      "other": "D187-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D270-main-vi35",
+      "other": "D187-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D270-main-vi68",
+      "other": "D187-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D270-main-vi68",
+      "other": "D187-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D270-main-vi912",
+      "other": "D187-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D270-main-vi912",
+      "other": "D187-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D270-main-vi13p",
+      "other": "D187-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D270-main-vi13p",
+      "other": "D187-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D271-main-vi912",
+      "other": "D188-bonus-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D271-main-vi912",
+      "other": "D188-bonus-vi13p"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D271-main-vi13p",
+      "other": "D188-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D271-main-vi13p",
+      "other": "D188-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D272-main-vi35",
+      "other": "D189-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D272-main-vi35",
+      "other": "D189-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D272-main-vi68",
+      "other": "D189-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D272-main-vi68",
+      "other": "D189-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D272-main-vi912",
+      "other": "D189-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D272-main-vi912",
+      "other": "D189-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D272-main-vi13p",
+      "other": "D189-bonus-vi912"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D272-main-vi13p",
+      "other": "D189-bonus-vi912"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D273-bonus-vi68",
+      "other": "D188-main-vi13p"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D273-bonus-vi68",
+      "other": "D188-main-vi13p"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D273-bonus-vi912",
+      "other": "D273-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D273-bonus-vi912",
+      "other": "D273-bonus-vi35"
+    },
+    {
+      "code": "duplicate_fingerprint",
+      "id": "D273-bonus-vi13p",
+      "other": "D273-bonus-vi35"
+    },
+    {
+      "code": "normalized_skin_duplicate",
+      "id": "D273-bonus-vi13p",
+      "other": "D273-bonus-vi35"
+    },
+    {
+      "code": "age_complexity",
+      "count": 84,
+      "examples": [
+        {
+          "typeId": "g01-t1",
+          "variant": "suy ngược phần đầu",
+          "byTrack": {
+            "age_3_5": {
+              "count": 1,
+              "uniqueStructural": 1,
+              "averageComplexity": 12.15
+            },
+            "age_6_8": {
+              "count": 1,
+              "uniqueStructural": 1,
+              "averageComplexity": 12.15
+            },
+            "age_9_12": {
+              "count": 1,
+              "uniqueStructural": 1,
+              "averageComplexity": 14.2
+            },
+            "age_13_plus": {
+              "count": 1,
+              "uniqueStructural": 1,
+              "averageComplexity": 15.2
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g01-t2",
+          "variant": "một hình sai vị trí",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 8
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 8
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 9
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 9
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g01-t2",
+          "variant": "một bước sai độ lớn",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 8
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 8
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 9
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 9
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g01-t2",
+          "variant": "một nhánh phá nhịp",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 9.15
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 9.15
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 10.15
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 10.15
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g01-t2",
+          "variant": "phát hiện lỗi giữa hai chuỗi",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 10.15
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 10.15
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 11.15
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 11.15
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g01-t3",
+          "variant": "đổi một thuộc tính",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g01-t3",
+          "variant": "thêm hoặc bớt phần tử",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g01-t3",
+          "variant": "hai đầu vào một kết quả",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g01-t3",
+          "variant": "suy ra đầu vào từ đầu ra",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 18
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g02-t1",
+          "variant": "khớp đường viền",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 83.03
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 74.47
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 74.92
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 74.3
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g02-t1",
+          "variant": "khớp khi bỏ chi tiết",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 91.03
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 74.3
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 83.07
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 82.58
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        },
+        {
+          "typeId": "g02-t1",
+          "variant": "phân biệt bóng gần giống",
+          "byTrack": {
+            "age_3_5": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 75.2
+            },
+            "age_6_8": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 67
+            },
+            "age_9_12": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 83
+            },
+            "age_13_plus": {
+              "count": 2,
+              "uniqueStructural": 2,
+              "averageComplexity": 74.43
+            }
+          },
+          "issue": "complexity_not_monotonic"
+        }
+      ]
+    }
+  ],
+  "status": "review_blocked_quality"
+}
