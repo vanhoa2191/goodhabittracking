@@ -35,6 +35,21 @@ export function checkMemorySequence(board: MemorySequenceBoard, answer: unknown)
   return answer.every((token, index) => token === expected[index]);
 }
 
+// How many tokens the child has to answer with. The renderer must offer exactly
+// this many slots, otherwise a correct answer cannot be submitted.
+export function memorySequenceAnswerLength(board: MemorySequenceBoard): number {
+  if (board.mode === 'missing') return 1;
+  if (board.mode === 'swapped') return 2;
+  return board.sequence.length;
+}
+
+// Which positions of the sequence the child has to answer with.
+export function memorySequenceSlots(board: MemorySequenceBoard): readonly number[] {
+  if (board.mode === 'missing' && board.missingIndex !== undefined) return [board.missingIndex];
+  if (board.mode === 'swapped' && board.swappedIndices) return [...board.swappedIndices];
+  return board.sequence.map((_, index) => index);
+}
+
 export function generateMemorySequencePuzzle(input: {
   seed: string;
   ageTrack: GameAgeTrack;
@@ -75,21 +90,23 @@ export function describeMemorySequenceBoard(board: MemorySequenceBoard): {
 } {
   const answer = solveMemorySequence(board);
   if (board.mode === 'missing') {
+    const position = (board.missingIndex ?? 0) + 1;
     return {
       hints: [
-        'Nhớ lại chỗ trống nằm ở đâu trong chuỗi.',
-        'Đọc lại các từ xung quanh chỗ trống để nhớ từ còn thiếu.',
+        'Nhớ lại ô bị bỏ trống nằm ở vị trí nào trong dãy.',
+        'Đọc lại các từ xung quanh ô đó để nhớ từ cần điền vào.',
       ],
-      explanation: `Phần còn thiếu trong chuỗi là ${answer[0] ?? '?'}.`,
+      explanation: `Ô thứ ${position} trong dãy là ${answer[0] ?? '?'}.`,
     };
   }
   if (board.mode === 'swapped') {
+    const [first, second] = board.swappedIndices ?? [0, 1];
     return {
       hints: [
-        'So sánh thứ tự lúc đầu với thứ tự đang hiện.',
-        'Tìm hai từ đứng cạnh nhau bị đổi chỗ.',
+        'Nhớ lại hai ô được đánh dấu nằm ở vị trí nào trong dãy.',
+        'Đọc lại các từ xung quanh đó để nhớ đúng hai từ cần điền vào.',
       ],
-      explanation: `Cặp bị đổi thứ tự là ${answer[0] ?? '?'} → ${answer[1] ?? '?'}.`,
+      explanation: `Hai ô thứ ${first + 1} và ${second + 1} trong dãy là ${answer[0] ?? '?'} và ${answer[1] ?? '?'}.`,
     };
   }
   if (board.mode === 'grouped') {

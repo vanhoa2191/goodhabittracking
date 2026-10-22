@@ -221,7 +221,7 @@ function buildCandidate({ engine, slot, day, ageTrack, source, attempt = 0 }) {
     ? engine.getNaturalInvitation(slot.typeId, day, seed)
     : slot.invitation;
   const tutorial = typeof engine.getNaturalTutorial === 'function'
-    ? engine.getNaturalTutorial(slot.typeId, ageTrack, day, seed)
+    ? engine.getNaturalTutorial(slot.typeId, ageTrack, day, seed, payload.boardData)
     : (ORIGINAL_TUTORIALS[slot.typeId] ?? generated.tutorial);
 
   return {

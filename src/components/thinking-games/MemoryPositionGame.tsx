@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { AgeTrack, MemoryPositionBoard, PathStep } from '@/lib/thinking-games/types';
+import { memoryPositionRequiredCount } from '@/lib/thinking-games';
 import { getButtonMinSize } from './game-utils';
 
 export interface MemoryPositionGameProps {
@@ -33,6 +34,7 @@ export function MemoryPositionGame({
   }
 
   const buttonMinSize = getButtonMinSize(ageTrack);
+  const requiredCount = memoryPositionRequiredCount(board);
 
   const isPointSelected = (x: number, y: number) => {
     return selectedPoints.some((p) => p.x === x && p.y === y);
@@ -55,6 +57,7 @@ export function MemoryPositionGame({
     if (isPointSelected(point.x, point.y)) {
       setSelectedPoints((prev) => prev.filter((p) => !(p.x === point.x && p.y === point.y)));
     } else {
+      if (selectedPoints.length >= requiredCount) return;
       setSelectedPoints((prev) => [...prev, point]);
     }
   };
@@ -144,10 +147,12 @@ export function MemoryPositionGame({
         >
           <div>
             <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-              Chọn lại đúng những vị trí ngôi sao đã xuất hiện:
+              {board.mode === 'missing'
+                ? 'Chọn vị trí ngôi sao còn thiếu (ô đã hiện không cần bấm lại):'
+                : 'Chọn lại đúng những vị trí ngôi sao đã xuất hiện:'}
             </p>
             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              Đã chọn: {selectedPoints.length} / {board.targets.length} vị trí
+              Đã chọn: {selectedPoints.length} / {requiredCount} vị trí
             </p>
           </div>
 
@@ -172,7 +177,7 @@ export function MemoryPositionGame({
                       key={`${x}-${y}`}
                       type="button"
                       data-testid={`recall-cell-${x}-${y}`}
-                      aria-label={`Ô (${x + 1}, ${y + 1})${isSel ? ', Đã chọn' : ''}`}
+                      aria-label={`Ô (${x + 1}, ${y + 1})${isRev ? ', Đã hiển thị sẵn' : isSel ? ', Đã chọn' : ''}`}
                       aria-pressed={isSel}
                       disabled={disabled || isRev}
                       onClick={() => togglePoint({ x, y })}
@@ -181,6 +186,8 @@ export function MemoryPositionGame({
                       } ${
                         isSel
                           ? 'border-indigo-600 bg-indigo-500 text-white shadow-md ring-2 ring-indigo-300'
+                          : isRev
+                          ? 'border-amber-300 bg-amber-50/70 text-amber-900 opacity-80 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-200'
                           : isOption
                           ? 'border-slate-300 bg-slate-50 hover:border-indigo-300 hover:bg-indigo-50/50 dark:border-zinc-700 dark:bg-zinc-800 dark:hover:bg-zinc-750'
                           : 'border-slate-200 bg-white dark:border-zinc-800 dark:bg-zinc-850'
@@ -192,8 +199,8 @@ export function MemoryPositionGame({
                         </span>
                       )}
                       {isRev && !isSel && (
-                        <span aria-hidden="true" className="text-sm opacity-50">
-                          👁️
+                        <span aria-hidden="true" className="text-base opacity-75" title="Vị trí đã biết">
+                          ⭐
                         </span>
                       )}
                     </button>
@@ -230,10 +237,10 @@ export function MemoryPositionGame({
             <button
               type="button"
               data-testid="submit-answer-btn"
-              disabled={disabled || selectedPoints.length === 0}
+              disabled={disabled || selectedPoints.length !== requiredCount}
               onClick={handleSubmit}
               className={`min-h-[48px] rounded-2xl px-6 py-2.5 text-sm font-extrabold text-white shadow-md transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-400 ${
-                selectedPoints.length > 0 && !disabled
+                selectedPoints.length === requiredCount && !disabled
                   ? 'bg-indigo-600 hover:bg-indigo-700'
                   : 'cursor-not-allowed bg-slate-300 opacity-60 dark:bg-zinc-700'
               }`}

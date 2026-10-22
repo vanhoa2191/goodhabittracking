@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { AgeTrack, QuantityTargetBoard } from '@/lib/thinking-games/types';
+import { quantityTargetSatisfies } from '@/lib/thinking-games';
 import { getButtonMinSize } from './game-utils';
 
 export interface QuantityTargetGameProps {
@@ -35,11 +36,14 @@ export function QuantityTargetGame({
 
   const isSelected = (id: string) => selectedIds.includes(id);
 
+  const maxSelectable = board.mode === 'exact-two' ? 2 : board.maxItems ? board.maxItems : undefined;
+
   const toggleItem = (id: string) => {
     if (disabled) return;
     if (isSelected(id)) {
       setSelectedIds((prev) => prev.filter((i) => i !== id));
     } else {
+      if (maxSelectable !== undefined && selectedIds.length >= maxSelectable) return;
       setSelectedIds((prev) => [...prev, id]);
     }
   };
@@ -50,8 +54,11 @@ export function QuantityTargetGame({
     return sum + (item?.value ?? 0);
   }, 0);
 
+  const isSatisfied = quantityTargetSatisfies(board, selectedIds);
+
   const handleSubmit = () => {
     if (disabled || selectedIds.length === 0) return;
+    if (board.mode === 'exact-two' && selectedIds.length !== 2) return;
     onSubmit(selectedIds);
   };
 
@@ -68,7 +75,15 @@ export function QuantityTargetGame({
     >
       <div>
         <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-          Chọn các món đồ sao cho tổng giá trị đạt mục tiêu:
+          {board.mode === 'fewest'
+            ? 'Chọn các món đồ sao cho tổng bằng mục tiêu với số món ít nhất:'
+            : board.mode === 'exact-two'
+            ? 'Chọn đúng 2 món đồ sao cho tổng giá trị bằng mục tiêu:'
+            : board.mode === 'not-over'
+            ? 'Chọn các món đồ sao cho tổng không vượt quá mục tiêu:'
+            : board.maxItems
+            ? `Chọn các món đồ sao cho tổng bằng mục tiêu (tối đa ${board.maxItems} món):`
+            : 'Chọn các món đồ sao cho tổng giá trị đạt mục tiêu:'}
         </p>
       </div>
 
@@ -85,9 +100,26 @@ export function QuantityTargetGame({
               Mục tiêu:
             </span>
           </div>
-          <span className="font-mono text-xl font-black text-indigo-700 dark:text-indigo-400">
-            {board.target}
-          </span>
+          <div className="flex items-center gap-2">
+            {board.mode === 'fewest' && (
+              <span className="rounded-lg bg-indigo-100 px-2 py-0.5 text-[10px] font-bold text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
+                Ít món nhất
+              </span>
+            )}
+            {board.mode === 'exact-two' && (
+              <span className="rounded-lg bg-indigo-100 px-2 py-0.5 text-[10px] font-bold text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
+                Đúng 2 món
+              </span>
+            )}
+            {board.maxItems && board.mode !== 'exact-two' && (
+              <span className="rounded-lg bg-indigo-100 px-2 py-0.5 text-[10px] font-bold text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
+                Tối đa {board.maxItems} món
+              </span>
+            )}
+            <span className="font-mono text-xl font-black text-indigo-700 dark:text-indigo-400">
+              {board.target}
+            </span>
+          </div>
         </div>
 
         <div className="mt-2.5 flex items-center justify-between">
@@ -97,15 +129,18 @@ export function QuantityTargetGame({
           <span
             data-testid="current-sum-display"
             className={`font-mono text-base font-black ${
-              currentSum === board.target
+              isSatisfied
                 ? 'text-emerald-600 dark:text-emerald-400'
-                : currentSum > board.target
+                : currentSum > board.target && board.mode !== 'not-over'
                 ? 'text-rose-600 dark:text-rose-400'
                 : 'text-slate-800 dark:text-slate-200'
             }`}
           >
             {currentSum} / {board.target}{' '}
-            {currentSum === board.target && '✅ (Đủ mục tiêu)'}
+            {isSatisfied && '✅ (Thỏa mãn yêu cầu)'}
+            {!isSatisfied && currentSum === board.target && board.mode === 'fewest' && '⚠️ (Chưa phải ít món nhất)'}
+            {!isSatisfied && currentSum === board.target && board.mode === 'exact-two' && '⚠️ (Cần đúng 2 món)'}
+            {!isSatisfied && currentSum === board.target && board.maxItems && selectedIds.length > board.maxItems && `⚠️ (Quá ${board.maxItems} món)`}
           </span>
         </div>
       </div>

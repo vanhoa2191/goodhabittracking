@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Eye, RotateCcw, Undo2 } from 'lucide-react';
 import type { AgeTrack, MemorySequenceBoard } from '@/lib/thinking-games/types';
+import { memorySequenceAnswerLength, memorySequenceSlots } from '@/lib/thinking-games';
 
 export interface MemorySequenceGameProps {
   readonly board: MemorySequenceBoard;
@@ -47,6 +48,8 @@ export function MemorySequenceGame({
 
   const isAge68 = ageTrack === 'age_6_8';
   const buttonMinSize = isAge68 ? 'min-h-[56px] min-w-[56px]' : 'min-h-[48px] min-w-[48px]';
+  const slots = memorySequenceSlots(board);
+  const requiredLength = memorySequenceAnswerLength(board);
 
   const handleStartRecall = () => {
     if (disabled) return;
@@ -60,7 +63,7 @@ export function MemorySequenceGame({
 
   const handleSelectOption = (token: string) => {
     if (disabled || phase !== 'recall') return;
-    if (userSequence.length >= board.sequence.length) return;
+    if (userSequence.length >= requiredLength) return;
     setUserSequence((prev) => [...prev, token]);
   };
 
@@ -81,7 +84,7 @@ export function MemorySequenceGame({
   };
 
   const handleSubmit = () => {
-    if (disabled || userSequence.length !== board.sequence.length) return;
+    if (disabled || userSequence.length !== requiredLength) return;
     onSubmit(userSequence);
   };
 
@@ -165,10 +168,14 @@ export function MemorySequenceGame({
         <div className="flex w-full flex-col items-center gap-5" data-testid="memory-recall-phase">
           <div>
             <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-              Hãy xếp lại chuỗi theo đúng thứ tự bạn vừa nhớ:
+              {board.mode === 'missing'
+                ? `Chọn từ còn thiếu ở vị trí ${(board.missingIndex ?? 0) + 1} trong dãy:`
+                : board.mode === 'swapped'
+                ? `Chọn 2 từ ở vị trí ${(board.swappedIndices?.[0] ?? 0) + 1} và ${(board.swappedIndices?.[1] ?? 1) + 1} bị đổi thứ tự:`
+                : 'Hãy xếp lại chuỗi theo đúng thứ tự bạn vừa nhớ:'}
             </p>
             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              Đã chọn {userSequence.length}/{board.sequence.length} hình
+              Đã chọn {userSequence.length}/{requiredLength} hình
             </p>
           </div>
 
@@ -178,18 +185,18 @@ export function MemorySequenceGame({
             aria-label="Các ô thứ tự đã chọn"
             className="flex max-w-full flex-wrap items-center justify-center gap-2.5 px-2"
           >
-            {Array.from({ length: board.sequence.length }).map((_, index) => {
+            {slots.map((posIndex, index) => {
               const token = userSequence[index];
               const isFilled = Boolean(token);
               return (
                 <button
-                  key={index}
+                  key={posIndex}
                   type="button"
                   data-testid={`recall-slot-${index}`}
                   aria-label={
                     isFilled
-                      ? `Vị trí ${index + 1}: ${token}. Nhấn để xóa.`
-                      : `Vị trí ${index + 1}: chưa chọn`
+                      ? `Vị trí ${posIndex + 1}: ${token}. Nhấn để xóa.`
+                      : `Vị trí ${posIndex + 1}: chưa chọn`
                   }
                   disabled={disabled || !isFilled}
                   onClick={() => {
@@ -207,13 +214,13 @@ export function MemorySequenceGame({
                   {isFilled ? (
                     <div className="flex flex-col items-center">
                       <span className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
-                        {index + 1}
+                        Vị trí {posIndex + 1}
                       </span>
                       {renderTokenVisual(token)}
                     </div>
                   ) : (
                     <span className="text-xs font-bold text-slate-400 dark:text-slate-500">
-                      Ô {index + 1}
+                      Ô {posIndex + 1}
                     </span>
                   )}
                 </button>
@@ -236,7 +243,7 @@ export function MemorySequenceGame({
                   key={`${option}-${optIdx}`}
                   type="button"
                   data-testid={`memory-option-${option}`}
-                  disabled={disabled || userSequence.length >= board.sequence.length}
+                  disabled={disabled || userSequence.length >= requiredLength}
                   onClick={() => handleSelectOption(option)}
                   className={`flex ${buttonMinSize} items-center justify-center rounded-2xl border-2 border-slate-200 bg-white px-3.5 py-2 text-slate-900 shadow-sm transition hover:border-indigo-300 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-100 dark:hover:border-zinc-600`}
                 >
@@ -284,7 +291,7 @@ export function MemorySequenceGame({
             <button
               type="button"
               data-testid="submit-memory-btn"
-              disabled={disabled || userSequence.length !== board.sequence.length}
+              disabled={disabled || userSequence.length !== requiredLength}
               onClick={handleSubmit}
               className={`flex ${
                 isAge68 ? 'min-h-[56px]' : 'min-h-[48px]'

@@ -34,6 +34,17 @@ export function QuantityBalanceGame({
   const leftSum = board.left.reduce((sum, item) => sum + item.weight, 0);
   const rightSum = board.right.reduce((sum, item) => sum + item.weight, 0);
 
+  const isReplaceLeft = board.mode === 'replace' && board.left.some((it) => it.id === board.replaceId);
+  const isReplaceRight = board.mode === 'replace' && board.right.some((it) => it.id === board.replaceId);
+
+  const effectiveLeftSum = isReplaceLeft && selectedWeight !== null
+    ? board.left.reduce((sum, it) => sum + (it.id === board.replaceId ? selectedWeight : it.weight), 0)
+    : leftSum;
+
+  const effectiveRightSum = isReplaceRight && selectedWeight !== null
+    ? board.right.reduce((sum, it) => sum + (it.id === board.replaceId ? selectedWeight : it.weight), 0)
+    : rightSum;
+
   const handleSelect = (weight: number) => {
     if (disabled) return;
     setSelectedWeight(weight);
@@ -57,7 +68,9 @@ export function QuantityBalanceGame({
     >
       <div>
         <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-          Tìm quả cân phù hợp để hai đĩa cân thăng bằng:
+          {board.mode === 'replace'
+            ? 'Tìm quả cân thay thế quả được đánh dấu để hai đĩa cân thăng bằng:'
+            : 'Tìm quả cân phù hợp để hai đĩa cân thăng bằng:'}
         </p>
       </div>
 
@@ -79,14 +92,39 @@ export function QuantityBalanceGame({
               Đĩa cân Trái
             </span>
             <div className="flex flex-wrap items-center justify-center gap-1.5">
-              {board.left.map((item) => (
-                <span
-                  key={item.id}
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100 font-mono text-sm font-black text-indigo-900 shadow-2xs dark:bg-indigo-950 dark:text-indigo-200"
-                >
-                  {item.weight}
-                </span>
-              ))}
+              {board.left.map((item) => {
+                const isTarget = board.mode === 'replace' && item.id === board.replaceId;
+                if (isTarget) {
+                  return (
+                    <div
+                      key={item.id}
+                      data-testid="replace-target-slot-left"
+                      className="flex flex-col items-center"
+                    >
+                      <span className="text-[9px] font-bold text-amber-700 dark:text-amber-400">
+                        Cần thay
+                      </span>
+                      <span
+                        className={`flex h-10 min-w-10 items-center justify-center rounded-xl border-2 px-2 font-mono text-sm font-black shadow-xs ${
+                          selectedWeight !== null
+                            ? 'border-indigo-500 bg-indigo-50 text-indigo-900 ring-2 ring-indigo-400 dark:border-indigo-400 dark:bg-indigo-950 dark:text-indigo-200'
+                            : 'border-dashed border-amber-500 bg-amber-50 text-amber-900 dark:border-amber-600 dark:bg-amber-950/50 dark:text-amber-200'
+                        }`}
+                      >
+                        {selectedWeight !== null ? `${selectedWeight}` : `${item.weight} 🔄`}
+                      </span>
+                    </div>
+                  );
+                }
+                return (
+                  <span
+                    key={item.id}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100 font-mono text-sm font-black text-indigo-900 shadow-2xs dark:bg-indigo-950 dark:text-indigo-200"
+                  >
+                    {item.weight}
+                  </span>
+                );
+              })}
               {board.unknownSide === 'left' && (
                 <span
                   data-testid="unknown-slot-left"
@@ -98,6 +136,9 @@ export function QuantityBalanceGame({
             </div>
             <span className="mt-2 text-[11px] font-semibold text-slate-400">
               Tổng hiện có: {leftSum}
+              {selectedWeight !== null && effectiveLeftSum !== leftSum && (
+                <span className="ml-1 font-bold text-indigo-600 dark:text-indigo-400">→ {effectiveLeftSum}</span>
+              )}
             </span>
           </div>
 
@@ -107,14 +148,39 @@ export function QuantityBalanceGame({
               Đĩa cân Phải
             </span>
             <div className="flex flex-wrap items-center justify-center gap-1.5">
-              {board.right.map((item) => (
-                <span
-                  key={item.id}
-                  className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100 font-mono text-sm font-black text-indigo-900 shadow-2xs dark:bg-indigo-950 dark:text-indigo-200"
-                >
-                  {item.weight}
-                </span>
-              ))}
+              {board.right.map((item) => {
+                const isTarget = board.mode === 'replace' && item.id === board.replaceId;
+                if (isTarget) {
+                  return (
+                    <div
+                      key={item.id}
+                      data-testid="replace-target-slot-right"
+                      className="flex flex-col items-center"
+                    >
+                      <span className="text-[9px] font-bold text-amber-700 dark:text-amber-400">
+                        Cần thay
+                      </span>
+                      <span
+                        className={`flex h-10 min-w-10 items-center justify-center rounded-xl border-2 px-2 font-mono text-sm font-black shadow-xs ${
+                          selectedWeight !== null
+                            ? 'border-indigo-500 bg-indigo-50 text-indigo-900 ring-2 ring-indigo-400 dark:border-indigo-400 dark:bg-indigo-950 dark:text-indigo-200'
+                            : 'border-dashed border-amber-500 bg-amber-50 text-amber-900 dark:border-amber-600 dark:bg-amber-950/50 dark:text-amber-200'
+                        }`}
+                      >
+                        {selectedWeight !== null ? `${selectedWeight}` : `${item.weight} 🔄`}
+                      </span>
+                    </div>
+                  );
+                }
+                return (
+                  <span
+                    key={item.id}
+                    className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100 font-mono text-sm font-black text-indigo-900 shadow-2xs dark:bg-indigo-950 dark:text-indigo-200"
+                  >
+                    {item.weight}
+                  </span>
+                );
+              })}
               {board.unknownSide === 'right' && (
                 <span
                   data-testid="unknown-slot-right"
@@ -126,6 +192,9 @@ export function QuantityBalanceGame({
             </div>
             <span className="mt-2 text-[11px] font-semibold text-slate-400">
               Tổng hiện có: {rightSum}
+              {selectedWeight !== null && effectiveRightSum !== rightSum && (
+                <span className="ml-1 font-bold text-indigo-600 dark:text-indigo-400">→ {effectiveRightSum}</span>
+              )}
             </span>
           </div>
         </div>

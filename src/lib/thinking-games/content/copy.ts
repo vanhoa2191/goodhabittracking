@@ -1,4 +1,4 @@
-import type { GameAgeTrack, GameTypeId, PathStep } from '../types';
+import type { BoardData, GameAgeTrack, GameTypeId, PathStep } from '../types';
 
 export const VIETNAMESE_COORDINATE = (point: PathStep): string => {
   return `hàng ${point.y + 1}, cột ${point.x + 1}`;
@@ -369,26 +369,26 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
   },
   'g05-t3': {
     age_6_8: [
-      'Bạn chọn các món đồ để cộng lại đúng số mục tiêu mà không bị vượt nhé.',
-      'Bấm chọn những con số sao cho vừa khít với số điểm cần đạt.',
-      'Gom các số nhỏ lại với nhau để được đúng tổng số đề bài yêu cầu.',
+      'Bạn chọn các món đồ sao cho tổng đúng với yêu cầu của đề bài nhé.',
+      'Bấm chọn những con số sao cho đúng điều kiện đề bài đưa ra nha.',
+      'Gom các số lại với nhau sao cho khớp với yêu cầu của đề bài nhé.',
     ],
     age_9_12: [
-      'Lựa chọn tập hợp các số sao cho tổng giá trị thỏa mãn đúng điều kiện mục tiêu.',
-      'Tối ưu hóa số lượng phần tử được chọn để đáp ứng tiêu chí ít nhất hoặc vừa vặn.',
-      'Tính nhẩm linh hoạt để kết hợp các số đạt mục tiêu mà không vượt quá giới hạn.',
+      'Lựa chọn tập hợp các số sao cho tổng giá trị thỏa mãn đúng điều kiện đề bài đưa ra.',
+      'Tối ưu cách chọn để đáp ứng chính xác tiêu chí của đề bài nêu ra.',
+      'Tính nhẩm linh hoạt để kết hợp các số đúng điều kiện đề bài yêu cầu.',
     ],
   },
   'g06-t1': {
     age_6_8: [
       'Đi từ ô bắt đầu đến ô đích, tránh các bức tường và ghé qua điểm cần đến nhé.',
       'Vẽ đường đi an toàn đưa bạn nhỏ về đích mà không đâm vào chướng ngại vật.',
-      'Tìm đường ngắn nhất trên bảng ô vuông để về đích an toàn nha bạn.',
+      'Tìm một đường đi hợp lệ đến ô đích và ghé qua các điểm mốc trên bảng nhé.',
     ],
     age_9_12: [
-      'Lập kế hoạch đường đi tối ưu từ điểm xuất phát đến đích, tránh vật cản và qua các điểm mốc.',
-      'Tìm lộ trình ngắn nhất hoặc ghé qua các điểm kiểm tra theo đúng thứ tự yêu cầu.',
-      'Định vị không gian trên lưới để vạch ra đường đi hợp lệ và an toàn nhất.',
+      'Vẽ một lộ trình hợp lệ từ điểm xuất phát đến đích, tránh vật cản và qua các điểm mốc.',
+      'Sắp xếp các bước đi sao cho an toàn, đi đủ các điểm mốc rồi mới tới đích.',
+      'Định vị không gian trên lưới để vạch ra đường đi hợp lệ và an toàn.',
     ],
   },
   'g06-t2': {
@@ -489,6 +489,187 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
   },
 };
 
+// Rule-specific tutorials. Some checkers enforce a rule that depends on the board
+// (how many tokens to answer, which positions to pick, how many items to select,
+// whether only the shortest path counts). Those boards must not reuse the generic
+// tutorial above, otherwise the child is told a rule the checker does not apply.
+export const GAME_MODE_TUTORIALS: Partial<Record<GameTypeId, Record<string, {
+  age_6_8: readonly string[];
+  age_9_12: readonly string[];
+}>>> = {
+  'g03-t1': {
+    missing: {
+      age_6_8: [
+        'Nhìn dãy thật kỹ; khi dãy ẩn đi, bạn chọn từ ở ô còn trống nhé.',
+        'Ghi nhớ dãy các từ; sau khi dãy ẩn đi, bạn điền lại từ ở ô bị bỏ trống nha.',
+        'Đọc thầm từng từ theo thứ tự để nhớ, rồi chọn từ cho ô để trống.',
+      ],
+      age_9_12: [
+        'Ghi nhớ toàn bộ dãy; khi dãy ẩn đi, bạn cho biết từ nào nằm ở ô bị bỏ trống.',
+        'Tập trung quan sát chuỗi trong thời gian ngắn rồi điền đúng từ vào ô để trống.',
+        'Gom các từ thành nhóm nhỏ trong tâm trí để nhớ chính xác từ ở ô bị bỏ trống.',
+      ],
+    },
+    swapped: {
+      age_6_8: [
+        'Nhìn dãy thật kỹ; khi dãy ẩn đi, bạn chọn hai từ ở hai ô được đánh dấu nhé.',
+        'Ghi nhớ dãy các từ; sau khi dãy ẩn đi, bạn điền lại hai ô được đánh dấu nha.',
+        'Đọc thầm từng từ theo thứ tự để nhớ, rồi chọn hai từ cho ô đánh dấu.',
+      ],
+      age_9_12: [
+        'Ghi nhớ toàn bộ dãy; khi dãy ẩn đi, bạn cho biết hai từ nằm ở ô được đánh dấu.',
+        'Tập trung quan sát chuỗi trong thời gian ngắn rồi điền đúng hai từ vào ô đánh dấu.',
+        'Gom các từ thành nhóm nhỏ trong tâm trí để nhớ chính xác hai từ ở ô đánh dấu.',
+      ],
+    },
+  },
+  'g03-t2': {
+    missing: {
+      age_6_8: [
+        'Bạn xem các ô sáng đèn; ô đã đánh dấu rồi thì bỏ qua, hãy bấm ô sáng đèn còn lại nhé.',
+        'Nhớ xem ngôi sao sáng ở ô nào; ô đã đánh dấu rồi, bạn bấm ô sáng đèn còn lại nha.',
+        'Tập trung nhìn các vị trí xuất hiện rồi bấm đúng ô sáng đèn chưa đánh dấu nha.',
+      ],
+      age_9_12: [
+        'Ghi nhớ vị trí các điểm sáng trên lưới; bỏ qua ô đã đánh dấu và chọn ô sáng còn lại.',
+        'Dùng dấu mốc hàng và cột để nhớ tọa độ các ô vừa sáng rồi chọn ô chưa đánh dấu.',
+        'Tái hiện lại phân bố các điểm nhớ trên bảng lưới và chọn ô sáng còn lại.',
+      ],
+    },
+  },
+  'g05-t1': {
+    replace: {
+      age_6_8: [
+        'Một quả cân sẽ được thay bằng quả mới; bạn tìm quả nặng bao nhiêu để hai đĩa cân bằng nhé.',
+        'Nhìn quả cân được đánh dấu; thay nó bằng quả nặng bao nhiêu thì hai đĩa cân bằng nha?',
+        'Cộng hai đĩa cân, rồi tìm số cân cần thay cho quả đã đánh dấu nhé.',
+      ],
+      age_9_12: [
+        'Tính giá trị quả cân cần thay thế để tổng khối lượng hai đĩa cân bằng nhau.',
+        'Xác định quả cân được đánh dấu rồi tìm số cân thay thế giúp hai đĩa cân thăng bằng.',
+        'So sánh tổng số lượng hai vế sau khi thay quả cân đã đánh dấu để tìm số cần thay.',
+      ],
+    },
+  },
+  'g05-t3': {
+    fewest: {
+      age_6_8: [
+        'Chọn các món sao cho tổng đúng bằng mục tiêu và số món chọn là ít nhất nhé.',
+        'Gom thật ít món vừa đủ để cộng ra đúng số mục tiêu nha.',
+        'Tìm cách dùng ít món nhất mà vẫn đủ số điểm cần đạt nhé.',
+      ],
+      age_9_12: [
+        'Chọn tập hợp các số sao cho tổng đúng mục tiêu và số phần tử là ít nhất.',
+        'Tối ưu số món chọn sao cho vẫn đạt đúng tổng số điểm yêu cầu.',
+        'Tìm tổ hợp có số phần tử ít nhất nhưng tổng giá trị vẫn đúng mục tiêu.',
+      ],
+    },
+    'exact-two': {
+      age_6_8: [
+        'Chọn đúng hai món sao cho tổng đúng bằng mục tiêu nhé.',
+        'Chọn hai món vừa đủ để cộng ra số mục tiêu nha.',
+        'Bấm đúng hai món đồ để tổng của chúng bằng mục tiêu nhé.',
+      ],
+      age_9_12: [
+        'Chọn đúng hai số sao cho tổng giá trị đúng bằng mục tiêu.',
+        'Tìm một cặp số có tổng đúng mục tiêu rồi chọn cả hai vào.',
+        'Hai phần tử được chọn phải có tổng giá trị đúng mục tiêu yêu cầu.',
+      ],
+    },
+    'not-over': {
+      age_6_8: [
+        'Chọn các món sao cho tổng không vượt quá mục tiêu và là lớn nhất nhé.',
+        'Bỏ món làm vượt mục tiêu rồi gom sao cho tổng vừa đủ nhất nha.',
+        'Gom các món sao cho tổng vừa khít mục tiêu mà không vượt quá nhé.',
+      ],
+      age_9_12: [
+        'Chọn tập hợp các số sao cho tổng không vượt mục tiêu và đạt giá trị lớn nhất.',
+        'Loại các phần làm vượt mục tiêu rồi tối đa hóa tổng còn lại.',
+        'Tìm tổ hợp có tổng lớn nhất nhưng vẫn không vượt quá mục tiêu đã cho.',
+      ],
+    },
+    any: {
+      age_6_8: [
+        'Chọn các món sao cho tổng đúng bằng mục tiêu, tối đa {maxItems} món nhé.',
+        'Gom các món vào giỏ sao cho tổng vừa đúng mục tiêu và không quá {maxItems} món nha.',
+        'Bấm chọn các món để tổng đúng mục tiêu, tối đa {maxItems} món nhé.',
+      ],
+      age_9_12: [
+        'Chọn tập hợp các số sao cho tổng đúng mục tiêu và không quá {maxItems} số.',
+        'Tối ưu danh sách chọn sao cho tổng đúng mục tiêu trong khi giới hạn {maxItems} phần tử.',
+        'Kết hợp các số đạt đúng tổng yêu cầu mà vẫn tuân thủ giới hạn {maxItems} món đã chọn.',
+      ],
+    },
+  },
+  'g06-t1': {
+    shortest: {
+      age_6_8: [
+        'Tìm đường ngắn nhất từ ô bắt đầu đến ô đích, tránh các bức tường nhé.',
+        'Đường ngắn nhất sẽ đi thẳng về đích; bạn hãy vạch đường đó nha.',
+        'Chọn đường có ít bước nhất để đưa bạn nhỏ tới đích an toàn nhé.',
+      ],
+      age_9_12: [
+        'Lập kế hoạch đường đi ngắn nhất từ điểm xuất phát đến đích, tránh vật cản.',
+        'Tìm lộ trình có số bước ít nhất để tới đích an toàn nhé.',
+        'Chọn đường đi ít bước nhất, tránh vật cản và đi qua các điểm mốc nếu có.',
+      ],
+    },
+    ordered: {
+      age_6_8: [
+        'Trên đường đi, bạn phải ghé lấy chiếc chìa khóa trước rồi mới tới cánh cửa nhé.',
+        'Nhớ ghé qua chiếc chìa khóa ở giữa đường trước khi bước vào cánh cửa nha.',
+        'Hãy đi qua chiếc chìa khóa trước, đến cánh cửa sau cùng nhé.',
+      ],
+      age_9_12: [
+        'Lộ trình phải đi qua chiếc chìa khóa trước rồi mới tới cánh cửa đích.',
+        'Sắp xếp đường đi sao cho điểm lấy chìa được ghé trước điểm mở cửa.',
+        'Định hướng để ghé lấy chìa khóa trước, sau đó mới tiến tới cánh cửa.',
+      ],
+    },
+    default: {
+      age_6_8: [
+        'Đi từ ô bắt đầu đến ô đích, tránh các bức tường và ghé qua điểm cần đến nhé.',
+        'Vẽ đường đi an toàn đưa bạn nhỏ về đích mà không đâm vào chướng ngại vật.',
+        'Tìm một đường đi hợp lệ đến ô đích và ghé qua các điểm mốc trên bảng nhé.',
+      ],
+      age_9_12: [
+        'Vẽ một lộ trình hợp lệ từ điểm xuất phát đến đích, tránh vật cản và qua các điểm mốc.',
+        'Sắp xếp các bước đi sao cho an toàn, đi đủ các điểm mốc rồi mới tới đích.',
+        'Định vị không gian trên lưới để vạch ra đường đi hợp lệ và an toàn.',
+      ],
+    },
+  },
+};
+
+// Which rule variant of a board decides how the child must answer.
+export function getTutorialMode(gameTypeId: GameTypeId, boardData?: BoardData | null): string | null {
+  if (!boardData) return null;
+  if (gameTypeId === 'g03-t1') {
+    return boardData.kind === 'memory-sequence' ? (boardData.mode ?? 'recall') : null;
+  }
+  if (gameTypeId === 'g03-t2') {
+    return boardData.kind === 'memory-position' ? boardData.mode : null;
+  }
+  if (gameTypeId === 'g05-t1') {
+    return boardData.kind === 'quantity-balance' ? boardData.mode : null;
+  }
+  if (gameTypeId === 'g05-t3') {
+    return boardData.kind === 'quantity-target' ? boardData.mode : null;
+  }
+  if (gameTypeId === 'g06-t1') {
+    if (boardData.kind !== 'path-planning') return null;
+    if (boardData.shortestPathOnly === true) return 'shortest';
+    if (boardData.waypointOrder === 'ordered') return 'ordered';
+    return 'default';
+  }
+  return null;
+}
+
+function formatTutorial(template: string, boardData?: BoardData | null): string {
+  if (!boardData || boardData.kind !== 'quantity-target') return template;
+  return template.replace(/\{maxItems\}/g, String(boardData.maxItems));
+}
+
 // Deterministic helper to select item by seed
 export function selectBySeed<T>(list: readonly T[], seed: string | number, salt = 0): T {
   const str = String(seed);
@@ -506,9 +687,19 @@ export function getNaturalInvitation(gameTypeId: GameTypeId, day: number, seed: 
   return selectBySeed(variants, seed, day);
 }
 
-export function getNaturalTutorial(gameTypeId: GameTypeId, ageTrack: GameAgeTrack, day: number, seed: string): string {
+export function getNaturalTutorial(
+  gameTypeId: GameTypeId,
+  ageTrack: GameAgeTrack,
+  day: number,
+  seed: string,
+  boardData?: BoardData | null,
+): string {
   const trackGroup = ageTrack === 'age_6_8' || ageTrack === 'age_3_5' ? 'age_6_8' : 'age_9_12';
-  const variants = GAME_TUTORIALS[gameTypeId]?.[trackGroup];
+  const mode = getTutorialMode(gameTypeId, boardData);
+  const modeVariants = mode ? GAME_MODE_TUTORIALS[gameTypeId]?.[mode]?.[trackGroup] : undefined;
+  const variants = modeVariants && modeVariants.length > 0
+    ? modeVariants
+    : GAME_TUTORIALS[gameTypeId]?.[trackGroup];
   if (!variants || variants.length === 0) return 'Bạn quan sát thật kỹ và chọn đáp án chính xác nhé.';
-  return selectBySeed(variants, seed, day);
+  return formatTutorial(selectBySeed(variants, seed, day), boardData);
 }

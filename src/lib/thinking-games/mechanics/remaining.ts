@@ -534,6 +534,12 @@ function memoryPositionAnswer(board: Extract<BoardData, { kind: 'memory-position
   return uniquePoints(board.targets.filter((point) => !revealed.has(pointKey(point))));
 }
 
+// How many positions the child has to pick. The renderer must count exactly this
+// many, otherwise the child cannot submit the answer the checker expects.
+export function memoryPositionRequiredCount(board: Extract<BoardData, { kind: 'memory-position' }>): number {
+  return memoryPositionAnswer(board).length;
+}
+
 definitions.push({
   gameTypeId: 'g03-t2',
   checkerId: 'memory-position-v1',
@@ -555,7 +561,7 @@ definitions.push({
       const p = { x: Math.floor(rng() * width), y: Math.floor(rng() * height) };
       if (!targets.some((entry) => entry.x === p.x && entry.y === p.y)) targets.push(p);
     }
-    const mode = variantIndex('g03-t2', input.variant) >= 2 ? 'missing' : 'recall';
+    const mode: 'missing' | 'recall' = variantIndex('g03-t2', input.variant) >= 2 ? 'missing' : 'recall';
     const revealed = mode === 'missing' ? targets.slice(0, -1) : [];
     const solution = memoryPositionAnswer({ kind: 'memory-position', width, height, targets, revealed, mode, displayMs: 1400, options: [] });
     const allPoints: PathStep[] = [];
@@ -572,13 +578,16 @@ definitions.push({
       'Bạn hãy dùng các góc và đường viền của bảng làm điểm mốc để nhớ vị trí nhé.',
       'Ghi nhớ các ô sáng đèn theo thứ tự từ trên xuống dưới để không bỏ sót.',
     ];
+    const board = { kind: 'memory-position' as const, width, height, targets, revealed, mode, displayMs: input.ageTrack === 'age_6_8' ? 1400 : 1200, options };
     return {
-      board: { kind: 'memory-position', width, height, targets, revealed, mode, displayMs: input.ageTrack === 'age_6_8' ? 1400 : 1200, options },
+      board,
       solution,
       hints,
-      explanation: `Các vị trí bạn nhỏ đã xuất hiện nằm ở ${posVi}.`,
+      explanation: mode === 'missing'
+        ? `Vị trí còn thiếu nằm ở ${posVi}.`
+        : `Các vị trí bạn nhỏ đã xuất hiện nằm ở ${posVi}.`,
       title: 'Nhớ vị trí',
-      tutorial: getNaturalTutorial('g03-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
+      tutorial: getNaturalTutorial('g03-t2', input.ageTrack, Math.floor(rng() * 100), input.seed, board),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -944,6 +953,20 @@ function balanceAnswer(board: Extract<BoardData, { kind: 'quantity-balance' }>):
   return board.unknownSide === 'left' ? right - left : left - right;
 }
 
+// Which weight is swapped out in replace mode. The renderer has to mark it,
+// otherwise the child cannot know that the answer replaces a weight instead of
+// being added to a pan.
+export function quantityBalanceReplaceTarget(
+  board: Extract<BoardData, { kind: 'quantity-balance' }>,
+): { side: 'left' | 'right'; index: number; weight: number } | null {
+  if (board.mode !== 'replace' || !board.replaceId) return null;
+  const leftIndex = board.left.findIndex((item) => item.id === board.replaceId);
+  if (leftIndex >= 0) return { side: 'left', index: leftIndex, weight: board.left[leftIndex]!.weight };
+  const rightIndex = board.right.findIndex((item) => item.id === board.replaceId);
+  if (rightIndex >= 0) return { side: 'right', index: rightIndex, weight: board.right[rightIndex]!.weight };
+  return null;
+}
+
 definitions.push({
   gameTypeId: 'g05-t1',
   checkerId: 'quantity-balance-v1',
@@ -988,17 +1011,34 @@ definitions.push({
     const optionCount = 3 + (rank >= 2 ? 1 : 0);
     const options = [...new Set([answer, answer + 1, Math.max(0, answer - 1), answer + 2, answer + 3])].sort((a, b) => a - b).slice(0, optionCount);
     if (!options.includes(answer)) options[0] = answer;
-    const hints: readonly [string, string] = [
-      'Bạn hãy tính tổng số cân ở đĩa cân đã biết đủ các quả nhé.',
-      'Lấy tổng số cân đó trừ đi phần đã có ở bên đĩa còn lại để tìm số cân còn thiếu.',
-    ];
+    const board = { ...base, options };
+    const replaceTarget = quantityBalanceReplaceTarget(board);
+    const hints: readonly [string, string] = mode === 'replace'
+      ? [
+        'Bạn hãy cộng tổng số cân ở cả hai đĩa nhé.',
+        'Quả cân được đánh dấu sẽ bị thay bằng quả mới; tìm số cân của quả mới đó.',
+      ]
+      : mode === 'compare'
+        ? [
+          'Bạn hãy cộng tổng số cân ở cả hai đĩa rồi so sánh xem đĩa nào nặng hơn nhé.',
+          'Hiệu số giữa hai đĩa chính là số cân cần thêm vào đĩa nhẹ hơn.',
+        ]
+        : [
+          'Bạn hãy tính tổng số cân ở đĩa cân đã biết đủ các quả nhé.',
+          'Lấy tổng số cân đó trừ đi phần đã có ở bên đĩa còn lại để tìm số cân còn thiếu.',
+        ];
+    const explanation = mode === 'replace' && replaceTarget
+      ? `Thay quả cân thứ ${replaceTarget.index + 1} ở đĩa ${replaceTarget.side === 'left' ? 'Trái' : 'Phải'} bằng quả cân nặng ${answer} thì hai đĩa cân sẽ cân bằng.`
+      : mode === 'compare'
+        ? `Cần thêm ${answer} vào đĩa nhẹ hơn để hai đĩa cân cân bằng.`
+        : `Cần thêm ${answer} để hai bên đĩa cân có cân nặng bằng nhau.`;
     return {
-      board: { ...base, options },
+      board,
       solution: answer,
       hints,
-      explanation: `Cần thêm ${answer} để hai bên đĩa cân có cân nặng bằng nhau.`,
+      explanation,
       title: 'Cân bằng hai bên',
-      tutorial: getNaturalTutorial('g05-t1', input.ageTrack, Math.floor(rng() * 100), input.seed),
+      tutorial: getNaturalTutorial('g05-t1', input.ageTrack, Math.floor(rng() * 100), input.seed, board),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1096,6 +1136,17 @@ function targetSubsets(board: Extract<BoardData, { kind: 'quantity-target' }>): 
   return valid;
 }
 
+// Every selection the checker accepts. The renderer uses it to tell the child
+// when the basket already satisfies the rule before submitting.
+export function quantityTargetSatisfies(
+  board: Extract<BoardData, { kind: 'quantity-target' }>,
+  answer: unknown,
+): boolean {
+  if (!isStringArray(answer)) return false;
+  if (new Set(answer).size !== answer.length) return false;
+  return targetSubsets(board).some((ids) => sameStringSet(ids, answer));
+}
+
 definitions.push({
   gameTypeId: 'g05-t3',
   checkerId: 'quantity-target-v1',
@@ -1107,10 +1158,8 @@ definitions.push({
     return valid[0] ?? null;
   },
   check: (board, answer) => {
-    if (!isStringArray(answer) || board.kind !== 'quantity-target') return false;
-    if (new Set(answer).size !== answer.length) return false;
-    const valid = targetSubsets(board);
-    return valid.some((ids) => sameStringSet(ids, answer));
+    if (board.kind !== 'quantity-target') return false;
+    return quantityTargetSatisfies(board, answer);
   },
   generate: (input) => {
     const rng = randomFor(input, 'g05-t3');
@@ -1125,17 +1174,40 @@ definitions.push({
     const subsets = targetSubsets(base).sort((a, b) => a.length - b.length || a.join(',').localeCompare(b.join(',')));
     const solution = (subsets[0] ?? [items[0]!.id]) as string[];
     const solValues = solution.map((id) => items.find((item) => item.id === id)?.value).filter((v): v is number => typeof v === 'number');
-    const hints: readonly [string, string] = [
-      `Bạn hãy thử chọn số lớn nhất có thể trước mà không làm vượt quá mục tiêu ${target} nhé.`,
-      `Tìm thêm các số nhỏ hơn để cộng dồn vào cho vừa khít với mục tiêu ${target}.`,
-    ];
+    const solSum = solValues.reduce((sum, value) => sum + value, 0);
+    const hints: readonly [string, string] = mode === 'fewest'
+      ? [
+        'Bạn hãy tìm cách dùng thật ít món mà vẫn đủ mục tiêu nhé.',
+        `Cộng các số lại rồi xem món nào là thừa, bỏ đi thì có còn đúng mục tiêu ${target} không nhé.`,
+      ]
+      : mode === 'exact-two'
+        ? [
+          'Bạn chỉ chọn đúng hai món thôi nhé.',
+          `Tìm hai số cộng lại đúng bằng mục tiêu ${target}.`,
+        ]
+        : mode === 'not-over'
+          ? [
+            `Bạn hãy thử chọn số lớn nhất có thể trước mà không làm vượt quá mục tiêu ${target} nhé.`,
+            `Tìm thêm các số nhỏ hơn để cộng dồn vào cho vừa khít với mục tiêu ${target}.`,
+          ]
+          : [
+            `Chọn các món sao cho tổng đúng bằng mục tiêu ${target} nhé.`,
+            `Bạn chỉ được chọn tối đa ${maxItems} món thôi nha.`,
+          ];
+    const explanation = mode === 'fewest'
+      ? `Chọn ${solution.length} món (${solValues.join(' và ')}) để đạt tổng đúng bằng ${target} với số món ít nhất.`
+      : mode === 'exact-two'
+        ? `Chọn đúng hai món (${solValues.join(' và ')}) để đạt tổng đúng bằng ${target}.`
+        : mode === 'not-over'
+          ? `Gom ${solValues.join(' và ')} để có tổng là ${solSum}, không vượt quá mục tiêu ${target}.`
+          : `Chọn các món (${solValues.join(' và ')}) để đạt tổng đúng bằng ${target}.`;
     return {
       board: base,
       solution,
       hints,
-      explanation: `Chọn các số ${solValues.join(' và ')} để đạt tổng đúng bằng ${target}.`,
+      explanation,
       title: 'Đủ mục tiêu',
-      tutorial: getNaturalTutorial('g05-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
+      tutorial: getNaturalTutorial('g05-t3', input.ageTrack, Math.floor(rng() * 100), input.seed, base),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };

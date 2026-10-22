@@ -146,14 +146,23 @@ export function PathPlanningGame({
       {/* Question prompt & Status */}
       <div className="flex flex-col items-center gap-1">
         <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-          Tìm đường từ điểm xuất phát 🏠 đến đích 🎯
+          {board.shortestPathOnly
+            ? 'Tìm đường ngắn nhất (ít bước nhất) từ điểm xuất phát 🏠 đến đích 🎯'
+            : 'Tìm đường từ điểm xuất phát 🏠 đến đích 🎯'}
         </p>
-        {board.waypoints.length > 0 && (
-          <p className="text-xs font-bold text-amber-700 dark:text-amber-400">
-            Điểm cần thu thập: {visitedWaypointsCount}/{board.waypoints.length}{' '}
-            {allWaypointsVisited ? '✅ (Đã qua đủ!)' : '⭐ (Nhớ đi qua nhé)'}
-          </p>
-        )}
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {board.shortestPathOnly && (
+            <span className="rounded-lg bg-indigo-100 px-2 py-0.5 text-xs font-bold text-indigo-800 dark:bg-indigo-950 dark:text-indigo-300">
+              ⚡ Đường ngắn nhất (hiện tại: {Math.max(0, path.length - 1)} bước)
+            </span>
+          )}
+          {board.waypoints.length > 0 && (
+            <p className="text-xs font-bold text-amber-700 dark:text-amber-400">
+              Điểm cần thu thập: {visitedWaypointsCount}/{board.waypoints.length}{' '}
+              {allWaypointsVisited ? '✅ (Đã qua đủ!)' : '⭐ (Nhớ đi qua nhé)'}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Grid container */}
