@@ -1,0 +1,3727 @@
+{
+  "batch": 5,
+  "file": "content/thinking-games/candidates/365-v2/batch-05-days-274-365.json",
+  "itemsReviewed": 368,
+  "flags": [
+    {
+      "id": "D274-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":3,\"y\":2}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D274-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":3,\"y\":2}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Bến thuyền · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là cá-xanh.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là cá-xanh.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Bến thuyền · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là sao-xanh.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D275-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là sao-xanh.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Bến thuyền · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Bến thuyền · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D276-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D278-main-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Long sentence in explanation (129 chars)",
+      "evidence": "explanation: \"Đường ngắn nhất có 12 bước: (0,0) → (1,0) → (2,0) → (3,0) → (4,0) → (5,0) → (5,1) → (5,2) → (5,3) → ...\"",
+      "suggestedFix": "Break into shorter sentences for children"
+    },
+    {
+      "id": "D279-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D279-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-3, item-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D279-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D279-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D280-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D280-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (3,3) (0,1).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D280-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D280-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (4,3) (3,2) (0,1).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D282-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D282-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D283-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D283-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (0,2).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D283-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D283-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (3,3).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D283-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D283-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D283-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D283-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D285-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-2.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D285-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1, item-2, item-3.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D286-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D286-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D287-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D287-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D287-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":3,\"y\":0}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D287-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":3,\"y\":3}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Cầu nối · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là quả-xanh.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là quả-xanh.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Cầu nối · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là cá-xanh.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D288-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là cá-xanh.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D289-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Cầu nối · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D289-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D289-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D289-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D289-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D289-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Cầu nối · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D289-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D289-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D289-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D289-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D290-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D290-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D291-bonus-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Long sentence in explanation (122 chars)",
+      "evidence": "explanation: \"Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (4,0) → (4,1) → (4,2) → (4,3) → (4,4) → (5,4) →...\"",
+      "suggestedFix": "Break into shorter sentences for children"
+    },
+    {
+      "id": "D292-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-2.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D292-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-2, item-4, item-6.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D293-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D293-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (0,3) (3,1).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D293-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D293-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (0,3) (4,0) (0,1).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D294-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D294-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D294-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D294-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D295-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D295-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D296-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D296-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1, item-4, item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D296-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D296-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (1,0) (1,1) (2,0).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D296-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D296-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (2,0) (2,2) (3,0) (3,2).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D297-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D297-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D298-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":2,\"y\":3}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D298-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":0,\"y\":1}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Xưởng tái chế · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là quả.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là quả.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Xưởng tái chế · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là hoa.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D299-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là hoa.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Xưởng tái chế · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Xưởng tái chế · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D300-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D302-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Tìm đường\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D302-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Tìm đường\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D302-main-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Long sentence in explanation (122 chars)",
+      "evidence": "explanation: \"Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (4,0) → (5,0) → (6,0) → (6,1) → (6,2) → (6,3) →...\"",
+      "suggestedFix": "Break into shorter sentences for children"
+    },
+    {
+      "id": "D302-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Điền phần tiếp theo\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D302-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Điền phần tiếp theo\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D303-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Đổi luật phân loại\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D303-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-2, item-3.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D303-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Đổi luật phân loại\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D303-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-6.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D303-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Ghép bóng\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D303-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D303-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Ghép bóng\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D303-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D304-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Điểm khác biệt\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D304-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D304-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (1,3) (1,1).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D304-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Điểm khác biệt\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D304-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D304-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (2,4) (3,3) (4,4).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D304-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Nhớ thứ tự\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D304-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Nhớ thứ tự\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D305-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Tìm phần sai\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D305-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Tìm phần sai\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D305-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Nếu thì\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D305-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Nếu thì\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D306-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Xoay hình\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D306-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D306-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Xoay hình\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D306-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D306-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Chia nhóm\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D306-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Chia nhóm\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Nhớ vị trí\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (0,1) (2,0) (2,2).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Nhớ vị trí\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (0,3) (1,1) (2,2) (3,2).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Xếp lệnh\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Xếp lệnh\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D307-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D308-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Thông tin còn thiếu\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D308-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Thông tin còn thiếu\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D308-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Đổi góc nhìn\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D308-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga xuất phát · Đổi góc nhìn\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D309-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-2, item-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D309-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-2, item-3, item-4, item-6.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D310-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D310-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D311-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D311-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D311-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":0,\"y\":1}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D311-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":1,\"y\":3}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Toa hành lý · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Toa hành lý · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D312-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D313-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Toa hành lý · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D313-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D313-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D313-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D313-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D313-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Toa hành lý · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D313-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D313-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D313-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D313-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D314-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D314-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D315-bonus-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Long sentence in explanation (122 chars)",
+      "evidence": "explanation: \"Một đường đi hợp lệ: (0,0) → (1,0) → (1,1) → (1,2) → (2,2) → (3,2) → (3,3) → (4,3) → (5,3) → (6,3) →...\"",
+      "suggestedFix": "Break into shorter sentences for children"
+    },
+    {
+      "id": "D316-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-4, item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D316-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-5, item-6.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D317-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D317-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (2,0) (0,0).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D317-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D317-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (3,0) (1,0) (0,4).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D318-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D318-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D318-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D318-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D319-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D319-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D320-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1, item-3, item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D320-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-4, item-6.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D320-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D320-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (0,1) (1,3) (2,0).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D320-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D320-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (0,1) (1,0) (1,3) (2,3).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D321-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D321-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D322-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":0,\"y\":2}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D322-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":3,\"y\":0}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Ga giao nhau · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là quả.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là quả.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Ga giao nhau · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là quả.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là quả.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Sửa bước sai\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D323-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Sửa bước sai\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Ga giao nhau · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Ga giao nhau · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Cách giải khác\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Cách giải khác\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D324-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D325-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Cân bằng hai bên\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D325-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Cân bằng hai bên\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D325-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Chi tiết bất hợp lý\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D325-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Chi tiết bất hợp lý\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D326-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Tìm đường\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D326-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Tìm đường\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D326-main-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Long sentence in explanation (122 chars)",
+      "evidence": "explanation: \"Một đường đi hợp lệ: (0,0) → (1,0) → (2,0) → (3,0) → (3,1) → (3,2) → (3,3) → (4,3) → (5,3) → (6,3) →...\"",
+      "suggestedFix": "Break into shorter sentences for children"
+    },
+    {
+      "id": "D326-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Điền phần tiếp theo\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D326-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Điền phần tiếp theo\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D327-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Đổi luật phân loại\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D327-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-4, item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D327-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Đổi luật phân loại\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D327-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D327-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Ghép bóng\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D327-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D327-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Ghép bóng\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D327-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D328-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Điểm khác biệt\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D328-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D328-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (2,1) (0,2).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D328-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Điểm khác biệt\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D328-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D328-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (3,4) (1,4) (4,1).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D328-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Nhớ thứ tự\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D328-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Nhớ thứ tự\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D329-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Tìm phần sai\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D329-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Tìm phần sai\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D329-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Nếu thì\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D329-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'ga' should be 'gà'",
+      "evidence": "title: \"Ga giao nhau · Nếu thì\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D330-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D330-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D331-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D331-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (1,2) (2,2) (3,3).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D331-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D331-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (0,1) (1,0) (1,1) (2,0).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D331-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D331-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D331-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D331-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D333-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D333-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1, item-2, item-4, item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D334-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D334-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D335-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D335-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D335-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":3,\"y\":1}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D335-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":0,\"y\":3}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Trang trí · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Trang trí · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D336-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D337-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Sân khấu · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D337-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D337-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D337-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D337-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D337-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Sân khấu · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D337-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D337-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D337-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D337-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D338-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D338-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D339-bonus-vi68",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Long sentence in explanation (115 chars)",
+      "evidence": "explanation: \"Một đường hợp lệ đi qua các điểm đúng thứ tự: (0,0) → (1,0) → (1,1) → (1,2) → (2,2) → (3,2) → (3,3) ...\"",
+      "suggestedFix": "Break into shorter sentences for children"
+    },
+    {
+      "id": "D339-bonus-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Long sentence in explanation (147 chars)",
+      "evidence": "explanation: \"Một đường hợp lệ đi qua các điểm đúng thứ tự: (0,0) → (1,0) → (1,1) → (1,2) → (2,2) → (3,2) → (4,2) ...\"",
+      "suggestedFix": "Break into shorter sentences for children"
+    },
+    {
+      "id": "D340-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-3.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D340-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-2, item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D341-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D341-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (2,2) (1,0).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D341-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D341-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (3,1) (2,4) (1,2).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D342-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D342-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D342-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D342-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D343-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D343-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D344-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Hai đặc điểm\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D344-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D344-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Hai đặc điểm\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D344-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-2, item-6.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D344-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Nhớ vị trí\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D344-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D344-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (1,1).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D344-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Nhớ vị trí\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D344-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D344-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (1,0).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D345-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Máy biến đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D345-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D345-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Máy biến đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D345-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D345-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Thông tin còn thiếu\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D345-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Thông tin còn thiếu\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D346-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Hoàn thành đối xứng\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D346-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":3,\"y\":1}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D346-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Hoàn thành đối xứng\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D346-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":1,\"y\":2}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D346-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Đủ mục tiêu\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D346-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Đủ mục tiêu\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Gian hàng · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá|mèo.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá|mèo.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Gian hàng · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là hoa|quả.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là hoa|quả.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Sửa bước sai\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D347-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Sửa bước sai\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Gian hàng · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Gian hàng · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Cách giải khác\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Cách giải khác\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D348-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D349-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Cân bằng hai bên\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D349-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Cân bằng hai bên\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D349-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Chi tiết bất hợp lý\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D349-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Chi tiết bất hợp lý\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D350-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Tìm đường\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D350-main-vi68",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Long sentence in explanation (115 chars)",
+      "evidence": "explanation: \"Một đường hợp lệ đi qua các điểm đúng thứ tự: (0,0) → (0,1) → (1,1) → (2,1) → (3,1) → (3,2) → (3,3) ...\"",
+      "suggestedFix": "Break into shorter sentences for children"
+    },
+    {
+      "id": "D350-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Tìm đường\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D350-main-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Long sentence in explanation (147 chars)",
+      "evidence": "explanation: \"Một đường hợp lệ đi qua các điểm đúng thứ tự: (0,0) → (1,0) → (2,0) → (2,1) → (2,2) → (2,3) → (3,3) ...\"",
+      "suggestedFix": "Break into shorter sentences for children"
+    },
+    {
+      "id": "D350-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Điền phần tiếp theo\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D350-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'gian' should be 'giận'",
+      "evidence": "title: \"Gian hàng · Điền phần tiếp theo\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D351-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D351-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-2, item-4, item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D351-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D351-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D352-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D352-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (0,3) (3,3).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D352-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D352-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (1,1) (0,1) (3,0).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D354-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D354-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D355-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D355-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (1,1).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D355-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D355-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình nhớ các vị trí đã hiện rồi so lại từng ô. Đáp án là (1,3).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D355-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D355-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D355-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D355-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D357-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1, item-3.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D357-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D358-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D358-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D359-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D359-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'cho' should be 'chó'",
+      "evidence": "tutorial: \"Bạn tìm một đường hợp lệ khác với đường đã cho.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D359-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":2,\"y\":0}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D359-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'soi' should be 'sổi'",
+      "evidence": "explanation: \"Mình soi ô cần điền hoặc ô đang làm mất đối xứng. Đáp án là {\"x\":0,\"y\":0}.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Cuộc hẹn bạn bè · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là hoa|sao.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là hoa|sao.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "title: \"Cuộc hẹn bạn bè · Nhận ra thay đổi\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "invitation: \"Mình có thử thách nhận ra thay đổi. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá|nắng.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D360-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi. Đáp án là lá|nắng.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D361-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Cuộc hẹn bạn bè · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D361-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D361-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D361-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D361-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D361-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "title: \"Cuộc hẹn bạn bè · Loại trừ theo manh mối\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D361-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "invitation: \"Mình có thử thách loại trừ theo manh mối. Bạn cùng thử nhé?\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D361-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D361-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sau' should be 'sáu'",
+      "evidence": "tutorial: \"Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D361-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'manh' should be 'mạnh'",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D362-main-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D362-main-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D363-bonus-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Long sentence in explanation (129 chars)",
+      "evidence": "explanation: \"Đường ngắn nhất có 12 bước: (0,0) → (1,0) → (2,0) → (3,0) → (4,0) → (4,1) → (5,1) → (6,1) → (6,2) → ...\"",
+      "suggestedFix": "Break into shorter sentences for children"
+    },
+    {
+      "id": "D364-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-2, item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D364-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'sang' should be 'sáng'",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-2, item-3, item-5.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D365-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D365-bonus-vi68",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (3,0) (1,3).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D365-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'thay' should be 'thấy'",
+      "evidence": "tutorial: \"Bạn tìm tất cả các ô đã thay đổi giữa hai hình.\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D365-bonus-vi912",
+      "severity": "fix",
+      "category": "copy",
+      "problem": "Missing diacritics: 'so' should be 'sợ'",
+      "evidence": "explanation: \"Mình so từng ô theo hàng và cột để không bỏ sót. Đáp án là (0,1) (0,2) (3,3).\"",
+      "suggestedFix": "Add proper Vietnamese diacritics"
+    },
+    {
+      "id": "D350-bonus-vi912",
+      "severity": "fix",
+      "category": "age",
+      "problem": "9-12 puzzle appears simpler than 6-8 (board size smaller)",
+      "evidence": "day=350, slot=bonus, 6-8 board size=152, 9-12 board size=134",
+      "suggestedFix": "Increase difficulty for 9-12 (larger grid, more steps, more options)"
+    }
+  ]
+}
