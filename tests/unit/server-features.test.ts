@@ -9,6 +9,11 @@ describe('getServerFeatures', () => {
     expect(features).toEqual({
       paymentSimulationEnabled: false,
       legacyPairingEnabled: false,
+      thinkingGamesPilotEnabled: false,
+      thinkingGamesBonusEnabled: false,
+      thinkingGamesServePilotContentEnabled: false,
+      thinkingGamesInternalCatalogEnabled: false,
+      thinkingGamesReleaseEnabled: false,
     });
   });
 
@@ -22,6 +27,11 @@ describe('getServerFeatures', () => {
     expect(features).toEqual({
       paymentSimulationEnabled: false,
       legacyPairingEnabled: false,
+      thinkingGamesPilotEnabled: false,
+      thinkingGamesBonusEnabled: false,
+      thinkingGamesServePilotContentEnabled: false,
+      thinkingGamesInternalCatalogEnabled: false,
+      thinkingGamesReleaseEnabled: false,
     });
   });
 
@@ -35,6 +45,11 @@ describe('getServerFeatures', () => {
     expect(features).toEqual({
       paymentSimulationEnabled: true,
       legacyPairingEnabled: true,
+      thinkingGamesPilotEnabled: false,
+      thinkingGamesBonusEnabled: false,
+      thinkingGamesServePilotContentEnabled: false,
+      thinkingGamesInternalCatalogEnabled: false,
+      thinkingGamesReleaseEnabled: false,
     });
   });
 });
