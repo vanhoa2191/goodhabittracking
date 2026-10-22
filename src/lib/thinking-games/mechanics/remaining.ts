@@ -1,4 +1,10 @@
 import { ageRank, targetSecondsForAge } from '../age';
+import {
+  DIRECTION_SHORT_VI,
+  DIRECTION_VI,
+  getNaturalTutorial,
+  VIETNAMESE_COORDINATE,
+} from '../content/copy';
 import { getGameMechanic } from '../registry';
 import {
   ruleErrorBoardSchema,
@@ -75,41 +81,6 @@ function variantIndex(gameTypeId: GameTypeId, variant: string): number {
 
 function targetSeconds(ageTrack: GameAgeTrack): number {
   return targetSecondsForAge(ageTrack);
-}
-
-function answerText(answer: unknown): string {
-  if (typeof answer === 'string') return answer;
-  if (typeof answer === 'number') return String(answer);
-  if (Array.isArray(answer)) {
-    if (answer.every((entry) => isPoint(entry))) {
-      return (answer as PathStep[]).map((point) => `(${point.x},${point.y})`).join(' ');
-    }
-    return answer.map((entry) => String(entry)).join(', ');
-  }
-  return JSON.stringify(answer);
-}
-
-function baseHints(answer: unknown, kind: 'visual' | 'number' | 'sequence'): readonly [string, string] {
-  if (kind === 'number') {
-    return [
-      'Bạn thử tính chậm từng bước và kiểm tra lại bằng cách làm ngược.',
-      'Mình gợi ý: che bớt một phần để thấy phần còn thiếu rõ hơn.',
-    ];
-  }
-  if (kind === 'sequence') {
-    return [
-      'Bạn thử đọc to từng phần theo đúng thứ tự.',
-      'Mình gợi ý: tìm phần đã chắc chắn trước, rồi mới xếp phần còn lại.',
-    ];
-  }
-  return [
-    'Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.',
-    'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.',
-  ];
-}
-
-function explanationFor(detail: string, solution: unknown): string {
-  return `${detail} Đáp án là ${answerText(solution)}.`;
 }
 
 function isPoint(value: unknown): value is PathStep {
@@ -258,14 +229,18 @@ definitions.push({
     const rng = randomFor(input, 'g01-t2');
     const { sequence, ruleKind, period, errorIndex } = ruleErrorSequence(input, rng);
     const board = { kind: 'rule-error' as const, sequence, ruleKind, ...(period ? { period } : {}) };
-    const hints = baseHints(errorIndex, 'sequence');
+    const errorToken = sequence[errorIndex] ?? '';
+    const hints: readonly [string, string] = [
+      'Bạn thử đọc to chuỗi theo nhịp điệu để cảm nhận xem chỗ nào bị vấp nhé.',
+      'So sánh xem phần tử nào ở đây không cùng quy luật tăng hoặc bước lặp với các phần còn lại.',
+    ];
     return {
       board,
       solution: errorIndex,
       hints,
-      explanation: explanationFor(`Mình thấy một phần không đi đúng nhịp của chuỗi.`, errorIndex),
+      explanation: `Vị trí thứ ${errorIndex + 1} (${errorToken}) chưa đúng với quy luật của chuỗi.`,
       title: 'Tìm phần sai',
-      tutorial: 'Bạn đọc cả chuỗi và chọn vị trí đang phá nhịp.',
+      tutorial: getNaturalTutorial('g01-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -320,13 +295,18 @@ definitions.push({
     const optionCount = 3 + (rank >= 2 ? 1 : 0);
     const options = shuffleDeterministic(rng, [...new Set([expected, ...distractors])]).slice(0, optionCount);
     if (!options.includes(expected)) options[0] = expected;
+    const transformDesc = transform === 'add' ? 'cộng thêm 1' : transform === 'subtract' ? 'trừ đi 1' : transform === 'double' ? 'gấp đôi giá trị' : 'đảo ngược thứ tự các chữ số';
+    const hints: readonly [string, string] = [
+      'Bạn thử so sánh số đầu vào và số đầu ra ở các ví dụ mẫu nhé.',
+      'Quan sát xem chữ số được tăng thêm, giảm đi hay đổi chỗ cho nhau.',
+    ];
     return {
       board: { kind: 'rule-transform', examples, query, options, transform },
       solution: expected,
-      hints: baseHints(expected, 'number'),
-      explanation: explanationFor('Mình làm theo đúng máy biến đổi ở các ví dụ.', expected),
+      hints,
+      explanation: `Quy tắc biến đổi của máy là ${transformDesc}. Khi đưa số ${query} vào máy, ta thu được kết quả là ${expected}.`,
       title: 'Máy biến đổi',
-      tutorial: 'Bạn xem ba ví dụ, tìm cách máy đổi số, rồi chọn kết quả cho số mới.',
+      tutorial: getNaturalTutorial('g01-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -370,13 +350,19 @@ definitions.push({
     const optionCount = Math.min(allOptions.length, 3 + (rank >= 1 ? 1 : 0) + (rank === 3 ? 1 : 0));
     const options = allOptions.slice(0, Math.max(2, optionCount));
     const solution = options[0]?.id as string;
+    const targetIdx = options.findIndex((opt) => opt.id === solution);
+    const targetLabel = String.fromCharCode(65 + Math.max(0, targetIdx));
+    const hints: readonly [string, string] = [
+      'Bạn hãy đếm số lượng ô và nhìn kỹ các góc nhọn của hình mẫu nhé.',
+      'Loại dần những hình có số lượng ô hoặc cấu trúc không trùng khớp với hình mẫu.',
+    ];
     return {
       board: { kind: 'spatial-silhouette', target, options },
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor('Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền.', solution),
+      hints,
+      explanation: `Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình ${targetLabel}.`,
       title: 'Ghép bóng',
-      tutorial: 'Bạn chọn bóng có đúng các ô như hình mẫu.',
+      tutorial: getNaturalTutorial('g02-t1', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -420,13 +406,19 @@ definitions.push({
     const optionCount = Math.min(allOptions.length, 3 + (rank >= 1 ? 1 : 0) + (rank === 3 ? 1 : 0));
     const options = allOptions.slice(0, Math.max(2, optionCount));
     const solution = options[0]?.id as string;
+    const targetIdx = options.findIndex((opt) => opt.id === solution);
+    const targetLabel = String.fromCharCode(65 + Math.max(0, targetIdx));
+    const hints: readonly [string, string] = [
+      'Bạn hãy chọn một góc nổi bật của hình mẫu làm điểm mốc để theo dõi khi xoay nhé.',
+      'Chú ý chiều xoay và góc quay để không bị nhầm với trường hợp lật đối xứng.',
+    ];
     return {
       board: { kind: 'spatial-rotation', shape, turn, options },
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor('Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô.', solution),
+      hints,
+      explanation: `Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình ${targetLabel}.`,
       title: 'Xoay hình',
-      tutorial: 'Bạn chọn hình đã được xoay hoặc lật đúng hướng.',
+      tutorial: getNaturalTutorial('g02-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -519,13 +511,17 @@ definitions.push({
       solution,
       ...shuffleDeterministic(rng, otherCandidates).slice(0, distractorCount),
     ]);
+    const hints: readonly [string, string] = [
+      'Bạn hãy đối chiếu từng ô qua đường trục ở giữa nhé.',
+      'Quan sát xem ô nào ở vị trí đối xứng còn đang bị thiếu hoặc chưa cân đối.',
+    ];
     return {
       board: { kind: 'spatial-symmetry', grid, axis, mode, options },
       solution,
-      hints: baseHints(chosen, 'visual'),
-      explanation: explanationFor(`Mình soi ô cần điền hoặc ô đang làm mất đối xứng.`, chosen),
+      hints,
+      explanation: `Ô cần chọn nằm ở ${VIETNAMESE_COORDINATE(solution)} để hình hoàn toàn đối xứng.`,
       title: 'Hoàn thành đối xứng',
-      tutorial: 'Bạn tìm ô còn thiếu hoặc ô đang phá vỡ trục đối xứng.',
+      tutorial: getNaturalTutorial('g02-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -571,13 +567,18 @@ definitions.push({
     const optionCount = 3 + rank;
     const distractors = shuffleDeterministic(rng, allPoints).slice(0, Math.max(0, optionCount - targets.length));
     const options = shuffleDeterministic(rng, [...targets, ...distractors]);
+    const posVi = solution.map(VIETNAMESE_COORDINATE).join(' và ');
+    const hints: readonly [string, string] = [
+      'Bạn hãy dùng các góc và đường viền của bảng làm điểm mốc để nhớ vị trí nhé.',
+      'Ghi nhớ các ô sáng đèn theo thứ tự từ trên xuống dưới để không bỏ sót.',
+    ];
     return {
       board: { kind: 'memory-position', width, height, targets, revealed, mode, displayMs: input.ageTrack === 'age_6_8' ? 1400 : 1200, options },
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor(`Mình nhớ các vị trí đã hiện rồi so lại từng ô.`, solution),
+      hints,
+      explanation: `Các vị trí bạn nhỏ đã xuất hiện nằm ở ${posVi}.`,
       title: 'Nhớ vị trí',
-      tutorial: 'Bạn xem các vị trí, sau đó chọn lại đúng những vị trí đã thấy.',
+      tutorial: getNaturalTutorial('g03-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -638,9 +639,9 @@ definitions.push({
       after[0] = after[1]!;
       after[1] = temp;
     } else {
-      before = tokens.map((token) => `${token}-đỏ`);
+      before = tokens.map((token) => `${token} đỏ`);
       after = [...before];
-      after[1] = `${tokens[1]!}-xanh`;
+      after[1] = `${tokens[1]!} xanh`;
     }
     const solution = memoryChangeAnswer({ kind: 'memory-change', before, after, change, options: [] }) as string;
     const extraTokens = allTokens.filter((t) => !tokens.includes(t));
@@ -657,13 +658,22 @@ definitions.push({
     const optionCount = 3 + rank;
     const options = [...new Set(optionPool)].slice(0, optionCount);
     if (!options.includes(solution)) options[0] = solution;
+    let changeExplanation = `Đã có một sự thay đổi ở cảnh sau: ${solution}.`;
+    if (change === 'removed') changeExplanation = `Ở cảnh sau, ${solution} đã biến mất khỏi khung hình.`;
+    else if (change === 'added') changeExplanation = `Ở cảnh sau, ${solution} vừa mới được thêm vào.`;
+    else if (change === 'swapped') changeExplanation = `Hai bạn ${solution.split('|').join(' và ')} đã đổi chỗ cho nhau.`;
+    else if (change === 'property') changeExplanation = `Ở cảnh sau, đối tượng đã đổi màu thành ${solution}.`;
+    const hints: readonly [string, string] = [
+      'Bạn hãy đối chiếu từng vị trí giữa cảnh trước và cảnh sau theo thứ tự nhé.',
+      'Quan sát xem có bạn nào đổi màu sắc, đổi vị trí hay vừa xuất hiện thêm không.',
+    ];
     return {
       board: { kind: 'memory-change', before, after, change, options },
       solution,
-      hints: baseHints(solution, 'sequence'),
-      explanation: explanationFor('Mình so hai cảnh theo đúng thứ tự và chỉ ra một thay đổi.', solution),
+      hints,
+      explanation: changeExplanation,
       title: 'Nhận ra thay đổi',
-      tutorial: 'Bạn xem cảnh trước và cảnh sau, rồi chọn thay đổi đã xảy ra.',
+      tutorial: getNaturalTutorial('g03-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -724,13 +734,20 @@ definitions.push({
           : [{ trait: 'màu', value: targetColor, negate: false }, { trait: 'hình', value: targetShape, negate: false }, { trait: 'kích_cỡ', value: targetSize, negate: false }];
     const options = shuffleDeterministic(rng, candidates.map((candidate) => candidate.id));
     const solution = candidates[0]!.id;
+    const candIndex = candidates.findIndex((c) => c.id === solution);
+    const targetCandidate = candidates[candIndex];
+    const targetTraitsVi = targetCandidate ? Object.entries(targetCandidate.traits).map(([k, v]) => `${k} ${v}`).join(', ') : '';
+    const hints: readonly [string, string] = [
+      'Bạn hãy đọc từng manh mối và tìm dấu hiệu chắc chắn nhất trước nhé.',
+      'Gạch bớt những bạn có đặc điểm không khớp với manh mối đã cho.',
+    ];
     return {
       board: { kind: 'reasoning-elimination', candidates, clues, options },
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor('Mình loại từng bạn không khớp manh mối, còn lại một bạn.', solution),
+      hints,
+      explanation: `Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số ${candIndex + 1} (${targetTraitsVi}).`,
       title: 'Loại trừ theo manh mối',
-      tutorial: 'Bạn đọc các manh mối và chọn bạn còn lại sau khi loại trừ.',
+      tutorial: getNaturalTutorial('g04-t1', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -804,13 +821,17 @@ definitions.push({
     const distractors = shuffleDeterministic(rng, distractorPool).slice(0, 2 + rank);
     // Options: exactly ONE derivable fact (the solution) + distractors
     const options = shuffleDeterministic(rng, [solution, ...distractors]).slice(0, 3 + rank);
+    const hints: readonly [string, string] = [
+      'Bạn hãy bắt đầu từ điều chúng mình đã biết chắc chắn nhé.',
+      'Tìm luật Nếu - Thì có điều kiện mở đầu trùng với điều đã biết để suy ra kết quả tiếp theo.',
+    ];
     return {
       board: { kind: 'reasoning-if-then', rules, facts, options },
       solution,
-      hints: baseHints(solution, 'sequence'),
-      explanation: explanationFor('Mình nối từng điều đã biết với phần "thì" tương ứng.', solution),
+      hints,
+      explanation: `Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là ${solution}.`,
       title: 'Nếu thì',
-      tutorial: 'Bạn dùng các điều đã biết và luật nếu-thì để tìm điều mới.',
+      tutorial: getNaturalTutorial('g04-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -880,6 +901,12 @@ definitions.push({
       ...(rank >= 2 ? [{ id: 'fact-d', trait: 'kích_cỡ', value: sizes.find((s) => s !== target.traits['kích_cỡ'])! }] : []),
     ];
     const solution = 'fact-a';
+    const solOpt = options.find((opt) => opt.id === solution);
+    const factDesc = solOpt ? `${solOpt.trait} là ${solOpt.value}` : 'manh mối còn thiếu';
+    const hints: readonly [string, string] = [
+      'Bạn hãy so sánh các bạn nhỏ xem đặc điểm nào giúp phân biệt được bạn cần tìm nhé.',
+      'Tìm manh mối chỉ đúng với bạn mục tiêu mà những bạn khác không có.',
+    ];
     return {
       board: {
         kind: 'reasoning-missing-info',
@@ -891,10 +918,10 @@ definitions.push({
         options: shuffleDeterministic(rng, options),
       },
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor('Mình thêm một dữ kiện chỉ còn đúng một bạn khớp.', solution),
+      hints,
+      explanation: `Manh mối còn thiếu giúp nhận diện chính xác bạn này là: ${factDesc}.`,
       title: 'Thông tin còn thiếu',
-      tutorial: 'Bạn chọn dữ kiện giúp phân biệt đúng bạn cần tìm.',
+      tutorial: getNaturalTutorial('g04-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -961,13 +988,17 @@ definitions.push({
     const optionCount = 3 + (rank >= 2 ? 1 : 0);
     const options = [...new Set([answer, answer + 1, Math.max(0, answer - 1), answer + 2, answer + 3])].sort((a, b) => a - b).slice(0, optionCount);
     if (!options.includes(answer)) options[0] = answer;
+    const hints: readonly [string, string] = [
+      'Bạn hãy tính tổng số cân ở đĩa cân đã biết đủ các quả nhé.',
+      'Lấy tổng số cân đó trừ đi phần đã có ở bên đĩa còn lại để tìm số cân còn thiếu.',
+    ];
     return {
       board: { ...base, options },
       solution: answer,
-      hints: baseHints(answer, 'number'),
-      explanation: explanationFor('Mình cộng hai bên rồi tìm phần còn thiếu để cân bằng.', answer),
+      hints,
+      explanation: `Cần thêm ${answer} để hai bên đĩa cân có cân nặng bằng nhau.`,
       title: 'Cân bằng hai bên',
-      tutorial: 'Bạn tính để hai bên có cùng tổng khối lượng.',
+      tutorial: getNaturalTutorial('g05-t1', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1016,13 +1047,22 @@ definitions.push({
     ];
     const options = [...new Set(optionPool)].sort((a, b) => a - b).slice(0, 3 + rank);
     if (!options.includes(expected)) options[0] = expected;
+    let groupExp = `Chia đều thành các nhóm ${groupSize}, kết quả là ${expected}.`;
+    if (mode === 'exact') groupExp = `Chia đều thành các nhóm ${groupSize}, ta được đúng ${expected} nhóm.`;
+    else if (mode === 'remainder') groupExp = `Sau khi chia thành các nhóm ${groupSize}, phần còn dư ra là ${expected}.`;
+    else if (mode === 'floor') groupExp = `Số nhóm trọn vẹn gom được là ${expected} nhóm.`;
+    else if (mode === 'needed') groupExp = `Để gom đủ thêm một nhóm ${groupSize} nữa, ta cần thêm ${expected} phần.`;
+    const hints: readonly [string, string] = [
+      'Bạn hãy thử gom các phần lại theo từng nhóm đều nhau xem được bao nhiêu nhóm nhé.',
+      'Lấy tổng số phần chia đều cho kích cỡ mỗi nhóm để tìm số nhóm hoặc phần còn dư.',
+    ];
     return {
       board: { ...base, options },
       solution: expected,
-      hints: baseHints(expected, 'number'),
-      explanation: explanationFor('Mình chia thành từng nhóm đủ và đếm phần còn lại.', expected),
+      hints,
+      explanation: groupExp,
       title: 'Chia nhóm',
-      tutorial: 'Bạn chia đều rồi trả lời số nhóm hoặc phần còn lại.',
+      tutorial: getNaturalTutorial('g05-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1084,13 +1124,18 @@ definitions.push({
     const base = { kind: 'quantity-target' as const, items, target, maxItems, mode, options: items.map((item) => item.id) };
     const subsets = targetSubsets(base).sort((a, b) => a.length - b.length || a.join(',').localeCompare(b.join(',')));
     const solution = (subsets[0] ?? [items[0]!.id]) as string[];
+    const solValues = solution.map((id) => items.find((item) => item.id === id)?.value).filter((v): v is number => typeof v === 'number');
+    const hints: readonly [string, string] = [
+      `Bạn hãy thử chọn số lớn nhất có thể trước mà không làm vượt quá mục tiêu ${target} nhé.`,
+      `Tìm thêm các số nhỏ hơn để cộng dồn vào cho vừa khít với mục tiêu ${target}.`,
+    ];
     return {
       board: base,
       solution,
-      hints: baseHints(solution, 'number'),
-      explanation: explanationFor('Mình thử các nhóm nhỏ và giữ nhóm có tổng đúng mục tiêu.', solution),
+      hints,
+      explanation: `Chọn các số ${solValues.join(' và ')} để đạt tổng đúng bằng ${target}.`,
       title: 'Đủ mục tiêu',
-      tutorial: 'Bạn chọn các món để đạt đúng mục tiêu mà không vượt quá.',
+      tutorial: getNaturalTutorial('g05-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1153,13 +1198,18 @@ definitions.push({
     const commands = shuffleDeterministic(rng, rawCommands);
     const board = { kind: 'planning-command-order' as const, commands, before };
     const solution = solveCommandOrder(board) as string[];
+    const commandTexts = solution.map((id) => commands.find((cmd) => cmd.id === id)?.text).filter(Boolean);
+    const hints: readonly [string, string] = [
+      'Bạn hãy tìm việc nào cần làm đầu tiên trong các hành động thường ngày nhé.',
+      'Kiểm tra các cặp bước: bước nào là điều kiện để làm được bước tiếp theo.',
+    ];
     return {
       board,
       solution,
-      hints: baseHints(solution, 'sequence'),
-      explanation: explanationFor('Mình xếp việc nào phải làm trước, rồi mới tới việc sau.', solution),
+      hints,
+      explanation: `Thứ tự đúng của các bước là: ${commandTexts.join(' → ')}.`,
       title: 'Xếp lệnh',
-      tutorial: 'Bạn sắp các bước sao cho mọi việc đều đúng thứ tự.',
+      tutorial: getNaturalTutorial('g06-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1227,13 +1277,20 @@ definitions.push({
     ]).filter((option, index, list) => list.findIndex((entry) => entry.command === option.command) === index);
     const board = { kind: 'planning-fix-step' as const, width, height, start, goal, walls: [], commands, options };
     const solution = fixedCommandOptions(board)[0] as string;
+    const solOption = options.find((entry) => entry.id === solution);
+    const dirVi = solOption ? DIRECTION_SHORT_VI[solOption.command] ?? solOption.command : '';
+    const stepIndex = solOption ? solOption.index + 1 : 1;
+    const hints: readonly [string, string] = [
+      'Bạn hãy di chuyển thử theo từng bước lệnh xem robot đi chệch đường ở bước nào nhé.',
+      'Tìm bước khiến robot đi xa khỏi đích hoặc đâm vào tường để đổi hướng cho bước đó.',
+    ];
     return {
       board,
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor('Mình chạy thử từng cách sửa và giữ cách tới đích.', solution),
+      hints,
+      explanation: `Đổi bước ${stepIndex} thành hướng "${dirVi}" để robot về đích an toàn.`,
       title: 'Sửa bước sai',
-      tutorial: 'Bạn tìm một bước cần đổi để chương trình tới đích.',
+      tutorial: getNaturalTutorial('g06-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1286,13 +1343,21 @@ definitions.push({
     }));
     const board = { kind: 'flexibility-classify' as const, items, rule: { trait, value: targetValue }, options: items.map((item) => item.id) };
     const solution = items.filter((item) => item.traits[trait] === targetValue).map((item) => item.id).sort();
+    const matchingIndices = items
+      .map((item, idx) => ({ item, index: idx + 1 }))
+      .filter(({ item }) => item.traits[trait] === targetValue)
+      .map(({ index }) => `hình ${index}`);
+    const hints: readonly [string, string] = [
+      'Bạn hãy nhìn kỹ quy tắc mới để biết mình cần chọn theo đặc điểm nào nhé.',
+      `Quan sát từng hình và chỉ chọn những hình có đúng ${trait} là "${targetValue}".`,
+    ];
     return {
       board,
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor('Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó.', solution),
+      hints,
+      explanation: `Theo quy tắc mới (${trait} là "${targetValue}"), các hình phù hợp là: ${matchingIndices.join(', ')}.`,
       title: 'Đổi luật phân loại',
-      tutorial: 'Bạn quên cách chia cũ và làm theo tiêu chí mới.',
+      tutorial: getNaturalTutorial('g07-t1', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1334,13 +1399,25 @@ definitions.push({
           : { x: Math.max(0, viewer.x - 1), y: viewer.y };
     const board = { kind: 'flexibility-perspective' as const, width, height, viewer, target, options: ['left', 'right', 'ahead', 'behind'] as RelativeDirection[] };
     const solution = relativeDirection(board) as RelativeDirection;
+    const solLabel = DIRECTION_VI[solution] ?? solution;
+    const facingNames: Record<string, string> = {
+      north: 'hướng lên trên',
+      south: 'hướng xuống dưới',
+      east: 'hướng sang phải',
+      west: 'hướng sang trái',
+    };
+    const facingDesc = facingNames[board.viewer.facing] ?? board.viewer.facing;
+    const hints: readonly [string, string] = [
+      'Bạn hãy tưởng tượng mình đang đứng ở vị trí bạn nhỏ và nhìn theo hướng mũi tên nhé.',
+      'Xác định xem đồ vật nằm ở phía trước mặt, sau lưng hay bên tay trái, tay phải của bạn nhỏ.',
+    ];
     return {
       board,
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor('Mình đứng vào vị trí người xem rồi xác định phía của vật.', solution),
+      hints,
+      explanation: `Từ vị trí bạn nhỏ đang ${facingDesc}, đồ vật nằm ở ${solLabel}.`,
       title: 'Đổi góc nhìn',
-      tutorial: 'Bạn nhìn từ vị trí mới và chọn hướng của vật.',
+      tutorial: getNaturalTutorial('g07-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1411,13 +1488,17 @@ definitions.push({
     }
     const wallCount = 1 + rank;
     const walls = shuffleDeterministic(rng, interiorCells).slice(0, Math.min(wallCount, interiorCells.length));
+    const hints: readonly [string, string] = [
+      'Bạn hãy tìm một lối đi khác từ điểm xuất phát mà không đi trùng vào đường màu xám nhé.',
+      'Thử rẽ sang hướng khác ngay từ điểm xuất phát và đi men theo các ô trống không có vật cản.',
+    ];
     return {
       board: { kind: 'flexibility-alternative' as const, width, height, start, goal, walls, knownPath },
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor('Mình tìm một đường khác vẫn đi từ đầu tới đích.', solution),
+      hints,
+      explanation: 'Đường đi mới đã dẫn từ điểm xuất phát đến đích mà không bị trùng với đường ban đầu và tránh được các ô tường.',
       title: 'Cách giải khác',
-      tutorial: 'Bạn tìm một đường hợp lệ khác với đường đã cho.',
+      tutorial: getNaturalTutorial('g07-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1466,13 +1547,18 @@ definitions.push({
     }
     const distractors = shuffleDeterministic(rng, distractorCandidates).slice(0, Math.max(0, optionCount - changed.length));
     const options = uniquePoints(shuffleDeterministic(rng, [...changed, ...distractors]));
+    const diffCoords = changed.map((pt) => VIETNAMESE_COORDINATE(pt)).join(' và ');
+    const hints: readonly [string, string] = [
+      'Bạn hãy so sánh từng hàng từ trên xuống dưới giữa hai bức hình nhé.',
+      'Quan sát kỹ từng biểu tượng ở hàng và cột tương ứng để tìm ra ô bị thay đổi.',
+    ];
     return {
       board: { kind: 'observation-difference', left, right, options },
       solution: changed,
-      hints: baseHints(changed, 'visual'),
-      explanation: explanationFor('Mình so từng ô theo hàng và cột để không bỏ sót.', changed),
+      hints,
+      explanation: `Điểm khác nhau giữa hai hình nằm ở ${diffCoords}.`,
       title: 'Điểm khác biệt',
-      tutorial: 'Bạn tìm tất cả các ô đã thay đổi giữa hai hình.',
+      tutorial: getNaturalTutorial('g08-t1', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1532,13 +1618,22 @@ definitions.push({
     }));
     const board = { kind: 'observation-two-traits' as const, items, criteria, options: items.map((item) => item.id) };
     const solution = items.filter((item) => criteria.every((criterion) => item.traits[criterion.trait] === criterion.value)).map((item) => item.id).sort();
+    const matchingIndices = items
+      .map((item, idx) => ({ item, index: idx + 1 }))
+      .filter(({ item }) => criteria.every((criterion) => item.traits[criterion.trait] === criterion.value))
+      .map(({ index }) => `hình ${index}`);
+    const critDesc = criteria.map((c) => `${c.trait} là ${c.value}`).join(' và ');
+    const hints: readonly [string, string] = [
+      'Bạn hãy kiểm tra đặc điểm thứ nhất trước để loại bớt các hình không phù hợp nhé.',
+      'Trong các hình còn lại, tìm hình có thêm đặc điểm thứ hai để chọn.',
+    ];
     return {
       board,
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor('Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn.', solution),
+      hints,
+      explanation: `Các hình có đủ cả hai đặc điểm (${critDesc}) là: ${matchingIndices.join(', ')}.`,
       title: 'Hai đặc điểm',
-      tutorial: 'Bạn chọn mọi vật có đủ cả hai đặc điểm đã nêu.',
+      tutorial: getNaturalTutorial('g08-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1568,24 +1663,77 @@ definitions.push({
     const ruleTrait = index % 2 === 0 ? 'nhóm' : 'bước';
     const ruleValue = (index === 0 ? 'đồ chơi' : index === 1 ? 'đi đúng hướng' : index === 2 ? 'đồ dùng học tập' : 'đi đúng vạch') as string;
     const flipIndex = 1 + Math.floor(rng() * (count - 1));
-    const scene: { id: string; text: string; traits: TraitMap }[] = Array.from({ length: count }, (_, sceneIndex) => ({
-      id: `scene-${sceneIndex + 1}`,
-      text: `Bạn ${sceneIndex + 1} ${rank < 2 ? 'đang chơi' : 'đang thực hiện'} việc ${sceneIndex + 1} theo cách ${index + 1}.`,
-      traits: {
-        nhóm: ruleTrait === 'nhóm' && sceneIndex === flipIndex ? 'đồ ăn' : (index === 2 ? 'đồ dùng học tập' : 'đồ chơi'),
-        bước: ruleTrait === 'bước' && sceneIndex === flipIndex ? 'đi sai hướng' : (index === 3 ? 'đi đúng vạch' : 'đi đúng hướng'),
-      },
-    }));
+
+    const toyTexts = [
+      'Bạn đang xếp các khối gỗ lâu đài',
+      'Bạn đang lái ô tô đồ chơi trên sàn',
+      'Bạn đang chơi gấu bông trên thảm',
+      'Bạn đang lắp ráp mô hình tàu bay',
+      'Bạn đang xếp các thanh gỗ domino',
+      'Bạn đang ghép tranh đồ chơi vườn thú',
+    ];
+    const studyTexts = [
+      'Bạn đang nắn nót viết bài vào vở ô ly',
+      'Bạn đang dùng thước kẻ vẽ hình chữ nhật',
+      'Bạn đang chuẩn bị hộp bút màu để vẽ',
+      'Bạn đang mở sách toán làm bài tập',
+      'Bạn đang đọc sách khoa học vui',
+      'Bạn đang cất compa và tẩy vào hộp bút',
+    ];
+    const directionTexts = [
+      'Bạn xếp hàng theo mũi tên vào khu vui chơi',
+      'Bạn đi men theo hành lang bên tay phải',
+      'Bạn bước theo lối đi một chiều chỉ dẫn',
+      'Bạn đi theo chiều di chuyển của cả lớp',
+      'Bạn tiến về phía trước theo vạch hướng dẫn',
+      'Bạn đi vòng theo chiều kim đồng hồ',
+    ];
+    const lineTexts = [
+      'Bạn bước trên vạch kẻ trắng dành cho người đi bộ',
+      'Bạn đi ngay ngắn trong làn đường quy định',
+      'Bạn dừng chân đúng phía trước vạch giới hạn',
+      'Bạn bước vào đúng các ô số trên sân chơi',
+      'Bạn đi theo đường vạch liền kẻ trên sàn',
+      'Bạn xếp hàng ngay ngắn phía sau vạch sơn',
+    ];
+
+    const badToyText = 'Bạn mang bánh ngọt và nước có ga vào chơi';
+    const badStudyText = 'Bạn đặt cốc trà sữa kem phô mai lên tập vở';
+    const badDirectionText = 'Bạn chạy ngược chiều dòng người đang bước tới';
+    const badLineText = 'Bạn chạy băng qua bên ngoài vạch kẻ an toàn';
+
+    const pool = index === 0 ? toyTexts : index === 1 ? directionTexts : index === 2 ? studyTexts : lineTexts;
+    const badText = index === 0 ? badToyText : index === 1 ? badDirectionText : index === 2 ? badStudyText : badLineText;
+
+    const scene: { id: string; text: string; traits: TraitMap }[] = Array.from({ length: count }, (_, sceneIndex) => {
+      const isBad = sceneIndex === flipIndex;
+      const text = isBad ? badText : pool[sceneIndex % pool.length]!;
+      return {
+        id: `scene-${sceneIndex + 1}`,
+        text,
+        traits: {
+          nhóm: ruleTrait === 'nhóm' && isBad ? 'đồ ăn' : (index === 2 ? 'đồ dùng học tập' : 'đồ chơi'),
+          bước: ruleTrait === 'bước' && isBad ? 'đi sai hướng' : (index === 3 ? 'đi đúng vạch' : 'đi đúng hướng'),
+        },
+      };
+    });
     const options = shuffleDeterministic(rng, scene.map((entry) => entry.id));
     const board = { kind: 'observation-implausible' as const, scene, rule: { trait: ruleTrait, value: ruleValue }, options };
     const solution = scene.find((entry) => entry.traits[ruleTrait] !== ruleValue)?.id as string;
+    const badIdx = scene.findIndex((entry) => entry.id === solution);
+    const badNum = badIdx >= 0 ? badIdx + 1 : 1;
+    const badTraitVal = scene[badIdx]?.traits[ruleTrait] ?? '';
+    const hints: readonly [string, string] = [
+      'Bạn hãy đối chiếu từng tình huống với quy tắc chuẩn ở phần hướng dẫn nhé.',
+      'Tìm tình huống có hành động hoặc đồ vật không khớp với quy tắc chuẩn.',
+    ];
     return {
       board,
       solution,
-      hints: baseHints(solution, 'visual'),
-      explanation: explanationFor('Mình kiểm tra từng chi tiết với quy tắc đã nêu.', solution),
+      hints,
+      explanation: `Tình huống ${badNum} chưa hợp lý vì có đặc điểm "${badTraitVal}", trong khi quy tắc chuẩn yêu cầu "${ruleValue}".`,
       title: 'Chi tiết bất hợp lý',
-      tutorial: 'Bạn tìm chi tiết không đúng với quy tắc.',
+      tutorial: getNaturalTutorial('g08-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };

@@ -257,6 +257,88 @@ export function copyCheck(item) {
   return issues;
 }
 
+const ASCII_ID_REGEX = /\b[a-z0-9à-ỹ]+-[a-z0-9à-ỹ]+\b/i;
+const JSON_RAW_REGEX = /[{}[\]]|"x"/;
+const ENGLISH_STOPWORDS = [
+  'ahead', 'behind', 'left', 'right',
+  'north', 'south', 'east', 'west',
+  'step', 'steps',
+  'item', 'items',
+  'candidate', 'candidates',
+  'shape', 'shapes',
+  'turn', 'turns',
+  'fact', 'facts',
+  'scene', 'scenes',
+  'fix', 'fixes',
+  'undefined', 'null', 'nan', 'object', 'array', 'true', 'false',
+  'red', 'blue', 'green', 'yellow', 'purple', 'orange',
+  'circle', 'square', 'star', 'triangle',
+];
+const ENGLISH_STOPWORD_REGEX = new RegExp(`\\b(${ENGLISH_STOPWORDS.join('|')})\\b`, 'i');
+
+export function copyAuditErrors(item) {
+  const errors = [];
+  const childTexts = [
+    { path: 'title', value: item.title },
+    { path: 'invitation', value: item.invitation },
+    { path: 'tutorial', value: item.tutorial },
+    { path: 'explanation', value: item.explanation },
+  ];
+  if (Array.isArray(item.hints)) {
+    item.hints.forEach((hint, idx) => {
+      childTexts.push({ path: `hints[${idx}]`, value: hint });
+    });
+  }
+
+  for (const { path, value } of childTexts) {
+    if (typeof value !== 'string') continue;
+
+    const idMatch = value.match(ASCII_ID_REGEX);
+    if (idMatch) {
+      errors.push({
+        code: 'copy_internal_id',
+        path,
+        message: `Internal id token "${idMatch[0]}" found in child text`,
+        snippet: value.slice(0, 120),
+      });
+    }
+
+    const jsonMatch = value.match(JSON_RAW_REGEX);
+    if (jsonMatch) {
+      errors.push({
+        code: 'copy_raw_json',
+        path,
+        message: `Raw JSON/bracket/coord token "${jsonMatch[0]}" found in child text`,
+        snippet: value.slice(0, 120),
+      });
+    }
+
+    const enMatch = value.match(ENGLISH_STOPWORD_REGEX);
+    if (enMatch) {
+      errors.push({
+        code: 'copy_english_word',
+        path,
+        message: `English stopword "${enMatch[0]}" found in child text`,
+        snippet: value.slice(0, 120),
+      });
+    }
+  }
+
+  if (Array.isArray(item.hints) && item.hints.length > 0 && typeof item.hints[0] === 'string') {
+    const hint1Clean = item.hints[0].trim().toLowerCase();
+    const solClean = String(item.solution ?? '').trim().toLowerCase();
+    if (hint1Clean.length > 0 && hint1Clean === solClean) {
+      errors.push({
+        code: 'copy_hint1_equals_answer',
+        path: 'hints[0]',
+        message: `Hint 1 is identical to solution: "${item.hints[0]}"`,
+      });
+    }
+  }
+
+  return errors;
+}
+
 export function normalizedStructuralSignature(item) {
   const board = item.boardData;
   const structural = { kind: board.kind };
@@ -272,7 +354,7 @@ function loadBatch(batch) { const document = JSON.parse(readFileSync(batchPath(b
 function loadManifest() { const manifestPath = join(V2_CANDIDATE_ROOT, 'candidate-manifest-v2.json'); return JSON.parse(readFileSync(manifestPath, 'utf8')); }
 function loadCandidateMeta() { const metaPath = join(V2_CANDIDATE_ROOT, 'candidate-meta-v2.json'); return JSON.parse(readFileSync(metaPath, 'utf8')); }
 
-function addCoverageIssues(items, errors) {
+function addCoverageIssues(items, errors, batch = null) {
   const dayTrackSlot = new Map(); const dayTrackType = new Map();
   for (const item of items) {
     const key = `${item.ageTrack}:${item.dayIndex}`;
@@ -287,13 +369,19 @@ function addCoverageIssues(items, errors) {
   }
   const trackDays = new Map();
   for (const item of items) { const days = trackDays.get(item.ageTrack) ?? new Set(); days.add(item.dayIndex); trackDays.set(item.ageTrack, days); }
+
+  const startDay = batch ? batch.startDay : 1;
+  const endDay = batch ? batch.endDay : 365;
+  const expectedDays = endDay - startDay + 1;
+  const expectedTrackItems = expectedDays * 2;
+
   for (const [ageTrack, days] of trackDays.entries()) {
-    if (days.size !== 365) pushIssue(errors, { code: 'track_days', path: ageTrack, message: `expected 365 days, found ${days.size}` });
-    for (let day = 1; day <= 365; day += 1) { if (!days.has(day)) pushIssue(errors, { code: 'day_coverage', path: `${ageTrack}.day${day}`, message: 'missing day' }); }
+    if (days.size !== expectedDays) pushIssue(errors, { code: 'track_days', path: ageTrack, message: `expected ${expectedDays} days, found ${days.size}` });
+    for (let day = startDay; day <= endDay; day += 1) { if (!days.has(day)) pushIssue(errors, { code: 'day_coverage', path: `${ageTrack}.day${day}`, message: 'missing day' }); }
   }
   for (const ageTrack of trackDays.keys()) {
     const trackItems = items.filter((item) => item.ageTrack === ageTrack);
-    if (trackItems.length !== 730) pushIssue(errors, { code: 'track_count', path: ageTrack, message: `expected 730 items, found ${trackItems.length}` });
+    if (trackItems.length !== expectedTrackItems) pushIssue(errors, { code: 'track_count', path: ageTrack, message: `expected ${expectedTrackItems} items, found ${trackItems.length}` });
   }
 }
 
@@ -426,6 +514,9 @@ async function checkBatch(batch, { write = true } = {}) {
       for (const issue of copyCheck(item)) {
         pushIssue(audit.warnings, { ...issue, id: item.id });
       }
+      for (const error of copyAuditErrors(item)) {
+        pushIssue(audit.errors, { ...error, id: item.id });
+      }
       if (item.source?.commit !== loaded.engineHash) {
         pushIssue(audit.errors, { code: 'provenance', id: item.id, message: 'item engine hash mismatch' });
       } else {
@@ -506,12 +597,13 @@ async function checkBatch(batch, { write = true } = {}) {
     audit.checks.wrongAnswerRejected = audit.metrics.wrongPass === items.length;
     audit.checks.malformedRejected = audit.metrics.malformedPass === items.length;
     audit.checks.alternateWhereApplicable = audit.metrics.alternatePass === audit.metrics.alternateApplicable;
-    audit.checks.copy = audit.warnings.filter((w) => w.code === 'copy_forbidden').length === 0;
+    audit.checks.copy = audit.warnings.filter((w) => w.code === 'copy_forbidden').length === 0
+      && audit.errors.filter((e) => e.code?.startsWith('copy_')).length === 0;
     audit.checks.provenance = audit.metrics.provenance === true;
     audit.checks.fingerprintsUnique = audit.metrics.duplicateFingerprints === 0;
     audit.checks.normalizedUnique = audit.metrics.normalizedCollisions === 0;
     audit.quality.blocked = audit.metrics.duplicateFingerprints > 0 || audit.metrics.normalizedCollisions > 0;
-    addCoverageIssues(items, coverageErrors);
+    addCoverageIssues(items, coverageErrors, batch);
     const result = {
       auditVersion: 'p08-candidate-audit-v2',
       scope: 'batch',
@@ -671,6 +763,9 @@ async function checkAll({ write = true } = {}) {
       for (const issue of copyCheck(item)) {
         pushIssue(audit.warnings, { ...issue, id: item.id });
       }
+      for (const error of copyAuditErrors(item)) {
+        pushIssue(audit.errors, { ...error, id: item.id });
+      }
       if (item.source?.commit !== loaded.engineHash) {
         pushIssue(audit.errors, { code: 'provenance', id: item.id, message: 'item engine hash mismatch' });
       } else {
@@ -751,7 +846,8 @@ async function checkAll({ write = true } = {}) {
     audit.checks.wrongAnswerRejected = audit.metrics.wrongPass === allItems.length;
     audit.checks.malformedRejected = audit.metrics.malformedPass === allItems.length;
     audit.checks.alternateWhereApplicable = audit.metrics.alternatePass === audit.metrics.alternateApplicable;
-    audit.checks.copy = audit.warnings.filter((w) => w.code === 'copy_forbidden').length === 0;
+    audit.checks.copy = audit.warnings.filter((w) => w.code === 'copy_forbidden').length === 0
+      && audit.errors.filter((e) => e.code?.startsWith('copy_')).length === 0;
     audit.checks.provenance = audit.metrics.provenance === true;
     audit.checks.fingerprintsUnique = audit.metrics.duplicateFingerprints === 0;
     audit.checks.normalizedUnique = audit.metrics.normalizedCollisions === 0;
@@ -764,6 +860,7 @@ async function checkAll({ write = true } = {}) {
     }
     if (meta.sourceHash !== editorial.csvHash) pushIssue(coverageErrors, { code: 'csv_hash', message: 'meta source hash mismatch' });
     if (manifest.manifestVersion !== V2_CONTENT_VERSION) pushIssue(coverageErrors, { code: 'manifest_version', message: manifest.manifestVersion });
+    addCoverageIssues(manifest.items, coverageErrors);
     const csvPairMap = new Map();
     for (const row of editorial.rows) {
       for (const slot of [row.main, row.bonus]) {
@@ -863,6 +960,9 @@ export function auditItems(items, { engine }) {
       if (!checked.ok || !checked.correct) {
         errors.push({ code: 'invalid_puzzle', id: item.id, message: 'solution fails checker' });
       }
+    }
+    for (const error of copyAuditErrors(item)) {
+      errors.push({ ...error, id: item.id });
     }
     const fp = item.fingerprint;
     const existing = fingerprints.get(fp) ?? [];

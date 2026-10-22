@@ -12,3 +12,4 @@ export * from './mechanics/rule-sequence';
 export * from './mechanics/path-planning';
 export * from './mechanics/memory-sequence';
 export * from './mechanics/remaining';
+export * from './content/copy';

@@ -195,10 +195,10 @@ export function describeRuleSequenceBoard(board: RuleSequenceBoard): {
     if (step !== null) {
       return {
         hints: [
-          'Tách các số ở vị trí chẵn và vị trí lẻ thành hai chuỗi.',
-          'Mỗi chuỗi tăng đều; thử tìm số tiếp theo của chuỗi sắp tới.',
+          'Bạn thử nhìn các số cách nhau một vị trí xem có bước tăng nào quen thuộc không nhé.',
+          'Ở đây có hai nhịp số cùng tăng đều đan xen; bạn tìm số tiếp theo của nhịp đang tới nhé.',
         ],
-        explanation: `Hai chuỗi số xen kẽ, mỗi chuỗi tăng thêm ${step}. Số tiếp theo là ${answer ?? '?'}.`,
+        explanation: `Hai nhịp số tăng đều đan xen, mỗi nhịp tăng thêm ${step}. Số tiếp theo là ${answer ?? '?'}.`,
       };
     }
     return {

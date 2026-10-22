@@ -191,7 +191,7 @@ function originalPayload(engine, slot, seed, ageTrack) {
     return {
       boardData: board,
       solution: engine.solveMemorySequence(board),
-      hints: SAFE_MEMORY_HINTS,
+      hints: engine.describeMemorySequenceBoard(board).hints,
       explanation: engine.describeMemorySequenceBoard(board).explanation,
     };
   }
@@ -217,6 +217,13 @@ function buildCandidate({ engine, slot, day, ageTrack, source, attempt = 0 }) {
   const payload = original ? originalPayload(engine, slot, seed, ageTrack) : { boardData: generated.board, solution: generated.solution, hints: generated.hints, explanation: generated.explanation };
   const fingerprint = engine.puzzleFingerprint(slot.typeId, payload.boardData);
 
+  const invitation = typeof engine.getNaturalInvitation === 'function'
+    ? engine.getNaturalInvitation(slot.typeId, day, seed)
+    : slot.invitation;
+  const tutorial = typeof engine.getNaturalTutorial === 'function'
+    ? engine.getNaturalTutorial(slot.typeId, ageTrack, day, seed)
+    : (ORIGINAL_TUTORIALS[slot.typeId] ?? generated.tutorial);
+
   return {
     schemaVersion: 1,
     contentVersion: V2_CONTENT_VERSION,
@@ -229,8 +236,8 @@ function buildCandidate({ engine, slot, day, ageTrack, source, attempt = 0 }) {
     ageTrack,
     locale: LOCALE,
     title: slot.title,
-    invitation: slot.invitation,
-    tutorial: ORIGINAL_TUTORIALS[slot.typeId] ?? generated.tutorial,
+    invitation,
+    tutorial,
     explanation: payload.explanation,
     boardData: payload.boardData,
     solution: payload.solution,

@@ -245,39 +245,39 @@ export function describePathBoard(board: PathBoard): {
   explanation: string;
 } {
   const path = solvePath(board);
-  const rendered = path?.map((point) => `(${point.x},${point.y})`).join(' → ') ?? '?';
+  const steps = Math.max(1, (path?.length ?? 1) - 1);
   if (board.shortestPathOnly === true) {
     return {
       hints: [
-        'Đếm số bước của từng đường để so sánh.',
-        'Đường ngắn nhất không đi vòng qua ô không cần thiết.',
+        'Bạn đếm số bước của từng ngả đường để so sánh nhé.',
+        'Đường ngắn nhất sẽ đi thẳng về đích, không rẽ vòng qua các ô thừa.',
       ],
-      explanation: `Đường ngắn nhất có ${(path?.length ?? 1) - 1} bước: ${rendered}.`,
+      explanation: `Đường ngắn nhất đưa bạn nhỏ về đích cần đúng ${steps} bước di chuyển an toàn.`,
     };
   }
   if (board.waypointOrder === 'ordered') {
     return {
       hints: [
-        'Đi qua chìa trước, rồi mới tìm cửa.',
-        'Không được ghé cửa trước khi lấy chìa.',
+        'Bạn quan sát xem trên đường đi có món đồ nào cần ghé lấy trước khi mở cửa không.',
+        'Hãy tìm đường ghé qua chiếc chìa khóa trước, sau đó mới tiến về phía cửa đích nhé.',
       ],
-      explanation: `Một đường hợp lệ đi qua các điểm đúng thứ tự: ${rendered}.`,
+      explanation: 'Một đường đi hợp lệ đưa bạn ghé qua các điểm theo đúng thứ tự rồi mới về đích an toàn.',
     };
   }
   if (board.waypoints.length > 0) {
     return {
       hints: [
-        'Đi từng ô một, đừng nhảy qua tường.',
-        'Ghé điểm bắt buộc trước khi tới đích.',
+        'Bạn hãy đi từng bước một cẩn thận và tránh xa các bức tường nhé.',
+        'Nhớ tìm đường đi qua điểm mốc bắt buộc trước khi tiến về ô đích nha.',
       ],
-      explanation: `Một đường đi hợp lệ: ${rendered}.`,
+      explanation: 'Một đường đi hợp lệ giúp bạn ghé đủ các điểm mốc cần thiết trước khi về đích an toàn.',
     };
   }
   return {
     hints: [
-      'Đi từng ô một, đừng nhảy qua tường.',
-      'Thử đi theo một hướng rồi rẽ khi gặp chướng ngại.',
+      'Bạn hãy đi từng bước một cẩn thận và tránh xa các bức tường nhé.',
+      'Thử đi theo một hướng trước, nếu gặp chướng ngại thì rẽ sang lối thoáng hơn.',
     ],
-    explanation: `Một đường đi hợp lệ: ${rendered}.`,
+    explanation: 'Một đường đi hợp lệ giúp bạn di chuyển an toàn từ ô xuất phát về đích mà không chạm tường.',
   };
 }
