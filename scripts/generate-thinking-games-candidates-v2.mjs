@@ -1,11 +1,11 @@
 import { createHash } from 'node:crypto';
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, resolve } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { join } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { build } from 'esbuild';
 
-const root = resolve('/home/opc/orca/goodhabittracking');
+const root = fileURLToPath(new URL('..', import.meta.url));
 const csvPath = join(root, 'docs/research/2026-10-17-daily-thinking-games-365.csv');
 const V2_CANDIDATE_ROOT = join(root, 'content/thinking-games/candidates/365-v2');
 const V2_CONTENT_VERSION = 'p08-candidates-365-v2';
