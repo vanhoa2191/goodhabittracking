@@ -18,6 +18,8 @@ const eslintConfig = defineConfig([
     "test-results/**",
     "next-env.d.ts",
     "cloudflare-env.d.ts",
+    // Private/generated directories
+    "private/**",
   ]),
 ]);
 
