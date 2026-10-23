@@ -15,4 +15,4 @@
  */
 export const RELEASE_MANIFEST_VERSION = 'release-365-v1';
 
-export const RELEASE_MANIFEST_DIGEST = '';
+export const RELEASE_MANIFEST_DIGEST = 'dd623f9e19d98d72387fc3cd15470f1239a55baf6507bb1c9708ec2a22f1010e';

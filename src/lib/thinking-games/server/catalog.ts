@@ -1,5 +1,7 @@
 import 'server-only';
 
+import releaseManifest from '../../../../content/thinking-games/manifests/release-365-v1.json';
+
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -12,6 +14,8 @@ export type ThinkingGameCatalogProfile = 'release' | 'internal-pilot';
 export type CatalogAdmission =
   | { ok: true; profile: ThinkingGameCatalogProfile; manifest: ThinkingGamesManifest }
   | { ok: false; code: 'catalog_unavailable' | 'catalog_not_approved' };
+
+let admittedRelease: Extract<CatalogAdmission, { ok: true }> | undefined;
 
 function parseManifestFrom(raw: string): ThinkingGamesManifest {
   return parseManifest(JSON.parse(raw) as unknown);
@@ -66,25 +70,24 @@ export function getThinkingGameCatalog(): CatalogAdmission {
 
   // Release path — fail closed unless:
   //   (a) the production-eligible release master flag is explicitly enabled AND
-  //   (b) the on-disk manifest passes every admission gate in admitReleaseManifest.
+  //   (b) the bundled manifest passes every admission gate in admitReleaseManifest.
   if (!features.thinkingGamesReleaseEnabled) return { ok: false, code: 'catalog_not_approved' };
+  // The bundled catalog cannot change during this isolate's lifetime. Validate
+  // it once while retaining the master flag check on every request.
+  if (admittedRelease) return admittedRelease;
 
-  let raw: string;
-  try {
-    raw = readFileSync(
-      join(process.cwd(), 'content/thinking-games/manifests', `${RELEASE_MANIFEST_VERSION}.json`),
-      'utf8',
-    );
-  } catch {
-    return { ok: false, code: 'catalog_not_approved' };
-  }
+  // Cloudflare Workers cannot read repository files at runtime. Keep private
+  // content in this server-only bundle; canonical bytes preserve the reviewed pin.
+  const raw = JSON.stringify(releaseManifest, null, 2) + '\n';
   const manifest = parseManifestFrom(raw);
+  if (manifest.manifestVersion !== RELEASE_MANIFEST_VERSION) return { ok: false, code: 'catalog_not_approved' };
   const digest = manifestDigest(raw);
 
   if (!admitReleaseManifest(manifest, RELEASE_MANIFEST_DIGEST, digest)) {
     return { ok: false, code: 'catalog_not_approved' };
   }
-  return { ok: true, profile: 'release', manifest };
+  admittedRelease = { ok: true, profile: 'release', manifest };
+  return admittedRelease;
 }
 
 export function findCatalogItem(

@@ -95,13 +95,21 @@ try {
   const pilotAsRelease = validator.validateManifest(pilot, { profile: 'release' });
   summarize('pilot-as-release', pilotAsRelease);
   const releaseResult = validator.validateManifest(release, { profile: 'release' });
-  summarize('release-placeholder', releaseResult);
+  summarize('release', releaseResult);
+  const releasePlaceholderResult = validator.validateManifest({
+    ...release,
+    items: [],
+    editorialApproval: null,
+    status: 'not_ready',
+  }, { profile: 'release' });
+  summarize('release-placeholder', releasePlaceholderResult);
 
   const expected = editorial.ok
     && pilotResult.ok
     && !pilotAsRelease.ok
-    && !releaseResult.ok
-    && releaseResult.errors.some((entry) => entry.code === 'release_item_count');
+    && releaseResult.ok
+    && !releasePlaceholderResult.ok
+    && releasePlaceholderResult.errors.some((entry) => entry.code === 'release_item_count');
   if (!expected) {
     console.error('content check did not match the expected profile gates');
     process.exitCode = 1;

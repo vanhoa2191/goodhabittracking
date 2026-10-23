@@ -16,6 +16,15 @@ export function loadRelease(): unknown {
   return readJson('../../../content/thinking-games/manifests/release-365-v1.json');
 }
 
+export function loadReleasePlaceholder(): unknown {
+  return {
+    ...(loadRelease() as Record<string, unknown>),
+    items: [],
+    editorialApproval: null,
+    status: 'not_ready',
+  };
+}
+
 export function loadEditorialCsv(): string {
   return readText('../../../docs/research/2026-10-17-daily-thinking-games-365.csv');
 }

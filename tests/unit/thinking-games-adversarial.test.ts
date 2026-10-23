@@ -29,7 +29,7 @@ import type {
   RuleSequenceBoard,
   ThinkingGamesManifest,
 } from '@/lib/thinking-games';
-import { loadPilot, loadRelease } from './thinking-games/helpers';
+import { loadPilot, loadReleasePlaceholder } from './thinking-games/helpers';
 
 const pilot = parseManifest(loadPilot()) as ThinkingGamesManifest;
 const pilotItems = pilot.items as readonly PuzzleItem[];
@@ -757,7 +757,7 @@ describe('adversarial: profile gates and honest coverage claims', () => {
   });
 
   it('rejects the release placeholder for the real reasons', () => {
-    const result = validateManifest(loadRelease(), { profile: 'release' });
+    const result = validateManifest(loadReleasePlaceholder(), { profile: 'release' });
     expect(result.ok).toBe(false);
     if (!result.ok) {
       const codes = result.errors.map((entry) => entry.code);
