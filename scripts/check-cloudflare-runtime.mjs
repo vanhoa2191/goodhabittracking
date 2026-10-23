@@ -56,6 +56,7 @@ async function main() {
     resolve('node_modules/wrangler/bin/wrangler.js'), 'dev',
     '--config', resolve('wrangler.jsonc'), '--local', '--ip', '127.0.0.1',
     '--port', String(port), '--inspector-port', '0',
+    '--var', 'ENABLE_THINKING_GAMES:true',
     // Explicit env-file skips .dev.vars; dotenv loading and inherited secrets are disabled too.
     '--env-file', emptyEnvironment, '--persist-to', join(runtimeDirectory, 'state'),
     '--show-interactive-dev-session=false', '--log-level', 'error',
@@ -90,9 +91,21 @@ async function main() {
     if (!validStatus || typeof health?.version !== 'string' || !health.version) {
       throw new Error('Worker returned an invalid application health response.');
     }
+    // A valid unauthenticated start must get past the approved catalog and
+    // stop at session authentication, without touching the database.
+    const start = await fetch(`${origin}/api/child/thinking-games/start`, {
+      method: 'POST', redirect: 'manual', signal: AbortSignal.timeout(15_000),
+      headers: { 'content-type': 'application/json', origin },
+      body: JSON.stringify({ slot: 'main', expectedLocalDay: '2026-10-23', commandId: '00000000-0000-4000-8000-000000000001' }),
+    });
+    const startBody = await start.json().catch(() => null);
+    if (start.status !== 401 || startBody?.code !== 'session_invalid') {
+      throw new Error(`Bundled release catalog was not admitted (HTTP ${start.status}, code ${startBody?.code ?? 'invalid_json'}).`);
+    }
     process.stdout.write(`${JSON.stringify({
       status: 'passed', scope: 'local-worker-bootstrap',
       healthStatus: health.status, httpStatus: response.status,
+      approvedCatalog: 'admitted', sessionBoundary: 'enforced',
       productionReadiness: 'not-verified',
     })}\n`);
     return;

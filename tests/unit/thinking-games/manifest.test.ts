@@ -5,7 +5,7 @@ import {
   puzzleFingerprint,
   validateManifest,
 } from '@/lib/thinking-games';
-import { loadPilot, loadRelease } from './helpers';
+import { loadPilot, loadReleasePlaceholder } from './helpers';
 
 function clone<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
@@ -119,13 +119,13 @@ describe('manifest validation', () => {
   });
 
   it('rejects the not-ready release placeholder and cannot be asserted as release', () => {
-    const result = validateManifest(loadRelease(), { profile: 'release' });
+    const result = validateManifest(loadReleasePlaceholder(), { profile: 'release' });
     expect(result.ok).toBe(false);
     if (!result.ok) {
       const codes = result.errors.map((entry) => entry.code);
       expect(codes).toContain('release_item_count');
       expect(codes).toContain('release_editorial');
     }
-    expect(() => assertReleaseManifest(loadRelease())).toThrow();
+    expect(() => assertReleaseManifest(loadReleasePlaceholder())).toThrow();
   });
 });

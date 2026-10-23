@@ -14,6 +14,9 @@
   "ai": {
     "binding": "AI"
   },
+  "vars": {
+    "ENABLE_THINKING_GAMES": "true"
+  },
   "observability": {
     "enabled": true
   }
