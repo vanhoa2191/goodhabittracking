@@ -72,7 +72,7 @@ async function main() {
     }
     let response;
     try {
-      response = await fetch(`${origin}/api/health`, { signal: AbortSignal.timeout(2_000) });
+      response = await fetch(`${origin}/api/health`, { redirect: 'manual', signal: AbortSignal.timeout(2_000) });
     } catch {
       await delay(250);
       continue;

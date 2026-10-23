@@ -17,8 +17,13 @@ test('the settings links stay in view while scrolling and mark the section you a
   await expect(nav).toBeVisible();
   await expect(nav.locator('a[aria-current="location"]')).toHaveCount(1);
 
-  await page.locator('#settings-security').scrollIntoViewIfNeeded();
-  await page.mouse.wheel(0, 200);
+  const security = page.locator('#settings-security');
+  await security.scrollIntoViewIfNeeded();
+  const headingBounds = await security.boundingBox();
+  const navBounds = await nav.boundingBox();
+  if (!headingBounds || !navBounds) throw new Error('Settings heading and navigation must be visible before scrolling.');
+  // Read this section just below the sticky links, regardless of the preceding cards' height.
+  await page.mouse.wheel(0, headingBounds.y - (navBounds.y + navBounds.height + 48));
   await expect(nav).toBeInViewport();
   await expect(nav.locator('a[aria-current="location"]')).toHaveAttribute('href', '#settings-security');
 

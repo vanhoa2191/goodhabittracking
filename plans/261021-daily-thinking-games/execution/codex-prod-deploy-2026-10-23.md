@@ -40,6 +40,26 @@ Only existing adapter/dependency versions and one narrowly scoped transitive ove
 
 Pre-push code scope: `package.json`, `package-lock.json`, `.github/workflows/ci.yml`, `scripts/check-cloudflare-runtime.mjs`, `docs/deployment.md`, these three repair/recovery reports and the existing continuation checkpoint. Unrelated dirty files remain excluded. The healthy old Worker remains active until the repair passes the normal GitHub Actions pipeline and production health verification.
 
+## Repair publication checkpoint
+
+Committed the exact nine-path repair scope with Lore trailers as `fa185cc479ceb6b811fa37af41e078acafa3e72e`. Staged whitespace and secrets checks passed; unrelated dirty files were excluded.
+
+GitHub rejected the normal fast-forward push to main with GH013 because repository rules require a pull request and status checks. No rule bypass or force push was attempted. Root pushed `fix/cloudflare-next-164-runtime` and opened [PR201](https://github.com/vanhoa2191/goodhabittracking/pull/201).
+
+PR CI run: https://github.com/vanhoa2191/goodhabittracking/actions/runs/39932253919
+
+PR marketing build run: https://github.com/vanhoa2191/goodhabittracking/actions/runs/39932253917
+
+The first PR201 quality job passed, including all3730 tests, audit/build and the new Worker gate on the GitHub runner (HTTP503 with normal `unavailable` JSON). Build, SQL and thinking-games E2E also passed. The general browser job failed one settings-scroll test after all retries and recorded one flaky reward-delivery test; root inspected its logs and downloaded screenshots instead of blindly rerunning it.
+
+The settings screenshot shows appearance heading near220px and security heading near440px, so the UI correctly highlights appearance. The test's fixed200px wheel movement did not reliably position the security section in the reading area. Root kept its nav-visibility/current-section/account-return assertions and replaced the arbitrary wheel delta with the actual security-heading position relative to the sticky navigation. No settings component or scrollspy behavior was changed.
+
+The reward screenshot shows the button still saving while the test already inspects request counts. Root moved the same exact request-order assertion after the existing auto-waited delivery-error UI assertion. Retry-only-deliver and no-approve-replay checks remain intact; no timeout was increased.
+
+Focused root verification: both scenarios repeated three times, **6/6 passed**, exit0 in1.4m; changed-test/gate ESLint and whole-project typecheck exit0. The Worker gate also passed again after explicitly disabling redirects, ensuring only the loopback Worker can supply its health response. Logs: `ci-fixtures-repeated.log` and the earlier full-CI/runtime-gate evidence under `/tmp/codex-resume-20261023/`.
+
+Production app remains on the restored healthy build. Root will merge only the expected reviewed head after all checks pass, then monitor the main-branch deployment and expected-SHA production health.
+
 ## Content release scope
 
 The code deployment authorization does not fabricate editorial signatures, child-pilot observations or release-manifest promotion. No thinking-games rollout flag was changed; all candidate content remains behind its existing release gates.

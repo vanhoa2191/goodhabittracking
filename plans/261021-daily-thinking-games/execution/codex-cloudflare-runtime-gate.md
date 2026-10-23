@@ -8,6 +8,8 @@ The script reuses the existing Wrangler config, compatibility flags, binding nam
 
 Acceptance is HTTP200/`ready`, or HTTP503/`degraded` or `unavailable`, with normal application health JSON and a nonempty version. HTTP500, Cloudflare1101, nonJSON and invalid health responses fail. Secret-free HTTP503 is bootstrap evidence only, explicitly not production readiness. Startup is bounded to60s; success/failure/interruption cleans up only the owned process group and temporary directory. A port already in use fails before startup.
 
+Health redirects are not followed, so an external healthy origin cannot satisfy the loopback bootstrap check. Root reran the gate successfully after adding this restriction; the unchanged application still returned local503/`unavailable` JSON.
+
 No custom adapter patch or new dependency was introduced. `docs/deployment.md` now explains the distinction between local runtime bootstrap and required production200/ready/SHA checks.
 
 ## Regression evidence
