@@ -79,6 +79,8 @@ Không đưa secret vào `wrangler.jsonc`, GitHub Actions log hoặc `NEXT_PUBLI
 
 Luồng phát hành duy nhất: viết code trên máy → push lên GitHub → GitHub Actions kiểm thử → deploy lên Cloudflare Workers. Không deploy thủ công từ máy cá nhân trừ khi rollback khẩn cấp.
 
+Sau khi build, job quality chạy `node scripts/check-cloudflare-runtime.mjs` trên bundle Worker thật bằng Wrangler local. Bước này chặn lỗi khởi tạo runtime như Cloudflare 1101 mà build hoặc E2E chạy bằng Next dev không phát hiện được. Kiểm tra local không nhận secrets: HTTP 503 với health JSON `degraded`/`unavailable` chỉ chứng minh Worker đã khởi tạo và nạp route; production vẫn bắt buộc HTTP 200, `ready` và đúng SHA ở bước kiểm tra sau deploy.
+
 `ci.yml` kiểm tra và phát hành Worker `goodhabittracking` (app) sau khi quality/browser đạt. `marketing.yml` build, kiểm tra artifact rồi phát hành Worker `kidhabit-home` (website giới thiệu) độc lập. Thiết lập một lần trong phần cấu hình GitHub:
 
 1. Secrets: `CLOUDFLARE_API_TOKEN` có quyền Workers deploy, cùng `CLOUDFLARE_ACCOUNT_ID`.

@@ -20,6 +20,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run ci
+      - name: Verify the built Cloudflare Worker initializes
+        run: node scripts/check-cloudflare-runtime.mjs
 
   sql:
     runs-on: ubuntu-latest

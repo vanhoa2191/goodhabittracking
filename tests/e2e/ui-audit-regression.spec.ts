@@ -338,8 +338,8 @@ test.describe('A04 — truthful slow / fail / retry approval and reward outcomes
 
     // The approve command was acknowledged and the deliver command failed: exactly two requests,
     // an error report, and the row recovered as approved-but-not-delivered — never as delivered.
-    expect(calls.map((call) => call.decision)).toEqual(['approve', 'deliver']);
     await expect(page.getByTestId('reward-result')).toHaveText(/Chưa trao được quà|could not be handed over/i);
+    expect(calls.map((call) => call.decision)).toEqual(['approve', 'deliver']);
     await expect(page.getByTestId('reward-result')).toHaveAttribute('role', 'alert');
     await expect(page.getByTestId('redemption-awaiting')).toBeVisible();
     await expect(row).toBeVisible();

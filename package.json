@@ -42,7 +42,7 @@
     "promote:thinking-games-release": "node scripts/promote-thinking-games-release.mjs"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "1.20.7",
+    "@opennextjs/cloudflare": "1.20.12",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.2",
     "canvas-confetti": "^1.9.4",
@@ -78,6 +78,9 @@
     "node": ">=24"
   },
   "overrides": {
-    "sharp": "0.35.5"
+    "sharp": "0.35.5",
+    "@node-minify/core": {
+      "glob": "10.5.0"
+    }
   }
 }
