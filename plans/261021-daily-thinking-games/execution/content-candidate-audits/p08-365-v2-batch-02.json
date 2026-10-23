@@ -5,9 +5,9 @@
   "contentVersion": "p08-candidates-365-v2",
   "batch": 2,
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-3b077094c402bc2e",
-  "engineHash": "3b077094c402bc2e1097bca82e7e1e628572274086dc9676b4d01dde924c446a",
-  "inputSha256": "85b1f4fb758ccf5b55cf5f43473cda9f050fa74332574ecd57fab49579ee9f80",
+  "engineVersion": "engine-f649e4224478fc18",
+  "engineHash": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+  "inputSha256": "e0a4b6a1d9de69c7b65b264e44da517851976f10f40d190151ef5b40f1e14e51",
   "csvSha256": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
   "metrics": {
     "itemCount": 504,
@@ -18,8 +18,8 @@
     "malformedPass": 504,
     "alternateApplicable": 28,
     "alternatePass": 28,
-    "uniqueFingerprints": 500,
-    "uniqueNormalized": 478,
+    "uniqueFingerprints": 502,
+    "uniqueNormalized": 480,
     "tracks": {
       "age_3_5": 126,
       "age_6_8": 126,
@@ -539,6 +539,157 @@
       "g08-t3:quan hệ vật lý đơn giản bị sai|age_9_12:72"
     ],
     "provenance": true,
+    "difficulty": {
+      "pairs": 126,
+      "notHarder": 0,
+      "clearlyHarder": 126,
+      "perType": {
+        "g01-t1": {
+          "pairs": 5,
+          "avgYoung": 7.2,
+          "avgOlder": 9.4,
+          "harderShare": 1
+        },
+        "g01-t2": {
+          "pairs": 6,
+          "avgYoung": 6,
+          "avgOlder": 7.33,
+          "harderShare": 1
+        },
+        "g01-t3": {
+          "pairs": 5,
+          "avgYoung": 6,
+          "avgOlder": 7,
+          "harderShare": 1
+        },
+        "g02-t1": {
+          "pairs": 5,
+          "avgYoung": 7,
+          "avgOlder": 8.45,
+          "harderShare": 1
+        },
+        "g02-t2": {
+          "pairs": 6,
+          "avgYoung": 6.88,
+          "avgOlder": 8.25,
+          "harderShare": 1
+        },
+        "g02-t3": {
+          "pairs": 5,
+          "avgYoung": 6.83,
+          "avgOlder": 10.33,
+          "harderShare": 1
+        },
+        "g03-t1": {
+          "pairs": 5,
+          "avgYoung": 4.4,
+          "avgOlder": 6.1,
+          "harderShare": 1
+        },
+        "g03-t2": {
+          "pairs": 6,
+          "avgYoung": 11.7,
+          "avgOlder": 16.35,
+          "harderShare": 1
+        },
+        "g03-t3": {
+          "pairs": 5,
+          "avgYoung": 6,
+          "avgOlder": 7.5,
+          "harderShare": 1
+        },
+        "g04-t1": {
+          "pairs": 5,
+          "avgYoung": 6,
+          "avgOlder": 7,
+          "harderShare": 1
+        },
+        "g04-t2": {
+          "pairs": 5,
+          "avgYoung": 5.6,
+          "avgOlder": 7.6,
+          "harderShare": 1
+        },
+        "g04-t3": {
+          "pairs": 5,
+          "avgYoung": 6.5,
+          "avgOlder": 7.5,
+          "harderShare": 1
+        },
+        "g05-t1": {
+          "pairs": 5,
+          "avgYoung": 4.5,
+          "avgOlder": 7,
+          "harderShare": 1
+        },
+        "g05-t2": {
+          "pairs": 6,
+          "avgYoung": 6.5,
+          "avgOlder": 10.88,
+          "harderShare": 1
+        },
+        "g05-t3": {
+          "pairs": 5,
+          "avgYoung": 5,
+          "avgOlder": 6.3,
+          "harderShare": 1
+        },
+        "g06-t1": {
+          "pairs": 5,
+          "avgYoung": 9.9,
+          "avgOlder": 18.15,
+          "harderShare": 1
+        },
+        "g06-t2": {
+          "pairs": 6,
+          "avgYoung": 5.5,
+          "avgOlder": 7,
+          "harderShare": 1
+        },
+        "g06-t3": {
+          "pairs": 5,
+          "avgYoung": 7.5,
+          "avgOlder": 8.5,
+          "harderShare": 1
+        },
+        "g07-t1": {
+          "pairs": 5,
+          "avgYoung": 6.7,
+          "avgOlder": 8,
+          "harderShare": 1
+        },
+        "g07-t2": {
+          "pairs": 5,
+          "avgYoung": 5,
+          "avgOlder": 6,
+          "harderShare": 1
+        },
+        "g07-t3": {
+          "pairs": 5,
+          "avgYoung": 6,
+          "avgOlder": 7.5,
+          "harderShare": 1
+        },
+        "g08-t1": {
+          "pairs": 6,
+          "avgYoung": 8.58,
+          "avgOlder": 12.83,
+          "harderShare": 1
+        },
+        "g08-t2": {
+          "pairs": 5,
+          "avgYoung": 7,
+          "avgOlder": 8,
+          "harderShare": 1
+        },
+        "g08-t3": {
+          "pairs": 5,
+          "avgYoung": 4,
+          "avgOlder": 5,
+          "harderShare": 1
+        }
+      }
+    },
     "duplicateFingerprints": null,
     "normalizedCollisions": null,
     "structuralReusePairs": null
@@ -566,28 +717,13 @@
   "warnings": [
     {
       "code": "duplicate_fingerprint",
-      "id": "D044-bonus-vi35",
-      "other": "D031-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D062-main-vi35",
       "other": "D051-bonus-vi35"
     },
     {
       "code": "duplicate_fingerprint",
-      "id": "D068-bonus-vi35",
-      "other": "D055-main-vi35"
-    },
-    {
-      "code": "duplicate_fingerprint",
       "id": "D086-main-vi35",
       "other": "D075-bonus-vi35"
-    },
-    {
-      "code": "normalized_skin_duplicate",
-      "id": "D044-bonus-vi35",
-      "other": "D031-main-vi35"
     },
     {
       "code": "normalized_skin_duplicate",
@@ -648,11 +784,6 @@
       "code": "normalized_skin_duplicate",
       "id": "D062-main-vi13p",
       "other": "D051-bonus-vi13p"
-    },
-    {
-      "code": "normalized_skin_duplicate",
-      "id": "D068-bonus-vi35",
-      "other": "D055-main-vi35"
     },
     {
       "code": "normalized_skin_duplicate",

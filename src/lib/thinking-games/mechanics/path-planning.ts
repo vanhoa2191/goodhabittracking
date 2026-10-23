@@ -1,4 +1,5 @@
 import { ageRank } from '../age';
+import { getTrackHints, type HintContext } from '../content/hints';
 import { pathBoardSchema } from '../schema';
 import { createSeededRandom, shuffleDeterministic, stableSeedKey } from '../seeded';
 import type { GameAgeTrack, PathBoard, PathStep } from '../types';
@@ -240,7 +241,13 @@ export function generatePathPuzzle(input: {
   return buildBoard(random, width, width, 0, waypoints, extra);
 }
 
-export function describePathBoard(board: PathBoard): {
+function pathHintMode(board: PathBoard): string {
+  if (board.shortestPathOnly === true) return 'shortest';
+  if (board.waypointOrder === 'ordered') return 'ordered';
+  return board.waypoints.length > 0 ? 'waypoint' : 'reach';
+}
+
+function describePathBoardLegacy(board: PathBoard): {
   hints: readonly [string, string];
   explanation: string;
 } {
@@ -250,7 +257,7 @@ export function describePathBoard(board: PathBoard): {
     return {
       hints: [
         'Bạn đếm số bước của từng ngả đường để so sánh nhé.',
-        'Đường ngắn nhất sẽ đi thẳng về đích, không rẽ vòng qua các ô thừa.',
+        'Đường ngắn nhất không đi vòng qua những ô thừa, mỗi bước đều tiến gần đích hơn.',
       ],
       explanation: `Đường ngắn nhất đưa bạn nhỏ về đích cần đúng ${steps} bước di chuyển an toàn.`,
     };
@@ -258,19 +265,19 @@ export function describePathBoard(board: PathBoard): {
   if (board.waypointOrder === 'ordered') {
     return {
       hints: [
-        'Bạn quan sát xem trên đường đi có món đồ nào cần ghé lấy trước khi mở cửa không.',
-        'Hãy tìm đường ghé qua chiếc chìa khóa trước, sau đó mới tiến về phía cửa đích nhé.',
+        'Bạn nhìn xem trên bảng có hai ngôi sao đánh số 1 và 2, cần ghé theo đúng số thứ tự nhé.',
+        'Hãy tìm đường ghé ngôi sao số 1 trước, rồi ngôi sao số 2, sau đó mới về đích nhé.',
       ],
-      explanation: 'Một đường đi hợp lệ đưa bạn ghé qua các điểm theo đúng thứ tự rồi mới về đích an toàn.',
+      explanation: 'Đường đi đúng ghé ngôi sao số 1 trước, rồi ngôi sao số 2, sau đó mới về đích mà không chạm tường.',
     };
   }
   if (board.waypoints.length > 0) {
     return {
       hints: [
         'Bạn hãy đi từng bước một cẩn thận và tránh xa các bức tường nhé.',
-        'Nhớ tìm đường đi qua điểm mốc bắt buộc trước khi tiến về ô đích nha.',
+        'Nhớ đi qua ngôi sao trước khi tiến về ô đích nha.',
       ],
-      explanation: 'Một đường đi hợp lệ giúp bạn ghé đủ các điểm mốc cần thiết trước khi về đích an toàn.',
+      explanation: 'Đường đi đúng ghé qua ngôi sao trên bảng rồi mới về đích, không chạm tường.',
     };
   }
   return {
@@ -280,4 +287,13 @@ export function describePathBoard(board: PathBoard): {
     ],
     explanation: 'Một đường đi hợp lệ giúp bạn di chuyển an toàn từ ô xuất phát về đích mà không chạm tường.',
   };
+}
+
+export function describePathBoard(
+  board: PathBoard,
+  context?: HintContext,
+): ReturnType<typeof describePathBoardLegacy> {
+  const described = describePathBoardLegacy(board);
+  if (!context) return described;
+  return { ...described, hints: getTrackHints('g06-t1', context.ageTrack, context.seed, pathHintMode(board)) };
 }

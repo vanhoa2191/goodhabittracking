@@ -13,3 +13,6 @@ export * from './mechanics/path-planning';
 export * from './mechanics/memory-sequence';
 export * from './mechanics/remaining';
 export * from './content/copy';
+export * from './difficulty';
+export * from './content/hints';
+export * from './content/titles';

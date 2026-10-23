@@ -1514,3 +1514,9 @@ Reader: finish this bounded interim review now. Do not spend more calls matching
 - Conclusion: earlier spec:123 failure was environment contamination (worker-created repo `.env.local` / shell env leaking a local Supabase URL into the spec's copied server), not a product bug. Coordinator moved `.env.local`/`.env.local.e2e` out of the repo.
 - P09 E2E total on current source: 92/92 (formats 34, frame 26, pilot 21, real-api 16, integration 3), 15 @a11y.
 - Agent-executable phases through P09 done. Remaining are human gates: P10 controlled pilot, editorial content approval + release digest, P11 release; plus committing the untracked feature files.
+
+### 25. Production migration — PARTIAL, awaiting owner (2026-10-22 ~13:30Z)
+- PR #197 all green on b125018 (migration sha256 b258f7c3…; browser passed on rerun 33m57s, close to its 35-min limit).
+- Applied to prod evkwelozdcmsmwdzhlxz via Supabase MCP in 4 inert transactions: all 8 thinking_game_* tables (RLS forced, read policies) + 26 new function bodies; md5(prosrc) of all 26 match the committed migration byte-for-byte. Nothing calls them yet; no triggers; ledger still 202610110001.
+- Part 5 (2 triggers on activity_logs + 6 legacy habit RPC replacements + ledger row 202610210001) is refused by the Supabase connector with "Invalid or expired requestState" (server-side confirmation the CLI cannot answer). Probes showed it is not a keyword filter. NOT bypassed.
+- Owner action: run plans/261021-daily-thinking-games/execution/prod-apply-part5.sql in the Supabase SQL editor (single transaction), then coordinator verifies md5/ACL/verify.sql and merges PR #197.

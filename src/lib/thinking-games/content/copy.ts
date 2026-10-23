@@ -43,13 +43,13 @@ export const GAME_INVITATIONS: Record<GameTypeId, readonly string[]> = {
     'Hãy xem chiếc máy biến đổi các con số thế nào rồi tìm kết quả tiếp theo nhé!',
     'Cùng mình giải mã bí mật của cỗ máy biến đổi số ngày hôm nay nào bạn!',
     'Bạn thử đoán xem khi cho số mới vào máy thì kết quả đầu ra sẽ là bao nhiêu?',
-    'Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!',
+    'Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!',
   ],
   'g02-t1': [
     'Mỗi hình đều có một chiếc bóng thật đẹp, bạn ghép bóng cùng mình nhé!',
     'Bạn hãy nhìn kỹ hình mẫu và tìm chiếc bóng khớp nhất trong các lựa chọn.',
     'Cùng mình so từng góc cạnh để tìm chiếc bóng chuẩn xác cho hình nào!',
-    'Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.',
+    'Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!',
     'Chào bạn, bạn đã sẵn sàng tìm bóng cho hình mẫu cùng mình chưa nào?',
   ],
   'g02-t2': [
@@ -70,7 +70,7 @@ export const GAME_INVITATIONS: Record<GameTypeId, readonly string[]> = {
     'Một dãy các từ sắp xuất hiện rồi biến mất, bạn nhớ thứ tự cùng mình nhé!',
     'Bạn hãy tập trung nhìn dãy thật kỹ để xếp lại đúng như lúc đầu nha!',
     'Cùng mình rèn luyện trí nhớ bằng cách ghi nhớ thứ tự của các bạn nhỏ nhé!',
-    'Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!',
+    'Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!',
     'Chào bạn, cùng mình chơi trò nhớ thứ tự các đồ vật thật vui nhé!',
   ],
   'g03-t2': [
@@ -126,12 +126,12 @@ export const GAME_INVITATIONS: Record<GameTypeId, readonly string[]> = {
     'Chiếc giỏ đang chờ bạn chọn các món đồ sao cho vừa đủ số mục tiêu đấy!',
     'Hãy chọn những con số phù hợp để đạt đúng mục tiêu mà không bị vượt quá nhé!',
     'Cùng mình nhặt các món đồ vào giỏ để đạt được tổng điểm mong muốn nào!',
-    'Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!',
+    'Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!',
     'Chào bạn, bạn hãy chọn các số thật khéo léo để đạt đúng mục tiêu cùng mình nhé!',
   ],
   'g06-t1': [
     'Bản đồ mê cung đã mở ra, bạn dẫn đường cho bạn nhỏ về đích cùng mình nhé!',
-    'Hãy tìm một lối đi an toàn, tránh các bức tường và ghé qua điểm cần đến nha!',
+    'Hãy tìm một lối đi an toàn, tránh các bức tường và đi tới đích nha!',
     'Cùng mình lên kế hoạch cho từng bước chân để đến đích một cách khéo léo nào!',
     'Thử thách tìm đường hôm nay sẽ giúp bạn rèn luyện khả năng quan sát không gian đấy!',
     'Chào bạn, hãy cầm bút vẽ đường đi thông minh nhất để về đích cùng mình nhé!',
@@ -175,7 +175,7 @@ export const GAME_INVITATIONS: Record<GameTypeId, readonly string[]> = {
     'Hai bức tranh trông rất giống nhau, nhưng có những điểm khác, bạn tìm nhé!',
     'Hãy so sánh từng hàng và từng cột để không bỏ sót điểm khác biệt nào nha bạn!',
     'Cùng mình làm thám tử tinh mắt tìm ra tất cả những chỗ khác nhau nào!',
-    'Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!',
+    'Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!',
     'Chào bạn, hãy soi thật kỹ hai bức tranh và tìm các điểm khác cùng mình nhé!',
   ],
   'g08-t2': [
@@ -206,9 +206,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Quan sát cách dãy thay đổi đều đặn để chọn đúng ô còn thiếu.',
     ],
     age_9_12: [
-      'Xác định quy luật tăng giảm hoặc nhịp lặp của dãy để chọn giá trị kế tiếp.',
-      'Phân tích bước nhảy giữa các phần tử để tìm quy luật của dãy số hoặc hình.',
-      'Quan sát mối liên hệ giữa các vị trí liên tiếp để điền phần tử tiếp theo chính xác.',
+      'Tìm xem dãy tăng thêm bao nhiêu hoặc lặp lại theo nhịp nào, rồi chọn phần tiếp theo.',
+      'So hai phần tử liền nhau xem chúng khác nhau thế nào để tìm ra quy luật của dãy.',
+      'Xem mỗi phần thay đổi thế nào so với phần ngay trước nó, rồi điền phần tiếp theo.',
     ],
   },
   'g01-t2': {
@@ -218,9 +218,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Quan sát từng bước của dãy và chọn phần đứng nhầm chỗ nhé.',
     ],
     age_9_12: [
-      'Đối chiếu từng phần tử với quy luật chung của dãy để chỉ ra điểm sai sót.',
-      'Xác định phần tử làm đứt gãy bước nhảy hoặc nhịp lặp có sẵn của dãy.',
-      'Kiểm tra tính nhất quán của chuỗi và chọn đúng vị trí vi phạm quy tắc.',
+      'Kiểm tra từng phần tử xem có hợp với quy luật của dãy không, rồi chỉ ra phần bị sai.',
+      'Tìm phần tử làm dãy không còn tăng đều hoặc không còn lặp đúng nhịp.',
+      'Đọc lại cả dãy và chọn vị trí không theo quy luật của các phần còn lại.',
     ],
   },
   'g01-t3': {
@@ -230,9 +230,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Tìm quy tắc biến đổi của cỗ máy qua các số mẫu rồi tính kết quả nha.',
     ],
     age_9_12: [
-      'Phân tích quy tắc chuyển đổi giữa đầu vào và đầu ra để suy ra kết quả cho câu hỏi.',
-      'So sánh các cặp số mẫu để tìm quy luật số học của cỗ máy biến đổi.',
-      'Áp dụng chính xác phép biến đổi từ các ví dụ mẫu vào con số cần tìm.',
+      'So số đưa vào với số đi ra ở các ví dụ để đoán cỗ máy làm gì, rồi tính số còn thiếu.',
+      'Xem các cặp số mẫu để tìm ra phép tính mà cỗ máy đã dùng.',
+      'Dùng đúng phép tính của cỗ máy cho con số mà đề bài hỏi.',
     ],
   },
   'g02-t1': {
@@ -242,9 +242,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Nhìn kỹ dáng hình và số ô để chọn đúng bóng của hình mẫu.',
     ],
     age_9_12: [
-      'So sánh chi tiết cấu trúc từng ô và đường viền để nhận diện bóng chính xác.',
-      'Phân biệt các bóng gần giống nhau dựa trên vị trí các ô cấu tạo của hình mẫu.',
-      'Đối chiếu tỉ mỉ hình dạng hình học để chọn bóng hoàn toàn trùng khớp.',
+      'Đếm số ô và xem các ô nằm ở đâu để tìm bóng giống hệt hình mẫu.',
+      'Có những bóng gần giống nhau, hãy so vị trí từng ô với hình mẫu để phân biệt.',
+      'Nhìn thật kỹ hình dạng và chọn bóng khớp hoàn toàn với hình mẫu.',
     ],
   },
   'g02-t2': {
@@ -254,9 +254,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Xoay thử hình trong suy nghĩ để tìm đúng vị trí mới của các ô.',
     ],
     age_9_12: [
-      'Xác định góc quay và chiều xoay để tìm trạng thái sau khi xoay của hình mẫu.',
-      'Phân biệt giữa phép xoay và phép lật gương để không bị chọn nhầm hình nhé.',
-      'Tưởng tượng sự dịch chuyển tọa độ các ô của hình mẫu khi quay quanh tâm.',
+      'Xem hình mẫu xoay theo kiểu nào, rồi tìm hình trông giống như vậy sau khi xoay.',
+      'Xoay khác với lật như soi gương, hãy phân biệt kỹ để không chọn nhầm hình nhé.',
+      'Tưởng tượng từng ô của hình mẫu chạy sang chỗ mới khi cả hình xoay.',
     ],
   },
   'g02-t3': {
@@ -266,9 +266,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'So từng cặp ô đối xứng qua đường kẻ giữa để tìm đúng vị trí.',
     ],
     age_9_12: [
-      'Dựa vào trục đối xứng ngang hoặc dọc để xác định ô cần bù hoặc ô làm lệch đối xứng.',
-      'So sánh từng cặp điểm đối xứng qua trục phản chiếu để tìm ra vị trí chính xác.',
-      'Phân tích sự cân đối giữa hai nửa lưới ô vuông để hoàn thành hình đối xứng.',
+      'Gấp đôi hình theo đường giữa: ô nào không có ô trùng bên kia thì cần bổ sung hoặc là ô bị lệch.',
+      'So từng cặp ô nằm đối nhau hai bên đường giữa để tìm ô cần chọn.',
+      'So hai nửa của lưới xem chỗ nào chưa cân đối, rồi hoàn thành hình đối xứng.',
     ],
   },
   'g03-t1': {
@@ -278,9 +278,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Ghi nhớ nhịp điệu của các hình ảnh rồi xếp lại sau khi chúng biến mất nha.',
     ],
     age_9_12: [
-      'Ghi nhớ trình tự xuất hiện của các phần tử và tái hiện lại chính xác toàn bộ chuỗi.',
-      'Gom các từ thành nhóm nhỏ trong tâm trí để ghi nhớ thứ tự hiệu quả hơn.',
-      'Tập trung quan sát chuỗi trong thời gian ngắn rồi sắp xếp lại đúng vị trí ban đầu.',
+      'Nhớ thứ tự các phần tử xuất hiện, rồi xếp lại đúng như ban đầu.',
+      'Gom các từ thành từng nhóm nhỏ trong đầu sẽ giúp bạn nhớ thứ tự dễ hơn.',
+      'Nhìn thật tập trung trong lúc dãy hiện ra, rồi xếp lại đúng vị trí ban đầu.',
     ],
   },
   'g03-t2': {
@@ -290,9 +290,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Tập trung nhìn các vị trí xuất hiện rồi bấm lại thật chính xác nha.',
     ],
     age_9_12: [
-      'Ghi nhớ vị trí không gian của các điểm trên lưới và chọn lại đầy đủ các điểm đó.',
-      'Sử dụng các dấu mốc hàng và cột để ghi nhớ chính xác tọa độ các ô vừa xuất hiện.',
-      'Tái hiện lại cấu trúc phân bố của các điểm nhớ trên bảng lưới ô vuông.',
+      'Nhớ những ô nào đã sáng lên trên lưới, rồi chọn lại đủ các ô đó.',
+      'Nhớ mỗi ô nằm ở hàng nào, cột nào sẽ giúp bạn không nhầm chỗ.',
+      'Hình dung lại các ô đã sáng nằm ở đâu trên lưới, rồi chọn lại chúng.',
     ],
   },
   'g03-t3': {
@@ -302,9 +302,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'So sánh hai bức tranh để tìm ra một điểm khác lạ vừa xuất hiện.',
     ],
     age_9_12: [
-      'Đối chiếu chi tiết giữa hai trạng thái trước và sau để xác định chính xác sự thay đổi.',
-      'Quan sát tỉ mỉ thuộc tính, số lượng hoặc vị trí của các đối tượng để nhận ra điểm mới.',
-      'Phân tích nhanh sự biến đổi giữa hai khung hình liên tiếp để tìm ra đáp án đúng.',
+      'So cảnh trước với cảnh sau từng món một để tìm ra điều đã thay đổi.',
+      'Xem kỹ màu sắc, số lượng và chỗ đứng của từng món để nhận ra điểm khác.',
+      'So nhanh hai cảnh nối tiếp nhau xem cái gì mất đi, mới đến hoặc đổi chỗ.',
     ],
   },
   'g04-t1': {
@@ -314,9 +314,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Xem kỹ từng lời gợi ý để tìm ra đúng người bạn bí mật.',
     ],
     age_9_12: [
-      'Phân tích các manh mối khẳng định và phủ định để loại trừ các phương án không phù hợp.',
-      'Sử dụng phương pháp loại suy từng bước để xác định đối tượng duy nhất thỏa mãn.',
-      'Kết hợp chặt chẽ tất cả các điều kiện để tìm ra ứng viên chính xác.',
+      'Đọc từng manh mối, cái nào nói "là" hay "không phải" đều giúp bạn loại bớt lựa chọn sai.',
+      'Loại dần từng lựa chọn không hợp, cho đến khi chỉ còn lại một đáp án.',
+      'Dùng cùng lúc tất cả manh mối để tìm ra lựa chọn đúng duy nhất.',
     ],
   },
   'g04-t2': {
@@ -326,9 +326,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Dùng gợi ý có sẵn và luật dẫn đường để tìm ra điều chắc chắn xảy ra.',
     ],
     age_9_12: [
-      'Áp dụng quy tắc suy luận Nếu - Thì từ tiền đề cho trước để rút ra kết luận logic.',
-      'Nối các mắt xích suy luận liên tiếp để đi từ thông tin ban đầu đến kết quả cuối cùng.',
-      'Kiểm tra tính hợp lệ của chuỗi lập luận để chọn kết luận không thể bác bỏ.',
+      'Đọc các câu "nếu ... thì ..." và những điều đã biết, rồi suy ra điều chắc chắn đúng.',
+      'Nối từng câu "nếu ... thì ..." với nhau, đi từ điều đã biết đến kết quả cuối cùng.',
+      'Kiểm tra từng bước suy nghĩ và chọn kết luận chắc chắn đúng, không thể sai.',
     ],
   },
   'g04-t3': {
@@ -338,9 +338,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Chọn đúng mẩu thông tin giúp chúng mình nhận ra người bạn này ngay lập tức.',
     ],
     age_9_12: [
-      'Xác định thông tin còn thiếu mang tính quyết định để thu hẹp phạm vi về một đối tượng.',
-      'Phân tích xem dữ kiện nào là điều kiện cần và đủ để khẳng định danh tính mục tiêu.',
-      'Lựa chọn bổ sung manh mối thích hợp nhằm loại bỏ hoàn toàn sự không chắc chắn.',
+      'Tìm xem còn thiếu thông tin nào thì mới biết chắc đó là ai hoặc cái nào.',
+      'Xem thông tin nào bổ sung vào là đủ để chỉ còn đúng một lựa chọn.',
+      'Chọn manh mối còn thiếu để không còn băn khoăn giữa các lựa chọn nữa.',
     ],
   },
   'g05-t1': {
@@ -350,9 +350,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Cộng số bên này rồi tìm số còn thiếu để bên kia nặng bằng nhau nha.',
     ],
     age_9_12: [
-      'Tính toán giá trị quả cân cần thêm hoặc thay thế để hai bên đạt trạng thái cân bằng.',
-      'Thiết lập sự tương đương về tổng khối lượng giữa hai đĩa cân để tìm số còn thiếu.',
-      'Giải bài toán cân thăng bằng bằng cách so sánh tổng số lượng hai vế.',
+      'Tính xem cần thêm hoặc đổi quả cân nặng bao nhiêu để hai đĩa cân bằng nhau.',
+      'Cộng số cân ở mỗi đĩa, rồi xem đĩa nhẹ hơn còn thiếu bao nhiêu để bằng đĩa kia.',
+      'So tổng số cân của hai đĩa để tìm số cân còn thiếu.',
     ],
   },
   'g05-t2': {
@@ -362,9 +362,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Đếm xem chia được mấy nhóm đủ và còn thừa lại mấy bạn nha.',
     ],
     age_9_12: [
-      'Vận dụng phép chia có dư để xác định số nhóm trọn vẹn hoặc số phần dư tương ứng.',
-      'Tính toán chính xác số phần cần bổ sung để tạo thêm một nhóm hoàn chỉnh.',
-      'Phân tích bài toán chia nhóm đều theo yêu cầu kích thước mỗi nhóm.',
+      'Chia đều thành các nhóm bằng nhau rồi xem được mấy nhóm đầy đủ và còn dư bao nhiêu.',
+      'Tính xem cần thêm bao nhiêu nữa thì có thêm được một nhóm đầy đủ.',
+      'Đọc kỹ mỗi nhóm có bao nhiêu phần tử, rồi chia theo đúng số đó.',
     ],
   },
   'g05-t3': {
@@ -374,21 +374,21 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Gom các số lại với nhau sao cho khớp với yêu cầu của đề bài nhé.',
     ],
     age_9_12: [
-      'Lựa chọn tập hợp các số sao cho tổng giá trị thỏa mãn đúng điều kiện đề bài đưa ra.',
-      'Tối ưu cách chọn để đáp ứng chính xác tiêu chí của đề bài nêu ra.',
-      'Tính nhẩm linh hoạt để kết hợp các số đúng điều kiện đề bài yêu cầu.',
+      'Chọn một vài số sao cho tổng của chúng đúng như đề bài yêu cầu.',
+      'Thử các cách chọn khác nhau cho đến khi đúng điều đề bài đặt ra.',
+      'Vừa chọn vừa cộng nhẩm để ghép các số cho đúng yêu cầu của đề bài.',
     ],
   },
   'g06-t1': {
     age_6_8: [
-      'Đi từ ô bắt đầu đến ô đích, tránh các bức tường và ghé qua điểm cần đến nhé.',
+      'Đi từ ô bắt đầu đến ô đích, tránh các bức tường nhé.',
       'Vẽ đường đi an toàn đưa bạn nhỏ về đích mà không đâm vào chướng ngại vật.',
-      'Tìm một đường đi hợp lệ đến ô đích và ghé qua các điểm mốc trên bảng nhé.',
+      'Tìm một đường đi từ ô bắt đầu đến ô đích mà không chạm vào tường nhé.',
     ],
     age_9_12: [
-      'Vẽ một lộ trình hợp lệ từ điểm xuất phát đến đích, tránh vật cản và qua các điểm mốc.',
-      'Sắp xếp các bước đi sao cho an toàn, đi đủ các điểm mốc rồi mới tới đích.',
-      'Định vị không gian trên lưới để vạch ra đường đi hợp lệ và an toàn.',
+      'Vẽ một đường từ điểm xuất phát đến đích, tránh vật cản.',
+      'Tìm lối đi an toàn qua các ô trống rồi về tới đích.',
+      'Nhìn cả bảng trước, rồi vạch đường tránh tường để tới đích.',
     ],
   },
   'g06-t2': {
@@ -398,9 +398,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Đặt các tấm thẻ hành động theo trình tự tự nhiên hàng ngày nha bạn.',
     ],
     age_9_12: [
-      'Sắp xếp chuỗi các câu lệnh hoặc thao tác theo quy trình logic và mối quan hệ trước sau.',
-      'Phân tích điều kiện phụ thuộc giữa các bước để xây dựng trình tự thực thi chuẩn xác.',
-      'Thiết lập quy trình hành động tuần tự hợp lý để hoàn thành mục tiêu công việc.',
+      'Xếp các lệnh theo đúng thứ tự: việc nào phải làm trước, việc nào làm sau.',
+      'Xem bước nào cần xong trước thì bước khác mới làm được, rồi xếp thành thứ tự đúng.',
+      'Xếp các bước thành một dãy hợp lý để hoàn thành việc cần làm.',
     ],
   },
   'g06-t3': {
@@ -410,9 +410,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Xem lại từng bước đi của robot và sửa lại một bước sai duy nhất nha.',
     ],
     age_9_12: [
-      'Chẩn đoán câu lệnh sai hướng trong chương trình và chọn phương án sửa đổi phù hợp.',
-      'Phát hiện bước đi đâm vào chướng ngại hoặc chệch đích để điều chỉnh chính xác.',
-      'Thực hiện gỡ lỗi bằng cách thay thế một bước đi duy nhất giúp lộ trình thành công.',
+      'Tìm lệnh đi sai hướng trong chương trình và chọn cách sửa cho đúng.',
+      'Tìm bước đi đâm vào vật cản hoặc đi lệch khỏi đích, rồi sửa lại bước đó.',
+      'Chỉ cần đổi đúng một bước đi là cả lộ trình sẽ tới được đích.',
     ],
   },
   'g07-t1': {
@@ -422,9 +422,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Đổi sang cách chia mới và chọn tất cả những hình phù hợp.',
     ],
     age_9_12: [
-      'Chuyển đổi linh hoạt sang tiêu chuẩn phân loại mới và chọn tất cả các đối tượng tương ứng.',
-      'Loại bỏ cách tư duy phân nhóm cũ để gom tập hợp đối tượng theo thuộc tính mới.',
-      'Phân loại lại các hình dựa trên đặc điểm màu sắc, hình học hoặc kích thước vừa đổi.',
+      'Luật đã đổi rồi, hãy chọn tất cả các hình hợp với luật mới.',
+      'Quên cách chia nhóm cũ đi và chia lại các hình theo đặc điểm mới.',
+      'Xem lại từng hình theo đặc điểm vừa đổi, như hình dạng, màu sắc hay kích cỡ.',
     ],
   },
   'g07-t2': {
@@ -434,9 +434,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Tưởng tượng mình đang đứng ở đó và chỉ ra hướng của đồ vật nha.',
     ],
     age_9_12: [
-      'Xoay chuyển góc nhìn tâm lý sang vị trí người quan sát để xác định hướng tương đối.',
-      'Phân tích tọa độ vị trí theo hệ quy chiếu của nhân vật quan sát trong không gian.',
-      'Định hướng chính xác vị trí đồ vật là phía trước, phía sau, bên trái hay bên phải.',
+      'Tưởng tượng mình đang đứng đúng chỗ bạn nhỏ và nhìn theo hướng mũi tên.',
+      'Xem đồ vật nằm ở đâu so với bạn nhỏ, không phải so với màn hình của bạn.',
+      'Chọn đồ vật đang ở phía trước, phía sau, bên trái hay bên phải của bạn nhỏ.',
     ],
   },
   'g07-t3': {
@@ -446,9 +446,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Vẽ một đường đi mới lạ để tránh đường quen thuộc đã có.',
     ],
     age_9_12: [
-      'Tìm kiếm phương án lộ trình thay thế hợp lệ không trùng với đường đi ban đầu.',
-      'Phát huy tính linh hoạt tư duy để tìm lối thoát thứ hai từ xuất phát đến đích.',
-      'Khám phá đường đi mới né tránh các vật cản và khác biệt với lời giải trước đó.',
+      'Tìm một đường đi khác, không giống đường đã có, mà vẫn tới được đích.',
+      'Nghĩ thêm một lối đi nữa từ chỗ xuất phát đến đích.',
+      'Tìm đường mới tránh các vật cản và không giống đường lần trước.',
     ],
   },
   'g08-t1': {
@@ -458,9 +458,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Nhìn thật tinh mắt xem những ô nào ở tranh bên phải đã bị đổi khác nha.',
     ],
     age_9_12: [
-      'So sánh có hệ thống theo từng hàng và cột để phát hiện mọi điểm khác biệt trên lưới.',
-      'Nhận diện các ô bị thay đổi chi tiết giữa hai bức tranh đối chiếu song song.',
-      'Quan sát tỉ mỉ để xác định toàn bộ các tọa độ có sự sai lệch giữa hai hình.',
+      'So hai bức tranh lần lượt từng hàng, từng cột để tìm hết các ô khác nhau.',
+      'Đặt hai bức tranh cạnh nhau và tìm những ô đã bị đổi.',
+      'Nhìn thật kỹ để tìm đủ mọi ô không giống nhau giữa hai hình.',
     ],
   },
   'g08-t2': {
@@ -470,9 +470,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Tìm những người bạn mang đủ cả hai dấu hiệu nhận biết.',
     ],
     age_9_12: [
-      'Lọc ra tất cả các đối tượng thỏa mãn đồng thời cả hai thuộc tính yêu cầu.',
-      'Kiểm tra giao điểm của hai tập hợp đặc điểm trên từng hình mẫu lựa chọn.',
-      'Xác định chính xác các hình có đầy đủ hai tiêu chuẩn nhận diện đã cho.',
+      'Chọn tất cả các hình có cả hai đặc điểm mà đề bài nêu.',
+      'Với mỗi hình, kiểm tra xem nó có đủ cả hai đặc điểm hay chỉ có một.',
+      'Chỉ chọn những hình hợp với cả hai điều kiện đã cho.',
     ],
   },
   'g08-t3': {
@@ -482,9 +482,9 @@ export const GAME_TUTORIALS: Record<GameTypeId, {
       'Tìm chi tiết không cùng nhóm hoặc không đúng cách thức thường ngày nha.',
     ],
     age_9_12: [
-      'Phát hiện tình huống chứa yếu tố phi lý hoặc vi phạm quy tắc chung của nhóm.',
-      'Phân tích tính hợp lý của các chi tiết hành vi và phân nhóm đối tượng.',
-      'Chỉ ra chính xác bức tranh chứa chi tiết bất thường không phù hợp với bối cảnh.',
+      'Tìm tình huống có chỗ vô lý hoặc không hợp với quy tắc chung của nhóm.',
+      'Xem từng chi tiết có hợp lý không, và mỗi thứ nên thuộc nhóm nào.',
+      'Chỉ ra bức tranh có chi tiết lạ, không hợp với bối cảnh của nó.',
     ],
   },
 };
@@ -531,9 +531,9 @@ export const GAME_MODE_TUTORIALS: Partial<Record<GameTypeId, Record<string, {
         'Tập trung nhìn các vị trí xuất hiện rồi bấm đúng ô sáng đèn chưa đánh dấu nha.',
       ],
       age_9_12: [
-        'Ghi nhớ vị trí các điểm sáng trên lưới; bỏ qua ô đã đánh dấu và chọn ô sáng còn lại.',
-        'Dùng dấu mốc hàng và cột để nhớ tọa độ các ô vừa sáng rồi chọn ô chưa đánh dấu.',
-        'Tái hiện lại phân bố các điểm nhớ trên bảng lưới và chọn ô sáng còn lại.',
+        'Nhớ những ô đã sáng trên lưới; bỏ qua ô đã đánh dấu và chọn ô sáng còn lại.',
+        'Nhớ mỗi ô nằm ở hàng nào, cột nào, rồi chọn ô sáng chưa được đánh dấu.',
+        'Hình dung lại các ô đã sáng trên lưới và chọn ô sáng còn lại.',
       ],
     },
   },
@@ -545,9 +545,9 @@ export const GAME_MODE_TUTORIALS: Partial<Record<GameTypeId, Record<string, {
         'Cộng hai đĩa cân, rồi tìm số cân cần thay cho quả đã đánh dấu nhé.',
       ],
       age_9_12: [
-        'Tính giá trị quả cân cần thay thế để tổng khối lượng hai đĩa cân bằng nhau.',
-        'Xác định quả cân được đánh dấu rồi tìm số cân thay thế giúp hai đĩa cân thăng bằng.',
-        'So sánh tổng số lượng hai vế sau khi thay quả cân đã đánh dấu để tìm số cần thay.',
+        'Tính xem quả cân mới phải nặng bao nhiêu để hai đĩa cân bằng nhau.',
+        'Tìm quả cân được đánh dấu rồi tính số cân thay vào để hai đĩa cân bằng.',
+        'Cộng số cân ở hai đĩa sau khi bỏ quả đã đánh dấu để tìm số cân cần thay vào.',
       ],
     },
   },
@@ -559,9 +559,9 @@ export const GAME_MODE_TUTORIALS: Partial<Record<GameTypeId, Record<string, {
         'Tìm cách dùng ít món nhất mà vẫn đủ số điểm cần đạt nhé.',
       ],
       age_9_12: [
-        'Chọn tập hợp các số sao cho tổng đúng mục tiêu và số phần tử là ít nhất.',
-        'Tối ưu số món chọn sao cho vẫn đạt đúng tổng số điểm yêu cầu.',
-        'Tìm tổ hợp có số phần tử ít nhất nhưng tổng giá trị vẫn đúng mục tiêu.',
+        'Chọn các số có tổng đúng bằng mục tiêu, và số lượng số chọn phải ít nhất.',
+        'Dùng ít nhất số món có thể mà tổng vẫn đúng số điểm cần đạt.',
+        'Tìm cách chọn có số lượng ít nhất mà tổng vẫn đúng bằng mục tiêu.',
       ],
     },
     'exact-two': {
@@ -571,9 +571,9 @@ export const GAME_MODE_TUTORIALS: Partial<Record<GameTypeId, Record<string, {
         'Bấm đúng hai món đồ để tổng của chúng bằng mục tiêu nhé.',
       ],
       age_9_12: [
-        'Chọn đúng hai số sao cho tổng giá trị đúng bằng mục tiêu.',
-        'Tìm một cặp số có tổng đúng mục tiêu rồi chọn cả hai vào.',
-        'Hai phần tử được chọn phải có tổng giá trị đúng mục tiêu yêu cầu.',
+        'Chọn đúng hai số có tổng bằng mục tiêu.',
+        'Tìm một cặp số cộng lại đúng bằng mục tiêu rồi chọn cả hai số đó.',
+        'Hai số bạn chọn phải cộng lại đúng bằng mục tiêu.',
       ],
     },
     'not-over': {
@@ -583,9 +583,9 @@ export const GAME_MODE_TUTORIALS: Partial<Record<GameTypeId, Record<string, {
         'Gom các món sao cho tổng vừa khít mục tiêu mà không vượt quá nhé.',
       ],
       age_9_12: [
-        'Chọn tập hợp các số sao cho tổng không vượt mục tiêu và đạt giá trị lớn nhất.',
-        'Loại các phần làm vượt mục tiêu rồi tối đa hóa tổng còn lại.',
-        'Tìm tổ hợp có tổng lớn nhất nhưng vẫn không vượt quá mục tiêu đã cho.',
+        'Chọn các số có tổng lớn nhất có thể mà không vượt quá mục tiêu.',
+        'Bỏ những số làm tổng vượt mục tiêu, rồi chọn sao cho tổng còn lại lớn nhất.',
+        'Tìm cách chọn có tổng lớn nhất mà vẫn không vượt quá mục tiêu.',
       ],
     },
     any: {
@@ -595,47 +595,59 @@ export const GAME_MODE_TUTORIALS: Partial<Record<GameTypeId, Record<string, {
         'Bấm chọn các món để tổng đúng mục tiêu, tối đa {maxItems} món nhé.',
       ],
       age_9_12: [
-        'Chọn tập hợp các số sao cho tổng đúng mục tiêu và không quá {maxItems} số.',
-        'Tối ưu danh sách chọn sao cho tổng đúng mục tiêu trong khi giới hạn {maxItems} phần tử.',
-        'Kết hợp các số đạt đúng tổng yêu cầu mà vẫn tuân thủ giới hạn {maxItems} món đã chọn.',
+        'Chọn các số có tổng đúng bằng mục tiêu, nhưng không quá {maxItems} số.',
+        'Chọn các số để tổng đúng mục tiêu, nhớ chỉ được dùng tối đa {maxItems} số.',
+        'Ghép các số cho tổng đúng yêu cầu, và không chọn quá {maxItems} món.',
       ],
     },
   },
   'g06-t1': {
     shortest: {
       age_6_8: [
-        'Tìm đường ngắn nhất từ ô bắt đầu đến ô đích, tránh các bức tường nhé.',
-        'Đường ngắn nhất sẽ đi thẳng về đích; bạn hãy vạch đường đó nha.',
+        'Đếm bước để tìm đường ngắn nhất từ ô bắt đầu đến ô đích, tránh các bức tường nhé.',
+        'Có nhiều đường tới đích, nhưng chỉ đường ít bước nhất mới đúng nha.',
         'Chọn đường có ít bước nhất để đưa bạn nhỏ tới đích an toàn nhé.',
       ],
       age_9_12: [
-        'Lập kế hoạch đường đi ngắn nhất từ điểm xuất phát đến đích, tránh vật cản.',
-        'Tìm lộ trình có số bước ít nhất để tới đích an toàn nhé.',
-        'Chọn đường đi ít bước nhất, tránh vật cản và đi qua các điểm mốc nếu có.',
+        'Tìm đường ngắn nhất từ ô bắt đầu đến ô đích, tránh các bức tường; đường dài hơn sẽ không được tính.',
+        'So các đường có thể đi và chọn đường dùng ít bước nhất để tới đích.',
+        'Chọn đường ít bước nhất, đi vòng thừa là chưa đúng nhé.',
       ],
     },
     ordered: {
       age_6_8: [
-        'Trên đường đi, bạn phải ghé lấy chiếc chìa khóa trước rồi mới tới cánh cửa nhé.',
-        'Nhớ ghé qua chiếc chìa khóa ở giữa đường trước khi bước vào cánh cửa nha.',
-        'Hãy đi qua chiếc chìa khóa trước, đến cánh cửa sau cùng nhé.',
+        'Trên đường đi, bạn phải ghé ngôi sao số 1 trước, rồi mới tới ngôi sao số 2 nhé.',
+        'Nhớ ghé qua ngôi sao số 1 trước khi tới ngôi sao số 2 rồi mới về đích nha.',
+        'Hãy đi qua ngôi sao số 1 trước, ngôi sao số 2 sau, cuối cùng về đích nhé.',
       ],
       age_9_12: [
-        'Lộ trình phải đi qua chiếc chìa khóa trước rồi mới tới cánh cửa đích.',
-        'Sắp xếp đường đi sao cho điểm lấy chìa được ghé trước điểm mở cửa.',
-        'Định hướng để ghé lấy chìa khóa trước, sau đó mới tiến tới cánh cửa.',
+        'Đường đi phải qua ngôi sao số 1 trước rồi mới tới ngôi sao số 2.',
+        'Ghé ngôi sao số 1, rồi ngôi sao số 2, sau đó mới về đích.',
+        'Đi theo đúng số thứ tự trên các ngôi sao, rồi mới tới đích.',
       ],
     },
-    default: {
+    waypoint: {
       age_6_8: [
-        'Đi từ ô bắt đầu đến ô đích, tránh các bức tường và ghé qua điểm cần đến nhé.',
-        'Vẽ đường đi an toàn đưa bạn nhỏ về đích mà không đâm vào chướng ngại vật.',
-        'Tìm một đường đi hợp lệ đến ô đích và ghé qua các điểm mốc trên bảng nhé.',
+        'Đi từ ô bắt đầu đến ô đích, tránh các bức tường và nhớ ghé qua ngôi sao nhé.',
+        'Vẽ đường đi an toàn, đi qua ngôi sao rồi về đích nha.',
+        'Tìm một đường đi tới đích, nhớ ghé qua ngôi sao trên bảng nhé.',
       ],
       age_9_12: [
-        'Vẽ một lộ trình hợp lệ từ điểm xuất phát đến đích, tránh vật cản và qua các điểm mốc.',
-        'Sắp xếp các bước đi sao cho an toàn, đi đủ các điểm mốc rồi mới tới đích.',
-        'Định vị không gian trên lưới để vạch ra đường đi hợp lệ và an toàn.',
+        'Vẽ đường từ ô bắt đầu tới ô đích, tránh bức tường và phải đi qua ngôi sao.',
+        'Đi sao cho đường đi ghé qua ngôi sao rồi mới tới đích.',
+        'Tìm đường đi tránh vật cản, qua ngôi sao và kết thúc ở ô đích.',
+      ],
+    },
+    reach: {
+      age_6_8: [
+        'Đi từ ô bắt đầu đến ô đích, tránh các bức tường nhé.',
+        'Vẽ đường đi an toàn đưa bạn nhỏ về đích mà không đâm vào chướng ngại vật.',
+        'Tìm một đường đi tới ô đích mà không chạm vào tường nhé.',
+      ],
+      age_9_12: [
+        'Vẽ một đường từ ô bắt đầu tới ô đích mà không chạm vào vật cản.',
+        'Tìm lối đi an toàn qua các ô trống để về tới đích.',
+        'Nhìn cả bảng trước, rồi vạch đường tránh tường để tới đích.',
       ],
     },
   },
@@ -660,7 +672,7 @@ export function getTutorialMode(gameTypeId: GameTypeId, boardData?: BoardData | 
     if (boardData.kind !== 'path-planning') return null;
     if (boardData.shortestPathOnly === true) return 'shortest';
     if (boardData.waypointOrder === 'ordered') return 'ordered';
-    return 'default';
+    return boardData.waypoints.length > 0 ? 'waypoint' : 'reach';
   }
   return null;
 }
@@ -694,6 +706,14 @@ export function getNaturalTutorial(
   seed: string,
   boardData?: BoardData | null,
 ): string {
+  if (gameTypeId === 'g06-t2' && boardData?.kind === 'planning-command-order') {
+    const orderRules = boardData.before.map(([first, second]) => {
+      const firstText = boardData.commands.find((command) => command.id === first)!.text;
+      const secondText = boardData.commands.find((command) => command.id === second)!.text;
+      return `${firstText} → ${secondText}`;
+    }).join('; ');
+    return `Luật riêng của ván này (→ là làm trước): ${orderRules}. Mọi thứ tự giữ đủ luật đều được.`;
+  }
   const trackGroup = ageTrack === 'age_6_8' || ageTrack === 'age_3_5' ? 'age_6_8' : 'age_9_12';
   const mode = getTutorialMode(gameTypeId, boardData);
   const modeVariants = mode ? GAME_MODE_TUTORIALS[gameTypeId]?.[mode]?.[trackGroup] : undefined;
@@ -701,5 +721,9 @@ export function getNaturalTutorial(
     ? modeVariants
     : GAME_TUTORIALS[gameTypeId]?.[trackGroup];
   if (!variants || variants.length === 0) return 'Bạn quan sát thật kỹ và chọn đáp án chính xác nhé.';
-  return formatTutorial(selectBySeed(variants, seed, day), boardData);
+  const tutorial = formatTutorial(selectBySeed(variants, seed, day), boardData);
+  if (gameTypeId === 'g04-t2' && boardData?.kind === 'reasoning-if-then') {
+    return `Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. ${tutorial}`;
+  }
+  return tutorial;
 }

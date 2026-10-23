@@ -114,8 +114,8 @@ export function ObservationTwoTraitsGame({
             const isSelected = selectedIds.includes(item.id);
             const shape = item.traits['hình'] ?? '';
             const color = item.traits['màu'] ?? '';
-            const size = item.traits['kích_cỡ'] ?? '';
-            const position = item.traits['vị_trí'] ?? '';
+            const size = (item.traits['kích cỡ'] ?? item.traits['kích_cỡ']) ?? '';
+            const position = (item.traits['vị trí'] ?? item.traits['vị_trí']) ?? '';
             const shapeIcon = TRAIT_ICONS[shape] ?? '🔷';
             const colorStyle = COLOR_CLASSES[color] ?? 'bg-slate-50 border-slate-200';
 

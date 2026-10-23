@@ -20,9 +20,8 @@ type PilotItem = {
 const pilot = JSON.parse(readFileSync(join(process.cwd(), 'content/thinking-games/pilot/pilot-manifest-v1.json'), 'utf8')) as {
   items: PilotItem[];
 };
-const dayIndex = ((new Date().getDate() - 1) % 7) + 1;
 const localItem = pilot.items.find((item) =>
-  item.dayIndex === dayIndex && item.slotType === 'main' && item.ageTrack === 'age_6_8'
+  item.dayIndex === 1 && item.slotType === 'main' && item.ageTrack === 'age_6_8'
   && item.locale === 'vi' && item.contentVersion === 'pilot-2026-10-21');
 if (!localItem) throw new Error('local practice fixture missing');
 
@@ -109,6 +108,8 @@ test.describe('Thinking Games Card/Player integration', () => {
   test('local demo starts the real Player from the Card and finishes locally', async ({ page }) => {
     test.setTimeout(120_000);
     await ensureServer();
+    // Pilot day 1 is the rule-sequence board; other calendar days rotate mechanics.
+    await page.clock.setFixedTime('2026-10-22T12:00:00');
     await page.goto(`${baseURL}/?demo=1`);
     await expect(page.getByRole('heading', { name: 'Một trò chơi nhỏ hôm nay' })).toBeVisible({ timeout: 30_000 });
     await page.getByRole('button', { name: 'Chơi', exact: true }).click();

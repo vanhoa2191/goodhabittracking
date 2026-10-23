@@ -182,7 +182,7 @@ function originalPayload(engine, slot, seed, ageTrack) {
     return {
       boardData: board,
       solution: engine.solveRuleSequence(board),
-      hints: engine.describeRuleSequenceBoard(board).hints,
+      hints: engine.describeRuleSequenceBoard(board, { ageTrack, seed }).hints,
       explanation: engine.describeRuleSequenceBoard(board).explanation,
     };
   }
@@ -191,7 +191,7 @@ function originalPayload(engine, slot, seed, ageTrack) {
     return {
       boardData: board,
       solution: engine.solveMemorySequence(board),
-      hints: engine.describeMemorySequenceBoard(board).hints,
+      hints: engine.describeMemorySequenceBoard(board, { ageTrack, seed }).hints,
       explanation: engine.describeMemorySequenceBoard(board).explanation,
     };
   }
@@ -200,7 +200,7 @@ function originalPayload(engine, slot, seed, ageTrack) {
     return {
       boardData: board,
       solution: engine.solvePath(board),
-      hints: engine.describePathBoard(board).hints,
+      hints: engine.describePathBoard(board, { ageTrack, seed }).hints,
       explanation: engine.describePathBoard(board).explanation,
     };
   }
@@ -252,7 +252,28 @@ function buildCandidate({ engine, slot, day, ageTrack, source, attempt = 0 }) {
   };
 }
 
-function generateBatch({ engine, editorial, candidateSource, ageTracks, usedFingerprints = new Set() }, batch) {
+// Titles come from a per-track system (name + frame picked by seed). A title may not repeat the
+// previous day's titles of the same track, so the pick steps past anything in `avoid`.
+function variedTitle({ engine, titleState, slot, ageTrack, day }) {
+  const state = titleState.get(ageTrack) ?? { day: 0, previous: new Set(), current: new Set() };
+  if (state.day !== day) {
+    state.previous = state.day === day - 1 ? state.current : new Set();
+    state.current = new Set();
+    state.day = day;
+  }
+  const title = engine.getVariedTitle({
+    gameTypeId: slot.typeId,
+    theme: engine.themeOfTitle(slot.title),
+    ageTrack,
+    slotId: slot.slotId,
+    avoid: new Set([...state.previous, ...state.current]),
+  });
+  state.current.add(title);
+  titleState.set(ageTrack, state);
+  return title;
+}
+
+function generateBatch({ engine, editorial, candidateSource, ageTracks, usedFingerprints = new Set(), titleState = new Map() }, batch) {
   const items = [];
   const mapping = [];
   const selectedRows = editorial.rows.filter((row) => row.day >= batch.startDay && row.day <= batch.endDay);
@@ -277,6 +298,7 @@ function generateBatch({ engine, editorial, candidateSource, ageTracks, usedFing
           const accepted = engine.checkAnswer(item, item.solution);
           if (accepted.ok && accepted.correct && !usedFingerprints.has(item.fingerprint)) break;
         }
+        item.title = variedTitle({ engine, titleState, slot, ageTrack, day: row.day });
         if (usedFingerprints.has(item.fingerprint)) duplicateAfterAttempts = true;
         usedFingerprints.add(item.fingerprint);
         items.push(item);
@@ -326,10 +348,11 @@ async function generateV2() {
     };
     const ageTracks = engine.GAME_AGE_TRACKS;
     const usedFingerprints = new Set();
+    const titleState = new Map();
     const allItems = [];
     const batchDocuments = [];
     for (const batch of BATCHES) {
-      const { batchPath, document } = generateBatch({ engine, editorial, candidateSource, ageTracks, usedFingerprints }, batch);
+      const { batchPath, document } = generateBatch({ engine, editorial, candidateSource, ageTracks, usedFingerprints, titleState }, batch);
       document.engineVersion = loaded.engineVersion;
       batchDocuments.push({ batchPath, document });
       allItems.push(...document.items);

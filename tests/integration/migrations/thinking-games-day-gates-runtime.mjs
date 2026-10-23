@@ -7,6 +7,18 @@ const session = ids.sessions.childAlphaLive.tokenHash;
 const commandId = '11111111-1111-4111-8111-111111111111';
 const { localDay: today, localYear: currentYear } = await fixture.familyClock('Asia/Ho_Chi_Minh');
 
+async function expectGate(label, pattern, action) {
+  let error = null;
+  try {
+    await action();
+  } catch (caught) {
+    error = caught;
+  }
+  if (!error) throw new Error(`${label} did not block play: start unexpectedly succeeded`);
+  const message = String(error?.message || error);
+  if (!pattern.test(message)) throw new Error(`${label} did not block play: unexpected error "${message}"`);
+}
+
 try {
   await fixture.exec(await readFile('supabase/migrations/202610210001_thinking_games.sql', 'utf8'));
   await fixture.exec(`set thinking_games.content_version = 'release-365-v1'`);
@@ -22,7 +34,7 @@ try {
     insert into public.family_engagement_settings(family_id, paused_at)
     values ($1, null) on conflict (family_id) do nothing;
   `, [ids.families.alpha]);
-  await fixture.query(`update public.child_profiles set birth_year = 2019 where id = $1`, [ids.children.alpha]);
+  await fixture.query(`update public.child_profiles set birth_year = $2 where id = $1`, [ids.children.alpha, currentYear - 7]);
   await fixture.query(`
     insert into public.thinking_game_settings(family_id, enabled, bonus_enabled, timezone, cutoff_local, bedtime_start_local, bedtime_end_local, age_track_override)
     values($1, true, true, 'Asia/Ho_Chi_Minh', '19:00', '00:00', '00:01', null)
@@ -43,17 +55,19 @@ try {
   const state = await fixture.one(`select public.thinking_game_state($1, null) result`, [session]);
   if (state.result.ageTrack !== 'age_6_8') throw new Error('age track did not resolve to 6-8');
 
-  const started = await fixture.one(`select public.thinking_game_start($1,'main','${today}'::date,$2) result`, [session, commandId]);
+  const started = await fixture.one(
+    `select public.thinking_game_start($1,'main',$2::date,$3) result`,
+    [session, today, commandId],
+  );
   if (!started.result.ok || started.result.status !== 'started') throw new Error('main start did not succeed');
 
   await fixture.query(`update public.family_engagement_settings set paused_at = now() where family_id = $1`, [ids.families.alpha]);
-  let paused = false;
-  try {
-    await fixture.one(`select public.thinking_game_start($1,'main',current_date,$2) result`, [session, '22222222-2222-4222-8222-222222222222']);
-  } catch (error) {
-    paused = /paused/.test(String(error?.message || error));
-  }
-  if (!paused) throw new Error('pause gate did not block play');
+  await expectGate('pause gate', /paused/, async () => {
+    await fixture.one(
+      `select public.thinking_game_start($1,'main',$2::date,$3) result`,
+      [session, today, '22222222-2222-4222-8222-222222222222'],
+    );
+  });
 
   await fixture.query(`update public.family_engagement_settings set paused_at = null where family_id = $1`, [ids.families.alpha]);
   await fixture.query(`delete from public.thinking_game_attempts where child_id = $1 and family_id = $2`, [ids.children.alpha, ids.families.alpha]);
@@ -64,13 +78,12 @@ try {
     `update public.thinking_game_settings set bedtime_start_local = $2::time, bedtime_end_local = $3::time where family_id = $1`,
     [ids.families.alpha, bedtimeStart, bedtimeEnd],
   );
-  let bedtime = false;
-  try {
-    await fixture.one(`select public.thinking_game_start($1,'main','${today}'::date,$2) result`, [session, '33333333-3333-4333-8333-333333333333']);
-  } catch (error) {
-    bedtime = /bedtime/.test(String(error?.message || error));
-  }
-  if (!bedtime) throw new Error('bedtime blackout did not block play');
+  await expectGate('bedtime blackout', /bedtime/, async () => {
+    await fixture.one(
+      `select public.thinking_game_start($1,'main',$2::date,$3) result`,
+      [session, today, '33333333-3333-4333-8333-333333333333'],
+    );
+  });
 
   await fixture.query(`
     update public.thinking_game_settings
@@ -97,13 +110,12 @@ try {
   await fixture.query(`update public.child_profiles set birth_year = $2 where id = $1`, [ids.children.alpha, currentYear - 7]);
 
   await fixture.query(`update public.thinking_game_settings set enabled = false where family_id = $1`, [ids.families.alpha]);
-  let disabled = false;
-  try {
-    await fixture.one(`select public.thinking_game_start($1,'bonus','${today}'::date,$2) result`, [session, '44444444-4444-4444-8444-444444444444']);
-  } catch (error) {
-    disabled = /feature_off/.test(String(error?.message || error));
-  }
-  if (!disabled) throw new Error('master disable did not block a new start');
+  await expectGate('master disable', /feature_off/, async () => {
+    await fixture.one(
+      `select public.thinking_game_start($1,'bonus',$2::date,$3) result`,
+      [session, today, '44444444-4444-4444-8444-444444444444'],
+    );
+  });
   await fixture.query(`update public.thinking_game_settings set enabled = true where family_id = $1`, [ids.families.alpha]);
 
   await fixture.query(`
@@ -131,8 +143,8 @@ try {
   await fixture.query(`delete from public.thinking_game_attempts where child_id = $1 and entitlement_id <> $2`, [ids.children.alpha, oldEntitlement.id]);
   await fixture.query(`delete from public.thinking_game_entitlements where child_id = $1 and id <> $2`, [ids.children.alpha, oldEntitlement.id]);
   const rolloverStart = await fixture.one(
-    `select public.thinking_game_start($1,'main','${today}'::date,$2) result`,
-    [session, '55555555-5555-4555-8555-555555555555'],
+    `select public.thinking_game_start($1,'main',$2::date,$3) result`,
+    [session, today, '55555555-5555-4555-8555-555555555555'],
   );
   if (!rolloverStart.result.ok || rolloverStart.result.status !== 'started') throw new Error('current-day main did not start after rollover');
   const oldState = await fixture.one(`

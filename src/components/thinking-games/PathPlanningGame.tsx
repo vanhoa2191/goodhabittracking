@@ -185,6 +185,9 @@ export function PathPlanningGame({
               const isGoal = board.goal.x === x && board.goal.y === y;
               const isWall = wallSet.has(key);
               const isWaypoint = waypointSet.has(key);
+              const waypointNumber = board.waypointOrder === 'ordered'
+                ? board.waypoints.findIndex((waypoint) => waypoint.x === x && waypoint.y === y) + 1
+                : 0;
               const isInPath = pathSet.has(key);
               const stepIndex = pathIndexMap.get(key);
               const isHead = currentHead.x === x && currentHead.y === y;
@@ -194,7 +197,7 @@ export function PathPlanningGame({
               if (isStart) cellLabel += ', Điểm xuất phát';
               else if (isGoal) cellLabel += ', Đích đến';
               else if (isWall) cellLabel += ', Tường chắn';
-              else if (isWaypoint) cellLabel += ', Điểm cần qua';
+              else if (isWaypoint) cellLabel += waypointNumber > 0 ? `, Ngôi sao số ${waypointNumber}` : ', Điểm cần qua';
               if (isInPath) cellLabel += `, Bước ${stepIndex}`;
 
               return (
@@ -228,7 +231,7 @@ export function PathPlanningGame({
                   {isWall && <span aria-hidden="true">🧱</span>}
                   {isWaypoint && !isHead && (
                     <span aria-hidden="true" className={isInPath ? 'opacity-40' : 'text-base'}>
-                      ⭐
+                      ⭐{waypointNumber > 0 && <span className="text-[10px] font-extrabold">{waypointNumber}</span>}
                     </span>
                   )}
                   {isInPath && !isStart && !isGoal && (

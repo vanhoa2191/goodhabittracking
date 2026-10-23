@@ -1,0 +1,3351 @@
+{
+  "metadata": {
+    "reportType": "round3-codex-titles-hints",
+    "createdAt": "2026-10-22T18:19:41.099296+00:00",
+    "pullRequest": 199,
+    "runId": "run_6149b435d3ef",
+    "reviewer": "Codex independent AI content reviewer",
+    "status": "review_complete_fixes_recommended_pending_root_snapshot_check",
+    "humanEditorialAcceptance": false,
+    "childPilotAcceptance": false,
+    "sourceWrites": false
+  },
+  "scope": {
+    "ageTracks": [
+      "age_6_8",
+      "age_9_12"
+    ],
+    "rows": 1460,
+    "gameTypes": 24,
+    "excluded": [
+      "invitations",
+      "tutorial and explanation review before integration",
+      "whole-mechanics audit",
+      "experimental tracks 3-5 and 13+ output review",
+      "browser or child testing"
+    ]
+  },
+  "freshness": {
+    "inputSha256": {
+      "src/lib/thinking-games/content/titles.ts": "d874cafb5c13acc31731f711480f6aab74fc273b85db6f8a7109fedbc35ec780",
+      "src/lib/thinking-games/content/hints.ts": "8c5b3822f833252a222520c2158e9289f749b633bbcc08426ebd1c7a3ace4132",
+      "content/thinking-games/candidates/365-v2/batch-01-days-001-028.json": "445fcac504000e900ae50d76f32d578115aa093fca86c04b0ed84a7cf0ab18eb",
+      "content/thinking-games/candidates/365-v2/batch-02-days-029-091.json": "7ae659233845433705ebfee1a5dd4edae418d2e35391a9e1dc2c8942e7564a2d",
+      "content/thinking-games/candidates/365-v2/batch-03-days-092-182.json": "a19183e272175171ce37fb9621c5c33e98ccb052a18288dd8fd61f096688edf3",
+      "content/thinking-games/candidates/365-v2/batch-04-days-183-273.json": "ca0db01ddbd0cd13ab5ddd8f3b6d976437d0f451ca653c3c611a04ff59a81395",
+      "content/thinking-games/candidates/365-v2/batch-05-days-274-365.json": "7e1161da56afe152afdd85cc4ff78a816dbeffb209d1e060e337cf6daefcc1c2",
+      "content/thinking-games/candidates/365-v2/candidate-manifest-v2.json": "9f5df6ea97b9ac10bd493d84025e7cf3f825df03361708bd5544ab604271fd7c",
+      "content/thinking-games/candidates/365-v2/candidate-meta-v2.json": "5d0f9b788ef147dac03f0f8c2da499cf981c438769b63e6e265ca392447594ae"
+    },
+    "changedInputsDuringReview": [
+      "content/thinking-games/candidates/365-v2/batch-01-days-001-028.json",
+      "content/thinking-games/candidates/365-v2/batch-02-days-029-091.json",
+      "content/thinking-games/candidates/365-v2/batch-03-days-092-182.json",
+      "content/thinking-games/candidates/365-v2/batch-04-days-183-273.json",
+      "content/thinking-games/candidates/365-v2/batch-05-days-274-365.json",
+      "content/thinking-games/candidates/365-v2/candidate-manifest-v2.json",
+      "content/thinking-games/candidates/365-v2/candidate-meta-v2.json"
+    ],
+    "initialTitleHintProjectionSha256": "256647b1f1cbb8ebe48d73298778a68575ef639d55cebd87ef1828fde3c6e2bc",
+    "projectionEncoding": "SHA256 of UTF-8 json.dumps([{id,title,hints},...], ensure_ascii=False, separators=(comma,colon)); rows are five batches in lexical file order, item array order, filtered to initial tracks.",
+    "reuseRule": "Root must recheck both title/hint source hashes and per-ID title/hint projection after catalog regeneration. Any source change invalidates this assessment and requires a stale status/review. Unchanged sources do not automatically certify new boards, mode mapping, renderer, tutorials or explanations.",
+    "finalInputSha256": {
+      "src/lib/thinking-games/content/titles.ts": "d874cafb5c13acc31731f711480f6aab74fc273b85db6f8a7109fedbc35ec780",
+      "src/lib/thinking-games/content/hints.ts": "8c5b3822f833252a222520c2158e9289f749b633bbcc08426ebd1c7a3ace4132",
+      "content/thinking-games/candidates/365-v2/batch-01-days-001-028.json": "445fcac504000e900ae50d76f32d578115aa093fca86c04b0ed84a7cf0ab18eb",
+      "content/thinking-games/candidates/365-v2/batch-02-days-029-091.json": "7ae659233845433705ebfee1a5dd4edae418d2e35391a9e1dc2c8942e7564a2d",
+      "content/thinking-games/candidates/365-v2/batch-03-days-092-182.json": "a19183e272175171ce37fb9621c5c33e98ccb052a18288dd8fd61f096688edf3",
+      "content/thinking-games/candidates/365-v2/batch-04-days-183-273.json": "ca0db01ddbd0cd13ab5ddd8f3b6d976437d0f451ca653c3c611a04ff59a81395",
+      "content/thinking-games/candidates/365-v2/batch-05-days-274-365.json": "7e1161da56afe152afdd85cc4ff78a816dbeffb209d1e060e337cf6daefcc1c2",
+      "content/thinking-games/candidates/365-v2/candidate-manifest-v2.json": "9f5df6ea97b9ac10bd493d84025e7cf3f825df03361708bd5544ab604271fd7c",
+      "content/thinking-games/candidates/365-v2/candidate-meta-v2.json": "5d0f9b788ef147dac03f0f8c2da499cf981c438769b63e6e265ca392447594ae"
+    },
+    "unchangedAcrossReview": false,
+    "initialInputSha256": {
+      "src/lib/thinking-games/content/titles.ts": "d874cafb5c13acc31731f711480f6aab74fc273b85db6f8a7109fedbc35ec780",
+      "src/lib/thinking-games/content/hints.ts": "8c5b3822f833252a222520c2158e9289f749b633bbcc08426ebd1c7a3ace4132",
+      "content/thinking-games/candidates/365-v2/batch-01-days-001-028.json": "e752dcb54987c1bcc9b26d93463206f459025bd03a4dd5d3dae1658b2a670095",
+      "content/thinking-games/candidates/365-v2/batch-02-days-029-091.json": "1e2fd5ed23ffe110473008216d4cb1951db324421f089d8cbaa34e114a753d31",
+      "content/thinking-games/candidates/365-v2/batch-03-days-092-182.json": "f5b08f79025039793e200b3163c574ef941ae43fb79408505ee7a18e33a81ccf",
+      "content/thinking-games/candidates/365-v2/batch-04-days-183-273.json": "82e29d1a7a27fd4ade924e0256d0cdc1af8bd8de2ddbe8f302c5d41668136c8f",
+      "content/thinking-games/candidates/365-v2/batch-05-days-274-365.json": "02a36bfa46a782f93f6aabc3bb06ba8d2c82db8cff35bcc3397eba1d21143b2d",
+      "content/thinking-games/candidates/365-v2/candidate-manifest-v2.json": "e7f13e16d454277f0e1fd82180306d3607a0711cbc59b488e7af2c8b6b2ff404",
+      "content/thinking-games/candidates/365-v2/candidate-meta-v2.json": "35d4a8c60a539ea996c33e9349afa5da328258a6cab28d38e556c11fdaa6fe45"
+    },
+    "sourceUnchangedAcrossEntireReview": true,
+    "candidateFilesChangedDuringReview": true,
+    "finalTitleHintProjectionSha256": "256647b1f1cbb8ebe48d73298778a68575ef639d55cebd87ef1828fde3c6e2bc",
+    "titleHintProjectionUnchangedAcrossRegeneration": true,
+    "catalogNote": "Concurrent catalog regeneration changed all seven candidate files during this lane. The pre-regeneration extraction and post-regeneration extraction have identical per-ID title/hint projection SHA256, and both title/hint sources retain their original SHA256. Findings remain about those unchanged fields and relevant board modes only; this is not review or acceptance of regenerated tutorial/explanation copy. Root must independently verify the same evidence before reuse."
+  },
+  "coverage": {
+    "method": "Programmatically parse every row; deduplicate rendered hints by exact Unicode string without normalization, then read all 263 distinct strings. Parse every title into its exact registered name and chapter using the four source frames; read all 192 distinct names and 53 chapter phrases (245 components), plus all four frames, rather than read every full composed title separately. Read every source raw hint phrase, including the young interleaved pair not present in current age_6_8 output. Source pools are parsed through an in-memory esbuild bundle (write:false). This is AI reading, never human eyes or human approval.",
+    "fullComposedTitlesIndividuallyRead": false,
+    "distinctFullTitles": 1278,
+    "distinctRenderedHints": 263,
+    "rawSourceTitleNames": 192,
+    "rawSourceHintPairs": 118,
+    "rawSourceDistinctHints": 235,
+    "chapterPhrases": 53,
+    "titleFrames": {
+      "theme · name": 548,
+      "name · theme": 297,
+      "name — theme": 336,
+      "theme: name": 279
+    },
+    "perTrack": {
+      "age_6_8": {
+        "rows": 730,
+        "uniqueTitles": 730,
+        "distinctHints": 131,
+        "distinctHintPairs": 74,
+        "maxHintCharacters": 62
+      },
+      "age_9_12": {
+        "rows": 730,
+        "uniqueTitles": 730,
+        "distinctHints": 132,
+        "distinctHintPairs": 73,
+        "maxHintCharacters": 104
+      }
+    },
+    "rowsByType": {
+      "g01-t1": 62,
+      "g04-t1": 62,
+      "g02-t1": 62,
+      "g05-t1": 62,
+      "g03-t1": 62,
+      "g06-t1": 62,
+      "g04-t2": 62,
+      "g07-t1": 62,
+      "g05-t2": 62,
+      "g08-t1": 62,
+      "g06-t2": 60,
+      "g01-t2": 60,
+      "g07-t2": 60,
+      "g02-t2": 60,
+      "g08-t2": 60,
+      "g03-t2": 60,
+      "g01-t3": 60,
+      "g04-t3": 60,
+      "g02-t3": 60,
+      "g05-t3": 60,
+      "g03-t3": 60,
+      "g06-t3": 60,
+      "g07-t3": 60,
+      "g08-t3": 60
+    },
+    "boardReading": "All 1460 board records were available to programmatic filters; 24 first-by-type full board examples were displayed/read, plus targeted finding examples and eight older fewest boards. No claim that all 1460 full boards or every solution was manually read or independently solved.",
+    "referenceReading": [
+      "workspace AGENTS.md and supplied instruction contract",
+      "sonnet-design-handoff.md design metrics and source contracts",
+      "codex-current-inventory.md summary and relevant findings",
+      "codex-current-inventory.json including source hashes and hint/title assessment",
+      "round2-sonnet.md scope/method and historic categories",
+      "codex-r3-mechanics-handoff.md integration contract; not acceptance of new tutorials/explanations"
+    ]
+  },
+  "checks": {
+    "parsedInitialRows": 1460,
+    "initialIdsUnique": true,
+    "allTitleFramesRecognized": true,
+    "allRenderedHintsMatchSourceTemplates": true,
+    "allRowsDesignOnly": true,
+    "manifestTitleHintProjectionMatchesBatches": true,
+    "unresolvedHintPlaceholders": 0
+  },
+  "summary": {
+    "block": {
+      "findingGroups": 0,
+      "flags": 0,
+      "uniqueAffectedItems": 0
+    },
+    "fix": {
+      "findingGroups": 11,
+      "flags": 156,
+      "uniqueAffectedItems": 146
+    },
+    "suggestion": {
+      "findingGroups": 4,
+      "flags": 63,
+      "uniqueAffectedItems": 63
+    }
+  },
+  "findings": [
+    {
+      "id": "TH-F01",
+      "severity": "fix",
+      "category": "hint_correctness",
+      "title": "Alternating hint asks for adjacent twins that do not exist",
+      "gameTypeIds": [
+        "g01-t2"
+      ],
+      "affectedCount": 8,
+      "byAgeTrack": {
+        "age_6_8": 8
+      },
+      "affectedIds": [
+        "D006-bonus-vi68",
+        "D017-main-vi68",
+        "D102-bonus-vi68",
+        "D113-main-vi68",
+        "D198-bonus-vi68",
+        "D209-main-vi68",
+        "D294-bonus-vi68",
+        "D305-main-vi68"
+      ],
+      "evidence": "Tìm chỗ hai hình giống nhau đứng liền nhau.",
+      "rationale": "D006-bonus-vi68 has lá / nắng / hoa / nắng / lá, with no equal neighboring pair. The inserted wrong token can be a third symbol, so following the hint gives no place to select.",
+      "recommendation": "Replace with “So từng vị trí với nhịp hai hình lúc đầu, tìm hình không theo nhịp nhé.” Preserve the existing rule and answer.",
+      "source": "src/lib/thinking-games/content/hints.ts",
+      "examples": [
+        {
+          "id": "D006-bonus-vi68",
+          "title": "Hạt giống: Một chỗ không khớp",
+          "hints": [
+            "Hai hình phải thay nhau xuất hiện đều đặn.",
+            "Tìm chỗ hai hình giống nhau đứng liền nhau."
+          ],
+          "boardData": {
+            "kind": "rule-error",
+            "sequence": [
+              "lá",
+              "nắng",
+              "hoa",
+              "nắng",
+              "lá"
+            ],
+            "ruleKind": "alternating"
+          },
+          "solution": 2
+        },
+        {
+          "id": "D017-main-vi68",
+          "title": "Bạn ong · Ai đứng nhầm chỗ?",
+          "hints": [
+            "Hai hình phải thay nhau xuất hiện đều đặn.",
+            "Tìm chỗ hai hình giống nhau đứng liền nhau."
+          ],
+          "boardData": {
+            "kind": "rule-error",
+            "sequence": [
+              "quả",
+              "mây",
+              "quả",
+              "mây",
+              "lá"
+            ],
+            "ruleKind": "alternating"
+          },
+          "solution": 4
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-F02",
+      "severity": "fix",
+      "category": "hint_mode_relevance",
+      "title": "Combined rotation and reflection receives a reflection-only nudge",
+      "gameTypeIds": [
+        "g02-t2"
+      ],
+      "affectedCount": 12,
+      "byAgeTrack": {
+        "age_6_8": 6,
+        "age_9_12": 6
+      },
+      "affectedIds": [
+        "D079-bonus-vi68",
+        "D079-bonus-vi912",
+        "D090-main-vi68",
+        "D090-main-vi912",
+        "D175-bonus-vi68",
+        "D175-bonus-vi912",
+        "D186-main-vi68",
+        "D186-main-vi912",
+        "D271-bonus-vi68",
+        "D271-bonus-vi912",
+        "D282-main-vi68",
+        "D282-main-vi912"
+      ],
+      "evidence": "Hình này bị lật, không chỉ xoay. / Đây là phép lật, nên hãy tìm hình đã đổi mặt chứ không chỉ xoay.",
+      "rationale": "All 12 boards require quarter-mirror. Both hints omit the required rotation before reflection, while the renderer labels the actual action “Xoay 90 độ rồi lật qua gương”. This is incomplete guidance, not a claim that the current hint explicitly forbids rotation.",
+      "recommendation": "Use a combined-operation hint that points back to both displayed operations in order. A small combined hint mode is sufficient if this correction is assigned; do not change boards or renderer.",
+      "source": "src/lib/thinking-games/content/hints.ts; src/lib/thinking-games/mechanics/remaining.ts:407; src/components/thinking-games/SpatialRotationGame.tsx:20",
+      "examples": [
+        {
+          "id": "D079-bonus-vi68",
+          "title": "Hình đã xoay — Cây cầu gỗ",
+          "hints": [
+            "Hình này bị lật, không chỉ xoay.",
+            "Nhìn một ô ở góc hình mẫu xem nó nhảy sang chỗ nào."
+          ],
+          "boardData": {
+            "kind": "spatial-rotation",
+            "shape": [
+              {
+                "x": 1,
+                "y": 2
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 2
+              },
+              {
+                "x": 0,
+                "y": 3
+              }
+            ],
+            "turn": "quarter-mirror",
+            "options": [
+              {
+                "id": "turn-e",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": 0,
+                    "y": 1
+                  },
+                  {
+                    "x": 0,
+                    "y": 3
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  }
+                ]
+              },
+              {
+                "id": "turn-b",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 1
+                  },
+                  {
+                    "x": 1,
+                    "y": 0
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  },
+                  {
+                    "x": 1,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "id": "turn-a",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 1
+                  },
+                  {
+                    "x": 2,
+                    "y": 0
+                  },
+                  {
+                    "x": 2,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 1
+                  }
+                ]
+              },
+              {
+                "id": "turn-c",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 2
+                  },
+                  {
+                    "x": 1,
+                    "y": 0
+                  },
+                  {
+                    "x": 1,
+                    "y": 2
+                  },
+                  {
+                    "x": 1,
+                    "y": 3
+                  }
+                ]
+              }
+            ]
+          },
+          "solution": "turn-a"
+        },
+        {
+          "id": "D079-bonus-vi912",
+          "title": "Hình đã xoay — Cây cầu gỗ",
+          "hints": [
+            "Đây là phép lật, nên hãy tìm hình đã đổi mặt chứ không chỉ xoay.",
+            "Dùng một ô góc làm mốc và dự đoán chỗ mới của nó trước khi nhìn các hình."
+          ],
+          "boardData": {
+            "kind": "spatial-rotation",
+            "shape": [
+              {
+                "x": 3,
+                "y": 1
+              },
+              {
+                "x": 3,
+                "y": 0
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 0,
+                "y": 2
+              },
+              {
+                "x": 1,
+                "y": 3
+              }
+            ],
+            "turn": "quarter-mirror",
+            "options": [
+              {
+                "id": "turn-e",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 1
+                  },
+                  {
+                    "x": 1,
+                    "y": 0
+                  },
+                  {
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "x": 3,
+                    "y": 2
+                  },
+                  {
+                    "x": 3,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "id": "turn-a",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": 1,
+                    "y": 0
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  },
+                  {
+                    "x": 2,
+                    "y": 3
+                  },
+                  {
+                    "x": 3,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "turn-b",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 2
+                  },
+                  {
+                    "x": 0,
+                    "y": 3
+                  },
+                  {
+                    "x": 1,
+                    "y": 2
+                  },
+                  {
+                    "x": 2,
+                    "y": 0
+                  },
+                  {
+                    "x": 3,
+                    "y": 1
+                  }
+                ]
+              },
+              {
+                "id": "turn-c",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": 0,
+                    "y": 1
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  },
+                  {
+                    "x": 2,
+                    "y": 3
+                  },
+                  {
+                    "x": 3,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          },
+          "solution": "turn-a"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-F03",
+      "severity": "fix",
+      "category": "title_mode_relevance",
+      "title": "Rotation-only titles are used for reflections, and “một vòng” implies a full turn",
+      "gameTypeIds": [
+        "g02-t2"
+      ],
+      "affectedCount": 26,
+      "byAgeTrack": {
+        "age_6_8": 16,
+        "age_9_12": 10
+      },
+      "affectedIds": [
+        "D007-bonus-vi68",
+        "D018-main-vi68",
+        "D055-bonus-vi912",
+        "D066-main-vi68",
+        "D079-bonus-vi68",
+        "D079-bonus-vi912",
+        "D090-main-vi68",
+        "D090-main-vi912",
+        "D151-bonus-vi68",
+        "D151-bonus-vi912",
+        "D162-main-vi68",
+        "D162-main-vi912",
+        "D175-bonus-vi68",
+        "D175-bonus-vi912",
+        "D186-main-vi68",
+        "D186-main-vi912",
+        "D199-bonus-vi68",
+        "D247-bonus-vi68",
+        "D247-bonus-vi912",
+        "D258-main-vi68",
+        "D258-main-vi912",
+        "D271-bonus-vi68",
+        "D282-main-vi68",
+        "D343-bonus-vi68",
+        "D343-bonus-vi912",
+        "D354-main-vi68"
+      ],
+      "evidence": "Vòng xoay bí ẩn · Căn phòng mới (mirror); Hạt giống · Xoay một vòng (quarter).",
+      "rationale": "The seed-only title selection does not consider turn mode. “Một vòng” naturally means a full rotation, while the actual task is a quarter/half turn or reflection. A playful title should not suggest a different operation.",
+      "recommendation": "Smallest scope: replace operation-specific names with neutral names valid for all current variants, e.g. “Hình sẽ đổi thế nào?”. Alternatively select existing names by actual turn only if separately assigned. Keep title frames and diversity rules.",
+      "source": "src/lib/thinking-games/content/titles.ts",
+      "examples": [
+        {
+          "id": "D007-bonus-vi68",
+          "title": "Hạt giống · Xoay một vòng",
+          "hints": [
+            "Hãy xoay đầu theo, hoặc xoay tờ giấy trong tưởng tượng.",
+            "Nhìn một ô ở góc hình mẫu xem nó chạy đến đâu."
+          ],
+          "boardData": {
+            "kind": "spatial-rotation",
+            "shape": [
+              {
+                "x": 1,
+                "y": 3
+              },
+              {
+                "x": 3,
+                "y": 3
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 1,
+                "y": 1
+              }
+            ],
+            "turn": "quarter",
+            "options": [
+              {
+                "id": "turn-b",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 0
+                  },
+                  {
+                    "x": 2,
+                    "y": 0
+                  },
+                  {
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "x": 3,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "id": "turn-c",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 3
+                  },
+                  {
+                    "x": 2,
+                    "y": 1
+                  },
+                  {
+                    "x": 2,
+                    "y": 3
+                  },
+                  {
+                    "x": 3,
+                    "y": 0
+                  }
+                ]
+              },
+              {
+                "id": "turn-a",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 1
+                  },
+                  {
+                    "x": 0,
+                    "y": 3
+                  },
+                  {
+                    "x": 2,
+                    "y": 1
+                  },
+                  {
+                    "x": 3,
+                    "y": 0
+                  }
+                ]
+              },
+              {
+                "id": "turn-d",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 3
+                  },
+                  {
+                    "x": 1,
+                    "y": 2
+                  },
+                  {
+                    "x": 3,
+                    "y": 0
+                  },
+                  {
+                    "x": 3,
+                    "y": 2
+                  }
+                ]
+              }
+            ]
+          },
+          "solution": "turn-a"
+        },
+        {
+          "id": "D018-main-vi68",
+          "title": "Bạn ong · Xoay một vòng",
+          "hints": [
+            "Hãy xoay đầu theo, hoặc xoay tờ giấy trong tưởng tượng.",
+            "Nhìn một ô ở góc hình mẫu xem nó chạy đến đâu."
+          ],
+          "boardData": {
+            "kind": "spatial-rotation",
+            "shape": [
+              {
+                "x": 1,
+                "y": 2
+              },
+              {
+                "x": 1,
+                "y": 3
+              },
+              {
+                "x": 1,
+                "y": 1
+              },
+              {
+                "x": 3,
+                "y": 2
+              }
+            ],
+            "turn": "quarter",
+            "options": [
+              {
+                "id": "turn-c",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 2
+                  },
+                  {
+                    "x": 2,
+                    "y": 1
+                  },
+                  {
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "x": 2,
+                    "y": 3
+                  }
+                ]
+              },
+              {
+                "id": "turn-d",
+                "cells": [
+                  {
+                    "x": 1,
+                    "y": 2
+                  },
+                  {
+                    "x": 2,
+                    "y": 0
+                  },
+                  {
+                    "x": 2,
+                    "y": 2
+                  },
+                  {
+                    "x": 3,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "turn-b",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 1
+                  },
+                  {
+                    "x": 2,
+                    "y": 0
+                  },
+                  {
+                    "x": 2,
+                    "y": 1
+                  },
+                  {
+                    "x": 2,
+                    "y": 2
+                  }
+                ]
+              },
+              {
+                "id": "turn-a",
+                "cells": [
+                  {
+                    "x": 0,
+                    "y": 1
+                  },
+                  {
+                    "x": 1,
+                    "y": 1
+                  },
+                  {
+                    "x": 1,
+                    "y": 3
+                  },
+                  {
+                    "x": 2,
+                    "y": 1
+                  }
+                ]
+              }
+            ]
+          },
+          "solution": "turn-a"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-F04",
+      "severity": "fix",
+      "category": "title_mode_relevance",
+      "title": "Completion titles are shown on find-the-break boards",
+      "gameTypeIds": [
+        "g02-t3"
+      ],
+      "affectedCount": 7,
+      "byAgeTrack": {
+        "age_9_12": 2,
+        "age_6_8": 5
+      },
+      "affectedIds": [
+        "D034-main-vi912",
+        "D047-bonus-vi68",
+        "D191-bonus-vi68",
+        "D274-main-vi68",
+        "D287-bonus-vi912",
+        "D322-main-vi68",
+        "D335-bonus-vi68"
+      ],
+      "evidence": "Hoàn thành đối xứng — Góc đồ chơi; Kệ sách: Ô nào làm tranh cân xứng?",
+      "rationale": "These rows ask the child to identify an existing mismatched cell, not fill a missing cell. The title suggests completing the picture.",
+      "recommendation": "Replace those names with a neutral symmetry title valid for fill and find-break, or constrain them to fill in a separately assigned narrow correction.",
+      "source": "src/lib/thinking-games/content/titles.ts",
+      "examples": [
+        {
+          "id": "D034-main-vi912",
+          "title": "Hoàn thành đối xứng — Góc đồ chơi",
+          "hints": [
+            "Đi từng ô ở một bên và so với ô đối xứng của nó ở bên kia trục.",
+            "Chỉ có một cặp ô khác nhau; hãy chọn ô thuộc cặp đó."
+          ],
+          "boardData": {
+            "kind": "spatial-symmetry",
+            "grid": [
+              [
+                "quả",
+                "quả",
+                "quả",
+                "quả",
+                "quả"
+              ],
+              [
+                "sao",
+                "hoa",
+                "lá",
+                "hoa",
+                "sao"
+              ],
+              [
+                "lá",
+                "lá",
+                "lá",
+                "lá",
+                "lá"
+              ],
+              [
+                "quả",
+                "hoa",
+                "sao",
+                "hoa",
+                "quả"
+              ],
+              [
+                "hoa",
+                "lá",
+                "lá",
+                "quả",
+                "hoa"
+              ]
+            ],
+            "axis": "vertical",
+            "mode": "find-break",
+            "options": [
+              {
+                "x": 1,
+                "y": 4
+              },
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 3,
+                "y": 0
+              },
+              {
+                "x": 4,
+                "y": 3
+              }
+            ]
+          },
+          "solution": {
+            "x": 1,
+            "y": 4
+          }
+        },
+        {
+          "id": "D047-bonus-vi68",
+          "title": "Kệ sách: Ô nào làm tranh cân xứng?",
+          "hints": [
+            "Hai bên của tranh phải giống nhau như soi gương.",
+            "Tìm chỗ hai bên không giống nhau."
+          ],
+          "boardData": {
+            "kind": "spatial-symmetry",
+            "grid": [
+              [
+                "lá",
+                "lá",
+                "hoa",
+                "lá"
+              ],
+              [
+                "mây",
+                "hoa",
+                "hoa",
+                "mây"
+              ],
+              [
+                "mây",
+                "sao",
+                "sao",
+                "mây"
+              ],
+              [
+                "hoa",
+                "mây",
+                "mây",
+                "hoa"
+              ]
+            ],
+            "axis": "vertical",
+            "mode": "find-break",
+            "options": [
+              {
+                "x": 3,
+                "y": 3
+              },
+              {
+                "x": 1,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 3
+              }
+            ]
+          },
+          "solution": {
+            "x": 1,
+            "y": 0
+          }
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-F05",
+      "severity": "fix",
+      "category": "title_mode_relevance",
+      "title": "Group-count question is shown when the answer is how many to add",
+      "gameTypeIds": [
+        "g05-t2"
+      ],
+      "affectedCount": 3,
+      "byAgeTrack": {
+        "age_9_12": 2,
+        "age_6_8": 1
+      },
+      "affectedIds": [
+        "D090-bonus-vi912",
+        "D269-main-vi68",
+        "D317-main-vi912"
+      ],
+      "evidence": "Bản đồ khu rừng: Được mấy nhóm? (D090-bonus-vi912, total=23, groupSize=3, needed, solution=1).",
+      "rationale": "The question asks for a group count, while the board expects a count of extra pieces. In this example there are seven full groups, but the accepted answer is one extra piece.",
+      "recommendation": "Use a neutral name such as “Cùng chia thành nhóm” across modes, keeping arithmetic and options unchanged.",
+      "source": "src/lib/thinking-games/content/titles.ts",
+      "examples": [
+        {
+          "id": "D090-bonus-vi912",
+          "title": "Bản đồ khu rừng: Được mấy nhóm?",
+          "hints": [
+            "Tìm phần dư khi chia đều tổng cho cỡ nhóm.",
+            "Phần cần thêm bằng cỡ nhóm trừ đi phần dư."
+          ],
+          "boardData": {
+            "kind": "quantity-grouping",
+            "total": 23,
+            "groupSize": 3,
+            "mode": "needed",
+            "options": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "solution": 1
+        },
+        {
+          "id": "D269-main-vi68",
+          "title": "Chuyến bay trở về: Được mấy nhóm?",
+          "hints": [
+            "Gom thành các nhóm bằng nhau trước.",
+            "Xem nhóm cuối còn thiếu mấy phần mới đủ."
+          ],
+          "boardData": {
+            "kind": "quantity-grouping",
+            "total": 9,
+            "groupSize": 2,
+            "mode": "needed",
+            "options": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "solution": 1
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-F06",
+      "severity": "fix",
+      "category": "title_mode_relevance",
+      "title": "“Cần thêm” title is used for replacing an existing weight",
+      "gameTypeIds": [
+        "g05-t1"
+      ],
+      "affectedCount": 2,
+      "byAgeTrack": {
+        "age_6_8": 1,
+        "age_9_12": 1
+      },
+      "affectedIds": [
+        "D037-main-vi68",
+        "D037-main-vi912"
+      ],
+      "evidence": "Căn bếp: Cần thêm bao nhiêu? (D037-main, both tracks).",
+      "rationale": "Replace mode asks for the new marked weight, not the amount added to a pan. The two operations can produce different numbers.",
+      "recommendation": "Use “Cân bằng hai bên” or another existing neutral balance name instead of the addition question for replace mode.",
+      "source": "src/lib/thinking-games/content/titles.ts",
+      "examples": [
+        {
+          "id": "D037-main-vi68",
+          "title": "Căn bếp: Cần thêm bao nhiêu?",
+          "hints": [
+            "Tính tổng mỗi đĩa cân nhé.",
+            "Quả cân được đánh dấu sẽ đổi thành quả mới."
+          ],
+          "boardData": {
+            "kind": "quantity-balance",
+            "left": [
+              {
+                "id": "left-1",
+                "weight": 6
+              },
+              {
+                "id": "left-2",
+                "weight": 6
+              }
+            ],
+            "right": [
+              {
+                "id": "right-1",
+                "weight": 11
+              }
+            ],
+            "mode": "replace",
+            "replaceId": "left-1",
+            "options": [
+              3,
+              4,
+              5
+            ]
+          },
+          "solution": 5
+        },
+        {
+          "id": "D037-main-vi912",
+          "title": "Căn bếp: Cần thêm bao nhiêu?",
+          "hints": [
+            "Tính tổng đĩa còn lại, rồi tính phần còn lại của đĩa có quả bị thay.",
+            "Quả mới bằng tổng cần có trừ đi các quả còn giữ lại ở cùng đĩa."
+          ],
+          "boardData": {
+            "kind": "quantity-balance",
+            "left": [
+              {
+                "id": "left-1",
+                "weight": 8
+              },
+              {
+                "id": "left-2",
+                "weight": 4
+              },
+              {
+                "id": "left-3",
+                "weight": 5
+              }
+            ],
+            "right": [
+              {
+                "id": "right-1",
+                "weight": 5
+              },
+              {
+                "id": "right-2",
+                "weight": 5
+              }
+            ],
+            "mode": "replace",
+            "replaceId": "left-1",
+            "options": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "solution": 1
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-F07",
+      "severity": "fix",
+      "category": "hint_integration_contract",
+      "title": "Home-routine hint conflicts with the game-local ordering contract",
+      "gameTypeIds": [
+        "g06-t2"
+      ],
+      "affectedCount": 17,
+      "byAgeTrack": {
+        "age_6_8": 17
+      },
+      "affectedIds": [
+        "D006-main-vi68",
+        "D019-bonus-vi68",
+        "D030-main-vi68",
+        "D043-bonus-vi68",
+        "D078-main-vi68",
+        "D126-main-vi68",
+        "D139-bonus-vi68",
+        "D150-main-vi68",
+        "D163-bonus-vi68",
+        "D198-main-vi68",
+        "D211-bonus-vi68",
+        "D246-main-vi68",
+        "D259-bonus-vi68",
+        "D270-main-vi68",
+        "D283-bonus-vi68",
+        "D307-bonus-vi68",
+        "D331-bonus-vi68"
+      ],
+      "evidence": "Nghĩ xem ở nhà bạn làm việc đó thế nào nhé.",
+      "rationale": "The mechanics handoff explicitly retains scenario chains and requires following this game’s declared before-relations. Household order can differ, particularly rice/soup/inviting family. This unchanged hint would pull the child back toward the ambiguity the mechanics lane is fixing.",
+      "recommendation": "Point the hint to the current game’s before-relations, e.g. “Nhìn luật của ván này: việc nào cần xong trước việc tiếp theo?”. Review the final integrated wording later; no tutorial or explanation acceptance here.",
+      "source": "src/lib/thinking-games/content/hints.ts",
+      "examples": [
+        {
+          "id": "D006-main-vi68",
+          "title": "Sắp xếp các bước — Hạt giống",
+          "hints": [
+            "Việc nào phải làm trước tiên?",
+            "Nghĩ xem ở nhà bạn làm việc đó thế nào nhé."
+          ],
+          "boardData": {
+            "kind": "planning-command-order",
+            "commands": [
+              {
+                "id": "step-1",
+                "text": "Lấy bát"
+              },
+              {
+                "id": "step-4",
+                "text": "Mời cả nhà"
+              },
+              {
+                "id": "step-3",
+                "text": "Múc canh"
+              },
+              {
+                "id": "step-2",
+                "text": "Xới cơm"
+              }
+            ],
+            "before": [
+              [
+                "step-1",
+                "step-2"
+              ],
+              [
+                "step-2",
+                "step-3"
+              ],
+              [
+                "step-3",
+                "step-4"
+              ]
+            ]
+          },
+          "solution": [
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        },
+        {
+          "id": "D019-bonus-vi68",
+          "title": "Xếp việc đúng thứ tự · Bạn ong",
+          "hints": [
+            "Việc nào phải làm trước tiên?",
+            "Nghĩ xem ở nhà bạn làm việc đó thế nào nhé."
+          ],
+          "boardData": {
+            "kind": "planning-command-order",
+            "commands": [
+              {
+                "id": "step-4",
+                "text": "Cất hộp"
+              },
+              {
+                "id": "step-2",
+                "text": "Lấy đồ"
+              },
+              {
+                "id": "step-3",
+                "text": "Đóng hộp"
+              },
+              {
+                "id": "step-1",
+                "text": "Mở hộp"
+              }
+            ],
+            "before": [
+              [
+                "step-1",
+                "step-2"
+              ],
+              [
+                "step-2",
+                "step-3"
+              ],
+              [
+                "step-3",
+                "step-4"
+              ]
+            ]
+          },
+          "solution": [
+            "step-1",
+            "step-2",
+            "step-3",
+            "step-4"
+          ]
+        }
+      ],
+      "notes": "Integration dependency noted from the handoff; this review does not evaluate the unintegrated tutorial or explanation."
+    },
+    {
+      "id": "TH-F08",
+      "severity": "fix",
+      "category": "hint_correctness",
+      "title": "Perspective hint says screen directions always differ",
+      "gameTypeIds": [
+        "g07-t2"
+      ],
+      "affectedCount": 4,
+      "byAgeTrack": {
+        "age_9_12": 4
+      },
+      "affectedIds": [
+        "D020-bonus-vi912",
+        "D103-main-vi912",
+        "D116-bonus-vi912",
+        "D295-main-vi912"
+      ],
+      "evidence": "Trước mặt, sau lưng, tay trái, tay phải của bạn ấy khác với phía trên, dưới, trái, phải của màn hình.",
+      "rationale": "When facing north, front/back/left/right align with screen up/down/left/right. The unconditional “khác” is false in these four stored rows.",
+      "recommendation": "Use “Hãy tính các phía theo hướng bạn nhỏ nhìn; chúng có thể khác các phía của màn hình.”",
+      "source": "src/lib/thinking-games/content/hints.ts",
+      "examples": [
+        {
+          "id": "D020-bonus-vi912",
+          "title": "Bạn ong · Đứng ở chỗ bạn ấy",
+          "hints": [
+            "Đặt mình vào chỗ bạn nhỏ và quay mặt theo hướng nhìn của bạn ấy.",
+            "Trước mặt, sau lưng, tay trái, tay phải của bạn ấy khác với phía trên, dưới, trái, phải của màn hình."
+          ],
+          "boardData": {
+            "kind": "flexibility-perspective",
+            "width": 5,
+            "height": 5,
+            "viewer": {
+              "x": 3,
+              "y": 1,
+              "facing": "north"
+            },
+            "target": {
+              "x": 4,
+              "y": 1
+            },
+            "options": [
+              "left",
+              "right",
+              "ahead",
+              "behind"
+            ]
+          },
+          "solution": "right"
+        },
+        {
+          "id": "D103-main-vi912",
+          "title": "Công viên · Bạn nhỏ nhìn thấy gì?",
+          "hints": [
+            "Đặt mình vào chỗ bạn nhỏ và quay mặt theo hướng nhìn của bạn ấy.",
+            "Trước mặt, sau lưng, tay trái, tay phải của bạn ấy khác với phía trên, dưới, trái, phải của màn hình."
+          ],
+          "boardData": {
+            "kind": "flexibility-perspective",
+            "width": 5,
+            "height": 5,
+            "viewer": {
+              "x": 2,
+              "y": 2,
+              "facing": "north"
+            },
+            "target": {
+              "x": 2,
+              "y": 1
+            },
+            "options": [
+              "left",
+              "right",
+              "ahead",
+              "behind"
+            ]
+          },
+          "solution": "ahead"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-F09",
+      "severity": "fix",
+      "category": "hint_visual_reference",
+      "title": "Alternative-path hints refer to a gray path; the current component uses amber dashes",
+      "gameTypeIds": [
+        "g07-t3"
+      ],
+      "affectedCount": 60,
+      "byAgeTrack": {
+        "age_6_8": 30,
+        "age_9_12": 30
+      },
+      "affectedIds": [
+        "D012-bonus-vi68",
+        "D012-bonus-vi912",
+        "D023-main-vi68",
+        "D023-main-vi912",
+        "D036-bonus-vi68",
+        "D036-bonus-vi912",
+        "D047-main-vi68",
+        "D047-main-vi912",
+        "D060-bonus-vi68",
+        "D060-bonus-vi912",
+        "D071-main-vi68",
+        "D071-main-vi912",
+        "D084-bonus-vi68",
+        "D084-bonus-vi912",
+        "D095-main-vi68",
+        "D095-main-vi912",
+        "D108-bonus-vi68",
+        "D108-bonus-vi912",
+        "D119-main-vi68",
+        "D119-main-vi912",
+        "D132-bonus-vi68",
+        "D132-bonus-vi912",
+        "D143-main-vi68",
+        "D143-main-vi912",
+        "D156-bonus-vi68",
+        "D156-bonus-vi912",
+        "D167-main-vi68",
+        "D167-main-vi912",
+        "D180-bonus-vi68",
+        "D180-bonus-vi912",
+        "D191-main-vi68",
+        "D191-main-vi912",
+        "D204-bonus-vi68",
+        "D204-bonus-vi912",
+        "D215-main-vi68",
+        "D215-main-vi912",
+        "D228-bonus-vi68",
+        "D228-bonus-vi912",
+        "D239-main-vi68",
+        "D239-main-vi912",
+        "D252-bonus-vi68",
+        "D252-bonus-vi912",
+        "D263-main-vi68",
+        "D263-main-vi912",
+        "D276-bonus-vi68",
+        "D276-bonus-vi912",
+        "D287-main-vi68",
+        "D287-main-vi912",
+        "D300-bonus-vi68",
+        "D300-bonus-vi912",
+        "D311-main-vi68",
+        "D311-main-vi912",
+        "D324-bonus-vi68",
+        "D324-bonus-vi912",
+        "D335-main-vi68",
+        "D335-main-vi912",
+        "D348-bonus-vi68",
+        "D348-bonus-vi912",
+        "D359-main-vi68",
+        "D359-main-vi912"
+      ],
+      "evidence": "Đường xám là đường đã đi rồi. / Tìm điểm đầu tiên mà bạn có thể rẽ khác đường xám.",
+      "rationale": "All 60 rows use “đường xám”. FlexibilityAlternativeGame renders the known path with amber dashed styling, labels it “Đường màu cam nét đứt”, and labels the legend “Đường cũ”. The child is asked to find a visual reference that the current component does not show.",
+      "recommendation": "Replace color-dependent “đường xám” with “đường cũ” or “đường nét đứt”. Clarify that part of the new route may overlap the old one; it must differ somewhere, not avoid every old cell. Keep renderer and checker unchanged.",
+      "source": "src/lib/thinking-games/content/hints.ts; src/components/thinking-games/FlexibilityAlternativeGame.tsx:115,174,188",
+      "examples": [
+        {
+          "id": "D012-bonus-vi68",
+          "title": "Vườn hoa · Có cách khác không?",
+          "hints": [
+            "Đường xám là đường đã đi rồi.",
+            "Tìm một đường mới không trùng đường xám nhé."
+          ],
+          "boardData": {
+            "kind": "flexibility-alternative",
+            "width": 5,
+            "height": 5,
+            "start": {
+              "x": 0,
+              "y": 0
+            },
+            "goal": {
+              "x": 4,
+              "y": 4
+            },
+            "walls": [
+              {
+                "x": 1,
+                "y": 3
+              },
+              {
+                "x": 2,
+                "y": 1
+              }
+            ],
+            "knownPath": [
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 0,
+                "y": 1
+              },
+              {
+                "x": 1,
+                "y": 1
+              },
+              {
+                "x": 1,
+                "y": 2
+              },
+              {
+                "x": 2,
+                "y": 2
+              },
+              {
+                "x": 2,
+                "y": 3
+              },
+              {
+                "x": 3,
+                "y": 3
+              },
+              {
+                "x": 3,
+                "y": 4
+              },
+              {
+                "x": 4,
+                "y": 4
+              }
+            ]
+          },
+          "solution": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 1,
+              "y": 0
+            },
+            {
+              "x": 2,
+              "y": 0
+            },
+            {
+              "x": 3,
+              "y": 0
+            },
+            {
+              "x": 4,
+              "y": 0
+            },
+            {
+              "x": 4,
+              "y": 1
+            },
+            {
+              "x": 4,
+              "y": 2
+            },
+            {
+              "x": 4,
+              "y": 3
+            },
+            {
+              "x": 4,
+              "y": 4
+            }
+          ]
+        },
+        {
+          "id": "D012-bonus-vi912",
+          "title": "Vườn hoa · Còn đường nào khác?",
+          "hints": [
+            "Tìm điểm đầu tiên mà bạn có thể rẽ khác đường xám.",
+            "Sau khi rẽ, kiểm tra không đi vào ô tường và vẫn đến được đích."
+          ],
+          "boardData": {
+            "kind": "flexibility-alternative",
+            "width": 6,
+            "height": 6,
+            "start": {
+              "x": 0,
+              "y": 0
+            },
+            "goal": {
+              "x": 5,
+              "y": 5
+            },
+            "walls": [
+              {
+                "x": 4,
+                "y": 2
+              },
+              {
+                "x": 1,
+                "y": 3
+              },
+              {
+                "x": 4,
+                "y": 1
+              }
+            ],
+            "knownPath": [
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 1,
+                "y": 0
+              },
+              {
+                "x": 1,
+                "y": 1
+              },
+              {
+                "x": 2,
+                "y": 1
+              },
+              {
+                "x": 2,
+                "y": 2
+              },
+              {
+                "x": 3,
+                "y": 2
+              },
+              {
+                "x": 3,
+                "y": 3
+              },
+              {
+                "x": 4,
+                "y": 3
+              },
+              {
+                "x": 4,
+                "y": 4
+              },
+              {
+                "x": 5,
+                "y": 4
+              },
+              {
+                "x": 5,
+                "y": 5
+              }
+            ]
+          },
+          "solution": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 1,
+              "y": 0
+            },
+            {
+              "x": 2,
+              "y": 0
+            },
+            {
+              "x": 3,
+              "y": 0
+            },
+            {
+              "x": 4,
+              "y": 0
+            },
+            {
+              "x": 5,
+              "y": 0
+            },
+            {
+              "x": 5,
+              "y": 1
+            },
+            {
+              "x": 5,
+              "y": 2
+            },
+            {
+              "x": 5,
+              "y": 3
+            },
+            {
+              "x": 5,
+              "y": 4
+            },
+            {
+              "x": 5,
+              "y": 5
+            }
+          ]
+        }
+      ],
+      "notes": "Static component inspection only; no browser screenshot or visual acceptance."
+    },
+    {
+      "id": "TH-F10",
+      "severity": "fix",
+      "category": "hint_action_reference",
+      "title": "Elimination hint asks the child to flip cards that have a cross-out control",
+      "gameTypeIds": [
+        "g04-t1"
+      ],
+      "affectedCount": 16,
+      "byAgeTrack": {
+        "age_6_8": 16
+      },
+      "affectedIds": [
+        "D001-bonus-vi68",
+        "D012-main-vi68",
+        "D060-main-vi68",
+        "D108-main-vi68",
+        "D121-bonus-vi68",
+        "D132-main-vi68",
+        "D145-bonus-vi68",
+        "D156-main-vi68",
+        "D180-main-vi68",
+        "D193-bonus-vi68",
+        "D217-bonus-vi68",
+        "D228-main-vi68",
+        "D265-bonus-vi68",
+        "D276-main-vi68",
+        "D289-bonus-vi68",
+        "D300-main-vi68"
+      ],
+      "evidence": "Bạn nào không giống manh mối thì úp xuống nhé.",
+      "rationale": "The component offers “Gạch bớt” and line-through/dim styling. No flip action or face-down card state exists. The child may search for an unavailable action.",
+      "recommendation": "Use “Bạn nào không khớp manh mối thì bấm Gạch bớt nhé.” Keep the existing candidate interaction.",
+      "source": "src/lib/thinking-games/content/hints.ts; src/components/thinking-games/ReasoningEliminationGame.tsx:170-175",
+      "examples": [
+        {
+          "id": "D001-bonus-vi68",
+          "title": "Thám tử nhỏ · Hạt giống",
+          "hints": [
+            "Đọc manh mối đầu tiên thật kỹ.",
+            "Bạn nào không giống manh mối thì úp xuống nhé."
+          ],
+          "boardData": {
+            "kind": "reasoning-elimination",
+            "candidates": [
+              {
+                "id": "candidate-1",
+                "traits": {
+                  "màu": "đỏ",
+                  "hình": "tam giác",
+                  "kích cỡ": "to"
+                }
+              },
+              {
+                "id": "candidate-2",
+                "traits": {
+                  "màu": "cam",
+                  "hình": "vuông",
+                  "kích cỡ": "nhỏ"
+                }
+              },
+              {
+                "id": "candidate-3",
+                "traits": {
+                  "màu": "tím",
+                  "hình": "sao",
+                  "kích cỡ": "to"
+                }
+              },
+              {
+                "id": "candidate-4",
+                "traits": {
+                  "màu": "vàng",
+                  "hình": "thoi",
+                  "kích cỡ": "nhỏ"
+                }
+              }
+            ],
+            "clues": [
+              {
+                "trait": "màu",
+                "value": "đỏ",
+                "negate": false
+              }
+            ],
+            "options": [
+              "candidate-2",
+              "candidate-3",
+              "candidate-1",
+              "candidate-4"
+            ]
+          },
+          "solution": "candidate-1"
+        },
+        {
+          "id": "D012-main-vi68",
+          "title": "Loại từng bạn một · Vườn hoa",
+          "hints": [
+            "Đọc manh mối đầu tiên thật kỹ.",
+            "Bạn nào không giống manh mối thì úp xuống nhé."
+          ],
+          "boardData": {
+            "kind": "reasoning-elimination",
+            "candidates": [
+              {
+                "id": "candidate-1",
+                "traits": {
+                  "màu": "cam",
+                  "hình": "thoi",
+                  "kích cỡ": "to"
+                }
+              },
+              {
+                "id": "candidate-2",
+                "traits": {
+                  "màu": "vàng",
+                  "hình": "tròn",
+                  "kích cỡ": "nhỏ"
+                }
+              },
+              {
+                "id": "candidate-3",
+                "traits": {
+                  "màu": "đỏ",
+                  "hình": "vuông",
+                  "kích cỡ": "to"
+                }
+              },
+              {
+                "id": "candidate-4",
+                "traits": {
+                  "màu": "hồng",
+                  "hình": "sao",
+                  "kích cỡ": "nhỏ"
+                }
+              }
+            ],
+            "clues": [
+              {
+                "trait": "màu",
+                "value": "cam",
+                "negate": false
+              }
+            ],
+            "options": [
+              "candidate-2",
+              "candidate-3",
+              "candidate-4",
+              "candidate-1"
+            ]
+          },
+          "solution": "candidate-1"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-F11",
+      "severity": "fix",
+      "category": "hint_strategy",
+      "title": "Largest-first hint can yield more pieces than the required minimum",
+      "gameTypeIds": [
+        "g05-t3"
+      ],
+      "affectedCount": 1,
+      "byAgeTrack": {
+        "age_9_12": 1
+      },
+      "affectedIds": [
+        "D213-main-vi912"
+      ],
+      "evidence": "Bắt đầu từ các số lớn để cần ít món nhất. / Khi đã có một cách đạt 14, thử thay hai món nhỏ bằng một món lớn.",
+      "rationale": "For values [6,8,1,9,4], target 14, largest-first gives 9+4+1 (three items), while 6+8 needs two. The suggested replacement of two small items by one large item cannot turn that three-item combination into the valid two-item optimum. Hint 1 should be an exploration nudge, not imply a greedy guarantee.",
+      "recommendation": "Use “Thử từng cặp trước; nếu chưa đủ thì thử thêm món. So các cách để chọn ít món nhất.” Preserve the target and fewest rule; consider the same wording for all eight older fewest rows.",
+      "source": "src/lib/thinking-games/content/hints.ts",
+      "examples": [
+        {
+          "id": "D213-main-vi912",
+          "title": "Bóng và ánh sáng: Làm sao cho đủ?",
+          "hints": [
+            "Bắt đầu từ các số lớn để cần ít món nhất.",
+            "Khi đã có một cách đạt 14, thử thay hai món nhỏ bằng một món lớn."
+          ],
+          "boardData": {
+            "kind": "quantity-target",
+            "items": [
+              {
+                "id": "item-1",
+                "value": 6
+              },
+              {
+                "id": "item-2",
+                "value": 8
+              },
+              {
+                "id": "item-3",
+                "value": 1
+              },
+              {
+                "id": "item-4",
+                "value": 9
+              },
+              {
+                "id": "item-5",
+                "value": 4
+              }
+            ],
+            "target": 14,
+            "maxItems": 3,
+            "mode": "fewest",
+            "options": [
+              "item-1",
+              "item-2",
+              "item-3",
+              "item-4",
+              "item-5"
+            ]
+          },
+          "solution": [
+            "item-1",
+            "item-2"
+          ]
+        }
+      ],
+      "notes": "Read-only subset enumeration was limited to the eight older fewest rows to verify this wording concern; it was not a whole-mechanics solver audit."
+    },
+    {
+      "id": "TH-S01",
+      "severity": "suggestion",
+      "category": "natural_vietnamese",
+      "title": "Rendered trait name repeats “hình” awkwardly",
+      "gameTypeIds": [
+        "g07-t1"
+      ],
+      "affectedCount": 16,
+      "byAgeTrack": {
+        "age_6_8": 8,
+        "age_9_12": 8
+      },
+      "affectedIds": [
+        "D004-bonus-vi68",
+        "D004-bonus-vi912",
+        "D015-main-vi68",
+        "D015-main-vi912",
+        "D100-bonus-vi68",
+        "D100-bonus-vi912",
+        "D111-main-vi68",
+        "D111-main-vi912",
+        "D196-bonus-vi68",
+        "D196-bonus-vi912",
+        "D207-main-vi68",
+        "D207-main-vi912",
+        "D292-bonus-vi68",
+        "D292-bonus-vi912",
+        "D303-main-vi68",
+        "D303-main-vi912"
+      ],
+      "evidence": "Chỉ chọn những hình có hình đúng như luật. / Kiểm tra từng hình theo đặc điểm hình;",
+      "rationale": "The meaning is recoverable but the repeated bare noun sounds machine-filled. “Hình dạng” is a more natural label for the shape trait.",
+      "recommendation": "Map the child-facing trait label hình to hình dạng when filling this hint, or use a neutral sentence referring to the displayed rule. Preserve internal trait keys.",
+      "source": "src/lib/thinking-games/content/hints.ts",
+      "examples": [
+        {
+          "id": "D004-bonus-vi68",
+          "title": "Đổi luật phân loại — Hạt giống",
+          "hints": [
+            "Đọc luật mới ở phía trên thật kỹ.",
+            "Chỉ chọn những hình có hình đúng như luật."
+          ],
+          "boardData": {
+            "kind": "flexibility-classify",
+            "items": [
+              {
+                "id": "item-1",
+                "traits": {
+                  "hình": "vuông",
+                  "màu": "tím",
+                  "kích cỡ": "to"
+                }
+              },
+              {
+                "id": "item-2",
+                "traits": {
+                  "hình": "vuông",
+                  "màu": "đỏ",
+                  "kích cỡ": "nhỏ"
+                }
+              },
+              {
+                "id": "item-3",
+                "traits": {
+                  "hình": "tròn",
+                  "màu": "cam",
+                  "kích cỡ": "to"
+                }
+              },
+              {
+                "id": "item-4",
+                "traits": {
+                  "hình": "thoi",
+                  "màu": "xanh",
+                  "kích cỡ": "nhỏ"
+                }
+              },
+              {
+                "id": "item-5",
+                "traits": {
+                  "hình": "vuông",
+                  "màu": "vàng",
+                  "kích cỡ": "to"
+                }
+              }
+            ],
+            "rule": {
+              "trait": "hình",
+              "value": "vuông"
+            },
+            "options": [
+              "item-1",
+              "item-2",
+              "item-3",
+              "item-4",
+              "item-5"
+            ]
+          },
+          "solution": [
+            "item-1",
+            "item-2",
+            "item-5"
+          ]
+        },
+        {
+          "id": "D004-bonus-vi912",
+          "title": "Đổi luật phân loại — Hạt giống",
+          "hints": [
+            "Quên luật cũ đi và dùng luật mới để xét từng hình.",
+            "Kiểm tra từng hình theo đặc điểm hình; hình nào đạt thì chọn, đừng bỏ sót hình nào."
+          ],
+          "boardData": {
+            "kind": "flexibility-classify",
+            "items": [
+              {
+                "id": "item-1",
+                "traits": {
+                  "hình": "thoi",
+                  "màu": "cam",
+                  "kích cỡ": "nhỏ",
+                  "vị trí": "dưới"
+                }
+              },
+              {
+                "id": "item-2",
+                "traits": {
+                  "hình": "thoi",
+                  "màu": "tím",
+                  "kích cỡ": "nhỏ",
+                  "vị trí": "dưới"
+                }
+              },
+              {
+                "id": "item-3",
+                "traits": {
+                  "hình": "vuông",
+                  "màu": "vàng",
+                  "kích cỡ": "nhỏ",
+                  "vị trí": "dưới"
+                }
+              },
+              {
+                "id": "item-4",
+                "traits": {
+                  "hình": "tròn",
+                  "màu": "tím",
+                  "kích cỡ": "to",
+                  "vị trí": "trên"
+                }
+              },
+              {
+                "id": "item-5",
+                "traits": {
+                  "hình": "sao",
+                  "màu": "xanh",
+                  "kích cỡ": "to",
+                  "vị trí": "trên"
+                }
+              },
+              {
+                "id": "item-6",
+                "traits": {
+                  "hình": "tam giác",
+                  "màu": "đỏ",
+                  "kích cỡ": "to",
+                  "vị trí": "trên"
+                }
+              }
+            ],
+            "rule": {
+              "trait": "hình",
+              "value": "tròn"
+            },
+            "options": [
+              "item-1",
+              "item-2",
+              "item-3",
+              "item-4",
+              "item-5",
+              "item-6"
+            ]
+          },
+          "solution": [
+            "item-4"
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-S02",
+      "severity": "suggestion",
+      "category": "pronoun_consistency",
+      "title": "One pool phrase uses collective “ta”",
+      "gameTypeIds": [
+        "g04-t2"
+      ],
+      "affectedCount": 18,
+      "byAgeTrack": {
+        "age_6_8": 18
+      },
+      "affectedIds": [
+        "D028-main-vi68",
+        "D052-main-vi68",
+        "D065-bonus-vi68",
+        "D076-main-vi68",
+        "D089-bonus-vi68",
+        "D100-main-vi68",
+        "D113-bonus-vi68",
+        "D148-main-vi68",
+        "D209-bonus-vi68",
+        "D220-main-vi68",
+        "D233-bonus-vi68",
+        "D281-bonus-vi68",
+        "D292-main-vi68",
+        "D316-main-vi68",
+        "D329-bonus-vi68",
+        "D340-main-vi68",
+        "D353-bonus-vi68",
+        "D364-main-vi68"
+      ],
+      "evidence": "Luật nào bắt đầu bằng điều đó thì cho ta một điều mới.",
+      "rationale": "This is not punitive and is intelligible, but departs from the preferred mình–bạn voice. There is one source phrase, appearing in 18 rows, not 18 distinct phrases.",
+      "recommendation": "Replace “cho ta một điều mới” with “giúp bạn tìm ra điều mới”.",
+      "source": "src/lib/thinking-games/content/hints.ts",
+      "examples": [
+        {
+          "id": "D028-main-vi68",
+          "title": "Chuỗi suy luận · Bữa tiệc trong vườn",
+          "hints": [
+            "Nhìn điều đã biết ở phía trên.",
+            "Luật nào bắt đầu bằng điều đó thì cho ta một điều mới."
+          ],
+          "boardData": {
+            "kind": "reasoning-if-then",
+            "rules": [
+              {
+                "if": "mây",
+                "then": "mưa"
+              },
+              {
+                "if": "mưa",
+                "then": "áo mưa"
+              }
+            ],
+            "facts": [
+              "mây"
+            ],
+            "options": [
+              "chim hót",
+              "mỉm cười",
+              "mưa",
+              "bông hoa"
+            ]
+          },
+          "solution": "mưa"
+        },
+        {
+          "id": "D052-main-vi68",
+          "title": "Căn phòng mới · Luật nếu thì",
+          "hints": [
+            "Nhìn điều đã biết ở phía trên.",
+            "Luật nào bắt đầu bằng điều đó thì cho ta một điều mới."
+          ],
+          "boardData": {
+            "kind": "reasoning-if-then",
+            "rules": [
+              {
+                "if": "mây",
+                "then": "mưa"
+              },
+              {
+                "if": "mưa",
+                "then": "áo mưa"
+              }
+            ],
+            "facts": [
+              "mây"
+            ],
+            "options": [
+              "bông hoa",
+              "cầu vồng",
+              "mưa",
+              "hạt mầm"
+            ]
+          },
+          "solution": "mưa"
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-S03",
+      "severity": "suggestion",
+      "category": "hint_strategy",
+      "title": "Shortest-path hints overstate that every step must approach the goal",
+      "gameTypeIds": [
+        "g06-t1"
+      ],
+      "affectedCount": 14,
+      "byAgeTrack": {
+        "age_6_8": 7,
+        "age_9_12": 7
+      },
+      "affectedIds": [
+        "D075-bonus-vi68",
+        "D075-bonus-vi912",
+        "D086-main-vi68",
+        "D086-main-vi912",
+        "D171-bonus-vi68",
+        "D171-bonus-vi912",
+        "D182-main-vi68",
+        "D182-main-vi912",
+        "D267-bonus-vi68",
+        "D267-bonus-vi912",
+        "D278-main-vi68",
+        "D278-main-vi912",
+        "D363-bonus-vi68",
+        "D363-bonus-vi912"
+      ],
+      "evidence": "Mỗi bước nên đi gần đích hơn. / Tránh đi lùi hoặc đi vòng; mỗi bước phải rút ngắn khoảng cách đến đích.",
+      "rationale": "Shortest valid routes around walls can require temporary moves away from the goal. All 14 current shortest-mode stored solutions were checked for Manhattan-distance decreases and contain no counterexample, so this is a source robustness suggestion, not a demonstrated failing row.",
+      "recommendation": "Prefer “So số bước của các đường tránh tường và chọn đường ít bước nhất.” Do not change path generation as part of this review.",
+      "source": "src/lib/thinking-games/content/hints.ts",
+      "examples": [
+        {
+          "id": "D075-bonus-vi68",
+          "title": "Dòng suối: Lối đi an toàn",
+          "hints": [
+            "Mỗi bước nên đi gần đích hơn.",
+            "Đừng đi vòng nhé."
+          ],
+          "boardData": {
+            "kind": "path-planning",
+            "width": 5,
+            "height": 5,
+            "start": {
+              "x": 0,
+              "y": 0
+            },
+            "goal": {
+              "x": 4,
+              "y": 4
+            },
+            "walls": [
+              {
+                "x": 4,
+                "y": 0
+              }
+            ],
+            "waypoints": [],
+            "shortestPathOnly": true
+          },
+          "solution": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 1,
+              "y": 0
+            },
+            {
+              "x": 2,
+              "y": 0
+            },
+            {
+              "x": 3,
+              "y": 0
+            },
+            {
+              "x": 3,
+              "y": 1
+            },
+            {
+              "x": 4,
+              "y": 1
+            },
+            {
+              "x": 4,
+              "y": 2
+            },
+            {
+              "x": 4,
+              "y": 3
+            },
+            {
+              "x": 4,
+              "y": 4
+            }
+          ]
+        },
+        {
+          "id": "D075-bonus-vi912",
+          "title": "Dòng suối: Lối đi an toàn",
+          "hints": [
+            "Thử đếm số bước của hai lối khác nhau rồi so sánh.",
+            "Tránh đi lùi hoặc đi vòng; mỗi bước phải rút ngắn khoảng cách đến đích."
+          ],
+          "boardData": {
+            "kind": "path-planning",
+            "width": 7,
+            "height": 7,
+            "start": {
+              "x": 0,
+              "y": 0
+            },
+            "goal": {
+              "x": 6,
+              "y": 6
+            },
+            "walls": [
+              {
+                "x": 2,
+                "y": 3
+              },
+              {
+                "x": 6,
+                "y": 3
+              },
+              {
+                "x": 3,
+                "y": 0
+              },
+              {
+                "x": 1,
+                "y": 6
+              }
+            ],
+            "waypoints": [],
+            "shortestPathOnly": true
+          },
+          "solution": [
+            {
+              "x": 0,
+              "y": 0
+            },
+            {
+              "x": 1,
+              "y": 0
+            },
+            {
+              "x": 2,
+              "y": 0
+            },
+            {
+              "x": 2,
+              "y": 1
+            },
+            {
+              "x": 3,
+              "y": 1
+            },
+            {
+              "x": 4,
+              "y": 1
+            },
+            {
+              "x": 5,
+              "y": 1
+            },
+            {
+              "x": 5,
+              "y": 2
+            },
+            {
+              "x": 5,
+              "y": 3
+            },
+            {
+              "x": 5,
+              "y": 4
+            },
+            {
+              "x": 6,
+              "y": 4
+            },
+            {
+              "x": 6,
+              "y": 5
+            },
+            {
+              "x": 6,
+              "y": 6
+            }
+          ]
+        }
+      ],
+      "notes": null
+    },
+    {
+      "id": "TH-S04",
+      "severity": "suggestion",
+      "category": "age_readability",
+      "title": "Algebra terminology may be unnecessary for the youngest older-track readers",
+      "gameTypeIds": [
+        "g05-t1"
+      ],
+      "affectedCount": 15,
+      "byAgeTrack": {
+        "age_9_12": 15
+      },
+      "affectedIds": [
+        "D002-bonus-vi912",
+        "D013-main-vi912",
+        "D074-bonus-vi912",
+        "D085-main-vi912",
+        "D098-bonus-vi912",
+        "D109-main-vi912",
+        "D170-bonus-vi912",
+        "D181-main-vi912",
+        "D194-bonus-vi912",
+        "D205-main-vi912",
+        "D266-bonus-vi912",
+        "D277-main-vi912",
+        "D290-bonus-vi912",
+        "D301-main-vi912",
+        "D362-bonus-vi912"
+      ],
+      "evidence": "Gọi quả còn thiếu là ẩn số rồi viết: tổng đĩa này bằng tổng đĩa kia.",
+      "rationale": "For age 9–12 the strategy is relevant, but “ẩn số” adds school vocabulary when the same operation can be described concretely. This is an AI readability observation, not a measured reading-age failure.",
+      "recommendation": "Use “Tìm số còn thiếu để tổng hai đĩa bằng nhau.”",
+      "source": "src/lib/thinking-games/content/hints.ts",
+      "examples": [
+        {
+          "id": "D002-bonus-vi912",
+          "title": "Cân bằng hai bên — Hạt giống",
+          "hints": [
+            "Gọi quả còn thiếu là ẩn số rồi viết: tổng đĩa này bằng tổng đĩa kia.",
+            "Số cần tìm là hiệu giữa hai tổng đã biết."
+          ],
+          "boardData": {
+            "kind": "quantity-balance",
+            "left": [
+              {
+                "id": "left-1",
+                "weight": 8
+              },
+              {
+                "id": "left-2",
+                "weight": 8
+              },
+              {
+                "id": "left-3",
+                "weight": 2
+              }
+            ],
+            "right": [
+              {
+                "id": "right-1",
+                "weight": 13
+              },
+              {
+                "id": "right-2",
+                "weight": 14
+              }
+            ],
+            "mode": "missing",
+            "unknownSide": "left",
+            "options": [
+              9,
+              10,
+              11,
+              12
+            ]
+          },
+          "solution": 9
+        },
+        {
+          "id": "D013-main-vi912",
+          "title": "Giữ cân thăng bằng — Vườn hoa",
+          "hints": [
+            "Gọi quả còn thiếu là ẩn số rồi viết: tổng đĩa này bằng tổng đĩa kia.",
+            "Số cần tìm là hiệu giữa hai tổng đã biết."
+          ],
+          "boardData": {
+            "kind": "quantity-balance",
+            "left": [
+              {
+                "id": "left-1",
+                "weight": 3
+              },
+              {
+                "id": "left-2",
+                "weight": 5
+              },
+              {
+                "id": "left-3",
+                "weight": 3
+              }
+            ],
+            "right": [
+              {
+                "id": "right-1",
+                "weight": 9
+              },
+              {
+                "id": "right-2",
+                "weight": 10
+              }
+            ],
+            "mode": "missing",
+            "unknownSide": "left",
+            "options": [
+              8,
+              9,
+              10,
+              11
+            ]
+          },
+          "solution": 8
+        }
+      ],
+      "notes": null
+    }
+  ],
+  "observations": {
+    "tone": "No shaming, punishment, urgency, comparison with other children, or threat was identified in the title/hint pools. “Bắt lỗi” describes puzzle/robot errors, not a child’s worth. These observations do not certify all product copy.",
+    "age": "Young hints are short and generally concrete (max 62 rendered characters); older hints offer comparison and rule-testing strategies (max 104). Differences alone do not establish age usability. Some older terms (phần tử, ứng viên, tổ hợp, trục) require reading familiarity.",
+    "answerLeakage": "No obvious exact answer, candidate/option ID, solution coordinate or answer label is inserted by these hint templates. target/max/trait are already-visible task parameters. Naming a board mode (removed/added/flip) narrows the task, but does not identify its answer. This is semantic/template inspection, not a proof against every inference or all renderer/board interactions.",
+    "titleThemes": "Chapter names are story framing; the boards do not always literally depict the chapter. Do not infer a promised illustrated scene from title variety."
+  },
+  "remainingGaps": [
+    "No sequential manual reading of all 1278 full composed title strings; compositional inspection and exact frame verification are the stated method.",
+    "No child pilot, human Vietnamese editorial review, accessibility session or browser rendering validation.",
+    "No review of unintegrated round3 mechanic tutorial/explanation wording; root must review final generated copy.",
+    "Candidate and source assessment is snapshot-bound; renderer source was inspected only for the named visual/action concerns and may change independently.",
+    "No full lint/typecheck/build/test suite was run for this documentation-only, source-read-only lane. Only read-only extraction/assertions and narrowly scoped evidence probes ran."
+  ],
+  "reviewCorpus": {
+    "titleNamesByGameType": {
+      "g01-t1": [
+        "Điền phần tiếp theo",
+        "Tiếp theo là gì?",
+        "Nối tiếp dãy",
+        "Bí mật của dãy",
+        "Đoán phần kế tiếp",
+        "Dãy này đi đâu?",
+        "Nhịp điệu của dãy",
+        "Ai đứng tiếp theo?"
+      ],
+      "g01-t2": [
+        "Tìm phần sai",
+        "Ai đứng nhầm chỗ?",
+        "Chỗ nào lạc nhịp?",
+        "Bắt lỗi trong dãy",
+        "Thám tử tìm lỗi",
+        "Một chỗ không khớp",
+        "Phát hiện chỗ lệch",
+        "Cái nào đi sai nhịp?"
+      ],
+      "g01-t3": [
+        "Máy biến đổi",
+        "Chiếc máy kỳ diệu",
+        "Máy làm gì với số?",
+        "Số vào, số ra",
+        "Giải mã cỗ máy",
+        "Cỗ máy thần kỳ",
+        "Bí mật của chiếc máy",
+        "Điều gì xảy ra trong máy?"
+      ],
+      "g02-t1": [
+        "Ghép bóng",
+        "Chiếc bóng nào đây?",
+        "Bóng của hình nào?",
+        "Tìm đúng chiếc bóng",
+        "Khớp hình với bóng",
+        "Chiếc bóng bí ẩn",
+        "Ghép hình và bóng",
+        "Bóng nào khớp?"
+      ],
+      "g02-t2": [
+        "Xoay hình",
+        "Hình xoay thế nào?",
+        "Vòng xoay bí ẩn",
+        "Xoay xong trông ra sao?",
+        "Hình đã xoay",
+        "Tưởng tượng xoay hình",
+        "Lật và xoay",
+        "Xoay một vòng"
+      ],
+      "g02-t3": [
+        "Hoàn thành đối xứng",
+        "Bên kia gương có gì?",
+        "Đối xứng hai bên",
+        "Chiếc gương thần",
+        "Ô nào làm tranh cân xứng?",
+        "Tìm cặp đối xứng",
+        "Soi gương cùng mình",
+        "Tranh hai bên giống nhau"
+      ],
+      "g03-t1": [
+        "Nhớ thứ tự",
+        "Ai đứng trước, ai đứng sau?",
+        "Dãy ghi nhớ",
+        "Nhớ và xếp lại",
+        "Trí nhớ xếp hàng",
+        "Đố bạn nhớ dãy",
+        "Nhớ đúng thứ tự nào",
+        "Hàng ghi nhớ"
+      ],
+      "g03-t2": [
+        "Nhớ vị trí",
+        "Ô nào đã sáng?",
+        "Trốn tìm trong bảng",
+        "Bảng ghi nhớ",
+        "Nhớ chỗ các ô sáng",
+        "Ô sáng ở đâu?",
+        "Đèn nhỏ trên bảng",
+        "Nhớ từng ô"
+      ],
+      "g03-t3": [
+        "Nhận ra thay đổi",
+        "Có gì khác rồi?",
+        "Cảnh nào đã đổi?",
+        "Trước và sau",
+        "Điều gì vừa đổi?",
+        "Mắt tinh phát hiện",
+        "Hai cảnh, một thay đổi",
+        "Ai vừa thay đổi?"
+      ],
+      "g04-t1": [
+        "Loại trừ theo manh mối",
+        "Bạn nhỏ bí ẩn là ai?",
+        "Thám tử nhỏ",
+        "Theo dấu manh mối",
+        "Tìm bạn nhỏ bí ẩn",
+        "Manh mối chỉ đường",
+        "Loại từng bạn một",
+        "Chỉ còn một bạn"
+      ],
+      "g04-t2": [
+        "Nếu thì",
+        "Nếu vậy thì sao?",
+        "Chuỗi suy luận",
+        "Từ điều biết đến điều mới",
+        "Nối các luật",
+        "Suy luận từng bước",
+        "Điều gì xảy ra tiếp?",
+        "Luật nếu thì"
+      ],
+      "g04-t3": [
+        "Thông tin còn thiếu",
+        "Cần thêm manh mối nào?",
+        "Mảnh ghép còn thiếu",
+        "Manh mối quyết định",
+        "Thiếu một gợi ý",
+        "Hỏi thêm điều gì?",
+        "Tìm gợi ý cuối cùng",
+        "Để biết chắc"
+      ],
+      "g05-t1": [
+        "Cân bằng hai bên",
+        "Chiếc cân thăng bằng",
+        "Cần thêm bao nhiêu?",
+        "Hai đĩa cân",
+        "Giữ cân thăng bằng",
+        "Quả cân còn thiếu",
+        "Cân cho đều",
+        "Hai đĩa ngang nhau"
+      ],
+      "g05-t2": [
+        "Chia nhóm",
+        "Chia đều nhé",
+        "Được mấy nhóm?",
+        "Chia quà cho đều",
+        "Gom thành từng nhóm",
+        "Nhóm nào đủ?",
+        "Chia và đếm",
+        "Mỗi nhóm một ít"
+      ],
+      "g05-t3": [
+        "Đủ mục tiêu",
+        "Gom cho vừa đủ",
+        "Chọn món vào giỏ",
+        "Chiếc giỏ mục tiêu",
+        "Làm sao cho đủ?",
+        "Cộng cho vừa",
+        "Vừa đúng mục tiêu",
+        "Giỏ đồ khéo léo"
+      ],
+      "g06-t1": [
+        "Tìm đường",
+        "Đường nào về đích?",
+        "Dẫn bạn nhỏ về đích",
+        "Mê cung nhỏ",
+        "Vẽ đường đi",
+        "Lối đi an toàn",
+        "Hành trình về đích",
+        "Đi sao cho khéo?"
+      ],
+      "g06-t2": [
+        "Xếp lệnh",
+        "Việc nào làm trước?",
+        "Xếp việc đúng thứ tự",
+        "Trước tiên làm gì?",
+        "Sắp xếp các bước",
+        "Từng bước một",
+        "Thứ tự công việc",
+        "Bước nào trước, bước nào sau?"
+      ],
+      "g06-t3": [
+        "Sửa bước sai",
+        "Robot đi lạc rồi",
+        "Lệnh nào bị nhầm?",
+        "Sửa lệnh cho robot",
+        "Bắt lỗi cho robot",
+        "Đưa robot về đích",
+        "Một bước chưa đúng",
+        "Chỉnh lại một lệnh"
+      ],
+      "g07-t1": [
+        "Đổi luật phân loại",
+        "Luật mới, cách chọn mới",
+        "Chọn theo luật mới",
+        "Phân loại lại nào",
+        "Luật đã đổi rồi",
+        "Ai hợp luật mới?",
+        "Nhóm theo luật mới",
+        "Gom lại theo luật"
+      ],
+      "g07-t2": [
+        "Đổi góc nhìn",
+        "Nhìn từ chỗ bạn nhỏ",
+        "Đồ vật ở phía nào?",
+        "Đứng ở chỗ bạn ấy",
+        "Trước, sau, trái, phải",
+        "Bạn nhỏ nhìn thấy gì?",
+        "Xoay người theo bạn nhỏ",
+        "Hướng nhìn của bạn nhỏ"
+      ],
+      "g07-t3": [
+        "Cách giải khác",
+        "Còn đường nào khác?",
+        "Đi lối khác thử xem",
+        "Một con đường mới",
+        "Đổi đường đi",
+        "Tìm lối rẽ khác",
+        "Không đi đường cũ",
+        "Có cách khác không?"
+      ],
+      "g08-t1": [
+        "Điểm khác biệt",
+        "Hai hình khác nhau ở đâu?",
+        "Tìm chỗ khác nhau",
+        "Mắt tinh tìm điểm lạ",
+        "So hai bức tranh",
+        "Chỗ nào không giống?",
+        "Săn điểm khác biệt",
+        "Hai tranh, vài điểm khác"
+      ],
+      "g08-t2": [
+        "Hai đặc điểm",
+        "Hình nào có cả hai?",
+        "Chọn theo hai điều kiện",
+        "Vừa thế này, vừa thế kia",
+        "Lọc theo hai gợi ý",
+        "Đủ cả hai đặc điểm",
+        "Hai manh mối cùng lúc",
+        "Ai hợp cả hai?"
+      ],
+      "g08-t3": [
+        "Chi tiết bất hợp lý",
+        "Điều gì lạ ở đây?",
+        "Có gì không ổn?",
+        "Tìm chi tiết lạ",
+        "Việc nào không hợp?",
+        "Điều không hợp lý",
+        "Bắt lỗi trong tình huống",
+        "Chuyện gì sai sai?"
+      ]
+    },
+    "chapterPhrases": [
+      "Bánh răng",
+      "Bãi cát",
+      "Bóng và ánh sáng",
+      "Bưu điện",
+      "Bạn ong",
+      "Bản đồ khu rừng",
+      "Bến thuyền",
+      "Bữa tiệc trong vườn",
+      "Chuyến bay trở về",
+      "Chuẩn bị cất cánh",
+      "Chuồng trại",
+      "Chợ nông sản",
+      "Cuộc hẹn bạn bè",
+      "Cây cầu gỗ",
+      "Công viên",
+      "Căn bếp",
+      "Căn phòng mới",
+      "Cầu nối",
+      "Cửa hàng",
+      "Dây chuyền",
+      "Dòng suối",
+      "Dấu chân",
+      "Dấu tích cổ",
+      "Ga giao nhau",
+      "Ga xuất phát",
+      "Gian hàng",
+      "Góc đồ chơi",
+      "Gặp lại các người bạn",
+      "Hành tinh mới",
+      "Hình khối",
+      "Hạt giống",
+      "Kho nông sản",
+      "Kệ sách",
+      "Máy lọc nước",
+      "Ngọn hải đăng",
+      "Nhà trên cây",
+      "Nhạc cụ",
+      "Phòng sửa lỗi",
+      "Quỹ đạo",
+      "Robot đưa thư",
+      "Rạn san hô",
+      "Sân khấu",
+      "Toa hành lý",
+      "Trang trí",
+      "Triển lãm robot",
+      "Trạm tiếp tế",
+      "Trạm xe",
+      "Tàu ngầm",
+      "Vườn hoa",
+      "Vườn rau",
+      "Vườn triển lãm",
+      "Xưởng tái chế",
+      "Đường hầm"
+    ],
+    "renderedDistinctHints": [
+      "Bước làm robot lệch khỏi đường tới đích là bước cần đổi; hãy chọn hướng sao cho robot vẫn đến được đích.",
+      "Bạn chỉ được chọn nhiều nhất 2 món.",
+      "Bạn nào khác manh mối ở một chỗ cũng không phải.",
+      "Bạn nào không giống manh mối thì úp xuống nhé.",
+      "Bắt đầu từ các số lớn để cần ít món nhất.",
+      "Bắt đầu từ manh mối loại được nhiều ứng viên nhất.",
+      "Bắt đầu từ điều bạn đã biết chắc.",
+      "Chia dãy theo cỡ nhóm rồi nhớ mỗi nhóm như một khối.",
+      "Chia dãy thành từng nhóm nhỏ.",
+      "Chia mỗi hình thành các vùng nhỏ và so lần lượt từng vùng.",
+      "Chia đường đi thành ba đoạn theo thứ tự các số.",
+      "Chia đường đi thành hai đoạn: từ chỗ xuất phát đến ngôi sao, rồi từ ngôi sao đến đích.",
+      "Chú ý hai vị trí được đánh dấu.",
+      "Chỉ chọn những hình có hình đúng như luật.",
+      "Chỉ chọn những hình có kích cỡ đúng như luật.",
+      "Chỉ chọn những hình có màu đúng như luật.",
+      "Chỉ chọn những hình có vị trí đúng như luật.",
+      "Chỉ chọn đúng hai món.",
+      "Chỉ có hai vị trí khác nhau; hai đồ vật ở đó đã đổi chỗ cho nhau.",
+      "Chỉ có một cặp ô khác nhau; hãy chọn ô thuộc cặp đó.",
+      "Chỉ có một tình huống đi ngược luật; loại dần các tình huống phù hợp.",
+      "Chỉ tập trung vào hai vị trí được đánh dấu, đừng nhớ cả dãy.",
+      "Chọn hình có cùng số ô, rồi nhìn xem hình dạng có giống không.",
+      "Chọn hình có cả hai đặc điểm, không chỉ một.",
+      "Chọn một món, rồi xem món kia phải là số nào để đủ 10.",
+      "Chọn một món, rồi xem món kia phải là số nào để đủ 12.",
+      "Chọn một món, rồi xem món kia phải là số nào để đủ 4.",
+      "Chọn một món, rồi xem món kia phải là số nào để đủ 6.",
+      "Chọn một món, rồi xem món kia phải là số nào để đủ 7.",
+      "Chọn một món, rồi xem món kia phải là số nào để đủ 9.",
+      "Chọn một ô nổi bật làm mốc rồi theo dõi nó sau khi xoay.",
+      "Chọn một ô ở góc hình mẫu làm mốc rồi so từng hình.",
+      "Chỗ nào khác phần tử cách đó đúng một độ dài đoạn lặp thì đó là chỗ sai.",
+      "Các bạn vẫn đủ và đứng yên.",
+      "Các bạn vẫn đủ, chỉ đứng khác chỗ.",
+      "Có hai đặc điểm cần tìm.",
+      "Có một bạn mới vừa đến.",
+      "Có một bạn đã đi mất rồi.",
+      "Có một lệnh đang đi ngược hướng cần đi.",
+      "Có một nhóm nhỏ cứ lặp đi lặp lại đó.",
+      "Có một ô sáng đã biến mất.",
+      "Cần thêm một manh mối để chỉ còn lại đúng một bạn.",
+      "Cộng các quả cân đã có ở mỗi đĩa.",
+      "Cộng dần nhưng đừng vượt quá 8.",
+      "Cộng thử hai món, xem có đủ 11 không.",
+      "Cộng thử hai món, xem có đủ 13 không.",
+      "Cộng thử hai món, xem có đủ 15 không.",
+      "Cộng thử hai món, xem có đủ 8 không.",
+      "Cộng từng đĩa rồi so hai tổng.",
+      "Duyệt từng vị trí; vị trí nào khác phần tử cách nó hai bước thì đáng nghi.",
+      "Dùng các góc và mép bảng làm mốc để nhớ vị trí.",
+      "Dùng lần lượt từng manh mối để loại dần, đến khi chỉ còn một bạn khớp mọi manh mối.",
+      "Dùng một ô góc làm mốc và dự đoán chỗ mới của nó trước khi nhìn các hình.",
+      "Dùng phép chia, hoặc cộng dồn cỡ nhóm cho đến khi sát tổng.",
+      "Dùng điều kiện thứ nhất để loại bớt hình, rồi xét điều kiện thứ hai trong các hình còn lại.",
+      "Dừng ở chỗ robot bắt đầu đi lạc xa khỏi đích.",
+      "Dựa vào hai phần tử đầu để xác định nhịp thay phiên.",
+      "Giới hạn 3 món giúp bạn loại các tổ hợp quá dài.",
+      "Gom các đồ vật thành từng nhóm nhỏ.",
+      "Gom thành các nhóm bằng nhau trước.",
+      "Gạch dần những đồ vật có mặt ở cả hai cảnh; đồ vật còn lại chính là điều đã đổi.",
+      "Gạch dần những đồ vật xuất hiện ở cả hai cảnh; đồ vật còn lại là đồ mới thêm.",
+      "Gắn các từ thành một câu chuyện ngắn để dễ nhớ thứ tự.",
+      "Gọi quả còn thiếu là ẩn số rồi viết: tổng đĩa này bằng tổng đĩa kia.",
+      "Hai bên của tranh phải giống nhau như soi gương.",
+      "Hai hình phải thay nhau xuất hiện đều đặn.",
+      "Hai ngôi sao có số một và số hai.",
+      "Hai đĩa chênh nhau bao nhiêu thì cần thêm bấy nhiêu.",
+      "Hiệu của hai tổng chính là phần cần thêm vào đĩa nhẹ hơn.",
+      "Hãy xoay đầu theo hướng bạn nhỏ nhìn.",
+      "Hãy xoay đầu theo, hoặc xoay tờ giấy trong tưởng tượng.",
+      "Hình dung bạn đang làm việc đó thật.",
+      "Hình dung các mũi tên nối từng điều theo mỗi luật Nếu - Thì.",
+      "Hình dung lại dãy ban đầu và đọc từ ở từng vị trí đó.",
+      "Hình nào cùng mốc mà các ô xung quanh bị lệch thì không phải hình cần tìm.",
+      "Hình này bị lật, không chỉ xoay.",
+      "Hình đúng không bị xoay và cũng không bị dịch sang chỗ khác.",
+      "Hình đúng phải thỏa cả hai điều kiện cùng lúc và có thể có nhiều hình như vậy.",
+      "Hỏi mình: manh mối nào giúp phân biệt bạn cần tìm với bạn dễ nhầm nhất?",
+      "Hỏi mình: trong tổng số có bao nhiêu lần cỡ một nhóm?",
+      "Khi trả lời, ghép các khối lại theo đúng thứ tự đã xuất hiện.",
+      "Khi đã có một cách đạt 10, thử thay hai món nhỏ bằng một món lớn.",
+      "Khi đã có một cách đạt 11, thử thay hai món nhỏ bằng một món lớn.",
+      "Khi đã có một cách đạt 12, thử thay hai món nhỏ bằng một món lớn.",
+      "Khi đã có một cách đạt 14, thử thay hai món nhỏ bằng một món lớn.",
+      "Khi đã có một cách đạt 9, thử thay hai món nhỏ bằng một món lớn.",
+      "Kiểm tra số thiếu đó có trong giỏ không; có thì đó là cặp cần chọn.",
+      "Kiểm tra từng hình theo đặc điểm hình; hình nào đạt thì chọn, đừng bỏ sót hình nào.",
+      "Kiểm tra từng hình theo đặc điểm kích cỡ; hình nào đạt thì chọn, đừng bỏ sót hình nào.",
+      "Kiểm tra từng hình theo đặc điểm màu; hình nào đạt thì chọn, đừng bỏ sót hình nào.",
+      "Kiểm tra từng hình theo đặc điểm vị trí; hình nào đạt thì chọn, đừng bỏ sót hình nào.",
+      "Liệt kê các bạn còn khớp với những điều đã biết.",
+      "Loại các từ đã xuất hiện ở những vị trí khác; từ còn lại là ứng viên.",
+      "Loại ngay những hình thừa hoặc thiếu ô so với hình mẫu.",
+      "Loại những hình bị lật như soi gương, vì xoay không làm đổi mặt của hình.",
+      "Luật nào bắt đầu bằng điều đó thì cho ta một điều mới.",
+      "Lặp lại với điều mới tìm được cho đến khi không suy thêm được nữa.",
+      "Lọc theo đặc điểm dễ nhận ra hơn trước để thu hẹp lựa chọn.",
+      "Manh mối tốt là manh mối chỉ đúng với một bạn.",
+      "Máy có thể cộng, trừ, nhân hoặc đảo chữ số; hãy thử từng khả năng với các ví dụ.",
+      "Máy làm cùng một việc với mọi số.",
+      "Mô phỏng từng lệnh và theo dõi vị trí của robot sau mỗi bước.",
+      "Mỗi bước nên đi gần đích hơn.",
+      "Mỗi dãy nhỏ có bước tăng riêng; xem vị trí tiếp theo thuộc dãy nào rồi dùng bước của dãy đó.",
+      "Mỗi số hơn số ngay trước nó bao nhiêu nhỉ?",
+      "Mỗi ô có một ô bạn ở bên kia đường, giống hệt nó.",
+      "Mỗi đoạn tự tìm đường tránh tường.",
+      "Nghĩ xem bạn đứng trước và bạn đứng sau ô đó là ai.",
+      "Nghĩ xem ở nhà bạn làm việc đó thế nào nhé.",
+      "Nhìn các số từ trái sang phải nhé.",
+      "Nhìn cả bản đồ trước, rồi chọn hướng đi chung từ chỗ xuất phát đến đích.",
+      "Nhìn hàng đầu tiên của hai hình trước.",
+      "Nhìn kỹ từng ô: hai ô cùng chỗ có giống nhau không?",
+      "Nhìn mũi tên của bạn nhỏ.",
+      "Nhìn một ví dụ: số đi vào là gì, số đi ra là gì?",
+      "Nhìn một ô ở góc hình mẫu xem nó chạy đến đâu.",
+      "Nhìn một ô ở góc hình mẫu xem nó nhảy sang chỗ nào.",
+      "Nhìn thật kỹ hình mẫu trước nhé.",
+      "Nhìn từng bạn nhỏ một và hỏi: bạn này có khớp không?",
+      "Nhìn từng chỗ đứng, xem ai đã đổi chỗ.",
+      "Nhìn xem ai vừa đổi màu.",
+      "Nhìn xem có mấy bạn giống bạn cần tìm.",
+      "Nhìn xem hai hình nào cứ thay nhau xuất hiện.",
+      "Nhìn xem số lúc ra to hơn, nhỏ hơn hay chỉ đổi chỗ các chữ số.",
+      "Nhìn xem số nào tăng không đều như các số còn lại.",
+      "Nhìn xem việc nào lạ so với các việc còn lại.",
+      "Nhìn điều đã biết ở phía trên.",
+      "Nhìn đường chia đôi ở giữa tranh.",
+      "Nhớ bạn đứng đầu tiên trước nhé.",
+      "Nhớ lại bạn đứng ở mỗi vị trí đó lúc đầu.",
+      "Nhớ lại ô nào bị trống.",
+      "Nhớ phần đầu và phần cuối của dãy trước, rồi điền phần ở giữa.",
+      "Nhớ theo hàng và cột để loại dần những ô vẫn còn đó.",
+      "Nhớ theo hình các ô sáng tạo nên, chẳng hạn một hàng hay một đường chéo.",
+      "Nhớ từng nhóm một, rồi ghép lại.",
+      "Nhớ ô nằm ở góc hay ở giữa bảng.",
+      "Những điều đã biết vẫn còn nhiều bạn phù hợp.",
+      "Nếu bị chặn, quay lại và thử lối rẽ khác thay vì cố đi tiếp.",
+      "Nếu chưa đủ mục tiêu 12 thì mới thêm món khác.",
+      "Nếu chưa đủ mục tiêu 15 thì mới thêm món khác.",
+      "Nếu chưa đủ mục tiêu 3 thì mới thêm món khác.",
+      "Nếu chưa đủ mục tiêu 6 thì mới thêm món khác.",
+      "Nếu chưa đủ mục tiêu 8 thì mới thêm món khác.",
+      "Nếu chưa đủ mục tiêu 9 thì mới thêm món khác.",
+      "Nếu gặp tường thì rẽ sang hướng khác.",
+      "Nếu hiệu giống nhau ở mọi cặp, bạn chỉ cần cộng hiệu đó vào số cuối cùng.",
+      "Nếu mọi cặp như vậy đều giống nhau thì nhịp lặp chỉ có hai phần tử.",
+      "Nối các cặp lại với nhau thành một chuỗi dài từ đầu đến cuối.",
+      "Phía mũi tên chỉ là phía trước của bạn ấy.",
+      "Phần cần thêm bằng cỡ nhóm trừ đi phần dư.",
+      "Phần dư bằng tổng trừ đi số nhóm trọn vẹn nhân với cỡ nhóm.",
+      "Phần không đủ một nhóm là phần còn dư.",
+      "Quét theo hàng hoặc theo cột và so từng ô với ô cùng vị trí ở hình kia.",
+      "Quên luật cũ đi và dùng luật mới để xét từng hình.",
+      "Quả cân được đánh dấu sẽ đổi thành quả mới.",
+      "Quả mới bằng tổng cần có trừ đi các quả còn giữ lại ở cùng đĩa.",
+      "Robot cần đi từ chỗ xuất phát đến đích.",
+      "Rồi xuống hàng thứ hai, cứ thế đến hết.",
+      "Sau khi rẽ, kiểm tra không đi vào ô tường và vẫn đến được đích.",
+      "Sau khi so xong, thử so lại theo thứ tự khác, chẳng hạn theo cột thay vì theo hàng.",
+      "Sau đó tìm bước chỉ phụ thuộc vào bước vừa đặt, và cứ thế nối tiếp.",
+      "So bảng bây giờ với lúc đầu.",
+      "So các ô còn hiện với trí nhớ về lúc đầu để tìm ô vắng mặt.",
+      "So nhóm đầu với từng nhóm sau để thấy chỗ lệch.",
+      "So số vào và số ra ở từng ví dụ để đoán việc máy làm.",
+      "So từng hàng của hai hình nhé.",
+      "So với dãy lệnh hiện có để thấy hướng nào đang thừa hoặc thiếu.",
+      "Số cần tìm là hiệu giữa hai tổng đã biết.",
+      "Số lượng và vị trí không đổi, nên hãy so thuộc tính của từng đồ vật.",
+      "Số đồ vật không đổi, nên hãy so từng vị trí giữa hai cảnh.",
+      "Thử chọn ít món trước nhé.",
+      "Thử các tổ hợp bắt đầu từ số lớn nhất mà tổng chưa quá 11.",
+      "Thử luật vừa đoán trên mọi ví dụ trước khi áp dụng cho số mới.",
+      "Thử món lớn trước, rồi thêm món nhỏ.",
+      "Thử so mỗi phần tử với phần tử cách nó một vị trí.",
+      "Thử so từng cặp số đứng cạnh nhau xem hiệu của chúng thế nào.",
+      "Thử tách dãy thành hai dãy nhỏ: các số ở vị trí lẻ và các số ở vị trí chẵn.",
+      "Thử từng lựa chọn; sau khi thêm nó mà chỉ còn một bạn thì giữ lại.",
+      "Thử với ví dụ thứ hai xem máy làm giống nhau không.",
+      "Thử đếm số bước của hai lối khác nhau rồi so sánh.",
+      "Trong các hình đạt, tìm tiếp hình có điều kiện thứ hai.",
+      "Tránh đi lùi hoặc đi vòng; mỗi bước phải rút ngắn khoảng cách đến đích.",
+      "Trước mặt, sau lưng, tay trái, tay phải của bạn ấy khác với phía trên, dưới, trái, phải của màn hình.",
+      "Tách các manh mối ra: manh mối nào nói về màu, manh mối nào nói về hình?",
+      "Tìm bước không cần bước nào khác đi trước, đó là bước đầu tiên.",
+      "Tìm chỗ hai bên không giống nhau.",
+      "Tìm chỗ hai hình giống nhau đứng liền nhau.",
+      "Tìm câu Nếu - Thì nói về điều đó nhé.",
+      "Tìm cặp hoặc bộ ba có tổng đúng 13.",
+      "Tìm cặp hoặc bộ ba có tổng đúng 16.",
+      "Tìm cặp hoặc bộ ba có tổng đúng 17.",
+      "Tìm cặp hoặc bộ ba có tổng đúng 3.",
+      "Tìm một đường mới không trùng đường xám nhé.",
+      "Tìm ngôi sao trên bản đồ.",
+      "Tìm nhóm nhỏ cứ lặp lại mãi.",
+      "Tìm phần dư khi chia đều tổng cho cỡ nhóm.",
+      "Tìm số nhóm trọn vẹn lớn nhất rồi tính phần còn lại.",
+      "Tìm tình huống làm khác luật.",
+      "Tìm xem nhóm đó bắt đầu từ hình nào.",
+      "Tìm điều chung ở tất cả ví dụ chứ đừng chỉ nhìn một cái.",
+      "Tìm điều kiện thứ nhất trước.",
+      "Tìm điểm chung của các tình huống rồi xem tình huống nào phá vỡ điểm chung đó.",
+      "Tìm điểm đầu tiên mà bạn có thể rẽ khác đường xám.",
+      "Tìm đoạn ngắn nhất mà khi lặp lại sẽ tạo ra đúng dãy này.",
+      "Tìm đặc điểm mà bạn cần tìm có nhưng các bạn còn lại không có.",
+      "Tính hiệu giữa các cặp số đứng cạnh nhau.",
+      "Tính tổng mỗi đĩa cân nhé.",
+      "Tính tổng đĩa còn lại, rồi tính phần còn lại của đĩa có quả bị thay.",
+      "Tổng tốt nhất là tổng lớn nhất không quá 11; so các tổ hợp để chắc chắn.",
+      "Việc nào phải làm trước tiên?",
+      "Việc nào xong rồi mới làm được việc tiếp theo?",
+      "Việc nào ở đây không nên làm?",
+      "Vị trí nào làm hiệu đổi khác so với những chỗ còn lại thì chỗ đó có vấn đề.",
+      "Với các hình còn lại, xem hình nào giữ đúng vị trí giữa các ô, không bị xoay hay dịch.",
+      "Với mỗi bạn, kiểm tra tất cả manh mối; chỉ cần sai một manh mối là loại.",
+      "Với mỗi hình còn lại, kiểm tra điều kiện kia rồi quyết định chọn hay bỏ.",
+      "Với mỗi số, tính số còn thiếu để đạt 10.",
+      "Với mỗi số, tính số còn thiếu để đạt 12.",
+      "Với mỗi số, tính số còn thiếu để đạt 3.",
+      "Với mỗi số, tính số còn thiếu để đạt 8.",
+      "Với mỗi số, tính số còn thiếu để đạt 9.",
+      "Với mỗi ô, hình dung ô đối xứng với nó qua trục.",
+      "Với từng cặp bước, hỏi: bước nào là điều kiện của bước kia?",
+      "Xem nhóm cuối còn thiếu mấy phần mới đủ.",
+      "Xem đĩa nào nặng hơn.",
+      "Xác định hướng nhìn của bạn nhỏ, rồi hình dung trục trước sau và trái phải theo hướng đó.",
+      "Xác định vị trí trống rồi nhớ hai từ đứng hai bên nó.",
+      "Xác định đoạn lặp từ phần đầu dãy rồi đối chiếu từng đoạn sau với nó.",
+      "Ô trống cần giống ô đối xứng của nó, nên hãy xem ô đó đang là gì.",
+      "Đi qua ngôi sao rồi mới về đích.",
+      "Đi theo mũi tên xuất phát từ điều đã biết; chỉ những điều đến được mới đáng chọn.",
+      "Đi theo từng mũi tên của robot.",
+      "Đi tới sao số một trước, sao số hai sau, rồi mới về đích.",
+      "Đi từng bước: từ điều đã biết, dùng luật phù hợp để tìm điều mới.",
+      "Đi từng ô một, tránh ô tường.",
+      "Đi từng ô ở một bên và so với ô đối xứng của nó ở bên kia trục.",
+      "Đoạn sau chỉ bắt đầu khi đã đến đúng ngôi sao của đoạn trước.",
+      "Đánh dấu mỗi chỗ khác nhau; có thể có nhiều hơn một chỗ nên đừng dừng quá sớm.",
+      "Đây là phép lật, nên hãy tìm hình đã đổi mặt chứ không chỉ xoay.",
+      "Đĩa nhẹ hơn cần thêm đúng phần còn thiếu.",
+      "Đường xám là đường đã đi rồi.",
+      "Đặt mình vào chỗ bạn nhỏ và quay mặt theo hướng nhìn của bạn ấy.",
+      "Đặt đồ vật lên trục ấy để biết vị trí so với bạn nhỏ, không so với màn hình.",
+      "Đếm số đồ vật ở hai cảnh để biết cảnh sau nhiều hơn hay ít hơn.",
+      "Đếm số đồ vật ở hai cảnh để biết cảnh sau thiếu hay thừa.",
+      "Đếm xem có mấy ô sáng rồi chỉ lại.",
+      "Đếm xem cảnh sau còn đủ bạn không.",
+      "Đếm xem cảnh sau có nhiều bạn hơn không.",
+      "Đếm xem dãy đã dài bao nhiêu để biết vị trí tiếp theo rơi vào chỗ nào của đoạn lặp.",
+      "Đếm xem gom được mấy nhóm.",
+      "Đếm xem hình mẫu có bao nhiêu ô.",
+      "Đếm xem mỗi hướng cần bao nhiêu lệnh để đi từ chỗ xuất phát đến đích.",
+      "Đọc các số từ trái sang phải nhé.",
+      "Đọc luật chuẩn ở trên.",
+      "Đọc luật mới ở phía trên thật kỹ.",
+      "Đọc manh mối đầu tiên thật kỹ.",
+      "Đọc nhỏ cả dãy: cái này, cái kia, cái này, cái kia.",
+      "Đọc thầm theo thứ tự: một, hai, ba.",
+      "Đối chiếu màu sắc ở từng vị trí giữa hai cảnh để tìm chỗ khác.",
+      "Đối chiếu từng tình huống với luật chuẩn.",
+      "Đối chiếu điểm chung ấy với luật chuẩn để chắc chắn.",
+      "Đồ vật ở trước mặt, sau lưng hay bên tay nào của bạn ấy?",
+      "Đừng đi vòng nhé."
+    ],
+    "rawDistinctHints": [
+      "Bước làm robot lệch khỏi đường tới đích là bước cần đổi; hãy chọn hướng sao cho robot vẫn đến được đích.",
+      "Bạn chỉ được chọn nhiều nhất {max} món.",
+      "Bạn nào khác manh mối ở một chỗ cũng không phải.",
+      "Bạn nào không giống manh mối thì úp xuống nhé.",
+      "Bắt đầu từ các số lớn để cần ít món nhất.",
+      "Bắt đầu từ manh mối loại được nhiều ứng viên nhất.",
+      "Bắt đầu từ điều bạn đã biết chắc.",
+      "Chia dãy theo cỡ nhóm rồi nhớ mỗi nhóm như một khối.",
+      "Chia dãy thành từng nhóm nhỏ.",
+      "Chia mỗi hình thành các vùng nhỏ và so lần lượt từng vùng.",
+      "Chia đường đi thành ba đoạn theo thứ tự các số.",
+      "Chia đường đi thành hai đoạn: từ chỗ xuất phát đến ngôi sao, rồi từ ngôi sao đến đích.",
+      "Chú ý hai vị trí được đánh dấu.",
+      "Chỉ chọn những hình có {trait} đúng như luật.",
+      "Chỉ chọn đúng hai món.",
+      "Chỉ có hai vị trí khác nhau; hai đồ vật ở đó đã đổi chỗ cho nhau.",
+      "Chỉ có một cặp ô khác nhau; hãy chọn ô thuộc cặp đó.",
+      "Chỉ có một tình huống đi ngược luật; loại dần các tình huống phù hợp.",
+      "Chỉ tập trung vào hai vị trí được đánh dấu, đừng nhớ cả dãy.",
+      "Chọn hình có cùng số ô, rồi nhìn xem hình dạng có giống không.",
+      "Chọn hình có cả hai đặc điểm, không chỉ một.",
+      "Chọn một món, rồi xem món kia phải là số nào để đủ {target}.",
+      "Chọn một ô nổi bật làm mốc rồi theo dõi nó sau khi xoay.",
+      "Chọn một ô ở góc hình mẫu làm mốc rồi so từng hình.",
+      "Chỗ nào khác phần tử cách đó đúng một độ dài đoạn lặp thì đó là chỗ sai.",
+      "Các bạn vẫn đủ và đứng yên.",
+      "Các bạn vẫn đủ, chỉ đứng khác chỗ.",
+      "Các số này như hai đội đứng xen kẽ nhau.",
+      "Có hai đặc điểm cần tìm.",
+      "Có một bạn mới vừa đến.",
+      "Có một bạn đã đi mất rồi.",
+      "Có một lệnh đang đi ngược hướng cần đi.",
+      "Có một nhóm nhỏ cứ lặp đi lặp lại đó.",
+      "Có một ô sáng đã biến mất.",
+      "Cần thêm một manh mối để chỉ còn lại đúng một bạn.",
+      "Cộng các quả cân đã có ở mỗi đĩa.",
+      "Cộng dần nhưng đừng vượt quá {target}.",
+      "Cộng thử hai món, xem có đủ {target} không.",
+      "Cộng từng đĩa rồi so hai tổng.",
+      "Duyệt từng vị trí; vị trí nào khác phần tử cách nó hai bước thì đáng nghi.",
+      "Dùng các góc và mép bảng làm mốc để nhớ vị trí.",
+      "Dùng lần lượt từng manh mối để loại dần, đến khi chỉ còn một bạn khớp mọi manh mối.",
+      "Dùng một ô góc làm mốc và dự đoán chỗ mới của nó trước khi nhìn các hình.",
+      "Dùng phép chia, hoặc cộng dồn cỡ nhóm cho đến khi sát tổng.",
+      "Dùng điều kiện thứ nhất để loại bớt hình, rồi xét điều kiện thứ hai trong các hình còn lại.",
+      "Dừng ở chỗ robot bắt đầu đi lạc xa khỏi đích.",
+      "Dựa vào hai phần tử đầu để xác định nhịp thay phiên.",
+      "Giới hạn {max} món giúp bạn loại các tổ hợp quá dài.",
+      "Gom các đồ vật thành từng nhóm nhỏ.",
+      "Gom thành các nhóm bằng nhau trước.",
+      "Gạch dần những đồ vật có mặt ở cả hai cảnh; đồ vật còn lại chính là điều đã đổi.",
+      "Gạch dần những đồ vật xuất hiện ở cả hai cảnh; đồ vật còn lại là đồ mới thêm.",
+      "Gắn các từ thành một câu chuyện ngắn để dễ nhớ thứ tự.",
+      "Gọi quả còn thiếu là ẩn số rồi viết: tổng đĩa này bằng tổng đĩa kia.",
+      "Hai bên của tranh phải giống nhau như soi gương.",
+      "Hai hình phải thay nhau xuất hiện đều đặn.",
+      "Hai ngôi sao có số một và số hai.",
+      "Hai đĩa chênh nhau bao nhiêu thì cần thêm bấy nhiêu.",
+      "Hiệu của hai tổng chính là phần cần thêm vào đĩa nhẹ hơn.",
+      "Hãy xoay đầu theo hướng bạn nhỏ nhìn.",
+      "Hãy xoay đầu theo, hoặc xoay tờ giấy trong tưởng tượng.",
+      "Hình dung bạn đang làm việc đó thật.",
+      "Hình dung các mũi tên nối từng điều theo mỗi luật Nếu - Thì.",
+      "Hình dung lại dãy ban đầu và đọc từ ở từng vị trí đó.",
+      "Hình nào cùng mốc mà các ô xung quanh bị lệch thì không phải hình cần tìm.",
+      "Hình này bị lật, không chỉ xoay.",
+      "Hình đúng không bị xoay và cũng không bị dịch sang chỗ khác.",
+      "Hình đúng phải thỏa cả hai điều kiện cùng lúc và có thể có nhiều hình như vậy.",
+      "Hỏi mình: manh mối nào giúp phân biệt bạn cần tìm với bạn dễ nhầm nhất?",
+      "Hỏi mình: trong tổng số có bao nhiêu lần cỡ một nhóm?",
+      "Khi trả lời, ghép các khối lại theo đúng thứ tự đã xuất hiện.",
+      "Khi đã có một cách đạt {target}, thử thay hai món nhỏ bằng một món lớn.",
+      "Kiểm tra số thiếu đó có trong giỏ không; có thì đó là cặp cần chọn.",
+      "Kiểm tra từng hình theo đặc điểm {trait}; hình nào đạt thì chọn, đừng bỏ sót hình nào.",
+      "Liệt kê các bạn còn khớp với những điều đã biết.",
+      "Loại các từ đã xuất hiện ở những vị trí khác; từ còn lại là ứng viên.",
+      "Loại ngay những hình thừa hoặc thiếu ô so với hình mẫu.",
+      "Loại những hình bị lật như soi gương, vì xoay không làm đổi mặt của hình.",
+      "Luật nào bắt đầu bằng điều đó thì cho ta một điều mới.",
+      "Lặp lại với điều mới tìm được cho đến khi không suy thêm được nữa.",
+      "Lọc theo đặc điểm dễ nhận ra hơn trước để thu hẹp lựa chọn.",
+      "Manh mối tốt là manh mối chỉ đúng với một bạn.",
+      "Máy có thể cộng, trừ, nhân hoặc đảo chữ số; hãy thử từng khả năng với các ví dụ.",
+      "Máy làm cùng một việc với mọi số.",
+      "Mô phỏng từng lệnh và theo dõi vị trí của robot sau mỗi bước.",
+      "Mỗi bước nên đi gần đích hơn.",
+      "Mỗi dãy nhỏ có bước tăng riêng; xem vị trí tiếp theo thuộc dãy nào rồi dùng bước của dãy đó.",
+      "Mỗi số hơn số ngay trước nó bao nhiêu nhỉ?",
+      "Mỗi ô có một ô bạn ở bên kia đường, giống hệt nó.",
+      "Mỗi đoạn tự tìm đường tránh tường.",
+      "Nghĩ xem bạn đứng trước và bạn đứng sau ô đó là ai.",
+      "Nghĩ xem ở nhà bạn làm việc đó thế nào nhé.",
+      "Nhìn các số từ trái sang phải nhé.",
+      "Nhìn cả bản đồ trước, rồi chọn hướng đi chung từ chỗ xuất phát đến đích.",
+      "Nhìn hàng đầu tiên của hai hình trước.",
+      "Nhìn kỹ từng ô: hai ô cùng chỗ có giống nhau không?",
+      "Nhìn mũi tên của bạn nhỏ.",
+      "Nhìn một ví dụ: số đi vào là gì, số đi ra là gì?",
+      "Nhìn một ô ở góc hình mẫu xem nó chạy đến đâu.",
+      "Nhìn một ô ở góc hình mẫu xem nó nhảy sang chỗ nào.",
+      "Nhìn riêng các số đứng ở vị trí thứ nhất, thứ ba, thứ năm xem chúng đổi thế nào.",
+      "Nhìn thật kỹ hình mẫu trước nhé.",
+      "Nhìn từng bạn nhỏ một và hỏi: bạn này có khớp không?",
+      "Nhìn từng chỗ đứng, xem ai đã đổi chỗ.",
+      "Nhìn xem ai vừa đổi màu.",
+      "Nhìn xem có mấy bạn giống bạn cần tìm.",
+      "Nhìn xem hai hình nào cứ thay nhau xuất hiện.",
+      "Nhìn xem số lúc ra to hơn, nhỏ hơn hay chỉ đổi chỗ các chữ số.",
+      "Nhìn xem số nào tăng không đều như các số còn lại.",
+      "Nhìn xem việc nào lạ so với các việc còn lại.",
+      "Nhìn điều đã biết ở phía trên.",
+      "Nhìn đường chia đôi ở giữa tranh.",
+      "Nhớ bạn đứng đầu tiên trước nhé.",
+      "Nhớ lại bạn đứng ở mỗi vị trí đó lúc đầu.",
+      "Nhớ lại ô nào bị trống.",
+      "Nhớ phần đầu và phần cuối của dãy trước, rồi điền phần ở giữa.",
+      "Nhớ theo hàng và cột để loại dần những ô vẫn còn đó.",
+      "Nhớ theo hình các ô sáng tạo nên, chẳng hạn một hàng hay một đường chéo.",
+      "Nhớ từng nhóm một, rồi ghép lại.",
+      "Nhớ ô nằm ở góc hay ở giữa bảng.",
+      "Những điều đã biết vẫn còn nhiều bạn phù hợp.",
+      "Nếu bị chặn, quay lại và thử lối rẽ khác thay vì cố đi tiếp.",
+      "Nếu chưa đủ mục tiêu {target} thì mới thêm món khác.",
+      "Nếu gặp tường thì rẽ sang hướng khác.",
+      "Nếu hiệu giống nhau ở mọi cặp, bạn chỉ cần cộng hiệu đó vào số cuối cùng.",
+      "Nếu mọi cặp như vậy đều giống nhau thì nhịp lặp chỉ có hai phần tử.",
+      "Nối các cặp lại với nhau thành một chuỗi dài từ đầu đến cuối.",
+      "Phía mũi tên chỉ là phía trước của bạn ấy.",
+      "Phần cần thêm bằng cỡ nhóm trừ đi phần dư.",
+      "Phần dư bằng tổng trừ đi số nhóm trọn vẹn nhân với cỡ nhóm.",
+      "Phần không đủ một nhóm là phần còn dư.",
+      "Quét theo hàng hoặc theo cột và so từng ô với ô cùng vị trí ở hình kia.",
+      "Quên luật cũ đi và dùng luật mới để xét từng hình.",
+      "Quả cân được đánh dấu sẽ đổi thành quả mới.",
+      "Quả mới bằng tổng cần có trừ đi các quả còn giữ lại ở cùng đĩa.",
+      "Robot cần đi từ chỗ xuất phát đến đích.",
+      "Rồi xuống hàng thứ hai, cứ thế đến hết.",
+      "Sau khi rẽ, kiểm tra không đi vào ô tường và vẫn đến được đích.",
+      "Sau khi so xong, thử so lại theo thứ tự khác, chẳng hạn theo cột thay vì theo hàng.",
+      "Sau đó tìm bước chỉ phụ thuộc vào bước vừa đặt, và cứ thế nối tiếp.",
+      "So bảng bây giờ với lúc đầu.",
+      "So các ô còn hiện với trí nhớ về lúc đầu để tìm ô vắng mặt.",
+      "So nhóm đầu với từng nhóm sau để thấy chỗ lệch.",
+      "So số vào và số ra ở từng ví dụ để đoán việc máy làm.",
+      "So từng hàng của hai hình nhé.",
+      "So với dãy lệnh hiện có để thấy hướng nào đang thừa hoặc thiếu.",
+      "Số cần tìm là hiệu giữa hai tổng đã biết.",
+      "Số lượng và vị trí không đổi, nên hãy so thuộc tính của từng đồ vật.",
+      "Số đồ vật không đổi, nên hãy so từng vị trí giữa hai cảnh.",
+      "Thử chọn ít món trước nhé.",
+      "Thử các tổ hợp bắt đầu từ số lớn nhất mà tổng chưa quá {target}.",
+      "Thử luật vừa đoán trên mọi ví dụ trước khi áp dụng cho số mới.",
+      "Thử món lớn trước, rồi thêm món nhỏ.",
+      "Thử so mỗi phần tử với phần tử cách nó một vị trí.",
+      "Thử so từng cặp số đứng cạnh nhau xem hiệu của chúng thế nào.",
+      "Thử tách dãy thành hai dãy nhỏ: các số ở vị trí lẻ và các số ở vị trí chẵn.",
+      "Thử từng lựa chọn; sau khi thêm nó mà chỉ còn một bạn thì giữ lại.",
+      "Thử với ví dụ thứ hai xem máy làm giống nhau không.",
+      "Thử đếm số bước của hai lối khác nhau rồi so sánh.",
+      "Trong các hình đạt, tìm tiếp hình có điều kiện thứ hai.",
+      "Tránh đi lùi hoặc đi vòng; mỗi bước phải rút ngắn khoảng cách đến đích.",
+      "Trước mặt, sau lưng, tay trái, tay phải của bạn ấy khác với phía trên, dưới, trái, phải của màn hình.",
+      "Tách các manh mối ra: manh mối nào nói về màu, manh mối nào nói về hình?",
+      "Tìm bước không cần bước nào khác đi trước, đó là bước đầu tiên.",
+      "Tìm chỗ hai bên không giống nhau.",
+      "Tìm chỗ hai hình giống nhau đứng liền nhau.",
+      "Tìm câu Nếu - Thì nói về điều đó nhé.",
+      "Tìm cặp hoặc bộ ba có tổng đúng {target}.",
+      "Tìm một đường mới không trùng đường xám nhé.",
+      "Tìm ngôi sao trên bản đồ.",
+      "Tìm nhóm nhỏ cứ lặp lại mãi.",
+      "Tìm phần dư khi chia đều tổng cho cỡ nhóm.",
+      "Tìm số nhóm trọn vẹn lớn nhất rồi tính phần còn lại.",
+      "Tìm tình huống làm khác luật.",
+      "Tìm xem nhóm đó bắt đầu từ hình nào.",
+      "Tìm điều chung ở tất cả ví dụ chứ đừng chỉ nhìn một cái.",
+      "Tìm điều kiện thứ nhất trước.",
+      "Tìm điểm chung của các tình huống rồi xem tình huống nào phá vỡ điểm chung đó.",
+      "Tìm điểm đầu tiên mà bạn có thể rẽ khác đường xám.",
+      "Tìm đoạn ngắn nhất mà khi lặp lại sẽ tạo ra đúng dãy này.",
+      "Tìm đặc điểm mà bạn cần tìm có nhưng các bạn còn lại không có.",
+      "Tính hiệu giữa các cặp số đứng cạnh nhau.",
+      "Tính tổng mỗi đĩa cân nhé.",
+      "Tính tổng đĩa còn lại, rồi tính phần còn lại của đĩa có quả bị thay.",
+      "Tổng tốt nhất là tổng lớn nhất không quá {target}; so các tổ hợp để chắc chắn.",
+      "Việc nào phải làm trước tiên?",
+      "Việc nào xong rồi mới làm được việc tiếp theo?",
+      "Việc nào ở đây không nên làm?",
+      "Vị trí nào làm hiệu đổi khác so với những chỗ còn lại thì chỗ đó có vấn đề.",
+      "Với các hình còn lại, xem hình nào giữ đúng vị trí giữa các ô, không bị xoay hay dịch.",
+      "Với mỗi bạn, kiểm tra tất cả manh mối; chỉ cần sai một manh mối là loại.",
+      "Với mỗi hình còn lại, kiểm tra điều kiện kia rồi quyết định chọn hay bỏ.",
+      "Với mỗi số, tính số còn thiếu để đạt {target}.",
+      "Với mỗi ô, hình dung ô đối xứng với nó qua trục.",
+      "Với từng cặp bước, hỏi: bước nào là điều kiện của bước kia?",
+      "Xem nhóm cuối còn thiếu mấy phần mới đủ.",
+      "Xem đĩa nào nặng hơn.",
+      "Xác định hướng nhìn của bạn nhỏ, rồi hình dung trục trước sau và trái phải theo hướng đó.",
+      "Xác định vị trí trống rồi nhớ hai từ đứng hai bên nó.",
+      "Xác định đoạn lặp từ phần đầu dãy rồi đối chiếu từng đoạn sau với nó.",
+      "Ô trống cần giống ô đối xứng của nó, nên hãy xem ô đó đang là gì.",
+      "Đi qua ngôi sao rồi mới về đích.",
+      "Đi theo mũi tên xuất phát từ điều đã biết; chỉ những điều đến được mới đáng chọn.",
+      "Đi theo từng mũi tên của robot.",
+      "Đi tới sao số một trước, sao số hai sau, rồi mới về đích.",
+      "Đi từng bước: từ điều đã biết, dùng luật phù hợp để tìm điều mới.",
+      "Đi từng ô một, tránh ô tường.",
+      "Đi từng ô ở một bên và so với ô đối xứng của nó ở bên kia trục.",
+      "Đoạn sau chỉ bắt đầu khi đã đến đúng ngôi sao của đoạn trước.",
+      "Đánh dấu mỗi chỗ khác nhau; có thể có nhiều hơn một chỗ nên đừng dừng quá sớm.",
+      "Đây là phép lật, nên hãy tìm hình đã đổi mặt chứ không chỉ xoay.",
+      "Đĩa nhẹ hơn cần thêm đúng phần còn thiếu.",
+      "Đường xám là đường đã đi rồi.",
+      "Đặt mình vào chỗ bạn nhỏ và quay mặt theo hướng nhìn của bạn ấy.",
+      "Đặt đồ vật lên trục ấy để biết vị trí so với bạn nhỏ, không so với màn hình.",
+      "Đếm số đồ vật ở hai cảnh để biết cảnh sau nhiều hơn hay ít hơn.",
+      "Đếm số đồ vật ở hai cảnh để biết cảnh sau thiếu hay thừa.",
+      "Đếm xem có mấy ô sáng rồi chỉ lại.",
+      "Đếm xem cảnh sau còn đủ bạn không.",
+      "Đếm xem cảnh sau có nhiều bạn hơn không.",
+      "Đếm xem dãy đã dài bao nhiêu để biết vị trí tiếp theo rơi vào chỗ nào của đoạn lặp.",
+      "Đếm xem gom được mấy nhóm.",
+      "Đếm xem hình mẫu có bao nhiêu ô.",
+      "Đếm xem mỗi hướng cần bao nhiêu lệnh để đi từ chỗ xuất phát đến đích.",
+      "Đọc các số từ trái sang phải nhé.",
+      "Đọc luật chuẩn ở trên.",
+      "Đọc luật mới ở phía trên thật kỹ.",
+      "Đọc manh mối đầu tiên thật kỹ.",
+      "Đọc nhỏ cả dãy: cái này, cái kia, cái này, cái kia.",
+      "Đọc thầm theo thứ tự: một, hai, ba.",
+      "Đối chiếu màu sắc ở từng vị trí giữa hai cảnh để tìm chỗ khác.",
+      "Đối chiếu từng tình huống với luật chuẩn.",
+      "Đối chiếu điểm chung ấy với luật chuẩn để chắc chắn.",
+      "Đồ vật ở trước mặt, sau lưng hay bên tay nào của bạn ấy?",
+      "Đừng đi vòng nhé."
+    ]
+  },
+  "delivery": {
+    "requestedFullReportRun": "run_6149b435d3ef",
+    "activeDispatchRunObserved": "run_d2b1a0cf783f",
+    "requestedRunSend": "rejected_by_runtime",
+    "exactError": "Dispatch ctx_d3d65aa24b41 belongs to Run run_d2b1a0cf783f, not run_6149b435d3ef.",
+    "fallback": "Send full report to active Dispatch Run with reportPath; coordinator must forward or attach it to requested Run. Do not claim requested-Run delivery succeeded."
+  }
+}
