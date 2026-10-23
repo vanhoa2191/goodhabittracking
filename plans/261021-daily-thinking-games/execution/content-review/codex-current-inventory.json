@@ -1,0 +1,2097 @@
+{
+  "metadata": {
+    "reportType": "codex-current-inventory",
+    "version": "1.0.0",
+    "generatedAt": "2026-10-23T00:05:00.000Z",
+    "commit": "b6bf6a94fa79856b195d73fa2370fc31112abc16",
+    "commitShort": "b6bf6a9",
+    "branch": "feat/thinking-games-content-r2",
+    "pullRequest": 199,
+    "reviewer": "Codex Content Reviewer (bounded, read-only)",
+    "disclaimer": "Báo cáo này là kết quả review biên tập độc lập, chỉ đọc. Báo cáo KHÔNG đưa ra phê duyệt biên tập và KHÔNG thay thế quyết định ký duyệt của chủ sở hữu sản phẩm."
+  },
+  "scope": {
+    "totalCandidateItemsInRepo": 2920,
+    "initialReleaseScope": 1460,
+    "ageTracksInScope": [
+      "age_6_8",
+      "age_9_12"
+    ],
+    "daysInScope": 365,
+    "slotsPerDay": [
+      "main",
+      "bonus"
+    ],
+    "batchesInScope": [
+      "batch-01-days-001-028.json",
+      "batch-02-days-029-091.json",
+      "batch-03-days-092-182.json",
+      "batch-04-days-183-273.json",
+      "batch-05-days-274-365.json"
+    ]
+  },
+  "inputSha256": {
+    "content/thinking-games/candidates/365-v2/batch-01-days-001-028.json": "e752dcb54987c1bcc9b26d93463206f459025bd03a4dd5d3dae1658b2a670095",
+    "content/thinking-games/candidates/365-v2/batch-02-days-029-091.json": "1e2fd5ed23ffe110473008216d4cb1951db324421f089d8cbaa34e114a753d31",
+    "content/thinking-games/candidates/365-v2/batch-03-days-092-182.json": "f5b08f79025039793e200b3163c574ef941ae43fb79408505ee7a18e33a81ccf",
+    "content/thinking-games/candidates/365-v2/batch-04-days-183-273.json": "82e29d1a7a27fd4ade924e0256d0cdc1af8bd8de2ddbe8f302c5d41668136c8f",
+    "content/thinking-games/candidates/365-v2/batch-05-days-274-365.json": "02a36bfa46a782f93f6aabc3bb06ba8d2c82db8cff35bcc3397eba1d21143b2d",
+    "content/thinking-games/candidates/365-v2/candidate-manifest-v2.json": "e7f13e16d454277f0e1fd82180306d3607a0711cbc59b488e7af2c8b6b2ff404",
+    "content/thinking-games/candidates/365-v2/candidate-meta-v2.json": "35d4a8c60a539ea996c33e9349afa5da328258a6cab28d38e556c11fdaa6fe45",
+    "plans/261021-daily-thinking-games/execution/content-review/round2-sonnet.json": "bfb2490c5afe97817c82507d87c97ba039a6dd45bdcb740937e9d00f26f65402",
+    "plans/261021-daily-thinking-games/execution/handoff-to-codex-2026-10-22.md": "3bbd898d9334fe11099246e7e636eec54f792c164b9f18c8ad307ecf2d86d016"
+  },
+  "summary": {
+    "totalOpenItems": 105,
+    "uniqueAffectedItems": 105,
+    "crossCategoryOverlaps": 0,
+    "byCategory": {
+      "pressure_comparison_language": 57,
+      "g04_t2_false_if_then": 15,
+      "g06_t2_ambiguous_sequencing": 21,
+      "g08_t3_explanation_mismatch": 12
+    },
+    "bySubCategory": {
+      "g02-t1_doi_hoi": 13,
+      "g05-t3_kiem_tra": 12,
+      "g01-t3_kiem_tra": 12,
+      "g03-t1_ai_nho_nhanh": 11,
+      "g08-t1_kiem_tra": 9,
+      "sun_morning_rule": 15,
+      "rice_before_soup": 11,
+      "wash_hands_twice": 10,
+      "wrong_direction_vs_crosswalk": 12
+    },
+    "byAgeTrack": {
+      "age_6_8": 55,
+      "age_9_12": 50
+    },
+    "byBatch": {
+      "batch-01-days-001-028.json": 7,
+      "batch-02-days-029-091.json": 24,
+      "batch-03-days-092-182.json": 21,
+      "batch-04-days-183-273.json": 26,
+      "batch-05-days-274-365.json": 27
+    },
+    "bySeverity": {
+      "block": 0,
+      "fix": 105,
+      "nit": 0
+    }
+  },
+  "closedHistoricIssues": [
+    {
+      "category": "answer_position_bias",
+      "round2Status": "250 items flagged as block (g02-t1, g02-t2, g03-t3, g05-t1, g07-t2)",
+      "currentStatus": "CLOSED",
+      "verificationEvidence": "Verified answer position distribution across all 1460 items; no option index exceeds 35% in current candidate batches; Fisher-Yates shuffle active in generators."
+    },
+    {
+      "category": "g07-t2_direction_and_double_word",
+      "round2Status": "60 items flagged as block (solution was always ahead; explanation had duplicate \"ở ở\")",
+      "currentStatus": "CLOSED",
+      "verificationEvidence": "Scanned all 1460 items: 0 occurrences of duplicate words (\"ở ở\"); solution directions across 60 g07-t2 items are well-balanced (ahead: 16, right: 16, left: 13, behind: 15)."
+    },
+    {
+      "category": "snake_case_leak",
+      "round2Status": "124 items flagged as fix (tokens kích_cỡ, vị_trí, trọng_lượng exposed in child-facing copy)",
+      "currentStatus": "CLOSED",
+      "verificationEvidence": "Scanned all child-facing text across 1460 items: 0 occurrences of underscore tokens."
+    },
+    {
+      "category": "g01-t1_interleaved_explanation",
+      "round2Status": "8 items flagged as block (explanation only stated a single step for interleaved sequences)",
+      "currentStatus": "CLOSED",
+      "verificationEvidence": "All 8 items (D049, D062, D145, D158, D241, D254, D337, D350) now state both odd and even track steps clearly (e.g. \"các số ở vị trí 1, 3, 5... tăng thêm A, các số ở vị trí 2, 4, 6... tăng thêm B\")."
+    },
+    {
+      "category": "g06-t1_waypoints_tutorial_mismatch",
+      "round2Status": "15 items flagged as fix/clarity (waypoints mentioned when absent or omitted when present)",
+      "currentStatus": "CLOSED",
+      "verificationEvidence": "getTutorialMode dynamically generates tutorials according to actual board waypoints and shortest path mode; verified 0 mismatches."
+    },
+    {
+      "category": "cross_track_identical_hints",
+      "round2Status": "708 / 730 day/slot pairs had identical hint 1 or hint 2 between 6-8 and 9-12",
+      "currentStatus": "CLOSED",
+      "verificationEvidence": "Verified cross-track hint uniqueness: 0 / 730 pairs share hint 1 or hint 2; 0 strings shared between 6-8 and 9-12 hint pools."
+    },
+    {
+      "category": "title_monotony",
+      "round2Status": "All titles followed rigid \"<Chủ đề> · <Tên trò>\" format and repeated identically",
+      "currentStatus": "CLOSED",
+      "verificationEvidence": "730 distinct titles per track (1.000 uniqueness ratio); 0 consecutive-day repeats across tracks; 4 dynamic title frames."
+    }
+  ],
+  "hintTitleAssessment": {
+    "methodology": "Full read coverage of 100% of underlying generative templates and pools (192 title names, 4 title frames, 263 distinct hint strings across young/older tiers), combined with programmatic invariant verification and spot checks across all 1460 candidate items.",
+    "honestCoverageClaim": "We do not claim all 1460 rows were read sequentially by human eyes one by one. Read coverage was achieved at 100% of the discrete generative template universe, ensuring zero unexamined phrases exist in the generated corpus.",
+    "titleFindings": {
+      "distinctTitlesInTrack68": 730,
+      "distinctTitlesInTrack912": 730,
+      "consecutiveDayRepeats": 0,
+      "pronounCheck": {
+        "ban": 139,
+        "minh": 11,
+        "ta": 0,
+        "toi": 0,
+        "chung_ta": 0,
+        "to": 0,
+        "cau": 0
+      },
+      "toneEvaluation": "Natural, playful, inviting; titles effectively balance declarative guidance with engaging questions."
+    },
+    "hintFindings": {
+      "distinctStringsTrack68": 131,
+      "distinctStringsTrack912": 132,
+      "distinctPairsTrack68": 74,
+      "distinctPairsTrack912": 73,
+      "sharedStringsBetweenTracks": 0,
+      "pronounCheck": {
+        "directImperativesOrDescriptions": "Dominant pattern (natural Vietnamese pedagogical style)",
+        "ban": 38,
+        "minh": 3,
+        "ta": 1,
+        "toi": 0,
+        "chung_ta": 0
+      },
+      "minorObservation": "1 instance of formal pronoun \"ta\" in g04-t2 Young hint 2 (\"Luật nào bắt đầu bằng điều đó thì cho ta một điều mới\"). Recommend replacing \"cho ta\" with \"cho bạn\" or \"giúp bạn tìm ra\" during next copy touch.",
+      "nonPunitiveCompliance": "100% compliant. Zero punitive, shaming, or comparative expressions exist in hints."
+    }
+  },
+  "fixOwnership": [
+    {
+      "category": "pressure_comparison_language",
+      "affectedCount": 57,
+      "file": "src/lib/thinking-games/content/copy.ts",
+      "lines": [
+        46,
+        52,
+        73,
+        129,
+        178
+      ],
+      "complexity": "trivial (text replacement of 5 invitation strings)"
+    },
+    {
+      "category": "g04_t2_false_if_then",
+      "affectedCount": 15,
+      "file": "src/lib/thinking-games/mechanics/remaining.ts",
+      "lines": [
+        791
+      ],
+      "complexity": "low (replace word pool starting element with unambiguous morning event)"
+    },
+    {
+      "category": "g06_t2_ambiguous_sequencing",
+      "affectedCount": 21,
+      "file": "src/lib/thinking-games/mechanics/remaining.ts",
+      "lines": [
+        1195,
+        1198
+      ],
+      "complexity": "low (update 2 scenario string arrays to eliminate branching ambiguity)"
+    },
+    {
+      "category": "g08_t3_explanation_mismatch",
+      "affectedCount": 12,
+      "file": "src/lib/thinking-games/mechanics/remaining.ts",
+      "lines": [
+        1715
+      ],
+      "complexity": "low (set bad trait value to \"bên ngoài vạch\" when index === 3)"
+    }
+  ],
+  "items": [
+    {
+      "id": "D002-main-vi68",
+      "dayIndex": 2,
+      "slotType": "main",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-01-days-001-028.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D006-main-vi68",
+      "dayIndex": 6,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-01-days-001-028.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D016-bonus-vi68",
+      "dayIndex": 16,
+      "slotType": "bonus",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-01-days-001-028.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D021-main-vi68",
+      "dayIndex": 21,
+      "slotType": "main",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-01-days-001-028.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D021-main-vi912",
+      "dayIndex": 21,
+      "slotType": "main",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-01-days-001-028.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D026-main-vi912",
+      "dayIndex": 26,
+      "slotType": "main",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-01-days-001-028.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D028-main-vi912",
+      "dayIndex": 28,
+      "slotType": "main",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-01-days-001-028.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"thức dậy\",\"then\":\"đánh răng\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là đánh răng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D030-main-vi912",
+      "dayIndex": 30,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà → Ăn cơm.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D034-bonus-vi68",
+      "dayIndex": 34,
+      "slotType": "bonus",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D040-bonus-vi68",
+      "dayIndex": 40,
+      "slotType": "bonus",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D046-bonus-vi912",
+      "dayIndex": 46,
+      "slotType": "bonus",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D051-main-vi912",
+      "dayIndex": 51,
+      "slotType": "main",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D052-main-vi912",
+      "dayIndex": 52,
+      "slotType": "main",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"thức dậy\",\"then\":\"đánh răng\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là đánh răng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D053-bonus-vi912",
+      "dayIndex": 53,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g08-t1_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra sự chú ý chi tiết của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời thám tử vui vẻ: \"Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 178
+      }
+    },
+    {
+      "id": "D054-main-vi68",
+      "dayIndex": 54,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D054-main-vi912",
+      "dayIndex": 54,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà → Ăn cơm.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D063-bonus-vi68",
+      "dayIndex": 63,
+      "slotType": "bonus",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D063-bonus-vi912",
+      "dayIndex": 63,
+      "slotType": "bonus",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D064-main-vi68",
+      "dayIndex": 64,
+      "slotType": "main",
+      "gameTypeId": "g08-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g08-t1_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra sự chú ý chi tiết của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời thám tử vui vẻ: \"Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 178
+      }
+    },
+    {
+      "id": "D067-bonus-vi68",
+      "dayIndex": 67,
+      "slotType": "bonus",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "wash_hands_twice",
+      "severity": "fix",
+      "problem": "Bước \"Rửa tay\" đứng trước \"Xoa xà phòng\" rồi lại \"Rửa sạch\" gây hiểu lầm là phải rửa tay hai lần, thuật ngữ chưa chuẩn xác cho bước làm ướt tay ban đầu.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch.",
+      "recommendedFix": "Sửa bước thứ 2 thành \"Làm ướt tay\" để chuỗi trở thành: Mở vòi → Làm ướt tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1195
+      }
+    },
+    {
+      "id": "D075-main-vi68",
+      "dayIndex": 75,
+      "slotType": "main",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D075-main-vi912",
+      "dayIndex": 75,
+      "slotType": "main",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D076-main-vi68",
+      "dayIndex": 76,
+      "slotType": "main",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"mặt trời\",\"then\":\"thức dậy\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là buổi sáng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D078-main-vi68",
+      "dayIndex": 78,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D081-main-vi912",
+      "dayIndex": 81,
+      "slotType": "main",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D082-bonus-vi68",
+      "dayIndex": 82,
+      "slotType": "bonus",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D082-bonus-vi912",
+      "dayIndex": 82,
+      "slotType": "bonus",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D085-bonus-vi68",
+      "dayIndex": 85,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-2): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 2 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D085-bonus-vi912",
+      "dayIndex": 85,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-2): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 2 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D088-bonus-vi68",
+      "dayIndex": 88,
+      "slotType": "bonus",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D089-bonus-vi68",
+      "dayIndex": 89,
+      "slotType": "bonus",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-02-days-029-091.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"mặt trời\",\"then\":\"thức dậy\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là buổi sáng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D096-main-vi68",
+      "dayIndex": 96,
+      "slotType": "main",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-3): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 3 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D096-main-vi912",
+      "dayIndex": 96,
+      "slotType": "main",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-3): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 3 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D098-main-vi912",
+      "dayIndex": 98,
+      "slotType": "main",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D102-main-vi912",
+      "dayIndex": 102,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "wash_hands_twice",
+      "severity": "fix",
+      "problem": "Bước \"Rửa tay\" đứng trước \"Xoa xà phòng\" rồi lại \"Rửa sạch\" gây hiểu lầm là phải rửa tay hai lần, thuật ngữ chưa chuẩn xác cho bước làm ướt tay ban đầu.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "recommendedFix": "Sửa bước thứ 2 thành \"Làm ướt tay\" để chuỗi trở thành: Mở vòi → Làm ướt tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1195
+      }
+    },
+    {
+      "id": "D106-bonus-vi68",
+      "dayIndex": 106,
+      "slotType": "bonus",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D112-bonus-vi68",
+      "dayIndex": 112,
+      "slotType": "bonus",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D126-main-vi912",
+      "dayIndex": 126,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà → Ăn cơm.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D130-bonus-vi912",
+      "dayIndex": 130,
+      "slotType": "bonus",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D136-bonus-vi68",
+      "dayIndex": 136,
+      "slotType": "bonus",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D136-main-vi68",
+      "dayIndex": 136,
+      "slotType": "main",
+      "gameTypeId": "g08-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g08-t1_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra sự chú ý chi tiết của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời thám tử vui vẻ: \"Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 178
+      }
+    },
+    {
+      "id": "D137-bonus-vi912",
+      "dayIndex": 137,
+      "slotType": "bonus",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"thức dậy\",\"then\":\"đánh răng\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là đánh răng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D153-main-vi68",
+      "dayIndex": 153,
+      "slotType": "main",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D154-bonus-vi912",
+      "dayIndex": 154,
+      "slotType": "bonus",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D161-bonus-vi912",
+      "dayIndex": 161,
+      "slotType": "bonus",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"thức dậy\",\"then\":\"đánh răng\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là đánh răng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D163-bonus-vi68",
+      "dayIndex": 163,
+      "slotType": "bonus",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "wash_hands_twice",
+      "severity": "fix",
+      "problem": "Bước \"Rửa tay\" đứng trước \"Xoa xà phòng\" rồi lại \"Rửa sạch\" gây hiểu lầm là phải rửa tay hai lần, thuật ngữ chưa chuẩn xác cho bước làm ướt tay ban đầu.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch.",
+      "recommendedFix": "Sửa bước thứ 2 thành \"Làm ướt tay\" để chuỗi trở thành: Mở vòi → Làm ướt tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1195
+      }
+    },
+    {
+      "id": "D163-bonus-vi912",
+      "dayIndex": 163,
+      "slotType": "bonus",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà → Ăn cơm.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D166-bonus-vi68",
+      "dayIndex": 166,
+      "slotType": "bonus",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D177-main-vi68",
+      "dayIndex": 177,
+      "slotType": "main",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D177-main-vi912",
+      "dayIndex": 177,
+      "slotType": "main",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D181-bonus-vi68",
+      "dayIndex": 181,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-4): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 4 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D181-bonus-vi912",
+      "dayIndex": 181,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-03-days-092-182.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-4): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 4 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D183-bonus-vi912",
+      "dayIndex": 183,
+      "slotType": "bonus",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D184-main-vi912",
+      "dayIndex": 184,
+      "slotType": "main",
+      "gameTypeId": "g08-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g08-t1_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra sự chú ý chi tiết của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời thám tử vui vẻ: \"Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 178
+      }
+    },
+    {
+      "id": "D189-main-vi68",
+      "dayIndex": 189,
+      "slotType": "main",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D190-bonus-vi912",
+      "dayIndex": 190,
+      "slotType": "bonus",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D192-main-vi68",
+      "dayIndex": 192,
+      "slotType": "main",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-4): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 4 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D192-main-vi912",
+      "dayIndex": 192,
+      "slotType": "main",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-3): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 3 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D196-main-vi912",
+      "dayIndex": 196,
+      "slotType": "main",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"thức dậy\",\"then\":\"đánh răng\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là đánh răng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D208-bonus-vi68",
+      "dayIndex": 208,
+      "slotType": "bonus",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D209-bonus-vi68",
+      "dayIndex": 209,
+      "slotType": "bonus",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là buổi sáng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D211-bonus-vi68",
+      "dayIndex": 211,
+      "slotType": "bonus",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "wash_hands_twice",
+      "severity": "fix",
+      "problem": "Bước \"Rửa tay\" đứng trước \"Xoa xà phòng\" rồi lại \"Rửa sạch\" gây hiểu lầm là phải rửa tay hai lần, thuật ngữ chưa chuẩn xác cho bước làm ướt tay ban đầu.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch.",
+      "recommendedFix": "Sửa bước thứ 2 thành \"Làm ướt tay\" để chuỗi trở thành: Mở vòi → Làm ướt tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1195
+      }
+    },
+    {
+      "id": "D213-main-vi68",
+      "dayIndex": 213,
+      "slotType": "main",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D218-main-vi68",
+      "dayIndex": 218,
+      "slotType": "main",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D220-main-vi68",
+      "dayIndex": 220,
+      "slotType": "main",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là buổi sáng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D221-bonus-vi68",
+      "dayIndex": 221,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g08-t1_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra sự chú ý chi tiết của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời thám tử vui vẻ: \"Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 178
+      }
+    },
+    {
+      "id": "D222-main-vi912",
+      "dayIndex": 222,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà → Ăn cơm.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D231-bonus-vi912",
+      "dayIndex": 231,
+      "slotType": "bonus",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D232-main-vi912",
+      "dayIndex": 232,
+      "slotType": "main",
+      "gameTypeId": "g08-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g08-t1_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra sự chú ý chi tiết của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời thám tử vui vẻ: \"Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 178
+      }
+    },
+    {
+      "id": "D233-bonus-vi68",
+      "dayIndex": 233,
+      "slotType": "bonus",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là buổi sáng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D238-bonus-vi912",
+      "dayIndex": 238,
+      "slotType": "bonus",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D246-main-vi68",
+      "dayIndex": 246,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "wash_hands_twice",
+      "severity": "fix",
+      "problem": "Bước \"Rửa tay\" đứng trước \"Xoa xà phòng\" rồi lại \"Rửa sạch\" gây hiểu lầm là phải rửa tay hai lần, thuật ngữ chưa chuẩn xác cho bước làm ướt tay ban đầu.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch.",
+      "recommendedFix": "Sửa bước thứ 2 thành \"Làm ướt tay\" để chuỗi trở thành: Mở vòi → Làm ướt tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1195
+      }
+    },
+    {
+      "id": "D246-main-vi912",
+      "dayIndex": 246,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà → Ăn cơm.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D255-bonus-vi912",
+      "dayIndex": 255,
+      "slotType": "bonus",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D259-bonus-vi68",
+      "dayIndex": 259,
+      "slotType": "bonus",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D268-main-vi68",
+      "dayIndex": 268,
+      "slotType": "main",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"mặt trời\",\"then\":\"thức dậy\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là buổi sáng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D269-bonus-vi68",
+      "dayIndex": 269,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g08-t1_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra sự chú ý chi tiết của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời thám tử vui vẻ: \"Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 178
+      }
+    },
+    {
+      "id": "D273-main-vi912",
+      "dayIndex": 273,
+      "slotType": "main",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-04-days-183-273.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D277-bonus-vi68",
+      "dayIndex": 277,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-2): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 2 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D277-bonus-vi912",
+      "dayIndex": 277,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-5): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 5 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D281-bonus-vi68",
+      "dayIndex": 281,
+      "slotType": "bonus",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"mặt trời\",\"then\":\"thức dậy\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là buổi sáng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D283-bonus-vi912",
+      "dayIndex": 283,
+      "slotType": "bonus",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "rice_before_soup",
+      "severity": "fix",
+      "problem": "Chuỗi hành động bắt buộc \"Xới cơm\" phải đứng trước \"Múc canh\", trong khi ngoài đời thực múc canh trước hay xới cơm trước đều hoàn toàn đúng và phổ biến.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà → Ăn cơm.",
+      "recommendedFix": "Thay thế kịch bản bằng chuỗi hành động có quan hệ nhân quả đơn tuyến tuyệt đối (ví dụ: Lấy bát → Xới cơm → Mời cả nhà → Ăn cơm → Dọn bát).",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1198
+      }
+    },
+    {
+      "id": "D288-main-vi68",
+      "dayIndex": 288,
+      "slotType": "main",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-2): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 2 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D288-main-vi912",
+      "dayIndex": 288,
+      "slotType": "main",
+      "gameTypeId": "g08-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g08_t3_explanation_mismatch",
+      "subCategory": "wrong_direction_vs_crosswalk",
+      "severity": "fix",
+      "problem": "Nội dung cảnh lỗi là chạy ra ngoài vạch kẻ an toàn, nhưng lời giải thích lại gán nhãn \"đi sai hướng\" để đối chiếu với luật \"đi đúng vạch\", gây sai lệch ngữ nghĩa.",
+      "actualEvidence": "Cảnh lỗi (scene-3): \"Bạn chạy băng qua bên ngoài vạch kẻ an toàn\"; Lời giải thích: \"Tình huống 3 chưa hợp lý vì có đặc điểm \"đi sai hướng\", trong khi quy tắc chuẩn yêu cầu \"đi đúng vạch\".\"",
+      "recommendedFix": "Sửa giá trị trait bước khi index === 3 thành \"bên ngoài vạch\" (thay vì \"đi sai hướng\") để giải thích khớp với cảnh: \"có đặc điểm bên ngoài vạch, trong khi quy tắc chuẩn yêu cầu đi đúng vạch\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1715
+      }
+    },
+    {
+      "id": "D294-main-vi68",
+      "dayIndex": 294,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "wash_hands_twice",
+      "severity": "fix",
+      "problem": "Bước \"Rửa tay\" đứng trước \"Xoa xà phòng\" rồi lại \"Rửa sạch\" gây hiểu lầm là phải rửa tay hai lần, thuật ngữ chưa chuẩn xác cho bước làm ướt tay ban đầu.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch.",
+      "recommendedFix": "Sửa bước thứ 2 thành \"Làm ướt tay\" để chuỗi trở thành: Mở vòi → Làm ướt tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1195
+      }
+    },
+    {
+      "id": "D294-main-vi912",
+      "dayIndex": 294,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "wash_hands_twice",
+      "severity": "fix",
+      "problem": "Bước \"Rửa tay\" đứng trước \"Xoa xà phòng\" rồi lại \"Rửa sạch\" gây hiểu lầm là phải rửa tay hai lần, thuật ngữ chưa chuẩn xác cho bước làm ướt tay ban đầu.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "recommendedFix": "Sửa bước thứ 2 thành \"Làm ướt tay\" để chuỗi trở thành: Mở vòi → Làm ướt tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1195
+      }
+    },
+    {
+      "id": "D297-main-vi912",
+      "dayIndex": 297,
+      "slotType": "main",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D304-bonus-vi68",
+      "dayIndex": 304,
+      "slotType": "bonus",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D304-bonus-vi912",
+      "dayIndex": 304,
+      "slotType": "bonus",
+      "gameTypeId": "g03-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g03-t1_ai_nho_nhanh",
+      "severity": "fix",
+      "problem": "Lời mời tạo áp lực thi đua và so sánh giữa các trẻ (\"xem ai nhớ nhanh và chính xác hơn nào!\"), vi phạm trực tiếp nguyên tắc không thi đua, không áp lực trong PRD.",
+      "actualEvidence": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "recommendedFix": "Thay thế bằng lời mời nhẹ nhàng, thư giãn: \"Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 73
+      }
+    },
+    {
+      "id": "D305-bonus-vi912",
+      "dayIndex": 305,
+      "slotType": "bonus",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"thức dậy\",\"then\":\"đánh răng\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là đánh răng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D314-main-vi912",
+      "dayIndex": 314,
+      "slotType": "main",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D317-bonus-vi68",
+      "dayIndex": 317,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g08-t1_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra sự chú ý chi tiết của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời thám tử vui vẻ: \"Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 178
+      }
+    },
+    {
+      "id": "D318-main-vi68",
+      "dayIndex": 318,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "wash_hands_twice",
+      "severity": "fix",
+      "problem": "Bước \"Rửa tay\" đứng trước \"Xoa xà phòng\" rồi lại \"Rửa sạch\" gây hiểu lầm là phải rửa tay hai lần, thuật ngữ chưa chuẩn xác cho bước làm ướt tay ban đầu.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch.",
+      "recommendedFix": "Sửa bước thứ 2 thành \"Làm ướt tay\" để chuỗi trở thành: Mở vòi → Làm ướt tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1195
+      }
+    },
+    {
+      "id": "D318-main-vi912",
+      "dayIndex": 318,
+      "slotType": "main",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "wash_hands_twice",
+      "severity": "fix",
+      "problem": "Bước \"Rửa tay\" đứng trước \"Xoa xà phòng\" rồi lại \"Rửa sạch\" gây hiểu lầm là phải rửa tay hai lần, thuật ngữ chưa chuẩn xác cho bước làm ướt tay ban đầu.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "recommendedFix": "Sửa bước thứ 2 thành \"Làm ướt tay\" để chuỗi trở thành: Mở vòi → Làm ướt tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1195
+      }
+    },
+    {
+      "id": "D327-bonus-vi912",
+      "dayIndex": 327,
+      "slotType": "bonus",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D331-bonus-vi68",
+      "dayIndex": 331,
+      "slotType": "bonus",
+      "gameTypeId": "g06-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g06_t2_ambiguous_sequencing",
+      "subCategory": "wash_hands_twice",
+      "severity": "fix",
+      "problem": "Bước \"Rửa tay\" đứng trước \"Xoa xà phòng\" rồi lại \"Rửa sạch\" gây hiểu lầm là phải rửa tay hai lần, thuật ngữ chưa chuẩn xác cho bước làm ướt tay ban đầu.",
+      "actualEvidence": "Thứ tự đúng của các bước là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch.",
+      "recommendedFix": "Sửa bước thứ 2 thành \"Làm ướt tay\" để chuỗi trở thành: Mở vòi → Làm ướt tay → Xoa xà phòng → Rửa sạch → Lau khô.",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 1195
+      }
+    },
+    {
+      "id": "D340-main-vi68",
+      "dayIndex": 340,
+      "slotType": "main",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là buổi sáng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    },
+    {
+      "id": "D341-bonus-vi68",
+      "dayIndex": 341,
+      "slotType": "bonus",
+      "gameTypeId": "g08-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g08-t1_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra sự chú ý chi tiết của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời thám tử vui vẻ: \"Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 178
+      }
+    },
+    {
+      "id": "D345-main-vi68",
+      "dayIndex": 345,
+      "slotType": "main",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D346-bonus-vi912",
+      "dayIndex": 346,
+      "slotType": "bonus",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D351-bonus-vi912",
+      "dayIndex": 351,
+      "slotType": "bonus",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D357-main-vi912",
+      "dayIndex": 357,
+      "slotType": "main",
+      "gameTypeId": "g05-t3",
+      "ageTrack": "age_9_12",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g05-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng chấm điểm/kiểm tra năng lực (\"sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời vui vẻ, đồng hành: \"Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 129
+      }
+    },
+    {
+      "id": "D358-bonus-vi68",
+      "dayIndex": 358,
+      "slotType": "bonus",
+      "gameTypeId": "g01-t3",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g01-t3_kiem_tra",
+      "severity": "fix",
+      "problem": "Lời mời mang giọng kiểm tra năng lực (\"sẽ kiểm tra khả năng suy đoán của bạn đấy!\"), vi phạm nguyên tắc non-punitive trong PRD.",
+      "actualEvidence": "Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!",
+      "recommendedFix": "Thay thế bằng lời mời cùng khám phá: \"Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 46
+      }
+    },
+    {
+      "id": "D362-main-vi68",
+      "dayIndex": 362,
+      "slotType": "main",
+      "gameTypeId": "g02-t1",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "pressure_comparison_language",
+      "subCategory": "g02-t1_doi_hoi",
+      "severity": "fix",
+      "problem": "Lời mời dùng cụm từ gây áp lực \"đòi hỏi bạn phải\", vi phạm nguyên tắc non-punitive và tinh thần thân thiện bạn bè trong PRD.",
+      "actualEvidence": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "recommendedFix": "Thay thế bằng lời mời tích cực, khích lệ: \"Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!\"",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/content/copy.ts",
+        "line": 52
+      }
+    },
+    {
+      "id": "D364-main-vi68",
+      "dayIndex": 364,
+      "slotType": "main",
+      "gameTypeId": "g04-t2",
+      "ageTrack": "age_6_8",
+      "batchFile": "batch-05-days-274-365.json",
+      "category": "g04_t2_false_if_then",
+      "subCategory": "sun_morning_rule",
+      "severity": "fix",
+      "problem": "Luật \"Nếu có mặt trời thì sẽ có buổi sáng\" mâu thuẫn với thực tế đời sống (mặt trời chiếu cả buổi chiều), gây bối rối cho trẻ khi tư duy logic nhân quả.",
+      "actualEvidence": "Luật trong boardData: [{\"if\":\"mặt trời\",\"then\":\"buổi sáng\"},{\"if\":\"buổi sáng\",\"then\":\"thức dậy\"},{\"if\":\"mặt trời\",\"then\":\"thức dậy\"}]; Tiền đề: [\"mặt trời\"]; Lời giải thích: \"Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là buổi sáng.\"",
+      "recommendedFix": "Đổi mắt xích đầu tiên trong chuỗi sang hiện tượng đặc thù của buổi sáng như \"trời hửng sáng\" hoặc \"bình minh\" thay vì \"mặt trời\".",
+      "generatorSource": {
+        "file": "src/lib/thinking-games/mechanics/remaining.ts",
+        "line": 791
+      }
+    }
+  ]
+}

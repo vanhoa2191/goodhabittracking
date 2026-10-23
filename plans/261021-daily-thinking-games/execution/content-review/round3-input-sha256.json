@@ -1,0 +1,31 @@
+{
+  "reportType": "opencode-r3-integration-input-sha256",
+  "generatedFor": "OpenCode round-3 integration (task_77752a22ad9c / ctx_ee8ab6e368d6)",
+  "algorithm": "sha256",
+  "note": "Candidate hashes captured after two consecutive deterministic regenerations; source/test hashes are the integrated round-3 files. Audits are checker outputs, included for traceability.",
+  "candidates": {
+    "content/thinking-games/candidates/365-v2/batch-01-days-001-028.json": "445fcac504000e900ae50d76f32d578115aa093fca86c04b0ed84a7cf0ab18eb",
+    "content/thinking-games/candidates/365-v2/batch-02-days-029-091.json": "7ae659233845433705ebfee1a5dd4edae418d2e35391a9e1dc2c8942e7564a2d",
+    "content/thinking-games/candidates/365-v2/batch-03-days-092-182.json": "a19183e272175171ce37fb9621c5c33e98ccb052a18288dd8fd61f096688edf3",
+    "content/thinking-games/candidates/365-v2/batch-04-days-183-273.json": "ca0db01ddbd0cd13ab5ddd8f3b6d976437d0f451ca653c3c611a04ff59a81395",
+    "content/thinking-games/candidates/365-v2/batch-05-days-274-365.json": "7e1161da56afe152afdd85cc4ff78a816dbeffb209d1e060e337cf6daefcc1c2",
+    "content/thinking-games/candidates/365-v2/candidate-manifest-v2.json": "9f5df6ea97b9ac10bd493d84025e7cf3f825df03361708bd5544ab604271fd7c",
+    "content/thinking-games/candidates/365-v2/candidate-meta-v2.json": "5d0f9b788ef147dac03f0f8c2da499cf981c438769b63e6e265ca392447594ae"
+  },
+  "source": {
+    "src/lib/thinking-games/content/copy.ts": "d3c7a6a28a9a558e1a9cb21c88e0d99058650f34e07306fa965596fe8d130143",
+    "src/lib/thinking-games/mechanics/remaining.ts": "5923f5ed58c9293f840c61a30a797548f4407184fcf139a248eff274cda15ea6"
+  },
+  "tests": {
+    "tests/unit/thinking-games/round3-copy.test.ts": "ef9b12e3fbca733a5f60ba52bf2a4d370eddbb9df5978001f2f7be9c28848944",
+    "tests/unit/thinking-games/round3-mechanics.test.ts": "378f39bbc9224f1ec1663cb2dc76ee2fb765d3c7d7bca277a5345628eee34990"
+  },
+  "auditArtifacts": {
+    "plans/261021-daily-thinking-games/execution/content-candidate-audits/p08-365-v2-batch-01.json": "ab8b00c7808dc3853e0af0f7d2a3d08dd6c11d8467fc1c38a7d1c51b86414624",
+    "plans/261021-daily-thinking-games/execution/content-candidate-audits/p08-365-v2-batch-02.json": "a456e8f17cbcd1510d3a5d3010d53d585f48f8bb294016f25d70d9163d726e0d",
+    "plans/261021-daily-thinking-games/execution/content-candidate-audits/p08-365-v2-batch-03.json": "9f8af014f3dfaae60f831a0f65e2a2046c3d205218de8509db5a8b5ca8d41e23",
+    "plans/261021-daily-thinking-games/execution/content-candidate-audits/p08-365-v2-batch-04.json": "86eed9d8844278d5ba1b4c77b039bb1d3a8a8b45dbdfa1a8d891ddf0ec223475",
+    "plans/261021-daily-thinking-games/execution/content-candidate-audits/p08-365-v2-batch-05.json": "698279eab7cbe7f7174c1e5d1d64286774d45f8453c30a59e28cd7d16b37493a",
+    "plans/261021-daily-thinking-games/execution/content-candidate-audits/p08-365-v2-catalog.json": "77f837bf1cda1d8f84ab7332fe5002e181f1f08085cc36bb3c82a09cf5bee36e"
+  }
+}

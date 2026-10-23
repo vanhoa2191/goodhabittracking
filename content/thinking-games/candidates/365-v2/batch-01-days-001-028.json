@@ -8,7 +8,7 @@
   "contentVersion": "p08-candidates-365-v2",
   "generatedAt": "2026-10-22T00:00:00.000Z",
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-ab1e420ff2a665d9",
+  "engineVersion": "engine-f649e4224478fc18",
   "seedPolicy": "contentVersion|slotId|ageTrack|locale|gameTypeId|ruleVariant",
   "items": [
     {
@@ -57,7 +57,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -110,7 +110,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -165,7 +165,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -221,7 +221,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -287,7 +287,7 @@
       "validSolutionPredicate": "reasoning-elimination-v1",
       "hints": [
         "Đọc manh mối đầu tiên thật kỹ.",
-        "Bạn nào không giống manh mối thì úp xuống nhé."
+        "Bạn nào không khớp manh mối thì bấm Gạch bớt nhé."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -299,7 +299,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -374,7 +374,7 @@
       "validSolutionPredicate": "reasoning-elimination-v1",
       "hints": [
         "Đọc manh mối đầu tiên thật kỹ.",
-        "Bạn nào không giống manh mối thì úp xuống nhé."
+        "Bạn nào không khớp manh mối thì bấm Gạch bớt nhé."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -386,7 +386,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -482,7 +482,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -587,7 +587,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -694,7 +694,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -712,7 +712,7 @@
       "ageTrack": "age_6_8",
       "locale": "vi",
       "title": "Hạt giống: Chiếc bóng bí ẩn",
-      "invitation": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "invitation": "Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!",
       "tutorial": "So từng ô của bóng với hình mẫu để tìm chiếc bóng khớp nhất.",
       "explanation": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình C.",
       "boardData": {
@@ -834,7 +834,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1023,7 +1023,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1236,7 +1236,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1295,7 +1295,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1358,7 +1358,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1417,7 +1417,7 @@
       "solution": 9,
       "validSolutionPredicate": "quantity-balance-v1",
       "hints": [
-        "Gọi quả còn thiếu là ẩn số rồi viết: tổng đĩa này bằng tổng đĩa kia.",
+        "Tìm số còn thiếu để tổng hai đĩa bằng nhau.",
         "Số cần tìm là hiệu giữa hai tổng đã biết."
       ],
       "praiseKeys": {
@@ -1430,7 +1430,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1490,7 +1490,7 @@
       "solution": 2,
       "validSolutionPredicate": "quantity-balance-v1",
       "hints": [
-        "Gọi quả còn thiếu là ẩn số rồi viết: tổng đĩa này bằng tổng đĩa kia.",
+        "Tìm số còn thiếu để tổng hai đĩa bằng nhau.",
         "Số cần tìm là hiệu giữa hai tổng đã biết."
       ],
       "praiseKeys": {
@@ -1503,7 +1503,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1558,7 +1558,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1616,7 +1616,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1678,7 +1678,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1743,7 +1743,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1832,7 +1832,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1926,7 +1926,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2048,7 +2048,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2186,7 +2186,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2205,8 +2205,8 @@
       "locale": "vi",
       "title": "Nếu thì — Hạt giống",
       "invitation": "Chào bạn, thử thách suy luận Nếu - Thì hôm nay rất thú vị, cùng thử sức nào!",
-      "tutorial": "Dùng gợi ý có sẵn và luật dẫn đường để tìm ra điều chắc chắn xảy ra.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là khát nước.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Dùng gợi ý có sẵn và luật dẫn đường để tìm ra điều chắc chắn xảy ra.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"nắng gắt\" → \"khát nước\". Từ thẻ \"nắng gắt\", áp dụng luật để suy ra thẻ \"khát nước\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -2240,7 +2240,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2259,8 +2259,8 @@
       "locale": "vi",
       "title": "Nếu thì — Hạt giống",
       "invitation": "Từ các điều đã biết và luật Nếu - Thì, bạn suy luận cùng mình nhé!",
-      "tutorial": "Bạn xem những điều đã biết và luật Nếu - Thì để tìm kết luận đúng nhé.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là mưa.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Bạn xem những điều đã biết và luật Nếu - Thì để tìm kết luận đúng nhé.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"mây\" → \"mưa\"; \"mưa\" → \"áo mưa\". Từ thẻ \"mây\", áp dụng luật để suy ra thẻ \"mưa\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -2299,7 +2299,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2318,8 +2318,8 @@
       "locale": "vi",
       "title": "Nối các luật — Hạt giống",
       "invitation": "Từ các điều đã biết và luật Nếu - Thì, bạn suy luận cùng mình nhé!",
-      "tutorial": "Kiểm tra từng bước suy nghĩ và chọn kết luận chắc chắn đúng, không thể sai.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là mát mẻ.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Kiểm tra từng bước suy nghĩ và chọn kết luận chắc chắn đúng, không thể sai.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"nắng gắt\" → \"khát nước\"; \"khát nước\" → \"uống nước\"; \"uống nước\" → \"mát mẻ\". Từ thẻ \"nắng gắt\", áp dụng luật để suy ra thẻ \"mát mẻ\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -2363,7 +2363,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2382,8 +2382,8 @@
       "locale": "vi",
       "title": "Nếu thì — Hạt giống",
       "invitation": "Cùng mình thử tài suy luận logic với những điều kiện Nếu - Thì ngày hôm nay!",
-      "tutorial": "Nối từng câu \"nếu ... thì ...\" với nhau, đi từ điều đã biết đến kết quả cuối cùng.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là quả ngọt.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Nối từng câu \"nếu ... thì ...\" với nhau, đi từ điều đã biết đến kết quả cuối cùng.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"hạt mầm\" → \"cây non\"; \"cây non\" → \"nụ hoa\"; \"nụ hoa\" → \"bông hoa\"; \"bông hoa\" → \"quả ngọt\". Từ thẻ \"hạt mầm\", áp dụng luật để suy ra thẻ \"quả ngọt\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -2432,7 +2432,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2502,7 +2502,7 @@
       "validSolutionPredicate": "flexibility-classify-v1",
       "hints": [
         "Đọc luật mới ở phía trên thật kỹ.",
-        "Chỉ chọn những hình có hình đúng như luật."
+        "Chỉ chọn những hình có hình dạng đúng như luật."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -2514,7 +2514,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2599,7 +2599,7 @@
       "validSolutionPredicate": "flexibility-classify-v1",
       "hints": [
         "Đọc luật mới ở phía trên thật kỹ.",
-        "Chỉ chọn những hình có hình đúng như luật."
+        "Chỉ chọn những hình có hình dạng đúng như luật."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -2611,7 +2611,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2709,7 +2709,7 @@
       "validSolutionPredicate": "flexibility-classify-v1",
       "hints": [
         "Quên luật cũ đi và dùng luật mới để xét từng hình.",
-        "Kiểm tra từng hình theo đặc điểm hình; hình nào đạt thì chọn, đừng bỏ sót hình nào."
+        "Kiểm tra từng hình theo đặc điểm hình dạng; hình nào đạt thì chọn, đừng bỏ sót hình nào."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -2721,7 +2721,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2828,7 +2828,7 @@
       "validSolutionPredicate": "flexibility-classify-v1",
       "hints": [
         "Quên luật cũ đi và dùng luật mới để xét từng hình.",
-        "Kiểm tra từng hình theo đặc điểm hình; hình nào đạt thì chọn, đừng bỏ sót hình nào."
+        "Kiểm tra từng hình theo đặc điểm hình dạng; hình nào đạt thì chọn, đừng bỏ sót hình nào."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -2840,7 +2840,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2857,7 +2857,7 @@
       "ruleVariantId": "g05-t2:chia đều không dư",
       "ageTrack": "age_3_5",
       "locale": "vi",
-      "title": "Hạt giống: Được mấy nhóm?",
+      "title": "Cùng chia thành nhóm · Hạt giống",
       "invitation": "Cùng mình rèn luyện phép chia qua việc phân chia các nhóm thật đều nào!",
       "tutorial": "Bạn chia đều rồi đếm xem được bao nhiêu nhóm hoặc còn dư mấy phần nhé.",
       "explanation": "Chia đều thành các nhóm 2, ta được đúng 3 nhóm.",
@@ -2888,7 +2888,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2905,7 +2905,7 @@
       "ruleVariantId": "g05-t2:chia đều không dư",
       "ageTrack": "age_6_8",
       "locale": "vi",
-      "title": "Hạt giống: Được mấy nhóm?",
+      "title": "Cùng chia thành nhóm · Hạt giống",
       "invitation": "Có rất nhiều món quà cần chia thành từng nhóm đều nhau, bạn giúp mình nhé!",
       "tutorial": "Bạn chia đều rồi đếm xem được bao nhiêu nhóm hoặc còn dư mấy phần nhé.",
       "explanation": "Chia đều thành các nhóm 2, ta được đúng 4 nhóm.",
@@ -2937,7 +2937,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2987,7 +2987,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3004,7 +3004,7 @@
       "ruleVariantId": "g05-t2:chia đều không dư",
       "ageTrack": "age_13_plus",
       "locale": "vi",
-      "title": "Hạt giống: Được mấy nhóm?",
+      "title": "Cùng chia thành nhóm · Hạt giống",
       "invitation": "Thử thách chia nhóm hôm nay rất vui và hữu ích, bạn cùng mình làm nhé!",
       "tutorial": "Tính xem cần thêm bao nhiêu nữa thì có thêm được một nhóm đầy đủ.",
       "explanation": "Chia đều thành các nhóm 3, ta được đúng 9 nhóm.",
@@ -3038,7 +3038,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3153,7 +3153,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3276,7 +3276,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3429,7 +3429,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3616,7 +3616,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3635,8 +3635,8 @@
       "locale": "vi",
       "title": "Sắp xếp các bước — Hạt giống",
       "invitation": "Cùng mình lập trình thứ tự các bước hành động sao cho thật hợp lý nào bạn!",
-      "tutorial": "Xem việc nào phải làm trước, việc nào làm sau rồi xếp lại cho đúng.",
-      "explanation": "Thứ tự đúng của các bước là: Pha màu → Nhúng cọ → Vẽ tranh.",
+      "tutorial": "Luật riêng của ván này (→ là làm trước): Pha màu → Nhúng cọ; Nhúng cọ → Vẽ tranh. Mọi thứ tự giữ đủ luật đều được.",
+      "explanation": "Luật riêng của ván này (→ là làm trước): Pha màu → Nhúng cọ; Nhúng cọ → Vẽ tranh. Một thứ tự theo luật của ván này là: Pha màu → Nhúng cọ → Vẽ tranh.",
       "boardData": {
         "kind": "planning-command-order",
         "commands": [
@@ -3672,7 +3672,7 @@
       "validSolutionPredicate": "planning-command-order-v1",
       "hints": [
         "Việc nào phải làm trước tiên?",
-        "Nghĩ xem ở nhà bạn làm việc đó thế nào nhé."
+        "Nhìn luật của ván này: việc nào cần xong trước việc tiếp theo?"
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -3684,7 +3684,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3703,8 +3703,8 @@
       "locale": "vi",
       "title": "Sắp xếp các bước — Hạt giống",
       "invitation": "Hãy sắp xếp các câu lệnh để mọi việc diễn ra tuần tự từ đầu đến cuối nha!",
-      "tutorial": "Xem việc nào phải làm trước, việc nào làm sau rồi xếp lại cho đúng.",
-      "explanation": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà.",
+      "tutorial": "Luật riêng của ván này (→ là làm trước): Lấy bát → Xới cơm; Xới cơm → Múc canh; Múc canh → Mời cả nhà. Mọi thứ tự giữ đủ luật đều được.",
+      "explanation": "Luật riêng của ván này (→ là làm trước): Lấy bát → Xới cơm; Xới cơm → Múc canh; Múc canh → Mời cả nhà. Một thứ tự theo luật của ván này là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà.",
       "boardData": {
         "kind": "planning-command-order",
         "commands": [
@@ -3749,7 +3749,7 @@
       "validSolutionPredicate": "planning-command-order-v1",
       "hints": [
         "Việc nào phải làm trước tiên?",
-        "Nghĩ xem ở nhà bạn làm việc đó thế nào nhé."
+        "Nhìn luật của ván này: việc nào cần xong trước việc tiếp theo?"
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -3761,7 +3761,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3780,8 +3780,8 @@
       "locale": "vi",
       "title": "Sắp xếp các bước — Hạt giống",
       "invitation": "Cùng mình lập trình thứ tự các bước hành động sao cho thật hợp lý nào bạn!",
-      "tutorial": "Xếp các lệnh theo đúng thứ tự: việc nào phải làm trước, việc nào làm sau.",
-      "explanation": "Thứ tự đúng của các bước là: Bật đèn → Ngồi xuống → Mở sách → Đọc bài → Gấp sách.",
+      "tutorial": "Luật riêng của ván này (→ là làm trước): Bật đèn → Ngồi xuống; Ngồi xuống → Mở sách; Mở sách → Đọc bài; Đọc bài → Gấp sách. Mọi thứ tự giữ đủ luật đều được.",
+      "explanation": "Luật riêng của ván này (→ là làm trước): Bật đèn → Ngồi xuống; Ngồi xuống → Mở sách; Mở sách → Đọc bài; Đọc bài → Gấp sách. Một thứ tự theo luật của ván này là: Bật đèn → Ngồi xuống → Mở sách → Đọc bài → Gấp sách.",
       "boardData": {
         "kind": "planning-command-order",
         "commands": [
@@ -3847,7 +3847,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3866,8 +3866,8 @@
       "locale": "vi",
       "title": "Xếp lệnh — Hạt giống",
       "invitation": "Chào bạn, bạn hãy giúp mình sắp xếp các bước công việc theo đúng trình tự nhé!",
-      "tutorial": "Xem bước nào cần xong trước thì bước khác mới làm được, rồi xếp thành thứ tự đúng.",
-      "explanation": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà → Ăn cơm.",
+      "tutorial": "Luật riêng của ván này (→ là làm trước): Lấy bát → Xới cơm; Xới cơm → Múc canh; Múc canh → Mời cả nhà; Mời cả nhà → Ăn cơm; Lấy bát → Ăn cơm. Mọi thứ tự giữ đủ luật đều được.",
+      "explanation": "Luật riêng của ván này (→ là làm trước): Lấy bát → Xới cơm; Xới cơm → Múc canh; Múc canh → Mời cả nhà; Mời cả nhà → Ăn cơm; Lấy bát → Ăn cơm. Một thứ tự theo luật của ván này là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà → Ăn cơm.",
       "boardData": {
         "kind": "planning-command-order",
         "commands": [
@@ -3937,7 +3937,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3972,7 +3972,7 @@
       "validSolutionPredicate": "rule-error-v1",
       "hints": [
         "Hai hình phải thay nhau xuất hiện đều đặn.",
-        "Tìm chỗ hai hình giống nhau đứng liền nhau."
+        "So từng vị trí với nhịp hai hình lúc đầu, tìm hình không theo nhịp nhé."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -3984,7 +3984,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4020,7 +4020,7 @@
       "validSolutionPredicate": "rule-error-v1",
       "hints": [
         "Hai hình phải thay nhau xuất hiện đều đặn.",
-        "Tìm chỗ hai hình giống nhau đứng liền nhau."
+        "So từng vị trí với nhịp hai hình lúc đầu, tìm hình không theo nhịp nhé."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -4032,7 +4032,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4081,7 +4081,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4131,7 +4131,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4188,7 +4188,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4245,7 +4245,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4302,7 +4302,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4359,7 +4359,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4376,10 +4376,10 @@
       "ruleVariantId": "g02-t2:xoay một phần tư vòng",
       "ageTrack": "age_3_5",
       "locale": "vi",
-      "title": "Hạt giống · Xoay một vòng",
+      "title": "Hạt giống · Hình qua phép biến đổi",
       "invitation": "Cùng mình tưởng tượng hình mẫu khi xoay sang hướng mới sẽ ra hình nào nhé!",
       "tutorial": "Bạn tưởng tượng hình mẫu khi xoay và chọn hình đúng sau khi xoay nhé.",
-      "explanation": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình B.",
+      "explanation": "Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình B.",
       "boardData": {
         "kind": "spatial-rotation",
         "shape": [
@@ -4467,7 +4467,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4484,10 +4484,10 @@
       "ruleVariantId": "g02-t2:xoay một phần tư vòng",
       "ageTrack": "age_6_8",
       "locale": "vi",
-      "title": "Hạt giống · Xoay một vòng",
+      "title": "Hạt giống · Hình qua phép biến đổi",
       "invitation": "Cùng mình tưởng tượng hình mẫu khi xoay sang hướng mới sẽ ra hình nào nhé!",
       "tutorial": "Bạn tưởng tượng hình mẫu khi xoay và chọn hình đúng sau khi xoay nhé.",
-      "explanation": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình C.",
+      "explanation": "Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình C.",
       "boardData": {
         "kind": "spatial-rotation",
         "shape": [
@@ -4612,7 +4612,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4629,10 +4629,10 @@
       "ruleVariantId": "g02-t2:xoay một phần tư vòng",
       "ageTrack": "age_9_12",
       "locale": "vi",
-      "title": "Hạt giống: Tưởng tượng xoay hình",
+      "title": "Hạt giống: Tưởng tượng hình mới",
       "invitation": "Cùng mình tưởng tượng hình mẫu khi xoay sang hướng mới sẽ ra hình nào nhé!",
       "tutorial": "Tưởng tượng từng ô của hình mẫu chạy sang chỗ mới khi cả hình xoay.",
-      "explanation": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình D.",
+      "explanation": "Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình D.",
       "boardData": {
         "kind": "spatial-rotation",
         "shape": [
@@ -4802,7 +4802,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4819,10 +4819,10 @@
       "ruleVariantId": "g02-t2:xoay một phần tư vòng",
       "ageTrack": "age_13_plus",
       "locale": "vi",
-      "title": "Hạt giống · Xoay xong trông ra sao?",
+      "title": "Hạt giống · Hình mới trông ra sao?",
       "invitation": "Cùng mình tưởng tượng hình mẫu khi xoay sang hướng mới sẽ ra hình nào nhé!",
       "tutorial": "Xem hình mẫu xoay theo kiểu nào, rồi tìm hình trông giống như vậy sau khi xoay.",
-      "explanation": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình B.",
+      "explanation": "Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình B.",
       "boardData": {
         "kind": "spatial-rotation",
         "shape": [
@@ -5016,7 +5016,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5108,7 +5108,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5216,7 +5216,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5335,7 +5335,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5458,7 +5458,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5536,7 +5536,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5626,7 +5626,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5728,7 +5728,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5842,7 +5842,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5899,7 +5899,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5960,7 +5960,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6022,7 +6022,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6089,7 +6089,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6181,7 +6181,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6281,7 +6281,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6398,7 +6398,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6520,7 +6520,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6537,7 +6537,7 @@
       "ruleVariantId": "g02-t3:gương dọc",
       "ageTrack": "age_3_5",
       "locale": "vi",
-      "title": "Hoàn thành đối xứng — Vườn hoa",
+      "title": "Khám phá đối xứng — Vườn hoa",
       "invitation": "Cùng mình tìm ô còn thiếu để bức tranh trở nên cân xứng hoàn hảo nhé!",
       "tutorial": "Nhìn hai bên trục gương xem ô nào cần điền để hai bên giống hệt nhau.",
       "explanation": "Ô cần chọn nằm ở hàng 1, cột 3 để hình hoàn toàn đối xứng.",
@@ -6596,7 +6596,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6613,7 +6613,7 @@
       "ruleVariantId": "g02-t3:gương dọc",
       "ageTrack": "age_6_8",
       "locale": "vi",
-      "title": "Hoàn thành đối xứng — Vườn hoa",
+      "title": "Khám phá đối xứng — Vườn hoa",
       "invitation": "Hai bên gương đang chờ bạn hoàn thành để đối xứng thật đẹp đấy!",
       "tutorial": "So từng cặp ô đối xứng qua đường kẻ giữa để tìm đúng vị trí.",
       "explanation": "Ô cần chọn nằm ở hàng 3, cột 2 để hình hoàn toàn đối xứng.",
@@ -6681,7 +6681,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6781,7 +6781,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6798,7 +6798,7 @@
       "ruleVariantId": "g02-t3:gương dọc",
       "ageTrack": "age_13_plus",
       "locale": "vi",
-      "title": "Vườn hoa: Ô nào làm tranh cân xứng?",
+      "title": "Vườn hoa: Hai bên tranh thế nào?",
       "invitation": "Hai bên gương đang chờ bạn hoàn thành để đối xứng thật đẹp đấy!",
       "tutorial": "So hai nửa của lưới xem chỗ nào chưa cân đối, rồi hoàn thành hình đối xứng.",
       "explanation": "Ô cần chọn nằm ở hàng 3, cột 2 để hình hoàn toàn đối xứng.",
@@ -6885,7 +6885,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6950,7 +6950,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7020,7 +7020,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7081,8 +7081,8 @@
       ],
       "validSolutionPredicate": "quantity-target-v1",
       "hints": [
-        "Bắt đầu từ các số lớn để cần ít món nhất.",
-        "Khi đã có một cách đạt 9, thử thay hai món nhỏ bằng một món lớn."
+        "Thử từng món, rồi từng cặp trước khi thử thêm món.",
+        "So các cách có tổng đúng 9 để chọn cách dùng ít món nhất."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -7094,7 +7094,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7161,8 +7161,8 @@
       ],
       "validSolutionPredicate": "quantity-target-v1",
       "hints": [
-        "Bắt đầu từ các số lớn để cần ít món nhất.",
-        "Khi đã có một cách đạt 10, thử thay hai món nhỏ bằng một món lớn."
+        "Thử từng món, rồi từng cặp trước khi thử thêm món.",
+        "So các cách có tổng đúng 10 để chọn cách dùng ít món nhất."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -7174,7 +7174,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7231,7 +7231,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7291,7 +7291,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7354,7 +7354,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7418,7 +7418,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7497,7 +7497,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7577,7 +7577,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7658,7 +7658,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7741,7 +7741,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7807,7 +7807,7 @@
       "validSolutionPredicate": "reasoning-elimination-v1",
       "hints": [
         "Đọc manh mối đầu tiên thật kỹ.",
-        "Bạn nào không giống manh mối thì úp xuống nhé."
+        "Bạn nào không khớp manh mối thì bấm Gạch bớt nhé."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -7819,7 +7819,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7894,7 +7894,7 @@
       "validSolutionPredicate": "reasoning-elimination-v1",
       "hints": [
         "Đọc manh mối đầu tiên thật kỹ.",
-        "Bạn nào không giống manh mối thì úp xuống nhé."
+        "Bạn nào không khớp manh mối thì bấm Gạch bớt nhé."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -7906,7 +7906,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8002,7 +8002,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8107,7 +8107,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8225,8 +8225,8 @@
       ],
       "validSolutionPredicate": "flexibility-alternative-v1",
       "hints": [
-        "Đường xám là đường đã đi rồi.",
-        "Tìm một đường mới không trùng đường xám nhé."
+        "Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé.",
+        "Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -8238,7 +8238,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8360,8 +8360,8 @@
       ],
       "validSolutionPredicate": "flexibility-alternative-v1",
       "hints": [
-        "Đường xám là đường đã đi rồi.",
-        "Tìm một đường mới không trùng đường xám nhé."
+        "Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé.",
+        "Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -8373,7 +8373,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8515,8 +8515,8 @@
       ],
       "validSolutionPredicate": "flexibility-alternative-v1",
       "hints": [
-        "Tìm điểm đầu tiên mà bạn có thể rẽ khác đường xám.",
-        "Sau khi rẽ, kiểm tra không đi vào ô tường và vẫn đến được đích."
+        "Tìm chỗ rẽ khác đường cũ; đường mới có thể trùng một đoạn với đường cũ.",
+        "Kiểm tra đường mới khác đường cũ ít nhất một chỗ, tránh tường và vẫn đến được đích."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -8528,7 +8528,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8690,8 +8690,8 @@
       ],
       "validSolutionPredicate": "flexibility-alternative-v1",
       "hints": [
-        "Tìm điểm đầu tiên mà bạn có thể rẽ khác đường xám.",
-        "Sau khi rẽ, kiểm tra không đi vào ô tường và vẫn đến được đích."
+        "Tìm chỗ rẽ khác đường cũ; đường mới có thể trùng một đoạn với đường cũ.",
+        "Kiểm tra đường mới khác đường cũ ít nhất một chỗ, tránh tường và vẫn đến được đích."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -8703,7 +8703,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8762,7 +8762,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8825,7 +8825,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8884,7 +8884,7 @@
       "solution": 8,
       "validSolutionPredicate": "quantity-balance-v1",
       "hints": [
-        "Gọi quả còn thiếu là ẩn số rồi viết: tổng đĩa này bằng tổng đĩa kia.",
+        "Tìm số còn thiếu để tổng hai đĩa bằng nhau.",
         "Số cần tìm là hiệu giữa hai tổng đã biết."
       ],
       "praiseKeys": {
@@ -8897,7 +8897,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8957,7 +8957,7 @@
       "solution": 8,
       "validSolutionPredicate": "quantity-balance-v1",
       "hints": [
-        "Gọi quả còn thiếu là ẩn số rồi viết: tổng đĩa này bằng tổng đĩa kia.",
+        "Tìm số còn thiếu để tổng hai đĩa bằng nhau.",
         "Số cần tìm là hiệu giữa hai tổng đã biết."
       ],
       "praiseKeys": {
@@ -8970,7 +8970,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8990,7 +8990,7 @@
       "title": "Vườn hoa: Điều không hợp lý",
       "invitation": "Hãy quan sát từng bức tranh và chỉ ra chi tiết không phù hợp với quy tắc nha!",
       "tutorial": "Tìm chi tiết không cùng nhóm hoặc không đúng cách thức thường ngày nha.",
-      "explanation": "Tình huống 2 chưa hợp lý vì có đặc điểm \"đồ ăn\", trong khi quy tắc chuẩn yêu cầu \"đồ chơi\".",
+      "explanation": "Tình huống 2: \"Bạn mang bánh ngọt và nước có ga vào chơi\" có đặc điểm \"đồ ăn\", trong khi luật của ván này yêu cầu \"đồ chơi\".",
       "boardData": {
         "kind": "observation-implausible",
         "scene": [
@@ -9045,7 +9045,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9065,7 +9065,7 @@
       "title": "Vườn hoa: Điều không hợp lý",
       "invitation": "Chào bạn, bạn hãy tinh mắt tìm ra tình huống chưa hợp lý cùng mình nhé!",
       "tutorial": "Xem các bức tranh và chỉ ra bạn nhỏ nào đang làm hành động khác lạ.",
-      "explanation": "Tình huống 2 chưa hợp lý vì có đặc điểm \"đồ ăn\", trong khi quy tắc chuẩn yêu cầu \"đồ chơi\".",
+      "explanation": "Tình huống 2: \"Bạn mang bánh ngọt và nước có ga vào chơi\" có đặc điểm \"đồ ăn\", trong khi luật của ván này yêu cầu \"đồ chơi\".",
       "boardData": {
         "kind": "observation-implausible",
         "scene": [
@@ -9129,7 +9129,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9149,7 +9149,7 @@
       "title": "Vườn hoa: Điều không hợp lý",
       "invitation": "Hãy quan sát từng bức tranh và chỉ ra chi tiết không phù hợp với quy tắc nha!",
       "tutorial": "Tìm tình huống có chỗ vô lý hoặc không hợp với quy tắc chung của nhóm.",
-      "explanation": "Tình huống 3 chưa hợp lý vì có đặc điểm \"đồ ăn\", trong khi quy tắc chuẩn yêu cầu \"đồ chơi\".",
+      "explanation": "Tình huống 3: \"Bạn mang bánh ngọt và nước có ga vào chơi\" có đặc điểm \"đồ ăn\", trong khi luật của ván này yêu cầu \"đồ chơi\".",
       "boardData": {
         "kind": "observation-implausible",
         "scene": [
@@ -9222,7 +9222,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9242,7 +9242,7 @@
       "title": "Vườn hoa · Điều gì lạ ở đây?",
       "invitation": "Cùng mình xem bức tranh nào có điều bất thường so với những bức tranh còn lại nào!",
       "tutorial": "Xem từng chi tiết có hợp lý không, và mỗi thứ nên thuộc nhóm nào.",
-      "explanation": "Tình huống 2 chưa hợp lý vì có đặc điểm \"đồ ăn\", trong khi quy tắc chuẩn yêu cầu \"đồ chơi\".",
+      "explanation": "Tình huống 2: \"Bạn mang bánh ngọt và nước có ga vào chơi\" có đặc điểm \"đồ ăn\", trong khi luật của ván này yêu cầu \"đồ chơi\".",
       "boardData": {
         "kind": "observation-implausible",
         "scene": [
@@ -9324,7 +9324,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9413,7 +9413,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9507,7 +9507,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9629,7 +9629,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9767,7 +9767,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9819,7 +9819,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9872,7 +9872,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9927,7 +9927,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9983,7 +9983,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10054,7 +10054,7 @@
       "validSolutionPredicate": "flexibility-classify-v1",
       "hints": [
         "Đọc luật mới ở phía trên thật kỹ.",
-        "Chỉ chọn những hình có hình đúng như luật."
+        "Chỉ chọn những hình có hình dạng đúng như luật."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -10066,7 +10066,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10149,7 +10149,7 @@
       "validSolutionPredicate": "flexibility-classify-v1",
       "hints": [
         "Đọc luật mới ở phía trên thật kỹ.",
-        "Chỉ chọn những hình có hình đúng như luật."
+        "Chỉ chọn những hình có hình dạng đúng như luật."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -10161,7 +10161,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10259,7 +10259,7 @@
       "validSolutionPredicate": "flexibility-classify-v1",
       "hints": [
         "Quên luật cũ đi và dùng luật mới để xét từng hình.",
-        "Kiểm tra từng hình theo đặc điểm hình; hình nào đạt thì chọn, đừng bỏ sót hình nào."
+        "Kiểm tra từng hình theo đặc điểm hình dạng; hình nào đạt thì chọn, đừng bỏ sót hình nào."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -10271,7 +10271,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10377,7 +10377,7 @@
       "validSolutionPredicate": "flexibility-classify-v1",
       "hints": [
         "Quên luật cũ đi và dùng luật mới để xét từng hình.",
-        "Kiểm tra từng hình theo đặc điểm hình; hình nào đạt thì chọn, đừng bỏ sót hình nào."
+        "Kiểm tra từng hình theo đặc điểm hình dạng; hình nào đạt thì chọn, đừng bỏ sót hình nào."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -10389,7 +10389,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10496,7 +10496,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10636,7 +10636,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10825,7 +10825,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11005,7 +11005,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11120,7 +11120,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11243,7 +11243,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11396,7 +11396,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11583,7 +11583,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11638,7 +11638,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11656,7 +11656,7 @@
       "ageTrack": "age_6_8",
       "locale": "vi",
       "title": "Bạn ong · Ai đứng trước, ai đứng sau?",
-      "invitation": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "invitation": "Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!",
       "tutorial": "Đọc thầm từng từ theo thứ tự để nhớ và xếp lại thật đúng.",
       "explanation": "Thứ tự đúng là mèo → thuyền → cá → trăng.",
       "boardData": {
@@ -11696,7 +11696,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11758,7 +11758,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11823,7 +11823,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11858,7 +11858,7 @@
       "validSolutionPredicate": "rule-error-v1",
       "hints": [
         "Hai hình phải thay nhau xuất hiện đều đặn.",
-        "Tìm chỗ hai hình giống nhau đứng liền nhau."
+        "So từng vị trí với nhịp hai hình lúc đầu, tìm hình không theo nhịp nhé."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -11870,7 +11870,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11906,7 +11906,7 @@
       "validSolutionPredicate": "rule-error-v1",
       "hints": [
         "Hai hình phải thay nhau xuất hiện đều đặn.",
-        "Tìm chỗ hai hình giống nhau đứng liền nhau."
+        "So từng vị trí với nhịp hai hình lúc đầu, tìm hình không theo nhịp nhé."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -11918,7 +11918,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11967,7 +11967,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12017,7 +12017,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12036,8 +12036,8 @@
       "locale": "vi",
       "title": "Bạn ong: Điều gì xảy ra tiếp?",
       "invitation": "Bạn hãy dùng tư duy logic để tìm ra sự thật tiếp theo từ những gì đã có nhé!",
-      "tutorial": "Bạn xem những điều đã biết và luật Nếu - Thì để tìm kết luận đúng nhé.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là buổi sáng.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Bạn xem những điều đã biết và luật Nếu - Thì để tìm kết luận đúng nhé.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"mặt trời\" → \"buổi sáng\". Từ thẻ \"mặt trời\", áp dụng luật để suy ra thẻ \"buổi sáng\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -12071,7 +12071,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12090,8 +12090,8 @@
       "locale": "vi",
       "title": "Bạn ong: Điều gì xảy ra tiếp?",
       "invitation": "Chào bạn, thử thách suy luận Nếu - Thì hôm nay rất thú vị, cùng thử sức nào!",
-      "tutorial": "Nếu có điều này thì sẽ có điều kia; bạn nối tiếp để tìm kết quả nha.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là khát nước.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Nếu có điều này thì sẽ có điều kia; bạn nối tiếp để tìm kết quả nha.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"nắng gắt\" → \"khát nước\"; \"khát nước\" → \"uống nước\". Từ thẻ \"nắng gắt\", áp dụng luật để suy ra thẻ \"khát nước\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -12130,7 +12130,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12149,8 +12149,8 @@
       "locale": "vi",
       "title": "Bạn ong: Điều gì xảy ra tiếp?",
       "invitation": "Từ các điều đã biết và luật Nếu - Thì, bạn suy luận cùng mình nhé!",
-      "tutorial": "Đọc các câu \"nếu ... thì ...\" và những điều đã biết, rồi suy ra điều chắc chắn đúng.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là bông hoa.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Đọc các câu \"nếu ... thì ...\" và những điều đã biết, rồi suy ra điều chắc chắn đúng.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"hạt mầm\" → \"cây non\"; \"cây non\" → \"nụ hoa\"; \"nụ hoa\" → \"bông hoa\". Từ thẻ \"hạt mầm\", áp dụng luật để suy ra thẻ \"bông hoa\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -12194,7 +12194,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12213,8 +12213,8 @@
       "locale": "vi",
       "title": "Chuỗi suy luận · Bạn ong",
       "invitation": "Hãy ghép nối các quy tắc suy luận để tìm ra kết luận chắc chắn nhất nào!",
-      "tutorial": "Kiểm tra từng bước suy nghĩ và chọn kết luận chắc chắn đúng, không thể sai.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là ô.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Kiểm tra từng bước suy nghĩ và chọn kết luận chắc chắn đúng, không thể sai.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"mây\" → \"mưa\"; \"mưa\" → \"áo mưa\"; \"áo mưa\" → \"ủng\"; \"ủng\" → \"ô\". Từ thẻ \"mây\", áp dụng luật để suy ra thẻ \"ô\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -12263,7 +12263,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12280,10 +12280,10 @@
       "ruleVariantId": "g02-t2:xoay một phần tư vòng",
       "ageTrack": "age_3_5",
       "locale": "vi",
-      "title": "Bạn ong · Xoay một vòng",
+      "title": "Bạn ong · Hình qua phép biến đổi",
       "invitation": "Mình có câu đố xoay hình rất vui, bạn cùng mình tìm hình đúng nhé!",
       "tutorial": "Bạn tưởng tượng hình mẫu khi xoay và chọn hình đúng sau khi xoay nhé.",
-      "explanation": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình B.",
+      "explanation": "Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình B.",
       "boardData": {
         "kind": "spatial-rotation",
         "shape": [
@@ -12371,7 +12371,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12388,10 +12388,10 @@
       "ruleVariantId": "g02-t2:xoay một phần tư vòng",
       "ageTrack": "age_6_8",
       "locale": "vi",
-      "title": "Bạn ong · Xoay một vòng",
+      "title": "Bạn ong · Hình qua phép biến đổi",
       "invitation": "Mình có câu đố xoay hình rất vui, bạn cùng mình tìm hình đúng nhé!",
       "tutorial": "Bạn tưởng tượng hình mẫu khi xoay và chọn hình đúng sau khi xoay nhé.",
-      "explanation": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình D.",
+      "explanation": "Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình D.",
       "boardData": {
         "kind": "spatial-rotation",
         "shape": [
@@ -12516,7 +12516,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12533,10 +12533,10 @@
       "ruleVariantId": "g02-t2:xoay một phần tư vòng",
       "ageTrack": "age_9_12",
       "locale": "vi",
-      "title": "Bạn ong: Tưởng tượng xoay hình",
+      "title": "Bạn ong: Tưởng tượng hình mới",
       "invitation": "Bạn hãy quan sát góc xoay và tìm hình sau khi xoay đúng hướng nào.",
       "tutorial": "Xem hình mẫu xoay theo kiểu nào, rồi tìm hình trông giống như vậy sau khi xoay.",
-      "explanation": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình B.",
+      "explanation": "Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình B.",
       "boardData": {
         "kind": "spatial-rotation",
         "shape": [
@@ -12706,7 +12706,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12723,10 +12723,10 @@
       "ruleVariantId": "g02-t2:xoay một phần tư vòng",
       "ageTrack": "age_13_plus",
       "locale": "vi",
-      "title": "Bạn ong · Xoay xong trông ra sao?",
+      "title": "Bạn ong · Hình mới trông ra sao?",
       "invitation": "Khi xoay hình mẫu một vòng, nó sẽ trông như thế nào nhỉ? Bạn thử đoán xem!",
       "tutorial": "Xem hình mẫu xoay theo kiểu nào, rồi tìm hình trông giống như vậy sau khi xoay.",
-      "explanation": "Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình E.",
+      "explanation": "Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình E.",
       "boardData": {
         "kind": "spatial-rotation",
         "shape": [
@@ -12920,7 +12920,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12968,7 +12968,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13017,7 +13017,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13034,7 +13034,7 @@
       "ruleVariantId": "g05-t2:chia đều không dư",
       "ageTrack": "age_9_12",
       "locale": "vi",
-      "title": "Bạn ong: Được mấy nhóm?",
+      "title": "Cùng chia thành nhóm · Bạn ong",
       "invitation": "Có rất nhiều món quà cần chia thành từng nhóm đều nhau, bạn giúp mình nhé!",
       "tutorial": "Đọc kỹ mỗi nhóm có bao nhiêu phần tử, rồi chia theo đúng số đó.",
       "explanation": "Chia đều thành các nhóm 3, ta được đúng 6 nhóm.",
@@ -13067,7 +13067,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13118,7 +13118,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13196,7 +13196,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13286,7 +13286,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13388,7 +13388,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13502,7 +13502,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13521,8 +13521,8 @@
       "locale": "vi",
       "title": "Xếp việc đúng thứ tự · Bạn ong",
       "invitation": "Hãy sắp xếp các câu lệnh để mọi việc diễn ra tuần tự từ đầu đến cuối nha!",
-      "tutorial": "Xem việc nào phải làm trước, việc nào làm sau rồi xếp lại cho đúng.",
-      "explanation": "Thứ tự đúng của các bước là: Lấy bát → Xới cơm → Múc canh.",
+      "tutorial": "Luật riêng của ván này (→ là làm trước): Lấy bát → Xới cơm; Xới cơm → Múc canh. Mọi thứ tự giữ đủ luật đều được.",
+      "explanation": "Luật riêng của ván này (→ là làm trước): Lấy bát → Xới cơm; Xới cơm → Múc canh. Một thứ tự theo luật của ván này là: Lấy bát → Xới cơm → Múc canh.",
       "boardData": {
         "kind": "planning-command-order",
         "commands": [
@@ -13558,7 +13558,7 @@
       "validSolutionPredicate": "planning-command-order-v1",
       "hints": [
         "Việc nào phải làm trước tiên?",
-        "Nghĩ xem ở nhà bạn làm việc đó thế nào nhé."
+        "Nhìn luật của ván này: việc nào cần xong trước việc tiếp theo?"
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -13570,7 +13570,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13589,8 +13589,8 @@
       "locale": "vi",
       "title": "Xếp việc đúng thứ tự · Bạn ong",
       "invitation": "Cùng mình lập trình thứ tự các bước hành động sao cho thật hợp lý nào bạn!",
-      "tutorial": "Xem việc nào phải làm trước, việc nào làm sau rồi xếp lại cho đúng.",
-      "explanation": "Thứ tự đúng của các bước là: Mở hộp → Lấy đồ → Đóng hộp → Cất hộp.",
+      "tutorial": "Luật riêng của ván này (→ là làm trước): Mở hộp → Lấy đồ; Lấy đồ → Đóng hộp; Đóng hộp → Cất hộp. Mọi thứ tự giữ đủ luật đều được.",
+      "explanation": "Luật riêng của ván này (→ là làm trước): Mở hộp → Lấy đồ; Lấy đồ → Đóng hộp; Đóng hộp → Cất hộp. Một thứ tự theo luật của ván này là: Mở hộp → Lấy đồ → Đóng hộp → Cất hộp.",
       "boardData": {
         "kind": "planning-command-order",
         "commands": [
@@ -13635,7 +13635,7 @@
       "validSolutionPredicate": "planning-command-order-v1",
       "hints": [
         "Việc nào phải làm trước tiên?",
-        "Nghĩ xem ở nhà bạn làm việc đó thế nào nhé."
+        "Nhìn luật của ván này: việc nào cần xong trước việc tiếp theo?"
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -13647,7 +13647,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13666,8 +13666,8 @@
       "locale": "vi",
       "title": "Thứ tự công việc · Bạn ong",
       "invitation": "Cùng mình lập trình thứ tự các bước hành động sao cho thật hợp lý nào bạn!",
-      "tutorial": "Xếp các lệnh theo đúng thứ tự: việc nào phải làm trước, việc nào làm sau.",
-      "explanation": "Thứ tự đúng của các bước là: Pha màu → Nhúng cọ → Vẽ tranh → Tô màu → Rửa cọ.",
+      "tutorial": "Luật riêng của ván này (→ là làm trước): Pha màu → Nhúng cọ; Nhúng cọ → Vẽ tranh; Vẽ tranh → Tô màu; Tô màu → Rửa cọ. Mọi thứ tự giữ đủ luật đều được.",
+      "explanation": "Luật riêng của ván này (→ là làm trước): Pha màu → Nhúng cọ; Nhúng cọ → Vẽ tranh; Vẽ tranh → Tô màu; Tô màu → Rửa cọ. Một thứ tự theo luật của ván này là: Pha màu → Nhúng cọ → Vẽ tranh → Tô màu → Rửa cọ.",
       "boardData": {
         "kind": "planning-command-order",
         "commands": [
@@ -13733,7 +13733,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13752,8 +13752,8 @@
       "locale": "vi",
       "title": "Xếp việc đúng thứ tự · Bạn ong",
       "invitation": "Các bước công việc đang bị đảo lộn, bạn xếp lại đúng thứ tự giúp mình nhé!",
-      "tutorial": "Xếp các bước thành một dãy hợp lý để hoàn thành việc cần làm.",
-      "explanation": "Thứ tự đúng của các bước là: Mở hộp → Lấy đồ → Đóng hộp → Cất hộp → Dọn bàn.",
+      "tutorial": "Luật riêng của ván này (→ là làm trước): Mở hộp → Lấy đồ; Lấy đồ → Đóng hộp; Đóng hộp → Cất hộp; Cất hộp → Dọn bàn; Mở hộp → Dọn bàn. Mọi thứ tự giữ đủ luật đều được.",
+      "explanation": "Luật riêng của ván này (→ là làm trước): Mở hộp → Lấy đồ; Lấy đồ → Đóng hộp; Đóng hộp → Cất hộp; Cất hộp → Dọn bàn; Mở hộp → Dọn bàn. Một thứ tự theo luật của ván này là: Mở hộp → Lấy đồ → Đóng hộp → Cất hộp → Dọn bàn.",
       "boardData": {
         "kind": "planning-command-order",
         "commands": [
@@ -13823,7 +13823,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13915,7 +13915,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14015,7 +14015,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14132,7 +14132,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14254,7 +14254,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14311,7 +14311,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14368,7 +14368,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14413,7 +14413,7 @@
       "validSolutionPredicate": "flexibility-perspective-v1",
       "hints": [
         "Đặt mình vào chỗ bạn nhỏ và quay mặt theo hướng nhìn của bạn ấy.",
-        "Trước mặt, sau lưng, tay trái, tay phải của bạn ấy khác với phía trên, dưới, trái, phải của màn hình."
+        "Tính các phía theo hướng bạn nhỏ nhìn; chúng có thể khác các phía của màn hình."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -14425,7 +14425,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14470,7 +14470,7 @@
       "validSolutionPredicate": "flexibility-perspective-v1",
       "hints": [
         "Đặt mình vào chỗ bạn nhỏ và quay mặt theo hướng nhìn của bạn ấy.",
-        "Trước mặt, sau lưng, tay trái, tay phải của bạn ấy khác với phía trên, dưới, trái, phải của màn hình."
+        "Tính các phía theo hướng bạn nhỏ nhìn; chúng có thể khác các phía của màn hình."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -14482,7 +14482,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14547,7 +14547,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14565,7 +14565,7 @@
       "ageTrack": "age_6_8",
       "locale": "vi",
       "title": "Bạn ong · Chiếc giỏ mục tiêu",
-      "invitation": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "invitation": "Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!",
       "tutorial": "Tìm cách dùng ít món nhất mà vẫn đủ số điểm cần đạt nhé.",
       "explanation": "Chọn 2 món (2 và 6) để đạt tổng đúng bằng 8 với số món ít nhất.",
       "boardData": {
@@ -14617,7 +14617,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14635,7 +14635,7 @@
       "ageTrack": "age_9_12",
       "locale": "vi",
       "title": "Bạn ong: Cộng cho vừa",
-      "invitation": "Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!",
+      "invitation": "Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!",
       "tutorial": "Chọn các số có tổng đúng bằng mục tiêu, và số lượng số chọn phải ít nhất.",
       "explanation": "Chọn 2 món (9 và 5) để đạt tổng đúng bằng 14 với số món ít nhất.",
       "boardData": {
@@ -14679,8 +14679,8 @@
       ],
       "validSolutionPredicate": "quantity-target-v1",
       "hints": [
-        "Bắt đầu từ các số lớn để cần ít món nhất.",
-        "Khi đã có một cách đạt 14, thử thay hai món nhỏ bằng một món lớn."
+        "Thử từng món, rồi từng cặp trước khi thử thêm món.",
+        "So các cách có tổng đúng 14 để chọn cách dùng ít món nhất."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -14692,7 +14692,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14759,8 +14759,8 @@
       ],
       "validSolutionPredicate": "quantity-target-v1",
       "hints": [
-        "Bắt đầu từ các số lớn để cần ít món nhất.",
-        "Khi đã có một cách đạt 12, thử thay hai món nhỏ bằng một món lớn."
+        "Thử từng món, rồi từng cặp trước khi thử thêm món.",
+        "So các cách có tổng đúng 12 để chọn cách dùng ít món nhất."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -14772,7 +14772,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14865,7 +14865,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14971,7 +14971,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15087,7 +15087,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15211,7 +15211,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15290,7 +15290,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15370,7 +15370,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15451,7 +15451,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15534,7 +15534,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15591,7 +15591,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15652,7 +15652,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15714,7 +15714,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15781,7 +15781,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15899,8 +15899,8 @@
       ],
       "validSolutionPredicate": "flexibility-alternative-v1",
       "hints": [
-        "Đường xám là đường đã đi rồi.",
-        "Tìm một đường mới không trùng đường xám nhé."
+        "Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé.",
+        "Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -15912,7 +15912,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16034,8 +16034,8 @@
       ],
       "validSolutionPredicate": "flexibility-alternative-v1",
       "hints": [
-        "Đường xám là đường đã đi rồi.",
-        "Tìm một đường mới không trùng đường xám nhé."
+        "Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé.",
+        "Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -16047,7 +16047,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16189,8 +16189,8 @@
       ],
       "validSolutionPredicate": "flexibility-alternative-v1",
       "hints": [
-        "Tìm điểm đầu tiên mà bạn có thể rẽ khác đường xám.",
-        "Sau khi rẽ, kiểm tra không đi vào ô tường và vẫn đến được đích."
+        "Tìm chỗ rẽ khác đường cũ; đường mới có thể trùng một đoạn với đường cũ.",
+        "Kiểm tra đường mới khác đường cũ ít nhất một chỗ, tránh tường và vẫn đến được đích."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -16202,7 +16202,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16364,8 +16364,8 @@
       ],
       "validSolutionPredicate": "flexibility-alternative-v1",
       "hints": [
-        "Tìm điểm đầu tiên mà bạn có thể rẽ khác đường xám.",
-        "Sau khi rẽ, kiểm tra không đi vào ô tường và vẫn đến được đích."
+        "Tìm chỗ rẽ khác đường cũ; đường mới có thể trùng một đoạn với đường cũ.",
+        "Kiểm tra đường mới khác đường cũ ít nhất một chỗ, tránh tường và vẫn đến được đích."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -16377,7 +16377,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16453,7 +16453,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16538,7 +16538,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16555,7 +16555,7 @@
       "ruleVariantId": "g02-t3:gương dọc",
       "ageTrack": "age_9_12",
       "locale": "vi",
-      "title": "Bữa tiệc trong vườn: Ô nào làm tranh cân xứng?",
+      "title": "Bữa tiệc trong vườn: Hai bên tranh thế nào?",
       "invitation": "Hai bên gương đang chờ bạn hoàn thành để đối xứng thật đẹp đấy!",
       "tutorial": "Gấp đôi hình theo đường giữa: ô nào không có ô trùng bên kia thì cần bổ sung hoặc là ô bị lệch.",
       "explanation": "Ô cần chọn nằm ở hàng 2, cột 5 để hình hoàn toàn đối xứng.",
@@ -16638,7 +16638,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16742,7 +16742,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16762,7 +16762,7 @@
       "title": "Bữa tiệc trong vườn · Điều gì lạ ở đây?",
       "invitation": "Cùng mình xem bức tranh nào có điều bất thường so với những bức tranh còn lại nào!",
       "tutorial": "Xem các bức tranh và chỉ ra bạn nhỏ nào đang làm hành động khác lạ.",
-      "explanation": "Tình huống 2 chưa hợp lý vì có đặc điểm \"đồ ăn\", trong khi quy tắc chuẩn yêu cầu \"đồ chơi\".",
+      "explanation": "Tình huống 2: \"Bạn mang bánh ngọt và nước có ga vào chơi\" có đặc điểm \"đồ ăn\", trong khi luật của ván này yêu cầu \"đồ chơi\".",
       "boardData": {
         "kind": "observation-implausible",
         "scene": [
@@ -16817,7 +16817,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16837,7 +16837,7 @@
       "title": "Bữa tiệc trong vườn · Điều gì lạ ở đây?",
       "invitation": "Trong các tình huống này có một điều chưa hợp lý, bạn tìm ra giúp mình nhé!",
       "tutorial": "Bạn tìm tình huống có chi tiết chưa đúng với quy tắc chung nhé.",
-      "explanation": "Tình huống 3 chưa hợp lý vì có đặc điểm \"đồ ăn\", trong khi quy tắc chuẩn yêu cầu \"đồ chơi\".",
+      "explanation": "Tình huống 3: \"Bạn mang bánh ngọt và nước có ga vào chơi\" có đặc điểm \"đồ ăn\", trong khi luật của ván này yêu cầu \"đồ chơi\".",
       "boardData": {
         "kind": "observation-implausible",
         "scene": [
@@ -16901,7 +16901,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16921,7 +16921,7 @@
       "title": "Bữa tiệc trong vườn · Điều gì lạ ở đây?",
       "invitation": "Cùng mình xem bức tranh nào có điều bất thường so với những bức tranh còn lại nào!",
       "tutorial": "Tìm tình huống có chỗ vô lý hoặc không hợp với quy tắc chung của nhóm.",
-      "explanation": "Tình huống 2 chưa hợp lý vì có đặc điểm \"đồ ăn\", trong khi quy tắc chuẩn yêu cầu \"đồ chơi\".",
+      "explanation": "Tình huống 2: \"Bạn mang bánh ngọt và nước có ga vào chơi\" có đặc điểm \"đồ ăn\", trong khi luật của ván này yêu cầu \"đồ chơi\".",
       "boardData": {
         "kind": "observation-implausible",
         "scene": [
@@ -16994,7 +16994,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17014,7 +17014,7 @@
       "title": "Bữa tiệc trong vườn: Điều không hợp lý",
       "invitation": "Cùng mình xem bức tranh nào có điều bất thường so với những bức tranh còn lại nào!",
       "tutorial": "Xem từng chi tiết có hợp lý không, và mỗi thứ nên thuộc nhóm nào.",
-      "explanation": "Tình huống 2 chưa hợp lý vì có đặc điểm \"đồ ăn\", trong khi quy tắc chuẩn yêu cầu \"đồ chơi\".",
+      "explanation": "Tình huống 2: \"Bạn mang bánh ngọt và nước có ga vào chơi\" có đặc điểm \"đồ ăn\", trong khi luật của ván này yêu cầu \"đồ chơi\".",
       "boardData": {
         "kind": "observation-implausible",
         "scene": [
@@ -17096,7 +17096,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17153,7 +17153,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17213,7 +17213,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17276,7 +17276,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17340,7 +17340,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17393,7 +17393,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17446,7 +17446,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17501,7 +17501,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17556,7 +17556,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17639,7 +17639,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17731,7 +17731,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17832,7 +17832,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17942,7 +17942,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17960,7 +17960,7 @@
       "ageTrack": "age_3_5",
       "locale": "vi",
       "title": "Bữa tiệc trong vườn · Tìm đúng chiếc bóng",
-      "invitation": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "invitation": "Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!",
       "tutorial": "So từng ô của bóng với hình mẫu để tìm chiếc bóng khớp nhất.",
       "explanation": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
       "boardData": {
@@ -18049,7 +18049,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18189,7 +18189,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18207,7 +18207,7 @@
       "ageTrack": "age_9_12",
       "locale": "vi",
       "title": "Bữa tiệc trong vườn · Bóng nào khớp?",
-      "invitation": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "invitation": "Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!",
       "tutorial": "Nhìn thật kỹ hình dạng và chọn bóng khớp hoàn toàn với hình mẫu.",
       "explanation": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình D.",
       "boardData": {
@@ -18378,7 +18378,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18396,7 +18396,7 @@
       "ageTrack": "age_13_plus",
       "locale": "vi",
       "title": "Bữa tiệc trong vườn · Tìm đúng chiếc bóng",
-      "invitation": "Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.",
+      "invitation": "Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!",
       "tutorial": "Đếm số ô và xem các ô nằm ở đâu để tìm bóng giống hệt hình mẫu.",
       "explanation": "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình C.",
       "boardData": {
@@ -18558,7 +18558,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18617,7 +18617,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18680,7 +18680,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18752,7 +18752,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18769,7 +18769,7 @@
       "ruleVariantId": "g05-t1:thay một vật cho cân",
       "ageTrack": "age_13_plus",
       "locale": "vi",
-      "title": "Bữa tiệc trong vườn: Cần thêm bao nhiêu?",
+      "title": "Bữa tiệc trong vườn: Cân thế nào cho bằng?",
       "invitation": "Thử thách cân thăng bằng hôm nay sẽ giúp bạn thành chuyên gia tính toán đấy!",
       "tutorial": "Cộng số cân ở hai đĩa sau khi bỏ quả đã đánh dấu để tìm số cân cần thay vào.",
       "explanation": "Thay quả cân thứ 1 ở đĩa Trái bằng quả cân nặng 10 thì hai đĩa cân sẽ cân bằng.",
@@ -18825,7 +18825,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18880,7 +18880,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18937,7 +18937,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18997,7 +18997,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19015,7 +19015,7 @@
       "ageTrack": "age_13_plus",
       "locale": "vi",
       "title": "Bữa tiệc trong vườn: Đố bạn nhớ dãy",
-      "invitation": "Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!",
+      "invitation": "Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!",
       "tutorial": "Ghi nhớ toàn bộ dãy; khi dãy ẩn đi, bạn cho biết từ nào nằm ở ô bị bỏ trống.",
       "explanation": "Ô thứ 4 trong dãy là trăng.",
       "boardData": {
@@ -19059,7 +19059,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19154,7 +19154,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19254,7 +19254,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19382,7 +19382,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19526,7 +19526,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19545,8 +19545,8 @@
       "locale": "vi",
       "title": "Chuỗi suy luận · Bữa tiệc trong vườn",
       "invitation": "Hãy ghép nối các quy tắc suy luận để tìm ra kết luận chắc chắn nhất nào!",
-      "tutorial": "Dùng gợi ý có sẵn và luật dẫn đường để tìm ra điều chắc chắn xảy ra.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là cây non.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Dùng gợi ý có sẵn và luật dẫn đường để tìm ra điều chắc chắn xảy ra.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"hạt mầm\" → \"cây non\". Từ thẻ \"hạt mầm\", áp dụng luật để suy ra thẻ \"cây non\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -19568,7 +19568,7 @@
       "validSolutionPredicate": "reasoning-if-then-v1",
       "hints": [
         "Nhìn điều đã biết ở phía trên.",
-        "Luật nào bắt đầu bằng điều đó thì cho ta một điều mới."
+        "Luật nào bắt đầu bằng điều đó thì giúp bạn tìm ra điều mới."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -19580,7 +19580,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19599,8 +19599,8 @@
       "locale": "vi",
       "title": "Chuỗi suy luận · Bữa tiệc trong vườn",
       "invitation": "Chào bạn, thử thách suy luận Nếu - Thì hôm nay rất thú vị, cùng thử sức nào!",
-      "tutorial": "Dùng gợi ý có sẵn và luật dẫn đường để tìm ra điều chắc chắn xảy ra.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là mưa.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Dùng gợi ý có sẵn và luật dẫn đường để tìm ra điều chắc chắn xảy ra.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"mây\" → \"mưa\"; \"mưa\" → \"áo mưa\". Từ thẻ \"mây\", áp dụng luật để suy ra thẻ \"mưa\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -19627,7 +19627,7 @@
       "validSolutionPredicate": "reasoning-if-then-v1",
       "hints": [
         "Nhìn điều đã biết ở phía trên.",
-        "Luật nào bắt đầu bằng điều đó thì cho ta một điều mới."
+        "Luật nào bắt đầu bằng điều đó thì giúp bạn tìm ra điều mới."
       ],
       "praiseKeys": {
         "correct": "thinking-games.praise.specific",
@@ -19639,7 +19639,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19658,8 +19658,8 @@
       "locale": "vi",
       "title": "Chuỗi suy luận · Bữa tiệc trong vườn",
       "invitation": "Từ các điều đã biết và luật Nếu - Thì, bạn suy luận cùng mình nhé!",
-      "tutorial": "Kiểm tra từng bước suy nghĩ và chọn kết luận chắc chắn đúng, không thể sai.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là đánh răng.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Kiểm tra từng bước suy nghĩ và chọn kết luận chắc chắn đúng, không thể sai.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"mặt trời\" → \"buổi sáng\"; \"buổi sáng\" → \"thức dậy\"; \"thức dậy\" → \"đánh răng\". Từ thẻ \"mặt trời\", áp dụng luật để suy ra thẻ \"đánh răng\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -19703,7 +19703,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19722,8 +19722,8 @@
       "locale": "vi",
       "title": "Bữa tiệc trong vườn: Điều gì xảy ra tiếp?",
       "invitation": "Từ các điều đã biết và luật Nếu - Thì, bạn suy luận cùng mình nhé!",
-      "tutorial": "Kiểm tra từng bước suy nghĩ và chọn kết luận chắc chắn đúng, không thể sai.",
-      "explanation": "Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là quả ngọt.",
+      "tutorial": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Kiểm tra từng bước suy nghĩ và chọn kết luận chắc chắn đúng, không thể sai.",
+      "explanation": "Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: \"hạt mầm\" → \"cây non\"; \"cây non\" → \"nụ hoa\"; \"nụ hoa\" → \"bông hoa\"; \"bông hoa\" → \"quả ngọt\". Từ thẻ \"hạt mầm\", áp dụng luật để suy ra thẻ \"quả ngọt\".",
       "boardData": {
         "kind": "reasoning-if-then",
         "rules": [
@@ -19772,7 +19772,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19854,7 +19854,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19951,7 +19951,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -20064,7 +20064,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -20181,7 +20181,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "ab1e420ff2a665d939f5a155b9a3a9c00e550b9c6b78f3af2821483383897d6a",
+        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },

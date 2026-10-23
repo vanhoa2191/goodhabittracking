@@ -28,7 +28,7 @@ export const TRACK_HINTS: Readonly<Record<GameTypeId, TierHints>> = {
   'g01-t2': {
     young: {
       increment: [['Đọc các số từ trái sang phải nhé.', 'Nhìn xem số nào tăng không đều như các số còn lại.']],
-      alternating: [['Hai hình phải thay nhau xuất hiện đều đặn.', 'Tìm chỗ hai hình giống nhau đứng liền nhau.']],
+      alternating: [['Hai hình phải thay nhau xuất hiện đều đặn.', 'So từng vị trí với nhịp hai hình lúc đầu, tìm hình không theo nhịp nhé.']],
       repeat: [['Tìm nhóm nhỏ cứ lặp lại mãi.', 'So nhóm đầu với từng nhóm sau để thấy chỗ lệch.']],
     },
     older: {
@@ -69,10 +69,12 @@ export const TRACK_HINTS: Readonly<Record<GameTypeId, TierHints>> = {
     young: {
       rotate: [['Hãy xoay đầu theo, hoặc xoay tờ giấy trong tưởng tượng.', 'Nhìn một ô ở góc hình mẫu xem nó chạy đến đâu.']],
       flip: [['Hình này bị lật, không chỉ xoay.', 'Nhìn một ô ở góc hình mẫu xem nó nhảy sang chỗ nào.']],
+      'quarter-mirror': [['Mình xoay hình rồi mới lật qua gương, theo lời chỉ dẫn nhé.', 'Theo dõi một ô góc qua cả hai bước để so với các hình.']],
     },
     older: {
       rotate: [['Chọn một ô nổi bật làm mốc rồi theo dõi nó sau khi xoay.', 'Loại những hình bị lật như soi gương, vì xoay không làm đổi mặt của hình.']],
       flip: [['Đây là phép lật, nên hãy tìm hình đã đổi mặt chứ không chỉ xoay.', 'Dùng một ô góc làm mốc và dự đoán chỗ mới của nó trước khi nhìn các hình.']],
+      'quarter-mirror': [['Hãy xoay hình theo chỉ dẫn rồi lật qua gương; giữ đúng thứ tự hai thao tác.', 'Chọn một ô làm mốc, dự đoán chỗ của nó sau cả hai thao tác rồi so các lựa chọn.']],
     },
   },
   'g02-t3': {
@@ -126,7 +128,7 @@ export const TRACK_HINTS: Readonly<Record<GameTypeId, TierHints>> = {
   'g04-t1': {
     young: {
       default: [
-        ['Đọc manh mối đầu tiên thật kỹ.', 'Bạn nào không giống manh mối thì úp xuống nhé.'],
+        ['Đọc manh mối đầu tiên thật kỹ.', 'Bạn nào không khớp manh mối thì bấm Gạch bớt nhé.'],
         ['Nhìn từng bạn nhỏ một và hỏi: bạn này có khớp không?', 'Bạn nào khác manh mối ở một chỗ cũng không phải.'],
       ],
     },
@@ -141,7 +143,7 @@ export const TRACK_HINTS: Readonly<Record<GameTypeId, TierHints>> = {
     young: {
       default: [
         ['Bắt đầu từ điều bạn đã biết chắc.', 'Tìm câu Nếu - Thì nói về điều đó nhé.'],
-        ['Nhìn điều đã biết ở phía trên.', 'Luật nào bắt đầu bằng điều đó thì cho ta một điều mới.'],
+        ['Nhìn điều đã biết ở phía trên.', 'Luật nào bắt đầu bằng điều đó thì giúp bạn tìm ra điều mới.'],
       ],
     },
     older: {
@@ -174,7 +176,7 @@ export const TRACK_HINTS: Readonly<Record<GameTypeId, TierHints>> = {
     older: {
       replace: [['Tính tổng đĩa còn lại, rồi tính phần còn lại của đĩa có quả bị thay.', 'Quả mới bằng tổng cần có trừ đi các quả còn giữ lại ở cùng đĩa.']],
       compare: [['Cộng từng đĩa rồi so hai tổng.', 'Hiệu của hai tổng chính là phần cần thêm vào đĩa nhẹ hơn.']],
-      missing: [['Gọi quả còn thiếu là ẩn số rồi viết: tổng đĩa này bằng tổng đĩa kia.', 'Số cần tìm là hiệu giữa hai tổng đã biết.']],
+      missing: [['Tìm số còn thiếu để tổng hai đĩa bằng nhau.', 'Số cần tìm là hiệu giữa hai tổng đã biết.']],
     },
   },
   'g05-t2': {
@@ -197,7 +199,7 @@ export const TRACK_HINTS: Readonly<Record<GameTypeId, TierHints>> = {
       any: [['Cộng thử hai món, xem có đủ {target} không.', 'Bạn chỉ được chọn nhiều nhất {max} món.']],
     },
     older: {
-      fewest: [['Bắt đầu từ các số lớn để cần ít món nhất.', 'Khi đã có một cách đạt {target}, thử thay hai món nhỏ bằng một món lớn.']],
+      fewest: [['Thử từng món, rồi từng cặp trước khi thử thêm món.', 'So các cách có tổng đúng {target} để chọn cách dùng ít món nhất.']],
       'exact-two': [['Với mỗi số, tính số còn thiếu để đạt {target}.', 'Kiểm tra số thiếu đó có trong giỏ không; có thì đó là cặp cần chọn.']],
       'not-over': [['Thử các tổ hợp bắt đầu từ số lớn nhất mà tổng chưa quá {target}.', 'Tổng tốt nhất là tổng lớn nhất không quá {target}; so các tổ hợp để chắc chắn.']],
       any: [['Tìm cặp hoặc bộ ba có tổng đúng {target}.', 'Giới hạn {max} món giúp bạn loại các tổ hợp quá dài.']],
@@ -208,20 +210,20 @@ export const TRACK_HINTS: Readonly<Record<GameTypeId, TierHints>> = {
       reach: [['Đi từng ô một, tránh ô tường.', 'Nếu gặp tường thì rẽ sang hướng khác.']],
       waypoint: [['Tìm ngôi sao trên bản đồ.', 'Đi qua ngôi sao rồi mới về đích.']],
       ordered: [['Hai ngôi sao có số một và số hai.', 'Đi tới sao số một trước, sao số hai sau, rồi mới về đích.']],
-      shortest: [['Mỗi bước nên đi gần đích hơn.', 'Đừng đi vòng nhé.']],
+      shortest: [['Thử đếm số bước của các đường tránh tường.', 'Chọn đường đến đích có ít bước nhất nhé.']],
     },
     older: {
       reach: [['Nhìn cả bản đồ trước, rồi chọn hướng đi chung từ chỗ xuất phát đến đích.', 'Nếu bị chặn, quay lại và thử lối rẽ khác thay vì cố đi tiếp.']],
       waypoint: [['Chia đường đi thành hai đoạn: từ chỗ xuất phát đến ngôi sao, rồi từ ngôi sao đến đích.', 'Mỗi đoạn tự tìm đường tránh tường.']],
       ordered: [['Chia đường đi thành ba đoạn theo thứ tự các số.', 'Đoạn sau chỉ bắt đầu khi đã đến đúng ngôi sao của đoạn trước.']],
-      shortest: [['Thử đếm số bước của hai lối khác nhau rồi so sánh.', 'Tránh đi lùi hoặc đi vòng; mỗi bước phải rút ngắn khoảng cách đến đích.']],
+      shortest: [['Thử đếm số bước của hai lối khác nhau rồi so sánh.', 'So các đường tránh tường và chọn đường đến đích có ít bước nhất.']],
     },
   },
   'g06-t2': {
     young: {
       default: [
-        ['Việc nào phải làm trước tiên?', 'Nghĩ xem ở nhà bạn làm việc đó thế nào nhé.'],
-        ['Hình dung bạn đang làm việc đó thật.', 'Việc nào xong rồi mới làm được việc tiếp theo?'],
+        ['Việc nào phải làm trước tiên?', 'Nhìn luật của ván này: việc nào cần xong trước việc tiếp theo?'],
+        ['Theo luật của ván này, tìm việc cần làm trước nhé.', 'Việc nào xong rồi mới làm được việc tiếp theo?'],
       ],
     },
     older: {
@@ -262,17 +264,17 @@ export const TRACK_HINTS: Readonly<Record<GameTypeId, TierHints>> = {
     },
     older: {
       default: [
-        ['Đặt mình vào chỗ bạn nhỏ và quay mặt theo hướng nhìn của bạn ấy.', 'Trước mặt, sau lưng, tay trái, tay phải của bạn ấy khác với phía trên, dưới, trái, phải của màn hình.'],
+        ['Đặt mình vào chỗ bạn nhỏ và quay mặt theo hướng nhìn của bạn ấy.', 'Tính các phía theo hướng bạn nhỏ nhìn; chúng có thể khác các phía của màn hình.'],
         ['Xác định hướng nhìn của bạn nhỏ, rồi hình dung trục trước sau và trái phải theo hướng đó.', 'Đặt đồ vật lên trục ấy để biết vị trí so với bạn nhỏ, không so với màn hình.'],
       ],
     },
   },
   'g07-t3': {
     young: {
-      default: [['Đường xám là đường đã đi rồi.', 'Tìm một đường mới không trùng đường xám nhé.']],
+      default: [['Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé.', 'Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích.']],
     },
     older: {
-      default: [['Tìm điểm đầu tiên mà bạn có thể rẽ khác đường xám.', 'Sau khi rẽ, kiểm tra không đi vào ô tường và vẫn đến được đích.']],
+      default: [['Tìm chỗ rẽ khác đường cũ; đường mới có thể trùng một đoạn với đường cũ.', 'Kiểm tra đường mới khác đường cũ ít nhất một chỗ, tránh tường và vẫn đến được đích.']],
     },
   },
   'g08-t1': {
@@ -324,7 +326,10 @@ export type HintContext = Readonly<{ ageTrack: GameAgeTrack; seed: string }>;
 export type HintVars = Readonly<Record<string, string | number>>;
 
 function fill(text: string, vars: HintVars): string {
-  return text.replace(/\{(\w+)\}/g, (match, key: string) => (key in vars ? String(vars[key]) : match));
+  return text.replace(/\{(\w+)\}/g, (match, key: string) => {
+    if (!(key in vars)) return match;
+    return key === 'trait' && vars[key] === 'hình' ? 'hình dạng' : String(vars[key]);
+  });
 }
 
 /** Track-specific hint pair for one board; a mode the table does not know falls back to its first mode. */

@@ -404,12 +404,12 @@ definitions.push({
     const solution = 'turn-a';
     const targetIdx = options.findIndex((opt) => opt.id === solution);
     const targetLabel = String.fromCharCode(65 + Math.max(0, targetIdx));
-    const hints = getTrackHints('g02-t2', input.ageTrack, input.seed, turn === 'quarter' || turn === 'half' ? 'rotate' : 'flip');
+    const hints = getTrackHints('g02-t2', input.ageTrack, input.seed, turn === 'quarter-mirror' ? 'quarter-mirror' : turn === 'mirror' ? 'flip' : 'rotate');
     return {
       board: { kind: 'spatial-rotation', shape, turn, options },
       solution,
       hints,
-      explanation: `Khi xoay hình mẫu đúng góc quay, ta được kết quả là Hình ${targetLabel}.`,
+      explanation: `Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình ${targetLabel}.`,
       title: 'Xoay hình',
       tutorial: getNaturalTutorial('g02-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
@@ -813,13 +813,17 @@ definitions.push({
     // Options: exactly ONE derivable fact (the solution) + distractors
     const options = shuffleDeterministic(rng, [solution, ...distractors]).slice(0, 3 + rank);
     const hints = getTrackHints('g04-t2', input.ageTrack, input.seed);
+    // These associations are arbitrary implications between game symbols, not
+    // claims about necessary causes in the world (for example, sun -> morning).
+    const symbolRules = rules.map((rule) => `"${rule.if}" → "${rule.then}"`).join('; ');
+    const symbolContext = 'Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này';
     return {
       board: { kind: 'reasoning-if-then', rules, facts, options },
       solution,
       hints,
-      explanation: `Từ những điều đã biết chắc chắn và áp dụng luật Nếu - Thì, ta tìm ra kết luận là ${solution}.`,
+      explanation: `${symbolContext}: ${symbolRules}. Từ thẻ "${facts[0]}", áp dụng luật để suy ra thẻ "${solution}".`,
       title: 'Nếu thì',
-      tutorial: getNaturalTutorial('g04-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
+      tutorial: `${symbolContext}. ${getNaturalTutorial('g04-t2', input.ageTrack, Math.floor(rng() * 100), input.seed)}`,
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1215,13 +1219,19 @@ definitions.push({
     const solution = solveCommandOrder(board) as string[];
     const commandTexts = solution.map((id) => commands.find((cmd) => cmd.id === id)?.text).filter(Boolean);
     const hints = getTrackHints('g06-t2', input.ageTrack, input.seed);
+    const orderRules = before.map(([first, second]) => {
+      const firstText = commands.find((command) => command.id === first)!.text;
+      const secondText = commands.find((command) => command.id === second)!.text;
+      return `${firstText} → ${secondText}`;
+    }).join('; ');
+    const orderContext = `Luật riêng của ván này (→ là làm trước): ${orderRules}.`;
     return {
       board,
       solution,
       hints,
-      explanation: `Thứ tự đúng của các bước là: ${commandTexts.join(' → ')}.`,
+      explanation: `${orderContext} Một thứ tự theo luật của ván này là: ${commandTexts.join(' → ')}.`,
       title: 'Xếp lệnh',
-      tutorial: getNaturalTutorial('g06-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
+      tutorial: `${orderContext} Mọi thứ tự giữ đủ luật đều được.`,
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1712,7 +1722,7 @@ definitions.push({
         text,
         traits: {
           nhóm: ruleTrait === 'nhóm' && isBad ? 'đồ ăn' : (index === 2 ? 'đồ dùng học tập' : 'đồ chơi'),
-          bước: ruleTrait === 'bước' && isBad ? 'đi sai hướng' : (index === 3 ? 'đi đúng vạch' : 'đi đúng hướng'),
+          bước: ruleTrait === 'bước' && isBad ? (index === 3 ? 'đi ngoài vạch' : 'đi sai hướng') : (index === 3 ? 'đi đúng vạch' : 'đi đúng hướng'),
         },
       };
     });
@@ -1727,7 +1737,7 @@ definitions.push({
       board,
       solution,
       hints,
-      explanation: `Tình huống ${badNum} chưa hợp lý vì có đặc điểm "${badTraitVal}", trong khi quy tắc chuẩn yêu cầu "${ruleValue}".`,
+      explanation: `Tình huống ${badNum}: "${scene[badIdx]!.text}" có đặc điểm "${badTraitVal}", trong khi luật của ván này yêu cầu "${ruleValue}".`,
       title: 'Chi tiết bất hợp lý',
       tutorial: getNaturalTutorial('g08-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),

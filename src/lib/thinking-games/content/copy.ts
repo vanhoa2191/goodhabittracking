@@ -43,13 +43,13 @@ export const GAME_INVITATIONS: Record<GameTypeId, readonly string[]> = {
     'Hãy xem chiếc máy biến đổi các con số thế nào rồi tìm kết quả tiếp theo nhé!',
     'Cùng mình giải mã bí mật của cỗ máy biến đổi số ngày hôm nay nào bạn!',
     'Bạn thử đoán xem khi cho số mới vào máy thì kết quả đầu ra sẽ là bao nhiêu?',
-    'Thử thách chiếc máy biến đổi hôm nay sẽ kiểm tra khả năng suy đoán của bạn đấy!',
+    'Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!',
   ],
   'g02-t1': [
     'Mỗi hình đều có một chiếc bóng thật đẹp, bạn ghép bóng cùng mình nhé!',
     'Bạn hãy nhìn kỹ hình mẫu và tìm chiếc bóng khớp nhất trong các lựa chọn.',
     'Cùng mình so từng góc cạnh để tìm chiếc bóng chuẩn xác cho hình nào!',
-    'Thử thách ghép bóng hôm nay đòi hỏi bạn phải quan sát từng ô nhỏ đấy nhé.',
+    'Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!',
     'Chào bạn, bạn đã sẵn sàng tìm bóng cho hình mẫu cùng mình chưa nào?',
   ],
   'g02-t2': [
@@ -70,7 +70,7 @@ export const GAME_INVITATIONS: Record<GameTypeId, readonly string[]> = {
     'Một dãy các từ sắp xuất hiện rồi biến mất, bạn nhớ thứ tự cùng mình nhé!',
     'Bạn hãy tập trung nhìn dãy thật kỹ để xếp lại đúng như lúc đầu nha!',
     'Cùng mình rèn luyện trí nhớ bằng cách ghi nhớ thứ tự của các bạn nhỏ nhé!',
-    'Thử thách nhớ chuỗi hôm nay xem ai nhớ nhanh và chính xác hơn nào!',
+    'Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!',
     'Chào bạn, cùng mình chơi trò nhớ thứ tự các đồ vật thật vui nhé!',
   ],
   'g03-t2': [
@@ -126,7 +126,7 @@ export const GAME_INVITATIONS: Record<GameTypeId, readonly string[]> = {
     'Chiếc giỏ đang chờ bạn chọn các món đồ sao cho vừa đủ số mục tiêu đấy!',
     'Hãy chọn những con số phù hợp để đạt đúng mục tiêu mà không bị vượt quá nhé!',
     'Cùng mình nhặt các món đồ vào giỏ để đạt được tổng điểm mong muốn nào!',
-    'Thử thách gom đủ mục tiêu hôm nay sẽ kiểm tra khả năng cộng nhẩm của bạn đấy!',
+    'Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!',
     'Chào bạn, bạn hãy chọn các số thật khéo léo để đạt đúng mục tiêu cùng mình nhé!',
   ],
   'g06-t1': [
@@ -175,7 +175,7 @@ export const GAME_INVITATIONS: Record<GameTypeId, readonly string[]> = {
     'Hai bức tranh trông rất giống nhau, nhưng có những điểm khác, bạn tìm nhé!',
     'Hãy so sánh từng hàng và từng cột để không bỏ sót điểm khác biệt nào nha bạn!',
     'Cùng mình làm thám tử tinh mắt tìm ra tất cả những chỗ khác nhau nào!',
-    'Thử thách tìm điểm khác biệt hôm nay sẽ kiểm tra sự chú ý chi tiết của bạn đấy!',
+    'Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!',
     'Chào bạn, hãy soi thật kỹ hai bức tranh và tìm các điểm khác cùng mình nhé!',
   ],
   'g08-t2': [
@@ -706,6 +706,14 @@ export function getNaturalTutorial(
   seed: string,
   boardData?: BoardData | null,
 ): string {
+  if (gameTypeId === 'g06-t2' && boardData?.kind === 'planning-command-order') {
+    const orderRules = boardData.before.map(([first, second]) => {
+      const firstText = boardData.commands.find((command) => command.id === first)!.text;
+      const secondText = boardData.commands.find((command) => command.id === second)!.text;
+      return `${firstText} → ${secondText}`;
+    }).join('; ');
+    return `Luật riêng của ván này (→ là làm trước): ${orderRules}. Mọi thứ tự giữ đủ luật đều được.`;
+  }
   const trackGroup = ageTrack === 'age_6_8' || ageTrack === 'age_3_5' ? 'age_6_8' : 'age_9_12';
   const mode = getTutorialMode(gameTypeId, boardData);
   const modeVariants = mode ? GAME_MODE_TUTORIALS[gameTypeId]?.[mode]?.[trackGroup] : undefined;
@@ -713,5 +721,9 @@ export function getNaturalTutorial(
     ? modeVariants
     : GAME_TUTORIALS[gameTypeId]?.[trackGroup];
   if (!variants || variants.length === 0) return 'Bạn quan sát thật kỹ và chọn đáp án chính xác nhé.';
-  return formatTutorial(selectBySeed(variants, seed, day), boardData);
+  const tutorial = formatTutorial(selectBySeed(variants, seed, day), boardData);
+  if (gameTypeId === 'g04-t2' && boardData?.kind === 'reasoning-if-then') {
+    return `Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. ${tutorial}`;
+  }
+  return tutorial;
 }
