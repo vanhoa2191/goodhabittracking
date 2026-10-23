@@ -4,8 +4,8 @@
   "generatedAt": "2026-10-22T00:00:00.000Z",
   "contentVersion": "p08-candidates-365-v2",
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-f649e4224478fc18",
-  "inputSha256": "2430e697d36746b91c57ee2f84f0315683262c90e16e5613631347a3e76ae6e1",
+  "engineVersion": "engine-e2ee48b85e3f760d",
+  "inputSha256": "f8fe17cf9f7d8728ee15a487f7f7a78b80b666f336dc20ac23cd66ec9691e838",
   "csvSha256": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
   "metrics": {
     "itemCount": 2920,

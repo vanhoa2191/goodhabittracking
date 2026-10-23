@@ -8,7 +8,7 @@
   "contentVersion": "p08-candidates-365-v2",
   "generatedAt": "2026-10-22T00:00:00.000Z",
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-f649e4224478fc18",
+  "engineVersion": "engine-e2ee48b85e3f760d",
   "seedPolicy": "contentVersion|slotId|ageTrack|locale|gameTypeId|ruleVariant",
   "items": [
     {
@@ -57,7 +57,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -110,7 +110,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -165,7 +165,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -221,7 +221,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -299,7 +299,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -386,7 +386,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -482,7 +482,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -587,7 +587,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -694,7 +694,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -834,7 +834,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1023,7 +1023,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1236,7 +1236,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1295,7 +1295,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1358,7 +1358,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1430,7 +1430,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1503,7 +1503,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1558,7 +1558,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1616,7 +1616,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1678,7 +1678,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1743,7 +1743,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1832,7 +1832,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -1926,7 +1926,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2048,7 +2048,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2186,7 +2186,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2240,7 +2240,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2299,7 +2299,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2363,7 +2363,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2432,7 +2432,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2514,7 +2514,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2611,7 +2611,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2721,7 +2721,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2840,7 +2840,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2888,7 +2888,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2937,7 +2937,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -2987,7 +2987,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3038,7 +3038,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3153,7 +3153,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3276,7 +3276,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3429,7 +3429,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3616,7 +3616,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3684,7 +3684,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3761,7 +3761,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3847,7 +3847,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3937,7 +3937,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -3984,7 +3984,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4032,7 +4032,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4081,7 +4081,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4131,7 +4131,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4188,7 +4188,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4245,7 +4245,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4302,7 +4302,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4359,7 +4359,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4467,7 +4467,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4612,7 +4612,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -4802,7 +4802,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5016,7 +5016,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5108,7 +5108,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5216,7 +5216,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5335,7 +5335,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5458,7 +5458,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5536,7 +5536,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5626,7 +5626,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5728,7 +5728,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5842,7 +5842,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5899,7 +5899,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -5960,7 +5960,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6022,7 +6022,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6089,7 +6089,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6181,7 +6181,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6281,7 +6281,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6398,7 +6398,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6520,7 +6520,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6596,7 +6596,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6681,7 +6681,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6781,7 +6781,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6885,7 +6885,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -6950,7 +6950,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7020,7 +7020,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7094,7 +7094,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7174,7 +7174,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7231,7 +7231,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7291,7 +7291,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7354,7 +7354,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7418,7 +7418,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7497,7 +7497,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7577,7 +7577,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7658,7 +7658,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7741,7 +7741,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7819,7 +7819,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -7906,7 +7906,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8002,7 +8002,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8107,7 +8107,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8238,7 +8238,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8373,7 +8373,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8528,7 +8528,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8703,7 +8703,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8762,7 +8762,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8825,7 +8825,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8897,7 +8897,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -8970,7 +8970,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9045,7 +9045,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9129,7 +9129,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9222,7 +9222,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9324,7 +9324,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9413,7 +9413,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9507,7 +9507,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9629,7 +9629,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9767,7 +9767,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9819,7 +9819,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9872,7 +9872,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9927,7 +9927,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -9983,7 +9983,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10066,7 +10066,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10161,7 +10161,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10271,7 +10271,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10389,7 +10389,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10496,7 +10496,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10636,7 +10636,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -10825,7 +10825,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11005,7 +11005,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11120,7 +11120,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11243,7 +11243,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11396,7 +11396,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11583,7 +11583,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11638,7 +11638,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11696,7 +11696,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11758,7 +11758,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11823,7 +11823,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11870,7 +11870,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11918,7 +11918,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -11967,7 +11967,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12017,7 +12017,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12071,7 +12071,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12130,7 +12130,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12194,7 +12194,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12263,7 +12263,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12371,7 +12371,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12516,7 +12516,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12706,7 +12706,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12920,7 +12920,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -12968,7 +12968,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13017,7 +13017,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13067,7 +13067,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13118,7 +13118,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13196,7 +13196,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13286,7 +13286,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13388,7 +13388,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13502,7 +13502,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13570,7 +13570,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13647,7 +13647,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13733,7 +13733,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13823,7 +13823,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -13915,7 +13915,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14015,7 +14015,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14132,7 +14132,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14254,7 +14254,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14311,7 +14311,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14368,7 +14368,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14425,7 +14425,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14482,7 +14482,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14547,7 +14547,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14617,7 +14617,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14692,7 +14692,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14772,7 +14772,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14865,7 +14865,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -14971,7 +14971,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15087,7 +15087,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15211,7 +15211,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15290,7 +15290,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15370,7 +15370,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15451,7 +15451,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15534,7 +15534,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15591,7 +15591,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15652,7 +15652,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15714,7 +15714,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15781,7 +15781,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -15912,7 +15912,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16047,7 +16047,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16202,7 +16202,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16377,7 +16377,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16453,7 +16453,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16538,7 +16538,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16638,7 +16638,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16742,7 +16742,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16817,7 +16817,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16901,7 +16901,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -16994,7 +16994,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17096,7 +17096,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17153,7 +17153,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17213,7 +17213,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17276,7 +17276,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17340,7 +17340,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17393,7 +17393,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17446,7 +17446,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17501,7 +17501,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17556,7 +17556,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17639,7 +17639,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17731,7 +17731,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17832,7 +17832,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -17942,7 +17942,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18049,7 +18049,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18189,7 +18189,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18378,7 +18378,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18558,7 +18558,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18617,7 +18617,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18680,7 +18680,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18752,7 +18752,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18825,7 +18825,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18880,7 +18880,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18937,7 +18937,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -18997,7 +18997,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19059,7 +19059,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19154,7 +19154,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19254,7 +19254,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19382,7 +19382,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19526,7 +19526,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19580,7 +19580,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19639,7 +19639,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19703,7 +19703,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19772,7 +19772,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19854,7 +19854,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -19951,7 +19951,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -20064,7 +20064,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
@@ -20181,7 +20181,7 @@
       "source": {
         "repo": "vanhoa2191/goodhabittracking",
         "url": "https://github.com/vanhoa2191/goodhabittracking",
-        "commit": "f649e4224478fc181cb844ff27a88149e7a9c9602949ace0ae66da3c12ae71c3",
+        "commit": "e2ee48b85e3f760d54d6550ca8fc7d1fc135f193bfceb5bc6155543dacdd0848",
         "license": "UNLICENSED",
         "path": "docs/research/2026-10-17-daily-thinking-games-365.csv"
       },
