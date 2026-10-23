@@ -18,12 +18,10 @@ test('the settings links stay in view while scrolling and mark the section you a
   await expect(nav.locator('a[aria-current="location"]')).toHaveCount(1);
 
   const security = page.locator('#settings-security');
-  await security.scrollIntoViewIfNeeded();
-  const headingBounds = await security.boundingBox();
-  const navBounds = await nav.boundingBox();
-  if (!headingBounds || !navBounds) throw new Error('Settings heading and navigation must be visible before scrolling.');
-  // Read this section just below the sticky links, regardless of the preceding cards' height.
-  await page.mouse.wheel(0, headingBounds.y - (navBounds.y + navBounds.height + 48));
+  // Honor the heading's authored scroll margin. An in-flight smooth scroll can
+  // invalidate coordinates measured before a subsequent wheel movement.
+  await security.evaluate((heading) => heading.scrollIntoView({ block: 'start', behavior: 'instant' }));
+  await expect(security).toBeInViewport();
   await expect(nav).toBeInViewport();
   await expect(nav.locator('a[aria-current="location"]')).toHaveAttribute('href', '#settings-security');
 
