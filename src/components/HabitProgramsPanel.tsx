@@ -4,28 +4,42 @@ import { useMemo, useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
 import { getHabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
+import { getDailyLivingCopy } from '@/lib/i18n/daily-living-copy';
 import { useLocalizedFramework } from '@/lib/habit-framework/localized';
 import { localDayKey } from '@/lib/habit-fire';
 import { programsForAge } from '@/lib/habit-programs/programs';
 import type { HabitProgram } from '@/lib/habit-programs/programs';
 import { childAgeYears } from '@/lib/habit-programs/summary';
 import { fillTemplate } from '@/lib/habit-programs/suggestion-display';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
+import {
+  getAllDailyLivingSets,
+  getTemplatesForSet,
+  type DailyLivingSet,
+} from '@/lib/daily-living-habits';
 import type { ChildProfile } from '@/types';
 import { HabitProgramStartModal } from './HabitProgramStartModal';
+import { DailyLivingSetModal } from './DailyLivingSetModal';
 import { HelpTip } from '@/components/help/HelpTip';
 
 
 type Target = { readonly program: HabitProgram; readonly child: ChildProfile; readonly ageYears: number };
 
 /** Sets of habits to build step by step, offered per child by age. Starting one never happens without the parent's three steps. */
-export function HabitProgramsPanel({ onStarted, onNotConfirmed }: { readonly onStarted: () => void; readonly onNotConfirmed: () => void }) {
+export function HabitProgramsPanel({ onStarted, onNotConfirmed }: { readonly onStarted: (childId?: string) => void; readonly onNotConfirmed: () => void }) {
   const { profiles } = useAppStore();
   const { language } = useTranslation();
   const framework = useLocalizedFramework(language);
   const habitNames = useMemo(() => new Map(framework.habits.map((habit) => [habit.id, habit.name])), [framework]);
   const copy = getHabitProgramsCopy(language);
+  const dailyCopy = getDailyLivingCopy(language);
   const [target, setTarget] = useState<Target | null>(null);
+  const [selectedDailySet, setSelectedDailySet] = useState<DailyLivingSet | null>(null);
   const today = localDayKey(new Date());
+  // The development-framework programs keep their own flag; the daily living sets can ship without them.
+  const showFrameworkPrograms = defaultExperienceFlags.habitPrograms;
+  const showDailyLivingSets = defaultExperienceFlags.dailyLivingHabits && language === 'vi';
+  const dailySets = getAllDailyLivingSets();
 
   return (
     <section data-testid="habit-programs" aria-labelledby="habit-programs-title" className="space-y-4">
@@ -33,8 +47,54 @@ export function HabitProgramsPanel({ onStarted, onNotConfirmed }: { readonly onS
         <div className="flex items-center gap-1"><h3 id="habit-programs-title" className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{copy.programsTitle}</h3><HelpTip topic="habits.programs" /></div>
         <p className="text-sm text-slate-600 dark:text-slate-300">{copy.programsIntro}</p>
       </div>
-      {profiles.length === 0 && <p className="text-sm text-slate-600 dark:text-slate-300">{copy.programsEmpty}</p>}
-      {profiles.map((child) => {
+      {showDailyLivingSets && (
+        <div data-testid="daily-living-sets" className="space-y-3">
+          <div>
+            <h4 className="text-base font-extrabold text-slate-800 dark:text-slate-100">{dailyCopy.tabLabel}</h4>
+            <p className="text-xs text-slate-600 dark:text-slate-300">{dailyCopy.setsIntro}</p>
+          </div>
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {dailySets.map((set) => {
+              const items = getTemplatesForSet(set.id);
+              return (
+                <li
+                  key={set.id}
+                  data-set-id={set.id}
+                  className="flex flex-col justify-between gap-3 rounded-3xl border border-slate-100 bg-white p-5 shadow-xs dark:border-zinc-800 dark:bg-zinc-900"
+                >
+                  <div>
+                    <h5 className="text-base font-extrabold text-slate-800 dark:text-slate-100">{set.title}</h5>
+                    <p className="mt-1 text-xs text-slate-600 dark:text-slate-300">{set.description}</p>
+                    <ul className="mt-2 space-y-1 text-xs text-slate-600 dark:text-slate-300">
+                      {items.map((item) => (
+                        <li key={item.id}>
+                          <span aria-hidden="true" className="mr-1">{item.icon}</span>
+                          {item.shortTitle}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <button
+                    type="button"
+                    data-testid="daily-living-set-start"
+                    data-set-id={set.id}
+                    disabled={profiles.length === 0}
+                    onClick={() => setSelectedDailySet(set)}
+                    className="min-h-11 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {dailyCopy.openSetButton}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+      {showFrameworkPrograms && profiles.length === 0 && <p className="text-sm text-slate-600 dark:text-slate-300">{copy.programsEmpty}</p>}
+      {showFrameworkPrograms && showDailyLivingSets && profiles.length > 0 && (
+        <h4 className="text-base font-extrabold text-slate-800 dark:text-slate-100">{dailyCopy.frameworkSetsTitle}</h4>
+      )}
+      {showFrameworkPrograms && profiles.map((child) => {
         const ageYears = childAgeYears(child, today);
         const childName = child.nickname || child.name;
         return (
@@ -71,6 +131,14 @@ export function HabitProgramsPanel({ onStarted, onNotConfirmed }: { readonly onS
           onClose={() => setTarget(null)}
           onStarted={() => { setTarget(null); onStarted(); }}
           onNotConfirmed={() => { setTarget(null); onNotConfirmed(); }}
+        />
+      )}
+      {selectedDailySet && (
+        <DailyLivingSetModal
+          set={selectedDailySet}
+          onClose={() => setSelectedDailySet(null)}
+          onStarted={(childId) => { setSelectedDailySet(null); onStarted(childId); }}
+          onNotConfirmed={() => { setSelectedDailySet(null); onNotConfirmed(); }}
         />
       )}
     </section>

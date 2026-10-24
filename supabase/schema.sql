@@ -72,3 +72,4 @@
 \ir migrations/202610110001_pro_plus_and_addons.sql
 \ir migrations/202610210001_thinking_games.sql
 \ir migrations/202610240001_thinking_games_settings_read.sql
+\ir migrations/202610250001_daily_living_template_refs.sql

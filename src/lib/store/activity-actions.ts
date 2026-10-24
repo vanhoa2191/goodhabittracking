@@ -2,10 +2,26 @@ import type { Dispatch, SetStateAction } from 'react';
 import type { User } from '@supabase/supabase-js';
 import type { HabitActivity } from '@/types';
 import type { ActivityMutation } from '@/lib/domain/activity-mutations';
+import { dailyLivingStatus, getDailyLivingTemplate } from '@/lib/daily-living-habits';
 import { requestActivityMutation } from './activity-mutation-client';
 import { removeActivity, updateActivityList } from './local-domain-actions';
 
 type NewActivity = Omit<HabitActivity, 'id' | 'createdAt'> & { readonly id?: string };
+
+export function overlapsDailyLivingAssignment(
+  candidate: Pick<HabitActivity, 'id' | 'childId' | 'legacyTemplateId'>,
+  existing: readonly HabitActivity[],
+): boolean {
+  if (!candidate.legacyTemplateId) return false;
+  const template = getDailyLivingTemplate(candidate.legacyTemplateId);
+  if (!template) return false;
+  if (existing.some((activity) => activity.id === candidate.id)) return true;
+  if (candidate.childId === null) {
+    return dailyLivingStatus(template, '', existing) === 'sharedCovers';
+  }
+  const status = dailyLivingStatus(template, candidate.childId, existing);
+  return status === 'added' || status === 'sharedCovers';
+}
 
 type ActivityActionsDependencies = {
   readonly currentUser: User | null;
@@ -58,6 +74,8 @@ export function createActivityActions(
     }
   };
 
+  const inFlightDailyLiving: HabitActivity[] = [];
+
   const createActivities = async (
     activities: readonly NewActivity[],
   ): Promise<boolean> => {
@@ -68,12 +86,35 @@ export function createActivityActions(
       createdAt,
     }));
     if (!dependencies.isDemoSession) {
-      return persistCloudActivity({ type: 'createMany', activities: createdActivities });
+      const accepted = [...dependencies.getActivities(), ...inFlightDailyLiving];
+      const trackedBatch: HabitActivity[] = [];
+      const filteredActivities = createdActivities.filter((activity) => {
+        if (overlapsDailyLivingAssignment(activity, accepted)) return false;
+        accepted.push(activity);
+        if (activity.legacyTemplateId && getDailyLivingTemplate(activity.legacyTemplateId)) {
+          trackedBatch.push(activity);
+          inFlightDailyLiving.push(activity);
+        }
+        return true;
+      });
+      if (filteredActivities.length === 0) return createdActivities.length > 0;
+      try {
+        return await persistCloudActivity({ type: 'createMany', activities: filteredActivities });
+      } finally {
+        for (const item of trackedBatch) {
+          const index = inFlightDailyLiving.indexOf(item);
+          if (index >= 0) inFlightDailyLiving.splice(index, 1);
+        }
+      }
     }
     dependencies.setActivities((previous) => {
       const accepted = [...previous];
       const additions = createdActivities.filter((activity) => {
-        if (!activity.journeyHabitKey) return true;
+        if (overlapsDailyLivingAssignment(activity, accepted)) return false;
+        if (!activity.journeyHabitKey) {
+          accepted.push(activity);
+          return true;
+        }
         if (overlapsJourneyAssignment(activity, accepted)) return false;
         accepted.push(activity);
         return true;

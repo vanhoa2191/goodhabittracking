@@ -12,12 +12,14 @@ import { getActivityMutationError } from '@/lib/i18n/activity-mutation-copy';
 import { getParentNavigationCopy } from '@/lib/i18n/parent-navigation-copy';
 import { useSevenDayCutoff } from '@/lib/use-seven-day-cutoff';
 import { HabitFrameworkLibrary } from './HabitFrameworkLibrary';
+import { DailyLivingHabitLibrary } from './DailyLivingHabitLibrary';
 import { LegacyHabitTemplateLibrary } from './LegacyHabitTemplateLibrary';
 import { HabitCueEditor } from './HabitCueEditor';
 import { HabitProgramsPanel } from './HabitProgramsPanel';
 import { cueChildOptions, keepIfOtherEditor } from '@/lib/habit-programs/parent-ui-state';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { getHabitProgramsCopy } from '@/lib/i18n/habit-programs-copy';
+import { getDailyLivingCopy } from '@/lib/i18n/daily-living-copy';
 import { HelpTip } from '@/components/help/HelpTip';
 
 interface ParentHabitsTabProps {
@@ -32,15 +34,18 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
   const navigationCopy = getParentNavigationCopy(language);
   const [mutationError, setMutationError] = useState('');
   const [collection, setCollection] = useState<'inUse' | 'library' | 'programs'>('inUse');
+  const [librarySection, setLibrarySection] = useState<'daily' | 'framework'>('daily');
   const [selectedChildId, setSelectedChildId] = useState('all');
   const [cueTarget, setCueTarget] = useState<{ activity: HabitActivity; title: string; childOptions: { id: string; name: string }[]; defaultChildId: string } | null>(null);
   const cueCopy = getHabitProgramsCopy(language);
+  const dailyCopy = getDailyLivingCopy(language);
   const [startedNotice, setStartedNotice] = useState(false);
   const noticeRef = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
     if (startedNotice && collection === 'inUse') noticeRef.current?.focus();
   }, [startedNotice, collection]);
-  const showPrograms = defaultExperienceFlags.habitPrograms && language === 'vi';
+  const showDailyLiving = defaultExperienceFlags.dailyLivingHabits && language === 'vi';
+  const showPrograms = (defaultExperienceFlags.habitPrograms || defaultExperienceFlags.dailyLivingHabits) && language === 'vi';
   const visibleActivities = activities.filter((activity) => selectedChildId === 'all' || activity.childId === null || activity.childId === selectedChildId);
   const weekStart = useSevenDayCutoff();
 
@@ -102,14 +107,60 @@ export function ParentHabitsTab({ onOpenHabit, onOpenHandbook }: ParentHabitsTab
 
       {collection === 'programs' && showPrograms ? (
         <HabitProgramsPanel
-          onStarted={() => { setStartedNotice(true); setCollection('inUse'); }}
+          onStarted={(childId) => {
+            if (childId) setSelectedChildId(childId);
+            setStartedNotice(true);
+            setCollection('inUse');
+          }}
           onNotConfirmed={() => { setMutationError(cueCopy.programUnconfirmed); setCollection('inUse'); }}
         />
       ) : collection === 'library' ? (
-        <section aria-label={navigationCopy.library}>
-          {language === 'vi'
-            ? <HabitFrameworkLibrary onMutationError={setMutationError} />
-            : <LegacyHabitTemplateLibrary onMutationError={setMutationError} />}
+        <section aria-label={navigationCopy.library} className="space-y-4">
+          {showDailyLiving ? (
+            <>
+              <div
+                role="group"
+                aria-label={dailyCopy.libraryContentChoiceLabel}
+                className="flex flex-wrap gap-2 rounded-2xl bg-slate-100 p-1.5 dark:bg-zinc-900"
+              >
+                <button
+                  type="button"
+                  data-testid="library-tab-daily"
+                  aria-pressed={librarySection === 'daily'}
+                  onClick={() => setLibrarySection('daily')}
+                  className={`min-h-11 rounded-xl px-4 py-2 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                    librarySection === 'daily'
+                      ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300'
+                      : 'text-slate-700 hover:bg-white/60 dark:text-slate-300 dark:hover:bg-zinc-800/60'
+                  }`}
+                >
+                  {dailyCopy.tabLabel}
+                </button>
+                <button
+                  type="button"
+                  data-testid="library-tab-framework"
+                  aria-pressed={librarySection === 'framework'}
+                  onClick={() => setLibrarySection('framework')}
+                  className={`min-h-11 rounded-xl px-4 py-2 text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+                    librarySection === 'framework'
+                      ? 'bg-white text-indigo-700 shadow-sm dark:bg-zinc-800 dark:text-indigo-300'
+                      : 'text-slate-700 hover:bg-white/60 dark:text-slate-300 dark:hover:bg-zinc-800/60'
+                  }`}
+                >
+                  {dailyCopy.frameworkTabLabel}
+                </button>
+              </div>
+              {librarySection === 'daily' ? (
+                <DailyLivingHabitLibrary />
+              ) : (
+                <HabitFrameworkLibrary onMutationError={setMutationError} />
+              )}
+            </>
+          ) : language === 'vi' ? (
+            <HabitFrameworkLibrary onMutationError={setMutationError} />
+          ) : (
+            <LegacyHabitTemplateLibrary onMutationError={setMutationError} />
+          )}
         </section>
       ) : (
       <section aria-label={navigationCopy.inUse} className="space-y-4">

@@ -22,6 +22,7 @@ describe('experience flags', () => {
       parentAi: false,
       printablesSale: false,
       thinkingGames: false,
+      dailyLivingHabits: false,
     });
   });
 
