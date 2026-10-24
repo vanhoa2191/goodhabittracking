@@ -69,7 +69,7 @@ describe('submitOnboarding', () => {
       showRealNameOnLeaderboard: false,
       isPublicOnLeaderboard: false,
     }, 'req-1', {
-      starterHabits: draft.habits.slice(0, 2).map(({ templateIndex, requiresApproval }) => ({ templateIndex, requiresApproval })),
+      starterHabits: draft.habits.slice(0, 2).map((habit) => ({ templateIndex: (habit as import('@/lib/onboarding/wizard').AgeStarterHabitChoice).templateIndex, requiresApproval: habit.requiresApproval })),
     });
     const rewardCopy = getOnboardingWizardCopy('vi').rewardTitles['experience-bedtime-story'];
     const template = MEANINGFUL_REWARD_TEMPLATES.find((reward) => reward.id === 'experience-bedtime-story');
