@@ -10,6 +10,7 @@ import {
   type StarterHabitChoice,
   type WizardDraft,
   initialDailyHabitSelection,
+  initialHabitSelection,
   isAgeStarterHabitChoice,
   isDailyStarterHabitChoice,
 } from '@/lib/onboarding/wizard';
@@ -65,14 +66,9 @@ export function HabitsStep({ draft, onChange }: HabitsStepProps) {
     if (newSource === currentSource) return;
 
     if (newSource === 'daily') {
-      // Switch to daily: replace age habits with daily habits, preserve age habits for potential switch back
-      const ageHabits = draft.habits.filter(isAgeStarterHabitChoice);
-      const dailyHabits = initialDailyHabitSelection(draft.childAge);
-      onChange({ ...draft, habits: [...ageHabits, ...dailyHabits] });
+      onChange({ ...draft, habits: initialDailyHabitSelection(draft.childAge) });
     } else {
-      // Switch to age: remove daily habits, keep age habits
-      const ageHabits = draft.habits.filter(isAgeStarterHabitChoice);
-      onChange({ ...draft, habits: ageHabits });
+      onChange({ ...draft, habits: initialHabitSelection(draft.childAge) });
     }
   };
 
