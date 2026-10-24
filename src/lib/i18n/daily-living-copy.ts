@@ -1,18 +1,55 @@
-import type { Language } from '@/types';
+import type { Language, TimeOfDay } from '@/types';
 
 /** Daily living habit copy for Vietnamese (MVP language). */
 const DAILY_LIVING_COPY_VI = {
   // Tab/section labels
   tabLabel: 'Sinh hoạt hằng ngày',
+  frameworkTabLabel: 'Theo khung phát triển',
+  libraryContentChoiceLabel: 'Chọn danh mục thư viện',
   libraryTitle: 'Thư viện sinh hoạt',
+  libraryIntro: 'Các việc tự phục vụ và vệ sinh cơ bản hằng ngày. Chọn bé rồi bấm Thêm để bắt đầu ngay.',
   setsTitle: 'Bộ sinh hoạt',
+  setsIntro: 'Chọn một bộ gợi ý cho bé, xem trước và chỉnh lại các việc trước khi thêm.',
+  frameworkSetsTitle: 'Theo khung phát triển',
+  openSetButton: 'Chọn bộ này',
 
-  // Actions
+  // Child / scope selection
+  childSelectLabel: 'Áp dụng cho',
+  childSelectPlaceholder: '— Chọn bé —',
+  allFamilyOption: 'Cả nhà',
+  allFamilyNote: 'Mục chung áp dụng cho mọi bé trong nhà và không tách riêng trạng thái "Bé đã tự làm" cho từng bé.',
+
+  // Card details & actions
   addButton: 'Thêm',
+  savingButton: 'Đang lưu...',
   addedButton: 'Đã thêm',
+  addedSharedButton: 'Đã thêm (mục chung)',
+  sharedCoversNote: 'Đã áp dụng qua mục chung của cả nhà.',
   restoreButton: 'Khôi phục',
+  archivedLabel: 'Đã tạm dừng',
   graduatedLabel: 'Bé đã tự làm',
   practiceAgainButton: 'Luyện lại',
+  supportSummary: 'Hướng dẫn cho người lớn',
+  cueLabel: 'Gợi ý thời điểm:',
+  timeOfDayLabels: {
+    morning: 'Sáng',
+    afternoon: 'Chiều',
+    evening: 'Tối',
+    anytime: 'Bất kỳ',
+  },
+
+  // Set modal
+  setModalChildLabel: 'Chọn bé',
+  setModalLimitHint: 'Gợi ý cho {child}: chọn tối đa {limit} việc mới cùng lúc để bé dễ bắt đầu.',
+  setModalOverLimitHint: 'Đang chọn {selected} việc mới, nhiều hơn mức gợi ý {limit} việc cho độ tuổi này. Bạn vẫn có thể tiếp tục.',
+  setItemAlreadyAdded: 'Đã có',
+  setItemSharedAdded: 'Đã có (mục chung)',
+  setItemTimeLabel: 'Buổi',
+  setItemPointsLabel: 'Sao (0–100)',
+  setTotalPointsLabel: 'Tổng sao: {points} ⭐ ({count} mục đã chọn)',
+  setAllItemsAddedNotice: 'Bé đã có đầy đủ các thói quen trong bộ này.',
+  setCancelButton: 'Hủy',
+  setConfirmButton: 'Xác nhận',
 
   // Notifications
   savedNotice: 'Đã lưu thói quen sinh hoạt',
@@ -92,13 +129,46 @@ const DAILY_LIVING_COPY_VI = {
 /** English fallback (used when locale is not Vietnamese). */
 const DAILY_LIVING_COPY_EN = {
   tabLabel: 'Daily Living',
+  frameworkTabLabel: 'Development Framework',
+  libraryContentChoiceLabel: 'Choose library section',
   libraryTitle: 'Daily Living Library',
+  libraryIntro: 'Basic daily self-care and hygiene habits. Select a child and tap Add to start right away.',
   setsTitle: 'Daily Living Sets',
+  setsIntro: 'Pick a suggested routine set, preview and adjust habits before adding.',
+  frameworkSetsTitle: 'Development Framework',
+  openSetButton: 'Choose this set',
+  childSelectLabel: 'Assign to',
+  childSelectPlaceholder: '— Select a child —',
+  allFamilyOption: 'Whole family',
+  allFamilyNote: 'Shared habits apply to all children and cannot be graduated per child.',
   addButton: 'Add',
+  savingButton: 'Saving...',
   addedButton: 'Added',
+  addedSharedButton: 'Added (shared)',
+  sharedCoversNote: 'Already covered by a shared family habit.',
   restoreButton: 'Restore',
+  archivedLabel: 'Paused',
   graduatedLabel: 'Child does it alone',
   practiceAgainButton: 'Practice again',
+  supportSummary: 'Guidance for adults',
+  cueLabel: 'Suggested cue:',
+  timeOfDayLabels: {
+    morning: 'Morning',
+    afternoon: 'Afternoon',
+    evening: 'Evening',
+    anytime: 'Anytime',
+  },
+  setModalChildLabel: 'Select child',
+  setModalLimitHint: 'Suggested for {child}: pick up to {limit} new habits at a time.',
+  setModalOverLimitHint: 'Selected {selected} new habits, more than the suggested {limit} for this age. You can still continue.',
+  setItemAlreadyAdded: 'Already added',
+  setItemSharedAdded: 'Already added (shared)',
+  setItemTimeLabel: 'Time of day',
+  setItemPointsLabel: 'Stars (0–100)',
+  setTotalPointsLabel: 'Total stars: {points} ⭐ ({count} selected)',
+  setAllItemsAddedNotice: 'All habits in this set are already added for this child.',
+  setCancelButton: 'Cancel',
+  setConfirmButton: 'Confirm',
   savedNotice: 'Daily living habits saved',
   saveUnconfirmedNotice: 'Save not confirmed',
   restoreNotice: 'Habit restored',
@@ -160,15 +230,43 @@ const DAILY_LIVING_COPY_EN = {
 } as const;
 
 /** Type for the copy object. */
-type DailyLivingCopy = {
+export type DailyLivingCopy = {
   readonly tabLabel: string;
+  readonly frameworkTabLabel: string;
+  readonly libraryContentChoiceLabel: string;
   readonly libraryTitle: string;
+  readonly libraryIntro: string;
   readonly setsTitle: string;
+  readonly setsIntro: string;
+  readonly frameworkSetsTitle: string;
+  readonly openSetButton: string;
+  readonly childSelectLabel: string;
+  readonly childSelectPlaceholder: string;
+  readonly allFamilyOption: string;
+  readonly allFamilyNote: string;
   readonly addButton: string;
+  readonly savingButton: string;
   readonly addedButton: string;
+  readonly addedSharedButton: string;
+  readonly sharedCoversNote: string;
   readonly restoreButton: string;
+  readonly archivedLabel: string;
   readonly graduatedLabel: string;
   readonly practiceAgainButton: string;
+  readonly supportSummary: string;
+  readonly cueLabel: string;
+  readonly timeOfDayLabels: Readonly<Record<TimeOfDay, string>>;
+  readonly setModalChildLabel: string;
+  readonly setModalLimitHint: string;
+  readonly setModalOverLimitHint: string;
+  readonly setItemAlreadyAdded: string;
+  readonly setItemSharedAdded: string;
+  readonly setItemTimeLabel: string;
+  readonly setItemPointsLabel: string;
+  readonly setTotalPointsLabel: string;
+  readonly setAllItemsAddedNotice: string;
+  readonly setCancelButton: string;
+  readonly setConfirmButton: string;
   readonly savedNotice: string;
   readonly saveUnconfirmedNotice: string;
   readonly restoreNotice: string;
