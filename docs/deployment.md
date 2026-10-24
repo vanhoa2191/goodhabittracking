@@ -149,6 +149,32 @@ Lệnh từ chối worktree bẩn, SHA không khớp, URL không dùng HTTPS, fe
 
 `--allow-dirty` chỉ dành cho kiểm tra harness trong quá trình phát triển. Kết quả đó được ghi là working-tree evidence và không phải chứng nhận release candidate.
 
+## Quyền đọc cài đặt game tư duy
+
+Sau migration `202610210001_thinking_games.sql`, áp riêng
+`supabase/migrations/202610240001_thinking_games_settings_read.sql`, rồi chạy
+`supabase/preflight/202610240001_thinking_games_settings_read.verify.sql`.
+Ghi nhận migration `202610240001` đã áp trong migration history của Supabase
+để `schema_version()` đáp ứng phiên bản schema mà bản build mới yêu cầu.
+Bản sửa bổ sung duy nhất quyền `SELECT` cho `authenticated` trên
+`thinking_game_settings`; policy đọc theo gia đình và forced RLS giữ nguyên.
+Không cấp quyền ghi trực tiếp, quyền cho khách ẩn danh hoặc quyền đọc đáp án.
+Thiếu quyền này, endpoint đọc cài đặt của phụ huynh trả `409 settings_failed`.
+
+`npm run test:sql` kiểm tra đọc đúng gia đình, cách ly gia đình khác và từ chối
+ghi/đọc riêng tư bằng vai trò PostgreSQL thực. Rollback nằm tại
+`supabase/rollbacks/202610240001_thinking_games_settings_read.rollback.sql`;
+thu hồi quyền đọc cũng khôi phục lỗi cài đặt nên cần tắt game trước khi rollback.
+
+Catalog phát hành được kiểm định đầy đủ ở `prebuild` bằng
+`scripts/check-thinking-games-release-bundle.mjs`: digest phải khớp pin đã duyệt,
+proof phải khớp đúng bytes và toàn bộ schema/mechanics phải qua profile release.
+Worker chỉ kiểm tra proof và các cổng phát hành trên dữ liệu bundle bất biến;
+không chạy lại kiểm định cả năm trong request vì gây Cloudflare `1102`.
+Sau khi duyệt một catalog mới và cập nhật pin, tạo lại proof bằng
+`node scripts/check-thinking-games-release-bundle.mjs --write-proof`, rồi chạy
+build thường; proof cũ hoặc dữ liệu bị sửa khiến build thất bại.
+
 ## Database rollout
 
 Production migration là gate thủ công vì thay đổi RLS và dữ liệu trẻ:

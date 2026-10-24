@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/check-thinking-games-release-bundle.mjs",
     "build": "next build",
     "build:marketing": "node scripts/build-marketing.mjs",
     "guide:build": "node scripts/build-user-guide.mjs",
@@ -37,7 +38,7 @@
     "deploy:cloudflare": "node scripts/run-cloudflare.mjs deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "ci": "npm run lint && npm run typecheck && npm run test && npm run verify:habit-framework && npm run verify:habit-framework-translation && npm run check:secrets && npm run check:audit && npm run build:cloudflare && npm run check:performance",
-    "test:sql": "node scripts/verify-local-billing.mjs && node scripts/verify-local-affiliate.mjs && node tests/integration/migrations/family-operations-runtime.mjs && node tests/integration/migrations/thinking-games-security-runtime.mjs",
+    "test:sql": "node scripts/verify-local-billing.mjs && node scripts/verify-local-affiliate.mjs && node tests/integration/migrations/family-operations-runtime.mjs && node tests/integration/migrations/thinking-games-security-runtime.mjs && node tests/integration/migrations/thinking-games-settings-read-runtime.mjs",
     "generate:synthetic-release-fixture": "node scripts/generate-synthetic-release-fixture.mjs",
     "promote:thinking-games-release": "node scripts/promote-thinking-games-release.mjs"
   },
@@ -81,6 +82,9 @@
     "sharp": "0.35.5",
     "@node-minify/core": {
       "glob": "10.5.0"
+    },
+    "miniflare": {
+      "undici": "7.30.1"
     }
   }
 }

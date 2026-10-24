@@ -93,6 +93,7 @@ async function main() {
     }
     // A valid unauthenticated start must get past the approved catalog and
     // stop at session authentication, without touching the database.
+    const catalogStart = performance.now();
     const start = await fetch(`${origin}/api/child/thinking-games/start`, {
       method: 'POST', redirect: 'manual', signal: AbortSignal.timeout(15_000),
       headers: { 'content-type': 'application/json', origin },
@@ -102,10 +103,15 @@ async function main() {
     if (start.status !== 401 || startBody?.code !== 'session_invalid') {
       throw new Error(`Bundled release catalog was not admitted (HTTP ${start.status}, code ${startBody?.code ?? 'invalid_json'}).`);
     }
+    const catalogFirstRequestMs = Math.round(performance.now() - catalogStart);
+    if (catalogFirstRequestMs > 1000) {
+      throw new Error(`Catalog cold request exceeded the local 1000ms budget (${catalogFirstRequestMs}ms).`);
+    }
     process.stdout.write(`${JSON.stringify({
       status: 'passed', scope: 'local-worker-bootstrap',
       healthStatus: health.status, httpStatus: response.status,
       approvedCatalog: 'admitted', sessionBoundary: 'enforced',
+      catalogFirstRequestMs,
       productionReadiness: 'not-verified',
     })}\n`);
     return;
