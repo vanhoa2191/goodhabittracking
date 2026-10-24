@@ -1,8 +1,8 @@
 import 'server-only';
 
 import releaseManifest from '../../../../content/thinking-games/manifests/release-365-v1.json';
+import releaseProof from '../../../../content/thinking-games/manifests/release-365-v1.validation.json';
 
-import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseManifest, toGradingData, toPublicPuzzle, validateManifest } from '@/lib/thinking-games';
@@ -19,10 +19,6 @@ let admittedRelease: Extract<CatalogAdmission, { ok: true }> | undefined;
 
 function parseManifestFrom(raw: string): ThinkingGamesManifest {
   return parseManifest(JSON.parse(raw) as unknown);
-}
-
-function manifestDigest(raw: string): string {
-  return createHash('sha256').update(raw).digest('hex');
 }
 
 /**
@@ -76,14 +72,21 @@ export function getThinkingGameCatalog(): CatalogAdmission {
   // it once while retaining the master flag check on every request.
   if (admittedRelease) return admittedRelease;
 
-  // Cloudflare Workers cannot read repository files at runtime. Keep private
-  // content in this server-only bundle; canonical bytes preserve the reviewed pin.
-  const raw = JSON.stringify(releaseManifest, null, 2) + '\n';
-  const manifest = parseManifestFrom(raw);
-  if (manifest.manifestVersion !== RELEASE_MANIFEST_VERSION) return { ok: false, code: 'catalog_not_approved' };
-  const digest = manifestDigest(raw);
-
-  if (!admitReleaseManifest(manifest, RELEASE_MANIFEST_DIGEST, digest)) {
+  // Production builds verify the exact pinned bytes, complete schema and all
+  // mechanics before bundling this immutable JSON and its validation proof.
+  // Repeating that year-wide computation in a request exceeds Worker CPU limits.
+  const manifest = releaseManifest as unknown as ThinkingGamesManifest;
+  if (!RELEASE_MANIFEST_DIGEST
+    || releaseProof.schemaVersion !== 1
+    || releaseProof.validationProfile !== 'release'
+    || releaseProof.manifestDigest !== RELEASE_MANIFEST_DIGEST
+    || releaseProof.manifestVersion !== RELEASE_MANIFEST_VERSION
+    || manifest.manifestVersion !== RELEASE_MANIFEST_VERSION
+    || releaseProof.itemCount !== manifest.items.length
+    || manifest.items.length === 0
+    || manifest.isPilotFixture
+    || !manifest.editorialApproval
+    || manifest.items.some((item) => item.status !== 'approved' || !item.editorial)) {
     return { ok: false, code: 'catalog_not_approved' };
   }
   admittedRelease = { ok: true, profile: 'release', manifest };
