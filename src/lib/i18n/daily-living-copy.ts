@@ -57,6 +57,23 @@ const DAILY_LIVING_COPY_VI = {
   restoreNotice: 'Đã khôi phục thói quen',
   practiceAgainNotice: 'Đã đặt lại thói quen để luyện tập',
 
+  // Explicit replacement of the combined toothbrushing assignment
+  toothbrushingTitle: 'Tách đánh răng thành hai buổi?',
+  toothbrushingIntro: 'Bạn đang có mục đánh răng sáng & tối gộp. Mặc định giữ nguyên mục hiện tại.',
+  toothbrushingKeep: 'Giữ nguyên',
+  toothbrushingSwitch: 'Chuyển sang sáng + tối',
+  toothbrushingConfirm: 'Xác nhận chuyển',
+  toothbrushingSafetyNote: 'Chỉ tạm dừng mục gộp sau khi xác nhận hai mục sáng/tối đã lưu. Lịch sử và sao đã nhận vẫn giữ nguyên.',
+  toothbrushingSharedHint: 'Mục gộp đang dùng chung. Chọn “Cả nhà” để chuyển cho mọi bé; khi chọn riêng một bé, mục chung được giữ nguyên.',
+  toothbrushingRestoreHint: 'Khôi phục hoặc Luyện lại mục sáng/tối đã có trước khi chuyển. Không tạo bản trùng hay tự thay đổi mục đã tạm dừng.',
+  toothbrushingChildReplacementHint: 'Một bé đã có mục sáng/tối riêng. Giữ mục gộp chung để tránh thêm trùng; xem lại các mục của từng bé trước khi chuyển cả nhà.',
+  toothbrushingPreviousPoints: 'Tổng sao mục gộp hiện tại: {points} ⭐',
+  toothbrushingReplacementPoints: 'Tổng sao sau khi chuyển: {points} ⭐ mỗi ngày (hai mục riêng).',
+  toothbrushingCardHint: 'Dùng lựa chọn Giữ nguyên / Chuyển sang sáng + tối ở trên để tránh thêm chồng mục gộp.',
+  toothbrushingSavedNotice: 'Đã xác nhận hai mục sáng/tối và tạm dừng mục gộp. Lịch sử và sao đã nhận được giữ nguyên.',
+  toothbrushingSaveUnconfirmed: 'Lưu chưa được xác nhận. Mục gộp được giữ nguyên; kiểm tra đồng bộ rồi thử chuyển lại.',
+  toothbrushingPauseUnconfirmed: 'Hai mục sáng/tối đã được xác nhận. Chưa xác nhận tạm dừng mục gộp; kiểm tra đồng bộ rồi thử chuyển lại. Lịch sử và sao vẫn được giữ nguyên.',
+
   // Hand washing explanation
   handWashingNote: 'Rửa tay là tổng kết theo ngày, không ghi từng lần rửa.',
 
@@ -173,6 +190,21 @@ const DAILY_LIVING_COPY_EN = {
   saveUnconfirmedNotice: 'Save not confirmed',
   restoreNotice: 'Habit restored',
   practiceAgainNotice: 'Habit reset for practice',
+  toothbrushingTitle: 'Track toothbrushing in two parts?',
+  toothbrushingIntro: 'A combined morning and evening habit already exists. Keep it by default.',
+  toothbrushingKeep: 'Keep as is',
+  toothbrushingSwitch: 'Switch to morning + evening',
+  toothbrushingConfirm: 'Confirm switch',
+  toothbrushingSafetyNote: 'Pause the combined habit only after both replacements are confirmed saved. History and earned stars are preserved.',
+  toothbrushingSharedHint: 'The combined habit is shared. Choose Whole family to switch for everyone; a single-child setup keeps it unchanged.',
+  toothbrushingRestoreHint: 'Restore or Practice again with existing morning/evening habits before switching. Paused habits are never duplicated or changed automatically.',
+  toothbrushingChildReplacementHint: 'A child already has an individual morning/evening habit. Keep the shared combined habit to avoid duplicates; review each child’s habits before switching the whole family.',
+  toothbrushingPreviousPoints: 'Current combined stars: {points} ⭐',
+  toothbrushingReplacementPoints: 'Stars after switching: {points} ⭐ per day (two separate habits).',
+  toothbrushingCardHint: 'Use the Keep / Switch choices above to avoid overlapping with the combined habit.',
+  toothbrushingSavedNotice: 'Both replacements are confirmed and the combined habit is paused. History and earned stars are preserved.',
+  toothbrushingSaveUnconfirmed: 'Save not confirmed. The combined habit is unchanged; check sync and try switching again.',
+  toothbrushingPauseUnconfirmed: 'Both replacements are confirmed. Pausing the combined habit is not confirmed; check sync and try switching again. History and stars are preserved.',
   handWashingNote: 'Hand washing is a daily summary, not tracked per meal.',
   setDescriptions: {
     'DLS-01': 'Two basic morning tasks: brush teeth and wash face.',
@@ -271,6 +303,21 @@ export type DailyLivingCopy = {
   readonly saveUnconfirmedNotice: string;
   readonly restoreNotice: string;
   readonly practiceAgainNotice: string;
+  readonly toothbrushingTitle: string;
+  readonly toothbrushingIntro: string;
+  readonly toothbrushingKeep: string;
+  readonly toothbrushingSwitch: string;
+  readonly toothbrushingConfirm: string;
+  readonly toothbrushingSafetyNote: string;
+  readonly toothbrushingSharedHint: string;
+  readonly toothbrushingRestoreHint: string;
+  readonly toothbrushingChildReplacementHint: string;
+  readonly toothbrushingPreviousPoints: string;
+  readonly toothbrushingReplacementPoints: string;
+  readonly toothbrushingCardHint: string;
+  readonly toothbrushingSavedNotice: string;
+  readonly toothbrushingSaveUnconfirmed: string;
+  readonly toothbrushingPauseUnconfirmed: string;
   readonly handWashingNote: string;
   readonly setDescriptions: Record<string, string>;
   readonly shortTitles: Record<string, string>;

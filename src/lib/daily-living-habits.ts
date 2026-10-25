@@ -6,6 +6,7 @@ import { matchesLegacyTemplateAssignment } from '@/lib/legacy-template-identity'
 import { localizeWitTemplate } from '@/lib/i18n/wit-template-copy';
 import { SUPPORTED_LANGUAGES } from '@/lib/i18n/context';
 import { dailyLivingActivityId, isDailyLivingTemplateId } from './daily-living-habits-id';
+import { generateAgeAdaptedHabits } from './wit-framework';
 
 /** Content version constant exported for external reference. */
 export const DAILY_LIVING_CONTENT_VERSION = 'daily-living-v1';
@@ -271,6 +272,77 @@ export function dailyLivingStatus(
   if (archived) return 'archived';
 
   return 'available';
+}
+
+export type ToothbrushingConversion = {
+  readonly combinedActivities: readonly HabitActivity[];
+  readonly missingTemplates: readonly DailyLivingTemplate[];
+  readonly blockedReason: 'shared' | 'inactiveReplacement' | 'childReplacement' | null;
+  readonly canConvert: boolean;
+  readonly pairConfirmed: boolean;
+  readonly previousPoints: number;
+  readonly replacementPoints: number;
+  readonly replacements: readonly { readonly template: DailyLivingTemplate; readonly activity?: HabitActivity }[];
+};
+
+function isCombinedToothbrushing(activity: HabitActivity): boolean {
+  if (activity.legacyTemplateId) return activity.legacyTemplateId === 'WIT-PHY-02';
+  const legacy = legacyMatchInputs('WIT-PHY-02');
+  if (legacy && matchesLegacyTemplateAssignment(activity, legacy.item, legacy.copies)) return true;
+  if (activity.frameworkHabitId || activity.journeyHabitKey) return false;
+
+  // The age starter has no template ID. Require its full known structure;
+  // a custom habit with just the same title is never sufficient evidence.
+  const starter = generateAgeAdaptedHabits(activity.childId, '3-6')[1];
+  return Object.entries(starter).every(([key, value]) => {
+    const actual = activity[key as keyof HabitActivity];
+    return Array.isArray(value)
+      ? Array.isArray(actual) && value.length === actual.length && value.every((day, index) => day === actual[index])
+      : actual === value;
+  }) && !activity.isParentRole && !activity.boThi7Key;
+}
+
+/** Plans a conversion without changing assignments, points, or historical logs. */
+export function getToothbrushingConversion(
+  scope: string,
+  activities: readonly HabitActivity[],
+): ToothbrushingConversion {
+  const childId = scope === 'shared' ? null : scope;
+  const combinedActivities = scope ? activities.filter((activity) => (
+    activity.isActive && !activity.graduatedAt && !activity.isParentRole
+    && (activity.childId === childId || (scope !== 'shared' && activity.childId === null))
+    && isCombinedToothbrushing(activity)
+  )) : [];
+  const missingTemplates: DailyLivingTemplate[] = [];
+  let inactiveReplacement = false;
+  let confirmedCount = 0;
+  let replacementPoints = 0;
+  const replacements: { template: DailyLivingTemplate; activity?: HabitActivity }[] = [];
+  for (const id of ['WIT-DLY-01', 'WIT-DLY-02']) {
+    const template = getDailyLivingTemplate(id)!;
+    const matching = activities.filter((activity) => (
+      activity.legacyTemplateId === id && !activity.isParentRole
+      && (activity.childId === childId || (scope !== 'shared' && activity.childId === null))
+    ));
+    const active = matching.find((activity) => activity.isActive && !activity.graduatedAt);
+    replacements.push({ template, activity: active ?? matching[0] });
+    replacementPoints += active?.points ?? matching[0]?.points ?? template.points;
+    if (active) confirmedCount++;
+    else if (matching.length > 0) inactiveReplacement = true;
+    else missingTemplates.push(template);
+  }
+  const overlapsChildReplacement = scope === 'shared' && activities.some((activity) => (
+    activity.childId !== null && (activity.legacyTemplateId === 'WIT-DLY-01' || activity.legacyTemplateId === 'WIT-DLY-02')
+  ));
+  const blockedReason = scope !== 'shared' && combinedActivities.some((activity) => activity.childId === null)
+    ? 'shared' : overlapsChildReplacement ? 'childReplacement' : inactiveReplacement ? 'inactiveReplacement' : null;
+  return {
+    combinedActivities, missingTemplates, blockedReason, replacements,
+    canConvert: Boolean(scope) && combinedActivities.length > 0 && blockedReason === null,
+    pairConfirmed: Boolean(scope) && confirmedCount === 2,
+    previousPoints: combinedActivities.reduce((total, activity) => total + activity.points, 0),
+    replacementPoints,
+  };
 }
 
 /** Returns all daily living templates. */
