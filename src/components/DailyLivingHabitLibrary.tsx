@@ -1,11 +1,12 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Check, Plus, RotateCcw, Sparkles } from 'lucide-react';
 import { WIT_HABIT_PACKS, type HabitTemplate } from '@/lib/constants';
 import {
   dailyLivingStatus,
   getAllDailyLivingTemplates,
+  getToothbrushingConversion,
   toHabitActivity,
   type DailyLivingStatus,
   type DailyLivingTemplate,
@@ -20,6 +21,7 @@ import {
 import { localizeWitTemplate } from '@/lib/i18n/wit-template-copy';
 import { matchesLegacyTemplateAssignment } from '@/lib/legacy-template-identity';
 import { useAppStore } from '@/lib/store';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 import type { HabitActivity } from '@/types';
 
 function findLegacyMatchInputs(templateId: string): { item: HabitTemplate; copies: HabitTemplate[] } | undefined {
@@ -104,6 +106,47 @@ export function resolveDailyLivingCardState(
   return { status: 'available' };
 }
 
+type ToothbrushingConversionDependencies = {
+  readonly activities: readonly HabitActivity[];
+  readonly createActivities: (activities: readonly Omit<HabitActivity, 'createdAt'>[]) => Promise<boolean>;
+  readonly readActivities: () => Promise<readonly HabitActivity[]>;
+  readonly updateActivity: (id: string, updates: Partial<HabitActivity>) => Promise<boolean>;
+};
+
+/** A save acknowledgement alone is insufficient: the confirmed pair must be read back. */
+export async function convertToothbrushing(
+  scope: string,
+  familyId: string,
+  dependencies: ToothbrushingConversionDependencies,
+): Promise<'converted' | 'blocked' | 'saveUnconfirmed' | 'pauseUnconfirmed'> {
+  const plan = getToothbrushingConversion(scope, dependencies.activities);
+  if (!plan.canConvert) return 'blocked';
+  try {
+    if (plan.missingTemplates.length > 0) {
+      const replacements = await Promise.all(plan.missingTemplates.map((template) => (
+        toHabitActivity(template, familyId, { childId: scope === 'shared' ? null : scope })
+      )));
+      if (!await dependencies.createActivities(replacements)) return 'saveUnconfirmed';
+    }
+    const confirmed = getToothbrushingConversion(scope, await dependencies.readActivities());
+    if (!confirmed.canConvert || !confirmed.pairConfirmed
+      || confirmed.replacementPoints !== plan.replacementPoints || confirmed.previousPoints !== plan.previousPoints
+      || !plan.combinedActivities.every((original) => (
+      confirmed.combinedActivities.some((activity) => activity.id === original.id && activity.childId === original.childId)
+    ))) return 'saveUnconfirmed';
+  } catch {
+    return 'saveUnconfirmed';
+  }
+  try {
+    for (const activity of plan.combinedActivities) {
+      if (!await dependencies.updateActivity(activity.id, { isActive: false })) return 'pauseUnconfirmed';
+    }
+    return 'converted';
+  } catch {
+    return 'pauseUnconfirmed';
+  }
+}
+
 export function DailyLivingHabitLibrary() {
   const { activities, profiles, activeChildId, familyId, createActivities, updateActivity } = useAppStore();
   const { language } = useTranslation();
@@ -117,7 +160,22 @@ export function DailyLivingHabitLibrary() {
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
   const [unconfirmedMessage, setUnconfirmedMessage] = useState<string | null>(null);
+  const [conversionChoice, setConversionChoice] = useState({ scope: '', value: 'keep' });
+  const [readbackRequest, setReadbackRequest] = useState<((rows: readonly HabitActivity[]) => void) | null>(null);
   const pendingRef = useRef(false);
+  const noticeRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if (savedMessage || unconfirmedMessage) noticeRef.current?.focus();
+  }, [savedMessage, unconfirmedMessage]);
+
+  // Read after React has committed the store/sync update, rather than using the
+  // pre-save event handler's activities closure. No background retry pauses the old habit.
+  useEffect(() => {
+    if (readbackRequest) {
+      readbackRequest(activities);
+    }
+  }, [activities, readbackRequest]);
 
   const defaultScope = activeChildId && profiles.some((profile) => profile.id === activeChildId) ? activeChildId : '';
   const effectiveScope = userChoseScope
@@ -125,12 +183,43 @@ export function DailyLivingHabitLibrary() {
     : defaultScope;
 
   const isBusy = pendingId !== null;
+  const conversion = getToothbrushingConversion(effectiveScope, activities);
+  const showConversion = defaultExperienceFlags.dailyLivingHabits && language === 'vi' && conversion.combinedActivities.length > 0;
+  const choice = conversionChoice.scope === effectiveScope ? conversionChoice.value : 'keep';
 
   const handleScopeChange = (nextScope: string) => {
     setUserChoseScope(true);
     setSelectedScope(nextScope);
+    setConversionChoice({ scope: nextScope, value: 'keep' });
     setSavedMessage(null);
     setUnconfirmedMessage(null);
+  };
+
+  const handleConvert = async (): Promise<void> => {
+    if (!showConversion || !conversion.canConvert || choice !== 'switch' || pendingRef.current) return;
+    pendingRef.current = true;
+    setPendingId('toothbrushing-conversion');
+    setSavedMessage(null);
+    setUnconfirmedMessage(null);
+    try {
+      const result = await convertToothbrushing(effectiveScope, familyId ?? 'local-family', {
+        activities, createActivities, updateActivity,
+        readActivities: async () => {
+          const rows = await new Promise<readonly HabitActivity[]>((resolve) => setReadbackRequest(() => resolve));
+          setReadbackRequest(null);
+          return rows;
+        },
+      });
+      if (result === 'converted') {
+        setSavedMessage(copy.toothbrushingSavedNotice);
+        setConversionChoice({ scope: effectiveScope, value: 'keep' });
+      } else {
+        setUnconfirmedMessage(result === 'pauseUnconfirmed' ? copy.toothbrushingPauseUnconfirmed : copy.toothbrushingSaveUnconfirmed);
+      }
+    } finally {
+      pendingRef.current = false;
+      setPendingId(null);
+    }
   };
 
   const handleAdd = async (template: DailyLivingTemplate): Promise<void> => {
@@ -227,6 +316,7 @@ export function DailyLivingHabitLibrary() {
             id="daily-living-child-select"
             data-testid="daily-living-child-select"
             value={effectiveScope}
+            disabled={isBusy}
             aria-describedby="daily-living-scope-note"
             onChange={(event) => handleScopeChange(event.target.value)}
             className="mt-1 min-h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-100"
@@ -266,6 +356,8 @@ export function DailyLivingHabitLibrary() {
 
       {unconfirmedMessage && (
         <p
+          ref={noticeRef}
+          tabIndex={-1}
           role="alert"
           data-testid="daily-living-unconfirmed-notice"
           className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs font-semibold text-amber-900 dark:border-amber-800/60 dark:bg-amber-950/40 dark:text-amber-200"
@@ -276,6 +368,8 @@ export function DailyLivingHabitLibrary() {
 
       {savedMessage && (
         <p
+          ref={noticeRef}
+          tabIndex={-1}
           role="status"
           aria-live="polite"
           data-testid="daily-living-saved-notice"
@@ -283,6 +377,55 @@ export function DailyLivingHabitLibrary() {
         >
           {savedMessage}
         </p>
+      )}
+
+      {showConversion && (
+        <fieldset
+          data-testid="toothbrushing-conversion"
+          disabled={isBusy}
+          aria-describedby="toothbrushing-safety-note"
+          className="min-w-0 space-y-3 rounded-2xl border border-indigo-200 bg-indigo-50 p-4 text-sm text-indigo-900 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-200"
+        >
+          <legend className="px-1 font-extrabold">{copy.toothbrushingTitle}</legend>
+          <p>{copy.toothbrushingIntro}</p>
+          <ul className="list-inside list-disc break-words">
+            {conversion.combinedActivities.map((activity) => <li key={activity.id}>{activity.title}</li>)}
+          </ul>
+          <p>{copy.toothbrushingPreviousPoints.replace('{points}', String(conversion.previousPoints))}</p>
+          <ul className="space-y-1">
+            {conversion.replacements.map(({ template, activity }) => (
+              <li key={template.id} className="break-words">
+                {activity?.title ?? template.title} · {copy.timeOfDayLabels[activity?.timeOfDay ?? template.timeOfDay]} · {activity?.points ?? template.points} ⭐
+                {activity && <span className="ml-2 font-semibold">{copy.setItemAlreadyAdded}</span>}
+              </li>
+            ))}
+          </ul>
+          <p className="font-bold" data-testid="toothbrushing-total-points">
+            {copy.toothbrushingReplacementPoints.replace('{points}', String(conversion.replacementPoints))}
+          </p>
+          <p id="toothbrushing-safety-note">{copy.toothbrushingSafetyNote}</p>
+          {conversion.blockedReason && <p role="status" className="font-semibold">
+            {conversion.blockedReason === 'shared' ? copy.toothbrushingSharedHint
+              : conversion.blockedReason === 'childReplacement' ? copy.toothbrushingChildReplacementHint : copy.toothbrushingRestoreHint}
+          </p>}
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            <label className="flex min-h-11 cursor-pointer items-center gap-2 rounded-xl px-3 focus-within:ring-2 focus-within:ring-indigo-500">
+              <input type="radio" name="toothbrushing-choice" value="keep" checked={choice === 'keep'}
+                onChange={() => setConversionChoice({ scope: effectiveScope, value: 'keep' })} />
+              {copy.toothbrushingKeep}
+            </label>
+            <label className="flex min-h-11 items-center gap-2 rounded-xl px-3 focus-within:ring-2 focus-within:ring-indigo-500">
+              <input type="radio" name="toothbrushing-choice" value="switch" checked={choice === 'switch'} disabled={!conversion.canConvert}
+                onChange={() => setConversionChoice({ scope: effectiveScope, value: 'switch' })} />
+              {copy.toothbrushingSwitch}
+            </label>
+          </div>
+          <button type="button" data-testid="toothbrushing-confirm" disabled={isBusy || choice !== 'switch' || !conversion.canConvert}
+            onClick={() => void handleConvert()}
+            className="min-h-11 w-full rounded-xl bg-indigo-600 px-4 py-2 font-bold text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto">
+            {pendingId === 'toothbrushing-conversion' ? copy.savingButton : copy.toothbrushingConfirm}
+          </button>
+        </fieldset>
       )}
 
       <ul className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -293,6 +436,7 @@ export function DailyLivingHabitLibrary() {
           const cueText = template.cue ?? getDailyLivingCue(template.id, language);
           const primaryHeading = template.source === 'legacy' ? template.shortTitle : template.title;
           const secondaryTitle = template.source === 'legacy' ? template.title : (template.shortTitle !== template.title ? template.shortTitle : null);
+          const controlledByConversion = showConversion && (template.id === 'WIT-DLY-01' || template.id === 'WIT-DLY-02');
 
           return (
             <li key={template.id} className="flex">
@@ -375,6 +519,9 @@ export function DailyLivingHabitLibrary() {
                       {copy.sharedCoversNote}
                     </p>
                   )}
+                  {controlledByConversion && status === 'available' && (
+                    <p className="text-xs font-semibold text-indigo-700 dark:text-indigo-300">{copy.toothbrushingCardHint}</p>
+                  )}
                 </div>
 
                 {status === 'added' || status === 'sharedCovers' ? (
@@ -413,7 +560,7 @@ export function DailyLivingHabitLibrary() {
                   <button
                     type="button"
                     data-testid="daily-living-add"
-                    disabled={!effectiveScope || isBusy}
+                    disabled={!effectiveScope || isBusy || controlledByConversion}
                     onClick={() => void handleAdd(template)}
                     className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
                   >
