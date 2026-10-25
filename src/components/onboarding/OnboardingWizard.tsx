@@ -9,10 +9,12 @@ import { getOnboardingCopy } from '@/lib/i18n/onboarding-copy';
 import { getOnboardingExtraCopy } from '@/lib/i18n/onboarding-extra-copy';
 import { getOnboardingWizardCopy } from '@/lib/i18n/onboarding-wizard-copy';
 import { submitOnboarding } from '@/lib/onboarding/submit';
+import { getDailyLivingTemplate, toHabitActivity } from '@/lib/daily-living-habits';
 import {
   canAdvance,
   createInitialDraft,
   firstInvalidRewardId,
+  selectedDailyStarterHabits,
   type OnboardingRewardId,
   type WizardDraft,
   type WizardStep,
@@ -36,7 +38,7 @@ export function OnboardingWizard({ onClose }: OnboardingWizardProps) {
   const copy = getOnboardingCopy(language);
   const extra = getOnboardingExtraCopy(language);
   const wizard = getOnboardingWizardCopy(language);
-  const { createProfile, createReward, currentUser, isPro, activateFreeTrial, profiles, rewards } = useAppStore();
+  const { createProfile, createReward, createActivities, currentUser, isPro, activateFreeTrial, profiles, rewards, familyId } = useAppStore();
 
   const [draft, setDraft] = useState<WizardDraft>(() => createInitialDraft({
     language,
@@ -100,6 +102,17 @@ export function OnboardingWizard({ onClose }: OnboardingWizardProps) {
         setSubmitError(outcome.message);
         return;
       }
+
+      // The daily living starter habits belong to the child that was just created.
+      const dailyHabits = selectedDailyStarterHabits(draft);
+      if (dailyHabits.length > 0) {
+        const dailyActivities = await Promise.all(dailyHabits.flatMap(({ templateId }) => {
+          const template = getDailyLivingTemplate(templateId);
+          return template ? [toHabitActivity(template, familyId ?? 'local-family', { childId: outcome.profileId })] : [];
+        }));
+        if (dailyActivities.length > 0) await createActivities(dailyActivities);
+      }
+
       sounds.playLevelUp();
       setResult({ profileId: outcome.profileId, rewardsFailed: outcome.rewardsFailed });
       setStep(5);

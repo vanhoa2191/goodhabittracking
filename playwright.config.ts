@@ -56,6 +56,7 @@ export default defineConfig({
               NEXT_PUBLIC_DAILY_JOURNAL: 'true',
               NEXT_PUBLIC_PARENT_REENGAGEMENT: 'true',
               NEXT_PUBLIC_HABIT_PROGRAMS: 'true',
+              NEXT_PUBLIC_DAILY_LIVING_HABITS: 'true',
               NEXT_PUBLIC_DAILY_EASE: 'true',
               NEXT_PUBLIC_INDEPENDENCE: 'true',
               NEXT_PUBLIC_HABIT_COACH: 'true',

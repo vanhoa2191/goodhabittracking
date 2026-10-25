@@ -14,6 +14,14 @@ export type OnboardingWizardCopy = {
     readonly none: string;
     readonly parentRole: string;
     readonly approval: string;
+    /** Label for the daily living habits radio option. */
+    readonly dailyOptionLabel: string;
+    /** Explanation for the daily living habits option. */
+    readonly dailyOptionExplain: string;
+    /** Label for the age-based habits radio option. */
+    readonly ageOptionLabel: string;
+    /** Explanation for the age-based habits option. */
+    readonly ageOptionExplain: string;
   };
   readonly rewards: {
     readonly title: string;
@@ -67,6 +75,10 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       none: 'Ba mẹ có thể thêm thói quen sau ở Thiết kế.',
       parentRole: 'Ở tuổi này con học bằng cách nhìn ba mẹ. Đây là những việc ba mẹ làm gương mỗi ngày.',
       approval: 'Ba mẹ duyệt',
+      dailyOptionLabel: 'Bắt đầu với sinh hoạt hằng ngày',
+      dailyOptionExplain: 'Chọn bộ "Bắt đầu nhẹ nhàng" (đánh răng sáng, rửa mặt) — phù hợp mọi lứa tuổi, dễ thành thói quen.',
+      ageOptionLabel: 'Theo khung phát triển theo tuổi',
+      ageOptionExplain: 'Gợi ý thói quen phù hợp giai đoạn phát triển của bé (6 mục).',
     },
     rewards: {
       title: 'Quà để đổi sao',
@@ -131,6 +143,10 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       none: 'You can add habits later in Design.',
       parentRole: 'At this age children learn by watching you. These are things you model every day.',
       approval: 'Parent approves',
+      dailyOptionLabel: 'Start with daily living habits',
+      dailyOptionExplain: 'Choose the "Easy Start" set (morning brush, wash face) — works for any age, easy to build into a routine.',
+      ageOptionLabel: 'By developmental stage',
+      ageOptionExplain: 'Habits suggested for your child\'s developmental stage (6 habits).',
     },
     rewards: {
       title: 'Rewards to trade stars for',
@@ -195,6 +211,10 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       none: '之后可以在“规划”中添加习惯。',
       parentRole: '这个年龄的孩子通过观察父母来学习。这些是你每天可以做的榜样。',
       approval: '家长审核',
+      dailyOptionLabel: '从日常生活习惯开始',
+      dailyOptionExplain: '选择"轻松开始"组合（早刷牙、洗脸）——适合任何年龄，易养成习惯。',
+      ageOptionLabel: '按发育阶段',
+      ageOptionExplain: '适合孩子发育阶段的习惯建议（6 个习惯）。',
     },
     rewards: {
       title: '用星星兑换的奖励',
@@ -259,6 +279,10 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       none: '習慣は後から「設計」で追加できます。',
       parentRole: 'この年齢の子は、保護者の姿を見て学びます。毎日お手本として行うことです。',
       approval: '保護者が承認',
+      dailyOptionLabel: '日常生活の習慣から始める',
+      dailyOptionExplain: '「やさしいスタート」セット（朝の歯磨き、洗顔）を選ぶ — どの年齢にも適していて、習慣化しやすい。',
+      ageOptionLabel: '発達段階別',
+      ageOptionExplain: 'お子さまの発達段階に合わせた習慣の提案（6 つの習慣）。',
     },
     rewards: {
       title: 'スターと交換するごほうび',
@@ -323,6 +347,10 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       none: '습관은 나중에 설계에서 추가할 수 있어요.',
       parentRole: '이 나이의 아이는 부모님을 보며 배워요. 부모님이 매일 보여 줄 수 있는 모범이에요.',
       approval: '부모 승인',
+      dailyOptionLabel: '일상생활 습관으로 시작하기',
+      dailyOptionExplain: '"가볍게 시작하기" 세트(아침 양치, 세수) 선택 — 모든 연령에 적합, 습관 들이기 쉬움.',
+      ageOptionLabel: '발달 단계별',
+      ageOptionExplain: '아이의 발달 단계에 맞는 습관 추천 (6개 습관).',
     },
     rewards: {
       title: '별로 바꿀 선물',
@@ -387,6 +415,10 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       none: 'Vous pourrez ajouter des habitudes plus tard dans Organiser.',
       parentRole: 'À cet âge, l’enfant apprend en vous observant. Voici ce que vous pouvez montrer chaque jour.',
       approval: 'Validé par un parent',
+      dailyOptionLabel: 'Commencer avec les habitudes quotidiennes',
+      dailyOptionExplain: 'Choisir le pack "Démarrage tout doux" (brossage matin, lavage visage) — convient à tout âge, facile à ancrer.',
+      ageOptionLabel: 'Par stade de développement',
+      ageOptionExplain: 'Habitudes suggérées pour le stade de développement de votre enfant (6 habitudes).',
     },
     rewards: {
       title: 'Récompenses à échanger contre des étoiles',
@@ -451,6 +483,10 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       none: 'Du kannst später unter Gestalten Gewohnheiten hinzufügen.',
       parentRole: 'In diesem Alter lernen Kinder durch Zuschauen. Das sind Dinge, die du jeden Tag vorlebst.',
       approval: 'Eltern bestätigen',
+      dailyOptionLabel: 'Mit täglichen Gewohnheiten starten',
+      dailyOptionExplain: 'Das "Sanfter Start"-Set (morgens Zähneputzen, Gesicht waschen) wählen — für jedes Alter geeignet, leicht zur Routine zu machen.',
+      ageOptionLabel: 'Nach Entwicklungsstufe',
+      ageOptionExplain: 'Gewohnheiten passend zur Entwicklungsstufe deines Kindes (6 Gewohnheiten).',
     },
     rewards: {
       title: 'Belohnungen zum Eintauschen',
@@ -515,6 +551,10 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       none: 'Potrai aggiungere abitudini più tardi in Progetta.',
       parentRole: 'A questa età i bambini imparano guardando te. Queste sono cose che puoi mostrare ogni giorno con l’esempio.',
       approval: 'Approva il genitore',
+      dailyOptionLabel: 'Inizia con le abitudini quotidiane',
+      dailyOptionExplain: 'Scegli il set "Inizio leggero" (lavarsi i denti la mattina, lavarsi la faccia) — adatto a ogni età, facile da trasformare in abitudine.',
+      ageOptionLabel: 'Per fase di sviluppo',
+      ageOptionExplain: 'Abitudini suggerite per la fase di sviluppo del tuo bambino (6 abitudini).',
     },
     rewards: {
       title: 'Premi da scambiare con le stelle',
@@ -579,6 +619,10 @@ const COPY: Record<Language, OnboardingWizardCopy> = {
       none: 'Puedes añadir hábitos más tarde en Diseñar.',
       parentRole: 'A esta edad los niños aprenden observándote. Estas son cosas que puedes mostrar con el ejemplo cada día.',
       approval: 'Aprueba un adulto',
+      dailyOptionLabel: 'Empezar con hábitos de vida diaria',
+      dailyOptionExplain: 'Elige el set "Inicio suave" (cepillado mañana, lavarse la cara) — sirve para cualquier edad, fácil de volver rutina.',
+      ageOptionLabel: 'Por etapa de desarrollo',
+      ageOptionExplain: 'Hábitos sugeridos para la etapa de desarrollo de tu hijo (6 hábitos).',
     },
     rewards: {
       title: 'Premios para canjear por estrellas',

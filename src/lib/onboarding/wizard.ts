@@ -2,6 +2,7 @@ import { newHabitLimit } from '@/lib/habit-programs/config';
 import { getOnboardingWizardCopy } from '@/lib/i18n/onboarding-wizard-copy';
 import { MEANINGFUL_REWARD_TEMPLATES } from '@/lib/reward-templates';
 import { generateAgeAdaptedHabits, getStageFromAge } from '@/lib/wit-framework';
+import { getTemplatesForSet, getDailyLivingTemplate } from '@/lib/daily-living-habits';
 import type { Language } from '@/types';
 
 export type WizardStep = 1 | 2 | 3 | 4 | 5;
@@ -17,11 +18,34 @@ export const ONBOARDING_REWARD_IDS: readonly OnboardingRewardId[] = [
   'experience-parent-time',
 ];
 
-export type StarterHabitChoice = {
+/** Habit choice from the age-adapted framework templates (source: 'age'). */
+export type AgeStarterHabitChoice = {
+  readonly source: 'age';
   readonly templateIndex: number;
   readonly selected: boolean;
   readonly requiresApproval: boolean;
 };
+
+/** Habit choice from the daily living catalog (source: 'daily'). */
+export type DailyStarterHabitChoice = {
+  readonly source: 'daily';
+  readonly templateId: string; // WIT-DLY-* or legacy WIT-NUT-01/WIT-CAP-01
+  readonly selected: boolean;
+  readonly requiresApproval: boolean;
+};
+
+/** Union of habit choice sources. */
+export type StarterHabitChoice = AgeStarterHabitChoice | DailyStarterHabitChoice;
+
+/** Type guard for age-sourced habit choices. */
+export function isAgeStarterHabitChoice(choice: StarterHabitChoice): choice is AgeStarterHabitChoice {
+  return choice.source === 'age';
+}
+
+/** Type guard for daily-sourced habit choices. */
+export function isDailyStarterHabitChoice(choice: StarterHabitChoice): choice is DailyStarterHabitChoice {
+  return choice.source === 'daily';
+}
 
 /** Matches the server reward schema (`costPoints` max in reward-mutations). */
 export const MAX_REWARD_COST = 1_000_000;
@@ -70,9 +94,23 @@ export function initialHabitSelection(age: number): StarterHabitChoice[] {
   const recommended = newHabitLimit(age);
 
   return templates.map((template, templateIndex) => ({
+    source: 'age' as const,
     templateIndex,
     selected: templateIndex < recommended,
     requiresApproval: template.requiresApproval,
+  }));
+}
+
+/** Creates initial habit selection for daily living habits (DLS-01 set). */
+export function initialDailyHabitSelection(age: number): StarterHabitChoice[] {
+  const templates = getTemplatesForSet('DLS-01');
+  const recommended = newHabitLimit(age);
+
+  return templates.map((template, index) => ({
+    source: 'daily' as const,
+    templateId: template.id,
+    selected: index < recommended,
+    requiresApproval: false, // daily living habits default to no approval required
   }));
 }
 
@@ -95,23 +133,45 @@ export function initialRewardSelection(options?: InitialDraftOptions): RewardCho
 export function withAge(draft: WizardDraft, age: number): WizardDraft {
   const sameStarterSet = getStageFromAge(age) === getStageFromAge(draft.childAge)
     && newHabitLimit(age) === newHabitLimit(draft.childAge);
-  return { ...draft, childAge: age, habits: sameStarterSet ? draft.habits : initialHabitSelection(age) };
+  if (sameStarterSet) {
+    return { ...draft, childAge: age };
+  }
+  // Preserve daily habits, reset age habits
+  const dailyHabits = draft.habits.filter(isDailyStarterHabitChoice);
+  return { ...draft, childAge: age, habits: [...initialHabitSelection(age), ...dailyHabits] };
+}
+
+/** Gets the points for a starter habit choice. */
+function getStarterHabitPoints(choice: StarterHabitChoice, age: number): number {
+  if (isAgeStarterHabitChoice(choice)) {
+    const templates = generateAgeAdaptedHabits(null, getStageFromAge(age));
+    return templates[choice.templateIndex]?.points ?? 0;
+  }
+  const template = getDailyLivingTemplate(choice.templateId);
+  return template?.points ?? 0;
 }
 
 export function selectedStarterHabits(
   draft: WizardDraft,
 ): Array<{ templateIndex: number; requiresApproval: boolean }> {
   return draft.habits
-    .filter((habit) => habit.selected)
+    .filter((habit): habit is AgeStarterHabitChoice => habit.selected && isAgeStarterHabitChoice(habit))
     .map(({ templateIndex, requiresApproval }) => ({ templateIndex, requiresApproval }));
 }
 
+/** Returns selected daily living habits for creation via toHabitActivity. */
+export function selectedDailyStarterHabits(
+  draft: WizardDraft,
+): Array<{ templateId: string; requiresApproval: boolean }> {
+  return draft.habits
+    .filter((habit): habit is DailyStarterHabitChoice => habit.selected && isDailyStarterHabitChoice(habit))
+    .map(({ templateId, requiresApproval }) => ({ templateId, requiresApproval }));
+}
+
 export function estimateDailyStars(draft: WizardDraft): number {
-  const templates = generateAgeAdaptedHabits(null, getStageFromAge(draft.childAge));
-  return selectedStarterHabits(draft).reduce(
-    (total, habit) => total + (templates[habit.templateIndex]?.points ?? 0),
-    0,
-  );
+  return draft.habits
+    .filter((habit) => habit.selected)
+    .reduce((total, habit) => total + getStarterHabitPoints(habit, draft.childAge), 0);
 }
 
 export function daysToReward(costPoints: number, dailyStars: number): number | null {

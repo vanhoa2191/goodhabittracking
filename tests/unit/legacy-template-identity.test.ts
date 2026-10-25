@@ -5,9 +5,47 @@ import { mapHabitActivityRow } from '@/lib/supabase/mappers';
 import { localizeWitTemplate } from '@/lib/i18n/wit-template-copy';
 import { SUPPORTED_LANGUAGES } from '@/lib/i18n/context';
 import { matchesLegacyTemplateAssignment } from '@/lib/legacy-template-identity';
+import { parseFamilyBackup, serializeFamilyBackup } from '@/lib/family-backup';
+import { connectChildDevice } from '@/lib/store/pairing-client';
 import type { HabitActivity } from '@/types';
 
 describe('legacy habit template identity', () => {
+  it.each([
+    ['WIT-NUT-01', '33333333-3333-4333-8333-333333333333'],
+    ['WIT-DLY-01', '33333333-3333-4333-8333-333333333333'],
+    ['WIT-DLY-10', null],
+  ])('preserves %s and its activity ID through mapper, backup and child pairing (scope %s)', async (legacyTemplateId, childId) => {
+    const activity = mapHabitActivityRow({
+      id: '11111111-1111-5111-8111-111111111111',
+      family_id: '22222222-2222-4222-8222-222222222222',
+      child_id: childId,
+      title: 'A renamed daily task', icon: '🧼', category: 'selfcare', points: 5,
+      recurrence_type: 'daily', recurrence_days: [0, 1, 2, 3, 4, 5, 6],
+      time_of_day: 'morning', requires_approval: false, is_active: true,
+      legacy_template_id: legacyTemplateId, created_at: '2026-10-24T00:00:00.000Z',
+    });
+    const backup = parseFamilyBackup(serializeFamilyBackup({
+      profiles: [], activities: [activity], logs: [], rewards: [], redemptions: [],
+      childBadges: [], groups: [], kudos: [],
+    }));
+    expect(backup?.activities[0]).toMatchObject({ id: activity.id, legacyTemplateId });
+
+    const session = {
+      familyPausedAt: null,
+      child: {
+        id: '33333333-3333-4333-8333-333333333333', name: 'Bé An', avatar: '🦁', themeColor: '#f97316',
+        points: 0, totalEarned: 0, level: 1, streak: 0, createdAt: activity.createdAt,
+      },
+      activities: backup?.activities, logs: [], rewards: [], redemptions: [],
+    };
+    const result = await connectChildDevice({ code: 'ABCD-2345' }, async (url) => (
+      Response.json(url === '/api/pairing/exchange' ? { success: true } : session)
+    ));
+    expect(result.success).toBe(true);
+    if (!result.success) throw new Error(result.message);
+    expect(result.session.activities[0]).toMatchObject({ id: activity.id, legacyTemplateId });
+  });
+
   it('has an explicit, unique identifier for every template', () => {
     // Given
     const templates = WIT_HABIT_PACKS.flatMap((pack) => pack.items);
@@ -18,7 +56,7 @@ describe('legacy habit template identity', () => {
     // Then
     expect(ids).toHaveLength(36);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(ids.every((id) => /^WIT-(NUT|GIV|VIR|MIN|PER|WIS|CAP|PHY)-\d{2}$/.test(id))).toBe(true);
+    expect(ids.every((id) => /^WIT-(NUT|GIV|VIR|MIN|PER|WIS|CAP|PHY|DLY)-\d{2}$/.test(id))).toBe(true);
   });
 
   it('preserves a template identifier when an activity is mapped from cloud data', () => {

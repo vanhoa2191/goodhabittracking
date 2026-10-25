@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "1.0.0",
+  "contentVersion": "daily-living-v1",
+  "language": "vi",
+  "templates": [
+    {
+      "id": "WIT-DLY-01",
+      "source": "daily",
+      "title": "Đánh răng buổi sáng",
+      "shortTitle": "Đánh răng sáng",
+      "icon": "🪥",
+      "category": "selfcare",
+      "timeOfDay": "morning",
+      "points": 5,
+      "description": "Đánh răng sạch sẽ sau khi thức dậy, 2 phút mỗi lần.",
+      "support": "Người lớn có thể giúp bé cầm bàn chải, hướng dẫn chải đúng khuôn mặt răng.",
+      "cue": "Sau khi thức dậy"
+    },
+    {
+      "id": "WIT-DLY-02",
+      "source": "daily",
+      "title": "Đánh răng buổi tối",
+      "shortTitle": "Đánh răng tối",
+      "icon": "🪥",
+      "category": "selfcare",
+      "timeOfDay": "evening",
+      "points": 5,
+      "description": "Đánh răng kỹ trước khi đi ngủ, 2 phút mỗi lần.",
+      "support": "Người lớn nhắc nhở và kiểm tra bé đã chải hết các bề mặt răng.",
+      "cue": "Trước khi đi ngủ"
+    },
+    {
+      "id": "WIT-DLY-03",
+      "source": "daily",
+      "title": "Rửa mặt",
+      "shortTitle": "Rửa mặt",
+      "icon": "🧼",
+      "category": "selfcare",
+      "timeOfDay": "morning",
+      "points": 5,
+      "description": "Rửa mặt sạch sẽ bằng nước và xà phòng phù hợp.",
+      "support": "Người lớn có thể giúp bé bôi xà phòng, rửa sạch bọt kem.",
+      "cue": "Sau khi thức dậy"
+    },
+    {
+      "id": "WIT-DLY-04",
+      "source": "daily",
+      "title": "Chải tóc",
+      "shortTitle": "Chải tóc",
+      "icon": "🪮",
+      "category": "selfcare",
+      "timeOfDay": "morning",
+      "points": 5,
+      "description": "Chải tóc gọn gàng, không bị rối.",
+      "support": "Người lớn giúp bé chải từ ngọn tóc lên, khéo léo gỡ các nút rối.",
+      "cue": "Sau khi rửa mặt"
+    },
+    {
+      "id": "WIT-DLY-05",
+      "source": "daily",
+      "title": "Thay quần áo sạch",
+      "shortTitle": "Thay đồ sạch",
+      "icon": "👕",
+      "category": "selfcare",
+      "timeOfDay": "morning",
+      "points": 5,
+      "description": "Thay quần áo ngủ thành quần áo đi ngoài sạch sẽ.",
+      "support": "Người lớn chuẩn bị đồ sạch, giúp bé mặc nếu bé còn nhỏ.",
+      "cue": "Sau khi vệ sinh xong"
+    },
+    {
+      "id": "WIT-DLY-06",
+      "source": "daily",
+      "title": "Tắm/rửa theo nếp sinh hoạt",
+      "shortTitle": "Tắm/rửa",
+      "icon": "🚿",
+      "category": "selfcare",
+      "timeOfDay": "evening",
+      "points": 5,
+      "description": "Tắm hoặc rửa người sạch sẽ theo thói quen của gia đình.",
+      "support": "Người lớn điều chỉnh nhiệt độ nước, giúp bé tắm an toàn.",
+      "cue": "Trước khi ăn tối hoặc trước ngủ"
+    },
+    {
+      "id": "WIT-DLY-07",
+      "source": "daily",
+      "title": "Cất quần áo bẩn đúng chỗ",
+      "shortTitle": "Cất áo bẩn",
+      "icon": "🧺",
+      "category": "chores",
+      "timeOfDay": "evening",
+      "points": 5,
+      "description": "Đặt quần áo bẩn vào giỏ giặt hoặc chỗ quy định.",
+      "support": "Người lớn đặt giỏ giặt ở nơi dễ thấy, nhắc nhở bé cất ngay sau khi thay.",
+      "cue": "Sau khi thay đồ睡觉"
+    },
+    {
+      "id": "WIT-DLY-08",
+      "source": "daily",
+      "title": "Cất đồ chơi sau khi chơi",
+      "shortTitle": "Cất đồ chơi",
+      "icon": "🧸",
+      "category": "chores",
+      "timeOfDay": "anytime",
+      "points": 5,
+      "description": "Gom đồ chơi vào giỏ hoặc kệ sau khi chơi xong.",
+      "support": "Người lớn chơi cùng và làm mẫu cất đồ, biến việc cất thành trò chơi.",
+      "cue": "Sau khi chơi xong"
+    },
+    {
+      "id": "WIT-DLY-09",
+      "source": "daily",
+      "title": "Chuẩn bị đồ cho ngày mai",
+      "shortTitle": "Chuẩn bị đồ",
+      "icon": "🎒",
+      "category": "chores",
+      "timeOfDay": "evening",
+      "points": 5,
+      "description": "Chuẩn bị cặp sách, đồ dùng học tập hoặc quần áo cho ngày mai.",
+      "support": "Người lớn kiểm tra lịch, nhắc nhớ những gì cần mang.",
+      "cue": "Trước khi đi ngủ"
+    },
+    {
+      "id": "WIT-DLY-10",
+      "source": "daily",
+      "title": "Lên giường theo giờ đã chọn",
+      "shortTitle": "Lên giường đúng giờ",
+      "icon": "🌙",
+      "category": "selfcare",
+      "timeOfDay": "evening",
+      "points": 5,
+      "description": "Đi ngủ đúng giờ gia đình đã thương lượng.",
+      "support": "Người lớn tạo không gian yên tĩnh, đọc truyện hoặc trò chuyện nhẹ nhàng trước ngủ.",
+      "cue": "Theo giờ gia đình chọn"
+    },
+    {
+      "id": "WIT-NUT-01",
+      "source": "legacy",
+      "shortTitle": "Rửa tay trước ăn",
+      "description": "Rửa tay là tổng kết theo ngày, không ghi từng lần rửa.",
+      "cue": "Trước mỗi bữa ăn"
+    },
+    {
+      "id": "WIT-CAP-01",
+      "source": "legacy",
+      "shortTitle": "Gấp chăn, sắp giường",
+      "description": "Gấp chăn gối gọn gàng, sắp xếp lại giường sau khi ngủ dậy.",
+      "cue": "Sau khi thức dậy"
+    }
+  ],
+  "sets": [
+    {
+      "id": "DLS-01",
+      "title": "Bắt đầu nhẹ nhàng",
+      "description": "Hai việc cơ bản mỗi sáng: đánh răng và rửa mặt.",
+      "itemIds": ["WIT-DLY-01", "WIT-DLY-03"]
+    },
+    {
+      "id": "DLS-02",
+      "title": "Buổi sáng gọn gàng",
+      "description": "Nếp sinh hoạt sáng hoàn chỉnh: vệ sinh, thay đồ, gấp chăn.",
+      "itemIds": ["WIT-DLY-01", "WIT-DLY-03", "WIT-DLY-05", "WIT-DLY-04", "WIT-CAP-01"]
+    },
+    {
+      "id": "DLS-03",
+      "title": "Buổi tối sẵn sàng",
+      "description": "Tự lo cho tối và ngày mai: đánh răng, cất đồ, chuẩn bị, ngủ đúng giờ.",
+      "itemIds": ["WIT-DLY-02", "WIT-DLY-07", "WIT-DLY-09", "WIT-DLY-10"]
+    },
+    {
+      "id": "DLS-04",
+      "title": "Tự chăm sóc mỗi ngày",
+      "description": "Vệ sinh toàn diện: đánh răng sáng/tối, rửa mặt, rửa tay, tắm/rửa.",
+      "itemIds": ["WIT-DLY-01", "WIT-DLY-02", "WIT-DLY-03", "WIT-NUT-01", "WIT-DLY-06"]
+    }
+  ]
+}
