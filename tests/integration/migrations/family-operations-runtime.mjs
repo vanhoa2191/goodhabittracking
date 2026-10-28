@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { createSqlTestDatabase, stopSqlTestServer } from '../../../scripts/sql-test-database.mjs';
 const baseline = process.env.OPS_RUNTIME_BASELINE === '1';
 const migrationPath = process.env.OPS_RUNTIME_MIGRATION_PATH ?? 'supabase/migrations/202610090030_family_operations_hardening.sql';
-const baselineFiles = readdirSync('supabase/migrations').filter((name) => name.endsWith('.sql') && !name.startsWith('20261009003')).sort();
+const baselineFiles = readdirSync('supabase/migrations').filter((name) => name.endsWith('.sql') && !name.startsWith('20261009003') && name < migrationPath.split('/').pop()).sort();
 const names = ['complete_habit_command', 'complete_child_habit_command', 'undo_habit_command', 'undo_child_habit_command',
   'review_habit_command', 'redeem_reward_command', 'redeem_child_reward_command', 'transition_redemption_command',
   'get_parent_pin_status', 'verify_parent_pin', 'set_parent_pin', 'claim_lifecycle_messages', 'get_child_session', 'open_daily_mascot_letter', 'mutate_child_profile_command', 'act_as_user', 'current_family_id', 'can_manage_family'];
