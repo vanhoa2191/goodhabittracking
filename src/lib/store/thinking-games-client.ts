@@ -55,8 +55,8 @@ async function request(
   return parsed.data;
 }
 
-const json = (body: unknown): RequestInit => ({
-  method: 'POST',
+const json = (body: unknown, method = 'POST'): RequestInit => ({
+  method,
   headers: { 'content-type': 'application/json' },
   body: JSON.stringify(body),
 });
@@ -98,7 +98,7 @@ export function updateThinkingGameParentSettings(input: {
   enabled: boolean; bonusEnabled: boolean; timezone: string; cutoffLocal: string;
   bedtimeStartLocal: string; bedtimeEndLocal: string; ageTrackOverride: 'age_6_8' | 'age_9_12' | null; commandId: string;
 }, requester: ThinkingGameRequester = fetch) {
-  return request('/api/domain/thinking-games/settings', json(input), requester);
+  return request('/api/domain/thinking-games/settings', json(input, 'PUT'), requester);
 }
 export function previewThinkingGameDay(input: { childId: string; localDay: string }, requester: ThinkingGameRequester = fetch) {
   return request(`/api/domain/thinking-games/preview?childId=${encodeURIComponent(input.childId)}&localDay=${encodeURIComponent(input.localDay)}`, undefined, requester);

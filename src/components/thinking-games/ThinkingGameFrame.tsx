@@ -149,7 +149,7 @@ export function ThinkingGameFrame({
         return;
       }
       if (event.key === 'Escape') {
-        if (normalizedKey === 'playing') {
+        if (normalizedKey === 'playing' || normalizedKey === 'hints') {
           if (onPause) {
             audio.playClick();
             onPause();
@@ -249,7 +249,7 @@ export function ThinkingGameFrame({
             )}
           </button>
 
-          {normalizedKey === 'playing' && onPause && (
+          {(normalizedKey === 'playing' || normalizedKey === 'hints') && onPause && (
             <button
               type="button"
               onClick={() => {

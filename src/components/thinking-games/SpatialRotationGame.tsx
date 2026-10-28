@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { AgeTrack, SpatialRotationBoard } from '@/lib/thinking-games/types';
-import { getButtonMinSize, MiniCellGrid } from './game-utils';
+import { describeCellGrid, getButtonMinSize, MiniCellGrid } from './game-utils';
 
 export interface SpatialRotationGameProps {
   readonly board: SpatialRotationBoard;
@@ -121,7 +121,7 @@ export function SpatialRotationGame({
                 key={opt.id}
                 type="button"
                 data-testid={`option-button-${opt.id}`}
-                aria-label={`Lựa chọn ${index + 1}: hình xoay`}
+                aria-label={`Lựa chọn ${index + 1}: ${describeCellGrid(opt.cells, gridWidth, gridHeight)}`}
                 aria-pressed={isSelected}
                 disabled={disabled}
                 onClick={() => handleSelect(opt.id)}

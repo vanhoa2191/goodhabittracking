@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { AgeTrack, PublicPuzzle, SlotType } from '@/lib/thinking-games/types';
+import { displayReasoningEliminationExplanation } from '@/lib/thinking-games/display-order';
 import { FlexibilityAlternativeGame } from './FlexibilityAlternativeGame';
 import { FlexibilityClassifyGame } from './FlexibilityClassifyGame';
 import { FlexibilityPerspectiveGame } from './FlexibilityPerspectiveGame';
@@ -111,7 +112,7 @@ export function ThinkingGamePlayer({
   }, []);
 
   const handlePause = useCallback(async () => {
-    if (gameStateRef.current !== 'playing' || pausePendingRef.current) return;
+    if (!['playing', 'hints'].includes(gameStateRef.current) || pausePendingRef.current) return;
     const epoch = contextEpochRef.current;
     pausePendingRef.current = true;
     let accepted = true;
@@ -121,7 +122,7 @@ export function ThinkingGamePlayer({
       accepted = false;
     }
     pausePendingRef.current = false;
-    if (epoch !== contextEpochRef.current || !accepted || gameStateRef.current !== 'playing') return;
+    if (epoch !== contextEpochRef.current || !accepted || !['playing', 'hints'].includes(gameStateRef.current)) return;
     setGameState('paused');
   }, [onPauseRequest]);
 
@@ -505,7 +506,9 @@ export function ThinkingGamePlayer({
       mascotName={mascotName}
       invitationText={puzzle.invitation}
       tutorialText={puzzle.tutorial}
-      explanationText={propExplanationText ?? 'Quan sát các quy luật và thử nhiều cách để tìm lời giải!'}
+      explanationText={(puzzle.gameTypeId === 'g04-t1' && puzzle.boardData.kind === 'reasoning-elimination'
+        ? displayReasoningEliminationExplanation(puzzle.boardData, propExplanationText)
+        : propExplanationText) ?? 'Quan sát các quy luật và thử nhiều cách để tìm lời giải!'}
       hints={puzzle.hints}
       isMuted={muted}
       onToggleMute={onMuteToggle}

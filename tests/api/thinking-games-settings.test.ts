@@ -51,6 +51,8 @@ describe('thinking-games settings client boundary', () => {
       commandId: '44444444-4444-4444-8444-444444444444',
     }, capture);
     expect(calls[0].url).toContain('/api/domain/thinking-games/settings');
+    expect(calls[0].init?.method).toBe('PUT');
+    expect(calls[1].init?.method).toBe('POST');
     expect(calls[1].url).toContain('/api/domain/thinking-games/excuse');
     expect(JSON.parse(String(calls[0].init?.body)).enabled).toBe(true);
   });

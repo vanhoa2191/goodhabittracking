@@ -47,6 +47,12 @@ export function renderTokenVisual(token: string | number): React.ReactNode {
   );
 }
 
+export function describeCellGrid(cells: readonly PathStep[], width: number, height: number): string {
+  const positions = [...cells].sort((a, b) => a.y - b.y || a.x - b.x)
+    .map(({ x, y }) => `hàng ${y + 1} cột ${x + 1}`).join('; ');
+  return `Lưới ${height} hàng, ${width} cột, tính từ góc trên bên trái. Ô tô đậm: ${positions || 'không có'}.`;
+}
+
 export function MiniCellGrid({
   cells,
   width = 4,
@@ -69,7 +75,8 @@ export function MiniCellGrid({
     <div
       className={`grid gap-1 rounded-xl border border-slate-200 bg-white p-1.5 dark:border-zinc-700 dark:bg-zinc-900 ${className}`}
       style={{ gridTemplateColumns: `repeat(${width}, minmax(0, 1fr))` }}
-      aria-hidden="true"
+      role="img"
+      aria-label={describeCellGrid(cells, width, height)}
     >
       {Array.from({ length: height }).map((_, y) =>
         Array.from({ length: width }).map((_, x) => {

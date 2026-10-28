@@ -55,5 +55,5 @@ export async function PUT(request: NextRequest) {
     new_age_track_override: parsed.data.ageTrackOverride, command_id: parsed.data.commandId,
   });
   if (error) return errorResponse(error);
-  return NextResponse.json({ ok: true, schemaVersion: 'v1', status: data?.status ?? 'scheduled', data });
+  return NextResponse.json({ ok: true, schemaVersion: 'v1', status: 'available', data });
 }

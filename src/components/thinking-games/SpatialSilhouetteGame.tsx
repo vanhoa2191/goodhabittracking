@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { AgeTrack, SpatialSilhouetteBoard } from '@/lib/thinking-games/types';
-import { getButtonMinSize, MiniCellGrid } from './game-utils';
+import { describeCellGrid, getButtonMinSize, MiniCellGrid } from './game-utils';
 
 export interface SpatialSilhouetteGameProps {
   readonly board: SpatialSilhouetteBoard;
@@ -111,7 +111,7 @@ export function SpatialSilhouetteGame({
                 key={opt.id}
                 type="button"
                 data-testid={`option-button-${opt.id}`}
-                aria-label={`Lựa chọn ${index + 1}: hình có ${opt.cells.length} ô`}
+                aria-label={`Lựa chọn ${index + 1}: ${describeCellGrid(opt.cells, gridWidth, gridHeight)}`}
                 aria-pressed={isSelected}
                 disabled={disabled}
                 onClick={() => handleSelect(opt.id)}
