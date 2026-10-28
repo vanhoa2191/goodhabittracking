@@ -70,3 +70,6 @@
 \ir migrations/202610090040_affiliate_commission_unfreeze.sql
 \ir migrations/202610100001_money_model_v2.sql
 \ir migrations/202610110001_pro_plus_and_addons.sql
+\ir migrations/202610120001_reward_pin_security.sql
+\ir migrations/202610120002_parent_role_activity_guard.sql
+\ir migrations/202610270001_billing_lifecycle_recovery.sql
