@@ -64,6 +64,7 @@ import type {
   ParentPinVerification,
 } from './store/parent-pin-client';
 import { installParentPinSignal, PARENT_PIN_REQUIRED_EVENT } from './security/parent-pin-signal';
+import { requestParentLock } from './security/parent-lock';
 import {
   clearDemoFamilyState,
   clearFamilyScopedStorage,
@@ -90,9 +91,11 @@ interface AppStoreContextType {
   setMode: (mode: 'kid' | 'parent') => void;
   parentPinConfigured: boolean | null;
   isParentUnlocked: boolean;
+  isParentLocking: boolean;
+  parentLockFailed: boolean;
   refreshParentPinStatus: () => Promise<ParentPinStatus>;
   unlockParent: (enteredPin: string) => Promise<ParentPinVerification>;
-  lockParent: () => void;
+  lockParent: () => Promise<boolean>;
   updateParentPin: (input: { readonly currentPin?: string; readonly newPin: string }) => Promise<ParentPinChange>;
 
   currentUser: User | null;
@@ -255,6 +258,9 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
   const [isPairingReady, setIsPairingReady] = useState(false);
   const [mode, setModeState] = useState<'kid' | 'parent'>('kid');
   const [isParentUnlocked, setIsParentUnlocked] = useState(false);
+  const [isParentLocking, setIsParentLocking] = useState(false);
+  const [parentLockFailed, setParentLockFailed] = useState(false);
+  const parentLockInFlight = useRef(false);
   const [parentPin, setParentPin] = useState<string | null>(null);
   const [parentPinConfigured, setParentPinConfigured] = useState<boolean | null>(false);
 
@@ -541,11 +547,27 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
     return result;
   };
 
-  const lockParent = () => {
+  const lockParent = async (): Promise<boolean> => {
+    if (parentLockInFlight.current) return false;
+    parentLockInFlight.current = true;
+    setParentLockFailed(false);
+    if (currentUser) {
+      setIsParentLocking(true);
+      try {
+        await requestParentLock();
+      } catch {
+        setParentLockFailed(true);
+        parentLockInFlight.current = false;
+        setIsParentLocking(false);
+        return false;
+      }
+    }
     setIsParentUnlocked(false);
     setModeState('kid');
     sounds.playClick();
-    if (currentUser) void fetch('/api/parent-pin', { method: 'DELETE' }).catch(() => undefined);
+    parentLockInFlight.current = false;
+    setIsParentLocking(false);
+    return true;
   };
 
   useEffect(() => {
@@ -1266,6 +1288,8 @@ export function AppStoreProvider({ children, analyticsSink, analyticsOptIn = fal
         setMode,
         parentPinConfigured,
         isParentUnlocked,
+        isParentLocking,
+        parentLockFailed,
         refreshParentPinStatus,
         unlockParent,
         lockParent,

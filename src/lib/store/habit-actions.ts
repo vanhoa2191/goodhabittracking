@@ -149,6 +149,9 @@ export function createHabitActions(dependencies: Dependencies): HabitActions {
       const existingLog = dependencies.state.logs.find((log) =>
         log.activityId === activityId && log.childId === childId && log.date === date,
       );
+      // Parent-role habits are not work performed by the child. Preserve the ability to
+      // undo an older erroneous log, but never send a new completion to the server.
+      if (activity.isParentRole && !existingLog) return failedWith('parent-role');
 
       if (!dependencies.isDemoSession) {
         const user = cloudUser();

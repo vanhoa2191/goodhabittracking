@@ -147,6 +147,33 @@ describe('local habit actions', () => {
     expect(pending.unlockedBadgeCount).toBe(0);
   });
 
+  it('does not record parent-role framework habits as child progress or reward them', () => {
+    const parentRoleActivity: HabitActivity = {
+      ...automaticActivity,
+      isParentRole: true,
+      frameworkHabitId: 'GD1-SK-01',
+    };
+
+    const result = toggleLocalHabit({
+      profiles: [child],
+      logs: [],
+      childBadges: [],
+      badges,
+      activity: parentRoleActivity,
+      childId: 'child-1',
+      date: '2026-09-20',
+      today: '2026-09-20',
+      logId: 'parent-role-log',
+      completedAt: '2026-09-20T02:00:00.000Z',
+    });
+
+    expect(result.kind).toBe('completed');
+    expect(result.logs).toEqual([]);
+    expect(result.profiles).toEqual([child]);
+    expect(result.childBadges).toEqual([]);
+    expect(result.unlockedBadgeCount).toBe(0);
+  });
+
   it('undoes a completed habit without allowing negative current or lifetime points', () => {
     // Given
     const awardedLog: ActivityLog = {

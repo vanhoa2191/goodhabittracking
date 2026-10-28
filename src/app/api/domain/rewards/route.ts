@@ -6,6 +6,8 @@ import {
 } from '@/lib/domain/reward-mutations';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { requireParentUnlock } from '@/lib/security/parent-unlock';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 
 export const runtime = 'nodejs';
@@ -75,7 +77,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const supabase = await createServerSupabaseClient();
+  const parentClient = await createServerSupabaseClient();
+  const locked = await requireParentUnlock(request, parent, parentClient);
+  if (locked) return locked;
+  // Authenticated table writes are revoked for rewards; use service role only after
+  // validating the parent's PIN unlock and derive family ownership from auth context.
+  const supabase = createAdminSupabaseClient();
   let error: { readonly code?: string } | null;
   switch (parsed.data.type) {
     case 'create': {
