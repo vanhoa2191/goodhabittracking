@@ -2,6 +2,7 @@ export * from './types';
 export * from './age';
 export * from './registry';
 export * from './seeded';
+export * from './display-order';
 export * from './fingerprint';
 export * from './schema';
 export * from './checkers';

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { AgeTrack, QuantityGroupingBoard } from '@/lib/thinking-games/types';
+import { displayQuantityGroupingOptions } from '@/lib/thinking-games/display-order';
 import { getButtonMinSize } from './game-utils';
 
 export interface QuantityGroupingGameProps {
@@ -37,6 +38,7 @@ export function QuantityGroupingGame({
   }
 
   const buttonMinSize = getButtonMinSize(ageTrack);
+  const displayedOptions = displayQuantityGroupingOptions(board);
 
   const question = MODE_QUESTIONS[board.mode]?.(board.total, board.groupSize) ??
     `Có ${board.total} đồ vật, chia nhóm ${board.groupSize} đồ vật:`;
@@ -110,7 +112,7 @@ export function QuantityGroupingGame({
           aria-label="Các lựa chọn số lượng"
           className="flex flex-wrap items-center justify-center gap-3"
         >
-          {board.options.map((opt) => {
+          {displayedOptions.map((opt) => {
             const isSelected = selectedNumber === opt;
             return (
               <button

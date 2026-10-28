@@ -30,6 +30,7 @@ import {
   observationImplausibleBoardSchema,
 } from '../schema';
 import { createSeededRandom, shuffleDeterministic, stableSeedKey } from '../seeded';
+import { displayQuantityGroupingOptions } from '../display-order';
 import { checkPath } from './path-planning';
 import type {
   GameAgeTrack,
@@ -726,14 +727,15 @@ definitions.push({
         : variant === 2
           ? [{ trait: 'màu', value: colors[1]!, negate: true }]
           : [{ trait: 'màu', value: targetColor, negate: false }, { trait: 'hình', value: targetShape, negate: false }, { trait: 'kích cỡ', value: targetSize, negate: false }];
-    const options = shuffleDeterministic(rng, candidates.map((candidate) => candidate.id));
+    const options = shuffledOptions(input, 'g04-t1', candidates.map((candidate) => candidate.id));
+    const orderedCandidates = options.map((id) => candidates.find((candidate) => candidate.id === id)!);
     const solution = candidates[0]!.id;
-    const candIndex = candidates.findIndex((c) => c.id === solution);
-    const targetCandidate = candidates[candIndex];
+    const candIndex = options.indexOf(solution);
+    const targetCandidate = candidates.find((candidate) => candidate.id === solution);
     const targetTraitsVi = targetCandidate ? Object.entries(targetCandidate.traits).map(([k, v]) => `${k} ${v}`).join(', ') : '';
     const hints = getTrackHints('g04-t1', input.ageTrack, input.seed);
     return {
-      board: { kind: 'reasoning-elimination', candidates, clues, options },
+      board: { kind: 'reasoning-elimination', candidates: orderedCandidates, clues, options },
       solution,
       hints,
       explanation: `Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số ${candIndex + 1} (${targetTraitsVi}).`,
@@ -1053,7 +1055,8 @@ definitions.push({
       groups + 1,
       groups + 2,
     ];
-    const options = [...new Set(optionPool)].sort((a, b) => a - b).slice(0, 3 + rank);
+    const candidates = [...new Set(optionPool)].sort((a, b) => a - b).slice(0, 3 + rank);
+    const options = displayQuantityGroupingOptions({ ...base, options: candidates });
     if (!options.includes(expected)) options[0] = expected;
     let groupExp = `Chia đều thành các nhóm ${groupSize}, kết quả là ${expected}.`;
     if (mode === 'exact') groupExp = `Chia đều thành các nhóm ${groupSize}, ta được đúng ${expected} nhóm.`;

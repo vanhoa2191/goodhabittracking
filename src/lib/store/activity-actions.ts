@@ -8,6 +8,17 @@ import { removeActivity, updateActivityList } from './local-domain-actions';
 
 type NewActivity = Omit<HabitActivity, 'id' | 'createdAt'> & { readonly id?: string };
 
+function hasSharedDailyLivingScopeConflict(
+  candidate: Pick<HabitActivity, 'childId' | 'legacyTemplateId'>,
+  existing: readonly HabitActivity[],
+): boolean {
+  if (candidate.childId !== null || !candidate.legacyTemplateId) return false;
+  const template = getDailyLivingTemplate(candidate.legacyTemplateId);
+  if (!template) return false;
+  const children = new Set(existing.flatMap((activity) => activity.childId === null ? [] : [activity.childId]));
+  return [...children].some((childId) => dailyLivingStatus(template, childId, existing) === 'added');
+}
+
 export function overlapsDailyLivingAssignment(
   candidate: Pick<HabitActivity, 'id' | 'childId' | 'legacyTemplateId'>,
   existing: readonly HabitActivity[],
@@ -17,7 +28,8 @@ export function overlapsDailyLivingAssignment(
   if (!template) return false;
   if (existing.some((activity) => activity.id === candidate.id)) return true;
   if (candidate.childId === null) {
-    return dailyLivingStatus(template, '', existing) === 'sharedCovers';
+    return dailyLivingStatus(template, '', existing) === 'sharedCovers'
+      || hasSharedDailyLivingScopeConflict(candidate, existing);
   }
   const status = dailyLivingStatus(template, candidate.childId, existing);
   return status === 'added' || status === 'sharedCovers';
@@ -87,6 +99,7 @@ export function createActivityActions(
     }));
     if (!dependencies.isDemoSession) {
       const accepted = [...dependencies.getActivities(), ...inFlightDailyLiving];
+      if (createdActivities.some((activity) => hasSharedDailyLivingScopeConflict(activity, accepted))) return false;
       const trackedBatch: HabitActivity[] = [];
       const filteredActivities = createdActivities.filter((activity) => {
         if (overlapsDailyLivingAssignment(activity, accepted)) return false;
@@ -107,6 +120,8 @@ export function createActivityActions(
         }
       }
     }
+    const existing = dependencies.getActivities();
+    if (createdActivities.some((activity) => hasSharedDailyLivingScopeConflict(activity, existing))) return false;
     dependencies.setActivities((previous) => {
       const accepted = [...previous];
       const additions = createdActivities.filter((activity) => {

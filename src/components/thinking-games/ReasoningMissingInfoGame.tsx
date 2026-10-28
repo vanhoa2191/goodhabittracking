@@ -102,7 +102,7 @@ export function ReasoningMissingInfoGame({
                 <div className="flex items-center gap-1">
                   <span aria-hidden="true">{CANDIDATE_ICONS[idx % CANDIDATE_ICONS.length]}</span>
                   <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200">
-                    {cand.id}
+                    Bạn #{idx + 1}
                   </span>
                 </div>
                 <div className="mt-1.5 flex flex-col gap-1 text-[11px] text-slate-600 dark:text-slate-300">

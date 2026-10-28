@@ -63,6 +63,10 @@ export function ReasoningEliminationGame({
     onReset?.();
   };
 
+  const displayedCandidates = board.options
+    .map((id) => board.candidates.find((candidate) => candidate.id === id))
+    .filter((candidate): candidate is (typeof board.candidates)[number] => candidate !== undefined);
+
   return (
     <div
       data-testid="reasoning-elimination-game"
@@ -112,7 +116,7 @@ export function ReasoningEliminationGame({
           aria-label="Danh sách các ứng viên"
           className="grid grid-cols-2 gap-3 sm:grid-cols-4"
         >
-          {board.candidates.map((cand, idx) => {
+          {displayedCandidates.map((cand, idx) => {
             const isSelected = selectedCandidate === cand.id;
             const isEliminated = eliminatedSet.has(cand.id);
             const avatar = CANDIDATE_AVATARS[idx % CANDIDATE_AVATARS.length];

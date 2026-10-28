@@ -165,7 +165,7 @@ export function QuantityTargetGame({
                 type="button"
                 data-testid={`option-button-${item.id}`}
                 aria-pressed={isSel}
-                aria-label={`Món ${item.id}: giá trị ${item.value}`}
+                aria-label={`Món số ${idx + 1}: giá trị ${item.value}`}
                 disabled={disabled}
                 onClick={() => toggleItem(item.id)}
                 className={`flex flex-col ${buttonMinSize} items-center justify-center rounded-2xl border-2 p-3 shadow-sm transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 ${

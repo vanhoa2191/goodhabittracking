@@ -51,6 +51,18 @@ function auditPath(batch) { return join(auditDir, `p08-365-v2-batch-${String(bat
 function pushIssue(list, issue) { if (list.length < 250) list.push(issue); }
 function optionAnswers(board) { return Array.isArray(board?.options) ? board.options : []; }
 
+function finalizeQualityMetrics(audit) {
+  const keys = ['duplicateFingerprints', 'normalizedCollisions', 'ageComplexityWarnings', 'structuralReusePairs'];
+  for (const key of keys) audit.quality[key] = audit.metrics[key];
+  const finite = keys.flatMap((key) => [audit.metrics[key], audit.quality[key]]).every(Number.isFinite);
+  if (!finite) {
+    pushIssue(audit.errors, { code: 'quality_metrics_invalid', message: 'quality counters must be finite numbers' });
+  }
+  audit.quality.blocked = !finite
+    || audit.quality.duplicateFingerprints > 0
+    || audit.quality.normalizedCollisions > 0;
+}
+
 export function isMultiAnswer(item) {
   if (item.gameTypeId === 'g03-t1') return item.boardData?.mode === 'swapped';
   if (item.gameTypeId === 'g02-t3' || item.gameTypeId === 'g08-t1') return true;
@@ -284,8 +296,13 @@ const DUPLICATE_WORD_REGEX = /(?:^|\s)(ở|và|là|của|các|một|những|thì
 export const POSITION_BIAS_MAX_SHARE = 0.6;
 export const POSITION_BIAS_MIN_ITEMS = 20;
 
-export function correctOptionIndex(item) {
-  const options = item.boardData?.options;
+export function correctOptionIndex(item, engine) {
+  let options = item.boardData?.options;
+  if (item.gameTypeId === 'g04-t1' && Array.isArray(item.boardData?.candidates)) {
+    options = (item.boardData.options ?? []).map((id) => item.boardData.candidates.find((candidate) => candidate.id === id));
+  } else if (item.gameTypeId === 'g05-t2' && engine?.displayQuantityGroupingOptions) {
+    options = engine.displayQuantityGroupingOptions(item.boardData);
+  }
   if (!Array.isArray(options) || options.length < 2) return null;
   if (typeof item.solution !== 'string' && typeof item.solution !== 'number') return null;
   const index = options.findIndex((option) => (option !== null && typeof option === 'object' && 'id' in option ? option.id : option) === item.solution);
@@ -293,15 +310,24 @@ export function correctOptionIndex(item) {
 }
 
 // Per gameType, no single option slot may hold more than 60% of the correct answers.
-export function positionBiasErrors(items) {
+export function positionBiasErrors(items, engine) {
   const byType = new Map();
+  const groupingStrata = new Map();
   for (const item of items) {
-    const index = correctOptionIndex(item);
+    const index = correctOptionIndex(item, engine);
     if (index === null) continue;
     const stats = byType.get(item.gameTypeId) ?? { total: 0, positions: new Map() };
     stats.total += 1;
     stats.positions.set(index, (stats.positions.get(index) ?? 0) + 1);
     byType.set(item.gameTypeId, stats);
+    if (item.gameTypeId === 'g05-t2') {
+      const variant = item.ruleVariantId ?? item.boardData?.mode ?? 'unknown';
+      const key = `${item.ageTrack ?? 'unknown'}|${variant}`;
+      const stratum = groupingStrata.get(key) ?? { total: 0, positions: new Map() };
+      stratum.total += 1;
+      stratum.positions.set(index, (stratum.positions.get(index) ?? 0) + 1);
+      groupingStrata.set(key, stratum);
+    }
   }
   const errors = [];
   for (const [gameTypeId, { total, positions }] of byType) {
@@ -313,6 +339,19 @@ export function positionBiasErrors(items) {
           id: gameTypeId,
           gameTypeId,
           message: `${gameTypeId}: correct answer is option #${position + 1} in ${count}/${total} items (> ${POSITION_BIAS_MAX_SHARE * 100}%)`,
+        });
+      }
+    }
+  }
+  for (const [stratum, { total, positions }] of groupingStrata) {
+    if (total < 5) continue;
+    for (const [position, count] of positions) {
+      if (count / total > POSITION_BIAS_MAX_SHARE) {
+        errors.push({
+          code: 'answer_position_bias',
+          id: `g05-t2:${stratum}`,
+          gameTypeId: 'g05-t2',
+          message: `g05-t2 (${stratum}): correct answer is option #${position + 1} in ${count}/${total} items (> ${POSITION_BIAS_MAX_SHARE * 100}%)`,
         });
       }
     }
@@ -592,6 +631,10 @@ async function checkBatch(batch, { write = true } = {}) {
         alternatePass: 0,
         uniqueFingerprints: 0,
         uniqueNormalized: 0,
+        duplicateFingerprints: 0,
+        normalizedCollisions: 0,
+        ageComplexityWarnings: 0,
+        structuralReusePairs: 0,
         tracks: {},
         initialTracks: 0,
         experimentalTracks: 0,
@@ -719,7 +762,7 @@ async function checkBatch(batch, { write = true } = {}) {
     }
     audit.metrics.uniqueFingerprints = fingerprints.size;
     audit.metrics.uniqueNormalized = normalized.size;
-    for (const error of positionBiasErrors(items)) pushIssue(audit.errors, error);
+    for (const error of positionBiasErrors(items, engine)) pushIssue(audit.errors, error);
     for (const error of crossTrackErrors(items, engine)) pushIssue(audit.errors, error);
     audit.metrics.difficulty = difficultyReport(items, engine);
     for (const ids of fingerprints.values()) {
@@ -778,6 +821,7 @@ async function checkBatch(batch, { write = true } = {}) {
       for (let index = 1; index < sorted.length; index += 1) { minSpacing = Math.min(minSpacing, sorted[index] - sorted[index - 1]); }
     }
     audit.metrics.minTypeSpacing = Number.isFinite(minSpacing) ? minSpacing : 0;
+    finalizeQualityMetrics(audit);
     audit.checks.schema = audit.metrics.schemaPass === items.length;
     audit.checks.knownAnswer = audit.metrics.knownPass === items.length;
     audit.checks.solver = audit.metrics.solvePass === items.length;
@@ -789,7 +833,6 @@ async function checkBatch(batch, { write = true } = {}) {
     audit.checks.provenance = audit.metrics.provenance === true;
     audit.checks.fingerprintsUnique = audit.metrics.duplicateFingerprints === 0;
     audit.checks.normalizedUnique = audit.metrics.normalizedCollisions === 0;
-    audit.quality.blocked = audit.metrics.duplicateFingerprints > 0 || audit.metrics.normalizedCollisions > 0;
     addCoverageIssues(items, coverageErrors, batch);
     const result = {
       auditVersion: 'p08-candidate-audit-v2',
@@ -821,7 +864,7 @@ async function checkBatch(batch, { write = true } = {}) {
   }
 }
 
-async function checkAll({ write = true } = {}) {
+export async function checkAll({ write = true } = {}) {
   const loaded = await loadEngine();
   try {
     const engine = loaded.engine;
@@ -844,6 +887,10 @@ async function checkAll({ write = true } = {}) {
         alternatePass: 0,
         uniqueFingerprints: 0,
         uniqueNormalized: 0,
+        duplicateFingerprints: 0,
+        normalizedCollisions: 0,
+        ageComplexityWarnings: 0,
+        structuralReusePairs: 0,
         tracks: {},
         initialTracks: 0,
         experimentalTracks: 0,
@@ -971,7 +1018,7 @@ async function checkAll({ write = true } = {}) {
     }
     audit.metrics.uniqueFingerprints = fingerprints.size;
     audit.metrics.uniqueNormalized = normalized.size;
-    for (const error of positionBiasErrors(allItems)) pushIssue(audit.errors, error);
+    for (const error of positionBiasErrors(allItems, engine)) pushIssue(audit.errors, error);
     for (const error of crossTrackErrors(allItems, engine)) pushIssue(audit.errors, error);
     audit.metrics.difficulty = difficultyReport(allItems, engine);
     for (const ids of fingerprints.values()) {
@@ -1030,6 +1077,7 @@ async function checkAll({ write = true } = {}) {
       for (let index = 1; index < sorted.length; index += 1) { minSpacing = Math.min(minSpacing, sorted[index] - sorted[index - 1]); }
     }
     audit.metrics.minTypeSpacing = Number.isFinite(minSpacing) ? minSpacing : 0;
+    finalizeQualityMetrics(audit);
     audit.checks.schema = audit.metrics.schemaPass === allItems.length;
     audit.checks.knownAnswer = audit.metrics.knownPass === allItems.length;
     audit.checks.solver = audit.metrics.solvePass === allItems.length;
@@ -1041,7 +1089,6 @@ async function checkAll({ write = true } = {}) {
     audit.checks.provenance = audit.metrics.provenance === true;
     audit.checks.fingerprintsUnique = audit.metrics.duplicateFingerprints === 0;
     audit.checks.normalizedUnique = audit.metrics.normalizedCollisions === 0;
-    audit.quality.blocked = audit.metrics.duplicateFingerprints > 0 || audit.metrics.normalizedCollisions > 0;
     const release = engine.validateManifest(manifest, { profile: 'release' });
     audit.releaseRejection = { ok: release.ok, errors: release.errors ?? [] };
     const coverageErrors = [];

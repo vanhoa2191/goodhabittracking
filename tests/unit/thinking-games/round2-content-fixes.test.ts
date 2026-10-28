@@ -1,11 +1,18 @@
 import { describe, expect, it } from 'vitest';
+import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 import { generateRuleSequencePuzzle, describeRuleSequenceBoard } from '@/lib/thinking-games/mechanics/rule-sequence';
 import { REMAINING_MECHANICS } from '@/lib/thinking-games/mechanics/remaining';
 import { getGameMechanic } from '@/lib/thinking-games/registry';
 import { getNaturalTutorial } from '@/lib/thinking-games/content/copy';
+import { displayReasoningEliminationExplanation } from '@/lib/thinking-games/display-order';
 import { generatePathPuzzle } from '@/lib/thinking-games/mechanics/path-planning';
 import type { PuzzleItem } from '@/lib/thinking-games';
+import { ReasoningEliminationGame } from '@/components/thinking-games/ReasoningEliminationGame';
+import { ReasoningMissingInfoGame } from '@/components/thinking-games/ReasoningMissingInfoGame';
+import { QuantityTargetGame } from '@/components/thinking-games/QuantityTargetGame';
+import { QuantityGroupingGame } from '@/components/thinking-games/QuantityGroupingGame';
 
 import * as v2Check from '../../../scripts/check-thinking-games-candidates-v2.mjs';
 
@@ -23,7 +30,7 @@ function correctIndex(board: { options: readonly unknown[] }, solution: unknown)
 }
 
 describe('answer position bias (finding A)', () => {
-  const cases = ['g02-t1', 'g02-t2', 'g03-t3', 'g05-t1', 'g07-t2'] as const;
+  const cases = ['g02-t1', 'g02-t2', 'g03-t3', 'g05-t1', 'g05-t2', 'g07-t2'] as const;
 
   it.each(cases)('%s spreads the correct option over several slots and keeps it solvable', (gameTypeId) => {
     const positions = new Map<number, number>();
@@ -37,6 +44,92 @@ describe('answer position bias (finding A)', () => {
     }
     expect(positions.size).toBeGreaterThanOrEqual(3);
     expect(Math.max(...positions.values()) / total).toBeLessThanOrEqual(0.5);
+  });
+
+  it('aligns g04-t1 card order with the shuffled, auditable answer order', () => {
+    const positions = new Set<number>();
+    for (let n = 0; n < 120; n += 1) {
+      const generated = generate('g04-t1', `seed-${n}`, TRACKS[n % 2]!, n);
+      const board = generated.board as Extract<typeof generated.board, { kind: 'reasoning-elimination' }>;
+      const displayedIndex = board.candidates.findIndex((candidate) => candidate.id === generated.solution);
+      expect(board.options).toEqual(board.candidates.map((candidate) => candidate.id));
+      expect(v2Check.correctOptionIndex({ gameTypeId: 'g04-t1', solution: generated.solution, boardData: board })).toBe(displayedIndex);
+      positions.add(displayedIndex);
+    }
+    expect(positions.size).toBeGreaterThanOrEqual(3);
+  });
+
+  it('renders elimination cards in the audited order', () => {
+    const generated = generate('g04-t1', 'rendered-order', 'age_9_12');
+    const board = generated.board as Extract<typeof generated.board, { kind: 'reasoning-elimination' }>;
+    const html = renderToStaticMarkup(React.createElement(ReasoningEliminationGame, {
+      board,
+      ageTrack: 'age_9_12',
+      onSubmit: () => undefined,
+    }));
+    const renderedIds = [...html.matchAll(/data-testid="option-button-([^"]+)"/g)].map((match) => match[1]);
+
+    expect(renderedIds).toEqual(board.options);
+    expect(renderedIds.indexOf(String(generated.solution))).toBe(v2Check.correctOptionIndex({ gameTypeId: 'g04-t1', solution: generated.solution, boardData: board }));
+  });
+
+  it('updates an existing elimination explanation to the displayed answer number', () => {
+    const generated = generate('g04-t1', 'explanation-order', 'age_9_12');
+    const board = generated.board as Extract<typeof generated.board, { kind: 'reasoning-elimination' }>;
+    const reorderedOptions = [...board.options.filter((id) => id !== generated.solution), String(generated.solution)];
+    const reorderedBoard = { ...board, options: reorderedOptions };
+    const corrected = displayReasoningEliminationExplanation(reorderedBoard, 'Đáp án là Bạn số 1.');
+
+    expect(corrected).toBe(`Đáp án là Bạn số ${board.candidates.length}.`);
+  });
+
+  it('keeps generated game identifiers out of child-visible text and accessible names', () => {
+    const missingInfo = generate('g04-t3', 'copy-render', 'age_6_8').board as Extract<ReturnType<typeof generate>['board'], { kind: 'reasoning-missing-info' }>;
+    const quantityTarget = generate('g05-t3', 'copy-render', 'age_6_8').board as Extract<ReturnType<typeof generate>['board'], { kind: 'quantity-target' }>;
+    const missingHtml = renderToStaticMarkup(React.createElement(ReasoningMissingInfoGame, {
+      board: missingInfo,
+      ageTrack: 'age_6_8',
+      onSubmit: () => undefined,
+    }));
+    const targetHtml = renderToStaticMarkup(React.createElement(QuantityTargetGame, {
+      board: quantityTarget,
+      ageTrack: 'age_6_8',
+      onSubmit: () => undefined,
+    }));
+
+    expect(missingHtml.replace(/<[^>]+>/g, ' ')).not.toMatch(/candidate-\d+/);
+    expect(missingHtml).toContain('Bạn #1');
+    expect(targetHtml.replace(/<[^>]+>/g, ' ')).not.toMatch(/item-\d+/);
+    expect(targetHtml).toContain('aria-label="Món số 1: giá trị');
+  });
+
+  it('audits g05-t2 position bias within each age-track and rule variant', () => {
+    const items = Array.from({ length: 6 }, (_, index) => ({
+      id: `group-${index}`,
+      gameTypeId: 'g05-t2',
+      ageTrack: 'age_6_8',
+      ruleVariantId: 'g05-t2:exact',
+      solution: 4,
+      boardData: { mode: 'exact', options: [1, 2, 3, 4] },
+    })) as unknown as PuzzleItem[];
+
+    expect(v2Check.positionBiasErrors(items)).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: 'g05-t2:age_6_8|g05-t2:exact' }),
+    ]));
+  });
+
+  it('renders grouping options in the shuffled order used by its position audit', () => {
+    const generated = generate('g05-t2', 'rendered-groups', 'age_9_12', 0);
+    const board = generated.board as Extract<typeof generated.board, { kind: 'quantity-grouping' }>;
+    const html = renderToStaticMarkup(React.createElement(QuantityGroupingGame, {
+      board,
+      ageTrack: 'age_9_12',
+      onSubmit: () => undefined,
+    }));
+    const renderedOptions = [...html.matchAll(/data-testid="option-button-(\d+)"/g)].map((match) => Number(match[1]));
+
+    expect(renderedOptions).toEqual(board.options);
+    expect(renderedOptions.indexOf(generated.solution as number)).toBe(v2Check.correctOptionIndex({ gameTypeId: 'g05-t2', solution: generated.solution, boardData: board }));
   });
 
   it('is deterministic per seed', () => {
@@ -68,6 +161,23 @@ describe('answer position bias (finding A)', () => {
     expect(v2Check.positionBiasErrors(balanced)).toHaveLength(0);
     expect(v2Check.positionBiasErrors(balanced.slice(0, 5).map((item) => ({ ...item, solution: 'a' })) as unknown as PuzzleItem[])).toHaveLength(0);
   });
+});
+
+describe('V2 catalog quality counters', () => {
+  it('reports real duplicate totals and blocks the quality gate', async () => {
+    const { result } = await v2Check.checkAll({ write: false });
+
+    expect(Number.isFinite(result.metrics.duplicateFingerprints)).toBe(true);
+    expect(Number.isFinite(result.metrics.normalizedCollisions)).toBe(true);
+    expect(result.metrics.duplicateFingerprints).toBe(137);
+    expect(result.metrics.normalizedCollisions).toBe(434);
+    expect(result.quality).toMatchObject({
+      duplicateFingerprints: 137,
+      normalizedCollisions: 434,
+      blocked: true,
+    });
+    expect(result.status).not.toBe('pass_with_review_warnings');
+  }, 60_000);
 });
 
 describe('g07-t2 perspective (finding B)', () => {
