@@ -149,10 +149,18 @@ export async function sendLifecycleEmail(input: {
   const config = getLifecycleEmailConfig();
   if (!config.enabled) throw new Error('lifecycle_email_not_configured');
   const rendered = renderLifecycleEmail(input.message);
+  // A transport failure can happen after provider acceptance; callers must quarantine it.
+  const send = async (url: string, init: RequestInit) => {
+    try {
+      return await fetch(url, { ...init, signal: AbortSignal.timeout(30_000) });
+    } catch {
+      throw new LifecycleDeliveryUncertainError();
+    }
+  };
 
   if (config.provider === 'brevo') {
-    // Brevo has no idempotency header; the outbox's dedupe key already stops a message from being claimed twice.
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+    // Enqueue dedupe does not prevent duplicate delivery after an uncertain send.
+    const response = await send('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: { 'api-key': config.apiKey, 'content-type': 'application/json', accept: 'application/json' },
       body: JSON.stringify({
@@ -163,11 +171,12 @@ export async function sendLifecycleEmail(input: {
       }),
     });
     const body = await response.json().catch(() => null) as { messageId?: string } | null;
-    if (!response.ok || !body?.messageId) throw new Error(`email_provider_${response.status}`);
+    if (!response.ok) throw new Error(`email_provider_${response.status}`);
+    if (!body?.messageId) throw new LifecycleDeliveryUncertainError();
     return body.messageId;
   }
 
-  const response = await fetch('https://api.resend.com/emails', {
+  const response = await send('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       authorization: `Bearer ${config.apiKey}`,
@@ -182,6 +191,11 @@ export async function sendLifecycleEmail(input: {
     }),
   });
   const body = await response.json().catch(() => null) as { id?: string } | null;
-  if (!response.ok || !body?.id) throw new Error(`email_provider_${response.status}`);
+  if (!response.ok) throw new Error(`email_provider_${response.status}`);
+  if (!body?.id) throw new LifecycleDeliveryUncertainError();
   return body.id;
+}
+
+export class LifecycleDeliveryUncertainError extends Error {
+  constructor() { super('delivery_uncertain'); }
 }

@@ -1221,7 +1221,7 @@ export function KidDashboard() {
                 <Icon aria-hidden="true" className="h-5 w-5 shrink-0" />
                 <span className="max-w-full truncate">{label}</span>
                 {id === 'tasks' && totalDue - completedCount > 0 && (
-                  <span aria-hidden="true" className="absolute right-2 top-0.5 min-w-5 rounded-full bg-rose-500 px-1.5 text-center text-[11px] font-black leading-5 text-white">
+                  <span aria-hidden="true" className="absolute right-2 top-0.5 min-w-5 rounded-full bg-rose-500 px-1.5 text-center text-xs font-black leading-normal text-white">
                     {totalDue - completedCount}
                   </span>
                 )}

@@ -137,6 +137,39 @@ describe('habit actions', () => {
     expect(fixture.analyticsSink).toHaveBeenCalledWith({ event: 'task_ticked', action: 'completed', mode: 'local' });
   });
 
+  it('does not record or send a new completion for a parent-role habit', async () => {
+    const parentRoleActivity = { ...activity, isParentRole: true };
+    const fixture = createState('cloud', user);
+    // Use the supplied parent-role activity in the existing fixture state.
+    const action = createHabitActions({
+      cloud: {
+        currentUser: user,
+        familyId: 'family-1',
+        isFamilyConnected: false,
+        refreshChildSession: fixture.refreshChildSession,
+        setCloudSyncActive: fixture.setCloudSyncActive,
+        syncCloudFamily: fixture.syncCloudFamily,
+      },
+      state: {
+        activeChildId: child.id,
+        activities: [parentRoleActivity],
+        profiles: [child],
+        logs: [],
+        childBadges: [],
+        setProfiles: vi.fn(),
+        setLogs: vi.fn(),
+        setChildBadges: vi.fn(),
+        setExperience: vi.fn(),
+      },
+      isDemoSession: false,
+    });
+
+    expect(await action.toggleActivity(parentRoleActivity.id, '2026-09-20')).toBe(false);
+    expect(getLastToggleFailure()).toBe('parent-role');
+    expect(requestDomainCommand).not.toHaveBeenCalled();
+    expect(requestChildDomainCommand).not.toHaveBeenCalled();
+  });
+
   it('clears a local deferral when the task is completed so undo does not restore it', async () => {
     const fixture = createState('demo');
     fixture.setExperience({

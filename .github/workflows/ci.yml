@@ -73,6 +73,11 @@ jobs:
         env:
           # The thinking-games suite runs in its own job; keep this job at its historical duration.
           PLAYWRIGHT_SKIP_THINKING_GAMES: "1"
+      - name: Run mobile Chromium regressions
+        run: npm run test:e2e -- --project=mobile-chromium quest-deferral kid-bottom-nav a11y-menus
+        env:
+          # The thinking-games suite runs in its own job; keep this job at its historical duration.
+          PLAYWRIGHT_SKIP_THINKING_GAMES: "1"
       - run: npm run test:e2e:marketing
         env:
           NEXT_PUBLIC_APP_URL: https://app.kidhabithero.com

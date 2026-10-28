@@ -1,11 +1,11 @@
 import { readFile } from 'node:fs/promises';
 import { createThinkingGamesFixture, BASELINE_SCHEMA_SQL } from '../../../scripts/thinking-games-sql-fixture.mjs';
 
-const guard = await readFile('supabase/migrations/202610120002_parent_role_activity_guard.sql', 'utf8');
+const guard = await readFile('supabase/migrations/202610260002_parent_role_activity_guard.sql', 'utf8');
 const game = await readFile('supabase/migrations/202610210001_thinking_games.sql', 'utf8');
 const reconcile = await readFile('supabase/migrations/202610280001_reconcile_thinking_games_guard.sql', 'utf8');
 const preflight = await readFile('supabase/preflight/202610280001_reconcile_thinking_games_guard.verify.sql', 'utf8');
-const requiredVersions = ['202610120001', '202610120002', '202610210001', '202610240001',
+const requiredVersions = ['202610260001', '202610260002', '202610210001', '202610240001',
   '202610250001', '202610270001', '202610280001'];
 const parentActivity = 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee';
 const parentCommand = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1';
@@ -44,7 +44,7 @@ for (const [label, order] of [
     if (child.result.status !== 'parent_role_activity') throw new Error(`${label}: child RPC accepted parent-role activity`);
     const logCount = await fixture.scalar('select count(*)::integer from public.activity_logs where activity_id=$1', [parentActivity]);
     if (logCount !== 0) throw new Error(`${label}: rejected activity wrote a log`);
-    await fixture.query('delete from supabase_migrations.schema_migrations where version=$1', ['202610120002']);
+    await fixture.query('delete from supabase_migrations.schema_migrations where version=$1', ['202610260002']);
     const incomplete = await fixture.one('select public.schema_version() version');
     if (incomplete.version !== null) throw new Error(`${label}: incomplete ledger reported ready`);
     let rejected = false;

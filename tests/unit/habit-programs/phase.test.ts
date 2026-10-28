@@ -72,9 +72,13 @@ describe('maintain', () => {
     expect(phaseOf(intoMaintain + 'xaxaxa').phase).toBe('maintain');
   });
 
-  it('returns to fade when fewer than 6 of the last 10 were done', () => {
-    expect(phaseOf(intoMaintain + 'xxxxx').phase).toBe('fade');
-    expect(phaseOf(intoMaintain + 'xxxx').phase).toBe('maintain');
+  it('waits for a full window of maintain opportunities before considering regression', () => {
+    expect(phaseOf(intoMaintain + 'xxxxxx').phase).toBe('maintain');
+  });
+
+  it('returns to fade when fewer than 6 of a full maintain window were done', () => {
+    expect(phaseOf(intoMaintain + 'xxxxxxaaaa').phase).toBe('fade');
+    expect(phaseOf(intoMaintain + 'xxxxaaaaaa').phase).toBe('maintain');
   });
 });
 
@@ -86,7 +90,8 @@ describe('weekly cadence', () => {
     expect(phaseOf(intoFade + 'aaaaaa', { cadence: 'weekly' }).phase).toBe('maintain');
     expect(phaseOf(intoFade + 'aaaaap', { cadence: 'weekly' }).phase).toBe('maintain');
     expect(phaseOf(intoFade + 'aaaapp', { cadence: 'weekly' }).phase).toBe('fade');
-    expect(phaseOf(intoFade + 'aaaaaa' + 'xxx', { cadence: 'weekly' }).phase).toBe('fade');
+    expect(phaseOf(intoFade + 'aaaaaa' + 'xxx', { cadence: 'weekly' }).phase).toBe('maintain');
+    expect(phaseOf(intoFade + 'aaaaaa' + 'xxxaaa', { cadence: 'weekly' }).phase).toBe('fade');
   });
 });
 

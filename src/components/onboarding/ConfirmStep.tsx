@@ -56,8 +56,8 @@ export function ConfirmStep({ draft, onChange, error, consentError, consentRef }
         {consentError && <p id="onboarding-consent-error" role="alert" className="mt-1.5 text-sm font-bold text-rose-700 dark:text-rose-300">{consentError}</p>}
       </div>
       <p className="text-center text-xs text-slate-600 dark:text-slate-300">{extra.legalTemplate.split(/(\[privacy\]|\[terms\])/).map((part, index) => {
-        if (part === '[privacy]') return <Link key={index} href={`${marketingOrigin}/privacy`} target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">{extra.privacy}</Link>;
-        if (part === '[terms]') return <Link key={index} href={`${marketingOrigin}/terms`} target="_blank" className="font-bold text-indigo-700 underline dark:text-indigo-300">{extra.terms}</Link>;
+        if (part === '[privacy]') return <Link key={index} href={`${marketingOrigin}/privacy`} target="_blank" rel="noopener noreferrer" className="font-bold text-indigo-700 underline dark:text-indigo-300">{extra.privacy}</Link>;
+        if (part === '[terms]') return <Link key={index} href={`${marketingOrigin}/terms`} target="_blank" rel="noopener noreferrer" className="font-bold text-indigo-700 underline dark:text-indigo-300">{extra.terms}</Link>;
         return <React.Fragment key={index}>{part}</React.Fragment>;
       })}</p>
 

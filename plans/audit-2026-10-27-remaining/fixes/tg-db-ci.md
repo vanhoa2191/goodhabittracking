@@ -6,7 +6,7 @@ Phạm vi: `supabase/**`, `.github/workflows/ci.yml`, `tests/integration/migrati
 
 ### P1 — Hai migration ghi đè hai habit RPC
 
-**Xác nhận.** `202610210001_thinking_games.sql` định nghĩa cả hai RPC với khóa game và bonus sync nhưng thiếu `is_parent_role`; migration guard `202610120002` ở nhánh audit song song định nghĩa lại cùng chữ ký nhưng thiếu hai hành vi game. Tạo `202610280001_reconcile_thinking_games_guard.sql` sau các migration song song, định nghĩa hai RPC với cả guard, lock và sync. Test mới `thinking-games-reconcile-runtime.mjs` kiểm tra hai thứ tự upgrade và guard ở cả hai RPC; `thinking-games-habit-integration-runtime.mjs` kiểm tra guard và đường hoàn thành thường. Rollback migration mới **fail closed** (`unsafe_rollback_requires_forward_fix`) theo quyết định coordinator vì cả hai định nghĩa trước đó đều không an toàn để khôi phục.
+**Xác nhận.** `202610210001_thinking_games.sql` định nghĩa cả hai RPC với khóa game và bonus sync nhưng thiếu `is_parent_role`; migration guard `202610260002` ở nhánh audit song song định nghĩa lại cùng chữ ký nhưng thiếu hai hành vi game. Tạo `202610280001_reconcile_thinking_games_guard.sql` sau các migration song song, định nghĩa hai RPC với cả guard, lock và sync. Test mới `thinking-games-reconcile-runtime.mjs` kiểm tra hai thứ tự upgrade và guard ở cả hai RPC; `thinking-games-habit-integration-runtime.mjs` kiểm tra guard và đường hoàn thành thường. Rollback migration mới **fail closed** (`unsafe_rollback_requires_forward_fix`) theo quyết định coordinator vì cả hai định nghĩa trước đó đều không an toàn để khôi phục.
 
 ### P2 — Start trả puzzle bonus đã thu hồi
 
@@ -18,7 +18,7 @@ Phạm vi: `supabase/**`, `.github/workflows/ci.yml`, `tests/integration/migrati
 
 ### P2 — Schema version tối đa không chứng nhận backfill
 
-**Xác nhận.** `schema_version()` cũ trả `max(version)`; health chỉ so sánh mốc. Migration mới chỉ trả mốc tối đa khi ledger có đủ `202610120001`, `202610120002`, `202610210001`, `202610240001`, `202610250001`, `202610270001`, `202610280001`; nếu thiếu trả `null`, khiến health báo chưa sẵn sàng. Preflight mới xác nhận tập version và hai RPC hợp nhất. `src/lib/schema-version.ts` nâng mốc lên `202610280001`; test integration kiểm tra ledger đủ/thiếu backfill. **Merge prerequisite:** ba migration `202610120001/002` và `202610270001` từ nhánh song song phải được gộp trước lane này; coordinator đã xác nhận. Coordinator xử lý xung đột `EXPECTED_SCHEMA_VERSION` khi merge.
+**Xác nhận.** `schema_version()` cũ trả `max(version)`; health chỉ so sánh mốc. Migration mới chỉ trả mốc tối đa khi ledger có đủ `202610260001`, `202610260002`, `202610210001`, `202610240001`, `202610250001`, `202610270001`, `202610280001`; nếu thiếu trả `null`, khiến health báo chưa sẵn sàng. Preflight mới xác nhận tập version và hai RPC hợp nhất. `src/lib/schema-version.ts` nâng mốc lên `202610280001`; test integration kiểm tra ledger đủ/thiếu backfill. **Merge prerequisite:** ba migration `202610260001/002` và `202610270001` từ nhánh song song phải được gộp trước lane này; coordinator đã xác nhận. Coordinator xử lý xung đột `EXPECTED_SCHEMA_VERSION` khi merge.
 
 ### P2 — CI PostgreSQL thiếu hành vi game
 
@@ -49,6 +49,6 @@ Phạm vi: `supabase/**`, `.github/workflows/ci.yml`, `tests/integration/migrati
 ## Rủi ro còn lại
 
 - Chưa chạy SQL runtime hoặc preflight trên PostgreSQL vì lệnh giao việc **không áp migration lên DB nào**. Các test mới cần được chạy sau khi gộp prerequisites, tại môi trường được phép dùng DB thử nghiệm.
-- Worktree hiện chưa có ba migration prerequisite; test `thinking-games-reconcile-runtime.mjs` cố ý yêu cầu file `202610120002` và sẽ không chạy trước khi merge.
+- Worktree hiện chưa có ba migration prerequisite; test `thinking-games-reconcile-runtime.mjs` cố ý yêu cầu file `202610260002` và sẽ không chạy trước khi merge.
 - Timeout 30 phút của job SQL là ước lượng bảo thủ vì không được phép đo runtime PostgreSQL trong lane này.
 - Rollback migration hợp nhất cố ý từ chối downgrade; phục hồi cần forward fix hoặc kế hoạch thủ công được duyệt.

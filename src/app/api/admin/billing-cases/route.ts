@@ -231,6 +231,7 @@ export async function PATCH(request: NextRequest) {
   });
   await recordAdminAudit(admin, { ...audit, outcome: error || result?.code !== 'updated' ? 'failed' : 'succeeded' });
   if (error || !result) return adminJsonResponse({ error: 'Could not update billing case.', correlationId }, correlationId, 503);
+  if (result.code === 'subscription_grant_review_required') return adminJsonResponse({ error: 'Verify this order’s subscription grant history before confirming the refund. The case remains open.', code: result.code, correlationId }, correlationId, 409);
   if (result.code !== 'updated') return adminJsonResponse({ error: 'This case changed or cannot be resolved. Reload and review it.', code: result.code, correlationId }, correlationId, result.code === 'case_not_found' ? 404 : 409);
   if (result.referralCommission) {
     await recordAdminAudit(admin, { ...audit, action: 'affiliate.commission.reverse', targetType: 'payment_order', targetId: String(supportCase.order_code), before: null, after: { referral: result.referralCommission }, outcome: 'succeeded' });

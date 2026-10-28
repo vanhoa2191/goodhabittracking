@@ -1,7 +1,4 @@
 import { expect, test } from '@playwright/test';
-import { loadEnvConfig } from '@next/env';
-
-loadEnvConfig(process.cwd());
 
 function deferred() {
   let release: () => void = () => undefined;
@@ -23,9 +20,9 @@ test('an anonymous visitor does not request persisted analytics consent', async 
 });
 
 test('a signed-in parent can manage anonymous measurement across responsive and CJK layouts', async ({ page }, testInfo) => {
+  test.setTimeout(120_000);
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  test.skip(!supabaseUrl, 'The browser auth client requires public Supabase configuration.');
-  if (!supabaseUrl) return;
+  if (!supabaseUrl) throw new Error('Playwright must provide synthetic public Supabase configuration.');
 
   const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
   if (!projectRef) throw new Error('Supabase project reference is unavailable.');

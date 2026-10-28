@@ -1,8 +1,9 @@
 import { NextRequest } from 'next/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const { getParentContext, insert, update, remove, from } = vi.hoisted(() => ({
+const { getParentContext, requireParentUnlock, insert, update, remove, from } = vi.hoisted(() => ({
   getParentContext: vi.fn(),
+  requireParentUnlock: vi.fn(),
   insert: vi.fn(),
   update: vi.fn(),
   remove: vi.fn(),
@@ -11,8 +12,10 @@ const { getParentContext, insert, update, remove, from } = vi.hoisted(() => ({
 
 vi.mock('@/lib/auth/parent-context', () => ({ getParentContext }));
 vi.mock('@/lib/supabase/server', () => ({
-  createServerSupabaseClient: vi.fn(async () => ({ from })),
+  createServerSupabaseClient: vi.fn(async () => ({ rpc: vi.fn() })),
 }));
+vi.mock('@/lib/supabase/admin', () => ({ createAdminSupabaseClient: vi.fn(() => ({ from })) }));
+vi.mock('@/lib/security/parent-unlock', () => ({ requireParentUnlock }));
 
 import { POST } from '@/app/api/domain/rewards/route';
 
@@ -43,6 +46,7 @@ describe('POST /api/domain/rewards', () => {
       role: 'owner',
       user: { id: 'user-a' },
     });
+    requireParentUnlock.mockResolvedValue(null);
     insert.mockResolvedValue({ error: null });
     const updateById = vi.fn(async () => ({ error: null }));
     const updateByFamily = vi.fn(() => ({ eq: updateById }));
@@ -62,6 +66,23 @@ describe('POST /api/domain/rewards', () => {
     expect(from).not.toHaveBeenCalled();
   });
 
+  it.each([
+    { type: 'create', reward },
+    { type: 'update', rewardId: reward.id, updates: { costPoints: 900 } },
+    { type: 'delete', rewardId: reward.id },
+  ])('requires a successful PIN unlock before $type writes', async (body) => {
+    requireParentUnlock.mockResolvedValue(Response.json({ error: 'Parent PIN required.' }, { status: 403 }));
+
+    const response = await POST(request(body));
+
+    expect(response.status).toBe(403);
+    expect(requireParentUnlock).toHaveBeenCalledOnce();
+    expect(from).not.toHaveBeenCalled();
+    expect(insert).not.toHaveBeenCalled();
+    expect(update).not.toHaveBeenCalled();
+    expect(remove).not.toHaveBeenCalled();
+  });
+
   it('rejects caller-controlled reward tenancy fields', async () => {
     const response = await POST(request({
       type: 'create',
@@ -76,6 +97,7 @@ describe('POST /api/domain/rewards', () => {
     const response = await POST(request({ type: 'create', reward }));
 
     expect(response.status).toBe(200);
+    expect(requireParentUnlock).toHaveBeenCalledOnce();
     expect(from).toHaveBeenCalledWith('rewards');
     expect(insert).toHaveBeenCalledWith(expect.objectContaining({
       id: reward.id,

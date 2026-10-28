@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import type { Language } from '@/types';
 import { PAID_PLAN_IDS } from '@/lib/billing/plan-catalog';
-import { getCheckoutPlanFeatures, PLAN_LOCALIZATION } from '@/lib/i18n/pricing-plan-copy';
+import { AI_SOON_LABEL, getCheckoutPlanFeatures, PLAN_LOCALIZATION, withAiAvailability } from '@/lib/i18n/pricing-plan-copy';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { getLaunchOfferCopy } from '@/lib/i18n/addons-copy';
 import { getPublicPricingCopy } from '@/lib/i18n/public-pricing-copy';
 import { getAiCopy } from '@/lib/i18n/ai-copy';
@@ -10,6 +11,14 @@ const LANGUAGES: readonly Language[] = ['vi', 'en', 'fr', 'de', 'it', 'es', 'zh'
 const OLD_VI_NAMES = /Gia Đình Plus|Gói Gia Đình|Gói cả nhà|Gói Một Bé|Gia Đình ·/;
 
 describe('plan names and copy', () => {
+  it('labels paid AI benefits in every locale while the feature is disabled', () => {
+    for (const language of LANGUAGES) {
+      const aiFeatures = getCheckoutPlanFeatures('pro_plus_monthly', language);
+      const ai = aiFeatures.at(-1) ?? '';
+      expect(ai.includes(AI_SOON_LABEL[language]), language).toBe(!defaultExperienceFlags.parentAi);
+      expect(withAiAvailability('AI add-on', language).includes(AI_SOON_LABEL[language]), language).toBe(!defaultExperienceFlags.parentAi);
+    }
+  });
   it('names, describes and prices every sellable plan in every language', () => {
     for (const id of PAID_PLAN_IDS) {
       for (const language of LANGUAGES) {

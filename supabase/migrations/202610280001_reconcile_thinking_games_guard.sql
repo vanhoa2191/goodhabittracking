@@ -233,7 +233,7 @@ returns text language plpgsql stable security definer set search_path = '' as $$
 declare latest text;
 begin
   if (select count(distinct version) from supabase_migrations.schema_migrations
-      where version in ('202610120001','202610120002','202610210001',
+      where version in ('202610260001','202610260002','202610210001',
                         '202610240001','202610250001','202610270001','202610280001')) <> 7 then
     return null;
   end if;

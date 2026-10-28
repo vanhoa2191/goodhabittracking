@@ -6,8 +6,8 @@ Phạm vi: `origin/main` tại `ba93504`; đối chiếu các file chưa commit 
 
 ### P1 — Hai migration ghi đè cùng RPC, khiến một trong hai bảo vệ bị mất
 
-- **Vị trí:** `supabase/migrations/202610210001_thinking_games.sql:996-1060`; `../emperor/supabase/migrations/202610120002_parent_role_activity_guard.sql:3-153`; `supabase/schema.sql:72-75`.
-- **Bằng chứng:** `202610210001` định nghĩa lại `complete_habit_command` và `complete_child_habit_command`, thêm khóa game và gọi `sync_thinking_game_bonus_for_child` sau khi ghi log, nhưng không kiểm tra `activity.is_parent_role`. `202610120002` cũng định nghĩa lại đúng hai chữ ký này, có kiểm tra `is_parent_role` tại dòng 30-32 và 103-105, nhưng không gọi khóa game hay đồng bộ bonus. Production đã tới `202610250001`, nên áp `202610120002` sau đó sẽ thay thế triển khai thinking games. Trên DB mới nếu áp theo thứ tự tên file, `202610210001` lại thay thế guard của `202610120002`.
+- **Vị trí:** `supabase/migrations/202610210001_thinking_games.sql:996-1060`; `../emperor/supabase/migrations/202610260002_parent_role_activity_guard.sql:3-153`; `supabase/schema.sql:72-75`.
+- **Bằng chứng:** `202610210001` định nghĩa lại `complete_habit_command` và `complete_child_habit_command`, thêm khóa game và gọi `sync_thinking_game_bonus_for_child` sau khi ghi log, nhưng không kiểm tra `activity.is_parent_role`. `202610260002` cũng định nghĩa lại đúng hai chữ ký này, có kiểm tra `is_parent_role` tại dòng 30-32 và 103-105, nhưng không gọi khóa game hay đồng bộ bonus. Production đã tới `202610250001`, nên áp `202610260002` sau đó sẽ thay thế triển khai thinking games. Trên DB mới nếu áp theo thứ tự tên file, `202610210001` lại thay thế guard của `202610260002`.
 - **Kịch bản:** trên production, lệnh hoàn thành thói quen không kích hoạt bonus game; trên DB mới, hoạt động `is_parent_role=true` có thể được hoàn thành và nhận điểm qua hai RPC. Trigger bonus tự động cũng đã bị xóa ở `202610210001:993-994`, nên không bù được sự thiếu đồng bộ trên production.
 - **Sửa:** tạo một migration mới có version lớn hơn `202610270001` định nghĩa hai RPC một lần, giữ cả guard `is_parent_role`, khóa game và đồng bộ bonus; thêm test PostgreSQL cho cả hai thứ tự upgrade và DB mới. Không sửa migration đã áp production.
 
@@ -28,7 +28,7 @@ Phạm vi: `origin/main` tại `ba93504`; đối chiếu các file chưa commit 
 ### P2 — Schema version tối đa không chứng nhận đủ migration bắt buộc
 
 - **Vị trí:** `supabase/migrations/202610030001_caregiver_progress_projection.sql:88-98`; `src/app/api/health/route.ts:39-45`; `../emperor/src/lib/schema-version.ts:1`; `../emperor/supabase/migrations/202610270001_billing_lifecycle_recovery.sql:1`.
-- **Bằng chứng:** `schema_version()` trả `max(version)` của migration ledger; health chỉ kiểm tra giá trị đó `>= EXPECTED_SCHEMA_VERSION`. Nhánh song song nâng kỳ vọng lên `202610270001`, cao hơn `202610120001/202610120002`. Không có kiểm tra các version bắt buộc hiện diện trong ledger.
+- **Bằng chứng:** `schema_version()` trả `max(version)` của migration ledger; health chỉ kiểm tra giá trị đó `>= EXPECTED_SCHEMA_VERSION`. Nhánh song song nâng kỳ vọng lên `202610270001`, cao hơn `202610260001/202610260002`. Không có kiểm tra các version bắt buộc hiện diện trong ledger.
 - **Kịch bản:** ghi nhận/áp `202610270001` nhưng bỏ sót hai migration `20261012000x` vẫn cho `/api/health` báo schema sẵn sàng; deploy gate ở `.github/workflows/ci.yml:180-205` đi qua dù guard hoạt động phụ huynh hoặc ACL reward chưa được áp.
 - **Sửa:** release preflight kiểm tra tập version bắt buộc (hoặc capability/ACL cụ thể), đặc biệt các migration backfill version thấp hơn max; đừng dùng `max(version)` làm bằng chứng duy nhất.
 

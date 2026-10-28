@@ -22,6 +22,15 @@ test('@a11y landing page has no serious or critical accessibility violations', a
   expect(blockingViolations).toEqual([]);
 });
 
+test('@a11y skip link moves keyboard focus past the app header', async ({ page }) => {
+  await page.goto('/');
+  await page.keyboard.press('Tab');
+  const skip = page.getByRole('link', { name: 'Bỏ qua điều hướng, đến nội dung chính' });
+  await expect(skip).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('main#noi-dung')).toBeFocused();
+});
+
 test('@a11y trial start entry has no serious or critical accessibility violations', async ({ page }) => {
   await page.route('**/api/child/session', (route) => route.fulfill({ status: 401, json: {} }));
   await page.goto('/start');

@@ -126,6 +126,18 @@ export function toggleLocalHabit(input: LocalHabitToggleInput): LocalHabitToggle
     };
   }
 
+  // GD1 habits are actions performed by the parent; recording them as child progress would
+  // create streaks, badge progress and reward points for behavior the child did not perform.
+  if (input.activity.isParentRole) {
+    return {
+      kind: LOCAL_HABIT_OUTCOMES.completed,
+      profiles: [...input.profiles],
+      logs: [...input.logs],
+      childBadges: [...input.childBadges],
+      unlockedBadgeCount: 0,
+    };
+  }
+
   const pointsAwarded = input.activity.requiresApproval ? 0 : input.activity.points;
   const newLog: ActivityLog = {
     id: input.logId,

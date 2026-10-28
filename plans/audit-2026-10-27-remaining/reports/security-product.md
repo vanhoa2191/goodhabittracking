@@ -34,9 +34,9 @@
 
 ## Đối chiếu bản sửa song song
 
-`../emperor` hiện có PIN guard cho route rewards, migration `202610120001_reward_pin_security.sql`, và migration `202610120002_parent_role_activity_guard.sql` có guard trước khi ghi log (`../emperor/supabase/migrations/202610120002_parent_role_activity_guard.sql:27-32`, `:96-105`). Nhưng trên nhánh audit này, `202610210001_thinking_games.sql` định nghĩa lại chính hai RPC completion đó mà không giữ guard (`supabase/migrations/202610210001_thinking_games.sql:1005-1022`, `:1037-1059`). Khi merge, thứ tự version sẽ chạy `202610120002` trước `202610210001`, nên bản sửa này không còn hiệu lực cuối cùng. Cần migration hợp nhất có version mới hơn `202610270001`, giữ đồng thời guard parent-role, khóa game và bonus sync; đây là cùng xung đột DB/CI đã ghi tại `reports/tg-db-ci.md`, không tính thành phát hiện thứ năm ở đây.
+`../emperor` hiện có PIN guard cho route rewards, migration `202610260001_reward_pin_security.sql`, và migration `202610260002_parent_role_activity_guard.sql` có guard trước khi ghi log (`../emperor/supabase/migrations/202610260002_parent_role_activity_guard.sql:27-32`, `:96-105`). Nhưng trên nhánh audit này, `202610210001_thinking_games.sql` định nghĩa lại chính hai RPC completion đó mà không giữ guard (`supabase/migrations/202610210001_thinking_games.sql:1005-1022`, `:1037-1059`). Khi merge, thứ tự version sẽ chạy `202610260002` trước `202610210001`, nên bản sửa này không còn hiệu lực cuối cùng. Cần migration hợp nhất có version mới hơn `202610270001`, giữ đồng thời guard parent-role, khóa game và bonus sync; đây là cùng xung đột DB/CI đã ghi tại `reports/tg-db-ci.md`, không tính thành phát hiện thứ năm ở đây.
 
-Migration thu hồi ghi `rewards` của `../emperor` cũng chưa có trong schema manifest của audit branch và chưa được áp/đối chiếu ACL thực tế. Việc nâng schema version tối đa không tự chứng minh migration `202610120001` đã được ghi nhận; theo dõi gate này trong `reports/tg-db-ci.md`.
+Migration thu hồi ghi `rewards` của `../emperor` cũng chưa có trong schema manifest của audit branch và chưa được áp/đối chiếu ACL thực tế. Việc nâng schema version tối đa không tự chứng minh migration `202610260001` đã được ghi nhận; theo dõi gate này trong `reports/tg-db-ci.md`.
 
 ## Kiểm chứng
 

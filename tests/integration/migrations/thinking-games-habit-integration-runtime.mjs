@@ -17,12 +17,12 @@ try {
     create schema supabase_migrations;
     create table supabase_migrations.schema_migrations(version text primary key);
     insert into supabase_migrations.schema_migrations(version) values
-      ('202610120001'),('202610120002'),('202610210001'),('202610240001'),
+      ('202610260001'),('202610260002'),('202610210001'),('202610240001'),
       ('202610250001'),('202610270001'),('202610280001');
   `);
   const completeVersion = await fixture.one(`select public.schema_version() as version`);
   if (completeVersion.version !== '202610280001') throw new Error('complete ledger rejected');
-  await fixture.exec(`delete from supabase_migrations.schema_migrations where version='202610120002'`);
+  await fixture.exec(`delete from supabase_migrations.schema_migrations where version='202610260002'`);
   const incompleteVersion = await fixture.one(`select public.schema_version() as version`);
   if (incompleteVersion.version !== null) throw new Error('schema version accepted missing backfill');
   await fixture.exec(`

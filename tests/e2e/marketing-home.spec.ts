@@ -165,6 +165,17 @@ test('the page does not scroll sideways at 360px', async ({ page }) => {
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(360);
 });
 
+test('timeline text keeps readable contrast and the default focus ring is visible', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/');
+  await page.locator('.timeline').scrollIntoViewIfNeeded();
+  const contrast = (await new AxeBuilder({ page }).include('.timeline').withRules(['color-contrast']).analyze()).violations;
+  expect(contrast).toEqual([]);
+  await page.goto('/privacy/');
+  await page.locator('.site-header a').first().focus();
+  expect(await page.locator('.site-header a').first().evaluate((element) => getComputedStyle(element).outlineColor)).toBe('rgb(31, 95, 71)');
+});
+
 test.describe('with reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
 
