@@ -8,7 +8,8 @@ const { requestChildDomainCommand, requestDomainCommand } = vi.hoisted(() => ({
   requestChildDomainCommand: vi.fn(),
   requestDomainCommand: vi.fn(),
 }));
-vi.mock('@/lib/store/domain-command-client', () => ({
+vi.mock('@/lib/store/domain-command-client', async (importOriginal) => ({
+  ...await importOriginal<typeof import('@/lib/store/domain-command-client')>(),
   requestChildDomainCommand,
   requestDomainCommand,
 }));
@@ -20,6 +21,8 @@ vi.mock('@/lib/sound', () => ({
     playTaskComplete: vi.fn(),
   },
 }));
+
+import { DomainCommandRequestError } from '@/lib/store/domain-command-client';
 
 import { createHabitActions, getLastToggleFailure } from '@/lib/store/habit-actions';
 
@@ -104,6 +107,7 @@ function createState(
   return {
     actions,
     read: () => ({ profiles, logs, childBadges }),
+    setLogs: (value: ActivityLog[]) => { logs = value; },
     readExperience: () => experience,
     setExperience: (value: ExperienceState) => { experience = value; },
     setCloudSyncActive,
@@ -201,9 +205,9 @@ describe('habit actions', () => {
     expect(fixture.analyticsSink).not.toHaveBeenCalled();
   });
 
-  it('shows a cloud completion at once and lets the server reload settle it afterwards', async () => {
+  it('shows only acknowledged cloud completion and leaves balance to the snapshot', async () => {
     // Given
-    requestDomainCommand.mockResolvedValue({ status: 'completed' });
+    requestDomainCommand.mockResolvedValue({ status: 'completed', logId: 'server-log', pointsAwarded: 20 });
     const fixture = createState('cloud', user);
 
     // When
@@ -221,7 +225,7 @@ describe('habit actions', () => {
     expect(fixture.read().logs).toEqual([
       expect.objectContaining({ activityId: activity.id, status: 'completed', pointsAwarded: 20 }),
     ]);
-    expect(fixture.read().profiles[0]?.points).toBe(20);
+    expect(fixture.read().profiles[0]?.points).toBe(0);
     expect(fixture.analyticsSink).toHaveBeenCalledWith({ event: 'task_ticked', action: 'completed', mode: 'cloud' });
   });
 
@@ -240,7 +244,7 @@ describe('habit actions', () => {
 
   it('uses the scoped child command and refreshes the paired session', async () => {
     // Given
-    requestChildDomainCommand.mockResolvedValue({ status: 'pending_approval' });
+    requestChildDomainCommand.mockResolvedValue({ status: 'pending_approval', logId: 'server-log', pointsAwarded: 0 });
     const fixture = createState('cloud', null, true);
 
     // When
@@ -281,13 +285,13 @@ describe('habit actions', () => {
     expect(getLastToggleFailure()).toBe('request-401');
 
     // A reload that fails after the server saved the tick does not turn the tick into a failure.
-    requestDomainCommand.mockResolvedValueOnce({ status: 'completed' });
+    requestDomainCommand.mockResolvedValueOnce({ status: 'completed', logId: 'server-log', pointsAwarded: 20 });
     const notSynced = createState('cloud', user);
     notSynced.syncCloudFamily.mockResolvedValueOnce(false);
     await expect(notSynced.actions.toggleActivity(activity.id, '2026-09-20')).resolves.toBe(true);
     expect(getLastToggleFailure()).toBeNull();
 
-    requestDomainCommand.mockResolvedValueOnce({ status: 'completed' });
+    requestDomainCommand.mockResolvedValueOnce({ status: 'completed', logId: 'server-log', pointsAwarded: 20 });
     const worked = createState('cloud', user);
     await expect(worked.actions.toggleActivity(activity.id, '2026-09-20')).resolves.toBe(true);
     expect(getLastToggleFailure()).toBeNull();
@@ -297,16 +301,16 @@ describe('habit actions', () => {
     expect(getLastToggleFailure()).toBe('no-activity');
   });
 
-  it('puts the card on screen before the server answers and rolls it back when the server refuses', async () => {
+  it('keeps card and verified points unchanged until the server acknowledges', async () => {
     let refuse: (reason: Error) => void = () => undefined;
     requestDomainCommand.mockReturnValue(new Promise((_, reject) => { refuse = reject; }));
     const fixture = createState('cloud', user);
 
     const pending = fixture.actions.toggleActivity(activity.id, '2026-09-20');
-    expect(fixture.read().logs).toHaveLength(1);
-    expect(fixture.read().profiles[0]?.points).toBe(20);
+    expect(fixture.read().logs).toHaveLength(0);
+    expect(fixture.read().profiles[0]?.points).toBe(0);
 
-    refuse(Object.assign(new Error('refused'), { status: 409 }));
+    refuse(new DomainCommandRequestError('refused', 409, 'refused'));
     expect(await pending).toBe(false);
     expect(fixture.read()).toEqual({ profiles: [child], logs: [], childBadges: [] });
     expect(fixture.syncCloudFamily).not.toHaveBeenCalled();
@@ -319,6 +323,33 @@ describe('habit actions', () => {
 
     expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20')).toBe(false);
     expect(fixture.read().logs).toEqual([log]);
+  });
+
+  it('keeps explicit completion retry intent when a fresh snapshot changes the visible toggle', async () => {
+    requestDomainCommand.mockRejectedValueOnce(new DomainCommandRequestError('conflict', 409, 'refused'));
+    requestDomainCommand.mockResolvedValueOnce({ status: 'completed', logId: 'server-log', pointsAwarded: 7 });
+    const fixture = createState('cloud', user);
+
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20', true)).toBe(false);
+    fixture.setLogs([{ id: 'other-device-log', activityId: activity.id, childId: child.id, date: '2026-09-20', status: 'completed', pointsAwarded: 7, completedAt: '2026-09-20T10:00:00.000Z' }]);
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20', true)).toBe(true);
+    expect(requestDomainCommand.mock.calls.map(([command]) => command.type)).toEqual(['completeHabit', 'completeHabit']);
+    expect(requestDomainCommand.mock.calls[1]?.[0]).toMatchObject({ commandId: requestDomainCommand.mock.calls[0]?.[0].commandId });
+  });
+
+  it('keeps explicit undo retry intent when a fresh snapshot removes the visible toggle', async () => {
+    const log: ActivityLog = { id: 'log-1', activityId: activity.id, childId: child.id, date: '2026-09-20', status: 'completed', pointsAwarded: 20, completedAt: '2026-09-20T10:00:00.000Z' };
+    requestDomainCommand.mockResolvedValueOnce({ status: 'not_found' });
+    requestDomainCommand.mockResolvedValueOnce({ status: 'undone' });
+    const fixture = createState('cloud', user, false, [log]);
+
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20', false)).toBe(false);
+    fixture.setLogs([]);
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20', false)).toBe(true);
+    expect(requestDomainCommand.mock.calls.map(([command]) => command)).toEqual([
+      { type: 'undoHabit', logId: log.id },
+      { type: 'undoHabit', logId: log.id },
+    ]);
   });
 
   it.each([
@@ -349,35 +380,41 @@ describe('habit actions', () => {
     expect(fixture.refreshChildSession).toHaveBeenCalledOnce();
   });
 
-  it('gives the optimistic log the id the server created so an immediate undo can find it', async () => {
+  it('uses only the acknowledged log ID and actual points', async () => {
     const serverId = '33333333-3333-4333-8333-333333333333';
-    requestDomainCommand.mockResolvedValue({ status: 'completed', logId: serverId });
+    requestDomainCommand.mockResolvedValue({ status: 'completed', logId: serverId, pointsAwarded: 7 });
     const fixture = createState('cloud', user);
 
     await fixture.actions.toggleActivity(activity.id, '2026-09-20');
     expect(fixture.read().logs.map((log) => log.id)).toEqual([serverId]);
+    expect(fixture.read().logs[0].pointsAwarded).toBe(7);
+    expect(fixture.read().profiles[0].points).toBe(0);
   });
 
-  it('runs one family reload at a time and one follow-up for the taps made meanwhile', async () => {
-    requestDomainCommand.mockResolvedValue({ status: 'completed' });
+  it('awaits the authoritative reload for each acknowledged operation', async () => {
+    requestDomainCommand.mockResolvedValue({ status: 'completed', logId: 'server-log', pointsAwarded: 20 });
     const fixture = createState('cloud', user);
     let finish: (ok: boolean) => void = () => undefined;
     fixture.syncCloudFamily.mockReturnValueOnce(new Promise<boolean>((resolve) => { finish = resolve; }));
-
-    await fixture.actions.toggleActivity(activity.id, '2026-09-20');
-    await fixture.actions.toggleActivity(activity.id, '2026-09-21');
-    await fixture.actions.toggleActivity(activity.id, '2026-09-22');
-    expect(fixture.syncCloudFamily).toHaveBeenCalledTimes(1);
-
+    let settled = false;
+    const saving = fixture.actions.toggleActivity(activity.id, '2026-09-20').then((value) => { settled = true; return value; });
+    await vi.waitFor(() => expect(fixture.syncCloudFamily).toHaveBeenCalledTimes(1));
+    expect(settled).toBe(false);
+    expect(fixture.read().profiles[0].points).toBe(0);
     finish(true);
-    await vi.waitFor(() => expect(fixture.syncCloudFamily).toHaveBeenCalledTimes(2));
+    expect(await saving).toBe(true);
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-21')).toBe(true);
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-22')).toBe(true);
+    expect(fixture.syncCloudFamily).toHaveBeenCalledTimes(3);
   });
 
   it('does not count a duplicate cloud command as a completed task', async () => {
     requestDomainCommand.mockResolvedValue({ status: 'duplicate' });
     const fixture = createState('cloud', user);
 
-    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20')).toBe(true);
+    expect(await fixture.actions.toggleActivity(activity.id, '2026-09-20')).toBe(false);
+    expect(fixture.read().logs).toEqual([]);
+    expect(fixture.actions.getToggleOutcome(activity.id, '2026-09-20')).toMatchObject({ status: 'unknown' });
     expect(fixture.analyticsSink).not.toHaveBeenCalled();
   });
 
@@ -444,7 +481,7 @@ describe('habit actions', () => {
 
       const outcome = await fixture.actions.reviewLogs(['log-1', 'log-2', 'log-1'], 'approve');
 
-      expect(outcome).toEqual({ approved: 2, rejected: 0, skipped: 0 });
+      expect(outcome).toEqual({ approved: 2, rejected: 0, skipped: 0, acknowledgedIds: ['log-1', 'log-2'], unresolvedIds: [] });
       expect(fixture.read().logs.map((log) => log.status)).toEqual(['approved', 'approved']);
       expect(fixture.read().profiles[0]?.points).toBe(activity.points * 2);
     });
@@ -455,7 +492,7 @@ describe('habit actions', () => {
 
       const outcome = await fixture.actions.reviewLogs(['log-1'], 'approve');
 
-      expect(outcome).toEqual({ approved: 0, rejected: 0, skipped: 1 });
+      expect(outcome).toEqual({ approved: 0, rejected: 0, skipped: 1, acknowledgedIds: ['log-1'], unresolvedIds: [] });
       expect(fixture.read().profiles[0]?.points).toBe(0);
     });
 
@@ -465,7 +502,7 @@ describe('habit actions', () => {
 
       const outcome = await fixture.actions.reviewLogs(['log-1'], 'reject');
 
-      expect(outcome).toEqual({ approved: 0, rejected: 1, skipped: 0 });
+      expect(outcome).toEqual({ approved: 0, rejected: 1, skipped: 0, acknowledgedIds: ['log-1'], unresolvedIds: [] });
       expect(fixture.read().logs[0]).toEqual(expect.objectContaining({ status: 'rejected', pointsAwarded: 0 }));
     });
 
@@ -484,12 +521,12 @@ describe('habit actions', () => {
 
       expect(requestDomainCommand).toHaveBeenCalledTimes(1);
       expect(requestDomainCommand).toHaveBeenCalledWith({ type: 'reviewHabits', logIds: ['log-1', 'log-2', 'log-3'], decision: 'approve' });
-      expect(outcome).toEqual({ approved: 1, rejected: 0, skipped: 2 });
+      expect(outcome).toEqual({ approved: 1, rejected: 0, skipped: 2, acknowledgedIds: ['log-1', 'log-2', 'log-3'], unresolvedIds: [] });
       expect(fixture.syncCloudFamily).toHaveBeenCalledTimes(1);
     });
 
     it('returns null and reloads nothing when the server refuses the batch', async () => {
-      requestDomainCommand.mockRejectedValue(new Error('locked'));
+      requestDomainCommand.mockRejectedValue(Object.assign(new DomainCommandRequestError('Unlock required', 403), { outcome: 'refused' as const }));
       const fixture = createState('cloud', user, true);
 
       await expect(fixture.actions.reviewLogs(['log-1'], 'approve')).resolves.toBeNull();
@@ -506,5 +543,90 @@ describe('habit actions', () => {
       const sent = requestDomainCommand.mock.calls[0]?.[0] as { logIds: string[] };
       expect(sent.logIds).toHaveLength(50);
     });
+
+    it('reviews a single waiting log through the same batch command the queue uses', async () => {
+      requestDomainCommand.mockResolvedValue({
+        status: 'reviewed',
+        results: [{ logId: 'log-1', status: 'approved', pointsAwarded: 20 }],
+      });
+      const fixture = createState('cloud', user, true);
+
+      const outcome = await fixture.actions.reviewLogs(['log-1'], 'approve');
+
+      expect(requestDomainCommand).toHaveBeenCalledTimes(1);
+      expect(requestDomainCommand).toHaveBeenCalledWith({ type: 'reviewHabits', logIds: ['log-1'], decision: 'approve' });
+      expect(outcome).toEqual({ approved: 1, rejected: 0, skipped: 0, acknowledgedIds: ['log-1'], unresolvedIds: [] });
+      expect(outcome?.stale).toBeUndefined();
+      expect(fixture.syncCloudFamily).toHaveBeenCalledTimes(1);
+    });
+
+    it('marks the outcome stale when the reload after a reviewed batch fails', async () => {
+      requestDomainCommand.mockResolvedValue({
+        status: 'reviewed',
+        results: [{ logId: 'log-1', status: 'approved', pointsAwarded: 20 }],
+      });
+      const fixture = createState('cloud', user, true);
+      fixture.syncCloudFamily.mockResolvedValue(false);
+
+      const outcome = await fixture.actions.reviewLogs(['log-1'], 'approve');
+
+      expect(outcome).toEqual({ approved: 1, rejected: 0, skipped: 0, acknowledgedIds: ['log-1'], unresolvedIds: [], stale: true });
+    });
+
+    it('keeps a successful local batch review fresh because local state is authoritative', async () => {
+      const fixture = createState('demo');
+      fixture.read().logs.push(pendingLog('log-1'));
+
+      const outcome = await fixture.actions.reviewLogs(['log-1'], 'approve');
+
+      expect(outcome).toEqual({ approved: 1, rejected: 0, skipped: 0, acknowledgedIds: ['log-1'], unresolvedIds: [] });
+      expect(outcome?.stale).toBeUndefined();
+    });
+    it('returns explicit acknowledged IDs even when every requested review was answered', async () => {
+      requestDomainCommand.mockResolvedValue({ status: 'reviewed', results: [{ logId: 'log-1', status: 'approved' }] });
+      const f = createState('cloud', user, true);
+      await expect(f.actions.reviewLogs(['log-1'], 'approve')).resolves.toMatchObject({ acknowledgedIds: ['log-1'], unresolvedIds: [] });
+    });
+
+    it('retains only uniquely acknowledged IDs in a partial response and reconciles missing IDs', async () => {
+      requestDomainCommand.mockResolvedValue({ status: 'reviewed', results: [{ logId: 'log-1', status: 'approved' }] });
+      const f = createState('cloud', user, true);
+      f.syncCloudFamily.mockResolvedValue(false);
+      await expect(f.actions.reviewLogs(['log-1', 'log-2'], 'approve')).resolves.toMatchObject({
+        approved: 1, rejected: 0, skipped: 0, acknowledgedIds: ['log-1'], unresolvedIds: ['log-2'], stale: true,
+      });
+      await f.actions.reviewLogs(['log-1', 'log-2'], 'reject');
+      expect(requestDomainCommand).toHaveBeenCalledTimes(1);
+      expect(f.syncCloudFamily).toHaveBeenCalledOnce();
+    });
+
+    it.each([
+      { status: 'reviewed' },
+      { status: 'reviewed', results: [] },
+      { status: 'reviewed', results: [{ logId: 'log-1', status: 'approved' }, { logId: 'log-1', status: 'approved' }] },
+      { status: 'completed', results: [{ logId: 'log-1', status: 'approved' }] },
+      { status: 'reviewed', results: [{ logId: 'alien', status: 'approved' }] },
+      { status: 'reviewed', results: [{ logId: 'log-1', status: 'rejected' }] },
+    ])('does not turn a malformed or contradictory per-ID batch into success: %j', async (result) => {
+      requestDomainCommand.mockResolvedValue(result);
+      const f = createState('cloud', user, true);
+      await expect(f.actions.reviewLogs(['log-1'], 'approve')).resolves.toMatchObject({
+        approved: 0, rejected: 0, skipped: 0, acknowledgedIds: [], unresolvedIds: ['log-1'],
+      });
+      expect(f.syncCloudFamily).toHaveBeenCalledOnce();
+    });
+
+    it('reconciles a committed batch whose response is lost and gates affected IDs while refresh fails', async () => {
+      requestDomainCommand.mockRejectedValueOnce(new TypeError('response lost after commit'));
+      const f = createState('cloud', user, true);
+      f.syncCloudFamily.mockResolvedValue(false);
+      await expect(f.actions.reviewLogs(['log-1'], 'approve')).resolves.toMatchObject({
+        approved: 0, acknowledgedIds: [], unresolvedIds: ['log-1'], stale: true,
+      });
+      await f.actions.reviewLogs(['log-1'], 'reject');
+      expect(requestDomainCommand).toHaveBeenCalledOnce();
+      expect(f.syncCloudFamily).toHaveBeenCalledOnce();
+    });
+
   });
 });

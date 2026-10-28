@@ -56,3 +56,10 @@ next-env.d.ts
 
 # local agent review artifacts
 /.omo/
+.omx/
+
+# playwright MCP snapshots and impeccable per-machine state (local-only)
+/.playwright-mcp/
+/.impeccable/hook.cache.json
+/.impeccable/hook.pending.json
+/.impeccable/config.local.json

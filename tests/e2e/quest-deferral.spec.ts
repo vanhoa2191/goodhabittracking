@@ -130,7 +130,7 @@ test('a failed paired-device save leaves the task available to retry', async ({ 
   const task = page.locator('[data-task-card]').first();
   await task.getByRole('button', { name: 'Để sau', exact: true }).click();
   await expect(task).toHaveAttribute('data-deferred', 'false');
-  await expect(task.getByRole('alert')).toContainText('Chưa lưu được');
+  await expect(task.getByRole('alert')).toContainText('Chưa xác nhận được kết quả');
   await expect(task.getByRole('button', { name: 'Để sau', exact: true })).toBeEnabled();
 });
 

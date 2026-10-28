@@ -146,7 +146,7 @@ describe('marketing static artifact', () => {
     const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
     if (!defaultExperienceFlags.parentAi) {
       expect(pricing).toContain('Gợi ý AI 20 lượt/tháng (sắp có)');
-      expect(pricing).toContain('Gợi ý AI không giới hạn (sắp có)');
+      expect(pricing).toContain('Gợi ý AI không giới hạn theo tháng (tối đa 100 lượt mỗi ngày) (sắp có)');
       expect(pricing).toContain('Tóm tắt tuần bằng AI cho ba mẹ (sắp có)');
     }
     if (!defaultExperienceFlags.habitCoach) expect(pricing).toMatch(/Huấn luyện viên thói quen<\/b>: gợi ý chia nhỏ thói quen bằng AI \(sắp có\)/);

@@ -15,6 +15,7 @@ import { AnalyticsConsentProvider } from "@/lib/analytics-consent-context";
 import { ParentReminderProvider } from "@/lib/parent-reminder-context";
 import { getSiteOrigin } from "@/lib/site";
 import { PwaRuntime } from "@/components/PwaRuntime";
+import { PwaInstallBanner } from "@/components/PwaInstallBanner";
 import { SessionHintSync } from "@/components/SessionHintSync";
 
 const displayFont = Fraunces({
@@ -95,11 +96,11 @@ export default async function RootLayout({
       <head>
         <script nonce={nonce} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: appearanceScript }} />
       </head>
-      <body className="min-h-full flex flex-col bg-app-surface dark:bg-zinc-950 text-ink dark:text-slate-100 selection:bg-indigo-500 selection:text-white">
+      <body className="min-h-full flex flex-col bg-app-surface text-ink selection:bg-indigo-500 selection:text-white">
         <PwaRuntime />
         <AppearanceProvider>
           <I18nProvider initialLanguage={initialLanguage}>
-            <AnalyticsConsentProvider><ParentReminderProvider>{children}<SessionHintSync /></ParentReminderProvider></AnalyticsConsentProvider>
+            <AnalyticsConsentProvider><ParentReminderProvider>{children}<PwaInstallBanner /><SessionHintSync /></ParentReminderProvider></AnalyticsConsentProvider>
           </I18nProvider>
         </AppearanceProvider>
       </body>

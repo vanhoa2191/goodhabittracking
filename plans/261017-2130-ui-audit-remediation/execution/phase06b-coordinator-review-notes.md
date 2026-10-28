@@ -1,0 +1,9 @@
+# Pending06b review notes
+
+Root actualfont-clip-probe.mjs run19Oct:375x812 vi118%, selectedrounded nameclientWidth262 /scrollWidth302, overflowhidden/textOverflowellipsis/whiteSpacenowrap, clippedtrue. FontSettingsModal retains truncate on name/sample. DOMfull-label testdoesnotprovevisiblefullcopy; requirewrapping andrerunmetric beforeaccept06b. Artifactfont-clip-probe.json under.omx, roottoolrunexit0 measureddefect(noassertgreenclaim). All4fontcountschecked beforeleafmeasurement.
+
+A08soleItaliantracefailure Comodo vsregexcomoda waslegitimatetestgrammarbug; rootchangedonlyregexcomod[oa], allothersemantics retained, independentrootA08run45323active logcoordinator-font-a08.log outsidePlaywrightoutput. OpenCodefirsttworunsloststdoutbecausePlaywrightcleansits--outputpathatstart; trace.zip+savedexit remainactualfailureevidence. Do notcalllostlog0tests/pass.
+
+Copyreviewpending: Koreanplayful name발랄한손글씨체 assertshandwritingwhileexistingpersistentplayfulCSS isTrebuchetMS/LucidaSansUnicode/SegoeUI/systemsans, nohandwrittenfamily. AskAGYboundedtextcopyreviewafter06bsettles; preferneutralplayful/cheerful label, preserveCSS/IDs. Otherlocallabelsdescribestyle, notfontbrandpromises. Noactualnativeusertestingclaimed.
+
+Root bounded confirmation afterwrapfix: font-clip-probe.mjs exit0, all8name/sample leavesunclipped. Selectedroundedtitle262client/262scroll,widthunchanged,height47shows2lines, overflowvisible/whiteSpacenormal. AGYtextREVISEonlyKOhandwritingfalseclaim; fresh06a2GPTcorrectiveownershipgrantforthisonecopyvalue.06bconditionalready, NOTaccepteduntilcorrection+focusedunitgreen. Whole06pendingfull04/05/integration. No furtherfontpolishloop.

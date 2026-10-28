@@ -23,7 +23,7 @@ const disabled: AiProvider = { name: 'workers', ask: async () => ({ ok: false, r
  * processor), the privacy notice and `AI_POLICY_VERSION`, so the parent's agreement covers it.
  */
 export function resolveProvider(env: ProviderEnv, dependencies: Dependencies = {}): { readonly provider: AiProvider; readonly available: boolean } {
-  if (env.AI_KILL_SWITCH === 'true') return { provider: disabled, available: false };
+  if (/^(?:true|1)$/i.test(String(env.AI_KILL_SWITCH ?? '').trim())) return { provider: disabled, available: false };
   if (env.AI_PROVIDER === 'deepseek') {
     const provider: AiProvider = env.DEEPSEEK_API_KEY
       ? createDeepSeekProvider({ apiKey: env.DEEPSEEK_API_KEY, baseUrl: env.DEEPSEEK_BASE_URL, model: env.DEEPSEEK_MODEL, fetch: dependencies.fetch })

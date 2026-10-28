@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { getOnboardingWizardCopy } from '@/lib/i18n/onboarding-wizard-copy';
 import { generateAgeAdaptedHabits, getStageFromAge } from '@/lib/wit-framework';
+import { getTemplatesForSet } from '@/lib/daily-living-habits';
 import {
   MAX_REWARD_COST,
   ONBOARDING_REWARD_IDS,
@@ -9,13 +10,16 @@ import {
   daysToReward,
   estimateDailyStars,
   firstInvalidRewardId,
+  initialDailyHabitSelection,
   initialHabitSelection,
   initialRewardSelection,
   isParentRoleStage,
   isValidRewardCost,
+  selectedDailyStarterHabits,
   selectedStarterHabits,
   withAge,
 } from '@/lib/onboarding/wizard';
+import type { StarterHabitChoice, AgeStarterHabitChoice, DailyStarterHabitChoice } from '@/lib/onboarding/wizard';
 
 describe('onboarding wizard', () => {
   it('starts with the child, habit, reward and consent defaults', () => {
@@ -38,11 +42,12 @@ describe('onboarding wizard', () => {
       const templates = generateAgeAdaptedHabits(null, getStageFromAge(age));
 
       expect(habits).toHaveLength(6);
-      expect(habits.filter((habit) => habit.selected).map((habit) => habit.templateIndex))
+      expect(habits.filter((habit) => habit.selected).map((habit) => (habit as StarterHabitChoice & { source: 'age' }).templateIndex))
         .toEqual(Array.from({ length: recommended }, (_, index) => index));
-      expect(habits.map((habit) => habit.templateIndex)).toEqual([0, 1, 2, 3, 4, 5]);
+      expect(habits.map((habit) => (habit as StarterHabitChoice & { source: 'age' }).templateIndex)).toEqual([0, 1, 2, 3, 4, 5]);
       expect(habits.map((habit) => habit.requiresApproval))
         .toEqual(templates.map((template) => template.requiresApproval));
+      expect(habits.every((h) => h.source === 'age')).toBe(true);
     },
   );
 
@@ -67,7 +72,7 @@ describe('onboarding wizard', () => {
     const at7 = withAge(createInitialDraft(), 7);
     const draft = {
       ...at7,
-      habits: at7.habits.map((habit) => ({ ...habit, selected: habit.templateIndex === 5, requiresApproval: !habit.requiresApproval })),
+      habits: at7.habits.map((habit) => ({ ...habit, selected: (habit as StarterHabitChoice & { source: 'age' }).templateIndex === 5, requiresApproval: !habit.requiresApproval })),
     };
 
     expect(withAge(draft, 8)).toEqual({ ...draft, childAge: 8 });
@@ -129,9 +134,9 @@ describe('onboarding wizard', () => {
     expect(selectedStarterHabits({
       ...draft,
       habits: [
-        { templateIndex: 3, selected: true, requiresApproval: false },
-        { templateIndex: 2, selected: false, requiresApproval: true },
-        { templateIndex: 0, selected: true, requiresApproval: true },
+        { source: 'age' as const, templateIndex: 3, selected: true, requiresApproval: false },
+        { source: 'age' as const, templateIndex: 2, selected: false, requiresApproval: true },
+        { source: 'age' as const, templateIndex: 0, selected: true, requiresApproval: true },
       ],
     })).toEqual([
       { templateIndex: 3, requiresApproval: false },
@@ -152,7 +157,7 @@ describe('onboarding wizard', () => {
     const templates = generateAgeAdaptedHabits(null, getStageFromAge(age));
     const habits = draft.habits.map((habit) => ({
       ...habit,
-      selected: habit.templateIndex === 1 || habit.templateIndex === 4,
+      selected: (habit as StarterHabitChoice & { source: 'age' }).templateIndex === 1 || (habit as StarterHabitChoice & { source: 'age' }).templateIndex === 4,
     }));
 
     expect(estimateDailyStars({ ...draft, habits })).toBe(templates[1].points + templates[4].points);
@@ -243,5 +248,93 @@ describe('onboarding wizard', () => {
 
   it('allows step 5', () => {
     expect(canAdvance(5, createInitialDraft())).toBe(true);
+  });
+});
+
+describe('daily living habits integration', () => {
+  it('initialDailyHabitSelection creates DLS-01 habits with correct defaults', () => {
+    const habits = initialDailyHabitSelection(5);
+    const templates = getTemplatesForSet('DLS-01');
+    const recommended = 2; // newHabitLimit(5) = 2
+
+    expect(habits).toHaveLength(templates.length);
+    expect(habits.every((h) => h.source === 'daily')).toBe(true);
+    expect(habits.map((h) => (h as DailyStarterHabitChoice).templateId)).toEqual(templates.map((t) => t.id));
+    expect(habits.map((h) => h.requiresApproval)).toEqual(templates.map(() => false));
+    expect(habits.filter((h) => h.selected).length).toBe(recommended);
+    expect(habits.filter((h) => h.selected).map((h) => (h as DailyStarterHabitChoice).templateId))
+      .toEqual(templates.slice(0, recommended).map((t) => t.id));
+  });
+
+  it('initialDailyHabitSelection respects newHabitLimit for different ages', () => {
+    const habitsAge2 = initialDailyHabitSelection(2); // limit 1
+    const habitsAge4 = initialDailyHabitSelection(4); // limit 2
+    const habitsAge8 = initialDailyHabitSelection(8); // limit 3 (but DLS-01 only has 2 items)
+
+    expect(habitsAge2.filter((h) => h.selected).length).toBe(1);
+    expect(habitsAge4.filter((h) => h.selected).length).toBe(2);
+    expect(habitsAge8.filter((h) => h.selected).length).toBe(2); // capped by DLS-01 size
+  });
+
+  it('selectedDailyStarterHabits returns only selected daily habits with templateId', () => {
+    const draft = createInitialDraft();
+    const dailyHabits = initialDailyHabitSelection(5);
+    const mixedHabits = [...draft.habits, ...dailyHabits.map((h, _i) => ({ ...h, selected: _i === 0 }))];
+
+    const result = selectedDailyStarterHabits({ ...draft, habits: mixedHabits });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].templateId).toBe('WIT-DLY-01');
+    expect(result[0].requiresApproval).toBe(false);
+  });
+
+  it('selectedStarterHabits ignores daily habits and returns only age habits', () => {
+    const draft = createInitialDraft();
+    const dailyHabits = initialDailyHabitSelection(5).map((h) => ({ ...h, selected: true }));
+    const mixedHabits = [...draft.habits, ...dailyHabits];
+
+    const result = selectedStarterHabits({ ...draft, habits: mixedHabits });
+
+    // Should only return selected age habits (first 2 by default for age 5)
+    expect(result.length).toBe(2);
+    expect(result.every((r) => 'templateIndex' in r)).toBe(true);
+    expect(result.every((r) => !('templateId' in r))).toBe(true);
+  });
+
+  it('estimateDailyStars works with both age and daily habits', () => {
+    const draft = createInitialDraft();
+    const dailyHabits = initialDailyHabitSelection(5).map((h, i) => ({ ...h, selected: i < 2 }));
+    const mixedHabits = [...draft.habits.slice(0, 2).map((h) => ({ ...h, selected: true })), ...dailyHabits];
+
+    const stars = estimateDailyStars({ ...draft, habits: mixedHabits });
+
+    // Age habits: first 2 selected, Daily habits: first 2 selected
+    // All daily habits have 5 points, age habits vary
+    expect(stars).toBeGreaterThan(0);
+  });
+
+  it('withAge preserves daily habits when switching age within same stage/limit', () => {
+    const draft = createInitialDraft();
+    const dailyHabits = initialDailyHabitSelection(5);
+    const mixedHabits = [...draft.habits, ...dailyHabits];
+
+    const result = withAge({ ...draft, habits: mixedHabits }, 4); // same stage (3-6), same limit (2)
+
+    expect(result.habits).toEqual(mixedHabits);
+  });
+
+  it('withAge resets age habits but preserves daily habits when stage/limit changes', () => {
+    const draft = createInitialDraft();
+    const dailyHabits = initialDailyHabitSelection(5).map((h) => ({ ...h, selected: true }));
+    const mixedHabits = [...draft.habits, ...dailyHabits];
+
+    const result = withAge({ ...draft, habits: mixedHabits }, 8); // different stage (3-6 -> 6-12), different limit (2 -> 3)
+
+    // Age habits should be reset, daily habits preserved
+    const ageHabits = result.habits.filter((h): h is AgeStarterHabitChoice => h.source === 'age');
+    const preservedDailyHabits = result.habits.filter((h): h is DailyStarterHabitChoice => h.source === 'daily');
+
+    expect(ageHabits).toEqual(initialHabitSelection(8));
+    expect(preservedDailyHabits).toEqual(dailyHabits);
   });
 });

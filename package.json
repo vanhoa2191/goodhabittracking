@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "prebuild": "node scripts/check-thinking-games-release-bundle.mjs",
     "build": "next build",
     "build:marketing": "node scripts/build-marketing.mjs",
     "guide:build": "node scripts/build-user-guide.mjs",
@@ -37,20 +38,22 @@
     "deploy:cloudflare": "node scripts/run-cloudflare.mjs deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "ci": "npm run lint && npm run typecheck && npm run test && npm run verify:habit-framework && npm run verify:habit-framework-translation && npm run check:secrets && npm run check:audit && npm run build:cloudflare && npm run check:performance",
-    "test:sql": "node scripts/verify-local-billing.mjs && node scripts/verify-local-affiliate.mjs && node tests/integration/migrations/family-operations-runtime.mjs"
+    "test:sql": "node scripts/verify-local-billing.mjs && node scripts/verify-local-affiliate.mjs && node tests/integration/migrations/family-operations-runtime.mjs && node tests/integration/migrations/thinking-games-security-runtime.mjs && node tests/integration/migrations/thinking-games-settings-read-runtime.mjs && node tests/integration/migrations/daily-living-template-refs-runtime.mjs",
+    "generate:synthetic-release-fixture": "node scripts/generate-synthetic-release-fixture.mjs",
+    "promote:thinking-games-release": "node scripts/promote-thinking-games-release.mjs"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "1.20.7",
+    "@opennextjs/cloudflare": "1.20.12",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.2",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.48.0",
-    "next": "16.4.1",
+    "next": "16.4.2",
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.4",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "zod": "^4.6.6"
+    "zod": "4.6.6"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -65,7 +68,7 @@
     "@vitest/coverage-v8": "^4.1.12",
     "esbuild": "^0.28.2",
     "eslint": "^9",
-    "eslint-config-next": "16.4.1",
+    "eslint-config-next": "16.4.2",
     "pg": "8.23.1",
     "tailwindcss": "^4",
     "typescript": "^5",
@@ -76,6 +79,12 @@
     "node": ">=24"
   },
   "overrides": {
-    "sharp": "0.35.5"
+    "sharp": "0.35.5",
+    "@node-minify/core": {
+      "glob": "10.5.0"
+    },
+    "miniflare": {
+      "undici": "7.30.1"
+    }
   }
 }

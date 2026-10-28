@@ -1,0 +1,759 @@
+{
+  "batch": 3,
+  "file": "content/thinking-games/candidates/365-v2/batch-03-days-092-182.json",
+  "itemsReviewed": 364,
+  "flags": [
+    {
+      "id": "D092-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fact-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình thêm một dữ kiện chỉ còn đúng một bạn khớp. Đáp án là fact-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description (e.g., \"hình tròn\")"
+    },
+    {
+      "id": "D092-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fact-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình thêm một dữ kiện chỉ còn đúng một bạn khớp. Đáp án là fact-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description (e.g., \"hình tròn\")"
+    },
+    {
+      "id": "D105-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fact-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình thêm một dữ kiện chỉ còn đúng một bạn khớp. Đáp án là fact-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description (e.g., \"hình tròn\")"
+    },
+    {
+      "id": "D105-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fact-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình thêm một dữ kiện chỉ còn đúng một bạn khớp. Đáp án là fact-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description (e.g., \"hình tròn\")"
+    },
+    {
+      "id": "D116-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fact-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình thêm một dữ kiện chỉ còn đúng một bạn khớp. Đáp án là fact-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description (e.g., \"hình tròn\")"
+    },
+    {
+      "id": "D116-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fact-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình thêm một dữ kiện chỉ còn đúng một bạn khớp. Đáp án là fact-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description (e.g., \"hình tròn\")"
+    },
+    {
+      "id": "D093-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option IDs \"item-1, item-2\" exposed in explanation",
+      "evidence": "explanation: \"Mình thử các nhóm nhỏ và giữ nhóm có tổng đúng mục tiêu. Đáp án là item-1, item-2.\"",
+      "suggestedFix": "Replace internal IDs with natural language descriptions"
+    },
+    {
+      "id": "D093-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option IDs \"item-1, item-2\" exposed in explanation",
+      "evidence": "explanation: \"Mình thử các nhóm nhỏ và giữ nhóm có tổng đúng mục tiêu. Đáp án là item-1, item-2.\"",
+      "suggestedFix": "Replace internal IDs with natural language descriptions"
+    },
+    {
+      "id": "D106-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option IDs \"item-1, item-2\" exposed in explanation",
+      "evidence": "explanation: \"Mình thử các nhóm nhỏ và giữ nhóm có tổng đúng mục tiêu. Đáp án là item-1, item-2.\"",
+      "suggestedFix": "Replace internal IDs with natural language descriptions"
+    },
+    {
+      "id": "D106-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option IDs \"item-1, item-2\" exposed in explanation",
+      "evidence": "explanation: \"Mình thử các nhóm nhỏ và giữ nhóm có tổng đúng mục tiêu. Đáp án là item-1, item-2.\"",
+      "suggestedFix": "Replace internal IDs with natural language descriptions"
+    },
+    {
+      "id": "D117-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option IDs \"item-1, item-2\" exposed in explanation",
+      "evidence": "explanation: \"Mình thử các nhóm nhỏ và giữ nhóm có tổng đúng mục tiêu. Đáp án là item-1, item-2.\"",
+      "suggestedFix": "Replace internal IDs with natural language descriptions"
+    },
+    {
+      "id": "D117-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option IDs \"item-1, item-2\" exposed in explanation",
+      "evidence": "explanation: \"Mình thử các nhóm nhỏ và giữ nhóm có tổng đúng mục tiêu. Đáp án là item-1, item-2.\"",
+      "suggestedFix": "Replace internal IDs with natural language descriptions"
+    },
+    {
+      "id": "D094-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fix-a/fix-b\" exposed in explanation",
+      "evidence": "explanation: \"Mình chạy thử từng cách sửa và giữ cách tới đích. Đáp án là fix-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D094-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fix-a/fix-b\" exposed in explanation",
+      "evidence": "explanation: \"Mình chạy thử từng cách sửa và giữ cách tới đích. Đáp án là fix-b.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D107-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fix-a/fix-b\" exposed in explanation",
+      "evidence": "explanation: \"Mình chạy thử từng cách sửa và giữ cách tới đích. Đáp án là fix-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D107-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fix-a/fix-b\" exposed in explanation",
+      "evidence": "explanation: \"Mình chạy thử từng cách sửa và giữ cách tới đích. Đáp án là fix-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D118-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fix-a/fix-b\" exposed in explanation",
+      "evidence": "explanation: \"Mình chạy thử từng cách sửa và giữ cách tới đích. Đáp án là fix-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D118-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"fix-a/fix-b\" exposed in explanation",
+      "evidence": "explanation: \"Mình chạy thử từng cách sửa và giữ cách tới đích. Đáp án là fix-b.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D100-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-5.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D100-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-4.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D111-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-2, item-3, item-5.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D111-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-2.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D124-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-3.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D124-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình đổi sang tiêu chí mới và chỉ giữ các bạn khớp tiêu chí đó. Đáp án là item-1, item-3, item-5, item-6.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D093-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-3, item-4.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D093-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1, item-6.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D104-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1, item-2, item-3.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D104-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1, item-5.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D117-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-2.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D117-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"item-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình kiểm tra cả hai dấu hiệu cùng lúc cho từng bạn. Đáp án là item-1.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D097-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"candidate-1\" exposed in explanation",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D097-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"candidate-1\" exposed in explanation",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D108-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"candidate-1\" exposed in explanation",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D108-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"candidate-1\" exposed in explanation",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D098-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"shape-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D098-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"shape-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D111-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"shape-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D111-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"shape-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D103-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"turn-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D103-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"turn-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D114-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"turn-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D114-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"turn-a\" exposed in explanation",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D096-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"scene-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình kiểm tra từng chi tiết với quy tắc đã nêu. Đáp án là scene-3.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D096-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"scene-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình kiểm tra từng chi tiết với quy tắc đã nêu. Đáp án là scene-3.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D109-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"scene-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình kiểm tra từng chi tiết với quy tắc đã nêu. Đáp án là scene-4.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D109-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "Internal option ID \"scene-X\" exposed in explanation",
+      "evidence": "explanation: \"Mình kiểm tra từng chi tiết với quy tắc đã nêu. Đáp án là scene-3.\"",
+      "suggestedFix": "Replace internal ID with natural language description"
+    },
+    {
+      "id": "D092-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D092-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D103-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D103-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D116-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D116-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D127-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D127-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D140-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D140-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D151-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D151-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D164-bonus-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D164-bonus-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D175-main-vi68",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D175-main-vi912",
+      "severity": "block",
+      "category": "copy",
+      "problem": "English direction word \"ahead\" in user-facing text",
+      "evidence": "solution: \"ahead\", explanation: \"Mình đứng vào vị trí người xem rồi xác định phía của vật. Đáp án là ahead.\"",
+      "suggestedFix": "Replace \"ahead\" with Vietnamese equivalent (phía trước/trái/phải/sau)"
+    },
+    {
+      "id": "D098-main-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g02-t1",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g02-t1 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D103-bonus-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g02-t2",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g02-t2 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D095-bonus-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g02-t3",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g02-t3 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D104-bonus-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g03-t2",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g03-t2 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D097-bonus-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g04-t1",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g04-t1 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D092-main-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g04-t3",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g04-t3 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D094-main-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g06-t3",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g06-t3 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D100-bonus-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g07-t1",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g07-t1 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D092-bonus-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g07-t2",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g07-t2 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D095-main-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g07-t3",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g07-t3 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D101-bonus-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g08-t1",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g08-t1 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D093-bonus-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g08-t2",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g08-t2 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D096-main-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "Generic hints not specific to game mechanic g08-t3",
+      "evidence": "hints: ['Bạn thử so sánh từng lựa chọn với dấu hiệu chính trong hình.', 'Mình gợi ý: loại dần những lựa chọn chưa khớp thay vì đoán ngay.']",
+      "suggestedFix": "Create mechanic-specific hints for g08-t3 that guide the child through the actual rule/logic"
+    },
+    {
+      "id": "D097-bonus-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "All g04-t1 items share identical explanation template",
+      "evidence": "explanation: \"Mình loại từng bạn không khớp manh mối, còn lại một bạn. Đáp án là candidate-1.\" (same for all 16 items)",
+      "suggestedFix": "Vary explanation wording per item while keeping the same reasoning structure"
+    },
+    {
+      "id": "D098-main-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "All g02-t1 items share identical explanation template",
+      "evidence": "explanation: \"Mình so từng ô của bóng với hình mẫu, không chỉ nhìn đường viền. Đáp án là shape-a.\" (same for all 14 items)",
+      "suggestedFix": "Vary explanation wording per item while keeping the same reasoning structure"
+    },
+    {
+      "id": "D103-bonus-vi68",
+      "severity": "fix",
+      "category": "hint",
+      "problem": "All g02-t2 items share identical explanation template",
+      "evidence": "explanation: \"Mình xoay hoặc lật hình mẫu đúng như yêu cầu rồi so các ô. Đáp án là turn-a.\" (same for all 14 items)",
+      "suggestedFix": "Vary explanation wording per item while keeping the same reasoning structure"
+    },
+    {
+      "id": "D102-main-vi68",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D102-main-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4', 'step-5']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D115-bonus-vi68",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D115-bonus-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4', 'step-5']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D126-main-vi68",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D126-main-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4', 'step-5']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D139-bonus-vi68",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D139-bonus-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4', 'step-5']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D150-main-vi68",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D150-main-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4', 'step-5']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D163-bonus-vi68",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D163-bonus-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4', 'step-5']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D174-main-vi68",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D174-main-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Internal step IDs in solution (not user-facing but visible in explanation)",
+      "evidence": "solution: \"['step-1', 'step-2', 'step-3', 'step-4', 'step-5']\", explanation: \"Mình xếp việc nào phải làm trước, rồi mới tới việc sau. Đáp án là step-1, step-2, step-3, step-4, step-5.\"",
+      "suggestedFix": "Consider using natural language in explanation instead of step IDs"
+    },
+    {
+      "id": "D095-main-vi68",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Coordinate format in explanation may be hard for children to read",
+      "evidence": "explanation: \"Mình tìm một đường khác vẫn đi từ đầu tới đích. Đáp án là (0,0) (1,0) (2,0) (3,0) (4,0) (4,1) (4,2) (4,3) (4,4)....\"",
+      "suggestedFix": "Consider more child-friendly path description"
+    },
+    {
+      "id": "D095-main-vi912",
+      "severity": "nit",
+      "category": "copy",
+      "problem": "Coordinate format in explanation may be hard for children to read",
+      "evidence": "explanation: \"Mình tìm một đường khác vẫn đi từ đầu tới đích. Đáp án là (0,0) (1,0) (2,0) (3,0) (4,0) (5,0) (5,1) (5,2) (5,3) (5,4) (5,5)....\"",
+      "suggestedFix": "Consider more child-friendly path description"
+    }
+  ]
+}

@@ -30,9 +30,9 @@ import {
   Trophy,
   Palette,
   BookOpen,
+  Brush,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
-import { getLastToggleFailure } from '@/lib/store/habit-actions';
 import { useTranslation } from '@/lib/i18n/context';
 import { HabitActivity, TimeOfDay } from '@/types';
 import { HabitTimerModal } from './HabitTimerModal';
@@ -74,6 +74,25 @@ import { useAgeTheme } from './useAgeTheme';
 import { getAgeThemeCopy } from '@/lib/i18n/age-theme-copy';
 import { getKidHistoryCopy } from '@/lib/i18n/kid-history-copy';
 import { canStepKidDay, clampKidDay, isEditableDay, parseDayKey, shiftDayKey } from '@/lib/kid-day-window';
+// Loaded only when the thinkingGames flag is on, so the first download stays lean for families that do not use it.
+const ThinkingGameCard = dynamic(
+  () => import('./ThinkingGameCard').then((module) => module.ThinkingGameCard),
+  { ssr: false },
+);
+
+// The lock is synchronous: a second event in the same turn cannot start a
+// duplicate operation while React is still rendering its disabled controls.
+function useOperationLock() {
+  const inFlight = useRef(false);
+  return {
+    tryStart() {
+      if (inFlight.current) return false;
+      inFlight.current = true;
+      return true;
+    },
+    finish() { inFlight.current = false; },
+  };
+}
 
 export function KidDashboard() {
   const {
@@ -81,6 +100,7 @@ export function KidDashboard() {
     activities,
     logs,
     toggleActivity,
+    getToggleOutcome,
     setTaskDeferred,
     rewards,
     experience,
@@ -92,6 +112,10 @@ export function KidDashboard() {
     badges,
     childBadges,
     setIsPortraitModalOpen,
+    currentUser,
+    storageMode,
+    isDemoSession,
+    isFamilyConnected,
   } = useAppStore();
 
   const { t, language } = useTranslation();
@@ -100,7 +124,6 @@ export function KidDashboard() {
   const questCopy = getKidQuestCopy(language);
   const historyCopy = getKidHistoryCopy(language);
 
-  const [failureCode, setFailureCode] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'tasks' | 'leaderboard' | 'rewards' | 'badges'>('tasks');
   // null follows today, so a screen left open past midnight moves on to the new day by itself.
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
@@ -109,11 +132,17 @@ export function KidDashboard() {
   const [savingWishlistId, setSavingWishlistId] = useState<string | null>(null);
   const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<HabitActivity | null>(null);
-  const [completionError, setCompletionError] = useState<string | null>(null);
+  const [completionError, setCompletionError] = useState<{ activityId: string; date: string } | null>(null);
   const [pointBurstId, setPointBurstId] = useState<string | null>(null);
+  const [awardedPoints, setAwardedPoints] = useState(0);
   const [praise, setPraise] = useState<{ readonly activityId: string; readonly text: string } | null>(null);
   const [completionStatusId, setCompletionStatusId] = useState<string | null>(null);
   const [savingTaskId, setSavingTaskId] = useState<string | null>(null);
+  const taskLock = useOperationLock();
+  const claimLock = useOperationLock();
+  const [claimingRewardId, setClaimingRewardId] = useState<string | null>(null);
+  const [claimErrorId, setClaimErrorId] = useState<string | null>(null);
+  const [taskRetry, setTaskRetry] = useState<{ activity: HabitActivity; date: string; isCompleting: boolean } | null>(null);
   const visibleTab = isFamilyPaused && activeTab === 'leaderboard' ? 'tasks' : activeTab;
   const habitPhases = useChildHabitPhases({
     enabled: defaultExperienceFlags.habitPrograms,
@@ -127,7 +156,14 @@ export function KidDashboard() {
   const contentTopRef = useRef<HTMLDivElement | null>(null);
   const [contentTopInView, setContentTopInView] = useState(true);
   const activeChildId = activeChild?.id;
-  // The list sits under the letter and the journal card; this tells the bottom bar whether the child can already see it.
+  const thinkingGameMode = storageMode === 'local' || isDemoSession
+    ? 'local'
+    : currentUser
+      ? 'parent'
+      : isFamilyConnected
+        ? 'paired'
+        : 'local';
+  // Track the task anchor so the bottom bar can bring practice back into view.
   useEffect(() => {
     const target = contentTopRef.current;
     if (!target || typeof IntersectionObserver === 'undefined') return;
@@ -137,51 +173,77 @@ export function KidDashboard() {
   }, [activeChildId]);
   const badgeAwards = useBadgeAwards({ child: activeChild ?? null, badges, logs, activities, childBadges });
 
-  const completeTask = async (activity: HabitActivity, date: string, isCompleting: boolean) => {
-    if (savingTaskId === activity.id || !isEditableDay(date, localDayKey(new Date()))) return;
+  const handleCompleteTask = async (activity: HabitActivity, date: string, isCompleting: boolean) => {
+    if (!isEditableDay(date, localDayKey(new Date())) || !taskLock.tryStart()) return false;
     setCompletionError(null);
+    setTaskRetry(null);
     setSavingTaskId(activity.id);
-    // The reward and the praise show on the tap and are taken back if the server then refuses the tick; the
-    // vibration waits for the server, because a buzz tells the child it worked. The praise is words, so it also
-    // reaches a child whose device is set to reduce motion.
+    setPraise(null);
+    setPointBurstId(null);
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (isCompleting) {
-      if (!reduceMotion) setPointBurstId(activity.id);
-      setPraise({
-        activityId: activity.id,
-        text: kidPraise(language, { points: activity.points, waitsForParent: activity.requiresApproval, seed: activity.id, band: ageTheme.band }),
-      });
-    } else {
-      setPraise(null);
+    let saved = false;
+    try {
+      saved = await toggleActivity(activity.id, date, isCompleting);
+    } catch (error: unknown) {
+      console.error('Saving child practice failed:', error);
+    } finally {
+      taskLock.finish();
+      setSavingTaskId(null);
     }
-    const saved = await toggleActivity(activity.id, date);
-    setSavingTaskId(null);
     if (!saved) {
-      setFailureCode(getLastToggleFailure());
-      setCompletionError(activity.id);
-      setPointBurstId(null);
-      setPraise(null);
-      return;
+      setCompletionError({ activityId: activity.id, date });
+      setTaskRetry({ activity, date, isCompleting });
+      return false;
+    }
+    const result = getToggleOutcome(activity.id, date);
+    const completed = result?.status === 'completed';
+    const pending = result?.status === 'pending_approval';
+    if (completed || pending) {
+      const points = completed ? result.pointsAwarded : 0;
+      setAwardedPoints(points);
+      if (completed && points > 0 && !reduceMotion) setPointBurstId(activity.id);
+      setPraise({ activityId: activity.id,
+        text: kidPraise(language, { points, waitsForParent: pending, seed: activity.id, band: ageTheme.band }),
+      });
     }
     setCompletionStatusId(activity.id);
-    if (isCompleting && !reduceMotion && 'vibrate' in navigator) {
-      try {
-        navigator.vibrate?.(25);
-      } catch (error: unknown) {
-        void error;
-      }
+    if (completed && !reduceMotion && 'vibrate' in navigator) {
+      try { navigator.vibrate?.(25); } catch (error: unknown) { void error; }
     }
     window.setTimeout(() => setPointBurstId((id) => id === activity.id ? null : id), 1200);
     window.setTimeout(() => setPraise((current) => current?.activityId === activity.id ? null : current), 4000);
+    return true;
   };
 
-  const changeTaskDeferral = async (activity: HabitActivity, date: string, deferred: boolean) => {
-    if (savingTaskId === activity.id || !isEditableDay(date, localDayKey(new Date()))) return;
+  const handleTaskDeferral = async (activity: HabitActivity, date: string, deferred: boolean) => {
+    if (!isEditableDay(date, localDayKey(new Date())) || !taskLock.tryStart()) return;
     setCompletionError(null);
+    setTaskRetry(null);
     setSavingTaskId(activity.id);
-    const saved = await setTaskDeferred(activity.id, date, deferred);
-    setSavingTaskId(null);
-    if (!saved) setCompletionError(activity.id);
+    try {
+      if (!await setTaskDeferred(activity.id, date, deferred)) setCompletionError({ activityId: activity.id, date });
+    } catch (error: unknown) {
+      console.error('Saving child deferral failed:', error);
+      setCompletionError({ activityId: activity.id, date });
+    } finally {
+      taskLock.finish();
+      setSavingTaskId(null);
+    }
+  };
+
+  const handleRewardClaim = async (rewardId: string) => {
+    if (!claimLock.tryStart()) return;
+    setClaimingRewardId(rewardId);
+    setClaimErrorId(null);
+    try {
+      if (!await claimReward(rewardId)) setClaimErrorId(rewardId);
+    } catch (error: unknown) {
+      console.error('Claiming child reward failed:', error);
+      setClaimErrorId(rewardId);
+    } finally {
+      claimLock.finish();
+      setClaimingRewardId(null);
+    }
   };
 
   if (!activeChild) {
@@ -213,8 +275,6 @@ export function KidDashboard() {
     setPraise(null);
     setPointBurstId(null);
     setCompletionStatusId(null);
-    setCompletionError(null);
-    setFailureCode(null);
   };
   const handlePrevDay = () => {
     if (canGoBack) showDay(shiftDayKey(dateStr, -1));
@@ -263,11 +323,15 @@ export function KidDashboard() {
     { id: 'badges', Icon: Award, label: t.badgesShort, tone: 'text-amber-600 dark:text-amber-400' },
   ];
 
-  // The bottom bar opens a section and brings its content to the top, past the letter and the journal card.
+  // Wait for the selected tab to render, then bring useful content below the
+  // sticky header. A task shortcut should pass the compact hero, too.
   const showTab = (tab: 'tasks' | 'leaderboard' | 'rewards' | 'badges') => {
     setActiveTab(tab);
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    contentTopRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    requestAnimationFrame(() => {
+      const firstTask = tab === 'tasks' ? document.querySelector<HTMLElement>('[data-task-card]') : null;
+      (firstTask ?? contentTopRef.current)?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    });
   };
 
   // Group activities by time of day
@@ -318,7 +382,7 @@ export function KidDashboard() {
     <div
       data-age-band={ageTheme.band ?? undefined}
       data-age-style={ageTheme.band === 'teen' ? (ageTheme.leanTeen ? 'compact' : 'companion') : undefined}
-      className="max-w-4xl mx-auto px-4 pt-6 pb-28 sm:py-8 space-y-6 animate-fade-in"
+      className="max-w-4xl mx-auto px-4 pt-3 pb-28 sm:py-6 space-y-4 animate-fade-in"
     >
       {ageTheme.showNotice && <AgeThemeNotice theme={ageTheme} language={language} />}
       {/* Kid Profile Hero Card */}
@@ -326,7 +390,7 @@ export function KidDashboard() {
         data-testid="kid-hero"
         data-mascot={activeMascot?.id || 'legacy'}
         data-theme-color={activeChild.themeColor}
-        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${activeMascot?.heroClass || 'from-amber-200 via-amber-300 to-orange-300'} p-4 sm:p-5 text-sand-900 shadow-xl shadow-amber-100 dark:shadow-none`}
+        className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${activeMascot?.heroClass || 'from-amber-200 via-amber-300 to-orange-300'} p-3 sm:p-4 text-sand-900 shadow-xl shadow-amber-100 dark:shadow-none`}
       >
         {/* Background decorative shapes */}
         <div className="absolute -right-6 -bottom-6 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
@@ -340,9 +404,9 @@ export function KidDashboard() {
                 onClick={() => setIsAvatarPickerOpen(true)}
                 title={t.changeAvatar}
                 aria-label={t.changeAvatar}
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-white/45 hover:bg-white/60 backdrop-blur-md flex items-center justify-center shadow-inner border border-white/60 transition-transform active:scale-95 group-hover:scale-105 cursor-pointer relative"
+                className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl bg-white/45 hover:bg-white/60 backdrop-blur-md flex items-center justify-center shadow-inner border border-white/60 transition-transform active:scale-95 group-hover:scale-105 cursor-pointer relative"
               >
-                <MascotAvatar avatar={activeChild.avatar} alt={activeMascot?.name || ''} priority className="h-16 w-16 sm:h-20 sm:w-20 text-4xl" />
+                <MascotAvatar avatar={activeChild.avatar} alt={activeMascot?.name || ''} priority className="h-12 w-12 sm:h-16 sm:w-16 text-4xl" />
                 <span className="absolute inset-0 rounded-2xl bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-bold transition-opacity">
                   <Palette className="w-5 h-5 text-white drop-shadow" />
                 </span>
@@ -350,21 +414,6 @@ export function KidDashboard() {
             </div>}
 
             <div className="min-w-0">
-              <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
-                <span className="text-xs font-bold uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full backdrop-blur-sm">
-                  {t.levelPrefix} {activeChild.level}
-                </span>
-                {activeChild.ageStage && (
-                  <span className="text-xs font-bold bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full shadow-xs">
-                    {copy.stageLabels[activeChild.ageStage]}
-                  </span>
-                )}
-                {activeChild.age !== undefined && (
-                  <span className="hidden sm:inline text-xs font-medium bg-white/20 px-2 py-0.5 rounded-full backdrop-blur-sm">
-                    {activeChild.age} {copy.ageUnit}
-                  </span>
-                )}
-              </div>
               <h1 className="font-display text-xl min-[360px]:text-2xl sm:text-3xl font-bold leading-tight tracking-tight">
                 {activeChild.name}
               </h1>
@@ -372,7 +421,7 @@ export function KidDashboard() {
                 <p className="text-sm text-amber-950/80 font-semibold">
                   {activeChild.ageStage === '0-3'
                     ? copy.infantJournal(activeChild.name)
-                    : `${t.greeting} ${activeChild.name}! ✨`}
+                    : t.greeting}
                 </p>
               )}
               {ageTheme.band === 'teen' && !ageTheme.showNotice && (
@@ -387,36 +436,13 @@ export function KidDashboard() {
             </div>
           </div>
 
-          {/* Points & Stats Wallet */}
-          <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:gap-3">
-            <div className="flex items-center gap-1.5 bg-white/15 backdrop-blur-md rounded-2xl px-2.5 py-1.5 border border-white/25 sm:min-w-[110px]">
-              <Star className="w-6 h-6 shrink-0 fill-current text-amber-300" />
-              <div className="min-w-0 leading-tight">
-                <div className="text-xl font-black">{activeChild.points}</div>
-                <div className="truncate text-xs font-semibold text-amber-950 uppercase sm:tracking-wide">
-                  {ageTheme.traits?.rewardWord === 'points' ? getAgeThemeCopy(language).pointsLabel : t.stars}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-1.5 bg-white/15 backdrop-blur-md rounded-2xl px-2.5 py-1.5 border border-white/25 sm:min-w-[110px]">
-              <Award className="w-6 h-6 shrink-0 text-emerald-300" />
-              <div className="min-w-0 leading-tight">
-                <div className="text-xl font-black">{unlockedBadgeIds.size}</div>
-                <div className="truncate text-xs font-semibold text-amber-950 uppercase sm:tracking-wide">
-                  <span className="sm:hidden">{t.badgesShort}</span>
-                  <span className="hidden sm:inline">{t.myBadges}</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {isFamilyPaused ? <div role="status" data-testid="family-pause-child" className="mt-5 rounded-2xl border border-white/60 bg-white/90 px-4 py-3 text-sm font-bold text-slate-900">{familyPauseCopy[language].childMessage}</div> : <div
           role="status"
           data-testid="habit-fire"
           data-state={fire.kind}
-          className="mt-3 flex w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-white/60 bg-white/90 px-3 py-2 text-sm font-bold text-slate-900"
+          className="mt-2 flex w-full flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-white/60 bg-white/90 px-3 py-2 text-sm font-bold text-slate-900"
         >
           <Flame aria-hidden="true" className={`h-5 w-5 shrink-0 ${fire.kind === 'active' ? 'fill-orange-500 text-orange-600' : 'text-slate-600'}`} />
           <span className="min-w-0 flex-1">
@@ -426,7 +452,7 @@ export function KidDashboard() {
         </div>}
 
         {/* Daily Progress Bar */}
-        {!isFamilyPaused && <div className="mt-3 pt-3 border-t border-white/20">
+        {!isFamilyPaused && <div className="mt-2 pt-2 border-t border-white/20">
           <div className="flex justify-between items-center gap-2 text-xs font-bold mb-1.5">
             <span className="flex min-w-0 items-center gap-1.5">
               <Sparkles className="w-4 h-4 shrink-0 text-amber-300" />
@@ -448,20 +474,12 @@ export function KidDashboard() {
             </div>
           )}
         </div>}
+        {activeChild && isToday && !isFamilyPaused && defaultExperienceFlags.thinkingGames && (
+          <div className="mt-4">
+            <ThinkingGameCard key={`${activeChild.id}:${dateStr}:${thinkingGameMode}`} childId={activeChild.id} localDay={dateStr} mode={thinkingGameMode} />
+          </div>
+        )}
       </div>
-
-      {defaultExperienceFlags.dailyMascotLetter && (
-        <MorningMascotLetter
-          childId={activeChild.id}
-          childName={activeChild.name}
-          avatar={activeChild.avatar}
-          language={language}
-        />
-      )}
-
-      {defaultExperienceFlags.habitPrograms && visibleTab === 'tasks' && <ChildSelfReportPrompt />}
-      {defaultExperienceFlags.independence && visibleTab === 'tasks' && <KidIndependence childId={activeChild.id} />}
-      {defaultExperienceFlags.habitCoach && visibleTab === 'tasks' && <KidWeeklyFocus childId={activeChild.id} />}
 
       {/* Main Tab Navigation */}
       <div data-testid="kid-tabs" className={`hidden sm:grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>
@@ -522,7 +540,7 @@ export function KidDashboard() {
 
       {/* TAB 1: DAILY TASKS */}
       {visibleTab === 'tasks' && (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {/* Day Selector */}
           <div className="bg-white dark:bg-zinc-900 rounded-2xl p-2.5 shadow-xs border border-slate-100 dark:border-zinc-800">
             <div className="flex items-center justify-between">
@@ -572,54 +590,8 @@ export function KidDashboard() {
             )}
           </div>
 
-          {/* Special Banner for Age 0-3 (Thân Giáo Ba Mẹ) */}
-          {activeChild.ageStage === '0-3' ? (
-            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-950/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <div className="flex items-start gap-3">
-                <span className="text-3xl p-2 rounded-xl bg-amber-100 dark:bg-amber-900/50 shrink-0">
-                  🍼
-                </span>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-extrabold text-sm text-amber-900 dark:text-amber-200">
-                      {copy.infantStage}
-                    </h3>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 dark:bg-amber-800 dark:text-amber-200">
-                      {copy.infantTag}
-                    </span>
-                  </div>
-                  <p className="text-xs text-amber-900 dark:text-amber-200 mt-0.5 leading-relaxed">
-                    {copy.infantDescription}
-                  </p>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setIsPortraitModalOpen(true)}
-                className="shrink-0 py-2 px-3.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 active:scale-95"
-              >
-                <BookOpen className="w-3.5 h-3.5" />
-                <span>{copy.handbook}</span>
-              </button>
-            </div>
-          ) : (
-            <div className="bg-amber-50/60 dark:bg-amber-950/20 rounded-2xl p-3 px-4 border border-amber-200/80 dark:border-amber-900/40 flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2 text-xs text-amber-900 dark:text-amber-200">
-                <span>✨</span>
-                <span className="font-medium">
-                  {copy.portraitPractice}
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsPortraitModalOpen(true)}
-                className="shrink-0 text-xs font-bold text-amber-700 dark:text-amber-300 hover:underline flex items-center gap-1"
-              >
-                <BookOpen className="w-3 h-3" />
-                <span>{copy.guide}</span>
-              </button>
-            </div>
+          {activeChild.ageStage === '0-3' && (
+            <p className="text-sm font-bold text-purple-900 dark:text-purple-200">{copy.infantStage} · {copy.infantTag}</p>
           )}
           {dueActivities.length === 0 ? (
             <div className="text-center py-16 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-slate-200 dark:border-zinc-800">
@@ -639,9 +611,9 @@ export function KidDashboard() {
                 <div key={sec.key} className="space-y-3">
                   <div className="flex items-center gap-2 px-1">
                     <span className={`p-1.5 rounded-lg ${sec.color}`}>{sec.icon}</span>
-                    <h3 className="font-bold text-sm text-slate-700 dark:text-slate-300 tracking-wide uppercase">
+                    <h2 className="font-bold text-sm text-slate-700 dark:text-slate-300 tracking-wide uppercase">
                       {sec.title}
-                    </h3>
+                    </h2>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -650,6 +622,10 @@ export function KidDashboard() {
                       const isPending = pendingApprovalIds.has(act.id);
                       const isDeferred = deferredActivityIds.has(act.id) && !isDone && !isPending;
                       const isSaving = savingTaskId === act.id;
+                      const handleToggleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+                        event.stopPropagation();
+                        await handleCompleteTask(act, dateStr, !isDone);
+                      };
 
                       const card = (
                         <div
@@ -657,7 +633,7 @@ export function KidDashboard() {
                           data-activity-id={act.id}
                           data-complete={isDone ? 'true' : 'false'}
                           data-deferred={isDeferred ? 'true' : 'false'}
-                          className={`relative group rounded-2xl p-4 transition-all duration-200 border ${
+                          className={`relative group scroll-mt-20 rounded-2xl p-4 transition-all duration-200 border ${
                             isDone
                               ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200/80 dark:border-emerald-900/40 opacity-80'
                               : isPending
@@ -669,25 +645,30 @@ export function KidDashboard() {
                         >
                           <div className="flex items-start justify-between gap-3">
                             <div className="flex min-w-0 flex-1 flex-col">
-                              <button type="button" onClick={() => setSelectedTask(act)} aria-label={`${chromeCopy.viewDetails}: ${act.title}`} className="flex w-full items-start gap-3 text-left rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
-                                <span className="text-3xl shrink-0 select-none">{act.icon}</span>
+                              <div className="flex w-full items-start gap-3">
+                                <span aria-hidden="true" className="text-3xl shrink-0 select-none">{act.icon === '🪥' ? <Brush className="h-8 w-8 text-slate-700 dark:text-slate-200" /> : act.icon}</span>
                                 <div className="min-w-0">
-                                <h4
+                                <h3
+                                  aria-label={act.title}
+                                  style={ageTheme.band ? { fontSize: 'calc(1rem * var(--kid-font-scale))' } : undefined}
                                   className={`font-bold text-sm sm:text-base leading-snug ${
                                     isDone
-                                      ? 'line-through text-slate-400 dark:text-slate-500'
+                                      ? 'line-through text-slate-600 dark:text-slate-300'
                                       : 'text-slate-800 dark:text-slate-100'
                                   }`}
                                 >
-                                  {act.title}
-                                </h4>
+                                  <button type="button" onClick={() => setSelectedTask(act)} aria-label={`${chromeCopy.viewDetails}: ${act.title}`} className="rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">{act.title}</button>
+                                </h3>
                                 {act.description && (
-                                  <p className="text-sm text-slate-500 mt-1 whitespace-normal">
+                                  <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 whitespace-normal">
                                     {act.description}
                                   </p>
                                 )}
                                 </div>
-                              </button>
+                              </div>
+                              <p data-task-state role={isSaving ? 'status' : undefined} className="mt-1 text-sm font-semibold text-slate-700 dark:text-slate-200">
+                                {isSaving ? questCopy.saving : isDone ? historyCopy.statusDone : isPending ? historyCopy.statusPending : historyCopy.statusNotDone}
+                              </p>
 
                               <div className="ml-12 flex items-center gap-2 mt-2 flex-wrap">
                                   <ReadAloudButton text={act.description ? `${act.title}. ${act.description}` : act.title} language={language} />
@@ -700,9 +681,10 @@ export function KidDashboard() {
                                   </span>
 
                                   {/* Timer button if configured */}
-                                  {canEdit && act.durationMinutes != null && act.durationMinutes > 0 && (
+                                  {canEdit && !isDone && !isPending && act.durationMinutes != null && act.durationMinutes > 0 && (
                                     <button
                                       type="button"
+                                      disabled={savingTaskId !== null}
                                       onClick={(event) => {
                                         event.stopPropagation();
                                         setSelectedTimerActivity(act);
@@ -749,11 +731,8 @@ export function KidDashboard() {
                               </span>
                             ) : <button
                               type="button"
-                              disabled={isSaving || isPending}
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                void completeTask(act, dateStr, !isDone);
-                              }}
+                              disabled={savingTaskId !== null || isPending}
+                              onClick={handleToggleClick}
                               data-task-toggle
                               className={`shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-90 hover:scale-105 border-2 shadow-xs hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                                 isDone
@@ -775,24 +754,26 @@ export function KidDashboard() {
                             >
                               {isDone ? (
                                 <CheckCircle aria-hidden="true" className="w-6 h-6 fill-current" />
+                              ) : isSaving ? (
+                                <Hourglass aria-hidden="true" className="w-5 h-5 animate-pulse" />
                               ) : isPending ? (
                                 <Hourglass aria-hidden="true" className="w-5 h-5 animate-pulse" />
                               ) : (
                                 <Circle aria-hidden="true" className="w-6 h-6 stroke-[2.5]" />
                               )}
                             </button>}
-                            {pointBurstId === act.id && <span data-testid="point-burst" className="pointer-events-none absolute right-3 top-0 -translate-y-1/2 rounded-full bg-amber-400 px-2 py-1 text-xs font-black text-slate-900 animate-burst-pop">+{act.points} ⭐</span>}
+                            {pointBurstId === act.id && <span data-testid="point-burst" className="pointer-events-none absolute right-3 top-0 -translate-y-1/2 rounded-full bg-amber-400 px-2 py-1 text-xs font-black text-slate-900 animate-burst-pop">+{awardedPoints} ⭐</span>}
                           </div>
                           {canEdit && !isDone && !isPending && (
                             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3 dark:border-zinc-700/70">
                               <span data-testid="swipe-hint" className="touch-swipe-hint text-sm text-slate-600 dark:text-slate-300">{questCopy.swipeHint}</span>
                               <button
                                 type="button"
-                                disabled={isSaving}
-                                onClick={() => { void changeTaskDeferral(act, dateStr, !isDeferred); }}
+                                disabled={savingTaskId !== null}
+                                onClick={() => { void handleTaskDeferral(act, dateStr, !isDeferred); }}
                                 className="min-h-11 rounded-xl border border-amber-300 bg-amber-50 px-3 text-sm font-bold text-amber-900 hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-60 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200 dark:hover:bg-amber-950/70"
                               >
-                                {isSaving ? questCopy.saving : isDeferred ? questCopy.doNow : questCopy.defer}
+                                {isDeferred ? questCopy.doNow : questCopy.defer}
                               </button>
                             </div>
                           )}
@@ -808,7 +789,10 @@ export function KidDashboard() {
                               <span className="sr-only">{` ${chromeCopy.taskUpdated(act.title)}`}</span>
                             </p>
                           )}
-                          {completionError === act.id && <p role="alert" className="mt-3 text-sm font-bold text-rose-600">{questCopy.saveError}{failureCode ? <span className="ml-2 text-xs font-semibold text-rose-400">({failureCode})</span> : null}</p>}
+                          {completionError?.activityId === act.id && completionError.date === dateStr && <div className="mt-3">
+                            <p role="alert" className="text-sm font-bold text-rose-700 dark:text-rose-300">{questCopy.saveError}</p>
+                            {canEdit && taskRetry?.activity.id === act.id && taskRetry.date === dateStr && <button type="button" disabled={savingTaskId !== null} onClick={() => { void handleCompleteTask(taskRetry.activity, taskRetry.date, taskRetry.isCompleting); }} className="mt-2 min-h-11 rounded-xl px-3 font-bold text-indigo-700 underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-indigo-300">{questCopy.retry}</button>}
+                          </div>}
                         </div>
                       );
 
@@ -818,10 +802,10 @@ export function KidDashboard() {
                           key={act.id}
                           completeLabel={t.tickDone}
                           deferLabel={questCopy.defer}
-                          canComplete={!isDone && !isPending && !isSaving}
-                          canDefer={!isDeferred && !isDone && !isPending && !isSaving}
-                          onComplete={() => { void completeTask(act, dateStr, true); }}
-                          onDefer={() => { void changeTaskDeferral(act, dateStr, true); }}
+                          canComplete={!isDone && !isPending && savingTaskId === null}
+                          canDefer={!isDeferred && !isDone && !isPending && savingTaskId === null}
+                          onComplete={() => { void handleCompleteTask(act, dateStr, true); }}
+                          onDefer={() => { void handleTaskDeferral(act, dateStr, true); }}
                         >
                           {card}
                         </QuestSwipeSurface>
@@ -839,6 +823,7 @@ export function KidDashboard() {
       {/* TAB 2: REWARDS & WISHLIST */}
       {visibleTab === 'rewards' && (
         <div className="space-y-6">
+          <h2 className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{t.rewardsShort}</h2>
           {defaultExperienceFlags.dreamCity && <DreamCityCard />}
           {/* Wishlist Goal Tracker */}
           {wishlistReward && (
@@ -850,9 +835,9 @@ export function KidDashboard() {
                     <span className="text-xs font-bold uppercase tracking-wider text-pink-500">
                       {t.myWishlist}
                     </span>
-                    <h4 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">
+                    <h3 className="font-extrabold text-sm text-slate-800 dark:text-slate-100">
                       {wishlistReward.title}
-                    </h4>
+                    </h3>
                   </div>
                 </div>
                 <span className="text-xs font-black text-pink-600 dark:text-pink-400">
@@ -893,9 +878,9 @@ export function KidDashboard() {
                       </span>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-2">
-                          <h4 className="font-extrabold text-sm sm:text-base leading-snug text-slate-800 dark:text-slate-100 line-clamp-2">
+                          <h3 className="font-extrabold text-sm sm:text-base leading-snug text-slate-800 dark:text-slate-100 line-clamp-2">
                             {rew.title}
-                          </h4>
+                          </h3>
                           <span className="font-black text-sm text-amber-500 shrink-0">
                             {rew.costPoints} ⭐
                           </span>
@@ -908,6 +893,7 @@ export function KidDashboard() {
                       </div>
                     </div>
 
+                    {claimErrorId === rew.id && <p role="alert" className="text-sm font-bold text-rose-700 dark:text-rose-300">{questCopy.saveError}</p>}
                     <div className="flex items-center gap-2 pt-2 border-t border-slate-50 dark:border-zinc-800/80">
                       <button
                         onClick={async () => {
@@ -931,8 +917,9 @@ export function KidDashboard() {
                       </button>
 
                       <button
-                        onClick={() => claimReward(rew.id)}
-                        disabled={!canAfford || outOfStock}
+                        onClick={() => { void handleRewardClaim(rew.id); }}
+                        disabled={!canAfford || outOfStock || claimingRewardId !== null}
+                        aria-busy={claimingRewardId === rew.id}
                         className={`flex-1 min-h-[44px] py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                           canAfford && !outOfStock
                             ? 'bg-gradient-to-r from-pink-500 to-indigo-600 hover:from-pink-600 hover:to-indigo-700 text-white shadow-xs cursor-pointer active:scale-95'
@@ -940,7 +927,7 @@ export function KidDashboard() {
                         }`}
                       >
                         <Gift className="w-3.5 h-3.5" />
-                        {outOfStock ? getRewardStockCopy(language) : canAfford ? t.claimReward : t.notEnoughPoints}
+                        {claimingRewardId === rew.id ? questCopy.saving : claimErrorId === rew.id ? questCopy.retry : outOfStock ? getRewardStockCopy(language) : canAfford ? t.claimReward : t.notEnoughPoints}
                       </button>
                     </div>
                   </div>
@@ -951,9 +938,9 @@ export function KidDashboard() {
           {/* Child's Redemptions History */}
           {redemptions.filter((r) => r.childId === activeChild.id).length > 0 && (
             <div className="bg-white dark:bg-zinc-900 rounded-3xl p-5 border border-slate-100 dark:border-zinc-800">
-              <h4 className="font-bold text-sm text-slate-700 dark:text-slate-200 mb-3">
+              <h3 className="font-bold text-sm text-slate-700 dark:text-slate-200 mb-3">
                 {t.yourRewards}
-              </h4>
+              </h3>
               <div className="space-y-2">
                 {redemptions
                   .filter((r) => r.childId === activeChild.id)
@@ -1001,6 +988,7 @@ export function KidDashboard() {
       {/* TAB 3: BADGES */}
       {visibleTab === 'badges' && (
         <div className="space-y-6" data-testid="badge-collection">
+          <h2 className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{t.myBadges}</h2>
           <p className="text-sm font-bold text-slate-600 dark:text-slate-300">
             🏅 {badgeCopy.collected(badges.filter((badge) => unlockedBadgeIds.has(badge.id)).length, badges.length)}
           </p>
@@ -1084,15 +1072,121 @@ export function KidDashboard() {
       {/* TAB: LEADERBOARD & LEAGUE COMPETITION */}
       {visibleTab === 'leaderboard' && <LeaderboardSection />}
 
+      {/* Secondary progress and guidance follow useful practice. */}
+      <div className="space-y-4">
+              <div className="flex items-center gap-1.5 mb-0.5 flex-wrap">
+                <span className="text-xs font-bold uppercase tracking-wider bg-slate-100 dark:bg-zinc-800 px-2.5 py-0.5 rounded-full backdrop-blur-sm">
+                  {t.levelPrefix} {activeChild.level}
+                </span>
+                {activeChild.ageStage && (
+                  <span className="text-xs font-bold bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full shadow-xs">
+                    {copy.stageLabels[activeChild.ageStage]}
+                  </span>
+                )}
+                {activeChild.age !== undefined && (
+                  <span className="hidden sm:inline text-xs font-medium bg-slate-100 dark:bg-zinc-800 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                    {activeChild.age} {copy.ageUnit}
+                  </span>
+                )}
+              </div>
+          {/* Points & Stats Wallet */}
+          <div className="grid grid-cols-2 gap-2 sm:flex sm:shrink-0 sm:gap-3">
+            <div className="flex items-center gap-1.5 bg-white dark:bg-zinc-900 backdrop-blur-md rounded-2xl px-2.5 py-1.5 border border-slate-200 dark:border-zinc-700 sm:min-w-[110px]">
+              <Star className="w-6 h-6 shrink-0 fill-current text-amber-300" />
+              <div className="min-w-0 leading-tight">
+                <div className="text-xl font-black">{activeChild.points}</div>
+                <div className="truncate text-xs font-semibold text-slate-700 dark:text-slate-200 uppercase sm:tracking-wide">
+                  {ageTheme.traits?.rewardWord === 'points' ? getAgeThemeCopy(language).pointsLabel : t.stars}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-1.5 bg-white dark:bg-zinc-900 backdrop-blur-md rounded-2xl px-2.5 py-1.5 border border-slate-200 dark:border-zinc-700 sm:min-w-[110px]">
+              <Award className="w-6 h-6 shrink-0 text-emerald-300" />
+              <div className="min-w-0 leading-tight">
+                <div className="text-xl font-black">{unlockedBadgeIds.size}</div>
+                <div className="truncate text-xs font-semibold text-slate-700 dark:text-slate-200 uppercase sm:tracking-wide">
+                  <span className="sm:hidden">{t.badgesShort}</span>
+                  <span className="hidden sm:inline">{t.myBadges}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      {visibleTab === 'tasks' && <div className="space-y-4">
+          {/* Special Banner for Age 0-3 (Thân Giáo Ba Mẹ) */}
+          {activeChild.ageStage === '0-3' ? (
+            <div className="bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-amber-500/10 dark:from-purple-950/40 dark:to-amber-950/30 rounded-2xl p-4 border border-purple-200 dark:border-purple-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div className="flex items-start gap-3">
+                <span className="text-3xl p-2 rounded-xl bg-purple-100 dark:bg-purple-900/50 shrink-0">
+                  🍼
+                </span>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="font-extrabold text-sm text-purple-900 dark:text-purple-200">
+                      {copy.infantStage}
+                    </h2>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-200 text-purple-800 dark:bg-purple-800 dark:text-purple-200">
+                      {copy.infantTag}
+                    </span>
+                  </div>
+                  <p className="text-xs text-purple-700/80 dark:text-purple-300/80 mt-0.5 leading-relaxed">
+                    {copy.infantDescription}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsPortraitModalOpen(true)}
+                className="shrink-0 py-2 px-3.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 active:scale-95"
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>{copy.handbook}</span>
+              </button>
+            </div>
+          ) : (
+            <div className="bg-amber-50/60 dark:bg-amber-950/20 rounded-2xl p-3 px-4 border border-amber-200/80 dark:border-amber-900/40 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2 text-xs text-amber-900 dark:text-amber-200">
+                <span>✨</span>
+                <span className="font-medium">
+                  {copy.portraitPractice}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsPortraitModalOpen(true)}
+                className="shrink-0 text-xs font-bold text-amber-700 dark:text-amber-300 hover:underline flex items-center gap-1"
+              >
+                <BookOpen className="w-3 h-3" />
+                <span>{copy.guide}</span>
+              </button>
+            </div>
+          )}
+      {defaultExperienceFlags.dailyMascotLetter && (
+        <MorningMascotLetter
+          childId={activeChild.id}
+          childName={activeChild.name}
+          avatar={activeChild.avatar}
+          language={language}
+        />
+      )}
+
+      {defaultExperienceFlags.habitPrograms && visibleTab === 'tasks' && <ChildSelfReportPrompt />}
+      {defaultExperienceFlags.independence && visibleTab === 'tasks' && <KidIndependence childId={activeChild.id} />}
+      {defaultExperienceFlags.habitCoach && visibleTab === 'tasks' && <KidWeeklyFocus childId={activeChild.id} />}
+
+      </div>}
+
       {/* Habit Timer Modal */}
       <HabitTimerModal
         activity={selectedTimerActivity}
         isOpen={Boolean(selectedTimerActivity)}
         onClose={() => setSelectedTimerActivity(null)}
-        onComplete={() => {
-          if (selectedTimerActivity && canEdit) {
-            toggleActivity(selectedTimerActivity.id, dateStr);
-          }
+        onComplete={async () => {
+          if (!selectedTimerActivity || !canEdit) return false;
+          if (completedActivityIds.has(selectedTimerActivity.id) || pendingApprovalIds.has(selectedTimerActivity.id)) return true;
+          return handleCompleteTask(selectedTimerActivity, dateStr, true);
         }}
       />
       <TaskDetailsModal activity={selectedTask} onClose={() => setSelectedTask(null)} />

@@ -221,6 +221,43 @@ describe('GET /api/health', () => {
     expect(rpcCalls()).toHaveLength(1);
   });
 
+  it('keeps a transient database failure degraded until its cache expires, then probes recovery', async () => {
+    for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
+    let databaseAvailable = false;
+    stubDatabase(async () => new Response('{}', { status: databaseAvailable ? 200 : 503 }));
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(new Date('2026-10-19T00:00:00Z'));
+      const failed = await GET(operations());
+      expect(failed.status).toBe(503);
+      expect(await failed.json()).toMatchObject({
+        status: 'degraded',
+        checks: { databaseConnection: false, schemaVersion: false },
+      });
+      expect(rpcCalls()).toHaveLength(0);
+
+      databaseAvailable = true;
+      vi.setSystemTime(new Date('2026-10-19T00:00:09.999Z'));
+      const cached = await GET(anonymous());
+      expect(cached.status).toBe(503);
+      expect(await cached.json()).toEqual({ status: 'degraded', version: expect.any(String) });
+      expect(rootCalls()).toHaveLength(1);
+      expect(rpcCalls()).toHaveLength(0);
+
+      vi.setSystemTime(new Date('2026-10-19T00:00:10Z'));
+      const recovered = await GET(operations());
+      expect(recovered.status).toBe(200);
+      expect(await recovered.json()).toMatchObject({
+        status: 'ready',
+        checks: { databaseConnection: true, schemaVersion: true },
+      });
+      expect(rootCalls()).toHaveLength(2);
+      expect(rpcCalls()).toHaveLength(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('asks the database again once the answer is stale', async () => {
     for (const [key, value] of Object.entries(readyEnvironment)) vi.stubEnv(key, value);
     vi.useFakeTimers();

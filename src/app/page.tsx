@@ -155,8 +155,11 @@ export default function Home() {
           ) : (
             <>
               {isDemoSession && !currentUser && (
-                <div role="status" className="mx-auto mt-3 flex max-w-5xl flex-col gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
-                  <span><strong>{demoCopy.label}</strong> {demoCopy.notice}</span>
+                <div role="status" className="mx-auto mt-3 flex max-w-5xl items-start justify-between gap-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950/40 dark:text-amber-100">
+                  <details className="min-w-0 flex-1">
+                    <summary className="min-h-11 cursor-pointer py-2 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">{demoCopy.label}</summary>
+                    <p className="pb-2">{demoCopy.notice}</p>
+                  </details>
                   <button type="button" onClick={loginWithGoogle} className="min-h-11 rounded-xl bg-amber-700 px-4 font-bold text-white hover:bg-amber-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500">
                     {demoCopy.setup}
                   </button>
@@ -170,7 +173,7 @@ export default function Home() {
         </main>
       </div>
 
-      <footer className="w-full py-6 border-t border-slate-100 dark:border-zinc-800 text-center text-xs text-slate-400 px-4">
+      <footer className="w-full py-6 border-t border-border text-center text-xs text-slate-400 px-4">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 font-medium">
           <p className="flex w-full min-w-0 max-w-full items-start justify-center gap-1.5 sm:w-auto">
             <span className="shrink-0">⭐</span>

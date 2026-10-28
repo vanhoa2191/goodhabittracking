@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 import { setupOrUnlockParent } from './pin-helper';
 
 test('parents see that AI suggestions are coming, and nothing about them can be pressed', async ({ page }) => {
+  test.skip(process.env.NEXT_PUBLIC_PARENT_AI === 'true', 'The coming-soon placeholder is only rendered while AI is off.');
   test.setTimeout(90_000);
   await page.goto('/?demo=1');
   await page.evaluate(() => localStorage.setItem('kidhabit_language', 'vi'));
@@ -14,7 +15,7 @@ test('parents see that AI suggestions are coming, and nothing about them can be 
   const card = page.getByTestId('ai-coming-soon-card');
   await expect(card).toBeVisible();
   await expect(card).toContainText('Sắp ra mắt');
-  await expect(card).toContainText('không bao giờ gửi tên hay nhật ký của bé');
+  await expect(card).toContainText('nhật ký của bé không bao giờ được gửi');
   await expect(page.getByTestId('ai-consent-card')).toHaveCount(0);
 
   await page.getByRole('tablist', { name: 'Khu vực phụ huynh' }).getByRole('tab', { name: 'Hôm nay' }).click();

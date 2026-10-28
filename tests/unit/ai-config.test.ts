@@ -5,7 +5,7 @@ afterEach(() => vi.unstubAllEnvs());
 
 describe('AI_LIMITS', () => {
   it('requires consent for the current monthly policy', () => {
-    expect(AI_POLICY_VERSION).toBe('2026-10-11');
+    expect(AI_POLICY_VERSION).toBe('2026-10-20');
   });
   it('holds the monthly and safety limits from the owner spec', () => {
     expect(AI_LIMITS.perMonth).toEqual({ free: 10, standard: 20 });

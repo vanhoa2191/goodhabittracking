@@ -1,0 +1,5 @@
+# Coordinator accepts inclusive regression preparation
+
+Actual source inspected: exact full VI phrase/persistence IDs, count-guarded4font/3size matrix with independent contexts and all9locales, real pairedtimer60ticks/activeelementidentity/live-region/Escape/zeroPOST assertions. Raw log confirms3expected productreds (fontlabel truncation, untranslatedfontcopy, autoendfocus/live-region), no fixture/navigation errors. Lint/typecheck worker exit0. This accepts regression preparation only, NOT06 implementation. Ownership released. Reuse for06a2/06b without weakening semantic assertions; translations may use equivalent complete wording.
+
+Coordinator editorial correction afteractualtrace19Oct: onlyremainingA08nine-locale failure isItalian normal-size labelComodo vsregexcomoda. Botharelegitimategenderformsofcomfortable; updateonlyregexcomod[oa], notanynonemptytext. Noapplicationcopyrewritten, no untranslated/full-label/count/persistence/focus assertionremoved. Traceartifactinclusive-a08-opencode-20261019-075732/.../trace.zip containssoleItalianfailure. IndependentA08rerun willrecordrealoutcome; geometry/clippingremainsseparate06bacceptancegate.

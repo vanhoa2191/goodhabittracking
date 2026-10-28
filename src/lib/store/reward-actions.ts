@@ -7,7 +7,8 @@ import {
   rewardMutationSchema,
   type RewardMutation,
 } from '@/lib/domain/reward-mutations';
-import { requestChildDomainCommand, requestDomainCommand } from './domain-command-client';
+import { rememberChildOperation, type ChildOperationState, type ParentOperationState } from './habit-actions';
+import { DomainCommandRequestError, requestChildDomainCommand, requestDomainCommand } from './domain-command-client';
 import { requestRewardMutation } from './reward-mutation-client';
 import {
   addReward,
@@ -19,7 +20,22 @@ import {
 
 type NewReward = Omit<Reward, 'id' | 'createdAt'>;
 
+/**
+ * What one redemption command actually did, so the screen reports the truth instead of a guess:
+ * `command` is the last server-acknowledged step (or why there was none), `refresh` says whether
+ * the reload after it produced fresh data, and `unfulfilled` marks an approval that was
+ * acknowledged while the delivery that should follow it failed.
+ */
+export type RedemptionOutcome = {
+  readonly command: 'approved' | 'delivered' | 'rejected' | 'invalid_transition' | 'failed' | 'unknown';
+  readonly refresh: 'synced' | 'stale';
+  readonly unfulfilled?: true;
+};
+
 type Dependencies = {
+  readonly childRedemptions?: () => readonly Redemption[];
+  readonly childOperations?: () => ChildOperationState;
+  readonly redemptionOperations?: () => ParentOperationState;
   readonly activeChildId: string | null;
   readonly currentUser: User | null;
   readonly familyId: string | null;
@@ -37,12 +53,12 @@ type Dependencies = {
 };
 
 type RewardActions = {
-  readonly approveRedemption: (redemptionId: string) => void;
+  readonly approveRedemption: (redemptionId: string) => Promise<RedemptionOutcome>;
   readonly claimReward: (rewardId: string) => Promise<boolean>;
   readonly createReward: (reward: NewReward) => Promise<boolean>;
   readonly deleteReward: (id: string) => Promise<boolean>;
-  readonly deliverRedemption: (redemptionId: string) => void;
-  readonly rejectRedemption: (redemptionId: string) => void;
+  readonly deliverRedemption: (redemptionId: string) => Promise<RedemptionOutcome>;
+  readonly rejectRedemption: (redemptionId: string) => Promise<RedemptionOutcome>;
   readonly updateReward: (id: string, updates: Partial<Reward>) => Promise<boolean>;
 };
 
@@ -111,20 +127,87 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
     }
   };
 
-  const persistCloudTransition = (
-    redemptionId: string,
-    decision: 'approve' | 'reject',
-  ) => {
+  const fallbackChildOperations: ChildOperationState = { active: true, habits: new Map(), rewards: new Map() };
+  const fallbackOperations = { busy: new Set<string>(), blocked: new Set<string>() };
+  const reloadAfter = async (user: User): Promise<'synced' | 'stale'> => {
+    try { return await dependencies.syncCloudFamily(user) ? 'synced' : 'stale'; }
+    catch { return 'stale'; }
+  };
+
+  const applyAcknowledgedTransition = (id: string, status: 'approved' | 'delivered' | 'rejected'): void => {
+    // ACK changes only this row. Balances, stock and refunds come from the snapshot.
+    dependencies.setRedemptions((previous) => previous.map((row) => row.id === id
+      ? { ...row, status, resolvedAt: new Date().toISOString() } : row));
+  };
+
+  const sendTransition = async (redemptionId: string, decision: 'approve' | 'deliver' | 'reject'): Promise<RedemptionOutcome['command']> => {
+    try {
+      const result = await requestDomainCommand({ type: 'transitionRedemption', redemptionId, decision });
+      if (result.redemptionId && result.redemptionId !== redemptionId) return 'unknown';
+      if (result.status === 'invalid_transition' || result.status === 'not_found') return 'invalid_transition';
+      if (decision === 'approve' && result.status === 'approved') return 'approved';
+      if (decision === 'deliver' && result.status === 'delivered') return 'delivered';
+      if (decision === 'reject' && result.status === 'rejected') return 'rejected';
+      return 'unknown';
+    } catch (error: unknown) {
+      return error instanceof DomainCommandRequestError && error.outcome === 'refused' ? 'failed' : 'unknown';
+    }
+  };
+
+  const runParentTransition = async (redemptionId: string, requested: 'approve' | 'deliver' | 'reject'): Promise<RedemptionOutcome> => {
+    const operations = dependencies.redemptionOperations?.() ?? fallbackOperations;
+    if (operations.busy.has(redemptionId) || operations.blocked.has(redemptionId)) {
+      return { command: 'unknown', refresh: 'stale' };
+    }
     const user = dependencies.currentUser;
-    if (!user) return;
-    void requestDomainCommand({ type: 'transitionRedemption', redemptionId, decision })
-      .then(() => dependencies.syncCloudFamily(user))
-      .catch((error: unknown) => {
-        console.error(
-          `${decision === 'approve' ? 'Approving' : 'Rejecting'} redemption failed:`,
-          error instanceof Error ? error.message : 'unknown',
-        );
-      });
+    if (!user) {
+      dependencies.setCloudSyncActive(false);
+      return { command: 'failed', refresh: 'stale' };
+    }
+    operations.busy.add(redemptionId);
+    let approved = dependencies.redemptions.some((row) => row.id === redemptionId && row.status === 'approved');
+    try {
+      if (requested === 'deliver' && !approved) {
+        const command = await sendTransition(redemptionId, 'approve');
+        if (command !== 'approved') {
+          const refresh = command === 'failed' ? 'stale' : await reloadAfter(user);
+          if (refresh === 'stale' && command !== 'failed') operations.blocked.add(redemptionId);
+          return { command, refresh };
+        }
+        approved = true;
+        applyAcknowledgedTransition(redemptionId, 'approved');
+      }
+      const command = await sendTransition(redemptionId, requested);
+      const acknowledged = command === 'approved' || command === 'delivered' || command === 'rejected';
+      if (acknowledged) applyAcknowledgedTransition(redemptionId, command);
+      // Even a known deliver refusal follows an acknowledged approval; reconcile that partial state.
+      const refresh = command === 'failed' && !approved ? 'stale' : await reloadAfter(user);
+      if (refresh === 'stale' && (acknowledged || command !== 'failed' || approved)) operations.blocked.add(redemptionId);
+      if (command === 'failed') dependencies.setCloudSyncActive(false);
+      return { command, refresh, ...(approved && requested === 'deliver' && command !== 'delivered' ? { unfulfilled: true as const } : {}) };
+    } finally {
+      operations.busy.delete(redemptionId);
+    }
+  };
+
+  const demoOutcome = (
+    redemptionId: string,
+    decision: 'approve' | 'deliver' | 'reject',
+    afterTransition: () => void,
+  ): RedemptionOutcome => {
+    const current = dependencies.redemptions.find((item) => item.id === redemptionId);
+    const nextStatus = decision === 'deliver' ? 'delivered' : decision === 'approve' ? 'approved' : 'rejected';
+    // The local transition decides what demo mode can do (a demo delivery may skip the approval
+    // step the server requires), so an already settled row is refused instead of faked as success.
+    const canTransition = current
+      && ((decision === 'approve' && current.status === 'pending')
+        || ((decision === 'deliver' || decision === 'reject') && (current.status === 'pending' || current.status === 'approved')));
+    if (!canTransition || !current) {
+      return { command: 'invalid_transition', refresh: 'synced' };
+    }
+    applyLocalTransition(redemptionId, decision);
+    afterTransition();
+    return { command: nextStatus, refresh: 'synced' };
   };
 
   return {
@@ -168,53 +251,75 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
 
       const user = dependencies.currentUser;
       if (!dependencies.isDemoSession) {
-        if (!user) {
-          if (!dependencies.isFamilyConnected) {
-            dependencies.setCloudSyncActive(false);
-            return false;
-          }
-          try {
-            const result = await requestChildDomainCommand({
-              type: 'redeemReward',
-              rewardId,
-              commandId: crypto.randomUUID(),
-            });
-            if (result.status === 'insufficient_points' || result.status === 'out_of_stock') {
-              return false;
-            }
-            await dependencies.refreshChildSession();
-            sounds.playRewardRedeem();
-            return true;
-          } catch (error: unknown) {
-            dependencies.setCloudSyncActive(false);
-            console.error(
-              'Redeeming child reward failed:',
-              error instanceof Error ? error.message : 'unknown',
-            );
-            return false;
-          }
-        }
-        try {
-          const result = await requestDomainCommand({
-            type: 'redeemReward',
-            rewardId,
-            childId,
-            commandId: crypto.randomUUID(),
-          });
-          if (result.status === 'insufficient_points' || result.status === 'out_of_stock') {
-            return false;
-          }
-          await dependencies.syncCloudFamily(user);
-          sounds.playRewardRedeem();
-          return true;
-        } catch (error: unknown) {
+        if (!user && !dependencies.isFamilyConnected) {
           dependencies.setCloudSyncActive(false);
-          console.error(
-            'Redeeming reward failed:',
-            error instanceof Error ? error.message : 'unknown',
-          );
           return false;
         }
+        const operations = dependencies.childOperations?.() ?? fallbackChildOperations;
+        const key = `${user?.id ?? 'paired'}:${dependencies.familyId ?? ''}:${childId}:${rewardId}`;
+        let operation = operations.rewards.get(key);
+        if (!operations.active || operation?.busy) return false;
+        const current = () => operations.active && (dependencies.childOperations?.() ?? fallbackChildOperations) === operations;
+        const reconcile = async () => {
+          try { return (user ? await dependencies.syncCloudFamily(user) : await dependencies.refreshChildSession()) && current(); }
+          catch { return false; }
+        };
+        if (operation && operation.phase !== 'settled') {
+          operation.busy = true;
+          const synced = await reconcile();
+          operation.busy = false;
+          if (!current()) return false;
+          if (operation.phase === 'accepted') {
+            if (synced) operation.phase = 'settled';
+            return true;
+          }
+          if (!synced) return false;
+          const recoveringId = operation.commandId;
+          if ((dependencies.childRedemptions?.() ?? dependencies.redemptions).some((row) => row.id === recoveringId && row.childId === childId && row.rewardId === rewardId)) {
+            operation.phase = 'settled';
+            return true;
+          }
+        } else {
+          operation = { commandId: crypto.randomUUID(), kind: 'reward', busy: false, phase: 'uncertain',
+            outcome: { status: 'unknown', pointsAwarded: 0, stale: true } };
+          rememberChildOperation(operations.rewards, key, operation);
+        }
+        operation.busy = true;
+        try {
+          const command = { type: 'redeemReward' as const, rewardId, commandId: operation.commandId };
+          const result = user ? await requestDomainCommand({ ...command, childId }) : await requestChildDomainCommand(command);
+          if (!current()) return false;
+          if (result.status === 'pending' && typeof result.redemptionId === 'string') {
+            operation.phase = 'accepted';
+            const synced = await reconcile();
+            if (!current()) return false;
+            if (synced) operation.phase = 'settled';
+            sounds.playRewardRedeem();
+            return true;
+          }
+          if (result.status === 'insufficient_points' || result.status === 'out_of_stock') {
+            operation.phase = 'settled';
+            return false;
+          }
+          const synced = await reconcile();
+          if (synced && (dependencies.childRedemptions?.() ?? dependencies.redemptions).some((row) => row.id === operation.commandId && row.childId === childId && row.rewardId === rewardId)) {
+            operation.phase = 'settled';
+            return true;
+          }
+          return false;
+        } catch (error: unknown) {
+          if (!current()) return false;
+          dependencies.setCloudSyncActive(false);
+          if (error instanceof DomainCommandRequestError && error.outcome === 'refused') operation.phase = 'settled';
+          else {
+            const synced = await reconcile();
+            if (synced && (dependencies.childRedemptions?.() ?? dependencies.redemptions).some((row) => row.id === operation.commandId && row.childId === childId && row.rewardId === rewardId)) {
+              operation.phase = 'settled';
+              return true;
+            }
+          }
+          return false;
+        } finally { operation.busy = false; }
       }
 
       const claimed = claimLocalReward(
@@ -244,59 +349,21 @@ export function createRewardActions(dependencies: Dependencies): RewardActions {
       });
       return true;
     },
-    approveRedemption: (redemptionId) => {
+    approveRedemption: async (redemptionId) => {
       if (!dependencies.isDemoSession) {
-        if (!dependencies.currentUser) {
-          dependencies.setCloudSyncActive(false);
-          return;
-        }
-        persistCloudTransition(redemptionId, 'approve');
-        return;
+        return runParentTransition(redemptionId, 'approve');
       }
-      applyLocalTransition(redemptionId, 'approve');
-      sounds.playClick();
+      return demoOutcome(redemptionId, 'approve', () => sounds.playClick());
     },
-    deliverRedemption: (redemptionId) => {
-      const user = dependencies.currentUser;
-      if (!dependencies.isDemoSession) {
-        if (!user) {
-          dependencies.setCloudSyncActive(false);
-          return;
-        }
-        void requestDomainCommand({
-          type: 'transitionRedemption',
-          redemptionId,
-          decision: 'approve',
-        })
-          .then(() => requestDomainCommand({
-            type: 'transitionRedemption',
-            redemptionId,
-            decision: 'deliver',
-          }))
-          .then(() => dependencies.syncCloudFamily(user))
-          .catch((error: unknown) => {
-            dependencies.setCloudSyncActive(false);
-            console.error(
-              'Delivering redemption failed:',
-              error instanceof Error ? error.message : 'unknown',
-            );
-          });
-        return;
-      }
-      applyLocalTransition(redemptionId, 'deliver');
-      sounds.playLevelUp();
+    deliverRedemption: async (redemptionId) => {
+      if (!dependencies.isDemoSession) return runParentTransition(redemptionId, 'deliver');
+      return demoOutcome(redemptionId, 'deliver', () => sounds.playLevelUp());
     },
-    rejectRedemption: (redemptionId) => {
+    rejectRedemption: async (redemptionId) => {
       if (!dependencies.isDemoSession) {
-        if (!dependencies.currentUser) {
-          dependencies.setCloudSyncActive(false);
-          return;
-        }
-        persistCloudTransition(redemptionId, 'reject');
-        return;
+        return runParentTransition(redemptionId, 'reject');
       }
-      applyLocalTransition(redemptionId, 'reject');
-      sounds.playClick();
+      return demoOutcome(redemptionId, 'reject', () => sounds.playClick());
     },
   };
 }

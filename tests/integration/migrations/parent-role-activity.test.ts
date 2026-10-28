@@ -3,8 +3,8 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { parse } from '@libpg-query/parser';
 
-const migration = readFileSync(resolve('supabase/migrations/202610120002_parent_role_activity_guard.sql'), 'utf8');
-const rollback = readFileSync(resolve('supabase/rollbacks/202610120002_parent_role_activity_guard.rollback.sql'), 'utf8');
+const migration = readFileSync(resolve('supabase/migrations/202610260002_parent_role_activity_guard.sql'), 'utf8');
+const rollback = readFileSync(resolve('supabase/rollbacks/202610260002_parent_role_activity_guard.rollback.sql'), 'utf8');
 
 describe('parent-role habit completion migration', () => {
   it('blocks parent-role completion in both parent and child commands before writing logs', async () => {

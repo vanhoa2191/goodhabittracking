@@ -15,6 +15,8 @@ test('parent can explore and add a canonical framework habit', async ({ page }) 
   await page.getByRole('tab', { name: 'Thiết kế' }).click();
   await page.getByRole('tab', { name: 'Quản lý việc' }).click();
   await page.getByRole('button', { name: 'Thư viện', exact: true }).click();
+  // The daily living habits come first in the library; the framework sits behind its own switch.
+  await page.getByTestId('library-tab-framework').click();
 
   // When
   await expect(page.getByRole('heading', { name: 'Khung 47 thói quen 0–18 tuổi' })).toBeVisible();
@@ -58,6 +60,8 @@ test('parent keeps assigned habits separate from the filtered library', async ({
   await expect(page.getByText(/lần hoàn thành trong 7 ngày/).first()).toBeVisible();
   await page.getByRole('combobox', { name: 'Lọc theo bé' }).selectOption({ index: 1 });
   await page.getByRole('button', { name: 'Thư viện', exact: true }).click();
+  // The daily living habits come first in the library; the framework sits behind its own switch.
+  await page.getByTestId('library-tab-framework').click();
   await expect(page.getByRole('heading', { name: 'Khung 47 thói quen 0–18 tuổi' })).toBeVisible();
   await expect(page.getByRole('combobox', { name: 'Lọc theo bé' })).toHaveCount(0);
 });

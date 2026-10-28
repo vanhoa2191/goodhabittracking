@@ -4,7 +4,7 @@
 
 - **Status:** Confirmed and fixed in source; migration not applied.
 - `POST /api/domain/rewards` now checks `requireParentUnlock` before its create, update, or delete mutation. It uses the authenticated parent's family and user values, then performs the write through the server-only admin client after the PIN check.
-- Added `202610120001_reward_pin_security.sql` to revoke `INSERT`, `UPDATE`, and `DELETE` from `authenticated` on `public.rewards`, with a rollback that restores those grants, and added the migration to `supabase/schema.sql`.
+- Added `202610260001_reward_pin_security.sql` to revoke `INSERT`, `UPDATE`, and `DELETE` from `authenticated` on `public.rewards`, with a rollback that restores those grants, and added the migration to `supabase/schema.sql`.
 - **Tests:** API regression coverage for all three locked mutations; migration and rollback parse/grant assertions. Results: pending final rerun.
 - **Remaining risk:** The migration must be applied and the role grants verified in a separately authorized database change. No DB was contacted.
 
@@ -19,7 +19,7 @@
 
 - **Status:** Confirmed and fixed in source; migration not applied.
 - Local habit toggles now leave logs, points, streaks, and badges unchanged for parent-role habits. Cloud habit actions reject new parent-role completions locally while still allowing an old erroneous log to be undone.
-- Added `202610120002_parent_role_activity_guard.sql` to make both authoritative parent and child completion RPCs return `parent_role_activity` before inserting a log or awarding points. Added a rollback restoring the previous function definitions and added the migration to `supabase/schema.sql`.
+- Added `202610260002_parent_role_activity_guard.sql` to make both authoritative parent and child completion RPCs return `parent_role_activity` before inserting a log or awarding points. Added a rollback restoring the previous function definitions and added the migration to `supabase/schema.sql`.
 - **Tests:** Local transition and cloud action regression tests; migration and rollback parse/guard assertions. Results: pending final rerun.
 - **Remaining risk:** Previously earned points or historical logs are not rewritten. The migration has not been applied or exercised against PostgreSQL.
 
@@ -37,4 +37,4 @@
 - No migration, database, production, or provider operation was performed.
 
 ## Kết quả kiểm chứng cuối (coordinator)
-Chạy toàn cây sau khi cả 4 lane sửa: tsc 0 lỗi, ESLint sạch, vitest 3418/3418 pass (đã bump `EXPECTED_SCHEMA_VERSION` trong src/lib/schema-version.ts lên 202610270001 theo migration mới nhất). Migration 202610120001/202610120002/202610270001 chỉ parse, chưa áp lên DB.
+Chạy toàn cây sau khi cả 4 lane sửa: tsc 0 lỗi, ESLint sạch, vitest 3418/3418 pass (đã bump `EXPECTED_SCHEMA_VERSION` trong src/lib/schema-version.ts lên 202610270001 theo migration mới nhất). Migration 202610260001/202610260002/202610270001 chỉ parse, chưa áp lên DB.

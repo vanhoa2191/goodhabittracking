@@ -3,8 +3,8 @@ import { expect, test } from '@playwright/test';
 import { getVisiblePricingOpener } from './open-pricing';
 import { setupOrUnlockParent } from './pin-helper';
 
-// The app honours prefers-reduced-motion by ending every colour transition at once. Without it,
-// a slow runner can be measured by axe halfway between two colours and report a false contrast failure.
+// Reduced motion removes authored movement while preserving colour/status transitions.
+// Wait for those transitions to finish before measuring a selected tab's contrast.
 test.use({ reducedMotion: 'reduce' });
 
 function seriousOrCritical(violations: Awaited<ReturnType<AxeBuilder['analyze']>>['violations']) {
@@ -58,8 +58,16 @@ test('@a11y parent approvals, rewards and settings have no serious or critical v
     { area: 'Thiết kế', section: 'Đổi quà' },
     { area: 'Gia đình', section: 'Cài đặt' },
   ]) {
-    await page.getByRole('tab', { name: destination.area }).click();
-    await page.getByRole('tab', { name: destination.section }).click();
+    const area = page.getByRole('tab', { name: destination.area });
+    await area.click();
+    await expect(area).toHaveAttribute('aria-selected', 'true');
+    const section = page.getByRole('tab', { name: destination.section });
+    await section.click();
+    await expect(section).toHaveAttribute('aria-selected', 'true');
+    await page.getByRole('tablist').evaluateAll(async (tablists) => {
+      await Promise.all(tablists.flatMap((tablist) => tablist.getAnimations({ subtree: true }))
+        .map((animation) => animation.finished.catch(() => undefined)));
+    });
     expect(seriousOrCritical((await new AxeBuilder({ page }).analyze()).violations)).toEqual([]);
   }
 });

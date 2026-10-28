@@ -21,6 +21,8 @@ describe('experience flags', () => {
       habitCoach: false,
       parentAi: false,
       printablesSale: false,
+      thinkingGames: false,
+      dailyLivingHabits: false,
     });
   });
 

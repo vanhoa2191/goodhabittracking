@@ -17,8 +17,11 @@ test('the settings links stay in view while scrolling and mark the section you a
   await expect(nav).toBeVisible();
   await expect(nav.locator('a[aria-current="location"]')).toHaveCount(1);
 
-  await page.locator('#settings-security').scrollIntoViewIfNeeded();
-  await page.mouse.wheel(0, 200);
+  const security = page.locator('#settings-security');
+  // Honor the heading's authored scroll margin. An in-flight smooth scroll can
+  // invalidate coordinates measured before a subsequent wheel movement.
+  await security.evaluate((heading) => heading.scrollIntoView({ block: 'start', behavior: 'instant' }));
+  await expect(security).toBeInViewport();
   await expect(nav).toBeInViewport();
   await expect(nav.locator('a[aria-current="location"]')).toHaveAttribute('href', '#settings-security');
 

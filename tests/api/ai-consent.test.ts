@@ -34,7 +34,7 @@ describe('AI consent', () => {
     await expect(response.json()).resolves.toEqual({ enabled: true });
     expect(from).toHaveBeenCalledWith('family_consents');
     expect(upsert).toHaveBeenCalledWith(expect.objectContaining({
-      family_id: familyId, user_id: 'parent-1', consent_type: 'parent_ai', policy_version: '2026-10-11', revoked_at: null,
+      family_id: familyId, user_id: 'parent-1', consent_type: 'parent_ai', policy_version: '2026-10-20', revoked_at: null,
     }), { onConflict: 'family_id,user_id,consent_type,policy_version' });
   });
 

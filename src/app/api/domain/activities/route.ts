@@ -9,6 +9,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { requireParentUnlock } from '@/lib/security/parent-unlock';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
+import { dailyLivingActivityId, isDailyLivingTemplateId } from '@/lib/daily-living-habits-id';
 
 export const runtime = 'nodejs';
 
@@ -154,6 +155,26 @@ export async function POST(request: NextRequest) {
     default: {
       const unreachable: never = parsed.data;
       return unreachable;
+    }
+  }
+
+  if (error?.code === '23505' && (parsed.data.type === 'create' || parsed.data.type === 'createMany')) {
+    const activities = parsed.data.type === 'create' ? [parsed.data.activity] : parsed.data.activities;
+    const matchingIds = await Promise.all(activities.map(async (activity) => (
+      activity.legacyTemplateId !== undefined
+      && isDailyLivingTemplateId(activity.legacyTemplateId)
+      && activity.id === await dailyLivingActivityId(parent.familyId, activity.childId, activity.legacyTemplateId)
+    )));
+    if (matchingIds.every(Boolean)) {
+      const ids = activities.map((activity) => activity.id);
+      const { data, error: readError } = await supabase
+        .from('habit_activities')
+        .select('id')
+        .eq('family_id', parent.familyId)
+        .in('id', ids);
+      const savedIds = new Set((data ?? []).map((row) => row.id));
+      // A conflicted bundle is atomic: confirm every requested row before acknowledging it.
+      if (!readError && ids.every((id) => savedIds.has(id))) error = null;
     }
   }
 

@@ -1,0 +1,3 @@
+# Inclusive test preparation — REVISE
+
+Coordinator rejected the initial file before acceptance: /parent/settings and/kid are not app routes; cookie language is wrong (actual kidhabit_language); th unsupported and it omitted; data-font-size attribute does not exist; conditional clicks and empty locator loops can silentlypass; no realclockadvance or asserted Escape/restore; author did not execute E2E despite explicit authorization to use existing server. Report's four test claims are not runtimeproof. Source typeerroris concurrent04a, not baselinepre-existing. Rejectedfile archivedunder.omx and removed; fresh scoped Kilo correction mustwrite actualmeaningfultests andrun them onexternal3107. No appsourcechanged.

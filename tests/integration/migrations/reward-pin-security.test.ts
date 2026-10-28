@@ -3,8 +3,8 @@ import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { parse } from '@libpg-query/parser';
 
-const migration = readFileSync(resolve('supabase/migrations/202610120001_reward_pin_security.sql'), 'utf8');
-const rollback = readFileSync(resolve('supabase/rollbacks/202610120001_reward_pin_security.rollback.sql'), 'utf8');
+const migration = readFileSync(resolve('supabase/migrations/202610260001_reward_pin_security.sql'), 'utf8');
+const rollback = readFileSync(resolve('supabase/rollbacks/202610260001_reward_pin_security.rollback.sql'), 'utf8');
 
 describe('reward PIN grants migration', () => {
   it('revokes authenticated reward mutations while preserving read access', async () => {

@@ -79,6 +79,8 @@ Không đưa secret vào `wrangler.jsonc`, GitHub Actions log hoặc `NEXT_PUBLI
 
 Luồng phát hành duy nhất: viết code trên máy → push lên GitHub → GitHub Actions kiểm thử → deploy lên Cloudflare Workers. Không deploy thủ công từ máy cá nhân trừ khi rollback khẩn cấp.
 
+Sau khi build, job quality chạy `node scripts/check-cloudflare-runtime.mjs` trên bundle Worker thật bằng Wrangler local. Bước này chặn lỗi khởi tạo runtime như Cloudflare 1101 mà build hoặc E2E chạy bằng Next dev không phát hiện được. Kiểm tra local không nhận secrets: HTTP 503 với health JSON `degraded`/`unavailable` chỉ chứng minh Worker đã khởi tạo và nạp route; production vẫn bắt buộc HTTP 200, `ready` và đúng SHA ở bước kiểm tra sau deploy.
+
 `ci.yml` kiểm tra và phát hành Worker `goodhabittracking` (app) sau khi quality/browser đạt. `marketing.yml` build, kiểm tra artifact rồi phát hành Worker `kidhabit-home` (website giới thiệu) độc lập. Thiết lập một lần trong phần cấu hình GitHub:
 
 1. Secrets: `CLOUDFLARE_API_TOKEN` có quyền Workers deploy, cùng `CLOUDFLARE_ACCOUNT_ID`.
@@ -110,6 +112,8 @@ Giao diện của bé tự thích ứng theo tuổi (3 dải: 3–8, 9–12, 13+
 Tiến độ theo ngày cho người chăm sóc ("Hôm nay x / y", "7 ngày gần đây") cần migration `202610030002_caregiver_daily_progress.sql` (có rollback ở `supabase/rollbacks/`); chạy `supabase/preflight/202610030002_caregiver_daily_progress.verify.sql` sau khi áp. Migration thay hàm `caregiver_progress_snapshot()` bằng `caregiver_progress_snapshot(local_today date default null)`; gọi không tham số vẫn trả đúng dạng cũ nên bản build cũ đang mở không hỏng. Nên áp migration trước rồi deploy; nếu deploy trước, ứng dụng nhận lỗi `PGRST202`, tự gọi lại không tham số và ẩn phần mới thay vì báo lỗi. `/api/health` báo schema chưa đủ cho tới khi migration được áp.
 
 Bộ thói quen thích ứng dùng cờ build `NEXT_PUBLIC_HABIT_PROGRAMS=true`, mặc định tắt và áp dụng cho mọi người dùng của bản build (không bật riêng theo gia đình). Bản deploy production đọc giá trị từ biến repository `NEXT_PUBLIC_HABIT_PROGRAMS` (đặt `true` để bật, xóa hoặc đặt `false` rồi chạy lại workflow CI trên `main` để tắt). Migration `202609300001_habit_programs.sql` phải được áp trước khi bật; chạy `supabase/preflight/202609300001_habit_programs.verify.sql` sau khi áp. Khi bảng chưa tồn tại, ứng dụng đọc như "chưa có dữ liệu" nên deploy trước migration không gây lỗi, nhưng lưu tín hiệu hoặc ghi nhận sẽ thất bại. Trước khi bật, kiểm tra: phụ huynh đặt tín hiệu, ghi nhận "Con làm thế nào?" và xem tóm tắt tiến độ; bé từ 15 tuổi tự chọn còn bé nhỏ hơn không thấy câu hỏi; luồng "Chương trình" (chỉ tiếng Việt) thêm thói quen và tín hiệu; tải lại vẫn còn dữ liệu; hai gia đình không thấy dữ liệu của nhau. Luật "từ 15 tuổi" chỉ áp ở giao diện, không ép ở máy chủ. Thay đổi cờ cần build/deploy lại.
+
+Thói quen sinh hoạt hằng ngày (đánh răng, rửa mặt...) dùng cờ build `NEXT_PUBLIC_DAILY_LIVING_HABITS=true`, mặc định tắt, chỉ hiện ở giao diện tiếng Việt và áp dụng cho mọi người dùng của bản build. Production đọc biến repository `NEXT_PUBLIC_DAILY_LIVING_HABITS` (đặt `true` để bật, xóa hoặc `false` rồi chạy lại CI trên `main` để tắt). Migration `202610250001_daily_living_template_refs.sql` phải được áp trước khi bật; chạy `supabase/preflight/202610250001_daily_living_template_refs.verify.sql` sau khi áp, và ghi sổ phiên bản 12 chữ số. Khi chưa áp migration, thêm một mục sinh hoạt mới sẽ bị cơ sở dữ liệu từ chối (lưu không được xác nhận). Trước khi bật, kiểm tra: thêm "Đánh răng buổi sáng" và "Rửa mặt" cho một bé từ Thư viện; chọn bộ "Buổi sáng gọn gàng" chỉ thêm phần còn thiếu; bé hoàn thành và hoàn tác được; tải lại vẫn còn; bấm thêm hai lần không tạo bản trùng. Rollback migration chỉ chạy khi không còn hàng `WIT-DLY-%`. Thay đổi cờ cần build/deploy lại.
 
 Bản deploy production đọc bốn cờ trải nghiệm từ biến repository cùng tên: `NEXT_PUBLIC_DAILY_MASCOT_LETTER`, `NEXT_PUBLIC_DAILY_JOURNAL`, `NEXT_PUBLIC_DREAM_CITY`, `NEXT_PUBLIC_PARENT_REENGAGEMENT` (đặt `true` để bật, xóa hoặc đặt `false` rồi chạy lại workflow CI trên `main` để tắt). Trước khi bật cần đạt `npm run verify:live-experience` (thư mascot, nhật ký, đồng ý nhắc phụ huynh và thành phố ước mơ với hai gia đình tổng hợp, tự dọn sạch) và `npm run verify:live-boundaries`. Nếu `~/.npm` có tệp thuộc root, đặt `npm_config_cache` sang một thư mục ghi được trước khi chạy các lệnh này.
 
@@ -146,6 +150,32 @@ Lệnh từ chối worktree bẩn, SHA không khớp, URL không dùng HTTPS, fe
 `/api/health` không chỉ kiểm tra biến môi trường: trạng thái `ready` yêu cầu PostgREST chấp nhận service-role credential qua một request không đọc dữ liệu. Vì vậy URL/key hết hạn hoặc sai phải trả `503` với `databaseConnection: false`. Chế độ `--allow-dirty` chỉ dùng để kiểm tra working tree cục bộ và có thể tiếp tục khi dependency ngoài chưa sẵn sàng; kết quả đó không phải chứng nhận release. Release candidate sạch luôn yêu cầu live dependency readiness.
 
 `--allow-dirty` chỉ dành cho kiểm tra harness trong quá trình phát triển. Kết quả đó được ghi là working-tree evidence và không phải chứng nhận release candidate.
+
+## Quyền đọc cài đặt game tư duy
+
+Sau migration `202610210001_thinking_games.sql`, áp riêng
+`supabase/migrations/202610240001_thinking_games_settings_read.sql`, rồi chạy
+`supabase/preflight/202610240001_thinking_games_settings_read.verify.sql`.
+Ghi nhận migration `202610240001` đã áp trong migration history của Supabase
+để `schema_version()` đáp ứng phiên bản schema mà bản build mới yêu cầu.
+Bản sửa bổ sung duy nhất quyền `SELECT` cho `authenticated` trên
+`thinking_game_settings`; policy đọc theo gia đình và forced RLS giữ nguyên.
+Không cấp quyền ghi trực tiếp, quyền cho khách ẩn danh hoặc quyền đọc đáp án.
+Thiếu quyền này, endpoint đọc cài đặt của phụ huynh trả `409 settings_failed`.
+
+`npm run test:sql` kiểm tra đọc đúng gia đình, cách ly gia đình khác và từ chối
+ghi/đọc riêng tư bằng vai trò PostgreSQL thực. Rollback nằm tại
+`supabase/rollbacks/202610240001_thinking_games_settings_read.rollback.sql`;
+thu hồi quyền đọc cũng khôi phục lỗi cài đặt nên cần tắt game trước khi rollback.
+
+Catalog phát hành được kiểm định đầy đủ ở `prebuild` bằng
+`scripts/check-thinking-games-release-bundle.mjs`: digest phải khớp pin đã duyệt,
+proof phải khớp đúng bytes và toàn bộ schema/mechanics phải qua profile release.
+Worker chỉ kiểm tra proof và các cổng phát hành trên dữ liệu bundle bất biến;
+không chạy lại kiểm định cả năm trong request vì gây Cloudflare `1102`.
+Sau khi duyệt một catalog mới và cập nhật pin, tạo lại proof bằng
+`node scripts/check-thinking-games-release-bundle.mjs --write-proof`, rồi chạy
+build thường; proof cũ hoặc dữ liệu bị sửa khiến build thất bại.
 
 ## Database rollout
 

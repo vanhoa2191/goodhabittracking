@@ -25,5 +25,12 @@ test('the parent areas stay usable by keyboard at 375px in every supported langu
     await page.keyboard.press('Home');
     await expect(areas.locator('#parent-area-today')).toHaveAttribute('aria-selected', 'true');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `${locale} should fit 375px`).toBe(true);
+    const taskHelp = page.locator('[data-help-topic="approvals.tasks"]');
+    await expect(taskHelp).toBeVisible();
+    const taskHelpBox = await taskHelp.boundingBox();
+    expect(taskHelpBox, `${locale} task help trigger should have a box`).not.toBeNull();
+    if (!taskHelpBox) throw new Error(`${locale} task help trigger should have a box`);
+    expect(taskHelpBox.x, `${locale} task help trigger should not start off screen`).toBeGreaterThanOrEqual(0);
+    expect(taskHelpBox.x + taskHelpBox.width, `${locale} task help trigger should stay inside 375px`).toBeLessThanOrEqual(375);
   }
 });

@@ -13,6 +13,7 @@ html[data-known-app-session='true'] [data-entry-loading='true'] {
   --surface-kid: #fffbeb;
   --surface-parent: #fbf8f3;
   --ink: #1b1815;
+  --border: #e8ded1;
   --primary: #4f46e5;
   --reward: #fbbf24;
   --success: #059669;
@@ -29,6 +30,7 @@ html[data-known-app-session='true'] [data-entry-loading='true'] {
   --color-kid-surface: var(--surface-kid);
   --color-parent-surface: var(--surface-parent);
   --color-ink: var(--ink);
+  --color-border: var(--border);
   --color-primary: var(--primary);
   --color-reward: var(--reward);
   --color-success: var(--success);
@@ -43,6 +45,15 @@ html[data-known-app-session='true'] [data-entry-loading='true'] {
 html.dark {
   --background: #09090b;
   --foreground: #f4f4f5;
+  --surface: #09090b;
+  --surface-kid: #0c0a09;
+  --surface-parent: #09090b;
+  --ink: #f4f4f5;
+  --border: #27272a;
+  --primary: #818cf8;
+  --reward: #fbbf24;
+  --success: #34d399;
+  --destructive: #fb7185;
   color-scheme: dark;
 }
 
@@ -197,10 +208,39 @@ button, input, select, textarea {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  /* Authored entrances, celebrations and loading indicators have visible static
+     defaults. Keep their text/icons; do not shorten every third-party animation. */
+  .animate-fade-in,
+  .animate-shake,
+  .animate-burst-pop,
+  .animate-trial-pulse,
+  .animate-bounce,
+  .animate-pulse,
+  .animate-spin {
+    animation: none !important;
+  }
+
+  /* Retain color/status feedback, but make authored movement and progress
+     geometry settle immediately. Static ring rotations and switch positions stay. */
+  .transition,
+  .transition-all {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow !important;
+  }
+  .transition-transform {
+    transition-property: none !important;
+  }
+  [class~="active:scale-90"]:active,
+  [class~="active:scale-95"]:active,
+  [class~="active:scale-98"]:active,
+  [class~="enabled:active:scale-95"]:enabled:active,
+  [class~="hover:scale-105"]:hover,
+  .group:hover [class~="group-hover:scale-105"] {
+    scale: none !important;
+  }
+  [class~="hover:-translate-y-0.5"]:hover {
+    translate: none !important;
+  }
+  html, .scroll-smooth {
     scroll-behavior: auto !important;
   }
 }
