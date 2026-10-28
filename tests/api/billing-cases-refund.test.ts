@@ -79,6 +79,14 @@ describe('PATCH /api/admin/billing-cases', () => {
       expect(caseUpdate).not.toHaveBeenCalled();
     });
 
+    it('keeps an untraceable subscription refund open for explicit review', async () => {
+      rpc.mockResolvedValue({ data: { code: 'subscription_grant_review_required' }, error: null });
+      const response = await patch(confirmRefund);
+      expect(response.status).toBe(409);
+      await expect(response.json()).resolves.toMatchObject({ code: 'subscription_grant_review_required' });
+      expect(caseUpdate).not.toHaveBeenCalled();
+    });
+
     it.each(['in_payout', 'already_paid'])('still completes the case but reports %s so the admin acts on it', async (result) => {
       rpc.mockResolvedValue({ data: { code: 'updated', referralCommission: result, launchOfferClaim: 'revoked' }, error: null });
       const response = await patch(confirmRefund);

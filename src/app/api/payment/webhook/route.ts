@@ -42,6 +42,12 @@ export async function POST(request: NextRequest) {
     });
     if (error) throw error;
 
+    if (result === 'late_payment_recorded') {
+      logOperationalEvent('warn', { operation: 'payment_webhook', reasonCode: 'late_payment_recorded', correlationId, route: request.nextUrl.pathname, status: 200 });
+      await recordOperationalSignal({ signalType: 'payment_webhook_failure', reasonCode: 'late_payment_recorded', correlationId, status: 200 });
+      return NextResponse.json({ success: true, message: 'Payment recorded for manual reconciliation.' });
+    }
+
     if (result === 'order_already_paid') {
       logOperationalEvent('warn', { operation: 'payment_webhook', reasonCode: 'order_already_paid', correlationId, route: request.nextUrl.pathname, status: 200 });
       await recordOperationalSignal({ signalType: 'payment_webhook_failure', reasonCode: 'order_already_paid', correlationId, status: 200 });

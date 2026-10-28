@@ -24,6 +24,9 @@ export async function DELETE(request: NextRequest) {
   const locked = await requireParentUnlock(request, parent, supabase);
   if (locked) return locked;
   const { error } = await callParentRpc(parent.user.id, 'delete_owned_family', { confirmation: parsed.data.confirmation });
+  if (error?.message?.includes('family_has_pending_payments')) {
+    return NextResponse.json({ success: false, code: 'family_has_pending_payments', error: 'Please reconcile or cancel pending payments before deleting your family.' }, { status: 409 });
+  }
   if (error) return NextResponse.json({ success: false, error: 'Family deletion failed.' }, { status: 409 });
   return NextResponse.json({ success: true });
 }
