@@ -59,6 +59,8 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e -- --project=chromium
+      - name: Run mobile Chromium regressions
+        run: npm run test:e2e -- --project=mobile-chromium quest-deferral kid-bottom-nav a11y-menus
       - run: npm run test:e2e:marketing
         env:
           NEXT_PUBLIC_APP_URL: https://app.kidhabithero.com

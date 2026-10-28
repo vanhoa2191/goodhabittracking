@@ -1,9 +1,6 @@
 import { readdir, stat, readFile } from 'node:fs/promises';
 import path from 'node:path';
-
-const root = path.resolve('.next/static/chunks');
-const budget = JSON.parse(await readFile('config/performance-budget.json', 'utf8'));
-const appManifest = JSON.parse(await readFile('.next/server/app-paths-manifest.json', 'utf8'));
+import { pathToFileURL } from 'node:url';
 
 async function listFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -13,33 +10,61 @@ async function listFiles(directory) {
   }))).flat();
 }
 
-const chunks = (await listFiles(root)).filter((file) => file.endsWith('.js'));
-const sizes = await Promise.all(chunks.map(async (file) => ({ file, bytes: (await stat(file)).size })));
-const total = sizes.reduce((sum, item) => sum + item.bytes, 0);
-const largest = sizes.sort((left, right) => right.bytes - left.bytes)[0];
-
-async function routeEntrySize({ manifestPath: appPath, route }) {
-  const relativePath = appPath.replace(/^\//, '');
-  const manifestPath = path.resolve('.next/server/app', `${relativePath || 'page'}_client-reference-manifest.js`);
-  const source = await readFile(manifestPath, 'utf8');
-  const key = `\"[project]/src/app/${relativePath || 'page'}\":[`;
-  const start = source.lastIndexOf(key);
-  if (start < 0) return null;
-  const end = source.indexOf(']', start + key.length);
-  const files = [...source.slice(start, end).matchAll(/\"(static\/chunks\/[^\"]+\.js)\"/g)].map((match) => match[1]);
-  const uniqueFiles = [...new Set(files)];
-  const routeBytes = await Promise.all(uniqueFiles.map(async (file) => (await stat(path.resolve('.next', file))).size));
-  return { route, bytes: routeBytes.reduce((sum, bytes) => sum + bytes, 0), files: uniqueFiles.length };
+function validateRouteStats(routeStats) {
+  if (!Array.isArray(routeStats) || routeStats.length === 0) {
+    throw new Error('Next route bundle stats are missing or empty.');
+  }
+  for (const entry of routeStats) {
+    if (
+      typeof entry?.route !== 'string'
+      || !Number.isFinite(entry.firstLoadUncompressedJsBytes)
+      || !Array.isArray(entry.firstLoadChunkPaths)
+      || entry.firstLoadChunkPaths.some((file) => typeof file !== 'string')
+    ) {
+      throw new Error('Next route bundle stats contain an invalid entry.');
+    }
+  }
 }
 
-const appRoutes = Object.keys(appManifest)
-  .filter((appPath) => appPath.endsWith('/page') && !appPath.includes('/_'))
-  .map((appPath) => ({ manifestPath: appPath, route: appPath.replace(/\/page$/, '') || '/' }));
-const routeEntries = (await Promise.all(appRoutes.map(routeEntrySize))).filter(Boolean);
-const largestRoute = routeEntries.sort((left, right) => right.bytes - left.bytes)[0];
+/** Compare Next's structured first-load route stats and emitted chunk sizes with the configured budget. */
+export function evaluatePerformanceBudget({ routeStats, chunkSizes, budget }) {
+  validateRouteStats(routeStats);
+  if (!Array.isArray(chunkSizes) || chunkSizes.length === 0) {
+    throw new Error('No JavaScript chunks were found for the performance budget.');
+  }
 
-if (largestRoute.bytes > budget.maxInitialJavaScriptBytes || largest.bytes > budget.maxSingleChunkBytes) {
-  console.error(JSON.stringify({ status: 'failed', largestInitialRoute: largestRoute, allChunksBytes: total, largestChunk: largest }));
-  process.exit(1);
+  const largestRouteStat = [...routeStats].sort(
+    (left, right) => right.firstLoadUncompressedJsBytes - left.firstLoadUncompressedJsBytes,
+  )[0];
+  const largestInitialRoute = {
+    route: largestRouteStat.route,
+    bytes: largestRouteStat.firstLoadUncompressedJsBytes,
+    files: new Set(largestRouteStat.firstLoadChunkPaths).size,
+  };
+  const largestChunk = [...chunkSizes].sort((left, right) => right.bytes - left.bytes)[0];
+  const allChunksBytes = chunkSizes.reduce((sum, item) => sum + item.bytes, 0);
+  const status = largestInitialRoute.bytes > budget.maxInitialJavaScriptBytes
+    || largestChunk.bytes > budget.maxSingleChunkBytes
+    ? 'failed'
+    : 'passed';
+
+  return { status, largestInitialRoute, allChunksBytes, largestChunk };
 }
-console.log(JSON.stringify({ status: 'passed', largestInitialRoute: largestRoute, allChunksBytes: total, largestChunk: largest }));
+
+async function main() {
+  const chunksRoot = path.resolve('.next/static/chunks');
+  const budget = JSON.parse(await readFile('config/performance-budget.json', 'utf8'));
+  const routeStats = JSON.parse(await readFile('.next/diagnostics/route-bundle-stats.json', 'utf8'));
+  const chunks = (await listFiles(chunksRoot)).filter((file) => file.endsWith('.js'));
+  const chunkSizes = await Promise.all(chunks.map(async (file) => ({ file, bytes: (await stat(file)).size })));
+  const result = evaluatePerformanceBudget({ routeStats, chunkSizes, budget });
+
+  const output = JSON.stringify(result);
+  if (result.status === 'failed') {
+    console.error(output);
+    process.exit(1);
+  }
+  console.log(output);
+}
+
+if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) main();

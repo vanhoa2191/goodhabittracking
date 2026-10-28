@@ -40,8 +40,38 @@ export function expiredEntries(allowlist, today) {
 
 function audit(extraArguments) {
   const result = spawnSync('npm', ['audit', '--json', ...extraArguments], { encoding: 'utf8' });
-  if (!result.stdout) throw new Error(`npm audit produced no report: ${result.stderr}`);
-  return JSON.parse(result.stdout);
+  return parseAuditResult(result);
+}
+
+/** Parse a completed `npm audit --json` call without mistaking registry errors for a clean report. */
+export function parseAuditResult(result) {
+  if (result.error) throw new Error(`npm audit could not start: ${result.error.message}`);
+  if (result.signal) throw new Error(`npm audit was terminated by ${result.signal}.`);
+  if (result.status !== 0 && result.status !== 1) {
+    throw new Error(`npm audit exited with status ${String(result.status)}: ${result.stderr || 'no error output'}`);
+  }
+  if (!result.stdout) throw new Error(`npm audit produced no report: ${result.stderr || 'no error output'}`);
+
+  let report;
+  try {
+    report = JSON.parse(result.stdout);
+  } catch (error) {
+    throw new Error(`npm audit produced malformed JSON: ${error.message}`);
+  }
+
+  if (
+    typeof report !== 'object'
+    || report === null
+    || 'error' in report
+    || typeof report.auditReportVersion !== 'number'
+    || typeof report.vulnerabilities !== 'object'
+    || report.vulnerabilities === null
+    || typeof report.metadata?.vulnerabilities !== 'object'
+    || report.metadata.vulnerabilities === null
+  ) {
+    throw new Error('npm audit produced an invalid vulnerability report.');
+  }
+  return report;
 }
 
 function main() {

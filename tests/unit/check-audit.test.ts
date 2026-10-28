@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { DEV_ONLY_ALLOWLIST, expiredEntries, findBlockingAdvisories } from '../../scripts/check-audit.mjs';
+import {
+  DEV_ONLY_ALLOWLIST,
+  expiredEntries,
+  findBlockingAdvisories,
+  parseAuditResult,
+} from '../../scripts/check-audit.mjs';
 
 const braces = {
   source: 1101234,
@@ -26,6 +31,31 @@ const report = {
 const allowlist = [{ id: 'GHSA-vfj7-8cjw-p6xm', reason: 'dev only', expires: '2026-11-03' }];
 
 describe('dependency audit', () => {
+  it('accepts an npm vulnerability report even though npm exits one', () => {
+    expect(parseAuditResult({
+      status: 1,
+      signal: null,
+      error: undefined,
+      stdout: JSON.stringify({
+        auditReportVersion: 2,
+        vulnerabilities: report.vulnerabilities,
+        metadata: { vulnerabilities: { total: 2 } },
+      }),
+      stderr: '',
+    })).toMatchObject({ vulnerabilities: report.vulnerabilities });
+  });
+
+  it.each([
+    ['a registry error payload', { status: 1, signal: null, error: undefined, stdout: '{"error":{"code":"E503"}}', stderr: '' }],
+    ['an empty response', { status: 1, signal: null, error: undefined, stdout: '', stderr: 'registry unavailable' }],
+    ['malformed JSON', { status: 1, signal: null, error: undefined, stdout: '{bad', stderr: '' }],
+    ['a report without audit metadata', { status: 1, signal: null, error: undefined, stdout: '{"vulnerabilities":{}}', stderr: '' }],
+    ['a spawn error', { status: null, signal: null, error: new Error('spawn failed'), stdout: '', stderr: '' }],
+    ['a killed process', { status: null, signal: 'SIGTERM', error: undefined, stdout: '', stderr: '' }],
+  ])('rejects %s instead of reporting a clean audit', (_label, result) => {
+    expect(() => parseAuditResult(result)).toThrow(/npm audit/i);
+  });
+
   it('blocks high and critical advisories that are not allowlisted', () => {
     const blocking = findBlockingAdvisories(report, allowlist, '2026-10-03');
     expect(blocking).toHaveLength(1);
