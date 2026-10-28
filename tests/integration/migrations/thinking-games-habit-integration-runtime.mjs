@@ -5,12 +5,26 @@ const fixture = await createThinkingGamesFixture({ schema: BASELINE_SCHEMA_SQL, 
 const { identities: ids } = fixture;
 const activityId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const approvalActivityId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
+const parentRoleActivityId = 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee';
 const childLogId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 const reviewLogId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
 const today = new Date().toISOString().slice(0, 10);
 
 try {
   await fixture.exec(await readFile('supabase/migrations/202610210001_thinking_games.sql', 'utf8'));
+  await fixture.exec(await readFile('supabase/migrations/202610280001_reconcile_thinking_games_guard.sql', 'utf8'));
+  await fixture.exec(`
+    create schema supabase_migrations;
+    create table supabase_migrations.schema_migrations(version text primary key);
+    insert into supabase_migrations.schema_migrations(version) values
+      ('202610120001'),('202610120002'),('202610210001'),('202610240001'),
+      ('202610250001'),('202610270001'),('202610280001');
+  `);
+  const completeVersion = await fixture.one(`select public.schema_version() as version`);
+  if (completeVersion.version !== '202610280001') throw new Error('complete ledger rejected');
+  await fixture.exec(`delete from supabase_migrations.schema_migrations where version='202610120002'`);
+  const incompleteVersion = await fixture.one(`select public.schema_version() as version`);
+  if (incompleteVersion.version !== null) throw new Error('schema version accepted missing backfill');
   await fixture.exec(`
     alter table public.child_profiles add column if not exists total_earned integer not null default 0;
     alter table public.child_profiles add column if not exists level integer not null default 1;
@@ -30,8 +44,14 @@ try {
   await fixture.query(`insert into public.habit_activities(id,family_id,child_id,title,points,requires_approval) values
     ($1,$2,$3,'Normal task',7,false),($4,$2,$3,'Approval task',9,true)`,
     [activityId, ids.families.alpha, ids.children.alpha, approvalActivityId]);
+  await fixture.query(`insert into public.habit_activities(id,family_id,child_id,title,points,requires_approval,is_parent_role)
+    values ($1,$2,$3,'Parent task',11,false,true)`,
+    [parentRoleActivityId, ids.families.alpha, ids.children.alpha]);
 
   await fixture.applyAuthContext({ role: 'authenticated', claims: { sub: ids.users.parentAlpha, role: 'authenticated' } });
+  const blockedParent = await fixture.one(`select public.complete_habit_command($1,$2,$3,$4) result`,
+    [parentRoleActivityId, ids.children.alpha, today, 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee1']);
+  if (blockedParent.result.status !== 'parent_role_activity') throw new Error('parent role guard missing from parent RPC');
   const complete = await fixture.one(
     `select public.complete_habit_command($1,$2,$3,$4) result`,
     [activityId, ids.children.alpha, today, childLogId],
@@ -46,6 +66,9 @@ try {
   if (undone.result.status !== 'undone') throw new Error('parent undo regression');
 
   await fixture.resetAuthContext();
+  const blockedChild = await fixture.one(`select public.complete_child_habit_command($1,$2,$3,$4) result`,
+    [ids.sessions.childAlphaLive.tokenHash, parentRoleActivityId, today, 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee2']);
+  if (blockedChild.result.status !== 'parent_role_activity') throw new Error('parent role guard missing from child RPC');
   const childComplete = await fixture.one(
     `select public.complete_child_habit_command($1,$2,$3,$4) result`,
     [ids.sessions.childAlphaLive.tokenHash, activityId, today, childLogId],
@@ -75,7 +98,7 @@ try {
   console.log(JSON.stringify({
     verdict: 'PASS',
     evidence: 'real-postgresql',
-    cases: ['parent-complete-idempotency-undo', 'child-complete-undo', 'single-review-receipt', 'anon-acl'],
+    cases: ['required-schema-ledger', 'parent-role-guard-both-rpcs', 'parent-complete-idempotency-undo', 'child-complete-undo', 'single-review-receipt', 'anon-acl'],
     database: fixture.databaseName,
   }));
 } finally {

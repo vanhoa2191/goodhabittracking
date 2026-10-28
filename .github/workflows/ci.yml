@@ -25,7 +25,7 @@ jobs:
 
   sql:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     services:
       postgres:
         image: postgres:18.4
@@ -48,6 +48,15 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run test:sql
+      - name: Verify thinking-game behavior against PostgreSQL
+        run: |
+          node tests/integration/migrations/thinking-games-habit-parity-runtime.mjs
+          node tests/integration/migrations/thinking-games-habit-integration-runtime.mjs
+          node tests/integration/migrations/thinking-games-reconcile-runtime.mjs
+          node tests/integration/migrations/thinking-games-gameplay-runtime.mjs
+          node tests/integration/migrations/thinking-games-day-gates-runtime.mjs
+          node tests/integration/migrations/thinking-games-admission-security-runtime.mjs
+          node tests/integration/migrations/thinking-games-authority-races-runtime.mjs
 
   browser:
     runs-on: ubuntu-latest
