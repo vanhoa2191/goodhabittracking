@@ -9,6 +9,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { getOnboardingWizardCopy } from '@/lib/i18n/onboarding-wizard-copy';
 import { getPinCopy } from '@/lib/i18n/pin-copy';
 import { readPairingCredential } from '@/lib/store/pairing-client';
+import { getParentLockErrorCopy, getParentLockPendingCopy } from '@/lib/security/parent-lock-copy';
 
 type HandoffStepProps = {
   readonly childId: string;
@@ -34,7 +35,7 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
   const wizard = getOnboardingWizardCopy(language);
   const copy = wizard.handoff;
   const pinCopy = getPinCopy(language);
-  const { currentUser, parentPinConfigured, refreshParentPinStatus, updateParentPin, setActiveChildId, lockParent } = useAppStore();
+  const { currentUser, parentPinConfigured, refreshParentPinStatus, updateParentPin, setActiveChildId, lockParent, isParentLocking, parentLockFailed } = useAppStore();
   const signedIn = Boolean(currentUser);
   const [choice, setChoice] = useState<DeviceChoice | null>(signedIn ? null : 'shared');
   const [pairing, setPairing] = useState<Pairing>({ status: 'idle' });
@@ -63,9 +64,9 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
     void loadPairing();
   };
 
-  const openKid = () => {
+  const openKid = async () => {
+    if (!await lockParent()) return;
     setActiveChildId(childId);
-    lockParent();
     onFinish();
   };
 
@@ -96,7 +97,7 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
         setPinError(result.status === 'invalid_format' ? copy.pinError : pinCopy.cannotSave);
         return;
       }
-      openKid();
+      await openKid();
     } catch {
       setPinError(pinCopy.cannotProcess);
     } finally {
@@ -111,6 +112,12 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
           {copy.rewardsFailed}
         </p>
       )}
+      {parentLockFailed && (
+        <p role="alert" className="rounded-xl bg-rose-50 px-3 py-2 text-xs font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-200">
+          {getParentLockErrorCopy(language)}
+        </p>
+      )}
+      {isParentLocking && <p role="status" className="text-sm font-bold text-slate-700 dark:text-slate-200">{getParentLockPendingCopy(language)}</p>}
 
       <div className="flex flex-col gap-2 sm:flex-row">
         {signedIn && (
@@ -160,7 +167,7 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
                   <button type="button" onClick={() => void loadPinStatus()} className={secondaryButton}>{pinCopy.retry}</button>
                 </>
               ) : <p role="status" className="text-sm text-slate-700 dark:text-slate-200">{pinCopy.checking}</p>}
-              <button type="button" onClick={openKid} className={secondaryButton}>{copy.skipPin}</button>
+              <button type="button" onClick={() => void openKid()} disabled={isParentLocking} className={secondaryButton}>{copy.skipPin}</button>
             </>
           ) : parentPinConfigured === false ? (
             <>
@@ -186,13 +193,13 @@ export function HandoffStep({ childId, rewardsFailed, onFinish }: HandoffStepPro
               <button type="button" onClick={() => void setPinAndOpen()} disabled={savingPin} className={primaryButton}>
                 {copy.setPinAndOpen}
               </button>
-              <button type="button" onClick={openKid} disabled={savingPin} className={secondaryButton}>
+              <button type="button" onClick={() => void openKid()} disabled={savingPin || isParentLocking} className={secondaryButton}>
                 {copy.skipPin}
               </button>
             </>
           ) : (
-            <button type="button" onClick={openKid} className={primaryButton}>
-              {copy.openKid}
+            <button type="button" onClick={() => void openKid()} disabled={isParentLocking} className={primaryButton}>
+              {isParentLocking ? getParentLockPendingCopy(language) : copy.openKid}
             </button>
           )}
         </div>

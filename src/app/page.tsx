@@ -13,6 +13,7 @@ import { CaregiverDashboard } from '@/components/CaregiverDashboard';
 import { PaymentReturnNotice } from '@/components/PaymentReturnNotice';
 import { ParentDashboardSkeleton } from '@/components/ParentDashboardSkeleton';
 import { getMarketingOrigin } from '@/lib/site';
+import { skipToContent } from '@/lib/i18n/app-skip-copy';
 import dynamic from 'next/dynamic';
 
 // The parent area is only needed once a parent opens it, so a child's device does not download it.
@@ -133,11 +134,14 @@ export default function Home() {
         renderGateway ? 'app-mode-parent' : mode === 'kid' ? 'app-mode-kid' : 'app-mode-parent'
       }`}
     >
+      <a href="#noi-dung" className="sr-only focus:not-sr-only fixed left-3 top-3 z-[100] rounded-xl bg-indigo-700 px-4 py-3 text-sm font-bold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400">
+        {skipToContent[language]}
+      </a>
       <div>
         <Header hasAppSession={canOpenApp} marketingHomeUrl={marketingOrigin.href} />
         <PaymentReturnNotice />
         <SignInErrorNotice message={signInError} onDismiss={clearSignInError} />
-        <main>
+        <main id="noi-dung" tabIndex={-1}>
           {renderGateway ? (
             <AppEntryGate
               isLoading={!isEntryReady}

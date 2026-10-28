@@ -574,21 +574,21 @@ export function KidDashboard() {
 
           {/* Special Banner for Age 0-3 (Thân Giáo Ba Mẹ) */}
           {activeChild.ageStage === '0-3' ? (
-            <div className="bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-amber-500/10 dark:from-purple-950/40 dark:to-amber-950/30 rounded-2xl p-4 border border-purple-200 dark:border-purple-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-950/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div className="flex items-start gap-3">
-                <span className="text-3xl p-2 rounded-xl bg-purple-100 dark:bg-purple-900/50 shrink-0">
+                <span className="text-3xl p-2 rounded-xl bg-amber-100 dark:bg-amber-900/50 shrink-0">
                   🍼
                 </span>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-extrabold text-sm text-purple-900 dark:text-purple-200">
+                    <h3 className="font-extrabold text-sm text-amber-900 dark:text-amber-200">
                       {copy.infantStage}
                     </h3>
-                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-purple-200 text-purple-800 dark:bg-purple-800 dark:text-purple-200">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 dark:bg-amber-800 dark:text-amber-200">
                       {copy.infantTag}
                     </span>
                   </div>
-                  <p className="text-xs text-purple-700/80 dark:text-purple-300/80 mt-0.5 leading-relaxed">
+                  <p className="text-xs text-amber-900 dark:text-amber-200 mt-0.5 leading-relaxed">
                     {copy.infantDescription}
                   </p>
                 </div>
@@ -1127,7 +1127,7 @@ export function KidDashboard() {
                 <Icon aria-hidden="true" className="h-5 w-5 shrink-0" />
                 <span className="max-w-full truncate">{label}</span>
                 {id === 'tasks' && totalDue - completedCount > 0 && (
-                  <span aria-hidden="true" className="absolute right-2 top-0.5 min-w-5 rounded-full bg-rose-500 px-1.5 text-center text-[11px] font-black leading-5 text-white">
+                  <span aria-hidden="true" className="absolute right-2 top-0.5 min-w-5 rounded-full bg-rose-500 px-1.5 text-center text-xs font-black leading-normal text-white">
                     {totalDue - completedCount}
                   </span>
                 )}

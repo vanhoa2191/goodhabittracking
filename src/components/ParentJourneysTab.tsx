@@ -92,9 +92,9 @@ export function ParentJourneysTab({ onApplied }: { onApplied: () => void }) {
           <div>
             <div className="flex items-center gap-1"><h3 className="flex items-center gap-2 text-lg font-black text-sand-900 dark:text-slate-100"><Compass className="size-5 text-indigo-600" />{t.journeys}</h3><HelpTip topic="journeys.overview" /></div>
             <p className="mt-1 text-sm text-sand-700 dark:text-slate-300">{copy.description}</p>
-            {defaultExperienceFlags.habitPrograms && language === 'vi' && (
+            {defaultExperienceFlags.habitPrograms && (
               <p data-testid="journeys-programs-note" className="mt-2 rounded-2xl bg-indigo-50 p-3 text-sm font-semibold text-indigo-900 dark:bg-indigo-950/30 dark:text-indigo-200">
-                Lộ trình này gợi ý thứ tự thêm thói quen theo độ tuổi. Chương trình đi theo nhịp riêng của từng bé nằm ở Thiết kế › Quản lý việc › Chương trình.
+                {tabCopy.programsNote}
               </p>
             )}
           </div>

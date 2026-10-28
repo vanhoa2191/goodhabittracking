@@ -56,7 +56,7 @@ describe('live pricing promotions', () => {
   it('shows the available promotion only on its matching yearly card, keeping list-price purchases', async () => {
     const html = await load({ remaining: 0, offers });
     expect(card(html, 'yearly')).toContain('href="/checkout?plan=pro_plus_yearly_upsell"');
-    expect(card(html, 'yearly')).toContain('Thêm 100.000đ để lên Pro Plus: AI không giới hạn. Còn 17/200 suất.');
+    expect(card(html, 'yearly')).toContain('Thêm 100.000đ để lên Pro Plus: AI không giới hạn (sắp có). Còn 17/200 suất.');
     expect(card(html, 'pro_plus_yearly')).toContain('href="/checkout?plan=pro_plus_yearly_b1g1"');
     expect(card(html, 'pro_plus_yearly')).toContain('Mua 1 năm tặng 1 năm: 790.000đ cho 2 năm Pro Plus. Còn 8/100 suất, đến hết 31/12/2026.');
     expect(card(html, 'solo_yearly')).not.toContain('plan=pro_plus_yearly_upsell');

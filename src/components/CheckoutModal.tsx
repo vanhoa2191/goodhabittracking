@@ -257,8 +257,8 @@ function CheckoutSession({ isOpen, onClose, plan }: CheckoutModalProps) {
                 <input type="checkbox" checked={hasAcceptedTerms} onChange={(event) => setHasAcceptedTerms(event.target.checked)} className="mt-1 h-5 w-5 shrink-0 accent-indigo-600" />
                 <span>
                   {legal.agreeTemplate.split(/(\[terms\]|\[privacy\])/).map((part, index) => {
-                    if (part === '[terms]') return <Link key={index} href={new URL('/terms/', marketingOrigin).href} target="_blank" className="text-indigo-700 underline dark:text-indigo-300">{legal.termsLink}</Link>;
-                    if (part === '[privacy]') return <Link key={index} href={new URL('/privacy/', marketingOrigin).href} target="_blank" className="text-indigo-700 underline dark:text-indigo-300">{legal.privacyLink}</Link>;
+                    if (part === '[terms]') return <Link key={index} href={new URL('/terms/', marketingOrigin).href} target="_blank" rel="noopener noreferrer" className="text-indigo-700 underline dark:text-indigo-300">{legal.termsLink}</Link>;
+                    if (part === '[privacy]') return <Link key={index} href={new URL('/privacy/', marketingOrigin).href} target="_blank" rel="noopener noreferrer" className="text-indigo-700 underline dark:text-indigo-300">{legal.privacyLink}</Link>;
                     return <React.Fragment key={index}>{part}</React.Fragment>;
                   })}
                 </span>

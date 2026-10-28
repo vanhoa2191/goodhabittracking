@@ -47,10 +47,13 @@ import { getPointsAdjustCopy } from '@/lib/i18n/points-adjust-copy';
 import { HelpTip } from '@/components/help/HelpTip';
 import { childAgeYears } from '@/lib/habit-programs/summary';
 import { localDayKey } from '@/lib/habit-fire';
+import { getParentLockErrorCopy, getParentLockPendingCopy } from '@/lib/security/parent-lock-copy';
 
 export function ParentDashboard() {
   const {
     lockParent,
+    isParentLocking,
+    parentLockFailed,
     profiles,
     createProfile,
     updateProfile,
@@ -307,7 +310,7 @@ export function ParentDashboard() {
   const pendingRedemptions = redemptions.filter((r) => r.status === 'pending');
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6 sm:py-8 space-y-6 animate-fade-in">
+    <div className="max-w-5xl mx-auto px-4 py-6 sm:py-8 space-y-6 animate-fade-in" aria-busy={isParentLocking} inert={isParentLocking}>
       {/* Top Banner: Parent Mode Title & Lock Action */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-3xl bg-slate-900 text-white shadow-lg">
         <div className="flex items-center gap-3">
@@ -323,13 +326,19 @@ export function ParentDashboard() {
         </div>
 
         <button
-          onClick={lockParent}
+          onClick={() => void lockParent()}
+          disabled={isParentLocking}
           className="self-start sm:self-auto py-2.5 px-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-2 active:scale-95 border border-white/15"
         >
           <Lock className="w-4 h-4 text-amber-400" />
-          {t.kidMode}
+          {isParentLocking ? getParentLockPendingCopy(language) : t.kidMode}
         </button>
       </div>
+      {parentLockFailed && (
+        <p role="alert" className="rounded-xl bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-200">
+          {getParentLockErrorCopy(language)}
+        </p>
+      )}
 
       <ParentNavigation activeSection={activeTab} onSelectSection={setActiveTab} pendingCount={pendingLogs.length + pendingRedemptions.length}>
 

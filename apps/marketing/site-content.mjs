@@ -1,5 +1,5 @@
 import frameworkData from '../../src/data/habit-framework-v1.vi.json' with { type: 'json' };
-import { pricingPromos, pricingTiers } from './pricing.mjs';
+import { aiAvailability, pricingPromos, pricingTiers } from './pricing.mjs';
 
 export const navigation = [
   { href: '/framework/', label: 'Khung thói quen' },
@@ -94,7 +94,7 @@ export const launchOffer = {
   slots: 10,
   planId: 'yearly',
   tag: 'Ưu đãi ra mắt',
-  text: '10 gia đình đầu tiên mua Gói Pro theo năm sẽ được nâng cấp miễn phí lên Pro Plus, có Huấn luyện viên thói quen.',
+  text: `10 gia đình đầu tiên mua Gói Pro theo năm sẽ được nâng cấp miễn phí lên Pro Plus, có Huấn luyện viên thói quen${aiAvailability.coach ? '' : ' (sắp có)'}.`,
   seatsLabel: 'suất còn lại',
   soldOut: 'Đã hết suất',
 };
@@ -104,7 +104,7 @@ export const promoOffers = Object.entries(pricingPromos).map(([planId, promo]) =
   ...promo,
   planId,
   text: planId === 'pro_plus_yearly_upsell'
-    ? 'Thêm 100.000đ để lên Pro Plus: AI không giới hạn. Còn {n}/200 suất.'
+    ? `Thêm 100.000đ để lên Pro Plus: AI không giới hạn${aiAvailability.suggestions ? '' : ' (sắp có)'}. Còn {n}/200 suất.`
     : 'Mua 1 năm tặng 1 năm: 790.000đ cho 2 năm Pro Plus. Còn {n}/100 suất, đến hết 31/12/2026.',
 }));
 
@@ -264,7 +264,7 @@ export const story = {
     ],
     defaultCycle: 'year',
     recommendedBadge: 'Hợp với gia đình mình',
-    addonLine: 'Gói Cơ bản/Pro: thêm Add-on AI · 29.000đ/tháng để có gợi ý AI không giới hạn.',
+    addonLine: `Gói Cơ bản/Pro: thêm Add-on AI · 29.000đ/tháng để có gợi ý AI không giới hạn${aiAvailability.suggestions ? '' : ' (sắp có)'}.`,
     pledge: [
       { strong: '7 ngày', text: 'dùng thử đầy đủ' },
       { strong: '0đ', text: 'không cần thẻ' },
@@ -330,7 +330,7 @@ export const faqGroups = [
       },
       {
         question: 'Ưu đãi nâng cấp lên Pro Plus hoạt động thế nào?',
-        answer: '10 gia đình đầu tiên thanh toán Gói Pro theo năm trước ngày Pro Plus ra mắt sẽ được chuyển lên Pro Plus miễn phí cho phần còn lại của năm đã trả. Suất được tính theo thứ tự thanh toán thành công, mỗi gia đình tối đa một suất; khi đủ 10 suất, trang sẽ ghi rõ.',
+        answer: '10 gia đình đầu tiên thanh toán Gói Pro theo năm sẽ được chuyển lên Pro Plus miễn phí cho phần còn lại của năm đã trả. Suất được tính theo thứ tự thanh toán thành công, mỗi gia đình tối đa một suất; suất sẽ bị thu hồi nếu đơn được hoàn tiền. Khi đủ 10 suất, trang sẽ ghi rõ.',
       },
     ],
   },

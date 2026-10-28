@@ -57,8 +57,9 @@ The root font scale is `1.125`. Light-mode supporting text uses at least the `sl
 ### Pricing hierarchy
 
 - Trial state is a compact guidance/status row, not a paid-plan card.
-- Gói Cơ bản (39.000đ/tháng, 399.000đ/năm) and Gói Pro (59.000đ/tháng, 590.000đ/năm), each monthly and yearly, form a four-card comparison at desktop widths (Gói Pro · Năm featured) and a single-column stack on mobile; Gói Pro Plus is shown as coming soon.
-- The labels are Khởi đầu nhẹ nhàng, Phổ biến nhất, and Tiết kiệm nhất; the featured Gói Pro · Năm receives the strongest visual emphasis while yearly plans show the exact savings (69.000đ for Gói Cơ bản, 118.000đ for Gói Pro).
+- Three purchasable tiers follow `PLAN_PRICES` in `src/lib/billing/plan-catalog.ts`: Gói Cơ bản (49.000đ/tháng, 399.000đ/năm), Gói Pro (69.000đ/tháng, 590.000đ/năm), and Gói Pro Plus (79.000đ/tháng, 790.000đ/năm). The public page shows three tier cards with a Tháng/Năm billing toggle, stacking on mobile.
+- The recommended tier alone carries the label “Hợp với gia đình mình”. Yearly savings are computed from twelve monthly payments: 189.000đ for Cơ bản, 238.000đ for Pro, and 158.000đ for Pro Plus. Add-on AI for eligible Cơ bản/Pro families is 29.000đ/tháng.
+- AI benefits carry a localized “sắp có” availability label on pricing and checkout surfaces whenever their corresponding `NEXT_PUBLIC_PARENT_AI` or `NEXT_PUBLIC_HABIT_COACH` feature flag is off. A plan remains purchasable at the catalog price; the label does not change its billing policy.
 - Price, billing period, primary benefit, and CTA must be visible in that order without decorative badges competing with the plan name.
 - Payment instructions show the full account number, beneficiary name, resolved bank name, and BIN as separate untruncated values.
 

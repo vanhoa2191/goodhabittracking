@@ -1,8 +1,5 @@
 import { expect, test } from '@playwright/test';
-import type { Locator, Page } from '@playwright/test';
-import { loadEnvConfig } from '@next/env';
-
-loadEnvConfig(process.cwd());
+import type { Locator } from '@playwright/test';
 
 const titles = {
   vi: 'Nhắc việc cho phụ huynh',
@@ -16,28 +13,13 @@ const titles = {
   ko: '부모님 할 일 알림',
 } as const;
 
-async function captureCardWithMargin(page: Page, card: Locator, path: string) {
-  const bounds = await card.boundingBox();
-  const viewport = page.viewportSize();
-  if (!bounds || !viewport) throw new Error('Reminder card bounds are unavailable.');
-  const margin = 10;
-  const x = Math.max(0, bounds.x - margin);
-  const y = Math.max(0, bounds.y - margin);
-  await page.screenshot({
-    path,
-    clip: {
-      x,
-      y,
-      width: Math.min(viewport.width - x, bounds.width + margin * 2),
-      height: Math.min(viewport.height - y, bounds.height + margin * 2),
-    },
-  });
+async function captureCard(card: Locator, path: string) {
+  await card.screenshot({ path });
 }
 
 test('a parent explicitly opts into actionable reminders and can revoke them', async ({ page }, testInfo) => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  test.skip(!supabaseUrl, 'The browser auth client requires public Supabase configuration.');
-  if (!supabaseUrl) return;
+  if (!supabaseUrl) throw new Error('Playwright must provide synthetic public Supabase configuration.');
 
   const projectRef = new URL(supabaseUrl).hostname.split('.')[0];
   if (!projectRef) throw new Error('Supabase project reference is unavailable.');
@@ -129,7 +111,7 @@ test('a parent explicitly opts into actionable reminders and can revoke them', a
   await expect(card.getByText('Thiết bị đã sẵn sàng nhận thông báo.')).toBeVisible();
 
   failNextSave = true;
-  await consent.uncheck();
+  await consent.click();
   await expect(consent).toBeChecked();
   await expect(card.getByText('Chưa lưu được lựa chọn. Vui lòng thử lại.')).toBeVisible();
 
@@ -161,7 +143,7 @@ test('a parent explicitly opts into actionable reminders and can revoke them', a
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
     });
-    await captureCardWithMargin(page, localizedCard, testInfo.outputPath(`parent-reminders-${language}-mobile.png`));
+    await captureCard(localizedCard, testInfo.outputPath(`parent-reminders-${language}-mobile.png`));
   }
 
   for (const width of [768, 1280]) {
@@ -174,6 +156,6 @@ test('a parent explicitly opts into actionable reminders and can revoke them', a
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
       await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
     });
-    await captureCardWithMargin(page, localizedCard, testInfo.outputPath(`parent-reminders-ko-${width}.png`));
+    await captureCard(localizedCard, testInfo.outputPath(`parent-reminders-ko-${width}.png`));
   }
 });

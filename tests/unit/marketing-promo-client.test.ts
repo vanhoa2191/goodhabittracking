@@ -33,7 +33,7 @@ describe('marketing live promo banners', () => {
     const { founding, links, fetch } = await visit({ remaining: 0, slots: 10, offers });
     expect(founding.textContent).toBe('Đã hết suất ưu đãi');
     expect(links.map((link) => link.hidden)).toEqual([false, false]);
-    expect(links[0].textContent).toBe('Thêm 100.000đ để lên Pro Plus: AI không giới hạn. Còn 17/200 suất.');
+    expect(links[0].textContent).toBe('Thêm 100.000đ để lên Pro Plus: AI không giới hạn (sắp có). Còn 17/200 suất.');
     expect(links[1].textContent).toBe('Mua 1 năm tặng 1 năm: 790.000đ cho 2 năm Pro Plus. Còn 8/100 suất, đến hết 31/12/2026.');
     expect(fetch).toHaveBeenCalledTimes(1);
   });

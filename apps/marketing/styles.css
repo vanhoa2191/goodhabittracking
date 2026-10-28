@@ -143,7 +143,7 @@ h1, h2 { font-weight: 800; }
 .button-secondary { color: var(--color-brand-dark); background: var(--color-brand-soft); border-color: var(--color-brand); box-shadow: 0 4px 0 var(--color-brand); }
 .button-quiet { color: var(--color-ink); background: var(--color-white); border-color: var(--color-line); }
 .button-light { color: var(--color-brand-dark); background: var(--color-white); box-shadow: 0 4px 0 color-mix(in oklch, var(--color-brand-dark) 70%, transparent); }
-.button:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--color-sun); outline-offset: 3px; }
+.button:focus-visible, a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
 
 
 .eyebrow { color: var(--color-brand-dark); font-size: var(--step--1); font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
@@ -342,7 +342,7 @@ html:not(.is-member) [data-member] { display: none !important; }
 .prose ul, .prose ol { padding-left: 1.5rem; }
 .prose li + li { margin-top: var(--space-2); }
 .prose a { color: var(--color-brand-dark); font-weight: 700; text-underline-offset: 0.2em; }
-.prose blockquote { margin: var(--space-8) 0; padding: var(--space-4) var(--space-6); color: var(--color-ink-soft); background: var(--color-cream); border-left: 6px solid var(--color-sun); border-radius: var(--radius-medium); font-size: var(--step-0); }
+.prose blockquote { margin: var(--space-8) 0; padding: var(--space-4) var(--space-6); color: var(--color-ink-soft); background: var(--color-cream); border-radius: var(--radius-medium); font-size: var(--step-0); }
 .prose blockquote p { margin: 0; }
 .prose img { max-width: 100%; height: auto; border-radius: var(--radius-medium); }
 .prose code { padding: 0.1rem 0.4rem; background: var(--color-surface); border-radius: var(--radius-small); font-size: 0.9em; }
@@ -562,8 +562,8 @@ body { overflow-x: clip; }
 .counter strong { color: var(--red); font-size: 5.5rem; font-weight: 800; line-height: 1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
 .counter span { max-width: 10em; color: var(--ink-2); font-weight: 600; line-height: 1.4; }
 .timeline { margin: 0; padding: 0; list-style: none; }
-.timeline li { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); transition: opacity .5s; }
-[data-motion] .timeline li:not(.on) { opacity: .28; }
+.timeline li { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+[data-motion] .timeline li:not(.on) .bubble { border-color: var(--ink-3); }
 .timeline time { padding-top: 4px; color: var(--ink-3); font-weight: 700; font-variant-numeric: tabular-nums; }
 .bubble { display: inline-block; padding: 12px 18px; background: var(--card); border: 1px solid var(--line); border-radius: 18px 18px 18px 4px; font-size: 1.12rem; font-weight: 600; }
 .timeline li:last-child .bubble { background: var(--red-soft); border-color: transparent; color: var(--red); }
@@ -684,7 +684,7 @@ body { overflow-x: clip; }
 .letter li { margin-bottom: .5em; }
 .sig { margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); }
 .sig b { display: block; font-size: 1.15rem; }
-.story .ps { margin-top: 24px; padding: 20px 24px; background: var(--card); border-left: 4px solid var(--sun); border-radius: 16px; font-size: 1rem; }
+.story .ps { margin-top: 24px; padding: 20px 24px; background: var(--card); border-radius: 16px; font-size: 1rem; }
 @media (max-width: 900px) { .letter-wrap { grid-template-columns: 1fr; gap: 24px; } .letter-aside { position: static; } }
 
 /* Chapter 6: the plans */
