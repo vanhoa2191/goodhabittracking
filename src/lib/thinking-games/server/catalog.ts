@@ -1,7 +1,7 @@
 import 'server-only';
 
-import releaseManifest from '../../../../content/thinking-games/manifests/release-365-v1.json';
-import releaseProof from '../../../../content/thinking-games/manifests/release-365-v1.validation.json';
+import releaseManifest from '../../../../content/thinking-games/manifests/release-365-v2.json';
+import releaseProof from '../../../../content/thinking-games/manifests/release-365-v2.validation.json';
 
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';

@@ -89,7 +89,8 @@ function runCatalogTests(label: string, params: {
         expect(item.source?.commit).toBe(params.expectedEngineHash());
         expect(item.status).toBe('design_only');
         expect(item.editorial).toBeNull();
-        expect(item.targetSeconds).toBe(engine.targetSecondsForAge(item.ageTrack));
+        const quarter = params.contentVersionExpected === V1_CONTENT_VERSION ? 0 : item.dayIndex <= 91 ? 0 : item.dayIndex <= 182 ? 1 : item.dayIndex <= 273 ? 2 : 3;
+        expect(item.targetSeconds).toBe(engine.targetSecondsForAge(item.ageTrack, quarter));
         expect(item.contentVersion).toBe(params.contentVersion);
         slotIds.add(slotId);
       }

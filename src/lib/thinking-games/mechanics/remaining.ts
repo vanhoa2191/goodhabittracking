@@ -97,8 +97,8 @@ function variantIndex(gameTypeId: GameTypeId, variant: string): number {
   return index < 0 ? 0 : index;
 }
 
-function targetSeconds(ageTrack: GameAgeTrack): number {
-  return targetSecondsForAge(ageTrack);
+function targetSeconds(ageTrack: GameAgeTrack, seed: string): number {
+  return targetSecondsForAge(ageTrack, candidateQuarter(seed));
 }
 
 function isPoint(value: unknown): value is PathStep {
@@ -290,7 +290,7 @@ definitions.push({
       explanation: `Vị trí thứ ${errorIndex + 1} (${errorToken}) chưa đúng với quy luật của chuỗi.`,
       title: 'Tìm phần sai',
       tutorial: getNaturalTutorial('g01-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -353,7 +353,7 @@ definitions.push({
       explanation: `Quy tắc biến đổi của máy là ${transformDesc}. Khi đưa số ${query} vào máy, ta thu được kết quả là ${expected}.`,
       title: 'Máy biến đổi',
       tutorial: getNaturalTutorial('g01-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -406,7 +406,7 @@ definitions.push({
       explanation: `Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình ${targetLabel}.`,
       title: 'Ghép bóng',
       tutorial: getNaturalTutorial('g02-t1', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -463,7 +463,7 @@ definitions.push({
       explanation: `Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình ${targetLabel}.`,
       title: 'Xoay hình',
       tutorial: getNaturalTutorial('g02-t2', input.ageTrack, Math.floor(rng() * 100), input.seed, { kind: 'spatial-rotation', shape, turn, options }),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -565,7 +565,7 @@ definitions.push({
         : `Ô cần chọn nằm ở ${VIETNAMESE_COORDINATE(solution)} để hình hoàn toàn đối xứng.`,
       title: 'Hoàn thành đối xứng',
       tutorial: getNaturalTutorial('g02-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -628,7 +628,7 @@ definitions.push({
         : `Các vị trí đã xuất hiện nằm ở ${posVi}.`,
       title: 'Nhớ vị trí',
       tutorial: getNaturalTutorial('g03-t2', input.ageTrack, Math.floor(rng() * 100), input.seed, board),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -726,7 +726,7 @@ definitions.push({
       explanation: changeExplanation,
       title: 'Nhận ra thay đổi',
       tutorial: getNaturalTutorial('g03-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -803,7 +803,7 @@ definitions.push({
       explanation: `Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số ${candIndex + 1} (${targetTraitsVi}).`,
       title: 'Loại trừ theo manh mối',
       tutorial: getNaturalTutorial('g04-t1', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -890,7 +890,7 @@ definitions.push({
       explanation: `${symbolContext}: ${symbolRules}. Từ thẻ "${facts[0]}", áp dụng luật để suy ra thẻ "${solution}".`,
       title: 'Nếu thì',
       tutorial: `${symbolContext}. ${getNaturalTutorial('g04-t2', input.ageTrack, Math.floor(rng() * 100), input.seed)}`,
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -980,7 +980,7 @@ definitions.push({
       explanation: `Manh mối còn thiếu giúp nhận diện chính xác bạn này là: ${factDesc}.`,
       title: 'Thông tin còn thiếu',
       tutorial: getNaturalTutorial('g04-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1076,7 +1076,7 @@ definitions.push({
       explanation,
       title: 'Cân bằng hai bên',
       tutorial: getNaturalTutorial('g05-t1', input.ageTrack, Math.floor(rng() * 100), input.seed, board),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1141,7 +1141,7 @@ definitions.push({
       explanation: groupExp,
       title: 'Chia nhóm',
       tutorial: getNaturalTutorial('g05-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1228,7 +1228,7 @@ definitions.push({
       explanation,
       title: 'Đủ mục tiêu',
       tutorial: getNaturalTutorial('g05-t3', input.ageTrack, Math.floor(rng() * 100), input.seed, base),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1310,7 +1310,7 @@ definitions.push({
       explanation: `${rank === 3 ? '' : `${orderContext} `}Một thứ tự theo luật của ván này là: ${commandTexts.join(' → ')}.`,
       title: 'Xếp lệnh',
       tutorial: getNaturalTutorial('g06-t2', input.ageTrack, 0, input.seed, board),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1405,7 +1405,7 @@ definitions.push({
       explanation: `Đổi bước ${stepIndex} sang hướng ${dirVi} để robot về đích an toàn.`,
       title: 'Sửa bước sai',
       tutorial: getNaturalTutorial('g06-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1469,7 +1469,7 @@ definitions.push({
       explanation: `Theo quy tắc mới (${trait} là "${targetValue}"), các hình phù hợp là: ${matchingIndices.join(', ')}.`,
       title: 'Đổi luật phân loại',
       tutorial: getNaturalTutorial('g07-t1', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1535,7 +1535,7 @@ definitions.push({
       explanation: `Từ hướng nhìn của nhân vật đang ${facingDesc}, đồ vật nằm ở ${solLabel}.`,
       title: 'Đổi góc nhìn',
       tutorial: getNaturalTutorial('g07-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1616,7 +1616,7 @@ definitions.push({
       explanation: `Một lộ trình khác là ${solution.map(VIETNAMESE_COORDINATE).join(' → ')}; lộ trình này tới đích mà không lặp lại đường cũ hay đi qua tường.`,
       title: 'Cách giải khác',
       tutorial: getNaturalTutorial('g07-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1673,7 +1673,7 @@ definitions.push({
       explanation: `Điểm khác nhau giữa hai hình nằm ở ${diffCoords}.`,
       title: 'Điểm khác biệt',
       tutorial: getNaturalTutorial('g08-t1', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1745,7 +1745,7 @@ definitions.push({
       explanation: `Các hình có đủ cả hai đặc điểm (${critDesc}) là: ${matchingIndices.join(', ')}.`,
       title: 'Hai đặc điểm',
       tutorial: getNaturalTutorial('g08-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },
@@ -1843,7 +1843,7 @@ definitions.push({
       explanation: `Tình huống ${badNum}: "${scene[badIdx]!.text}" có đặc điểm "${badTraitVal}", trong khi luật của ván này yêu cầu "${ruleValue}".`,
       title: 'Chi tiết bất hợp lý',
       tutorial: getNaturalTutorial('g08-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
-      targetSeconds: targetSeconds(input.ageTrack),
+      targetSeconds: targetSeconds(input.ageTrack, input.seed),
       praiseKeys: PRAISE_KEYS,
     };
   },

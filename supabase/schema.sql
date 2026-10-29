@@ -77,3 +77,4 @@
 \ir migrations/202610260002_parent_role_activity_guard.sql
 \ir migrations/202610270001_billing_lifecycle_recovery.sql
 \ir migrations/202610280001_reconcile_thinking_games_guard.sql
+\ir migrations/202610290001_thinking_games_release_v2.sql

@@ -8,7 +8,7 @@
  * marks them with synthetic "approved" status and synthetic editorial metadata.
  *
  * The resulting fixture is ONLY safe for tests.  It is never loaded by the
- * serving catalog (catalog.ts reads release-365-v1.json from manifests/).
+ * serving catalog (catalog.ts reads release-365-v2.json from manifests/).
  */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';

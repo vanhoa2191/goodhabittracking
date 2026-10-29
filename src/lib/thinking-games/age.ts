@@ -14,11 +14,16 @@ export function isOlderTrack(ageTrack: GameAgeTrack): boolean {
   return ageTrack === 'age_9_12' || ageTrack === 'age_13_plus';
 }
 
-export function targetSecondsForAge(ageTrack: GameAgeTrack): number {
-  if (ageTrack === 'age_3_5') return 60;
-  if (ageTrack === 'age_6_8') return 75;
-  if (ageTrack === 'age_9_12') return 105;
-  return 115;
+const TARGET_SECONDS_BY_QUARTER: Record<GameAgeTrack, readonly [number, number, number, number]> = {
+  age_3_5: [60, 65, 70, 75],
+  age_6_8: [75, 80, 85, 90],
+  age_9_12: [105, 110, 115, 120],
+  age_13_plus: [115, 118, 120, 120],
+};
+
+// The first-quarter value is the historical per-track target, so seeds without a day keep their old timing.
+export function targetSecondsForAge(ageTrack: GameAgeTrack, quarter: 0 | 1 | 2 | 3 = 0): number {
+  return TARGET_SECONDS_BY_QUARTER[ageTrack][quarter];
 }
 
 export function ageRank(ageTrack: GameAgeTrack): 0 | 1 | 2 | 3 {

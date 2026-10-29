@@ -5,7 +5,7 @@
  * PREPARATION-ONLY promotion tool.  Validates a reviewed candidate manifest,
  * verifies the human review proof (approval-hash + editorial-signature), and
  * writes a reviewable LOCAL import artifact.  It does NOT:
- *   - write to content/thinking-games/manifests/release-365-v1.json
+ *   - write to content/thinking-games/manifests/release-365-v2.json
  *   - apply changes to any real database
  *   - alter existing release manifests
  *
@@ -13,7 +13,7 @@
  *   content/thinking-games/manifests/<version>.approved.json
  *
  * and must be reviewed before a separate operator step promotes it to the
- * serving path.  The on-disk release-365-v1.json is never modified by this tool.
+ * serving path.  The on-disk release-365-v2.json is never modified by this tool.
  *
  * Usage:
  *   node scripts/promote-thinking-games-release.mjs \
@@ -118,7 +118,7 @@ const approved = {
   },
 };
 
-// Write LOCAL import artifact only - NOT the serving release-365-v1.json.
+// Write LOCAL import artifact only - NOT the serving release-365-v2.json.
 const outputPath = args.output ?? join(
   root,
   'content/thinking-games/manifests',
@@ -137,5 +137,5 @@ console.log(JSON.stringify({
   itemCount: manifest.items.length,
   ageTracks: manifest.ageTracks,
   editorialSignatureProvided: true,
-  note: 'LOCAL import artifact only - not serving. Operator must manually promote to release-365-v1.json after human sign-off.',
+  note: 'LOCAL import artifact only - not serving. Operator must manually promote to release-365-v2.json after human sign-off.',
 }, null, 2));

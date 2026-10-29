@@ -38,10 +38,10 @@ describe('synthetic release fixture', () => {
 
   it('is NOT the same as the serving release manifest', () => {
     const serving = parseManifest(loadRelease());
-    expect(serving.manifestVersion).toBe('release-365-v1');
+    expect(serving.manifestVersion).toBe('release-365-v2');
     expect(serving.manifestVersion).not.toBe(parseManifest(loadSyntheticReleaseFixture()).manifestVersion);
     expect(serving.editorialApproval).toMatchObject({
-      editorialSignature: expect.stringContaining('phan game ok roi ma. Cho production di'),
+      editorialSignature: expect.stringContaining('Product owner explicitly approved candidate V2 content for production'),
     });
   });
 
@@ -81,7 +81,7 @@ describe('synthetic release fixture', () => {
 
 describe('approved production serving release', () => {
   it('validates the approved two-track year and admits only the pinned bytes', { timeout: 30000 }, () => {
-    const raw = readFileSync(new URL('../../../content/thinking-games/manifests/release-365-v1.json', import.meta.url), 'utf8');
+    const raw = readFileSync(new URL('../../../content/thinking-games/manifests/release-365-v2.json', import.meta.url), 'utf8');
     const manifest = parseManifest(JSON.parse(raw));
     const digest = sha256(raw);
     expect(validateManifest(manifest, { profile: 'release' })).toMatchObject({
@@ -90,7 +90,7 @@ describe('approved production serving release', () => {
     });
     expect(manifest.ageTracks).toEqual(['age_6_8', 'age_9_12']);
     expect(manifest.locales).toEqual(['vi']);
-    expect(new Set(manifest.items.map((item) => item.contentVersion))).toEqual(new Set(['release-365-v1']));
+    expect(new Set(manifest.items.map((item) => item.contentVersion))).toEqual(new Set(['release-365-v2']));
     expect(digest).toBe(RELEASE_MANIFEST_DIGEST);
     expect(admitReleaseManifest(manifest, RELEASE_MANIFEST_DIGEST, digest)).toBe(true);
     expect(admitReleaseManifest(manifest, '', digest)).toBe(false);
@@ -110,7 +110,7 @@ describe('approved production serving release', () => {
     const admission = getThinkingGameCatalog();
     expect(admission).toMatchObject({ ok: true, profile: 'release' });
     if (!admission.ok) throw new Error(`Release admission failed: ${admission.code}`);
-    expect(admission.manifest.manifestVersion).toBe('release-365-v1');
+    expect(admission.manifest.manifestVersion).toBe('release-365-v2');
     expect(admission.manifest.items).toHaveLength(1460);
     expect(admission.manifest.ageTracks).toEqual(['age_6_8', 'age_9_12']);
     expect(sha256(JSON.stringify(admission.manifest, null, 2) + '\n')).toBe(RELEASE_MANIFEST_DIGEST);
