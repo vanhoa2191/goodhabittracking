@@ -244,7 +244,7 @@ function buildCandidate({ engine, slot, day, ageTrack, source, attempt = 0 }) {
     validSolutionPredicate: mechanic.checkerId,
     hints: payload.hints,
     praiseKeys: generated?.praiseKeys ?? PRAISE_KEYS,
-    targetSeconds: engine.targetSecondsForAge(ageTrack),
+    targetSeconds: engine.targetSecondsForAge(ageTrack, day <= 91 ? 0 : day <= 182 ? 1 : day <= 273 ? 2 : 3),
     status: 'design_only',
     fingerprint,
     source,

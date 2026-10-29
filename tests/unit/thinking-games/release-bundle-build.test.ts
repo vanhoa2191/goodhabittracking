@@ -4,8 +4,8 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
-const manifestPath = resolve('content/thinking-games/manifests/release-365-v1.json');
-const proofPath = resolve('content/thinking-games/manifests/release-365-v1.validation.json');
+const manifestPath = resolve('content/thinking-games/manifests/release-365-v2.json');
+const proofPath = resolve('content/thinking-games/manifests/release-365-v2.validation.json');
 const temporary: string[] = [];
 function fixture(name: string, contents: string): string {
   const directory = mkdtempSync(join(tmpdir(), 'release-bundle-negative-'));

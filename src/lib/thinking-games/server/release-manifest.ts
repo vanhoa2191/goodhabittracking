@@ -13,6 +13,6 @@
  * (ENABLE_THINKING_GAMES) and a non-empty digest that matches the on-disk file
  * are required before the release profile is admitted.
  */
-export const RELEASE_MANIFEST_VERSION = 'release-365-v1';
+export const RELEASE_MANIFEST_VERSION = 'release-365-v2';
 
-export const RELEASE_MANIFEST_DIGEST = 'dd623f9e19d98d72387fc3cd15470f1239a55baf6507bb1c9708ec2a22f1010e';
+export const RELEASE_MANIFEST_DIGEST = 'b38165f74c64e5c433397c308e9f9bfb764b3e592ea5e3cbf1d9ebaf384004b0';

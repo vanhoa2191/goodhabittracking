@@ -15,8 +15,8 @@ const option = (name, fallback) => {
 };
 let temporary;
 try {
-  const manifestPath = option('--manifest', join(root, 'content/thinking-games/manifests/release-365-v1.json'));
-  const proofPath = option('--proof', join(root, 'content/thinking-games/manifests/release-365-v1.validation.json'));
+  const manifestPath = option('--manifest', join(root, 'content/thinking-games/manifests/release-365-v2.json'));
+  const proofPath = option('--proof', join(root, 'content/thinking-games/manifests/release-365-v2.validation.json'));
   const pinSource = readFileSync(join(root, 'src/lib/thinking-games/server/release-manifest.ts'), 'utf8');
   const trustedDigest = pinSource.match(/export const RELEASE_MANIFEST_DIGEST = '([a-f0-9]{64})'/)?.[1];
   const trustedVersion = pinSource.match(/export const RELEASE_MANIFEST_VERSION = '([^']+)'/)?.[1];

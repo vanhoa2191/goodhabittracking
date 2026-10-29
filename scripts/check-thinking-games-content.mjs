@@ -8,7 +8,7 @@ import { build } from 'esbuild';
 const root = resolve(new URL('..', import.meta.url).pathname);
 const csvPath = join(root, 'docs/research/2026-10-17-daily-thinking-games-365.csv');
 const pilotPath = join(root, 'content/thinking-games/pilot/pilot-manifest-v1.json');
-const releasePath = join(root, 'content/thinking-games/manifests/release-365-v1.json');
+const releasePath = join(root, 'content/thinking-games/manifests/release-365-v2.json');
 
 function parseCsv(text) {
   const rows = [];
