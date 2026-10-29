@@ -3,13 +3,19 @@
 // plain ESM so the static build needs no TypeScript.
 
 /** All three tiers are on sale with monthly and yearly checkout ids. */
+export const aiAvailability = Object.freeze({
+  suggestions: process.env.NEXT_PUBLIC_PARENT_AI === 'true',
+  coach: process.env.NEXT_PUBLIC_HABIT_COACH === 'true',
+});
+const whenReady = (copy, ready) => ready ? copy : `${copy} (sắp có)`;
+
 export const pricingTiers = Object.freeze({
   solo: {
     name: 'Gói Cơ bản',
     who: 'Cho nhà có một bé',
     month: { id: 'solo_monthly', amount: 49000 },
     year: { id: 'solo_yearly', amount: 399000 },
-    features: ['1 hồ sơ bé', 'Khung 47 thói quen theo tuổi', 'Nhiệm vụ, sao và phần thưởng', 'Đồng bộ trên nhiều thiết bị', 'Mời người thân cùng theo dõi', 'Gợi ý AI 20 lượt/tháng'],
+    features: ['1 hồ sơ bé', 'Khung 47 thói quen theo tuổi', 'Nhiệm vụ, sao và phần thưởng', 'Đồng bộ trên nhiều thiết bị', 'Mời người thân cùng theo dõi', whenReady('Gợi ý AI 20 lượt/tháng', aiAvailability.suggestions)],
     purchasable: true,
   },
   pro: {
@@ -17,19 +23,19 @@ export const pricingTiers = Object.freeze({
     who: 'Cho nhà có tối đa 5 bé',
     month: { id: 'monthly', amount: 69000 },
     year: { id: 'yearly', amount: 590000 },
-    features: ['Tối đa 5 hồ sơ bé, mỗi bé một lộ trình', 'Mời người thân cùng theo dõi', 'Toàn bộ khung thói quen và lộ trình', 'Theo dõi tiến bộ cả nhà', 'Gợi ý AI 20 lượt/tháng'],
+    features: ['Tối đa 5 hồ sơ bé, mỗi bé một lộ trình', 'Mời người thân cùng theo dõi', 'Toàn bộ khung thói quen và lộ trình', 'Theo dõi tiến bộ cả nhà', whenReady('Gợi ý AI 20 lượt/tháng', aiAvailability.suggestions)],
     purchasable: true,
   },
   pro_plus: {
     name: 'Gói Pro Plus',
-    who: 'Pro, thêm Huấn luyện viên thói quen',
+    who: whenReady('Pro, thêm Huấn luyện viên thói quen', aiAvailability.coach),
     month: { id: 'pro_plus_monthly', amount: 79000 },
     year: { id: 'pro_plus_yearly', amount: 790000 },
     features: [
       'Mọi quyền lợi của Gói Pro, tối đa 5 hồ sơ bé',
-      'Gợi ý AI không giới hạn theo tháng (tối đa 100 lượt mỗi ngày)',
-      'Huấn luyện viên thói quen: gợi ý chia nhỏ thói quen bằng AI',
-      'Tóm tắt tuần bằng AI cho ba mẹ',
+      whenReady('Gợi ý AI không giới hạn theo tháng (tối đa 100 lượt mỗi ngày)', aiAvailability.suggestions),
+      whenReady('Huấn luyện viên thói quen: gợi ý chia nhỏ thói quen bằng AI', aiAvailability.coach),
+      whenReady('Tóm tắt tuần bằng AI cho ba mẹ', aiAvailability.suggestions),
       'Luôn do ba mẹ quyết định, không gửi tên hay nhật ký của bé',
     ],
     purchasable: true,

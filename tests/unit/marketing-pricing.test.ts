@@ -1,10 +1,36 @@
 import { describe, expect, it } from 'vitest';
-import { maxSavingPercent, priceView, pricingTiers, upgradeDifference } from '../../apps/marketing/pricing.mjs';
+import { readFileSync } from 'node:fs';
+import { aiAvailability, maxSavingPercent, priceView, pricingTiers, upgradeDifference } from '../../apps/marketing/pricing.mjs';
 import { LAUNCH_OFFER, PAID_PLAN_IDS, PLAN_PRICES, planCycle, planTier } from '@/lib/billing/plan-catalog';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 
 const tiers = ['solo', 'pro', 'pro_plus'] as const;
 
 describe('marketing pricing', () => {
+  it('labels AI rights as upcoming when their app features are disabled', () => {
+    expect(aiAvailability).toEqual({ suggestions: defaultExperienceFlags.parentAi, coach: defaultExperienceFlags.habitCoach });
+    const aiLines = [pricingTiers.solo.features.at(-1), pricingTiers.pro.features.at(-1), pricingTiers.pro_plus.features[1], pricingTiers.pro_plus.features[3]];
+    for (const line of aiLines) expect(line?.includes('(sắp có)')).toBe(!defaultExperienceFlags.parentAi);
+    expect(pricingTiers.pro_plus.features[2].includes('(sắp có)')).toBe(!defaultExperienceFlags.habitCoach);
+  });
+  it('keeps the design contract and claims ledger aligned with charged prices and savings', () => {
+    const design = readFileSync('DESIGN.md', 'utf8');
+    const ledger = readFileSync('docs/claims-ledger.md', 'utf8');
+    const pricingSection = design.split('### Pricing hierarchy')[1]?.split('## 4.')[0] ?? '';
+    const ledgerRow = ledger.split('\n').find((row) => row.startsWith('| Khung giá 3 gói trả phí')) ?? '';
+    expect(pricingSection).toContain('three tier cards');
+    expect(ledgerRow).toContain('6 SKU');
+    for (const tier of tiers) {
+      const { month, year } = PLAN_PRICES[tier];
+      const formattedMonth = month.toLocaleString('vi-VN');
+      const formattedYear = year.toLocaleString('vi-VN');
+      const formattedSaving = (month * 12 - year).toLocaleString('vi-VN');
+      expect(pricingSection).toContain(`${formattedMonth}đ/tháng, ${formattedYear}đ/năm`);
+      expect(ledgerRow).toContain(`${formattedMonth}đ / ${formattedYear}đ`);
+      expect(pricingSection).toContain(`${formattedSaving}đ`);
+      expect(ledgerRow).toContain(`${formattedSaving}đ`);
+    }
+  });
   it('lists the three tiers at exactly the prices the app charges', () => {
     expect(Object.keys(pricingTiers)).toEqual([...tiers]);
     for (const tier of tiers) {

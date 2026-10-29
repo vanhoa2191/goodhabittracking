@@ -73,3 +73,6 @@
 \ir migrations/202610210001_thinking_games.sql
 \ir migrations/202610240001_thinking_games_settings_read.sql
 \ir migrations/202610250001_daily_living_template_refs.sql
+\ir migrations/202610260001_reward_pin_security.sql
+\ir migrations/202610260002_parent_role_activity_guard.sql
+\ir migrations/202610270001_billing_lifecycle_recovery.sql

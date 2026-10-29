@@ -65,15 +65,15 @@
     "@types/qrcode": "^1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^4.1.12",
     "esbuild": "^0.28.2",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "pg": "8.23.1",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^4.1.11",
-    "wrangler": "^4.135.0"
+    "vitest": "^4.1.12",
+    "wrangler": "^4.153.0"
   },
   "engines": {
     "node": ">=24"

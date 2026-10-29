@@ -93,6 +93,6 @@ function nextPhase(
   const alone = count(window, (entry) => entry.outcome === 'alone');
   if (phase === 'build' && inPhase >= windowSize && completed >= requiredCount(config.buildToFadeRatio, windowSize)) return 'fade';
   if (phase === 'fade' && inPhase >= windowSize && alone >= requiredCount(config.fadeToMaintainAloneRatio, windowSize)) return 'maintain';
-  if (phase === 'maintain' && completed < requiredCount(config.maintainRegressBelowRatio, windowSize)) return 'fade';
+  if (phase === 'maintain' && inPhase >= windowSize && completed < requiredCount(config.maintainRegressBelowRatio, windowSize)) return 'fade';
   return phase;
 }

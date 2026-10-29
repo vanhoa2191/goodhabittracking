@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 
 import { CheckCircle2, Gift } from 'lucide-react';
 import { buildPricingView, MAX_SAVING_PERCENT, promoForCard, readLaunchOffers, type LaunchOfferData, type PricingCard } from '@/lib/billing/pricing-view';
 import type { BillingCycle, PaidPlanId } from '@/lib/billing/plan-catalog';
-import { getCheckoutPlanFeatures, PLAN_LOCALIZATION } from '@/lib/i18n/pricing-plan-copy';
+import { getCheckoutPlanFeatures, PLAN_LOCALIZATION, withAiAvailability } from '@/lib/i18n/pricing-plan-copy';
 import { getPublicPricingCopy } from '@/lib/i18n/public-pricing-copy';
 import { formatCurrency } from '@/lib/i18n/formatters';
 import { useTranslation } from '@/lib/i18n/context';
@@ -121,7 +121,7 @@ export function PricingPlans({ renderAction, isCurrent }: PricingPlansProps) {
       <div data-testid="paid-plan-grid" className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 lg:grid-cols-3">
         {cards.map(buyable)}
       </div>
-      <p className="mx-auto max-w-6xl text-sm text-slate-700 dark:text-slate-200">{getAddonsCopy(language).aiPricingLine.replace('{price}', money(ADDON_PRICES.ai_addon_monthly))}</p>
+      <p className="mx-auto max-w-6xl text-sm text-slate-700 dark:text-slate-200">{withAiAvailability(getAddonsCopy(language).aiPricingLine.replace('{price}', money(ADDON_PRICES.ai_addon_monthly)), language)}</p>
     </div>
   );
 }

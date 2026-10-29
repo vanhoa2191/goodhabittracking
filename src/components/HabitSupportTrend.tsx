@@ -28,7 +28,7 @@ export function HabitSupportTrend({ buckets, verdict, copy }: { readonly buckets
           </li>
         ))}
       </ul>
-      <ul className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-slate-600 dark:text-slate-300">
+      <ul className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-600 dark:text-slate-300">
         {SEGMENTS.map(({ key, color }) => (
           <li key={key} className="flex items-center gap-1"><span className={`h-2.5 w-2.5 rounded-sm ${color}`} aria-hidden="true" />{copy.legend[key]}</li>
         ))}

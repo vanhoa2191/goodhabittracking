@@ -5,6 +5,10 @@ const baseURL = externalBaseUrl ?? 'http://127.0.0.1:3000';
 const localBrowserChannel = process.env.PLAYWRIGHT_USE_SYSTEM_CHROME ? 'chrome' : undefined;
 const e2eSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://e2e-test.supabase.co';
 const e2eSupabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'e2e-anon-key';
+// Playwright tests and the local Next process must share the same synthetic public configuration.
+// These are public client identifiers, not production credentials.
+process.env.NEXT_PUBLIC_SUPABASE_URL ??= e2eSupabaseUrl;
+process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??= e2eSupabaseAnonKey;
 // The static marketing build (npm run build:marketing) is served on its own fixed port for marketing-home.spec.ts.
 const marketingPort = 4321;
 const marketingURL = `http://127.0.0.1:${marketingPort}`;

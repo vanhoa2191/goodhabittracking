@@ -85,6 +85,14 @@ describe('POST /api/payment/webhook', () => {
     expect(recordOperationalSignal).toHaveBeenCalledWith(expect.objectContaining({ signalType: 'payment_webhook_failure', reasonCode: 'order_already_paid', status: 200 }));
   });
 
+  it('acknowledges a durably queued late payment and signals manual reconciliation', async () => {
+    rpc.mockResolvedValue({ data: 'late_payment_recorded', error: null });
+    const response = await POST(request());
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({ success: true, message: 'Payment recorded for manual reconciliation.' });
+    expect(recordOperationalSignal).toHaveBeenCalledWith(expect.objectContaining({ reasonCode: 'late_payment_recorded' }));
+  });
+
   it('rejects amount or description mismatches returned by the atomic RPC', async () => {
     rpc.mockResolvedValue({ data: 'amount_mismatch', error: null });
     const response = await POST(request());

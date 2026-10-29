@@ -28,6 +28,7 @@ import { useAppStore } from '@/lib/store';
 import { useTranslation, SUPPORTED_LANGUAGES, LanguageOption } from '@/lib/i18n/context';
 import { sounds } from '@/lib/sound';
 import { PARENT_PIN_REQUIRED_EVENT } from '@/lib/security/parent-pin-signal';
+import { getParentLockPendingCopy } from '@/lib/security/parent-lock-copy';
 import { PinModal } from './PinModal';
 import { FontSettingsModal } from './FontSettingsModal';
 import { DeviceConnectModal } from './DeviceConnectModal';
@@ -52,6 +53,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
     mode,
     setMode,
     isParentUnlocked,
+    isParentLocking,
     refreshParentPinStatus,
     unlockParent,
     updateParentPin,
@@ -112,7 +114,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
         setIsPinModalOpen(true);
       }
     } else {
-      lockParent();
+      void lockParent();
     }
   };
 
@@ -312,7 +314,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                 {currentUser.user_metadata?.avatar_url ? (
                   <Image
                     src={currentUser.user_metadata.avatar_url}
-                    alt="Google avatar"
+                    alt=""
                     width={20}
                     height={20}
                     unoptimized
@@ -353,7 +355,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                 isPro
                   ? subscriptionPlan === 'trial'
                     ? 'bg-gradient-to-r from-amber-700 to-orange-700 text-white shadow-amber-200 dark:shadow-none animate-trial-pulse'
-                    : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white shadow-indigo-200 dark:shadow-none'
+                    : 'bg-indigo-600 text-white shadow-indigo-200 dark:shadow-none'
                   : 'bg-amber-100 hover:bg-amber-200 text-amber-950 dark:bg-amber-950/70 dark:text-amber-300 border border-amber-300/80 dark:border-amber-800/80'
               }`}
               title={t.pricingModalTitle}
@@ -384,7 +386,9 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
             {!isCaregiver && hasDashboardAccess && (!currentUser || mode === 'kid') && (
               <button
                 onClick={handleParentModeClick}
-                aria-label={mode === 'parent' ? copy.backToChild : undefined}
+                disabled={isParentLocking}
+                aria-busy={isParentLocking}
+                aria-label={isParentLocking ? getParentLockPendingCopy(language) : mode === 'parent' ? copy.backToChild : undefined}
                 className={`${mode === 'parent' ? 'max-[429px]:hidden ' : ''}min-h-[44px] flex items-center gap-1 sm:gap-1.5 py-1 px-1.5 sm:px-3 rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 shrink-0 ${
                   mode === 'parent'
                     ? 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 dark:shadow-none'
@@ -394,7 +398,7 @@ export function Header({ hasAppSession = false, marketingHomeUrl }: HeaderProps)
                 {mode === 'parent' ? (
                   <>
                     <Unlock className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-                    <span className="hidden whitespace-nowrap 2xl:inline">{copy.backToChild}</span>
+                    <span className="hidden whitespace-nowrap 2xl:inline">{isParentLocking ? getParentLockPendingCopy(language) : copy.backToChild}</span>
                     <span className="whitespace-nowrap text-xs 2xl:hidden">{copy.backToChildShort}</span>
                   </>
                 ) : (

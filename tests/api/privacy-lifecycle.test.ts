@@ -61,6 +61,13 @@ describe('privacy lifecycle APIs', () => {
     expect(rpc).not.toHaveBeenCalledWith('delete_owned_family', expect.anything());
   });
 
+  it('explains why a pending checkout blocks family deletion', async () => {
+    adminRpc.mockResolvedValue({ error: { message: 'family_has_pending_payments' } });
+    const response = await DELETE(request('/api/family', 'DELETE', { confirmation: 'DELETE FAMILY' }));
+    expect(response.status).toBe(409);
+    await expect(response.json()).resolves.toMatchObject({ success: false, code: 'family_has_pending_payments' });
+  });
+
   it('records both required consent scopes for the authenticated family', async () => {
     const response = await POST(request('/api/privacy/consent', 'POST', {
       policyVersion: '2026-09-19',

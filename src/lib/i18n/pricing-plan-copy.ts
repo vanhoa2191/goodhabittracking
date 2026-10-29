@@ -3,6 +3,7 @@ import type { AddonId } from '@/lib/billing/addon-catalog';
 import type { PromoPlanId } from '@/lib/billing/plan-catalog';
 import type { SubscriptionPlan } from '@/types';
 import { getPublicPricingCopy } from '@/lib/i18n/public-pricing-copy';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 
 // Localized plan descriptions and titles
 export const PLAN_LOCALIZATION: Record<
@@ -254,6 +255,17 @@ const AI_STANDARD_MONTHLY: Record<Language, string> = {
   ko: 'AI 제안 월 20회',
 };
 
+export const AI_SOON_LABEL: Record<Language, string> = {
+  vi: 'sắp có', en: 'coming soon', fr: 'bientôt disponible', de: 'bald verfügbar',
+  it: 'disponibile a breve', es: 'próximamente', zh: '即将推出', ja: '近日公開', ko: '곧 제공 예정',
+};
+
+export function withAiAvailability(copy: string, language: Language): string {
+  if (defaultExperienceFlags.parentAi) return copy;
+  const punctuation = copy.match(/[.!?。]$/)?.[0] ?? '';
+  return `${copy.slice(0, copy.length - punctuation.length)} (${AI_SOON_LABEL[language]})${punctuation}`;
+}
+
 const PRO_PLUS_YEARLY_SAVINGS: Record<Language, string> = {
   vi: 'Tiết kiệm 158.000đ (17%)',
   en: 'Save 158,000 VND (17%)',
@@ -305,15 +317,15 @@ const PAY_ONCE: Record<Language, string> = {
 export function getCheckoutPlanFeatures(planId: SubscriptionPlan | PromoPlanId | AddonId, language: Language): readonly string[] {
   const common = getPublicPricingCopy(language);
   switch (planId) {
-    case 'solo_monthly': return [common.oneChild, common.sync, common.caregiverInvites, common.library, AI_STANDARD_MONTHLY[language]];
-    case 'solo_yearly': return [common.oneChild, common.sync, common.caregiverInvites, common.library, AI_STANDARD_MONTHLY[language], common.soloSavings];
-    case 'monthly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_STANDARD_MONTHLY[language]];
-    case 'yearly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_STANDARD_MONTHLY[language], common.annualPayment, common.savings];
-    case 'pro_plus_monthly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_UNLIMITED[language]];
-    case 'pro_plus_yearly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_UNLIMITED[language], common.annualPayment, PRO_PLUS_YEARLY_SAVINGS[language]];
-    case 'pro_plus_yearly_upsell': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_UNLIMITED[language], common.annualPayment];
-    case 'pro_plus_yearly_b1g1': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, AI_UNLIMITED[language], PRO_PLUS_B1G1_TWO_YEARS[language]];
-    case 'ai_addon_monthly': return [AI_UNLIMITED[language], ADDON_EXTENDS_MONTH[language]];
+    case 'solo_monthly': return [common.oneChild, common.sync, common.caregiverInvites, common.library, withAiAvailability(AI_STANDARD_MONTHLY[language], language)];
+    case 'solo_yearly': return [common.oneChild, common.sync, common.caregiverInvites, common.library, withAiAvailability(AI_STANDARD_MONTHLY[language], language), common.soloSavings];
+    case 'monthly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, withAiAvailability(AI_STANDARD_MONTHLY[language], language)];
+    case 'yearly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, withAiAvailability(AI_STANDARD_MONTHLY[language], language), common.annualPayment, common.savings];
+    case 'pro_plus_monthly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, withAiAvailability(AI_UNLIMITED[language], language)];
+    case 'pro_plus_yearly': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, withAiAvailability(AI_UNLIMITED[language], language), common.annualPayment, PRO_PLUS_YEARLY_SAVINGS[language]];
+    case 'pro_plus_yearly_upsell': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, withAiAvailability(AI_UNLIMITED[language], language), common.annualPayment];
+    case 'pro_plus_yearly_b1g1': return [common.upToFive, common.sync, common.caregiverInvites, common.fullLibrary, withAiAvailability(AI_UNLIMITED[language], language), PRO_PLUS_B1G1_TWO_YEARS[language]];
+    case 'ai_addon_monthly': return [withAiAvailability(AI_UNLIMITED[language], language), ADDON_EXTENDS_MONTH[language]];
     case 'printables': return [PAY_ONCE[language]];
     default: return [];
   }

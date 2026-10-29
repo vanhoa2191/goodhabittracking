@@ -9,6 +9,7 @@ import { faqGroups, faqs, launchOffer, story, storyStages, traitLabels } from '.
 import { pricingTiers } from '../../apps/marketing/pricing.mjs';
 import frameworkData from '../../src/data/habit-framework-v1.vi.json';
 import { LAUNCH_OFFER } from '@/lib/billing/plan-catalog';
+import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { buildMarketingSite } from '../../scripts/build-marketing.mjs';
 
 const outputs: string[] = [];
@@ -121,6 +122,8 @@ describe('marketing static artifact', () => {
       expect(faq.match(/<summary>/g)).toHaveLength(faqs.length);
       expect(faq).toContain('mã VietQR (qua PayOS)');
       expect(faq).toContain('Gói được kích hoạt khi PayOS xác nhận thanh toán.');
+      expect(faq).not.toContain('trước ngày Pro Plus ra mắt');
+      expect(faq).toContain('suất sẽ bị thu hồi nếu đơn được hoàn tiền');
       expect(faq).toContain('bấm nút đọc to');
       expect(faq).toContain('Từ 13 tuổi, con tự chọn');
       expect(faq).not.toMatch(/ngay lập tức|tức thì|thời gian thực/);
@@ -136,6 +139,17 @@ describe('marketing static artifact', () => {
     }
     const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
     expect(pricing).toContain(`${pricingTiers.solo.name} cho 1 bé hoặc ${pricingTiers.pro.name} cho tối đa 5 bé`);
+  });
+
+  it('discloses unavailable AI benefits on the built pricing page', async () => {
+    const { outputDir } = await buildFixture();
+    const pricing = await readFile(join(outputDir, 'pricing', 'index.html'), 'utf8');
+    if (!defaultExperienceFlags.parentAi) {
+      expect(pricing).toContain('Gợi ý AI 20 lượt/tháng (sắp có)');
+      expect(pricing).toContain('Gợi ý AI không giới hạn theo tháng (tối đa 100 lượt mỗi ngày) (sắp có)');
+      expect(pricing).toContain('Tóm tắt tuần bằng AI cho ba mẹ (sắp có)');
+    }
+    if (!defaultExperienceFlags.habitCoach) expect(pricing).toMatch(/Huấn luyện viên thói quen<\/b>: gợi ý chia nhỏ thói quen bằng AI \(sắp có\)/);
   });
 
   it('corrects the product copy and keeps the founder’s letter free of the chapter-three list', async () => {

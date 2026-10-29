@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   getLifecycleEmailConfig,
+  LifecycleDeliveryUncertainError,
   parseEmailSender,
   parseLifecycleMessage,
   renderLifecycleEmail,
@@ -81,7 +82,20 @@ describe('lifecycle email', () => {
 
     expect(fetchMock).toHaveBeenCalledWith('https://api.resend.com/emails', expect.objectContaining({
       headers: expect.objectContaining({ 'idempotency-key': 'welcome-setup/user-1' }),
+      signal: expect.any(AbortSignal),
     }));
+  });
+
+  it.each(['resend', 'brevo'])('quarantines an uncertain %s transport failure', async (provider) => {
+    vi.stubEnv('LIFECYCLE_EMAILS_ENABLED', 'true');
+    vi.stubEnv('LIFECYCLE_EMAIL_PROVIDER', provider);
+    vi.stubEnv('RESEND_API_KEY', 'test-key');
+    vi.stubEnv('BREVO_API_KEY', 'test-key');
+    vi.stubEnv('LIFECYCLE_EMAIL_FROM', 'sender@example.test');
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new DOMException('Timed out', 'TimeoutError')));
+    await expect(sendLifecycleEmail({ to: 'parent@example.test', dedupeKey: 'k1',
+      message: parseLifecycleMessage({ templateKey: 'welcome_setup', locale: 'vi', payload: {} }),
+    })).rejects.toBeInstanceOf(LifecycleDeliveryUncertainError);
   });
 
   describe('provider choice', () => {

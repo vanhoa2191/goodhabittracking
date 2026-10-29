@@ -47,10 +47,13 @@ import { getPointsAdjustCopy } from '@/lib/i18n/points-adjust-copy';
 import { HelpTip } from '@/components/help/HelpTip';
 import { childAgeYears } from '@/lib/habit-programs/summary';
 import { localDayKey } from '@/lib/habit-fire';
+import { getParentLockErrorCopy, getParentLockPendingCopy } from '@/lib/security/parent-lock-copy';
 
 export function ParentDashboard() {
   const {
     lockParent,
+    isParentLocking,
+    parentLockFailed,
     profiles,
     createProfile,
     updateProfile,
@@ -307,7 +310,7 @@ export function ParentDashboard() {
   const queueRedemptions = redemptions.filter((r) => r.status === 'pending' || r.status === 'approved');
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-4 sm:py-8 space-y-4 sm:space-y-6 animate-fade-in">
+    <div className="max-w-5xl mx-auto px-4 py-4 sm:py-8 space-y-4 sm:space-y-6 animate-fade-in" aria-busy={isParentLocking} inert={isParentLocking}>
       {/* Top Banner: Parent Mode Title & Lock Action */}
       <div className="flex items-center justify-between gap-3 p-3 sm:p-4 rounded-3xl bg-slate-900 text-white shadow-lg">
         <div className="flex min-w-0 items-center gap-3">
@@ -321,13 +324,19 @@ export function ParentDashboard() {
         </div>
 
         <button
-          onClick={lockParent}
+          onClick={() => void lockParent()}
+          disabled={isParentLocking}
           className="shrink-0 py-2 px-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all flex items-center gap-2 active:scale-95 border border-white/15"
         >
           <Lock className="w-4 h-4 text-amber-400" />
-          {t.kidMode}
+          {isParentLocking ? getParentLockPendingCopy(language) : t.kidMode}
         </button>
       </div>
+      {parentLockFailed && (
+        <p role="alert" className="rounded-xl bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700 dark:bg-rose-950/40 dark:text-rose-200">
+          {getParentLockErrorCopy(language)}
+        </p>
+      )}
 
       <ParentNavigation activeSection={activeTab} onSelectSection={setActiveTab} pendingCount={pendingLogs.length + queueRedemptions.length}>
 
