@@ -344,5 +344,11 @@ export function getTrackHints(
   const modes = TRACK_HINTS[gameTypeId][tier];
   const pairs = modes[mode] ?? modes['default'] ?? Object.values(modes)[0] ?? [];
   const pair = pairs[hashSeed(`${seed}|${gameTypeId}|${tier}|${mode}|hint`) % pairs.length] as HintPair;
-  return [fill(pair[0], vars), fill(pair[1], vars)];
+  const filled = [fill(pair[0], vars), fill(pair[1], vars)] as const;
+  if (ageTrack !== 'age_13_plus') return filled;
+  const olderTone = (hint: string) => hint
+    .replace(/bạn nhỏ/giu, 'nhân vật')
+    .replace(/bạn ấy/giu, 'nhân vật')
+    .replace(/nha([.!?])/giu, '$1');
+  return [olderTone(filled[0]), olderTone(filled[1])];
 }

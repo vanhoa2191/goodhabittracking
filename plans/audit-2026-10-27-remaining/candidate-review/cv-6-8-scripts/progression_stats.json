@@ -1,0 +1,246 @@
+{
+  "quarterly_stats": {
+    "Q1 (Day 001-091)": {
+      "items_count": 182,
+      "mean_text_chars": 219.9,
+      "mean_options_count": 3.24,
+      "target_seconds": 75
+    },
+    "Q2 (Day 092-182)": {
+      "items_count": 182,
+      "mean_text_chars": 220.1,
+      "mean_options_count": 3.25,
+      "target_seconds": 75
+    },
+    "Q3 (Day 183-273)": {
+      "items_count": 182,
+      "mean_text_chars": 221.3,
+      "mean_options_count": 3.28,
+      "target_seconds": 75
+    },
+    "Q4 (Day 274-365)": {
+      "items_count": 184,
+      "mean_text_chars": 219.7,
+      "mean_options_count": 3.28,
+      "target_seconds": 75
+    }
+  },
+  "kind_progression": {
+    "flexibility-alternative": {
+      "quarters": [
+        25,
+        25,
+        25,
+        25
+      ],
+      "delta": 0
+    },
+    "flexibility-classify": {
+      "quarters": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "delta": 0
+    },
+    "flexibility-perspective": {
+      "quarters": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "delta": 0
+    },
+    "memory-change": {
+      "quarters": [
+        4.29,
+        4.25,
+        4.29,
+        4.25
+      ],
+      "delta": -0.04
+    },
+    "memory-position": {
+      "quarters": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "delta": 0
+    },
+    "memory-sequence": {
+      "quarters": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "delta": 0
+    },
+    "observation-difference": {
+      "quarters": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "delta": 0
+    },
+    "observation-implausible": {
+      "quarters": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "delta": 0
+    },
+    "observation-two-traits": {
+      "quarters": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "delta": 0
+    },
+    "path-planning": {
+      "quarters": [
+        25,
+        25,
+        25,
+        25
+      ],
+      "delta": 0
+    },
+    "planning-command-order": {
+      "quarters": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "delta": 0
+    },
+    "planning-fix-step": {
+      "quarters": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "delta": 0
+    },
+    "quantity-balance": {
+      "quarters": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "delta": 0
+    },
+    "quantity-grouping": {
+      "quarters": [
+        9.75,
+        9.57,
+        9,
+        9.75
+      ],
+      "delta": 0.0
+    },
+    "quantity-target": {
+      "quarters": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "delta": 0
+    },
+    "reasoning-elimination": {
+      "quarters": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "delta": 0
+    },
+    "reasoning-if-then": {
+      "quarters": [
+        2.25,
+        2.14,
+        2.25,
+        2.25
+      ],
+      "delta": 0.0
+    },
+    "reasoning-missing-info": {
+      "quarters": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "delta": 0
+    },
+    "rule-error": {
+      "quarters": [
+        5.25,
+        5.14,
+        5.25,
+        5.14
+      ],
+      "delta": -0.11
+    },
+    "rule-sequence": {
+      "quarters": [
+        5,
+        5,
+        5,
+        5
+      ],
+      "delta": 0
+    },
+    "rule-transform": {
+      "quarters": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "delta": 0
+    },
+    "spatial-rotation": {
+      "quarters": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "delta": 0
+    },
+    "spatial-silhouette": {
+      "quarters": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "delta": 0
+    },
+    "spatial-symmetry": {
+      "quarters": [
+        16,
+        16,
+        16,
+        16
+      ],
+      "delta": 0
+    }
+  }
+}

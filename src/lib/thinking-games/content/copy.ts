@@ -8,7 +8,7 @@ export const DIRECTION_VI: Record<string, string> = {
   ahead: 'ở ngay phía trước',
   behind: 'ở ngay phía sau',
   left: 'ở bên tay trái',
-  right: 'ở bên tay phải',
+  right: 'ở phía bên phải',
   up: 'đi lên trên',
   down: 'đi xuống dưới',
 };
@@ -17,9 +17,46 @@ export const DIRECTION_SHORT_VI: Record<string, string> = {
   ahead: 'phía trước',
   behind: 'phía sau',
   left: 'bên trái',
-  right: 'bên phải',
+  right: 'sang phải',
   up: 'lên',
   down: 'xuống',
+};
+
+const AGE_3_5_INVITATIONS: Partial<Record<GameTypeId, readonly string[]>> = {
+  'g03-t2': ['Nhìn các ô vừa sáng lên, rồi cùng người lớn tìm lại nhé!', 'Cùng nghe người lớn đọc hướng dẫn, rồi nhớ những ô sáng nhé!'],
+  'g04-t3': ['Cùng tìm thêm một manh mối để biết bạn nào phù hợp nhé!', 'Nhìn các gợi ý rồi chọn điều còn thiếu để tìm đúng bạn nhé!'],
+  'g05-t1': ['Cùng tìm quả cân còn thiếu để hai đĩa thăng bằng nhé!', 'Nhìn hai đĩa cân rồi tìm số cân giúp chúng thăng bằng nhé!'],
+  'g05-t2': ['Cùng chia đồ vật thành những nhóm bằng nhau nhé!', 'Nhìn số đồ vật rồi tìm xem chia được mấy nhóm nhé!'],
+  'g06-t2': ['Cùng xếp các việc theo thứ tự để làm nhé!', 'Việc nào cần làm trước? Mình cùng xếp lại nào!'],
+  'g06-t3': ['Cùng tìm bước đi giúp bạn robot tới đích nhé!', 'Bạn giúp robot sửa một bước để đi đúng đường nhé!'],
+  'g07-t2': ['Hãy nhìn theo hướng bạn ấy đang nhìn để tìm món đồ nhé!', 'Cùng tưởng tượng mình đứng ở chỗ bạn ấy và tìm đồ vật nhé!'],
+};
+
+const AGE_13_PLUS_INVITATIONS: Partial<Record<GameTypeId, readonly string[]>> = {
+  'g01-t1': ['Xác định quy luật của dãy rồi chọn phần tử tiếp theo.', 'Phân tích nhịp lặp hoặc mức tăng để hoàn thành dãy.'],
+  'g01-t2': ['Tìm phần tử không tuân theo quy luật chung của dãy.', 'Đối chiếu từng vị trí để xác định chỗ sai quy luật.'],
+  'g01-t3': ['Tìm phép biến đổi của máy từ các cặp số mẫu.', 'Suy ra quy tắc đầu vào – đầu ra rồi áp dụng cho số mới.'],
+  'g02-t1': ['Đối chiếu hình mẫu với các lựa chọn theo vị trí và số ô.', 'Tìm hình có cấu trúc trùng khớp với hình mẫu.'],
+  'g02-t2': ['Xác định phép xoay được mô tả rồi chọn hình tương ứng.', 'Theo dõi vị trí các ô sau phép xoay để chọn hình đúng.'],
+  'g02-t3': ['Đối chiếu các cặp ô qua trục để hoàn thành hình đối xứng.', 'Tìm vị trí làm hình không còn đối xứng qua trục gương.'],
+  'g03-t1': ['Ghi nhớ trình tự xuất hiện rồi khôi phục dãy.', 'Quan sát chuỗi và tái lập đúng thứ tự sau khi ẩn.'],
+  'g03-t2': ['Ghi nhớ các vị trí sáng trên lưới rồi chọn lại.', 'Theo dõi vị trí từng ô để tái hiện chính xác mẫu.'],
+  'g03-t3': ['So sánh hai cảnh để xác định thay đổi.', 'Đối chiếu trước và sau, rồi chỉ ra điều đã đổi.'],
+  'g04-t1': ['Kết hợp các dữ kiện để loại trừ những phương án không phù hợp.', 'Đối chiếu từng manh mối và xác định phương án còn lại.'],
+  'g04-t2': ['Dùng các quy tắc đã cho để suy ra kết luận.', 'Lần theo quan hệ giữa các dữ kiện để tìm kết quả hợp lệ.'],
+  'g04-t3': ['Xác định thông tin bổ sung cần thiết để phân biệt các khả năng.', 'Tìm manh mối còn thiếu để kết luận duy nhất.'],
+  'g05-t1': ['Tính phần chênh lệch để hai bên cân bằng.', 'Dựa vào tổng khối lượng mỗi bên để tìm số còn thiếu.'],
+  'g05-t2': ['Xác định số nhóm, phần dư hoặc số lượng cần thêm.', 'Chia tổng số theo kích thước nhóm và chọn kết quả tương ứng.'],
+  'g05-t3': ['Tìm tập hợp đáp ứng mục tiêu và điều kiện lựa chọn.', 'Tính tổng các phương án rồi chọn tập hợp hợp lệ.'],
+  'g06-t1': ['Lập lộ trình thỏa các điều kiện trên bản đồ.', 'Tìm đường phù hợp từ điểm đầu tới đích.'],
+  'g06-t2': ['Sắp xếp các công việc sao cho mọi quan hệ trước–sau đều đúng.', 'Dựa vào các ràng buộc để tìm thứ tự thực hiện hợp lệ.'],
+  'g06-t3': ['Xác định lệnh sai và thay bằng hướng đi phù hợp.', 'Theo dõi đường đi để tìm bước cần điều chỉnh.'],
+  'g07-t1': ['Áp dụng tiêu chí mới để phân loại lại các hình.', 'Đổi tiêu chí phân loại và chọn các hình phù hợp.'],
+  'g07-t2': ['Quy chiếu vị trí theo hướng nhìn của nhân vật.', 'Xác định vị trí tương đối từ hướng đang quan sát.'],
+  'g07-t3': ['Tìm một phương án khác vẫn đáp ứng các điều kiện.', 'Thử cách giải mới và kiểm tra tính hợp lệ của nó.'],
+  'g08-t1': ['So sánh hai hình theo từng hàng và cột.', 'Liệt kê các vị trí khác nhau giữa hai hình.'],
+  'g08-t2': ['Chọn các hình thỏa đồng thời cả hai tiêu chí.', 'Kiểm tra từng tiêu chí trên mỗi hình trước khi chọn.'],
+  'g08-t3': ['Tìm tình huống vi phạm quy tắc đã cho.', 'Đối chiếu từng tình huống với điều kiện và chọn trường hợp lệch.'],
 };
 
 // Natural invitation variants per game type (avoiding repetitive "Bạn cùng thử nhé?")
@@ -653,6 +690,75 @@ export const GAME_MODE_TUTORIALS: Partial<Record<GameTypeId, Record<string, {
   },
 };
 
+const AGE_3_5_TUTORIALS: Partial<Record<GameTypeId, readonly string[]>> = {
+  'g03-t1': ['Cùng nghe người lớn đọc dãy từ, rồi nhớ thứ tự nhé.', 'Nhìn các từ cùng người lớn; khi chúng ẩn đi, hãy chọn từ còn thiếu nhé.'],
+  'g04-t2': ['Mỗi từ là một tấm thẻ. Hãy nhìn điều đã biết rồi tìm thẻ tiếp theo nhé.', 'Cùng nghe người lớn đọc quy tắc, rồi tìm điều sẽ xảy ra nhé.'],
+  'g05-t1': ['Nhìn hai đĩa cân rồi tìm số giúp chúng thăng bằng nhé.', 'Tìm số cân còn thiếu để hai bên thăng bằng nhé.'],
+  'g05-t2': ['Chia đều các món thành từng nhóm rồi đếm số nhóm nhé.', 'Đếm các món và xem chia được mấy nhóm bằng nhau nhé.'],
+  'g06-t2': ['Nghe người lớn đọc các việc rồi xếp việc cần làm trước lên trước nhé.', 'Hãy xếp các việc theo thứ tự để mọi thứ làm đúng nhé.'],
+  'g06-t3': ['Nhìn đường của robot rồi chọn bước giúp bạn ấy tới đích nhé.', 'Cùng tìm hướng đi đúng để robot đến đích nhé.'],
+  'g07-t2': ['Hãy nhìn theo hướng bạn ấy đang nhìn rồi tìm món đồ nhé.', 'Tưởng tượng mình đứng ở chỗ bạn ấy để biết món đồ ở đâu nhé.'],
+};
+
+const AGE_3_5_MODE_TUTORIALS: Partial<Record<GameTypeId, Record<string, readonly string[]>>> = {
+  'g03-t1': {
+    missing: ['Nghe người lớn đọc dãy từ; khi dãy ẩn đi, hãy chọn từ còn thiếu nhé.', 'Nhìn dãy từ cùng người lớn rồi nhớ từ ở ô trống nhé.'],
+    swapped: ['Nghe người lớn đọc dãy từ; khi dãy ẩn đi, hãy chọn hai từ ở ô được đánh dấu nhé.', 'Nhìn kỹ thứ tự các từ cùng người lớn rồi nhớ hai ô được đánh dấu nhé.'],
+  },
+  'g05-t2': {
+    needed: ['Đếm xem cần thêm mấy món để đủ một nhóm nữa nhé.', 'Còn thiếu bao nhiêu món để làm thêm một nhóm bằng nhau?'],
+    exact: ['Chia đều các món thành nhóm rồi đếm số nhóm nhé.', 'Tìm xem chia đều thì được chính xác bao nhiêu nhóm nhé.'],
+    remainder: ['Chia đều các món rồi đếm xem còn dư mấy món nhé.', 'Tìm số món còn lại sau khi chia thành các nhóm bằng nhau nhé.'],
+    floor: ['Đếm số nhóm đủ món sau khi chia đều nhé.', 'Tìm xem xếp được bao nhiêu nhóm trọn vẹn nhé.'],
+  },
+};
+
+const AGE_13_PLUS_MODE_TUTORIALS: Partial<Record<GameTypeId, Record<string, readonly string[]>>> = {
+  'g03-t1': {
+    missing: ['Ghi nhớ trình tự rồi xác định phần tử bị lược khỏi dãy.', 'Khôi phục phần tử còn thiếu dựa trên thứ tự đã quan sát.'],
+    swapped: ['Ghi nhớ dãy rồi xác định hai phần tử ở vị trí được đánh dấu.', 'Tái lập hai giá trị tại các vị trí được yêu cầu.'],
+  },
+  'g05-t2': {
+    needed: ['Tính số lượng cần bổ sung để tạo thêm một nhóm đủ kích thước.', 'Xác định phần còn thiếu để hoàn thành một nhóm nữa.'],
+    exact: ['Chia tổng số cho kích thước nhóm để tìm số nhóm chính xác.', 'Tính số nhóm khi mọi phần tử đều được chia hết.'],
+    remainder: ['Tính phần dư sau khi chia thành các nhóm đủ kích thước.', 'Xác định số phần tử còn lại sau phép chia.'],
+    floor: ['Tính số nhóm trọn vẹn có thể lập được.', 'Chỉ tính các nhóm đủ kích thước sau khi chia.'],
+  },
+  'g06-t1': {
+    shortest: ['So sánh các lộ trình và chọn đường có ít bước nhất.', 'Chọn lộ trình ngắn nhất, đồng thời thỏa các điều kiện trên bản đồ.'],
+    ordered: ['Đi qua các điểm trung chuyển theo đúng thứ tự được chỉ định.', 'Kiểm tra thứ tự các điểm cần ghé trước khi tới đích.'],
+    waypoint: ['Tìm đường tới đích có đi qua điểm trung chuyển.', 'Lộ trình phải tránh vật cản và ghé điểm được đánh dấu.'],
+    reach: ['Tìm một lộ trình hợp lệ từ điểm đầu tới đích.', 'Tránh các ô bị chặn khi nối điểm đầu với đích.'],
+  },
+};
+
+const AGE_13_PLUS_TUTORIALS: Partial<Record<GameTypeId, readonly string[]>> = {
+  'g01-t1': ['Xác định quy luật rồi chọn phần tử kế tiếp.', 'So sánh các phần tử liên tiếp để suy ra quy luật.'],
+  'g01-t2': ['Tìm phần tử không tuân theo quy luật chung.', 'Đối chiếu từng vị trí và xác định chỗ sai.'],
+  'g01-t3': ['Suy ra phép biến đổi từ các ví dụ rồi áp dụng.', 'Tìm quan hệ đầu vào–đầu ra của máy biến đổi.'],
+  'g02-t1': ['So số ô và vị trí của chúng để tìm hình trùng khớp.', 'Đối chiếu cấu trúc của từng lựa chọn với hình mẫu.'],
+  'g02-t2': ['Theo dõi vị trí các ô sau phép xoay.', 'Phân biệt phép xoay với phép đối xứng gương.'],
+  'g02-t3': ['Đối chiếu các cặp ô qua trục đối xứng.', 'Tìm vị trí làm hình mất đối xứng qua trục.'],
+  'g03-t1': ['Ghi nhớ trình tự rồi khôi phục dãy sau khi ẩn.', 'Quan sát chuỗi và tái lập đúng thứ tự.'],
+  'g03-t2': ['Ghi nhớ các vị trí sáng rồi chọn lại trên lưới.', 'Theo dõi từng ô để tái hiện chính xác mẫu.'],
+  'g03-t3': ['So sánh hai cảnh để xác định thay đổi.', 'Đối chiếu cảnh trước và sau rồi chỉ ra điểm khác.'],
+  'g04-t1': ['Kết hợp các dữ kiện để loại trừ phương án.', 'Đối chiếu từng manh mối với các khả năng.'],
+  'g04-t2': ['Áp dụng các quy tắc đã cho để suy ra kết luận.', 'Lần theo quan hệ giữa các dữ kiện để tìm kết quả.'],
+  'g04-t3': ['Tìm thông tin cần bổ sung để phân biệt các khả năng.', 'Xác định manh mối còn thiếu để có kết luận duy nhất.'],
+  'g05-t1': ['Tính phần chênh lệch để hai bên cân bằng.', 'Dựa vào tổng mỗi bên để tìm giá trị còn thiếu.'],
+  'g05-t2': ['Chia tổng số theo kích thước nhóm và xác định kết quả.', 'Tìm số nhóm, phần dư hoặc số lượng cần bổ sung.'],
+  'g05-t3': ['Tìm tập hợp đáp ứng mục tiêu và điều kiện lựa chọn.', 'Tính tổng các phương án rồi chọn tập hợp hợp lệ.'],
+  'g06-t1': ['Lập lộ trình thỏa các điều kiện trên bản đồ.', 'Tìm đường phù hợp từ điểm đầu tới đích.'],
+  'g06-t2': ['Sắp xếp công việc theo các quan hệ trước–sau.', 'Dựa vào ràng buộc để tìm thứ tự hợp lệ.'],
+  'g06-t3': ['Tìm lệnh sai và thay bằng hướng đi phù hợp.', 'Theo dõi lộ trình để xác định bước cần chỉnh.'],
+  'g07-t1': ['Áp dụng tiêu chí mới để phân loại lại các hình.', 'Chọn các hình phù hợp với tiêu chí vừa đổi.'],
+  'g07-t2': ['Quy chiếu vị trí theo hướng nhìn của nhân vật.', 'Xác định vị trí tương đối từ hướng quan sát.'],
+  'g07-t3': ['Tìm phương án khác vẫn đáp ứng điều kiện.', 'Thử cách giải mới rồi kiểm tra tính hợp lệ.'],
+  'g08-t1': ['So sánh hai hình theo từng hàng và cột.', 'Xác định các vị trí khác nhau giữa hai hình.'],
+  'g08-t2': ['Chọn các hình thỏa đồng thời cả hai tiêu chí.', 'Kiểm tra từng tiêu chí trên mỗi hình trước khi chọn.'],
+  'g08-t3': ['Đối chiếu từng tình huống với quy tắc đã cho.', 'Tìm trường hợp vi phạm điều kiện.'],
+};
+
 // Which rule variant of a board decides how the child must answer.
 export function getTutorialMode(gameTypeId: GameTypeId, boardData?: BoardData | null): string | null {
   if (!boardData) return null;
@@ -667,6 +773,9 @@ export function getTutorialMode(gameTypeId: GameTypeId, boardData?: BoardData | 
   }
   if (gameTypeId === 'g05-t3') {
     return boardData.kind === 'quantity-target' ? boardData.mode : null;
+  }
+  if (gameTypeId === 'g05-t2') {
+    return boardData.kind === 'quantity-grouping' ? boardData.mode : null;
   }
   if (gameTypeId === 'g06-t1') {
     if (boardData.kind !== 'path-planning') return null;
@@ -693,8 +802,12 @@ export function selectBySeed<T>(list: readonly T[], seed: string | number, salt 
   return list[index]!;
 }
 
-export function getNaturalInvitation(gameTypeId: GameTypeId, day: number, seed: string): string {
-  const variants = GAME_INVITATIONS[gameTypeId];
+export function getNaturalInvitation(gameTypeId: GameTypeId, day: number, seed: string, ageTrack?: GameAgeTrack): string {
+  const variants = ageTrack === 'age_3_5'
+    ? AGE_3_5_INVITATIONS[gameTypeId] ?? GAME_INVITATIONS[gameTypeId]
+    : ageTrack === 'age_13_plus'
+      ? AGE_13_PLUS_INVITATIONS[gameTypeId] ?? GAME_INVITATIONS[gameTypeId]
+      : GAME_INVITATIONS[gameTypeId];
   if (!variants || variants.length === 0) return 'Mình có thử thách thú vị, bạn cùng khám phá nhé!';
   return selectBySeed(variants, seed, day);
 }
@@ -706,24 +819,45 @@ export function getNaturalTutorial(
   seed: string,
   boardData?: BoardData | null,
 ): string {
+  if (gameTypeId === 'g02-t2' && boardData?.kind === 'spatial-rotation') {
+    const instruction = {
+      quarter: 'Xoay hình 90 độ theo chiều kim đồng hồ.',
+      half: 'Xoay hình 180 độ.',
+      mirror: 'Lật hình qua gương theo chiều trái–phải: bên trái đổi sang bên phải.',
+      'quarter-mirror': 'Xoay hình 90 độ theo chiều kim đồng hồ, rồi lật hình vừa xoay theo chiều trái–phải.',
+    }[boardData.turn];
+    return `${instruction} Chọn hình đúng sau thao tác này.`;
+  }
   if (gameTypeId === 'g06-t2' && boardData?.kind === 'planning-command-order') {
     const orderRules = boardData.before.map(([first, second]) => {
       const firstText = boardData.commands.find((command) => command.id === first)!.text;
       const secondText = boardData.commands.find((command) => command.id === second)!.text;
-      return `${firstText} → ${secondText}`;
-    }).join('; ');
-    return `Luật riêng của ván này (→ là làm trước): ${orderRules}. Mọi thứ tự giữ đủ luật đều được.`;
+      return `${firstText} phải làm trước ${secondText}`;
+    }).join('. ');
+    return ageTrack === 'age_3_5'
+      ? `Nghe người lớn đọc: ${orderRules}.`
+      : `Các quy tắc của lượt này: ${orderRules}.`;
   }
   const trackGroup = ageTrack === 'age_6_8' || ageTrack === 'age_3_5' ? 'age_6_8' : 'age_9_12';
   const mode = getTutorialMode(gameTypeId, boardData);
-  const modeVariants = mode ? GAME_MODE_TUTORIALS[gameTypeId]?.[mode]?.[trackGroup] : undefined;
+  const modeVariants = ageTrack === 'age_3_5' && mode
+    ? AGE_3_5_MODE_TUTORIALS[gameTypeId]?.[mode]
+    : ageTrack === 'age_13_plus' && mode
+      ? AGE_13_PLUS_MODE_TUTORIALS[gameTypeId]?.[mode]
+    : mode ? GAME_MODE_TUTORIALS[gameTypeId]?.[mode]?.[trackGroup] : undefined;
   const variants = modeVariants && modeVariants.length > 0
     ? modeVariants
-    : GAME_TUTORIALS[gameTypeId]?.[trackGroup];
+    : ageTrack === 'age_3_5'
+      ? AGE_3_5_TUTORIALS[gameTypeId] ?? GAME_TUTORIALS[gameTypeId]?.[trackGroup]
+      : ageTrack === 'age_13_plus'
+        ? AGE_13_PLUS_TUTORIALS[gameTypeId] ?? GAME_TUTORIALS[gameTypeId]?.[trackGroup]
+        : GAME_TUTORIALS[gameTypeId]?.[trackGroup];
   if (!variants || variants.length === 0) return 'Bạn quan sát thật kỹ và chọn đáp án chính xác nhé.';
   const tutorial = formatTutorial(selectBySeed(variants, seed, day), boardData);
   if (gameTypeId === 'g04-t2' && boardData?.kind === 'reasoning-if-then') {
-    return `Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. ${tutorial}`;
+    return ageTrack === 'age_3_5'
+      ? tutorial
+      : `Mỗi từ là một thẻ. Hãy dùng các quy tắc trong lượt này để tìm kết quả. ${tutorial}`;
   }
   return tutorial;
 }

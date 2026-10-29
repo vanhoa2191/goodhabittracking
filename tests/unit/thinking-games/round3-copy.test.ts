@@ -75,7 +75,7 @@ describe('round 3 non-punitive invitations', () => {
     for (const finding of flagged) expect(finding.actualEvidence).toMatch(pressure);
     for (const item of candidates) {
       const seed = catalogSeed(item);
-      const invitation = getNaturalInvitation(item.gameTypeId, item.dayIndex, seed);
+      const invitation = getNaturalInvitation(item.gameTypeId, item.dayIndex, seed, item.ageTrack);
       expectSupportive(invitation);
       const finding = flagged.find((entry) => entry.id === item.id);
       if (finding) expect(invitation).not.toBe(finding.actualEvidence);
@@ -99,20 +99,18 @@ describe('round 3 final catalog tutorial path', () => {
         expect(tutorial.length).toBeLessThanOrEqual(240);
         expect(generated.explanation.length).toBeLessThanOrEqual(300);
         if (board.kind === 'reasoning-if-then') {
-          expect(tutorial).toContain('Các từ là thẻ ký hiệu.');
-          expect(tutorial).toContain('Luật chỉ dùng trong ván này.');
+          if (ageTrack === 'age_3_5') expect(tutorial).toMatch(/Mỗi từ là một tấm thẻ|người lớn đọc/);
+          else expect(tutorial).toContain('các quy tắc trong lượt này');
+          expect(tutorial).not.toContain('→');
           // Instructions must not reveal the inferred answer.
           expect(` ${tutorial.match(/\p{L}+/gu)!.join(' ')} `).not.toContain(` ${generated.solution} `);
         } else if (board.kind === 'planning-command-order') {
-          expect(tutorial).toContain('Luật riêng của ván này');
-          expect(tutorial).toContain('→ là làm trước');
-          expect(tutorial).toContain('Mọi thứ tự giữ đủ luật đều được.');
+          expect(tutorial).toContain(ageTrack === 'age_3_5' ? 'người lớn đọc' : 'Các quy tắc của lượt này');
+          expect(tutorial).not.toContain('→');
           const labels = new Map(board.commands.map((command) => [command.id, command.text]));
           for (const [first, second] of board.before) {
-            expect(tutorial).toContain(`${labels.get(first)} → ${labels.get(second)}`);
+            expect(tutorial).toContain(`${labels.get(first)} phải làm trước ${labels.get(second)}`);
           }
-          // Only disclose the board's edges, not an extra chosen total ordering.
-          expect(tutorial.match(/ → /g)).toHaveLength(board.before.length);
         } else throw new Error('unexpected board');
       }
     }
@@ -125,13 +123,13 @@ describe('round 3 final catalog tutorial path', () => {
       before: [['bowl', 'rice'], ['bowl', 'soup'], ['rice', 'invite'], ['soup', 'invite']],
     };
     const tutorial = getNaturalTutorial('g06-t2', 'age_6_8', 6, 'partial-order', board);
-    expect(tutorial).toContain('Lấy bát → Xới cơm');
-    expect(tutorial).toContain('Lấy bát → Múc canh');
-    expect(tutorial).toContain('Xới cơm → Mời cả nhà');
-    expect(tutorial).toContain('Múc canh → Mời cả nhà');
-    expect(tutorial).not.toContain('Xới cơm → Múc canh');
-    expect(tutorial).not.toContain('Múc canh → Xới cơm');
-    expect(tutorial).toContain('Mọi thứ tự giữ đủ luật đều được.');
+    expect(tutorial).toContain('Lấy bát phải làm trước Xới cơm');
+    expect(tutorial).toContain('Lấy bát phải làm trước Múc canh');
+    expect(tutorial).toContain('Xới cơm phải làm trước Mời cả nhà');
+    expect(tutorial).toContain('Múc canh phải làm trước Mời cả nhà');
+    expect(tutorial).not.toContain('Xới cơm phải làm trước Múc canh');
+    expect(tutorial).not.toContain('Múc canh phải làm trước Xới cơm');
+    expect(tutorial).not.toContain('Mọi thứ tự giữ đủ luật đều được.');
     expect(tutorial.length).toBeLessThanOrEqual(240);
   });
 
@@ -139,7 +137,8 @@ describe('round 3 final catalog tutorial path', () => {
     const unrelated = candidates.find((item) => item.boardData.kind === 'quantity-target')!.boardData;
     for (const id of Object.keys(GAME_TUTORIALS) as GameTypeId[]) {
       for (const track of GAME_AGE_TRACKS) {
-        const group = track === 'age_3_5' || track === 'age_6_8' ? 'age_6_8' : 'age_9_12';
+        if (track === 'age_3_5' || track === 'age_13_plus') continue;
+        const group = track === 'age_6_8' ? 'age_6_8' : 'age_9_12';
         const expected = selectBySeed(GAME_TUTORIALS[id][group], 'default', 7);
         expect(getNaturalTutorial(id, track, 7, 'default')).toBe(expected);
         expect(getNaturalTutorial(id, track, 7, 'default', null)).toBe(expected);
@@ -157,6 +156,18 @@ describe('round 3 final catalog tutorial path', () => {
         expect(tutorial.length, item.id).toBeLessThanOrEqual(240);
         expect(tutorial).not.toMatch(/[{}]/);
       }
+    }
+  });
+
+  it('uses age-aware invitations and mode-aware grouping instructions', () => {
+    for (const id of Object.keys(GAME_INVITATIONS) as GameTypeId[]) {
+      expect(getNaturalInvitation(id, 2, 'age-13', 'age_13_plus')).not.toMatch(/bạn nhỏ|nhí|nha!/iu);
+    }
+
+    for (const mode of ['needed', 'exact', 'remainder'] as const) {
+      const board: BoardData = { kind: 'quantity-grouping', total: 13, groupSize: 3, mode, options: [2, 3, 4] };
+      const tutorial = getNaturalTutorial('g05-t2', 'age_3_5', 0, mode, board);
+      expect(tutorial).toMatch(mode === 'needed' ? /thêm|thiếu/iu : mode === 'remainder' ? /dư|còn lại/iu : /chia đều|số nhóm/iu);
     }
   });
 });

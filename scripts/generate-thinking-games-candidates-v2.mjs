@@ -218,7 +218,7 @@ function buildCandidate({ engine, slot, day, ageTrack, source, attempt = 0 }) {
   const fingerprint = engine.puzzleFingerprint(slot.typeId, payload.boardData);
 
   const invitation = typeof engine.getNaturalInvitation === 'function'
-    ? engine.getNaturalInvitation(slot.typeId, day, seed)
+    ? engine.getNaturalInvitation(slot.typeId, day, seed, ageTrack)
     : slot.invitation;
   const tutorial = typeof engine.getNaturalTutorial === 'function'
     ? engine.getNaturalTutorial(slot.typeId, ageTrack, day, seed, payload.boardData)
@@ -273,7 +273,17 @@ function variedTitle({ engine, titleState, slot, ageTrack, day }) {
   return title;
 }
 
-function generateBatch({ engine, editorial, candidateSource, ageTracks, usedFingerprints = new Set(), titleState = new Map() }, batch) {
+function normalizedCandidateSignature(item) {
+  const board = item.boardData;
+  const normalized = board.kind === 'path-planning'
+    ? { ...board, walls: [...board.walls].sort((a, b) => a.x - b.x || a.y - b.y), waypoints: [...board.waypoints].sort((a, b) => a.id.localeCompare(b.id)) }
+    : 'options' in board && Array.isArray(board.options)
+      ? { ...board, options: [...board.options].sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b))) }
+      : board;
+  return JSON.stringify({ board: normalized, solutionType: Array.isArray(item.solution) ? 'array' : typeof item.solution });
+}
+
+function generateBatch({ engine, editorial, candidateSource, ageTracks, usedFingerprints = new Set(), usedNormalized = new Set(), titleState = new Map() }, batch) {
   const items = [];
   const mapping = [];
   const selectedRows = editorial.rows.filter((row) => row.day >= batch.startDay && row.day <= batch.endDay);
@@ -293,14 +303,23 @@ function generateBatch({ engine, editorial, candidateSource, ageTracks, usedFing
         let item = null;
         let attempt = 0;
         let duplicateAfterAttempts = false;
+        let fallback = null;
+        let fallbackAttempt = 0;
         for (attempt = 0; attempt <= 20; attempt += 1) {
           item = buildCandidate({ engine, slot, day: row.day, ageTrack, source: candidateSource, attempt });
           const accepted = engine.checkAnswer(item, item.solution);
-          if (accepted.ok && accepted.correct && !usedFingerprints.has(item.fingerprint)) break;
+          if (!accepted.ok || !accepted.correct || usedFingerprints.has(item.fingerprint)) continue;
+          if (!fallback) { fallback = item; fallbackAttempt = attempt; }
+          if (!usedNormalized.has(normalizedCandidateSignature(item))) break;
+        }
+        if (attempt > 20 && fallback) {
+          item = fallback;
+          attempt = fallbackAttempt;
         }
         item.title = variedTitle({ engine, titleState, slot, ageTrack, day: row.day });
-        if (usedFingerprints.has(item.fingerprint)) duplicateAfterAttempts = true;
+        if (usedFingerprints.has(item.fingerprint) || usedNormalized.has(normalizedCandidateSignature(item))) duplicateAfterAttempts = true;
         usedFingerprints.add(item.fingerprint);
+        usedNormalized.add(normalizedCandidateSignature(item));
         items.push(item);
         mapping.push({
           day: row.day,
@@ -348,11 +367,12 @@ async function generateV2() {
     };
     const ageTracks = engine.GAME_AGE_TRACKS;
     const usedFingerprints = new Set();
+    const usedNormalized = new Set();
     const titleState = new Map();
     const allItems = [];
     const batchDocuments = [];
     for (const batch of BATCHES) {
-      const { batchPath, document } = generateBatch({ engine, editorial, candidateSource, ageTracks, usedFingerprints, titleState }, batch);
+      const { batchPath, document } = generateBatch({ engine, editorial, candidateSource, ageTracks, usedFingerprints, usedNormalized, titleState }, batch);
       document.engineVersion = loaded.engineVersion;
       batchDocuments.push({ batchPath, document });
       allItems.push(...document.items);
@@ -440,6 +460,7 @@ export {
   readEditorialRows,
   skillForCsv,
   loadEngine,
+  normalizedCandidateSignature,
   generateBatch,
   generateV2,
 };

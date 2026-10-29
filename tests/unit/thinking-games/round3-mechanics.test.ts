@@ -65,13 +65,13 @@ describe('round 3 generator semantics', () => {
         expect(mechanic.parseBoard(board)).toEqual(board);
         scenarios.add(board.commands.find((command) => command.id === 'step-1')!.text);
         expect(board.commands).toHaveLength(ageTrack === 'age_6_8' ? 4 : 5);
-        expect(generated.tutorial).toContain('Luật riêng của ván này');
+        expect(generated.tutorial).toMatch(/quy tắc/);
         expect(generated.explanation).toContain('Một thứ tự theo luật của ván này');
         for (const [before, after] of board.before) {
           const first = board.commands.find((command) => command.id === before)!.text;
           const second = board.commands.find((command) => command.id === after)!.text;
           const constraint = `${first} → ${second}`;
-          expect(generated.tutorial).toContain(constraint);
+          expect(generated.tutorial).toContain(`${first} phải làm trước ${second}`);
           expect(generated.explanation).toContain(constraint);
         }
         const orders = permutations(board.commands.map((command) => command.id));

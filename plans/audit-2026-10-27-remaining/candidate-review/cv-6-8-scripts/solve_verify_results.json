@@ -1,0 +1,221 @@
+{
+  "path_planning_target_mismatch": [
+    {
+      "id": "D003-bonus-vi68",
+      "dayIndex": 3,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D014-main-vi68",
+      "dayIndex": 14,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D027-bonus-vi68",
+      "dayIndex": 27,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D038-main-vi68",
+      "dayIndex": 38,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D051-bonus-vi68",
+      "dayIndex": 51,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D062-main-vi68",
+      "dayIndex": 62,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D075-bonus-vi68",
+      "dayIndex": 75,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D086-main-vi68",
+      "dayIndex": 86,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D099-bonus-vi68",
+      "dayIndex": 99,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D110-main-vi68",
+      "dayIndex": 110,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D123-bonus-vi68",
+      "dayIndex": 123,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D134-main-vi68",
+      "dayIndex": 134,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D147-bonus-vi68",
+      "dayIndex": 147,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D158-main-vi68",
+      "dayIndex": 158,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D171-bonus-vi68",
+      "dayIndex": 171,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D182-main-vi68",
+      "dayIndex": 182,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D195-bonus-vi68",
+      "dayIndex": 195,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D206-main-vi68",
+      "dayIndex": 206,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D219-bonus-vi68",
+      "dayIndex": 219,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D230-main-vi68",
+      "dayIndex": 230,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D243-bonus-vi68",
+      "dayIndex": 243,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D254-main-vi68",
+      "dayIndex": 254,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D267-bonus-vi68",
+      "dayIndex": 267,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D278-main-vi68",
+      "dayIndex": 278,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D291-bonus-vi68",
+      "dayIndex": 291,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D302-main-vi68",
+      "dayIndex": 302,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D315-bonus-vi68",
+      "dayIndex": 315,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D326-main-vi68",
+      "dayIndex": 326,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D339-bonus-vi68",
+      "dayIndex": 339,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D350-main-vi68",
+      "dayIndex": 350,
+      "slotType": "main",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    },
+    {
+      "id": "D363-bonus-vi68",
+      "dayIndex": 363,
+      "slotType": "bonus",
+      "kind": "path-planning",
+      "message": "Path target {'x': 4, 'y': 4} != None"
+    }
+  ]
+}

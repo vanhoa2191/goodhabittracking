@@ -27,3 +27,10 @@ export function ageRank(ageTrack: GameAgeTrack): 0 | 1 | 2 | 3 {
   if (ageTrack === 'age_9_12') return 2;
   return 3;
 }
+
+// Candidate seeds include the editorial slot id. Direct engine callers without a
+// day keep the first-quarter settings for reproducible standalone puzzles.
+export function candidateQuarter(seed: string): 0 | 1 | 2 | 3 {
+  const day = Number(/\|D(\d{3})-(?:main|bonus)/.exec(seed)?.[1] ?? 1);
+  return (day <= 91 ? 0 : day <= 182 ? 1 : day <= 273 ? 2 : 3);
+}

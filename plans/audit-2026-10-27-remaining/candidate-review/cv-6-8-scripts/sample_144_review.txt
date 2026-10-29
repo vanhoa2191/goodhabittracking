@@ -1,0 +1,1440 @@
+=== [001/144] D001-bonus-vi68 | Day 001 | Slot bonus | g04-t1 | reasoning-elimination ===
+Title: Thám tử nhỏ · Hạt giống
+Invitation: Hãy đọc từng manh mối và loại trừ dần để tìm ra đáp án chính xác nha!
+Tutorial: Gạch dần những hình không đúng gợi ý, hình còn lại chính là đáp án.
+Explanation: Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu đỏ, hình tam giác, kích cỡ to).
+Hints: Đọc manh mối đầu tiên thật kỹ. // Bạn nào không khớp manh mối thì bấm Gạch bớt nhé.
+Board summary: {"kind": "reasoning-elimination", "candidates": [{"id": "candidate-1", "traits": {"màu": "đỏ", "hình": "tam giác", "kích cỡ": "to"}}, {"id": "candidate-2", "traits": {"màu": "cam", "hình": "vuông", "kích cỡ": "nhỏ"}}, {"id": "candidate-3", "traits": {"màu": "tím", "hình": "sao", "kích cỡ": "to"}}, {
+Options: ["candidate-1", "candidate-2", "candidate-3", "candidate-4"]
+Solution: "candidate-1"
+
+=== [002/144] D001-main-vi68 | Day 001 | Slot main | g01-t1 | rule-sequence ===
+Title: Hạt giống · Ai đứng tiếp theo?
+Invitation: Chào bạn, thử thách điền tiếp vào dãy quy luật đang chờ bạn trổ tài đấy!
+Tutorial: Đọc to các phần theo thứ tự, tìm xem phần nào đến tiếp theo.
+Explanation: Phần tiếp theo hợp với nhịp của chuỗi là mây.
+Hints: Nhìn xem hai hình nào cứ thay nhau xuất hiện. // Đọc nhỏ cả dãy: cái này, cái kia, cái này, cái kia.
+Board summary: {"kind": "rule-sequence", "sequence": ["hoa", "mây", "hoa", "mây", "hoa"], "ruleKind": "alternating"}
+Options: ["quả", "mây", "lá"]
+Solution: "mây"
+
+=== [003/144] D002-bonus-vi68 | Day 002 | Slot bonus | g05-t1 | quantity-balance ===
+Title: Giữ cân thăng bằng — Hạt giống
+Invitation: Chào bạn, cùng mình tìm quả cân còn thiếu để hai đĩa cân bằng nhau nhé!
+Tutorial: Bạn tính để hai bên đĩa cân có cùng cân nặng bằng nhau nhé.
+Explanation: Cần thêm 1 để hai bên đĩa cân có cân nặng bằng nhau.
+Hints: Cộng các quả cân đã có ở mỗi đĩa. // Đĩa nhẹ hơn cần thêm đúng phần còn thiếu.
+Board summary: {"kind": "quantity-balance", "left": [{"id": "left-1", "weight": 4}, {"id": "left-2", "weight": 4}], "right": [{"id": "right-1", "weight": 9}], "mode": "missing", "unknownSide": "left"}
+Options: [0, 1, 2]
+Solution: 1
+
+=== [004/144] D002-main-vi68 | Day 002 | Slot main | g02-t1 | spatial-silhouette ===
+Title: Hạt giống: Chiếc bóng bí ẩn
+Invitation: Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!
+Tutorial: So từng ô của bóng với hình mẫu để tìm chiếc bóng khớp nhất.
+Explanation: Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình C.
+Hints: Nhìn thật kỹ hình mẫu trước nhé. // Hình đúng không bị xoay và cũng không bị dịch sang chỗ khác.
+Board summary: {"kind": "spatial-silhouette", "target": [{"x": 2, "y": 0}, {"x": 2, "y": 1}, {"x": 1, "y": 0}, {"x": 3, "y": 2}]}
+Options: [{"id": "shape-d", "cells": [{"x": 2, "y": 0}, {"x": 2, "y": 1}, {"x": 1, "y": 0}]}, {"id": "shape-b", "cells": [{"x": 3, "y": 0}, {"x": 3, "y": 1}, {"x": 2, "y": 0}, {"x": 0, "y":
+Solution: "shape-a"
+
+=== [005/144] D003-bonus-vi68 | Day 003 | Slot bonus | g06-t1 | path-planning ===
+Title: Dẫn bạn nhỏ về đích · Hạt giống
+Invitation: Hãy tìm một lối đi an toàn, tránh các bức tường và đi tới đích nha!
+Tutorial: Đi từ ô bắt đầu đến ô đích, tránh các bức tường nhé.
+Explanation: Một đường đi hợp lệ giúp bạn di chuyển an toàn từ ô xuất phát về đích mà không chạm tường.
+Hints: Đi từng ô một, tránh ô tường. // Nếu gặp tường thì rẽ sang hướng khác.
+Board summary: {"kind": "path-planning", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 1, "y": 0}], "waypoints": []}
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 1, "y": 1}, {"x": 2, "y": 1}, {"x": 3, "y": 1}, {"x": 4, "y": 1}, {"x": 4, "y": 2}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [006/144] D003-main-vi68 | Day 003 | Slot main | g03-t1 | memory-sequence ===
+Title: Hạt giống · Hàng ghi nhớ
+Invitation: Một dãy các từ sắp xuất hiện rồi biến mất, bạn nhớ thứ tự cùng mình nhé!
+Tutorial: Đọc thầm từng từ theo thứ tự để nhớ và xếp lại thật đúng.
+Explanation: Thứ tự đúng là mèo → cây → bóng → táo.
+Hints: Nhớ bạn đứng đầu tiên trước nhé. // Đọc thầm theo thứ tự: một, hai, ba.
+Board summary: {"kind": "memory-sequence", "sequence": ["mèo", "cây", "bóng", "táo"], "displayMs": 1200}
+Options: ["bóng", "mèo", "táo", "cây"]
+Solution: ["mèo", "cây", "bóng", "táo"]
+
+=== [007/144] D004-bonus-vi68 | Day 004 | Slot bonus | g07-t1 | flexibility-classify ===
+Title: Đổi luật phân loại — Hạt giống
+Invitation: Cùng mình rèn luyện sự linh hoạt khi chuyển sang cách phân loại mới nào bạn!
+Tutorial: Đổi sang cách chia mới và chọn tất cả những hình phù hợp.
+Explanation: Theo quy tắc mới (hình là "vuông"), các hình phù hợp là: hình 1, hình 2, hình 5.
+Hints: Đọc luật mới ở phía trên thật kỹ. // Chỉ chọn những hình có hình dạng đúng như luật.
+Board summary: {"kind": "flexibility-classify", "items": [{"id": "item-1", "traits": {"hình": "vuông", "màu": "tím", "kích cỡ": "to"}}, {"id": "item-2", "traits": {"hình": "vuông", "màu": "đỏ", "kích cỡ": "nhỏ"}}, {"id": "item-3", "traits": {"hình": "tròn", "màu": "cam", "kích cỡ": "to"}}, {"id": "item-4", "traits
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-1", "item-2", "item-5"]
+
+=== [008/144] D004-main-vi68 | Day 004 | Slot main | g04-t2 | reasoning-if-then ===
+Title: Nếu thì — Hạt giống
+Invitation: Từ các điều đã biết và luật Nếu - Thì, bạn suy luận cùng mình nhé!
+Tutorial: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Bạn xem những điều đã biết và luật Nếu - Thì để tìm kết luận đúng nhé.
+Explanation: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: "mây" → "mưa"; "mưa" → "áo mưa". Từ thẻ "mây", áp dụng luật để suy ra thẻ "mưa".
+Hints: Bắt đầu từ điều bạn đã biết chắc. // Tìm câu Nếu - Thì nói về điều đó nhé.
+Board summary: {"kind": "reasoning-if-then", "rules": [{"if": "mây", "then": "mưa"}, {"if": "mưa", "then": "áo mưa"}], "facts": ["mây"]}
+Options: ["chim hót", "mưa", "vui vẻ", "nắng gắt"]
+Solution: "mưa"
+
+=== [009/144] D005-bonus-vi68 | Day 005 | Slot bonus | g08-t1 | observation-difference ===
+Title: Tìm chỗ khác nhau · Hạt giống
+Invitation: Cùng mình làm thám tử tinh mắt tìm ra tất cả những chỗ khác nhau nào!
+Tutorial: Bạn tìm tất cả các ô có hình khác nhau giữa hai bức tranh nhé.
+Explanation: Điểm khác nhau giữa hai hình nằm ở hàng 2, cột 1 và hàng 3, cột 2.
+Hints: Nhìn hàng đầu tiên của hai hình trước. // Rồi xuống hàng thứ hai, cứ thế đến hết.
+Board summary: {"kind": "observation-difference", "left": [["nấm", "lá", "nấm", "nấm"], ["nấm", "quả", "nấm", "hoa"], ["nấm", "cỏ", "sao", "quả"], ["hoa", "nấm", "hoa", "hoa"]], "right": [["nấm", "lá", "nấm", "nấm"], ["lá", "quả", "nấm", "hoa"], ["nấm", "lá", "sao", "quả"], ["hoa", "nấm", "hoa", "hoa"]]}
+Options: [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 1, "y": 0}, {"x": 1, "y": 2}, {"x": 2, "y": 1}]
+Solution: [{"x": 0, "y": 1}, {"x": 1, "y": 2}]
+
+=== [010/144] D005-main-vi68 | Day 005 | Slot main | g05-t2 | quantity-grouping ===
+Title: Cùng chia thành nhóm · Hạt giống
+Invitation: Có rất nhiều món quà cần chia thành từng nhóm đều nhau, bạn giúp mình nhé!
+Tutorial: Bạn chia đều rồi đếm xem được bao nhiêu nhóm hoặc còn dư mấy phần nhé.
+Explanation: Chia đều thành các nhóm 2, ta được đúng 4 nhóm.
+Hints: Gom các đồ vật thành từng nhóm nhỏ. // Đếm xem gom được mấy nhóm.
+Board summary: {"kind": "quantity-grouping", "total": 8, "groupSize": 2, "mode": "exact"}
+Options: [4, 3, 2, 1]
+Solution: 4
+
+=== [011/144] D006-bonus-vi68 | Day 006 | Slot bonus | g01-t2 | rule-error ===
+Title: Hạt giống: Một chỗ không khớp
+Invitation: Thử thách tìm phần sai hôm nay sẽ giúp bạn rèn luyện đôi mắt tinh anh đấy!
+Tutorial: Quan sát từng bước của dãy và chọn phần đứng nhầm chỗ nhé.
+Explanation: Vị trí thứ 3 (hoa) chưa đúng với quy luật của chuỗi.
+Hints: Hai hình phải thay nhau xuất hiện đều đặn. // So từng vị trí với nhịp hai hình lúc đầu, tìm hình không theo nhịp nhé.
+Board summary: {"kind": "rule-error", "sequence": ["lá", "nắng", "hoa", "nắng", "lá"], "ruleKind": "alternating"}
+Options: null
+Solution: 2
+
+=== [012/144] D006-main-vi68 | Day 006 | Slot main | g06-t2 | planning-command-order ===
+Title: Sắp xếp các bước — Hạt giống
+Invitation: Hãy sắp xếp các câu lệnh để mọi việc diễn ra tuần tự từ đầu đến cuối nha!
+Tutorial: Luật riêng của ván này (→ là làm trước): Lấy bát → Xới cơm; Xới cơm → Múc canh; Múc canh → Mời cả nhà. Mọi thứ tự giữ đủ luật đều được.
+Explanation: Luật riêng của ván này (→ là làm trước): Lấy bát → Xới cơm; Xới cơm → Múc canh; Múc canh → Mời cả nhà. Một thứ tự theo luật của ván này là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà.
+Hints: Việc nào phải làm trước tiên? // Nhìn luật của ván này: việc nào cần xong trước việc tiếp theo?
+Board summary: {"kind": "planning-command-order", "commands": [{"id": "step-1", "text": "Lấy bát"}, {"id": "step-4", "text": "Mời cả nhà"}, {"id": "step-3", "text": "Múc canh"}, {"id": "step-2", "text": "Xới cơm"}], "before": [["step-1", "step-2"], ["step-2", "step-3"], ["step-3", "step-4"]]}
+Options: null
+Solution: ["step-1", "step-2", "step-3", "step-4"]
+
+=== [013/144] D007-bonus-vi68 | Day 007 | Slot bonus | g02-t2 | spatial-rotation ===
+Title: Hạt giống · Hình qua phép biến đổi
+Invitation: Cùng mình tưởng tượng hình mẫu khi xoay sang hướng mới sẽ ra hình nào nhé!
+Tutorial: Bạn tưởng tượng hình mẫu khi xoay và chọn hình đúng sau khi xoay nhé.
+Explanation: Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình C.
+Hints: Hãy xoay đầu theo, hoặc xoay tờ giấy trong tưởng tượng. // Nhìn một ô ở góc hình mẫu xem nó chạy đến đâu.
+Board summary: {"kind": "spatial-rotation", "shape": [{"x": 1, "y": 3}, {"x": 3, "y": 3}, {"x": 0, "y": 0}, {"x": 1, "y": 1}], "turn": "quarter"}
+Options: [{"id": "turn-b", "cells": [{"x": 0, "y": 0}, {"x": 2, "y": 0}, {"x": 2, "y": 2}, {"x": 3, "y": 3}]}, {"id": "turn-c", "cells": [{"x": 0, "y": 3}, {"x": 2, "y": 1}, {"x": 2, "y": 3
+Solution: "turn-a"
+
+=== [014/144] D007-main-vi68 | Day 007 | Slot main | g07-t2 | flexibility-perspective ===
+Title: Hạt giống: Đồ vật ở phía nào?
+Invitation: Chào bạn, cùng mình khám phá hướng nhìn mới trong câu đố ngày hôm nay nhé!
+Tutorial: Nhìn theo hướng mắt của bạn nhỏ để xem đồ vật ở trước, sau, trái hay phải.
+Explanation: Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở phía trước.
+Hints: Hãy xoay đầu theo hướng bạn nhỏ nhìn. // Đồ vật ở trước mặt, sau lưng hay bên tay nào của bạn ấy?
+Board summary: {"kind": "flexibility-perspective", "width": 4, "height": 4, "viewer": {"x": 2, "y": 1, "facing": "north"}, "target": {"x": 2, "y": 0}}
+Options: ["left", "right", "ahead", "behind"]
+Solution: "ahead"
+
+=== [015/144] D008-bonus-vi68 | Day 008 | Slot bonus | g03-t2 | memory-position ===
+Title: Vườn hoa · Ô nào đã sáng?
+Invitation: Bạn hãy tập trung quan sát các vị trí xuất hiện rồi chỉ lại thật đúng nhé!
+Tutorial: Nhớ xem những người bạn vừa đứng ở ô nào trên bảng ô vuông.
+Explanation: Các vị trí bạn nhỏ đã xuất hiện nằm ở hàng 1, cột 1 và hàng 4, cột 3 và hàng 3, cột 4.
+Hints: Nhớ ô nằm ở góc hay ở giữa bảng. // Đếm xem có mấy ô sáng rồi chỉ lại.
+Board summary: {"kind": "memory-position", "width": 4, "height": 4, "targets": [{"x": 0, "y": 0}, {"x": 2, "y": 3}, {"x": 3, "y": 2}], "revealed": [], "mode": "recall", "displayMs": 1400}
+Options: [{"x": 1, "y": 3}, {"x": 3, "y": 2}, {"x": 2, "y": 3}, {"x": 0, "y": 0}]
+Solution: [{"x": 0, "y": 0}, {"x": 2, "y": 3}, {"x": 3, "y": 2}]
+
+=== [016/144] D008-main-vi68 | Day 008 | Slot main | g08-t2 | observation-two-traits ===
+Title: Hai đặc điểm — Vườn hoa
+Invitation: Hãy tìm tất cả các hình có đủ cả hai đặc điểm mà đề bài đưa ra bạn nhé!
+Tutorial: Bạn chọn mọi hình có đủ cả hai đặc điểm mà đề bài nhắc tới nhé.
+Explanation: Các hình có đủ cả hai đặc điểm (hình là tròn và kích cỡ là to) là: hình 1, hình 4, hình 5.
+Hints: Có hai đặc điểm cần tìm. // Chọn hình có cả hai đặc điểm, không chỉ một.
+Board summary: {"kind": "observation-two-traits", "items": [{"id": "item-1", "traits": {"hình": "tròn", "màu": "xanh", "kích cỡ": "to", "vị trí": "dưới"}}, {"id": "item-2", "traits": {"hình": "tam giác", "màu": "vàng", "kích cỡ": "nhỏ", "vị trí": "dưới"}}, {"id": "item-3", "traits": {"hình": "sao", "màu": "đỏ", "k
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-1", "item-4", "item-5"]
+
+=== [017/144] D009-bonus-vi68 | Day 009 | Slot bonus | g04-t3 | reasoning-missing-info ===
+Title: Thông tin còn thiếu — Vườn hoa
+Invitation: Thử thách tìm manh mối còn thiếu hôm nay sẽ thử tài tư duy sắc bén của bạn!
+Tutorial: Tìm xem còn thiếu gợi ý nào để biết chắc chắn đáp án đúng.
+Explanation: Manh mối còn thiếu giúp nhận diện chính xác bạn này là: hình là tam giác.
+Hints: Những điều đã biết vẫn còn nhiều bạn phù hợp. // Manh mối tốt là manh mối chỉ đúng với một bạn.
+Board summary: {"kind": "reasoning-missing-info", "scenario": "Mình cần biết chắc một bạn là ai.", "candidates": [{"id": "candidate-1", "traits": {"màu": "xanh", "hình": "tam giác", "kích cỡ": "to"}}, {"id": "candidate-2", "traits": {"màu": "xanh", "hình": "sao", "kích cỡ": "to"}}, {"id": "candidate-3", "traits": 
+Options: [{"id": "fact-b", "trait": "hình", "value": "sao"}, {"id": "fact-a", "trait": "hình", "value": "tam giác"}, {"id": "fact-c", "trait": "màu", "value": "đỏ"}]
+Solution: "fact-a"
+
+=== [018/144] D009-main-vi68 | Day 009 | Slot main | g01-t3 | rule-transform ===
+Title: Vườn hoa: Chiếc máy kỳ diệu
+Invitation: Hãy xem chiếc máy biến đổi các con số thế nào rồi tìm kết quả tiếp theo nhé!
+Tutorial: Tìm quy tắc biến đổi của cỗ máy qua các số mẫu rồi tính kết quả nha.
+Explanation: Quy tắc biến đổi của máy là cộng thêm 1. Khi đưa số 149 vào máy, ta thu được kết quả là 150.
+Hints: Nhìn một ví dụ: số đi vào là gì, số đi ra là gì? // Thử với ví dụ thứ hai xem máy làm giống nhau không.
+Board summary: {"kind": "rule-transform", "examples": [{"input": "118", "output": "119"}, {"input": "125", "output": "126"}, {"input": "132", "output": "133"}], "query": "149", "transform": "add"}
+Options: ["151", "152", "150"]
+Solution: "150"
+
+=== [019/144] D010-bonus-vi68 | Day 010 | Slot bonus | g05-t3 | quantity-target ===
+Title: Vườn hoa · Giỏ đồ khéo léo
+Invitation: Cùng mình nhặt các món đồ vào giỏ để đạt được tổng điểm mong muốn nào!
+Tutorial: Gom thật ít món vừa đủ để cộng ra đúng số mục tiêu nha.
+Explanation: Chọn 2 món (1 và 7) để đạt tổng đúng bằng 8 với số món ít nhất.
+Hints: Thử chọn ít món trước nhé. // Nếu chưa đủ mục tiêu 8 thì mới thêm món khác.
+Board summary: {"kind": "quantity-target", "items": [{"id": "item-1", "value": 1}, {"id": "item-2", "value": 7}, {"id": "item-3", "value": 9}, {"id": "item-4", "value": 5}], "target": 8, "maxItems": 2, "mode": "fewest"}
+Options: ["item-1", "item-2", "item-3", "item-4"]
+Solution: ["item-1", "item-2"]
+
+=== [020/144] D010-main-vi68 | Day 010 | Slot main | g02-t3 | spatial-symmetry ===
+Title: Khám phá đối xứng — Vườn hoa
+Invitation: Hai bên gương đang chờ bạn hoàn thành để đối xứng thật đẹp đấy!
+Tutorial: So từng cặp ô đối xứng qua đường kẻ giữa để tìm đúng vị trí.
+Explanation: Ô cần chọn nằm ở hàng 3, cột 2 để hình hoàn toàn đối xứng.
+Hints: Nhìn đường chia đôi ở giữa tranh. // Mỗi ô có một ô bạn ở bên kia đường, giống hệt nó.
+Board summary: {"kind": "spatial-symmetry", "grid": [["lá", "hoa", "hoa", "lá"], ["sao", "sao", "sao", "sao"], ["mây", null, "mây", "mây"], ["sao", "hoa", "hoa", "sao"]], "axis": "vertical", "mode": "fill"}
+Options: [{"x": 3, "y": 2}, {"x": 1, "y": 2}, {"x": 1, "y": 1}]
+Solution: {"x": 1, "y": 2}
+
+=== [021/144] D011-bonus-vi68 | Day 011 | Slot bonus | g06-t3 | planning-fix-step ===
+Title: Vườn hoa: Robot đi lạc rồi
+Invitation: Hãy xem robot đi tới đâu bị vướng và đổi lại một bước để tới đích an toàn nha!
+Tutorial: Robot đi lệch ở bước nào nhỉ? Bạn đổi hướng bước đó để giúp bạn ấy nhé.
+Explanation: Đổi bước 2 thành hướng "bên phải" để robot về đích an toàn.
+Hints: Đi theo từng mũi tên của robot. // Dừng ở chỗ robot bắt đầu đi lạc xa khỏi đích.
+Board summary: {"kind": "planning-fix-step", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 3, "y": 2}, "walls": [], "commands": ["right", "up", "right", "down", "down"]}
+Options: [{"id": "fix-a", "index": 1, "command": "right"}, {"id": "fix-b", "index": 1, "command": "down"}, {"id": "fix-d", "index": 1, "command": "up"}, {"id": "fix-c", "index": 1, "command
+Solution: "fix-a"
+
+=== [022/144] D011-main-vi68 | Day 011 | Slot main | g03-t3 | memory-change ===
+Title: Vườn hoa: Cảnh nào đã đổi?
+Invitation: Chào bạn, hãy nhìn thật kỹ hai cảnh và chỉ ra điểm thay đổi cùng mình nhé!
+Tutorial: Nhìn thật kỹ xem bạn nào vừa đổi chỗ, đổi màu hoặc biến mất nha.
+Explanation: Ở cảnh sau, quả đã biến mất khỏi khung hình.
+Hints: Đếm xem cảnh sau còn đủ bạn không. // Có một bạn đã đi mất rồi.
+Board summary: {"kind": "memory-change", "before": ["nắng", "sao", "hoa", "mây", "quả"], "after": ["nắng", "sao", "hoa", "mây"], "change": "removed"}
+Options: ["quả", "lá", "nắng", "sao"]
+Solution: "quả"
+
+=== [023/144] D012-bonus-vi68 | Day 012 | Slot bonus | g07-t3 | flexibility-alternative ===
+Title: Vườn hoa · Có cách khác không?
+Invitation: Hãy tìm một con đường mới vẫn đưa chúng mình về đích an toàn nha bạn!
+Tutorial: Vẽ một đường đi mới lạ để tránh đường quen thuộc đã có.
+Explanation: Đường đi mới đã dẫn từ điểm xuất phát đến đích mà không bị trùng với đường ban đầu và tránh được các ô tường.
+Hints: Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé. // Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích.
+Board summary: {"kind": "flexibility-alternative", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 1, "y": 3}, {"x": 2, "y": 1}], "knownPath": [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 2, "y": 2}, {"x": 2, "y": 3}, {"x": 3, "y": 3},
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}, {"x": 3, "y": 0}, {"x": 4, "y": 0}, {"x": 4, "y": 1}, {"x": 4, "y": 2}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [024/144] D013-bonus-vi68 | Day 013 | Slot bonus | g08-t3 | observation-implausible ===
+Title: Vườn hoa: Điều không hợp lý
+Invitation: Chào bạn, bạn hãy tinh mắt tìm ra tình huống chưa hợp lý cùng mình nhé!
+Tutorial: Xem các bức tranh và chỉ ra bạn nhỏ nào đang làm hành động khác lạ.
+Explanation: Tình huống 2: "Bạn mang bánh ngọt và nước có ga vào chơi" có đặc điểm "đồ ăn", trong khi luật của ván này yêu cầu "đồ chơi".
+Hints: Việc nào ở đây không nên làm? // Nhìn xem việc nào lạ so với các việc còn lại.
+Board summary: {"kind": "observation-implausible", "scene": [{"id": "scene-1", "text": "Bạn đang xếp các khối gỗ lâu đài", "traits": {"nhóm": "đồ chơi", "bước": "đi đúng hướng"}}, {"id": "scene-2", "text": "Bạn mang bánh ngọt và nước có ga vào chơi", "traits": {"nhóm": "đồ ăn", "bước": "đi đúng hướng"}}, {"id": "s
+Options: ["scene-3", "scene-2", "scene-4", "scene-1"]
+Solution: "scene-2"
+
+=== [025/144] D073-bonus-vi68 | Day 073 | Slot bonus | g04-t1 | reasoning-elimination ===
+Title: Dòng suối · Bạn nhỏ bí ẩn là ai?
+Invitation: Chào bạn, hãy dùng các manh mối để tìm ra bạn nhỏ bí ẩn cùng mình nhé!
+Tutorial: Xem kỹ từng lời gợi ý để tìm ra đúng người bạn bí mật.
+Explanation: Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 4 (màu vàng, hình tam giác, kích cỡ to).
+Hints: Nhìn từng bạn nhỏ một và hỏi: bạn này có khớp không? // Bạn nào khác manh mối ở một chỗ cũng không phải.
+Board summary: {"kind": "reasoning-elimination", "candidates": [{"id": "candidate-4", "traits": {"màu": "tím", "hình": "tròn", "kích cỡ": "nhỏ"}}, {"id": "candidate-2", "traits": {"màu": "hồng", "hình": "thoi", "kích cỡ": "nhỏ"}}, {"id": "candidate-3", "traits": {"màu": "xanh", "hình": "sao", "kích cỡ": "to"}}, {"
+Options: ["candidate-4", "candidate-2", "candidate-3", "candidate-1"]
+Solution: "candidate-1"
+
+=== [026/144] D073-main-vi68 | Day 073 | Slot main | g01-t1 | rule-sequence ===
+Title: Nhịp điệu của dãy · Dòng suối
+Invitation: Chào bạn, thử thách điền tiếp vào dãy quy luật đang chờ bạn trổ tài đấy!
+Tutorial: Quan sát cách dãy thay đổi đều đặn để chọn đúng ô còn thiếu.
+Explanation: Chuỗi lặp lại theo nhóm 3 phần tử nên phần tiếp theo là sao.
+Hints: Có một nhóm nhỏ cứ lặp đi lặp lại đó. // Tìm xem nhóm đó bắt đầu từ hình nào.
+Board summary: {"kind": "rule-sequence", "sequence": ["lá", "nắng", "sao", "lá", "nắng"], "ruleKind": "repeat", "period": 3}
+Options: ["sao", "hoa", "quả"]
+Solution: "sao"
+
+=== [027/144] D074-bonus-vi68 | Day 074 | Slot bonus | g05-t1 | quantity-balance ===
+Title: Dòng suối · Hai đĩa cân
+Invitation: Thử thách cân thăng bằng hôm nay sẽ giúp bạn thành chuyên gia tính toán đấy!
+Tutorial: Tìm quả cân còn thiếu để hai bên cân thăng bằng thật đẹp.
+Explanation: Cần thêm 3 để hai bên đĩa cân có cân nặng bằng nhau.
+Hints: Cộng các quả cân đã có ở mỗi đĩa. // Đĩa nhẹ hơn cần thêm đúng phần còn thiếu.
+Board summary: {"kind": "quantity-balance", "left": [{"id": "left-1", "weight": 2}, {"id": "left-2", "weight": 1}], "right": [{"id": "right-1", "weight": 6}], "mode": "unknown", "unknownSide": "left"}
+Options: [1, 2, 3]
+Solution: 3
+
+=== [028/144] D074-main-vi68 | Day 074 | Slot main | g02-t1 | spatial-silhouette ===
+Title: Ghép bóng — Dòng suối
+Invitation: Cùng mình so từng góc cạnh để tìm chiếc bóng chuẩn xác cho hình nào!
+Tutorial: Nhìn kỹ dáng hình và số ô để chọn đúng bóng của hình mẫu.
+Explanation: Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.
+Hints: Đếm xem hình mẫu có bao nhiêu ô. // Chọn hình có cùng số ô, rồi nhìn xem hình dạng có giống không.
+Board summary: {"kind": "spatial-silhouette", "target": [{"x": 0, "y": 0}, {"x": 3, "y": 0}, {"x": 1, "y": 0}, {"x": 1, "y": 3}]}
+Options: [{"id": "shape-a", "cells": [{"x": 0, "y": 0}, {"x": 3, "y": 0}, {"x": 1, "y": 0}, {"x": 1, "y": 3}]}, {"id": "shape-c", "cells": [{"x": 0, "y": 1}, {"x": 3, "y": 0}, {"x": 3, "y":
+Solution: "shape-a"
+
+=== [029/144] D075-bonus-vi68 | Day 075 | Slot bonus | g06-t1 | path-planning ===
+Title: Dòng suối: Lối đi an toàn
+Invitation: Thử thách tìm đường hôm nay sẽ giúp bạn rèn luyện khả năng quan sát không gian đấy!
+Tutorial: Có nhiều đường tới đích, nhưng chỉ đường ít bước nhất mới đúng nha.
+Explanation: Đường ngắn nhất đưa bạn nhỏ về đích cần đúng 8 bước di chuyển an toàn.
+Hints: Thử đếm số bước của các đường tránh tường. // Chọn đường đến đích có ít bước nhất nhé.
+Board summary: {"kind": "path-planning", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 4, "y": 0}], "waypoints": [], "shortestPathOnly": true}
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}, {"x": 3, "y": 0}, {"x": 3, "y": 1}, {"x": 4, "y": 1}, {"x": 4, "y": 2}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [030/144] D075-main-vi68 | Day 075 | Slot main | g03-t1 | memory-sequence ===
+Title: Nhớ đúng thứ tự nào · Dòng suối
+Invitation: Hôm nay mình cùng nhớ một chuỗi nhé, bạn cứ từ từ quan sát nha!
+Tutorial: Ghi nhớ dãy các từ; sau khi dãy ẩn đi, bạn điền lại hai ô được đánh dấu nha.
+Explanation: Hai ô thứ 2 và 3 trong dãy là bóng và táo.
+Hints: Chú ý hai vị trí được đánh dấu. // Nhớ lại bạn đứng ở mỗi vị trí đó lúc đầu.
+Board summary: {"kind": "memory-sequence", "sequence": ["mèo", "bóng", "táo", "mưa"], "displayMs": 1200, "mode": "swapped", "swappedIndices": [1, 2]}
+Options: ["táo", "mưa", "mèo", "bóng"]
+Solution: ["bóng", "táo"]
+
+=== [031/144] D076-bonus-vi68 | Day 076 | Slot bonus | g07-t1 | flexibility-classify ===
+Title: Dòng suối · Phân loại lại nào
+Invitation: Thử thách đổi luật phân loại hôm nay sẽ giúp tư duy của bạn thật nhạy bén đấy!
+Tutorial: Đổi sang cách chia mới và chọn tất cả những hình phù hợp.
+Explanation: Theo quy tắc mới (vị trí là "trên"), các hình phù hợp là: hình 1, hình 4, hình 5.
+Hints: Đọc luật mới ở phía trên thật kỹ. // Chỉ chọn những hình có vị trí đúng như luật.
+Board summary: {"kind": "flexibility-classify", "items": [{"id": "item-1", "traits": {"hình": "sao", "màu": "đỏ", "kích cỡ": "nhỏ", "vị trí": "trên"}}, {"id": "item-2", "traits": {"hình": "vuông", "màu": "tím", "kích cỡ": "nhỏ", "vị trí": "dưới"}}, {"id": "item-3", "traits": {"hình": "tròn", "màu": "cam", "kích cỡ
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-1", "item-4", "item-5"]
+
+=== [032/144] D076-main-vi68 | Day 076 | Slot main | g04-t2 | reasoning-if-then ===
+Title: Dòng suối: Suy luận từng bước
+Invitation: Chào bạn, thử thách suy luận Nếu - Thì hôm nay rất thú vị, cùng thử sức nào!
+Tutorial: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Dùng gợi ý có sẵn và luật dẫn đường để tìm ra điều chắc chắn xảy ra.
+Explanation: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: "mặt trời" → "buổi sáng"; "buổi sáng" → "thức dậy"; "mặt trời" → "thức dậy". Từ thẻ "mặt trời", áp dụng luật để suy ra thẻ "buổi sáng".
+Hints: Nhìn điều đã biết ở phía trên. // Luật nào bắt đầu bằng điều đó thì giúp bạn tìm ra điều mới.
+Board summary: {"kind": "reasoning-if-then", "rules": [{"if": "mặt trời", "then": "buổi sáng"}, {"if": "buổi sáng", "then": "thức dậy"}, {"if": "mặt trời", "then": "thức dậy"}], "facts": ["mặt trời"]}
+Options: ["buổi sáng", "quả ngọt", "chim hót", "ô"]
+Solution: "buổi sáng"
+
+=== [033/144] D077-bonus-vi68 | Day 077 | Slot bonus | g08-t1 | observation-difference ===
+Title: Dòng suối · Hai hình khác nhau ở đâu?
+Invitation: Hãy so sánh từng hàng và từng cột để không bỏ sót điểm khác biệt nào nha bạn!
+Tutorial: Bạn tìm tất cả các ô có hình khác nhau giữa hai bức tranh nhé.
+Explanation: Điểm khác nhau giữa hai hình nằm ở hàng 4, cột 3 và hàng 2, cột 3.
+Hints: So từng hàng của hai hình nhé. // Nhìn kỹ từng ô: hai ô cùng chỗ có giống nhau không?
+Board summary: {"kind": "observation-difference", "left": [["quả", "lá", "nấm", "cỏ"], ["hoa", "mây", "mây", "mây"], ["mây", "hoa", "mây", "mây"], ["nấm", "mây", "quả", "cỏ"]], "right": [["quả", "lá", "nấm", "cỏ"], ["hoa", "mây", "lá", "mây"], ["mây", "hoa", "mây", "mây"], ["nấm", "mây", "lá", "cỏ"]]}
+Options: [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 2, "y": 1}, {"x": 2, "y": 2}, {"x": 2, "y": 3}]
+Solution: [{"x": 2, "y": 3}, {"x": 2, "y": 1}]
+
+=== [034/144] D077-main-vi68 | Day 077 | Slot main | g05-t2 | quantity-grouping ===
+Title: Dòng suối · Chia quà cho đều
+Invitation: Có rất nhiều món quà cần chia thành từng nhóm đều nhau, bạn giúp mình nhé!
+Tutorial: Đếm xem chia được mấy nhóm đủ và còn thừa lại mấy bạn nha.
+Explanation: Để gom đủ thêm một nhóm 2 nữa, ta cần thêm 1 phần.
+Hints: Gom thành các nhóm bằng nhau trước. // Xem nhóm cuối còn thiếu mấy phần mới đủ.
+Board summary: {"kind": "quantity-grouping", "total": 11, "groupSize": 2, "mode": "needed"}
+Options: [1, 0, 3, 2]
+Solution: 1
+
+=== [035/144] D078-bonus-vi68 | Day 078 | Slot bonus | g01-t2 | rule-error ===
+Title: Phát hiện chỗ lệch · Cây cầu gỗ
+Invitation: Cùng mình làm thám tử tìm xem chi tiết nào đang phá vỡ nhịp của dãy nhé!
+Tutorial: Tìm xem ô nào làm cho cả dãy bị sai quy luật quen thuộc.
+Explanation: Vị trí thứ 6 (lá) chưa đúng với quy luật của chuỗi.
+Hints: Tìm nhóm nhỏ cứ lặp lại mãi. // So nhóm đầu với từng nhóm sau để thấy chỗ lệch.
+Board summary: {"kind": "rule-error", "sequence": ["quả", "hoa", "quả", "hoa", "quả", "lá"], "ruleKind": "repeat", "period": 2}
+Options: null
+Solution: 5
+
+=== [036/144] D078-main-vi68 | Day 078 | Slot main | g06-t2 | planning-command-order ===
+Title: Cây cầu gỗ · Việc nào làm trước?
+Invitation: Cùng mình lập trình thứ tự các bước hành động sao cho thật hợp lý nào bạn!
+Tutorial: Luật riêng của ván này (→ là làm trước): Lấy bát → Xới cơm; Xới cơm → Múc canh; Múc canh → Mời cả nhà. Mọi thứ tự giữ đủ luật đều được.
+Explanation: Luật riêng của ván này (→ là làm trước): Lấy bát → Xới cơm; Xới cơm → Múc canh; Múc canh → Mời cả nhà. Một thứ tự theo luật của ván này là: Lấy bát → Xới cơm → Múc canh → Mời cả nhà.
+Hints: Việc nào phải làm trước tiên? // Nhìn luật của ván này: việc nào cần xong trước việc tiếp theo?
+Board summary: {"kind": "planning-command-order", "commands": [{"id": "step-4", "text": "Mời cả nhà"}, {"id": "step-3", "text": "Múc canh"}, {"id": "step-2", "text": "Xới cơm"}, {"id": "step-1", "text": "Lấy bát"}], "before": [["step-1", "step-2"], ["step-2", "step-3"], ["step-3", "step-4"]]}
+Options: null
+Solution: ["step-1", "step-2", "step-3", "step-4"]
+
+=== [037/144] D079-bonus-vi68 | Day 079 | Slot bonus | g02-t2 | spatial-rotation ===
+Title: Theo dấu hình mẫu — Cây cầu gỗ
+Invitation: Cùng mình tưởng tượng hình mẫu khi xoay sang hướng mới sẽ ra hình nào nhé!
+Tutorial: Xoay thử hình trong suy nghĩ để tìm đúng vị trí mới của các ô.
+Explanation: Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình C.
+Hints: Mình xoay hình rồi mới lật qua gương, theo lời chỉ dẫn nhé. // Theo dõi một ô góc qua cả hai bước để so với các hình.
+Board summary: {"kind": "spatial-rotation", "shape": [{"x": 1, "y": 2}, {"x": 0, "y": 0}, {"x": 0, "y": 2}, {"x": 0, "y": 3}], "turn": "quarter-mirror"}
+Options: [{"id": "turn-e", "cells": [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 0, "y": 3}, {"x": 1, "y": 1}]}, {"id": "turn-b", "cells": [{"x": 0, "y": 1}, {"x": 1, "y": 0}, {"x": 1, "y": 1
+Solution: "turn-a"
+
+=== [038/144] D079-main-vi68 | Day 079 | Slot main | g07-t2 | flexibility-perspective ===
+Title: Cây cầu gỗ · Đứng ở chỗ bạn ấy
+Invitation: Hãy thử đổi góc nhìn và xác định hướng của đồ vật theo vị trí mới nha bạn!
+Tutorial: Bạn đứng vào vị trí người quan sát và chọn xem đồ vật ở phía nào nhé.
+Explanation: Từ vị trí bạn nhỏ đang hướng sang trái, đồ vật nằm ở bên trái.
+Hints: Hãy xoay đầu theo hướng bạn nhỏ nhìn. // Đồ vật ở trước mặt, sau lưng hay bên tay nào của bạn ấy?
+Board summary: {"kind": "flexibility-perspective", "width": 4, "height": 4, "viewer": {"x": 2, "y": 1, "facing": "west"}, "target": {"x": 2, "y": 2}}
+Options: ["left", "right", "ahead", "behind"]
+Solution: "left"
+
+=== [039/144] D080-bonus-vi68 | Day 080 | Slot bonus | g03-t2 | memory-position ===
+Title: Cây cầu gỗ · Ô nào đã sáng?
+Invitation: Hãy nhớ thật nhanh xem những ô nào vừa sáng lên trên bảng nha bạn!
+Tutorial: Bạn xem các ô sáng đèn; ô đã đánh dấu rồi thì bỏ qua, hãy bấm ô sáng đèn còn lại nhé.
+Explanation: Vị trí còn thiếu nằm ở hàng 4, cột 2.
+Hints: Có một ô sáng đã biến mất. // So bảng bây giờ với lúc đầu.
+Board summary: {"kind": "memory-position", "width": 4, "height": 4, "targets": [{"x": 3, "y": 2}, {"x": 0, "y": 0}, {"x": 1, "y": 3}], "revealed": [{"x": 3, "y": 2}, {"x": 0, "y": 0}], "mode": "missing", "displayMs": 1400}
+Options: [{"x": 3, "y": 2}, {"x": 1, "y": 3}, {"x": 2, "y": 1}, {"x": 0, "y": 0}]
+Solution: [{"x": 1, "y": 3}]
+
+=== [040/144] D080-main-vi68 | Day 080 | Slot main | g08-t2 | observation-two-traits ===
+Title: Hai đặc điểm — Cây cầu gỗ
+Invitation: Chào bạn, cùng mình tìm các hình có đủ hai đặc điểm trong thử thách này nhé!
+Tutorial: Tìm những người bạn mang đủ cả hai dấu hiệu nhận biết.
+Explanation: Các hình có đủ cả hai đặc điểm (hình là tròn và màu là cam) là: hình 2, hình 3, hình 4.
+Hints: Có hai đặc điểm cần tìm. // Chọn hình có cả hai đặc điểm, không chỉ một.
+Board summary: {"kind": "observation-two-traits", "items": [{"id": "item-1", "traits": {"hình": "tròn", "màu": "xanh", "kích cỡ": "nhỏ", "vị trí": "dưới"}}, {"id": "item-2", "traits": {"hình": "tròn", "màu": "cam", "kích cỡ": "nhỏ", "vị trí": "dưới"}}, {"id": "item-3", "traits": {"hình": "tròn", "màu": "cam", "kíc
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-2", "item-3", "item-4"]
+
+=== [041/144] D081-bonus-vi68 | Day 081 | Slot bonus | g04-t3 | reasoning-missing-info ===
+Title: Thông tin còn thiếu — Cây cầu gỗ
+Invitation: Cùng mình tìm mẩu thông tin còn thiếu để hoàn thành bài toán suy luận nhé!
+Tutorial: Chọn đúng mẩu thông tin giúp chúng mình nhận ra người bạn này ngay lập tức.
+Explanation: Manh mối còn thiếu giúp nhận diện chính xác bạn này là: hình là tròn.
+Hints: Nhìn xem có mấy bạn giống bạn cần tìm. // Cần thêm một manh mối để chỉ còn lại đúng một bạn.
+Board summary: {"kind": "reasoning-missing-info", "scenario": "Mình cần biết chắc một bạn là ai.", "candidates": [{"id": "candidate-1", "traits": {"màu": "xanh", "hình": "tròn", "kích cỡ": "to"}}, {"id": "candidate-2", "traits": {"màu": "xanh", "hình": "tam giác", "kích cỡ": "to"}}, {"id": "candidate-3", "traits":
+Options: [{"id": "fact-a", "trait": "hình", "value": "tròn"}, {"id": "fact-c", "trait": "màu", "value": "vàng"}, {"id": "fact-b", "trait": "hình", "value": "tam giác"}]
+Solution: "fact-a"
+
+=== [042/144] D081-main-vi68 | Day 081 | Slot main | g01-t3 | rule-transform ===
+Title: Cây cầu gỗ: Chiếc máy kỳ diệu
+Invitation: Bạn thử đoán xem khi cho số mới vào máy thì kết quả đầu ra sẽ là bao nhiêu?
+Tutorial: Bạn xem các ví dụ chiếc máy làm mẫu, rồi chọn kết quả cho số mới nhé.
+Explanation: Quy tắc biến đổi của máy là đảo ngược thứ tự các chữ số. Khi đưa số 248 vào máy, ta thu được kết quả là 842.
+Hints: Nhìn một ví dụ: số đi vào là gì, số đi ra là gì? // Thử với ví dụ thứ hai xem máy làm giống nhau không.
+Board summary: {"kind": "rule-transform", "examples": [{"input": "217", "output": "712"}, {"input": "224", "output": "422"}, {"input": "231", "output": "132"}], "query": "248", "transform": "reverse"}
+Options: ["843", "842", "841"]
+Solution: "842"
+
+=== [043/144] D082-bonus-vi68 | Day 082 | Slot bonus | g05-t3 | quantity-target ===
+Title: Vừa đúng mục tiêu · Cây cầu gỗ
+Invitation: Hôm nay mình cùng gom đủ số mục tiêu nhé, bạn cộng nhẩm thử xem nào!
+Tutorial: Bấm chọn các món để tổng đúng mục tiêu, tối đa 2 món nhé.
+Explanation: Chọn các món (4 và 7) để đạt tổng đúng bằng 11.
+Hints: Cộng thử hai món, xem có đủ 11 không. // Bạn chỉ được chọn nhiều nhất 2 món.
+Board summary: {"kind": "quantity-target", "items": [{"id": "item-1", "value": 4}, {"id": "item-2", "value": 7}, {"id": "item-3", "value": 6}, {"id": "item-4", "value": 2}], "target": 11, "maxItems": 2, "mode": "any"}
+Options: ["item-1", "item-2", "item-3", "item-4"]
+Solution: ["item-1", "item-2"]
+
+=== [044/144] D082-main-vi68 | Day 082 | Slot main | g02-t3 | spatial-symmetry ===
+Title: Cây cầu gỗ · Chiếc gương thần
+Invitation: Hai bên gương đang chờ bạn hoàn thành để đối xứng thật đẹp đấy!
+Tutorial: So từng cặp ô đối xứng qua đường kẻ giữa để tìm đúng vị trí.
+Explanation: Ô cần chọn nằm ở hàng 1, cột 2 để hình hoàn toàn đối xứng.
+Hints: Hai bên của tranh phải giống nhau như soi gương. // Tìm chỗ hai bên không giống nhau.
+Board summary: {"kind": "spatial-symmetry", "grid": [["sao", "hoa", "mây", "quả"], ["mây", "quả", "mây", "mây"], ["mây", "quả", "mây", "mây"], ["sao", "lá", "mây", "quả"]], "axis": "horizontal", "mode": "find-break"}
+Options: [{"x": 2, "y": 2}, {"x": 3, "y": 3}, {"x": 1, "y": 0}]
+Solution: {"x": 1, "y": 0}
+
+=== [045/144] D083-bonus-vi68 | Day 083 | Slot bonus | g06-t3 | planning-fix-step ===
+Title: Sửa bước sai — Cây cầu gỗ
+Invitation: Cùng mình sửa lỗi cho bạn robot để bạn ấy hoàn thành chuyến đi xuất sắc nào!
+Tutorial: Xem lại từng bước đi của robot và sửa lại một bước sai duy nhất nha.
+Explanation: Đổi bước 3 thành hướng "bên phải" để robot về đích an toàn.
+Hints: Robot cần đi từ chỗ xuất phát đến đích. // Có một lệnh đang đi ngược hướng cần đi.
+Board summary: {"kind": "planning-fix-step", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 3, "y": 2}, "walls": [], "commands": ["right", "right", "up", "down", "down"]}
+Options: [{"id": "fix-b", "index": 2, "command": "down"}, {"id": "fix-d", "index": 2, "command": "up"}, {"id": "fix-c", "index": 2, "command": "left"}, {"id": "fix-a", "index": 2, "command"
+Solution: "fix-a"
+
+=== [046/144] D083-main-vi68 | Day 083 | Slot main | g03-t3 | memory-change ===
+Title: Cây cầu gỗ · Có gì khác rồi?
+Invitation: Cùng mình so sánh hai bức tranh xem điều gì vừa mới thay đổi nhé!
+Tutorial: So sánh hai bức tranh để tìm ra một điểm khác lạ vừa xuất hiện.
+Explanation: Ở cảnh sau, đối tượng đã đổi màu thành cá xanh.
+Hints: Các bạn vẫn đủ và đứng yên. // Nhìn xem ai vừa đổi màu.
+Board summary: {"kind": "memory-change", "before": ["quả đỏ", "cá đỏ", "lá đỏ", "sao đỏ"], "after": ["quả đỏ", "cá xanh", "lá đỏ", "sao đỏ"], "change": "property"}
+Options: ["quả", "hoa", "cá", "cá xanh"]
+Solution: "cá xanh"
+
+=== [047/144] D084-bonus-vi68 | Day 084 | Slot bonus | g07-t3 | flexibility-alternative ===
+Title: Đi lối khác thử xem · Cây cầu gỗ
+Invitation: Con đường quen thuộc đã bị chặn, bạn tìm một lối đi khác cùng mình nhé!
+Tutorial: Bạn tìm một con đường mới hợp lệ mà không đi trùng với đường cũ nhé.
+Explanation: Đường đi mới đã dẫn từ điểm xuất phát đến đích mà không bị trùng với đường ban đầu và tránh được các ô tường.
+Hints: Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé. // Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích.
+Board summary: {"kind": "flexibility-alternative", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 3, "y": 1}, {"x": 3, "y": 2}], "knownPath": [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 2, "y": 2}, {"x": 2, "y": 3}, {"x": 3, "y": 3},
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}, {"x": 3, "y": 0}, {"x": 4, "y": 0}, {"x": 4, "y": 1}, {"x": 4, "y": 2}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [048/144] D085-bonus-vi68 | Day 085 | Slot bonus | g08-t3 | observation-implausible ===
+Title: Chi tiết bất hợp lý — Bản đồ khu rừng
+Invitation: Chào bạn, bạn hãy tinh mắt tìm ra tình huống chưa hợp lý cùng mình nhé!
+Tutorial: Tìm chi tiết không cùng nhóm hoặc không đúng cách thức thường ngày nha.
+Explanation: Tình huống 2: "Bạn chạy băng qua bên ngoài vạch kẻ an toàn" có đặc điểm "đi ngoài vạch", trong khi luật của ván này yêu cầu "đi đúng vạch".
+Hints: Việc nào ở đây không nên làm? // Nhìn xem việc nào lạ so với các việc còn lại.
+Board summary: {"kind": "observation-implausible", "scene": [{"id": "scene-1", "text": "Bạn bước trên vạch kẻ trắng dành cho người đi bộ", "traits": {"nhóm": "đồ chơi", "bước": "đi đúng vạch"}}, {"id": "scene-2", "text": "Bạn chạy băng qua bên ngoài vạch kẻ an toàn", "traits": {"nhóm": "đồ chơi", "bước": "đi ngoài
+Options: ["scene-1", "scene-4", "scene-3", "scene-2"]
+Solution: "scene-2"
+
+=== [049/144] D145-bonus-vi68 | Day 145 | Slot bonus | g04-t1 | reasoning-elimination ===
+Title: Ngọn hải đăng · Chỉ còn một bạn
+Invitation: Thử thách suy luận loại trừ hôm nay sẽ giúp bạn rèn luyện tư duy logic đấy!
+Tutorial: Xem kỹ từng lời gợi ý để tìm ra đúng người bạn bí mật.
+Explanation: Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 1 (màu cam, hình sao, kích cỡ to).
+Hints: Đọc manh mối đầu tiên thật kỹ. // Bạn nào không khớp manh mối thì bấm Gạch bớt nhé.
+Board summary: {"kind": "reasoning-elimination", "candidates": [{"id": "candidate-1", "traits": {"màu": "cam", "hình": "sao", "kích cỡ": "to"}}, {"id": "candidate-2", "traits": {"màu": "tím", "hình": "tròn", "kích cỡ": "nhỏ"}}, {"id": "candidate-4", "traits": {"màu": "tím", "hình": "thoi", "kích cỡ": "nhỏ"}}, {"id
+Options: ["candidate-1", "candidate-2", "candidate-4", "candidate-3"]
+Solution: "candidate-1"
+
+=== [050/144] D145-main-vi68 | Day 145 | Slot main | g01-t1 | rule-sequence ===
+Title: Đoán phần kế tiếp — Ngọn hải đăng
+Invitation: Mình có dãy quy luật rất thú vị, bạn xem nhịp điệu của nó nhé!
+Tutorial: Đọc to các phần theo thứ tự, tìm xem phần nào đến tiếp theo.
+Explanation: Phần tiếp theo hợp với nhịp của chuỗi là nắng.
+Hints: Nhìn xem hai hình nào cứ thay nhau xuất hiện. // Đọc nhỏ cả dãy: cái này, cái kia, cái này, cái kia.
+Board summary: {"kind": "rule-sequence", "sequence": ["mây", "nắng", "mây", "nắng", "mây"], "ruleKind": "alternating"}
+Options: ["hoa", "lá", "nắng"]
+Solution: "nắng"
+
+=== [051/144] D146-bonus-vi68 | Day 146 | Slot bonus | g05-t1 | quantity-balance ===
+Title: Ngọn hải đăng: Chiếc cân thăng bằng
+Invitation: Hai chiếc đĩa cân đang nghiêng, bạn giúp mình tìm số cân để thăng bằng nhé!
+Tutorial: Tìm quả cân còn thiếu để hai bên cân thăng bằng thật đẹp.
+Explanation: Cần thêm 2 vào đĩa nhẹ hơn để hai đĩa cân cân bằng.
+Hints: Xem đĩa nào nặng hơn. // Hai đĩa chênh nhau bao nhiêu thì cần thêm bấy nhiêu.
+Board summary: {"kind": "quantity-balance", "left": [{"id": "left-1", "weight": 1}, {"id": "left-2", "weight": 6}], "right": [{"id": "right-1", "weight": 5}], "mode": "compare"}
+Options: [2, 3, 4]
+Solution: 2
+
+=== [052/144] D146-main-vi68 | Day 146 | Slot main | g02-t1 | spatial-silhouette ===
+Title: Ngọn hải đăng: Bóng của hình nào?
+Invitation: Bạn hãy nhìn kỹ hình mẫu và tìm chiếc bóng khớp nhất trong các lựa chọn.
+Tutorial: So từng ô của bóng với hình mẫu để tìm chiếc bóng khớp nhất.
+Explanation: Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.
+Hints: Nhìn thật kỹ hình mẫu trước nhé. // Hình đúng không bị xoay và cũng không bị dịch sang chỗ khác.
+Board summary: {"kind": "spatial-silhouette", "target": [{"x": 0, "y": 0}, {"x": 0, "y": 3}, {"x": 0, "y": 1}, {"x": 3, "y": 2}]}
+Options: [{"id": "shape-a", "cells": [{"x": 0, "y": 0}, {"x": 0, "y": 3}, {"x": 0, "y": 1}, {"x": 3, "y": 2}]}, {"id": "shape-d", "cells": [{"x": 0, "y": 0}, {"x": 0, "y": 3}, {"x": 0, "y":
+Solution: "shape-a"
+
+=== [053/144] D147-bonus-vi68 | Day 147 | Slot bonus | g06-t1 | path-planning ===
+Title: Ngọn hải đăng · Đi sao cho khéo?
+Invitation: Hãy tìm một lối đi an toàn, tránh các bức tường và đi tới đích nha!
+Tutorial: Nhớ ghé qua ngôi sao số 1 trước khi tới ngôi sao số 2 rồi mới về đích nha.
+Explanation: Đường đi đúng ghé ngôi sao số 1 trước, rồi ngôi sao số 2, sau đó mới về đích mà không chạm tường.
+Hints: Hai ngôi sao có số một và số hai. // Đi tới sao số một trước, sao số hai sau, rồi mới về đích.
+Board summary: {"kind": "path-planning", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 3, "y": 1}], "waypoints": [{"id": "key", "x": 1, "y": 1}, {"id": "door", "x": 3, "y": 3}], "waypointOrder": "ordered"}
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 1, "y": 1}, {"x": 2, "y": 1}, {"x": 2, "y": 2}, {"x": 3, "y": 2}, {"x": 3, "y": 3}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [054/144] D147-main-vi68 | Day 147 | Slot main | g03-t1 | memory-sequence ===
+Title: Nhớ thứ tự — Ngọn hải đăng
+Invitation: Chào bạn, cùng mình chơi trò nhớ thứ tự các đồ vật thật vui nhé!
+Tutorial: Đọc thầm từng từ theo thứ tự để nhớ và xếp lại thật đúng.
+Explanation: Thứ tự đúng theo nhóm là thuyền → táo → cá → trăng.
+Hints: Chia dãy thành từng nhóm nhỏ. // Nhớ từng nhóm một, rồi ghép lại.
+Board summary: {"kind": "memory-sequence", "sequence": ["thuyền", "táo", "cá", "trăng"], "displayMs": 1200, "mode": "grouped", "groupSize": 2}
+Options: ["táo", "trăng", "thuyền", "cá"]
+Solution: ["thuyền", "táo", "cá", "trăng"]
+
+=== [055/144] D148-bonus-vi68 | Day 148 | Slot bonus | g07-t1 | flexibility-classify ===
+Title: Bánh răng · Ai hợp luật mới?
+Invitation: Cùng mình rèn luyện sự linh hoạt khi chuyển sang cách phân loại mới nào bạn!
+Tutorial: Bạn phân loại các hình theo đặc điểm mới mà đề bài yêu cầu nhé.
+Explanation: Theo quy tắc mới (kích cỡ là "to"), các hình phù hợp là: hình 1, hình 4, hình 5.
+Hints: Đọc luật mới ở phía trên thật kỹ. // Chỉ chọn những hình có kích cỡ đúng như luật.
+Board summary: {"kind": "flexibility-classify", "items": [{"id": "item-1", "traits": {"hình": "vuông", "màu": "xanh", "kích cỡ": "to"}}, {"id": "item-2", "traits": {"hình": "tròn", "màu": "cam", "kích cỡ": "nhỏ"}}, {"id": "item-3", "traits": {"hình": "tam giác", "màu": "tím", "kích cỡ": "nhỏ"}}, {"id": "item-4", "
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-1", "item-4", "item-5"]
+
+=== [056/144] D148-main-vi68 | Day 148 | Slot main | g04-t2 | reasoning-if-then ===
+Title: Bánh răng · Luật nếu thì
+Invitation: Hãy ghép nối các quy tắc suy luận để tìm ra kết luận chắc chắn nhất nào!
+Tutorial: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Bạn xem những điều đã biết và luật Nếu - Thì để tìm kết luận đúng nhé.
+Explanation: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: "nắng gắt" → "khát nước"; "khát nước" → "uống nước". Từ thẻ "nắng gắt", áp dụng luật để suy ra thẻ "khát nước".
+Hints: Nhìn điều đã biết ở phía trên. // Luật nào bắt đầu bằng điều đó thì giúp bạn tìm ra điều mới.
+Board summary: {"kind": "reasoning-if-then", "rules": [{"if": "nắng gắt", "then": "khát nước"}, {"if": "khát nước", "then": "uống nước"}], "facts": ["nắng gắt"]}
+Options: ["buổi sáng", "khát nước", "mỉm cười", "mặt trời"]
+Solution: "khát nước"
+
+=== [057/144] D149-bonus-vi68 | Day 149 | Slot bonus | g08-t1 | observation-difference ===
+Title: Bánh răng · Hai tranh, vài điểm khác
+Invitation: Chào bạn, hãy soi thật kỹ hai bức tranh và tìm các điểm khác cùng mình nhé!
+Tutorial: Nhìn thật tinh mắt xem những ô nào ở tranh bên phải đã bị đổi khác nha.
+Explanation: Điểm khác nhau giữa hai hình nằm ở hàng 4, cột 3 và hàng 3, cột 3.
+Hints: So từng hàng của hai hình nhé. // Nhìn kỹ từng ô: hai ô cùng chỗ có giống nhau không?
+Board summary: {"kind": "observation-difference", "left": [["mây", "nấm", "hoa", "quả"], ["cỏ", "nấm", "lá", "cỏ"], ["cỏ", "quả", "cỏ", "lá"], ["cỏ", "lá", "lá", "hoa"]], "right": [["mây", "nấm", "hoa", "quả"], ["cỏ", "nấm", "lá", "cỏ"], ["cỏ", "quả", "lá", "lá"], ["cỏ", "lá", "hoa", "hoa"]]}
+Options: [{"x": 0, "y": 2}, {"x": 0, "y": 3}, {"x": 1, "y": 3}, {"x": 2, "y": 2}, {"x": 2, "y": 3}]
+Solution: [{"x": 2, "y": 3}, {"x": 2, "y": 2}]
+
+=== [058/144] D149-main-vi68 | Day 149 | Slot main | g05-t2 | quantity-grouping ===
+Title: Bánh răng · Nhóm nào đủ?
+Invitation: Thử thách chia nhóm hôm nay rất vui và hữu ích, bạn cùng mình làm nhé!
+Tutorial: Đếm xem chia được mấy nhóm đủ và còn thừa lại mấy bạn nha.
+Explanation: Số nhóm trọn vẹn gom được là 5 nhóm.
+Hints: Gom các đồ vật thành từng nhóm nhỏ. // Đếm xem gom được mấy nhóm.
+Board summary: {"kind": "quantity-grouping", "total": 11, "groupSize": 2, "mode": "floor"}
+Options: [3, 4, 5, 2]
+Solution: 5
+
+=== [059/144] D150-bonus-vi68 | Day 150 | Slot bonus | g01-t2 | rule-error ===
+Title: Bánh răng · Ai đứng nhầm chỗ?
+Invitation: Trong chuỗi này có một vị trí bị đặt nhầm, bạn tìm giúp mình nhé!
+Tutorial: Quan sát từng bước của dãy và chọn phần đứng nhầm chỗ nhé.
+Explanation: Vị trí thứ 3 (lá) chưa đúng với quy luật của chuỗi.
+Hints: Tìm nhóm nhỏ cứ lặp lại mãi. // So nhóm đầu với từng nhóm sau để thấy chỗ lệch.
+Board summary: {"kind": "rule-error", "sequence": ["sao", "lá", "lá", "lá", "sao"], "ruleKind": "repeat", "period": 2}
+Options: null
+Solution: 2
+
+=== [060/144] D150-main-vi68 | Day 150 | Slot main | g06-t2 | planning-command-order ===
+Title: Xếp lệnh — Bánh răng
+Invitation: Hãy sắp xếp các câu lệnh để mọi việc diễn ra tuần tự từ đầu đến cuối nha!
+Tutorial: Luật riêng của ván này (→ là làm trước): Bật đèn → Ngồi xuống; Ngồi xuống → Mở sách; Mở sách → Đọc bài. Mọi thứ tự giữ đủ luật đều được.
+Explanation: Luật riêng của ván này (→ là làm trước): Bật đèn → Ngồi xuống; Ngồi xuống → Mở sách; Mở sách → Đọc bài. Một thứ tự theo luật của ván này là: Bật đèn → Ngồi xuống → Mở sách → Đọc bài.
+Hints: Việc nào phải làm trước tiên? // Nhìn luật của ván này: việc nào cần xong trước việc tiếp theo?
+Board summary: {"kind": "planning-command-order", "commands": [{"id": "step-3", "text": "Mở sách"}, {"id": "step-2", "text": "Ngồi xuống"}, {"id": "step-1", "text": "Bật đèn"}, {"id": "step-4", "text": "Đọc bài"}], "before": [["step-1", "step-2"], ["step-2", "step-3"], ["step-3", "step-4"]]}
+Options: null
+Solution: ["step-1", "step-2", "step-3", "step-4"]
+
+=== [061/144] D151-bonus-vi68 | Day 151 | Slot bonus | g02-t2 | spatial-rotation ===
+Title: Bánh răng · Hình mới trông ra sao?
+Invitation: Thử thách xoay hình hôm nay giúp bạn rèn luyện trí tưởng tượng không gian đấy!
+Tutorial: Xem hình quay sang hướng nào rồi tìm hình tương ứng bên dưới.
+Explanation: Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình A.
+Hints: Hình này bị lật, không chỉ xoay. // Nhìn một ô ở góc hình mẫu xem nó nhảy sang chỗ nào.
+Board summary: {"kind": "spatial-rotation", "shape": [{"x": 1, "y": 0}, {"x": 0, "y": 1}, {"x": 0, "y": 2}, {"x": 0, "y": 3}], "turn": "mirror"}
+Options: [{"id": "turn-a", "cells": [{"x": 0, "y": 0}, {"x": 1, "y": 1}, {"x": 1, "y": 2}, {"x": 1, "y": 3}]}, {"id": "turn-e", "cells": [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 0, "y": 2
+Solution: "turn-a"
+
+=== [062/144] D151-main-vi68 | Day 151 | Slot main | g07-t2 | flexibility-perspective ===
+Title: Xoay người theo bạn nhỏ · Bánh răng
+Invitation: Cùng mình luyện khả năng tưởng tượng khi nhìn thế giới từ góc độ của bạn khác nào!
+Tutorial: Bạn đứng vào vị trí người quan sát và chọn xem đồ vật ở phía nào nhé.
+Explanation: Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở phía trước.
+Hints: Nhìn mũi tên của bạn nhỏ. // Phía mũi tên chỉ là phía trước của bạn ấy.
+Board summary: {"kind": "flexibility-perspective", "width": 4, "height": 4, "viewer": {"x": 1, "y": 2, "facing": "south"}, "target": {"x": 1, "y": 3}}
+Options: ["left", "right", "ahead", "behind"]
+Solution: "ahead"
+
+=== [063/144] D152-bonus-vi68 | Day 152 | Slot bonus | g03-t2 | memory-position ===
+Title: Bánh răng · Ô nào đã sáng?
+Invitation: Cùng mình thử tài siêu trí nhớ với bảng vị trí ngày hôm nay nào!
+Tutorial: Nhớ xem ngôi sao sáng ở ô nào; ô đã đánh dấu rồi, bạn bấm ô sáng đèn còn lại nha.
+Explanation: Vị trí còn thiếu nằm ở hàng 1, cột 1.
+Hints: Có một ô sáng đã biến mất. // So bảng bây giờ với lúc đầu.
+Board summary: {"kind": "memory-position", "width": 4, "height": 4, "targets": [{"x": 0, "y": 2}, {"x": 3, "y": 3}, {"x": 0, "y": 0}], "revealed": [{"x": 0, "y": 2}, {"x": 3, "y": 3}], "mode": "missing", "displayMs": 1400}
+Options: [{"x": 0, "y": 2}, {"x": 0, "y": 0}, {"x": 3, "y": 2}, {"x": 3, "y": 3}]
+Solution: [{"x": 0, "y": 0}]
+
+=== [064/144] D152-main-vi68 | Day 152 | Slot main | g08-t2 | observation-two-traits ===
+Title: Hai đặc điểm — Bánh răng
+Invitation: Thử thách quan sát hai đặc điểm hôm nay sẽ rèn cho bạn thói quen bao quát đấy!
+Tutorial: Bạn chọn mọi hình có đủ cả hai đặc điểm mà đề bài nhắc tới nhé.
+Explanation: Các hình có đủ cả hai đặc điểm (hình là tam giác và vị trí là trên) là: hình 3.
+Hints: Có hai đặc điểm cần tìm. // Chọn hình có cả hai đặc điểm, không chỉ một.
+Board summary: {"kind": "observation-two-traits", "items": [{"id": "item-1", "traits": {"hình": "thoi", "màu": "xanh", "kích cỡ": "to", "vị trí": "trên"}}, {"id": "item-2", "traits": {"hình": "sao", "màu": "tím", "kích cỡ": "nhỏ", "vị trí": "dưới"}}, {"id": "item-3", "traits": {"hình": "tam giác", "màu": "đỏ", "kí
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-3"]
+
+=== [065/144] D153-bonus-vi68 | Day 153 | Slot bonus | g04-t3 | reasoning-missing-info ===
+Title: Thông tin còn thiếu — Bánh răng
+Invitation: Cùng mình tìm mẩu thông tin còn thiếu để hoàn thành bài toán suy luận nhé!
+Tutorial: Bạn xem các gợi ý đã có và chọn thêm một điều cần biết để tìm ra bạn nhỏ nhé.
+Explanation: Manh mối còn thiếu giúp nhận diện chính xác bạn này là: hình là sao.
+Hints: Nhìn xem có mấy bạn giống bạn cần tìm. // Cần thêm một manh mối để chỉ còn lại đúng một bạn.
+Board summary: {"kind": "reasoning-missing-info", "scenario": "Mình cần biết chắc một bạn là ai.", "candidates": [{"id": "candidate-1", "traits": {"màu": "vàng", "hình": "sao", "kích cỡ": "to"}}, {"id": "candidate-2", "traits": {"màu": "vàng", "hình": "tam giác", "kích cỡ": "to"}}, {"id": "candidate-3", "traits": 
+Options: [{"id": "fact-c", "trait": "màu", "value": "xanh"}, {"id": "fact-b", "trait": "hình", "value": "tam giác"}, {"id": "fact-a", "trait": "hình", "value": "sao"}]
+Solution: "fact-a"
+
+=== [066/144] D153-main-vi68 | Day 153 | Slot main | g01-t3 | rule-transform ===
+Title: Bánh răng: Chiếc máy kỳ diệu
+Invitation: Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!
+Tutorial: Tìm quy tắc biến đổi của cỗ máy qua các số mẫu rồi tính kết quả nha.
+Explanation: Quy tắc biến đổi của máy là gấp đôi giá trị. Khi đưa số 396 vào máy, ta thu được kết quả là 792.
+Hints: Nhìn một ví dụ: số đi vào là gì, số đi ra là gì? // Thử với ví dụ thứ hai xem máy làm giống nhau không.
+Board summary: {"kind": "rule-transform", "examples": [{"input": "365", "output": "730"}, {"input": "372", "output": "744"}, {"input": "379", "output": "758"}], "query": "396", "transform": "double"}
+Options: ["794", "792", "791"]
+Solution: "792"
+
+=== [067/144] D154-bonus-vi68 | Day 154 | Slot bonus | g05-t3 | quantity-target ===
+Title: Chọn món vào giỏ · Bánh răng
+Invitation: Cùng mình nhặt các món đồ vào giỏ để đạt được tổng điểm mong muốn nào!
+Tutorial: Chọn các món sao cho tổng không vượt quá mục tiêu và là lớn nhất nhé.
+Explanation: Gom 2 và 6 để có tổng là 8, không vượt quá mục tiêu 8.
+Hints: Cộng dần nhưng đừng vượt quá 8. // Thử món lớn trước, rồi thêm món nhỏ.
+Board summary: {"kind": "quantity-target", "items": [{"id": "item-1", "value": 7}, {"id": "item-2", "value": 2}, {"id": "item-3", "value": 6}, {"id": "item-4", "value": 4}], "target": 8, "maxItems": 2, "mode": "not-over"}
+Options: ["item-1", "item-2", "item-3", "item-4"]
+Solution: ["item-2", "item-3"]
+
+=== [068/144] D154-main-vi68 | Day 154 | Slot main | g02-t3 | spatial-symmetry ===
+Title: Bánh răng · Khám phá hai bên tranh
+Invitation: Thử thách hoàn thành đối xứng hôm nay sẽ thử tài khéo mắt của bạn!
+Tutorial: Bạn tìm ô còn thiếu hoặc ô đang làm mất vẻ đối xứng qua chiếc gương nhé.
+Explanation: Ô cần chọn nằm ở hàng 1, cột 1 để hình hoàn toàn đối xứng.
+Hints: Nhìn đường chia đôi ở giữa tranh. // Mỗi ô có một ô bạn ở bên kia đường, giống hệt nó.
+Board summary: {"kind": "spatial-symmetry", "grid": [[null, "sao", "mây", "hoa"], ["lá", "sao", "mây", "mây"], ["lá", "sao", "mây", "mây"], ["quả", "sao", "mây", "hoa"]], "axis": "horizontal", "mode": "fill"}
+Options: [{"x": 0, "y": 0}, {"x": 3, "y": 0}, {"x": 1, "y": 1}]
+Solution: {"x": 0, "y": 0}
+
+=== [069/144] D155-bonus-vi68 | Day 155 | Slot bonus | g06-t3 | planning-fix-step ===
+Title: Bắt lỗi cho robot — Dây chuyền
+Invitation: Cùng mình sửa lỗi cho bạn robot để bạn ấy hoàn thành chuyến đi xuất sắc nào!
+Tutorial: Xem lại từng bước đi của robot và sửa lại một bước sai duy nhất nha.
+Explanation: Đổi bước 3 thành hướng "bên phải" để robot về đích an toàn.
+Hints: Đi theo từng mũi tên của robot. // Dừng ở chỗ robot bắt đầu đi lạc xa khỏi đích.
+Board summary: {"kind": "planning-fix-step", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 3, "y": 2}, "walls": [], "commands": ["right", "right", "up", "down", "down"]}
+Options: [{"id": "fix-b", "index": 2, "command": "down"}, {"id": "fix-a", "index": 2, "command": "right"}, {"id": "fix-c", "index": 2, "command": "left"}, {"id": "fix-d", "index": 2, "comma
+Solution: "fix-a"
+
+=== [070/144] D155-main-vi68 | Day 155 | Slot main | g03-t3 | memory-change ===
+Title: Dây chuyền: Mắt tinh phát hiện
+Invitation: Giữa hai cảnh vừa có một sự thay đổi nhỏ, bạn có nhận ra không nào?
+Tutorial: Bạn xem cảnh trước và cảnh sau, rồi chọn điều vừa mới thay đổi nhé.
+Explanation: Hai bạn cá và sao đã đổi chỗ cho nhau.
+Hints: Các bạn vẫn đủ, chỉ đứng khác chỗ. // Nhìn từng chỗ đứng, xem ai đã đổi chỗ.
+Board summary: {"kind": "memory-change", "before": ["sao", "cá", "quả", "hoa"], "after": ["cá", "sao", "quả", "hoa"], "change": "swapped"}
+Options: ["quả|sao", "cá|sao", "cá|hoa", "cá|quả"]
+Solution: "cá|sao"
+
+=== [071/144] D156-bonus-vi68 | Day 156 | Slot bonus | g07-t3 | flexibility-alternative ===
+Title: Đi lối khác thử xem · Dây chuyền
+Invitation: Hãy tìm một con đường mới vẫn đưa chúng mình về đích an toàn nha bạn!
+Tutorial: Tìm lối đi khác đưa bạn nhỏ về đích an toàn nha bạn.
+Explanation: Đường đi mới đã dẫn từ điểm xuất phát đến đích mà không bị trùng với đường ban đầu và tránh được các ô tường.
+Hints: Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé. // Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích.
+Board summary: {"kind": "flexibility-alternative", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 2, "y": 1}, {"x": 3, "y": 1}], "knownPath": [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 0, "y": 2}, {"x": 0, "y": 3}, {"x": 0, "y": 4}, {"x": 1, "y": 4}, {"x": 2, "y": 4},
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}, {"x": 3, "y": 0}, {"x": 4, "y": 0}, {"x": 4, "y": 1}, {"x": 4, "y": 2}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [072/144] D157-bonus-vi68 | Day 157 | Slot bonus | g08-t3 | observation-implausible ===
+Title: Chi tiết bất hợp lý — Dây chuyền
+Invitation: Thử thách chi tiết bất hợp lý hôm nay sẽ giúp bạn rèn óc quan sát đời sống đấy!
+Tutorial: Bạn tìm tình huống có chi tiết chưa đúng với quy tắc chung nhé.
+Explanation: Tình huống 4: "Bạn đặt cốc trà sữa kem phô mai lên tập vở" có đặc điểm "đồ ăn", trong khi luật của ván này yêu cầu "đồ dùng học tập".
+Hints: Đọc luật chuẩn ở trên. // Tìm tình huống làm khác luật.
+Board summary: {"kind": "observation-implausible", "scene": [{"id": "scene-1", "text": "Bạn đang nắn nót viết bài vào vở ô ly", "traits": {"nhóm": "đồ dùng học tập", "bước": "đi đúng hướng"}}, {"id": "scene-2", "text": "Bạn đang dùng thước kẻ vẽ hình chữ nhật", "traits": {"nhóm": "đồ dùng học tập", "bước": "đi đún
+Options: ["scene-1", "scene-2", "scene-3", "scene-4"]
+Solution: "scene-4"
+
+=== [073/144] D217-bonus-vi68 | Day 217 | Slot bonus | g04-t1 | reasoning-elimination ===
+Title: Bóng và ánh sáng · Bạn nhỏ bí ẩn là ai?
+Invitation: Cùng mình làm thám tử nhí suy luận theo các dấu hiệu gợi ý nào bạn!
+Tutorial: Gạch dần những hình không đúng gợi ý, hình còn lại chính là đáp án.
+Explanation: Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 4 (màu xanh, hình tròn, kích cỡ to).
+Hints: Đọc manh mối đầu tiên thật kỹ. // Bạn nào không khớp manh mối thì bấm Gạch bớt nhé.
+Board summary: {"kind": "reasoning-elimination", "candidates": [{"id": "candidate-4", "traits": {"màu": "hồng", "hình": "vuông", "kích cỡ": "nhỏ"}}, {"id": "candidate-2", "traits": {"màu": "vàng", "hình": "tam giác", "kích cỡ": "nhỏ"}}, {"id": "candidate-3", "traits": {"màu": "tím", "hình": "sao", "kích cỡ": "to"}
+Options: ["candidate-4", "candidate-2", "candidate-3", "candidate-1"]
+Solution: "candidate-1"
+
+=== [074/144] D217-main-vi68 | Day 217 | Slot main | g01-t1 | rule-sequence ===
+Title: Nhịp điệu của dãy · Bóng và ánh sáng
+Invitation: Chào bạn, thử thách điền tiếp vào dãy quy luật đang chờ bạn trổ tài đấy!
+Tutorial: Đọc to các phần theo thứ tự, tìm xem phần nào đến tiếp theo.
+Explanation: Quy luật là mỗi số tăng thêm 3. Số tiếp theo là 16.
+Hints: Nhìn các số từ trái sang phải nhé. // Mỗi số hơn số ngay trước nó bao nhiêu nhỉ?
+Board summary: {"kind": "rule-sequence", "sequence": ["1", "4", "7", "10", "13"], "ruleKind": "increment"}
+Options: ["13", "16", "19", "17"]
+Solution: "16"
+
+=== [075/144] D218-bonus-vi68 | Day 218 | Slot bonus | g05-t1 | quantity-balance ===
+Title: Hình khối · Hai đĩa cân
+Invitation: Chào bạn, cùng mình tìm quả cân còn thiếu để hai đĩa cân bằng nhau nhé!
+Tutorial: Một quả cân sẽ được thay bằng quả mới; bạn tìm quả nặng bao nhiêu để hai đĩa cân bằng nhé.
+Explanation: Thay quả cân thứ 1 ở đĩa Trái bằng quả cân nặng 4 thì hai đĩa cân sẽ cân bằng.
+Hints: Tính tổng mỗi đĩa cân nhé. // Quả cân được đánh dấu sẽ đổi thành quả mới.
+Board summary: {"kind": "quantity-balance", "left": [{"id": "left-1", "weight": 2}, {"id": "left-2", "weight": 3}], "right": [{"id": "right-1", "weight": 7}], "mode": "replace", "replaceId": "left-1"}
+Options: [3, 4, 5]
+Solution: 4
+
+=== [076/144] D218-main-vi68 | Day 218 | Slot main | g02-t1 | spatial-silhouette ===
+Title: Ghép bóng — Hình khối
+Invitation: Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!
+Tutorial: Bạn chọn chiếc bóng có đúng các ô và hình dạng như hình mẫu nhé.
+Explanation: Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình C.
+Hints: Đếm xem hình mẫu có bao nhiêu ô. // Chọn hình có cùng số ô, rồi nhìn xem hình dạng có giống không.
+Board summary: {"kind": "spatial-silhouette", "target": [{"x": 1, "y": 3}, {"x": 0, "y": 0}, {"x": 3, "y": 2}, {"x": 1, "y": 2}]}
+Options: [{"id": "shape-d", "cells": [{"x": 1, "y": 3}, {"x": 0, "y": 0}, {"x": 3, "y": 2}]}, {"id": "shape-c", "cells": [{"x": 0, "y": 1}, {"x": 1, "y": 1}, {"x": 1, "y": 3}, {"x": 3, "y":
+Solution: "shape-a"
+
+=== [077/144] D219-bonus-vi68 | Day 219 | Slot bonus | g06-t1 | path-planning ===
+Title: Hình khối: Lối đi an toàn
+Invitation: Cùng mình lên kế hoạch cho từng bước chân để đến đích một cách khéo léo nào!
+Tutorial: Tìm một đường đi tới đích, nhớ ghé qua ngôi sao trên bảng nhé.
+Explanation: Đường đi đúng ghé qua ngôi sao trên bảng rồi mới về đích, không chạm tường.
+Hints: Tìm ngôi sao trên bản đồ. // Đi qua ngôi sao rồi mới về đích.
+Board summary: {"kind": "path-planning", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 4, "y": 2}], "waypoints": [{"id": "w1", "x": 2, "y": 2}]}
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}, {"x": 2, "y": 1}, {"x": 2, "y": 2}, {"x": 3, "y": 2}, {"x": 3, "y": 3}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [078/144] D219-main-vi68 | Day 219 | Slot main | g03-t1 | memory-sequence ===
+Title: Nhớ đúng thứ tự nào · Hình khối
+Invitation: Chào bạn, cùng mình chơi trò nhớ thứ tự các đồ vật thật vui nhé!
+Tutorial: Ghi nhớ dãy các từ; sau khi dãy ẩn đi, bạn điền lại từ ở ô bị bỏ trống nha.
+Explanation: Ô thứ 3 trong dãy là bóng.
+Hints: Nhớ lại ô nào bị trống. // Nghĩ xem bạn đứng trước và bạn đứng sau ô đó là ai.
+Board summary: {"kind": "memory-sequence", "sequence": ["mưa", "táo", "bóng", "mèo"], "displayMs": 1200, "mode": "missing", "missingIndex": 2}
+Options: ["bóng", "mèo", "mưa", "táo"]
+Solution: ["bóng"]
+
+=== [079/144] D220-bonus-vi68 | Day 220 | Slot bonus | g07-t1 | flexibility-classify ===
+Title: Luật đã đổi rồi — Hình khối
+Invitation: Chào bạn, cùng mình chọn các hình đúng với đặc điểm mới của vòng chơi nhé!
+Tutorial: Bạn phân loại các hình theo đặc điểm mới mà đề bài yêu cầu nhé.
+Explanation: Theo quy tắc mới (màu là "tím"), các hình phù hợp là: hình 2.
+Hints: Đọc luật mới ở phía trên thật kỹ. // Chỉ chọn những hình có màu đúng như luật.
+Board summary: {"kind": "flexibility-classify", "items": [{"id": "item-1", "traits": {"hình": "tròn", "màu": "xanh", "kích cỡ": "to"}}, {"id": "item-2", "traits": {"hình": "sao", "màu": "tím", "kích cỡ": "to"}}, {"id": "item-3", "traits": {"hình": "vuông", "màu": "cam", "kích cỡ": "to"}}, {"id": "item-4", "traits"
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-2"]
+
+=== [080/144] D220-main-vi68 | Day 220 | Slot main | g04-t2 | reasoning-if-then ===
+Title: Nối các luật — Hình khối
+Invitation: Cùng mình thử tài suy luận logic với những điều kiện Nếu - Thì ngày hôm nay!
+Tutorial: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Bạn xem những điều đã biết và luật Nếu - Thì để tìm kết luận đúng nhé.
+Explanation: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: "mặt trời" → "buổi sáng"; "buổi sáng" → "thức dậy". Từ thẻ "mặt trời", áp dụng luật để suy ra thẻ "buổi sáng".
+Hints: Nhìn điều đã biết ở phía trên. // Luật nào bắt đầu bằng điều đó thì giúp bạn tìm ra điều mới.
+Board summary: {"kind": "reasoning-if-then", "rules": [{"if": "mặt trời", "then": "buổi sáng"}, {"if": "buổi sáng", "then": "thức dậy"}], "facts": ["mặt trời"]}
+Options: ["buổi sáng", "khát nước", "uống nước", "đi học"]
+Solution: "buổi sáng"
+
+=== [081/144] D221-bonus-vi68 | Day 221 | Slot bonus | g08-t1 | observation-difference ===
+Title: Săn điểm khác biệt · Hình khối
+Invitation: Hôm nay mình cùng tìm điểm khác nhau giữa hai bức tranh nhé!
+Tutorial: So từng ô theo hàng và cột để tìm ra những điểm thay đổi.
+Explanation: Điểm khác nhau giữa hai hình nằm ở hàng 2, cột 3 và hàng 2, cột 2.
+Hints: Nhìn hàng đầu tiên của hai hình trước. // Rồi xuống hàng thứ hai, cứ thế đến hết.
+Board summary: {"kind": "observation-difference", "left": [["sao", "sao", "mây", "cỏ"], ["nấm", "lá", "lá", "mây"], ["mây", "mây", "cỏ", "mây"], ["sao", "mây", "hoa", "nấm"]], "right": [["sao", "sao", "mây", "cỏ"], ["nấm", "hoa", "hoa", "mây"], ["mây", "mây", "cỏ", "mây"], ["sao", "mây", "hoa", "nấm"]]}
+Options: [{"x": 0, "y": 1}, {"x": 0, "y": 2}, {"x": 1, "y": 1}, {"x": 2, "y": 1}, {"x": 3, "y": 3}]
+Solution: [{"x": 2, "y": 1}, {"x": 1, "y": 1}]
+
+=== [082/144] D221-main-vi68 | Day 221 | Slot main | g05-t2 | quantity-grouping ===
+Title: Chia và đếm · Hình khối
+Invitation: Chào bạn, hãy trổ tài tính toán nhanh để chia đều các phần cùng mình nhé!
+Tutorial: Đếm xem chia được mấy nhóm đủ và còn thừa lại mấy bạn nha.
+Explanation: Sau khi chia thành các nhóm 2, phần còn dư ra là 1.
+Hints: Gom thành các nhóm bằng nhau trước. // Phần không đủ một nhóm là phần còn dư.
+Board summary: {"kind": "quantity-grouping", "total": 9, "groupSize": 2, "mode": "remainder"}
+Options: [2, 1, 0, 3]
+Solution: 1
+
+=== [083/144] D222-bonus-vi68 | Day 222 | Slot bonus | g01-t2 | rule-error ===
+Title: Hình khối · Ai đứng nhầm chỗ?
+Invitation: Bạn hãy quan sát thật kỹ xem hình hoặc số nào đứng chưa đúng quy luật.
+Tutorial: Tìm xem ô nào làm cho cả dãy bị sai quy luật quen thuộc.
+Explanation: Vị trí thứ 5 (7) chưa đúng với quy luật của chuỗi.
+Hints: Đọc các số từ trái sang phải nhé. // Nhìn xem số nào tăng không đều như các số còn lại.
+Board summary: {"kind": "rule-error", "sequence": ["2", "3", "4", "5", "7"], "ruleKind": "increment"}
+Options: null
+Solution: 4
+
+=== [084/144] D222-main-vi68 | Day 222 | Slot main | g06-t2 | planning-command-order ===
+Title: Xếp lệnh — Hình khối
+Invitation: Thử thách xếp lệnh hôm nay sẽ giúp bạn có tư duy của một nhà lập trình nhí đấy!
+Tutorial: Luật riêng của ván này (→ là làm trước): Pha màu → Nhúng cọ; Nhúng cọ → Vẽ tranh; Vẽ tranh → Tô màu. Mọi thứ tự giữ đủ luật đều được.
+Explanation: Luật riêng của ván này (→ là làm trước): Pha màu → Nhúng cọ; Nhúng cọ → Vẽ tranh; Vẽ tranh → Tô màu. Một thứ tự theo luật của ván này là: Pha màu → Nhúng cọ → Vẽ tranh → Tô màu.
+Hints: Theo luật của ván này, tìm việc cần làm trước nhé. // Việc nào xong rồi mới làm được việc tiếp theo?
+Board summary: {"kind": "planning-command-order", "commands": [{"id": "step-4", "text": "Tô màu"}, {"id": "step-2", "text": "Nhúng cọ"}, {"id": "step-1", "text": "Pha màu"}, {"id": "step-3", "text": "Vẽ tranh"}], "before": [["step-1", "step-2"], ["step-2", "step-3"], ["step-3", "step-4"]]}
+Options: null
+Solution: ["step-1", "step-2", "step-3", "step-4"]
+
+=== [085/144] D223-bonus-vi68 | Day 223 | Slot bonus | g02-t2 | spatial-rotation ===
+Title: Hình khối · Hình mới trông ra sao?
+Invitation: Cùng mình tưởng tượng hình mẫu khi xoay sang hướng mới sẽ ra hình nào nhé!
+Tutorial: Bạn tưởng tượng hình mẫu khi xoay và chọn hình đúng sau khi xoay nhé.
+Explanation: Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình A.
+Hints: Hãy xoay đầu theo, hoặc xoay tờ giấy trong tưởng tượng. // Nhìn một ô ở góc hình mẫu xem nó chạy đến đâu.
+Board summary: {"kind": "spatial-rotation", "shape": [{"x": 2, "y": 2}, {"x": 3, "y": 1}, {"x": 2, "y": 1}, {"x": 2, "y": 0}], "turn": "half"}
+Options: [{"id": "turn-a", "cells": [{"x": 0, "y": 1}, {"x": 1, "y": 0}, {"x": 1, "y": 1}, {"x": 1, "y": 2}]}, {"id": "turn-b", "cells": [{"x": 0, "y": 2}, {"x": 1, "y": 2}, {"x": 1, "y": 3
+Solution: "turn-a"
+
+=== [086/144] D223-main-vi68 | Day 223 | Slot main | g07-t2 | flexibility-perspective ===
+Title: Xoay người theo bạn nhỏ · Hình khối
+Invitation: Nếu đứng ở vị trí của bạn nhỏ kia, bạn sẽ thấy đồ vật ở phía nào nhỉ?
+Tutorial: Bạn đứng vào vị trí người quan sát và chọn xem đồ vật ở phía nào nhé.
+Explanation: Từ vị trí bạn nhỏ đang hướng sang phải, đồ vật nằm ở bên phải.
+Hints: Nhìn mũi tên của bạn nhỏ. // Phía mũi tên chỉ là phía trước của bạn ấy.
+Board summary: {"kind": "flexibility-perspective", "width": 4, "height": 4, "viewer": {"x": 2, "y": 2, "facing": "east"}, "target": {"x": 2, "y": 3}}
+Options: ["left", "right", "ahead", "behind"]
+Solution: "right"
+
+=== [087/144] D224-bonus-vi68 | Day 224 | Slot bonus | g03-t2 | memory-position ===
+Title: Hình khối · Ô sáng ở đâu?
+Invitation: Hãy nhớ thật nhanh xem những ô nào vừa sáng lên trên bảng nha bạn!
+Tutorial: Nhớ xem những người bạn vừa đứng ở ô nào trên bảng ô vuông.
+Explanation: Các vị trí bạn nhỏ đã xuất hiện nằm ở hàng 3, cột 1 và hàng 4, cột 1 và hàng 3, cột 4.
+Hints: Nhớ ô nằm ở góc hay ở giữa bảng. // Đếm xem có mấy ô sáng rồi chỉ lại.
+Board summary: {"kind": "memory-position", "width": 4, "height": 4, "targets": [{"x": 3, "y": 2}, {"x": 0, "y": 3}, {"x": 0, "y": 2}], "revealed": [], "mode": "recall", "displayMs": 1400}
+Options: [{"x": 0, "y": 3}, {"x": 1, "y": 2}, {"x": 3, "y": 2}, {"x": 0, "y": 2}]
+Solution: [{"x": 0, "y": 2}, {"x": 0, "y": 3}, {"x": 3, "y": 2}]
+
+=== [088/144] D224-main-vi68 | Day 224 | Slot main | g08-t2 | observation-two-traits ===
+Title: Lọc theo hai gợi ý — Hình khối
+Invitation: Cùng mình kết hợp hai tiêu chuẩn để lọc ra những người bạn phù hợp nhất nào!
+Tutorial: Tìm những người bạn mang đủ cả hai dấu hiệu nhận biết.
+Explanation: Các hình có đủ cả hai đặc điểm (hình là thoi và màu là cam) là: hình 2, hình 3, hình 4.
+Hints: Tìm điều kiện thứ nhất trước. // Trong các hình đạt, tìm tiếp hình có điều kiện thứ hai.
+Board summary: {"kind": "observation-two-traits", "items": [{"id": "item-1", "traits": {"hình": "tam giác", "màu": "cam", "kích cỡ": "nhỏ", "vị trí": "dưới"}}, {"id": "item-2", "traits": {"hình": "thoi", "màu": "cam", "kích cỡ": "nhỏ", "vị trí": "dưới"}}, {"id": "item-3", "traits": {"hình": "thoi", "màu": "cam", "
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-2", "item-3", "item-4"]
+
+=== [089/144] D225-bonus-vi68 | Day 225 | Slot bonus | g04-t3 | reasoning-missing-info ===
+Title: Thiếu một gợi ý — Nhạc cụ
+Invitation: Thử thách tìm manh mối còn thiếu hôm nay sẽ thử tài tư duy sắc bén của bạn!
+Tutorial: Bạn xem các gợi ý đã có và chọn thêm một điều cần biết để tìm ra bạn nhỏ nhé.
+Explanation: Manh mối còn thiếu giúp nhận diện chính xác bạn này là: hình là tròn.
+Hints: Những điều đã biết vẫn còn nhiều bạn phù hợp. // Manh mối tốt là manh mối chỉ đúng với một bạn.
+Board summary: {"kind": "reasoning-missing-info", "scenario": "Mình cần biết chắc một bạn là ai.", "candidates": [{"id": "candidate-1", "traits": {"màu": "xanh", "hình": "tròn", "kích cỡ": "to"}}, {"id": "candidate-2", "traits": {"màu": "xanh", "hình": "sao", "kích cỡ": "to"}}, {"id": "candidate-3", "traits": {"mà
+Options: [{"id": "fact-b", "trait": "hình", "value": "sao"}, {"id": "fact-c", "trait": "màu", "value": "tím"}, {"id": "fact-a", "trait": "hình", "value": "tròn"}]
+Solution: "fact-a"
+
+=== [090/144] D225-main-vi68 | Day 225 | Slot main | g01-t3 | rule-transform ===
+Title: Nhạc cụ: Cỗ máy thần kỳ
+Invitation: Bạn thử đoán xem khi cho số mới vào máy thì kết quả đầu ra sẽ là bao nhiêu?
+Tutorial: Bạn xem các ví dụ chiếc máy làm mẫu, rồi chọn kết quả cho số mới nhé.
+Explanation: Quy tắc biến đổi của máy là trừ đi 1. Khi đưa số 519 vào máy, ta thu được kết quả là 518.
+Hints: Nhìn một ví dụ: số đi vào là gì, số đi ra là gì? // Thử với ví dụ thứ hai xem máy làm giống nhau không.
+Board summary: {"kind": "rule-transform", "examples": [{"input": "488", "output": "487"}, {"input": "495", "output": "494"}, {"input": "502", "output": "501"}], "query": "519", "transform": "subtract"}
+Options: ["521", "518", "520"]
+Solution: "518"
+
+=== [091/144] D226-bonus-vi68 | Day 226 | Slot bonus | g05-t3 | quantity-target ===
+Title: Chọn món vào giỏ · Nhạc cụ
+Invitation: Chào bạn, bạn hãy chọn các số thật khéo léo để đạt đúng mục tiêu cùng mình nhé!
+Tutorial: Chọn hai món vừa đủ để cộng ra số mục tiêu nha.
+Explanation: Chọn đúng hai món (1 và 8) để đạt tổng đúng bằng 9.
+Hints: Chỉ chọn đúng hai món. // Chọn một món, rồi xem món kia phải là số nào để đủ 9.
+Board summary: {"kind": "quantity-target", "items": [{"id": "item-1", "value": 1}, {"id": "item-2", "value": 8}, {"id": "item-3", "value": 6}, {"id": "item-4", "value": 7}], "target": 9, "maxItems": 2, "mode": "exact-two"}
+Options: ["item-1", "item-2", "item-3", "item-4"]
+Solution: ["item-1", "item-2"]
+
+=== [092/144] D226-main-vi68 | Day 226 | Slot main | g02-t3 | spatial-symmetry ===
+Title: Nhạc cụ · Khám phá hai bên tranh
+Invitation: Hai bên gương đang chờ bạn hoàn thành để đối xứng thật đẹp đấy!
+Tutorial: Nhìn hai bên trục gương xem ô nào cần điền để hai bên giống hệt nhau.
+Explanation: Ô cần chọn nằm ở hàng 3, cột 1 để hình hoàn toàn đối xứng.
+Hints: Hai bên của tranh phải giống nhau như soi gương. // Tìm chỗ hai bên không giống nhau.
+Board summary: {"kind": "spatial-symmetry", "grid": [["sao", "hoa", "hoa", "sao"], ["sao", "mây", "mây", "sao"], ["quả", "sao", "sao", "lá"], ["sao", "sao", "sao", "sao"]], "axis": "vertical", "mode": "find-break"}
+Options: [{"x": 0, "y": 2}, {"x": 2, "y": 0}, {"x": 0, "y": 1}]
+Solution: {"x": 0, "y": 2}
+
+=== [093/144] D227-bonus-vi68 | Day 227 | Slot bonus | g06-t3 | planning-fix-step ===
+Title: Bắt lỗi cho robot — Nhạc cụ
+Invitation: Chào bạn, bạn hãy làm chuyên gia gỡ lỗi giúp bạn robot đến đích cùng mình nhé!
+Tutorial: Bạn tìm một bước cần đổi để bạn robot đi đúng đường tới đích nhé.
+Explanation: Đổi bước 2 thành hướng "bên phải" để robot về đích an toàn.
+Hints: Robot cần đi từ chỗ xuất phát đến đích. // Có một lệnh đang đi ngược hướng cần đi.
+Board summary: {"kind": "planning-fix-step", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 3, "y": 2}, "walls": [], "commands": ["right", "up", "right", "down", "down"]}
+Options: [{"id": "fix-a", "index": 1, "command": "right"}, {"id": "fix-c", "index": 1, "command": "left"}, {"id": "fix-b", "index": 1, "command": "down"}, {"id": "fix-d", "index": 1, "comma
+Solution: "fix-a"
+
+=== [094/144] D227-main-vi68 | Day 227 | Slot main | g03-t3 | memory-change ===
+Title: Nhạc cụ: Mắt tinh phát hiện
+Invitation: Cùng mình so sánh hai bức tranh xem điều gì vừa mới thay đổi nhé!
+Tutorial: Nhìn thật kỹ xem bạn nào vừa đổi chỗ, đổi màu hoặc biến mất nha.
+Explanation: Ở cảnh sau, nắng vừa mới được thêm vào.
+Hints: Đếm xem cảnh sau có nhiều bạn hơn không. // Có một bạn mới vừa đến.
+Board summary: {"kind": "memory-change", "before": ["mèo", "hoa", "sao", "quả"], "after": ["mèo", "hoa", "sao", "quả", "nắng"], "change": "added"}
+Options: ["lá", "hoa", "mèo", "nắng"]
+Solution: "nắng"
+
+=== [095/144] D228-bonus-vi68 | Day 228 | Slot bonus | g07-t3 | flexibility-alternative ===
+Title: Một chỗ rẽ mới · Nhạc cụ
+Invitation: Cùng mình rèn tính linh hoạt bằng cách tìm cách giải mới cho bài toán này nào!
+Tutorial: Tìm lối đi khác đưa bạn nhỏ về đích an toàn nha bạn.
+Explanation: Đường đi mới đã dẫn từ điểm xuất phát đến đích mà không bị trùng với đường ban đầu và tránh được các ô tường.
+Hints: Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé. // Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích.
+Board summary: {"kind": "flexibility-alternative", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 3, "y": 1}, {"x": 3, "y": 2}], "knownPath": [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 0, "y": 2}, {"x": 0, "y": 3}, {"x": 0, "y": 4}, {"x": 1, "y": 4}, {"x": 2, "y": 4},
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}, {"x": 3, "y": 0}, {"x": 4, "y": 0}, {"x": 4, "y": 1}, {"x": 4, "y": 2}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [096/144] D229-bonus-vi68 | Day 229 | Slot bonus | g08-t3 | observation-implausible ===
+Title: Nhạc cụ: Việc nào không hợp?
+Invitation: Cùng mình xem bức tranh nào có điều bất thường so với những bức tranh còn lại nào!
+Tutorial: Tìm chi tiết không cùng nhóm hoặc không đúng cách thức thường ngày nha.
+Explanation: Tình huống 4: "Bạn chạy ngược chiều dòng người đang bước tới" có đặc điểm "đi sai hướng", trong khi luật của ván này yêu cầu "đi đúng hướng".
+Hints: Việc nào ở đây không nên làm? // Nhìn xem việc nào lạ so với các việc còn lại.
+Board summary: {"kind": "observation-implausible", "scene": [{"id": "scene-1", "text": "Bạn xếp hàng theo mũi tên vào khu vui chơi", "traits": {"nhóm": "đồ chơi", "bước": "đi đúng hướng"}}, {"id": "scene-2", "text": "Bạn đi men theo hành lang bên tay phải", "traits": {"nhóm": "đồ chơi", "bước": "đi đúng hướng"}}, 
+Options: ["scene-2", "scene-3", "scene-4", "scene-1"]
+Solution: "scene-4"
+
+=== [097/144] D289-bonus-vi68 | Day 289 | Slot bonus | g04-t1 | reasoning-elimination ===
+Title: Tìm bạn nhỏ bí ẩn — Cầu nối
+Invitation: Hãy đọc từng manh mối và loại trừ dần để tìm ra đáp án chính xác nha!
+Tutorial: Bạn đọc các gợi ý và chọn bạn nhỏ còn lại sau khi gạch bớt nhé.
+Explanation: Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 4 (màu vàng, hình sao, kích cỡ to).
+Hints: Đọc manh mối đầu tiên thật kỹ. // Bạn nào không khớp manh mối thì bấm Gạch bớt nhé.
+Board summary: {"kind": "reasoning-elimination", "candidates": [{"id": "candidate-2", "traits": {"màu": "hồng", "hình": "vuông", "kích cỡ": "nhỏ"}}, {"id": "candidate-3", "traits": {"màu": "tím", "hình": "thoi", "kích cỡ": "to"}}, {"id": "candidate-4", "traits": {"màu": "xanh", "hình": "tam giác", "kích cỡ": "nhỏ"
+Options: ["candidate-2", "candidate-3", "candidate-4", "candidate-1"]
+Solution: "candidate-1"
+
+=== [098/144] D289-main-vi68 | Day 289 | Slot main | g01-t1 | rule-sequence ===
+Title: Cầu nối · Tiếp theo là gì?
+Invitation: Mình có dãy quy luật rất thú vị, bạn xem nhịp điệu của nó nhé!
+Tutorial: Quan sát cách dãy thay đổi đều đặn để chọn đúng ô còn thiếu.
+Explanation: Phần tiếp theo hợp với nhịp của chuỗi là quả.
+Hints: Nhìn xem hai hình nào cứ thay nhau xuất hiện. // Đọc nhỏ cả dãy: cái này, cái kia, cái này, cái kia.
+Board summary: {"kind": "rule-sequence", "sequence": ["sao", "quả", "sao", "quả", "sao"], "ruleKind": "alternating"}
+Options: ["hoa", "quả", "lá"]
+Solution: "quả"
+
+=== [099/144] D290-bonus-vi68 | Day 290 | Slot bonus | g05-t1 | quantity-balance ===
+Title: Cầu nối · Hai đĩa cân
+Invitation: Chào bạn, cùng mình tìm quả cân còn thiếu để hai đĩa cân bằng nhau nhé!
+Tutorial: Tìm quả cân còn thiếu để hai bên cân thăng bằng thật đẹp.
+Explanation: Cần thêm 2 để hai bên đĩa cân có cân nặng bằng nhau.
+Hints: Cộng các quả cân đã có ở mỗi đĩa. // Đĩa nhẹ hơn cần thêm đúng phần còn thiếu.
+Board summary: {"kind": "quantity-balance", "left": [{"id": "left-1", "weight": 5}, {"id": "left-2", "weight": 1}], "right": [{"id": "right-1", "weight": 8}], "mode": "missing", "unknownSide": "left"}
+Options: [2, 3, 4]
+Solution: 2
+
+=== [100/144] D290-main-vi68 | Day 290 | Slot main | g02-t1 | spatial-silhouette ===
+Title: Ghép bóng — Cầu nối
+Invitation: Bạn hãy nhìn kỹ hình mẫu và tìm chiếc bóng khớp nhất trong các lựa chọn.
+Tutorial: Bạn chọn chiếc bóng có đúng các ô và hình dạng như hình mẫu nhé.
+Explanation: Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình B.
+Hints: Đếm xem hình mẫu có bao nhiêu ô. // Chọn hình có cùng số ô, rồi nhìn xem hình dạng có giống không.
+Board summary: {"kind": "spatial-silhouette", "target": [{"x": 3, "y": 1}, {"x": 0, "y": 0}, {"x": 3, "y": 2}, {"x": 2, "y": 2}]}
+Options: [{"id": "shape-b", "cells": [{"x": 0, "y": 1}, {"x": 1, "y": 0}, {"x": 0, "y": 2}, {"x": 3, "y": 2}]}, {"id": "shape-a", "cells": [{"x": 3, "y": 1}, {"x": 0, "y": 0}, {"x": 3, "y":
+Solution: "shape-a"
+
+=== [101/144] D291-bonus-vi68 | Day 291 | Slot bonus | g06-t1 | path-planning ===
+Title: Cầu nối: Lối đi an toàn
+Invitation: Cùng mình lên kế hoạch cho từng bước chân để đến đích một cách khéo léo nào!
+Tutorial: Vẽ đường đi an toàn đưa bạn nhỏ về đích mà không đâm vào chướng ngại vật.
+Explanation: Một đường đi hợp lệ giúp bạn di chuyển an toàn từ ô xuất phát về đích mà không chạm tường.
+Hints: Đi từng ô một, tránh ô tường. // Nếu gặp tường thì rẽ sang hướng khác.
+Board summary: {"kind": "path-planning", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 4, "y": 1}], "waypoints": []}
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}, {"x": 3, "y": 0}, {"x": 3, "y": 1}, {"x": 3, "y": 2}, {"x": 4, "y": 2}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [102/144] D291-main-vi68 | Day 291 | Slot main | g03-t1 | memory-sequence ===
+Title: Nhớ đúng thứ tự nào · Cầu nối
+Invitation: Chào bạn, cùng mình chơi trò nhớ thứ tự các đồ vật thật vui nhé!
+Tutorial: Đọc thầm từng từ theo thứ tự để nhớ và xếp lại thật đúng.
+Explanation: Thứ tự đúng là mưa → thuyền → táo → cây.
+Hints: Nhớ bạn đứng đầu tiên trước nhé. // Đọc thầm theo thứ tự: một, hai, ba.
+Board summary: {"kind": "memory-sequence", "sequence": ["mưa", "thuyền", "táo", "cây"], "displayMs": 1200}
+Options: ["mưa", "táo", "cây", "thuyền"]
+Solution: ["mưa", "thuyền", "táo", "cây"]
+
+=== [103/144] D292-bonus-vi68 | Day 292 | Slot bonus | g07-t1 | flexibility-classify ===
+Title: Cầu nối · Phân loại lại nào
+Invitation: Bây giờ luật chơi đã đổi, bạn phân loại lại các hình theo đặc điểm mới nhé!
+Tutorial: Đổi sang cách chia mới và chọn tất cả những hình phù hợp.
+Explanation: Theo quy tắc mới (hình là "tam giác"), các hình phù hợp là: hình 1, hình 2.
+Hints: Đọc luật mới ở phía trên thật kỹ. // Chỉ chọn những hình có hình dạng đúng như luật.
+Board summary: {"kind": "flexibility-classify", "items": [{"id": "item-1", "traits": {"hình": "tam giác", "màu": "vàng", "kích cỡ": "to"}}, {"id": "item-2", "traits": {"hình": "tam giác", "màu": "cam", "kích cỡ": "nhỏ"}}, {"id": "item-3", "traits": {"hình": "thoi", "màu": "xanh", "kích cỡ": "to"}}, {"id": "item-4"
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-1", "item-2"]
+
+=== [104/144] D292-main-vi68 | Day 292 | Slot main | g04-t2 | reasoning-if-then ===
+Title: Cầu nối: Suy luận từng bước
+Invitation: Cùng mình thử tài suy luận logic với những điều kiện Nếu - Thì ngày hôm nay!
+Tutorial: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Dùng gợi ý có sẵn và luật dẫn đường để tìm ra điều chắc chắn xảy ra.
+Explanation: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: "nắng gắt" → "khát nước"; "khát nước" → "uống nước". Từ thẻ "nắng gắt", áp dụng luật để suy ra thẻ "khát nước".
+Hints: Nhìn điều đã biết ở phía trên. // Luật nào bắt đầu bằng điều đó thì giúp bạn tìm ra điều mới.
+Board summary: {"kind": "reasoning-if-then", "rules": [{"if": "nắng gắt", "then": "khát nước"}, {"if": "khát nước", "then": "uống nước"}], "facts": ["nắng gắt"]}
+Options: ["ủng", "khát nước", "chim hót", "áo mưa"]
+Solution: "khát nước"
+
+=== [105/144] D293-bonus-vi68 | Day 293 | Slot bonus | g08-t1 | observation-difference ===
+Title: Cầu nối · Hai hình khác nhau ở đâu?
+Invitation: Chào bạn, hãy soi thật kỹ hai bức tranh và tìm các điểm khác cùng mình nhé!
+Tutorial: Nhìn thật tinh mắt xem những ô nào ở tranh bên phải đã bị đổi khác nha.
+Explanation: Điểm khác nhau giữa hai hình nằm ở hàng 4, cột 1 và hàng 2, cột 4.
+Hints: So từng hàng của hai hình nhé. // Nhìn kỹ từng ô: hai ô cùng chỗ có giống nhau không?
+Board summary: {"kind": "observation-difference", "left": [["quả", "quả", "nấm", "sao"], ["nấm", "lá", "lá", "sao"], ["quả", "mây", "hoa", "cỏ"], ["quả", "hoa", "mây", "nấm"]], "right": [["quả", "quả", "nấm", "sao"], ["nấm", "lá", "lá", "lá"], ["quả", "mây", "hoa", "cỏ"], ["lá", "hoa", "mây", "nấm"]]}
+Options: [{"x": 0, "y": 0}, {"x": 0, "y": 3}, {"x": 2, "y": 2}, {"x": 3, "y": 1}, {"x": 3, "y": 2}]
+Solution: [{"x": 0, "y": 3}, {"x": 3, "y": 1}]
+
+=== [106/144] D293-main-vi68 | Day 293 | Slot main | g05-t2 | quantity-grouping ===
+Title: Cầu nối · Chia quà cho đều
+Invitation: Hãy tính xem chia được bao nhiêu nhóm hoặc còn dư lại mấy phần nha bạn!
+Tutorial: Chia các món thành từng phần bằng nhau rồi trả lời câu hỏi.
+Explanation: Chia đều thành các nhóm 2, ta được đúng 4 nhóm.
+Hints: Gom các đồ vật thành từng nhóm nhỏ. // Đếm xem gom được mấy nhóm.
+Board summary: {"kind": "quantity-grouping", "total": 8, "groupSize": 2, "mode": "exact"}
+Options: [4, 3, 2, 1]
+Solution: 4
+
+=== [107/144] D294-bonus-vi68 | Day 294 | Slot bonus | g01-t2 | rule-error ===
+Title: Phát hiện chỗ lệch · Cầu nối
+Invitation: Trong chuỗi này có một vị trí bị đặt nhầm, bạn tìm giúp mình nhé!
+Tutorial: Quan sát từng bước của dãy và chọn phần đứng nhầm chỗ nhé.
+Explanation: Vị trí thứ 3 (lá) chưa đúng với quy luật của chuỗi.
+Hints: Hai hình phải thay nhau xuất hiện đều đặn. // So từng vị trí với nhịp hai hình lúc đầu, tìm hình không theo nhịp nhé.
+Board summary: {"kind": "rule-error", "sequence": ["quả", "nắng", "lá", "nắng", "quả"], "ruleKind": "alternating"}
+Options: null
+Solution: 2
+
+=== [108/144] D294-main-vi68 | Day 294 | Slot main | g06-t2 | planning-command-order ===
+Title: Cầu nối · Việc nào làm trước?
+Invitation: Hãy sắp xếp các câu lệnh để mọi việc diễn ra tuần tự từ đầu đến cuối nha!
+Tutorial: Luật riêng của ván này (→ là làm trước): Mở vòi → Rửa tay; Rửa tay → Xoa xà phòng; Xoa xà phòng → Rửa sạch. Mọi thứ tự giữ đủ luật đều được.
+Explanation: Luật riêng của ván này (→ là làm trước): Mở vòi → Rửa tay; Rửa tay → Xoa xà phòng; Xoa xà phòng → Rửa sạch. Một thứ tự theo luật của ván này là: Mở vòi → Rửa tay → Xoa xà phòng → Rửa sạch.
+Hints: Theo luật của ván này, tìm việc cần làm trước nhé. // Việc nào xong rồi mới làm được việc tiếp theo?
+Board summary: {"kind": "planning-command-order", "commands": [{"id": "step-4", "text": "Rửa sạch"}, {"id": "step-3", "text": "Xoa xà phòng"}, {"id": "step-2", "text": "Rửa tay"}, {"id": "step-1", "text": "Mở vòi"}], "before": [["step-1", "step-2"], ["step-2", "step-3"], ["step-3", "step-4"]]}
+Options: null
+Solution: ["step-1", "step-2", "step-3", "step-4"]
+
+=== [109/144] D295-bonus-vi68 | Day 295 | Slot bonus | g02-t2 | spatial-rotation ===
+Title: Theo dấu hình mẫu — Xưởng tái chế
+Invitation: Bạn hãy quan sát góc xoay và tìm hình sau khi xoay đúng hướng nào.
+Tutorial: Bạn tưởng tượng hình mẫu khi xoay và chọn hình đúng sau khi xoay nhé.
+Explanation: Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình B.
+Hints: Hãy xoay đầu theo, hoặc xoay tờ giấy trong tưởng tượng. // Nhìn một ô ở góc hình mẫu xem nó chạy đến đâu.
+Board summary: {"kind": "spatial-rotation", "shape": [{"x": 0, "y": 0}, {"x": 2, "y": 0}, {"x": 0, "y": 2}, {"x": 2, "y": 1}], "turn": "quarter"}
+Options: [{"id": "turn-b", "cells": [{"x": 0, "y": 1}, {"x": 0, "y": 2}, {"x": 2, "y": 0}, {"x": 2, "y": 2}]}, {"id": "turn-a", "cells": [{"x": 0, "y": 0}, {"x": 1, "y": 2}, {"x": 2, "y": 0
+Solution: "turn-a"
+
+=== [110/144] D295-main-vi68 | Day 295 | Slot main | g07-t2 | flexibility-perspective ===
+Title: Xưởng tái chế · Đứng ở chỗ bạn ấy
+Invitation: Nếu đứng ở vị trí của bạn nhỏ kia, bạn sẽ thấy đồ vật ở phía nào nhỉ?
+Tutorial: Tưởng tượng mình đang đứng ở đó và chỉ ra hướng của đồ vật nha.
+Explanation: Từ vị trí bạn nhỏ đang hướng lên trên, đồ vật nằm ở bên phải.
+Hints: Hãy xoay đầu theo hướng bạn nhỏ nhìn. // Đồ vật ở trước mặt, sau lưng hay bên tay nào của bạn ấy?
+Board summary: {"kind": "flexibility-perspective", "width": 4, "height": 4, "viewer": {"x": 2, "y": 2, "facing": "north"}, "target": {"x": 3, "y": 2}}
+Options: ["left", "right", "ahead", "behind"]
+Solution: "right"
+
+=== [111/144] D296-bonus-vi68 | Day 296 | Slot bonus | g03-t2 | memory-position ===
+Title: Đèn nhỏ trên bảng · Xưởng tái chế
+Invitation: Các bạn nhỏ đang trốn trong ô, bạn hãy nhớ vị trí của các bạn ấy nhé!
+Tutorial: Bạn xem các ô sáng đèn, sau đó bấm lại đúng những vị trí vừa thấy nhé.
+Explanation: Các vị trí bạn nhỏ đã xuất hiện nằm ở hàng 1, cột 2 và hàng 2, cột 2 và hàng 1, cột 3.
+Hints: Nhớ ô nằm ở góc hay ở giữa bảng. // Đếm xem có mấy ô sáng rồi chỉ lại.
+Board summary: {"kind": "memory-position", "width": 4, "height": 4, "targets": [{"x": 1, "y": 1}, {"x": 2, "y": 0}, {"x": 1, "y": 0}], "revealed": [], "mode": "recall", "displayMs": 1400}
+Options: [{"x": 1, "y": 1}, {"x": 2, "y": 0}, {"x": 2, "y": 3}, {"x": 1, "y": 0}]
+Solution: [{"x": 1, "y": 0}, {"x": 1, "y": 1}, {"x": 2, "y": 0}]
+
+=== [112/144] D296-main-vi68 | Day 296 | Slot main | g08-t2 | observation-two-traits ===
+Title: Xưởng tái chế: Đủ cả hai đặc điểm
+Invitation: Chào bạn, cùng mình tìm các hình có đủ hai đặc điểm trong thử thách này nhé!
+Tutorial: Bạn chọn mọi hình có đủ cả hai đặc điểm mà đề bài nhắc tới nhé.
+Explanation: Các hình có đủ cả hai đặc điểm (hình là tam giác và kích cỡ là to) là: hình 1.
+Hints: Tìm điều kiện thứ nhất trước. // Trong các hình đạt, tìm tiếp hình có điều kiện thứ hai.
+Board summary: {"kind": "observation-two-traits", "items": [{"id": "item-1", "traits": {"hình": "tam giác", "màu": "vàng", "kích cỡ": "to", "vị trí": "dưới"}}, {"id": "item-2", "traits": {"hình": "vuông", "màu": "cam", "kích cỡ": "nhỏ", "vị trí": "dưới"}}, {"id": "item-3", "traits": {"hình": "sao", "màu": "tím", "
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-1"]
+
+=== [113/144] D297-bonus-vi68 | Day 297 | Slot bonus | g04-t3 | reasoning-missing-info ===
+Title: Xưởng tái chế · Để biết chắc
+Invitation: Bạn hãy xem những gợi ý đã có và chọn thêm điều kiện cần thiết nhất nào.
+Tutorial: Tìm xem còn thiếu gợi ý nào để biết chắc chắn đáp án đúng.
+Explanation: Manh mối còn thiếu giúp nhận diện chính xác bạn này là: hình là tam giác.
+Hints: Nhìn xem có mấy bạn giống bạn cần tìm. // Cần thêm một manh mối để chỉ còn lại đúng một bạn.
+Board summary: {"kind": "reasoning-missing-info", "scenario": "Mình cần biết chắc một bạn là ai.", "candidates": [{"id": "candidate-1", "traits": {"màu": "tím", "hình": "tam giác", "kích cỡ": "to"}}, {"id": "candidate-2", "traits": {"màu": "tím", "hình": "tròn", "kích cỡ": "to"}}, {"id": "candidate-3", "traits": {
+Options: [{"id": "fact-c", "trait": "màu", "value": "xanh"}, {"id": "fact-b", "trait": "hình", "value": "tròn"}, {"id": "fact-a", "trait": "hình", "value": "tam giác"}]
+Solution: "fact-a"
+
+=== [114/144] D297-main-vi68 | Day 297 | Slot main | g01-t3 | rule-transform ===
+Title: Giải mã cỗ máy — Xưởng tái chế
+Invitation: Cùng mình giải mã bí mật của cỗ máy biến đổi số ngày hôm nay nào bạn!
+Tutorial: Tìm quy tắc biến đổi của cỗ máy qua các số mẫu rồi tính kết quả nha.
+Explanation: Quy tắc biến đổi của máy là cộng thêm 1. Khi đưa số 661 vào máy, ta thu được kết quả là 662.
+Hints: Máy làm cùng một việc với mọi số. // Nhìn xem số lúc ra to hơn, nhỏ hơn hay chỉ đổi chỗ các chữ số.
+Board summary: {"kind": "rule-transform", "examples": [{"input": "630", "output": "631"}, {"input": "637", "output": "638"}, {"input": "644", "output": "645"}], "query": "661", "transform": "add"}
+Options: ["665", "663", "662"]
+Solution: "662"
+
+=== [115/144] D298-bonus-vi68 | Day 298 | Slot bonus | g05-t3 | quantity-target ===
+Title: Xưởng tái chế: Cộng cho vừa
+Invitation: Cùng mình nhặt các món đồ vào giỏ để đạt được tổng điểm mong muốn nào!
+Tutorial: Chọn các món sao cho tổng đúng bằng mục tiêu và số món chọn là ít nhất nhé.
+Explanation: Chọn 2 món (4 và 5) để đạt tổng đúng bằng 9 với số món ít nhất.
+Hints: Thử chọn ít món trước nhé. // Nếu chưa đủ mục tiêu 9 thì mới thêm món khác.
+Board summary: {"kind": "quantity-target", "items": [{"id": "item-1", "value": 4}, {"id": "item-2", "value": 5}, {"id": "item-3", "value": 2}, {"id": "item-4", "value": 6}], "target": 9, "maxItems": 2, "mode": "fewest"}
+Options: ["item-1", "item-2", "item-3", "item-4"]
+Solution: ["item-1", "item-2"]
+
+=== [116/144] D298-main-vi68 | Day 298 | Slot main | g02-t3 | spatial-symmetry ===
+Title: Đối xứng hai bên · Xưởng tái chế
+Invitation: Chào bạn, cùng mình khám phá vẻ đẹp đối xứng của bức tranh này nhé!
+Tutorial: Nhìn hai bên trục gương xem ô nào cần điền để hai bên giống hệt nhau.
+Explanation: Ô cần chọn nằm ở hàng 4, cột 3 để hình hoàn toàn đối xứng.
+Hints: Nhìn đường chia đôi ở giữa tranh. // Mỗi ô có một ô bạn ở bên kia đường, giống hệt nó.
+Board summary: {"kind": "spatial-symmetry", "grid": [["sao", "lá", "lá", "sao"], ["sao", "quả", "quả", "sao"], ["lá", "mây", "mây", "lá"], ["hoa", "lá", null, "hoa"]], "axis": "vertical", "mode": "fill"}
+Options: [{"x": 2, "y": 0}, {"x": 2, "y": 2}, {"x": 2, "y": 3}]
+Solution: {"x": 2, "y": 3}
+
+=== [117/144] D299-bonus-vi68 | Day 299 | Slot bonus | g06-t3 | planning-fix-step ===
+Title: Xưởng tái chế · Sửa lệnh cho robot
+Invitation: Thử thách sửa bước sai hôm nay sẽ rèn cho bạn tính cẩn thận và quan sát tỉ mỉ đấy!
+Tutorial: Bạn tìm một bước cần đổi để bạn robot đi đúng đường tới đích nhé.
+Explanation: Đổi bước 4 thành hướng "xuống" để robot về đích an toàn.
+Hints: Đi theo từng mũi tên của robot. // Dừng ở chỗ robot bắt đầu đi lạc xa khỏi đích.
+Board summary: {"kind": "planning-fix-step", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 3, "y": 2}, "walls": [], "commands": ["right", "right", "right", "up", "down"]}
+Options: [{"id": "fix-c", "index": 3, "command": "left"}, {"id": "fix-a", "index": 3, "command": "right"}, {"id": "fix-d", "index": 3, "command": "up"}, {"id": "fix-b", "index": 3, "command
+Solution: "fix-b"
+
+=== [118/144] D299-main-vi68 | Day 299 | Slot main | g03-t3 | memory-change ===
+Title: Xưởng tái chế: Điều gì vừa đổi?
+Invitation: Chào bạn, hãy nhìn thật kỹ hai cảnh và chỉ ra điểm thay đổi cùng mình nhé!
+Tutorial: Bạn xem cảnh trước và cảnh sau, rồi chọn điều vừa mới thay đổi nhé.
+Explanation: Ở cảnh sau, quả đã biến mất khỏi khung hình.
+Hints: Đếm xem cảnh sau còn đủ bạn không. // Có một bạn đã đi mất rồi.
+Board summary: {"kind": "memory-change", "before": ["sao", "mèo", "lá", "nắng", "quả"], "after": ["sao", "mèo", "lá", "nắng"], "change": "removed"}
+Options: ["hoa", "mèo", "quả", "sao"]
+Solution: "quả"
+
+=== [119/144] D300-bonus-vi68 | Day 300 | Slot bonus | g07-t3 | flexibility-alternative ===
+Title: Xưởng tái chế · Còn đường nào khác?
+Invitation: Thử thách cách giải khác hôm nay sẽ thử xem bạn có nghĩ ra lối đi mới không đấy!
+Tutorial: Tìm lối đi khác đưa bạn nhỏ về đích an toàn nha bạn.
+Explanation: Đường đi mới đã dẫn từ điểm xuất phát đến đích mà không bị trùng với đường ban đầu và tránh được các ô tường.
+Hints: Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé. // Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích.
+Board summary: {"kind": "flexibility-alternative", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 3, "y": 2}, {"x": 2, "y": 1}], "knownPath": [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 0, "y": 2}, {"x": 0, "y": 3}, {"x": 0, "y": 4}, {"x": 1, "y": 4}, {"x": 2, "y": 4},
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}, {"x": 3, "y": 0}, {"x": 4, "y": 0}, {"x": 4, "y": 1}, {"x": 4, "y": 2}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [120/144] D301-bonus-vi68 | Day 301 | Slot bonus | g08-t3 | observation-implausible ===
+Title: Xưởng tái chế · Tìm chi tiết lạ
+Invitation: Hãy quan sát từng bức tranh và chỉ ra chi tiết không phù hợp với quy tắc nha!
+Tutorial: Xem các bức tranh và chỉ ra bạn nhỏ nào đang làm hành động khác lạ.
+Explanation: Tình huống 3: "Bạn mang bánh ngọt và nước có ga vào chơi" có đặc điểm "đồ ăn", trong khi luật của ván này yêu cầu "đồ chơi".
+Hints: Việc nào ở đây không nên làm? // Nhìn xem việc nào lạ so với các việc còn lại.
+Board summary: {"kind": "observation-implausible", "scene": [{"id": "scene-1", "text": "Bạn đang xếp các khối gỗ lâu đài", "traits": {"nhóm": "đồ chơi", "bước": "đi đúng hướng"}}, {"id": "scene-2", "text": "Bạn đang lái ô tô đồ chơi trên sàn", "traits": {"nhóm": "đồ chơi", "bước": "đi đúng hướng"}}, {"id": "scene-
+Options: ["scene-2", "scene-3", "scene-1", "scene-4"]
+Solution: "scene-3"
+
+=== [121/144] D353-main-vi68 | Day 353 | Slot main | g01-t2 | rule-error ===
+Title: Thám tử tìm lỗi — Vườn triển lãm
+Invitation: Bạn hãy quan sát thật kỹ xem hình hoặc số nào đứng chưa đúng quy luật.
+Tutorial: Tìm xem ô nào làm cho cả dãy bị sai quy luật quen thuộc.
+Explanation: Vị trí thứ 4 (hoa) chưa đúng với quy luật của chuỗi.
+Hints: Tìm nhóm nhỏ cứ lặp lại mãi. // So nhóm đầu với từng nhóm sau để thấy chỗ lệch.
+Board summary: {"kind": "rule-error", "sequence": ["sao", "lá", "sao", "hoa", "sao"], "ruleKind": "repeat", "period": 2}
+Options: null
+Solution: 3
+
+=== [122/144] D354-main-vi68 | Day 354 | Slot main | g02-t2 | spatial-rotation ===
+Title: Biến đổi hình bí ẩn · Vườn triển lãm
+Invitation: Mình có câu đố xoay hình rất vui, bạn cùng mình tìm hình đúng nhé!
+Tutorial: Xem hình quay sang hướng nào rồi tìm hình tương ứng bên dưới.
+Explanation: Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình C.
+Hints: Hình này bị lật, không chỉ xoay. // Nhìn một ô ở góc hình mẫu xem nó nhảy sang chỗ nào.
+Board summary: {"kind": "spatial-rotation", "shape": [{"x": 1, "y": 1}, {"x": 2, "y": 0}, {"x": 3, "y": 2}, {"x": 3, "y": 3}], "turn": "mirror"}
+Options: [{"id": "turn-b", "cells": [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 1, "y": 3}, {"x": 2, "y": 2}]}, {"id": "turn-e", "cells": [{"x": 1, "y": 2}, {"x": 2, "y": 3}, {"x": 3, "y": 0
+Solution: "turn-a"
+
+=== [123/144] D355-bonus-vi68 | Day 355 | Slot bonus | g06-t2 | planning-command-order ===
+Title: Vườn triển lãm: Từng bước một
+Invitation: Thử thách xếp lệnh hôm nay sẽ giúp bạn có tư duy của một nhà lập trình nhí đấy!
+Tutorial: Luật riêng của ván này (→ là làm trước): Bật đèn → Ngồi xuống; Ngồi xuống → Mở sách; Mở sách → Đọc bài. Mọi thứ tự giữ đủ luật đều được.
+Explanation: Luật riêng của ván này (→ là làm trước): Bật đèn → Ngồi xuống; Ngồi xuống → Mở sách; Mở sách → Đọc bài. Một thứ tự theo luật của ván này là: Bật đèn → Ngồi xuống → Mở sách → Đọc bài.
+Hints: Theo luật của ván này, tìm việc cần làm trước nhé. // Việc nào xong rồi mới làm được việc tiếp theo?
+Board summary: {"kind": "planning-command-order", "commands": [{"id": "step-3", "text": "Mở sách"}, {"id": "step-4", "text": "Đọc bài"}, {"id": "step-1", "text": "Bật đèn"}, {"id": "step-2", "text": "Ngồi xuống"}], "before": [["step-1", "step-2"], ["step-2", "step-3"], ["step-3", "step-4"]]}
+Options: null
+Solution: ["step-1", "step-2", "step-3", "step-4"]
+
+=== [124/144] D355-main-vi68 | Day 355 | Slot main | g03-t2 | memory-position ===
+Title: Nhớ vị trí — Vườn triển lãm
+Invitation: Các bạn nhỏ đang trốn trong ô, bạn hãy nhớ vị trí của các bạn ấy nhé!
+Tutorial: Tập trung nhìn các vị trí xuất hiện rồi bấm đúng ô sáng đèn chưa đánh dấu nha.
+Explanation: Vị trí còn thiếu nằm ở hàng 2, cột 2.
+Hints: Có một ô sáng đã biến mất. // So bảng bây giờ với lúc đầu.
+Board summary: {"kind": "memory-position", "width": 4, "height": 4, "targets": [{"x": 2, "y": 0}, {"x": 3, "y": 2}, {"x": 1, "y": 1}], "revealed": [{"x": 2, "y": 0}, {"x": 3, "y": 2}], "mode": "missing", "displayMs": 1400}
+Options: [{"x": 1, "y": 1}, {"x": 2, "y": 0}, {"x": 0, "y": 0}, {"x": 3, "y": 2}]
+Solution: [{"x": 1, "y": 1}]
+
+=== [125/144] D356-bonus-vi68 | Day 356 | Slot bonus | g07-t2 | flexibility-perspective ===
+Title: Vườn triển lãm · Hướng nhìn của bạn nhỏ
+Invitation: Cùng mình luyện khả năng tưởng tượng khi nhìn thế giới từ góc độ của bạn khác nào!
+Tutorial: Bạn đứng vào vị trí người quan sát và chọn xem đồ vật ở phía nào nhé.
+Explanation: Từ vị trí bạn nhỏ đang hướng xuống dưới, đồ vật nằm ở phía trước.
+Hints: Hãy xoay đầu theo hướng bạn nhỏ nhìn. // Đồ vật ở trước mặt, sau lưng hay bên tay nào của bạn ấy?
+Board summary: {"kind": "flexibility-perspective", "width": 4, "height": 4, "viewer": {"x": 2, "y": 1, "facing": "south"}, "target": {"x": 2, "y": 2}}
+Options: ["left", "right", "ahead", "behind"]
+Solution: "ahead"
+
+=== [126/144] D356-main-vi68 | Day 356 | Slot main | g04-t3 | reasoning-missing-info ===
+Title: Vườn triển lãm · Cần thêm manh mối nào?
+Invitation: Bạn hãy xem những gợi ý đã có và chọn thêm điều kiện cần thiết nhất nào.
+Tutorial: Bạn xem các gợi ý đã có và chọn thêm một điều cần biết để tìm ra bạn nhỏ nhé.
+Explanation: Manh mối còn thiếu giúp nhận diện chính xác bạn này là: hình là tam giác.
+Hints: Những điều đã biết vẫn còn nhiều bạn phù hợp. // Manh mối tốt là manh mối chỉ đúng với một bạn.
+Board summary: {"kind": "reasoning-missing-info", "scenario": "Mình cần biết chắc một bạn là ai.", "candidates": [{"id": "candidate-1", "traits": {"màu": "vàng", "hình": "tam giác", "kích cỡ": "to"}}, {"id": "candidate-2", "traits": {"màu": "vàng", "hình": "tròn", "kích cỡ": "to"}}, {"id": "candidate-3", "traits":
+Options: [{"id": "fact-c", "trait": "màu", "value": "đỏ"}, {"id": "fact-a", "trait": "hình", "value": "tam giác"}, {"id": "fact-b", "trait": "hình", "value": "tròn"}]
+Solution: "fact-a"
+
+=== [127/144] D357-bonus-vi68 | Day 357 | Slot bonus | g08-t2 | observation-two-traits ===
+Title: Vườn triển lãm · Hình nào có cả hai?
+Invitation: Cùng mình kết hợp hai tiêu chuẩn để lọc ra những người bạn phù hợp nhất nào!
+Tutorial: Bạn chọn mọi hình có đủ cả hai đặc điểm mà đề bài nhắc tới nhé.
+Explanation: Các hình có đủ cả hai đặc điểm (hình là tròn và vị trí là trên) là: hình 1, hình 3.
+Hints: Tìm điều kiện thứ nhất trước. // Trong các hình đạt, tìm tiếp hình có điều kiện thứ hai.
+Board summary: {"kind": "observation-two-traits", "items": [{"id": "item-1", "traits": {"hình": "tròn", "màu": "cam", "kích cỡ": "nhỏ", "vị trí": "trên"}}, {"id": "item-2", "traits": {"hình": "sao", "màu": "vàng", "kích cỡ": "to", "vị trí": "trên"}}, {"id": "item-3", "traits": {"hình": "tròn", "màu": "đỏ", "kích c
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-1", "item-3"]
+
+=== [128/144] D357-main-vi68 | Day 357 | Slot main | g05-t3 | quantity-target ===
+Title: Vườn triển lãm · Chiếc giỏ mục tiêu
+Invitation: Chiếc giỏ đang chờ bạn chọn các món đồ sao cho vừa đủ số mục tiêu đấy!
+Tutorial: Gom các món sao cho tổng vừa khít mục tiêu mà không vượt quá nhé.
+Explanation: Gom 8 để có tổng là 8, không vượt quá mục tiêu 8.
+Hints: Cộng dần nhưng đừng vượt quá 8. // Thử món lớn trước, rồi thêm món nhỏ.
+Board summary: {"kind": "quantity-target", "items": [{"id": "item-1", "value": 4}, {"id": "item-2", "value": 5}, {"id": "item-3", "value": 7}, {"id": "item-4", "value": 8}], "target": 8, "maxItems": 2, "mode": "not-over"}
+Options: ["item-1", "item-2", "item-3", "item-4"]
+Solution: ["item-4"]
+
+=== [129/144] D358-bonus-vi68 | Day 358 | Slot bonus | g01-t3 | rule-transform ===
+Title: Máy biến đổi — Cuộc hẹn bạn bè
+Invitation: Hôm nay mình cùng đoán xem chiếc máy biến đổi số thế nào nhé!
+Tutorial: Nhìn xem số vào máy thay đổi như thế nào để đoán số ra tiếp theo.
+Explanation: Quy tắc biến đổi của máy là gấp đôi giá trị. Khi đưa số 259 vào máy, ta thu được kết quả là 518.
+Hints: Máy làm cùng một việc với mọi số. // Nhìn xem số lúc ra to hơn, nhỏ hơn hay chỉ đổi chỗ các chữ số.
+Board summary: {"kind": "rule-transform", "examples": [{"input": "228", "output": "456"}, {"input": "235", "output": "470"}, {"input": "242", "output": "484"}], "query": "259", "transform": "double"}
+Options: ["518", "521", "519"]
+Solution: "518"
+
+=== [130/144] D358-main-vi68 | Day 358 | Slot main | g06-t3 | planning-fix-step ===
+Title: Cuộc hẹn bạn bè: Robot đi lạc rồi
+Invitation: Cùng mình sửa lỗi cho bạn robot để bạn ấy hoàn thành chuyến đi xuất sắc nào!
+Tutorial: Bạn tìm một bước cần đổi để bạn robot đi đúng đường tới đích nhé.
+Explanation: Đổi bước 3 thành hướng "bên phải" để robot về đích an toàn.
+Hints: Đi theo từng mũi tên của robot. // Dừng ở chỗ robot bắt đầu đi lạc xa khỏi đích.
+Board summary: {"kind": "planning-fix-step", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 3, "y": 2}, "walls": [], "commands": ["right", "right", "up", "down", "down"]}
+Options: [{"id": "fix-c", "index": 2, "command": "left"}, {"id": "fix-d", "index": 2, "command": "up"}, {"id": "fix-b", "index": 2, "command": "down"}, {"id": "fix-a", "index": 2, "command"
+Solution: "fix-a"
+
+=== [131/144] D359-bonus-vi68 | Day 359 | Slot bonus | g02-t3 | spatial-symmetry ===
+Title: Soi gương cùng mình · Cuộc hẹn bạn bè
+Invitation: Hai bên gương đang chờ bạn hoàn thành để đối xứng thật đẹp đấy!
+Tutorial: So từng cặp ô đối xứng qua đường kẻ giữa để tìm đúng vị trí.
+Explanation: Ô cần chọn nằm ở hàng 1, cột 3 để hình hoàn toàn đối xứng.
+Hints: Nhìn đường chia đôi ở giữa tranh. // Mỗi ô có một ô bạn ở bên kia đường, giống hệt nó.
+Board summary: {"kind": "spatial-symmetry", "grid": [["lá", "hoa", null, "lá"], ["sao", "mây", "sao", "mây"], ["sao", "mây", "sao", "mây"], ["lá", "hoa", "quả", "lá"]], "axis": "horizontal", "mode": "fill"}
+Options: [{"x": 2, "y": 0}, {"x": 3, "y": 1}, {"x": 1, "y": 2}]
+Solution: {"x": 2, "y": 0}
+
+=== [132/144] D359-main-vi68 | Day 359 | Slot main | g07-t3 | flexibility-alternative ===
+Title: Cuộc hẹn bạn bè · Có cách khác không?
+Invitation: Cùng mình rèn tính linh hoạt bằng cách tìm cách giải mới cho bài toán này nào!
+Tutorial: Tìm lối đi khác đưa bạn nhỏ về đích an toàn nha bạn.
+Explanation: Đường đi mới đã dẫn từ điểm xuất phát đến đích mà không bị trùng với đường ban đầu và tránh được các ô tường.
+Hints: Nhìn đường cũ và tìm chỗ mình có thể rẽ khác nhé. // Bạn có thể đi chung một đoạn đường cũ, chỉ cần khác ít nhất một chỗ và đến được đích.
+Board summary: {"kind": "flexibility-alternative", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 1, "y": 3}, {"x": 3, "y": 2}], "knownPath": [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}, {"x": 3, "y": 0}, {"x": 4, "y": 0}, {"x": 4, "y": 1}, {"x": 4, "y": 2},
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 0, "y": 1}, {"x": 0, "y": 2}, {"x": 0, "y": 3}, {"x": 0, "y": 4}, {"x": 1, "y": 4}, {"x": 2, "y": 4}, {"x": 3, "y": 4}, {"x": 4, "y": 4}]
+
+=== [133/144] D360-bonus-vi68 | Day 360 | Slot bonus | g03-t3 | memory-change ===
+Title: Cuộc hẹn bạn bè · Trước và sau
+Invitation: Thử thách nhận ra thay đổi hôm nay sẽ rèn cho bạn đôi mắt rất tinh đấy!
+Tutorial: Nhìn thật kỹ xem bạn nào vừa đổi chỗ, đổi màu hoặc biến mất nha.
+Explanation: Hai bạn hoa và sao đã đổi chỗ cho nhau.
+Hints: Các bạn vẫn đủ, chỉ đứng khác chỗ. // Nhìn từng chỗ đứng, xem ai đã đổi chỗ.
+Board summary: {"kind": "memory-change", "before": ["hoa", "sao", "mèo", "lá"], "after": ["sao", "hoa", "mèo", "lá"], "change": "swapped"}
+Options: ["hoa|sao", "hoa|mèo", "lá|sao", "mèo|sao"]
+Solution: "hoa|sao"
+
+=== [134/144] D360-main-vi68 | Day 360 | Slot main | g08-t3 | observation-implausible ===
+Title: Chi tiết bất hợp lý — Cuộc hẹn bạn bè
+Invitation: Cùng mình xem bức tranh nào có điều bất thường so với những bức tranh còn lại nào!
+Tutorial: Bạn tìm tình huống có chi tiết chưa đúng với quy tắc chung nhé.
+Explanation: Tình huống 4: "Bạn đặt cốc trà sữa kem phô mai lên tập vở" có đặc điểm "đồ ăn", trong khi luật của ván này yêu cầu "đồ dùng học tập".
+Hints: Đọc luật chuẩn ở trên. // Tìm tình huống làm khác luật.
+Board summary: {"kind": "observation-implausible", "scene": [{"id": "scene-1", "text": "Bạn đang nắn nót viết bài vào vở ô ly", "traits": {"nhóm": "đồ dùng học tập", "bước": "đi đúng hướng"}}, {"id": "scene-2", "text": "Bạn đang dùng thước kẻ vẽ hình chữ nhật", "traits": {"nhóm": "đồ dùng học tập", "bước": "đi đún
+Options: ["scene-4", "scene-1", "scene-3", "scene-2"]
+Solution: "scene-4"
+
+=== [135/144] D361-bonus-vi68 | Day 361 | Slot bonus | g04-t1 | reasoning-elimination ===
+Title: Cuộc hẹn bạn bè · Chỉ còn một bạn
+Invitation: Chào bạn, hãy dùng các manh mối để tìm ra bạn nhỏ bí ẩn cùng mình nhé!
+Tutorial: Xem kỹ từng lời gợi ý để tìm ra đúng người bạn bí mật.
+Explanation: Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số 4 (màu cam, hình thoi, kích cỡ to).
+Hints: Nhìn từng bạn nhỏ một và hỏi: bạn này có khớp không? // Bạn nào khác manh mối ở một chỗ cũng không phải.
+Board summary: {"kind": "reasoning-elimination", "candidates": [{"id": "candidate-3", "traits": {"màu": "hồng", "hình": "vuông", "kích cỡ": "to"}}, {"id": "candidate-2", "traits": {"màu": "tím", "hình": "tròn", "kích cỡ": "nhỏ"}}, {"id": "candidate-4", "traits": {"màu": "vàng", "hình": "sao", "kích cỡ": "nhỏ"}}, {
+Options: ["candidate-3", "candidate-2", "candidate-4", "candidate-1"]
+Solution: "candidate-1"
+
+=== [136/144] D361-main-vi68 | Day 361 | Slot main | g01-t1 | rule-sequence ===
+Title: Đoán phần kế tiếp — Cuộc hẹn bạn bè
+Invitation: Bạn hãy quan sát thật tinh mắt để đoán xem số hoặc hình nào sẽ xuất hiện tiếp theo.
+Tutorial: Đọc to các phần theo thứ tự, tìm xem phần nào đến tiếp theo.
+Explanation: Chuỗi lặp lại theo nhóm 3 phần tử nên phần tiếp theo là quả.
+Hints: Có một nhóm nhỏ cứ lặp đi lặp lại đó. // Tìm xem nhóm đó bắt đầu từ hình nào.
+Board summary: {"kind": "rule-sequence", "sequence": ["nắng", "mây", "quả", "nắng", "mây"], "ruleKind": "repeat", "period": 3}
+Options: ["quả", "lá", "hoa"]
+Solution: "quả"
+
+=== [137/144] D362-bonus-vi68 | Day 362 | Slot bonus | g05-t1 | quantity-balance ===
+Title: Cuộc hẹn bạn bè: Chiếc cân thăng bằng
+Invitation: Cùng mình làm cho chiếc cân trở nên thăng bằng thật đẹp mắt nào bạn!
+Tutorial: Tìm quả cân còn thiếu để hai bên cân thăng bằng thật đẹp.
+Explanation: Cần thêm 2 để hai bên đĩa cân có cân nặng bằng nhau.
+Hints: Cộng các quả cân đã có ở mỗi đĩa. // Đĩa nhẹ hơn cần thêm đúng phần còn thiếu.
+Board summary: {"kind": "quantity-balance", "left": [{"id": "left-1", "weight": 6}, {"id": "left-2", "weight": 4}], "right": [{"id": "right-1", "weight": 12}], "mode": "unknown", "unknownSide": "left"}
+Options: [0, 1, 2]
+Solution: 2
+
+=== [138/144] D362-main-vi68 | Day 362 | Slot main | g02-t1 | spatial-silhouette ===
+Title: Cuộc hẹn bạn bè: Bóng của hình nào?
+Invitation: Hôm nay mình cùng ghép bóng nhé, bạn nhìn thật kỹ từng ô nhỏ nha!
+Tutorial: So từng ô của bóng với hình mẫu để tìm chiếc bóng khớp nhất.
+Explanation: Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình D.
+Hints: Đếm xem hình mẫu có bao nhiêu ô. // Chọn hình có cùng số ô, rồi nhìn xem hình dạng có giống không.
+Board summary: {"kind": "spatial-silhouette", "target": [{"x": 3, "y": 2}, {"x": 0, "y": 3}, {"x": 0, "y": 1}, {"x": 2, "y": 1}]}
+Options: [{"id": "shape-b", "cells": [{"x": 0, "y": 2}, {"x": 1, "y": 3}, {"x": 1, "y": 1}, {"x": 3, "y": 1}]}, {"id": "shape-d", "cells": [{"x": 3, "y": 2}, {"x": 0, "y": 3}, {"x": 0, "y":
+Solution: "shape-a"
+
+=== [139/144] D363-bonus-vi68 | Day 363 | Slot bonus | g06-t1 | path-planning ===
+Title: Cuộc hẹn bạn bè · Đi sao cho khéo?
+Invitation: Thử thách tìm đường hôm nay sẽ giúp bạn rèn luyện khả năng quan sát không gian đấy!
+Tutorial: Đếm bước để tìm đường ngắn nhất từ ô bắt đầu đến ô đích, tránh các bức tường nhé.
+Explanation: Đường ngắn nhất đưa bạn nhỏ về đích cần đúng 8 bước di chuyển an toàn.
+Hints: Thử đếm số bước của các đường tránh tường. // Chọn đường đến đích có ít bước nhất nhé.
+Board summary: {"kind": "path-planning", "width": 5, "height": 5, "start": {"x": 0, "y": 0}, "goal": {"x": 4, "y": 4}, "walls": [{"x": 0, "y": 1}], "waypoints": [], "shortestPathOnly": true}
+Options: null
+Solution: [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}, {"x": 3, "y": 0}, {"x": 4, "y": 0}, {"x": 4, "y": 1}, {"x": 4, "y": 2}, {"x": 4, "y": 3}, {"x": 4, "y": 4}]
+
+=== [140/144] D363-main-vi68 | Day 363 | Slot main | g03-t1 | memory-sequence ===
+Title: Nhớ thứ tự — Cuộc hẹn bạn bè
+Invitation: Cùng mình rèn luyện trí nhớ bằng cách ghi nhớ thứ tự của các bạn nhỏ nhé!
+Tutorial: Đọc thầm từng từ theo thứ tự để nhớ, rồi chọn hai từ cho ô đánh dấu.
+Explanation: Hai ô thứ 2 và 3 trong dãy là bóng và thuyền.
+Hints: Chú ý hai vị trí được đánh dấu. // Nhớ lại bạn đứng ở mỗi vị trí đó lúc đầu.
+Board summary: {"kind": "memory-sequence", "sequence": ["táo", "bóng", "thuyền", "trăng"], "displayMs": 1200, "mode": "swapped", "swappedIndices": [1, 2]}
+Options: ["táo", "bóng", "thuyền", "trăng"]
+Solution: ["bóng", "thuyền"]
+
+=== [141/144] D364-bonus-vi68 | Day 364 | Slot bonus | g07-t1 | flexibility-classify ===
+Title: Cuộc hẹn bạn bè · Ai hợp luật mới?
+Invitation: Thử thách đổi luật phân loại hôm nay sẽ giúp tư duy của bạn thật nhạy bén đấy!
+Tutorial: Bạn phân loại các hình theo đặc điểm mới mà đề bài yêu cầu nhé.
+Explanation: Theo quy tắc mới (vị trí là "trên"), các hình phù hợp là: hình 2, hình 5.
+Hints: Đọc luật mới ở phía trên thật kỹ. // Chỉ chọn những hình có vị trí đúng như luật.
+Board summary: {"kind": "flexibility-classify", "items": [{"id": "item-1", "traits": {"hình": "sao", "màu": "cam", "kích cỡ": "to", "vị trí": "dưới"}}, {"id": "item-2", "traits": {"hình": "tròn", "màu": "đỏ", "kích cỡ": "nhỏ", "vị trí": "trên"}}, {"id": "item-3", "traits": {"hình": "tam giác", "màu": "xanh", "kích
+Options: ["item-1", "item-2", "item-3", "item-4", "item-5"]
+Solution: ["item-2", "item-5"]
+
+=== [142/144] D364-main-vi68 | Day 364 | Slot main | g04-t2 | reasoning-if-then ===
+Title: Cuộc hẹn bạn bè · Luật nếu thì
+Invitation: Cùng mình thử tài suy luận logic với những điều kiện Nếu - Thì ngày hôm nay!
+Tutorial: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này. Bạn xem những điều đã biết và luật Nếu - Thì để tìm kết luận đúng nhé.
+Explanation: Các từ là thẻ ký hiệu. Luật chỉ dùng trong ván này: "mặt trời" → "buổi sáng"; "buổi sáng" → "thức dậy"; "mặt trời" → "thức dậy". Từ thẻ "mặt trời", áp dụng luật để suy ra thẻ "buổi sáng".
+Hints: Nhìn điều đã biết ở phía trên. // Luật nào bắt đầu bằng điều đó thì giúp bạn tìm ra điều mới.
+Board summary: {"kind": "reasoning-if-then", "rules": [{"if": "mặt trời", "then": "buổi sáng"}, {"if": "buổi sáng", "then": "thức dậy"}, {"if": "mặt trời", "then": "thức dậy"}], "facts": ["mặt trời"]}
+Options: ["chim hót", "áo mưa", "uống nước", "buổi sáng"]
+Solution: "buổi sáng"
+
+=== [143/144] D365-bonus-vi68 | Day 365 | Slot bonus | g08-t1 | observation-difference ===
+Title: Gặp lại các người bạn · Hai tranh, vài điểm khác
+Invitation: Hãy so sánh từng hàng và từng cột để không bỏ sót điểm khác biệt nào nha bạn!
+Tutorial: Bạn tìm tất cả các ô có hình khác nhau giữa hai bức tranh nhé.
+Explanation: Điểm khác nhau giữa hai hình nằm ở hàng 1, cột 4 và hàng 4, cột 2.
+Hints: So từng hàng của hai hình nhé. // Nhìn kỹ từng ô: hai ô cùng chỗ có giống nhau không?
+Board summary: {"kind": "observation-difference", "left": [["mây", "nấm", "mây", "hoa"], ["hoa", "nấm", "lá", "nấm"], ["quả", "quả", "nấm", "lá"], ["quả", "nấm", "cỏ", "lá"]], "right": [["mây", "nấm", "mây", "lá"], ["hoa", "nấm", "lá", "nấm"], ["quả", "quả", "nấm", "lá"], ["quả", "lá", "cỏ", "lá"]]}
+Options: [{"x": 0, "y": 0}, {"x": 0, "y": 3}, {"x": 1, "y": 3}, {"x": 2, "y": 1}, {"x": 3, "y": 0}]
+Solution: [{"x": 3, "y": 0}, {"x": 1, "y": 3}]
+
+=== [144/144] D365-main-vi68 | Day 365 | Slot main | g05-t2 | quantity-grouping ===
+Title: Gặp lại các người bạn · Nhóm nào đủ?
+Invitation: Thử thách chia nhóm hôm nay rất vui và hữu ích, bạn cùng mình làm nhé!
+Tutorial: Đếm xem chia được mấy nhóm đủ và còn thừa lại mấy bạn nha.
+Explanation: Để gom đủ thêm một nhóm 2 nữa, ta cần thêm 1 phần.
+Hints: Gom thành các nhóm bằng nhau trước. // Xem nhóm cuối còn thiếu mấy phần mới đủ.
+Board summary: {"kind": "quantity-grouping", "total": 9, "groupSize": 2, "mode": "needed"}
+Options: [2, 1, 0, 3]
+Solution: 1
+

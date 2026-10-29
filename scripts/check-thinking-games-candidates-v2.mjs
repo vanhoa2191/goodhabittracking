@@ -8,6 +8,7 @@ import {
   V2_CONTENT_VERSION,
   GENERATED_AT,
   loadEngine,
+  normalizedCandidateSignature,
   readEditorialRows,
   sha256,
   skillForCsv,
@@ -15,7 +16,7 @@ import {
 
 export const auditDir = join(resolve(new URL('..', import.meta.url).pathname), 'plans/261021-daily-thinking-games/execution/content-candidate-audits');
 const REQUIRED_ALTERNATE_TYPES = new Set(['g07-t3']);
-const FORBIDDEN_COPY = /\bIQ\b|chỉ số thông minh|nhanh nhất|chậm nhất|thua kém|kém cỏi|đần|ngốc|phải nhanh|tốc độ|ganh đua|áp lực|đua top|so bì/i;
+const FORBIDDEN_COPY = /\bIQ\b|chỉ số thông minh|nhanh nhất|chậm nhất|thua kém|kém cỏi|đần|ngốc|phải nhanh|thật nhanh|tính toán nhanh|tốc độ|ganh đua|áp lực|đua top|so bì/i;
 const COPY_KEYS = new Set(['text', 'title', 'invitation', 'label', 'name']);
 
 // Game types with point array answers where order doesn't matter (set of points)
@@ -296,7 +297,71 @@ const DUPLICATE_WORD_REGEX = /(?:^|\s)(ở|và|là|của|các|một|những|thì
 export const POSITION_BIAS_MAX_SHARE = 0.6;
 export const POSITION_BIAS_MIN_ITEMS = 20;
 
+// Independent checks for candidate defects which a known-answer round trip
+// cannot detect (the generator and checker may agree on the same mistake).
+export function candidateCorrectnessErrors(item) {
+  const board = item.boardData;
+  const errors = [];
+  const fail = (code, message) => errors.push({ code, id: item.id, gameTypeId: item.gameTypeId, message });
+  const pointKey = (cells) => cells.map(({ x, y }) => `${x},${y}`).sort().join('|');
+  if (['rule-error', 'spatial-rotation'].includes(board.kind) && board.mechanicRevision !== 2) fail('candidate_mechanic_revision_missing', 'new candidate boards must opt into corrected mechanic revision 2');
+  if (board.kind === 'rule-error') {
+    const period = board.ruleKind === 'alternating' ? 2 : board.period;
+    if (board.ruleKind !== 'increment' && period >= 2) {
+      const repairs = board.sequence.flatMap((token, omitted) => {
+        const groups = Array.from({ length: period }, (_, residue) => new Set(board.sequence.filter((_, i) => i !== omitted && i % period === residue)));
+        return groups.every((group) => group.size === 1) && !groups[omitted % period].has(token) ? [omitted] : [];
+      });
+      if (repairs.length !== 1 || repairs[0] !== item.solution) fail('rule_error_ambiguous', `repairable slots: ${repairs.join(', ')}`);
+      if (board.sequence.length < 2 * period) fail('rule_error_short_repeat', 'repeat must show at least two cycles');
+    }
+  }
+  if (board.kind === 'spatial-rotation') {
+    const maxX = Math.max(...board.shape.map((p) => p.x));
+    const maxY = Math.max(...board.shape.map((p) => p.y));
+    const expected = board.shape.map(({ x, y }) => board.turn === 'quarter-mirror' ? { x: y, y: x }
+      : board.turn === 'mirror' ? { x: maxX - x, y }
+      : board.turn === 'half' ? { x: maxX - x, y: maxY - y } : { x: maxY - y, y: x });
+    const valid = board.options.filter((option) => pointKey(option.cells) === pointKey(expected));
+    if (valid.length !== 1 || valid[0].id !== item.solution) fail('rotation_transform_mismatch', 'expected exactly one option matching the requested transform');
+    if (board.turn.includes('mirror') && !/trái.*phải/.test(item.tutorial ?? '')) fail('rotation_axis_missing', 'mirror tutorial must state left-right axis');
+    if (board.turn === 'mirror') {
+      const other = pointKey(board.shape.map(({ x, y }) => ({ x, y: maxY - y })));
+      if (board.options.some((option) => option.id !== item.solution && pointKey(option.cells) === other)) fail('rotation_other_axis_distractor', 'other-axis mirror is still offered');
+    }
+  }
+  if (board.kind === 'spatial-symmetry' && board.mode === 'find-break') {
+    const mismatches = board.grid.flatMap((row, y) => row.flatMap((value, x) => {
+      const other = board.axis === 'vertical' ? { x: row.length - 1 - x, y } : { x, y: board.grid.length - 1 - y };
+      return value !== board.grid[other.y]?.[other.x] ? [{ x, y }] : [];
+    }));
+    if (mismatches.length !== 2 || mismatches.some((p) => !board.options.some((o) => o.x === p.x && o.y === p.y))) fail('symmetry_hidden_valid_cell', 'both cells of the broken pair must be selectable');
+  }
+  if (board.kind === 'planning-command-order') {
+    let count = 0;
+    const visit = (order) => {
+      if (count >= 2) return;
+      if (order.length === board.commands.length) { count++; return; }
+      for (const command of board.commands) {
+        if (!order.includes(command.id) && board.before.every(([a, b]) => b !== command.id || order.includes(a))) visit([...order, command.id]);
+      }
+    };
+    visit([]);
+    if (count < 2) fail('command_order_single_solution', 'generated partial order must allow at least two valid orders');
+    const ids = board.commands.map((c) => c.id).sort();
+    const sorted = [...board.before].sort(([a, b], [c, d]) => ids.indexOf(a) - ids.indexOf(c) || ids.indexOf(b) - ids.indexOf(d));
+    if (JSON.stringify(sorted) === JSON.stringify(board.before)) fail('command_rules_solution_order', 'constraints are listed in solution order');
+  }
+  if (board.kind === 'reasoning-if-then' && /hai/.test(item.ruleVariantId ?? '')) {
+    if (board.rules.length < 2 || board.rules.some((r) => board.facts.includes(r.if) && r.then === item.solution)) fail('if_then_missing_two_steps', 'two-step variant must require more than one inference');
+  }
+  if (board.kind === 'memory-change' && board.change === 'property'
+    && board.options.some((option) => !/ (đỏ|xanh|vàng|tím)$/.test(option))) fail('memory_property_format_leak', 'all property options must use the same noun + color format');
+  return errors;
+}
+
 export function correctOptionIndex(item, engine) {
+  if (item.gameTypeId === 'g01-t2' && Number.isInteger(item.solution) && item.solution >= 0 && item.solution < item.boardData?.sequence?.length) return item.solution;
   let options = item.boardData?.options;
   if (item.gameTypeId === 'g04-t1' && Array.isArray(item.boardData?.candidates)) {
     options = (item.boardData.options ?? []).map((id) => item.boardData.candidates.find((candidate) => candidate.id === id));
@@ -320,12 +385,14 @@ export function positionBiasErrors(items, engine) {
     stats.total += 1;
     stats.positions.set(index, (stats.positions.get(index) ?? 0) + 1);
     byType.set(item.gameTypeId, stats);
-    if (item.gameTypeId === 'g05-t2') {
+    if (['g05-t2', 'g01-t2', 'g04-t3'].includes(item.gameTypeId)) {
       const variant = item.ruleVariantId ?? item.boardData?.mode ?? 'unknown';
-      const key = `${item.ageTrack ?? 'unknown'}|${variant}`;
+      const key = `${item.gameTypeId}|${item.ageTrack ?? 'unknown'}|${variant}`;
       const stratum = groupingStrata.get(key) ?? { total: 0, positions: new Map() };
+      const position = item.gameTypeId === 'g04-t3'
+        ? item.boardData.candidates.findIndex((candidate) => candidate.id === item.boardData.targetId) : index;
       stratum.total += 1;
-      stratum.positions.set(index, (stratum.positions.get(index) ?? 0) + 1);
+      stratum.positions.set(position, (stratum.positions.get(position) ?? 0) + 1);
       groupingStrata.set(key, stratum);
     }
   }
@@ -349,9 +416,9 @@ export function positionBiasErrors(items, engine) {
       if (count / total > POSITION_BIAS_MAX_SHARE) {
         errors.push({
           code: 'answer_position_bias',
-          id: `g05-t2:${stratum}`,
-          gameTypeId: 'g05-t2',
-          message: `g05-t2 (${stratum}): correct answer is option #${position + 1} in ${count}/${total} items (> ${POSITION_BIAS_MAX_SHARE * 100}%)`,
+          id: `${stratum.split('|')[0]}:${stratum.slice(stratum.indexOf('|') + 1)}`,
+          gameTypeId: stratum.split('|')[0],
+          message: `${stratum}: correct answer/target is position #${position + 1} in ${count}/${total} items (> ${POSITION_BIAS_MAX_SHARE * 100}%)`,
         });
       }
     }
@@ -562,16 +629,8 @@ export function copyAuditErrors(item) {
   return errors;
 }
 
-export function normalizedStructuralSignature(item) {
-  const board = item.boardData;
-  const structural = { kind: board.kind };
-  if (board.kind === 'rule-sequence') { structural.ruleKind = board.ruleKind; structural.period = board.period; structural.sequenceLength = board.sequence.length; structural.optionCount = board.options.length; }
-  else if (board.kind === 'path-planning') { structural.width = board.width; structural.height = board.height; structural.wallCount = board.walls.length; structural.waypointCount = board.waypoints.length; structural.waypointOrder = board.waypointOrder; structural.shortestPathOnly = board.shortestPathOnly; }
-  else if (board.kind === 'memory-sequence') { structural.mode = board.mode; structural.sequenceLength = board.sequence?.length ?? 0; structural.optionCount = board.options?.length ?? 0; structural.groupCount = board.groups?.length ?? 0; }
-  else { structural.boardJson = JSON.stringify(board); }
-  structural.solutionType = Array.isArray(item.solution) ? 'array' : typeof item.solution;
-  return JSON.stringify(structural);
-}
+// The generator and audit must agree on the same content-level uniqueness key.
+export const normalizedStructuralSignature = normalizedCandidateSignature;
 
 function loadBatch(batch) { const document = JSON.parse(readFileSync(batchPath(batch), 'utf8')); return document.items; }
 function loadManifest() { const manifestPath = join(V2_CANDIDATE_ROOT, 'candidate-manifest-v2.json'); return JSON.parse(readFileSync(manifestPath, 'utf8')); }
@@ -674,6 +733,7 @@ async function checkBatch(batch, { write = true } = {}) {
     const usedAlternate = new Set();
     for (const item of items) {
       audit.metrics.itemCount += 1;
+      for (const error of candidateCorrectnessErrors(item)) pushIssue(audit.errors, error);
       const validated = engine.validatePuzzle(item);
       if (!validated.ok) {
         pushIssue(audit.errors, { code: 'schema', id: item.id, message: validated.details.join('; ') });
@@ -930,6 +990,7 @@ export async function checkAll({ write = true } = {}) {
     const usedAlternate = new Set();
     for (const item of allItems) {
       audit.metrics.itemCount += 1;
+      for (const error of candidateCorrectnessErrors(item)) pushIssue(audit.errors, error);
       const validated = engine.validatePuzzle(item);
       if (!validated.ok) {
         pushIssue(audit.errors, { code: 'schema', id: item.id, message: validated.details.join('; ') });

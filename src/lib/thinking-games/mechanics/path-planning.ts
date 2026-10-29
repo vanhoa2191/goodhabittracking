@@ -1,4 +1,4 @@
-import { ageRank } from '../age';
+import { ageRank, candidateQuarter } from '../age';
 import { getTrackHints, type HintContext } from '../content/hints';
 import { pathBoardSchema } from '../schema';
 import { createSeededRandom, shuffleDeterministic, stableSeedKey } from '../seeded';
@@ -176,10 +176,10 @@ function buildBoard(
   height: number,
   wallCount: number,
   waypoints: PathBoard['waypoints'],
+  start: PathStep,
+  goal: PathStep,
   extra: Pick<PathBoard, 'waypointOrder' | 'shortestPathOnly'> = {},
 ): PathBoard {
-  const start = { x: 0, y: 0 };
-  const goal = { x: width - 1, y: height - 1 };
   const reserved = new Set([cellKey(start), cellKey(goal), ...waypoints.map(cellKey)]);
   const candidates: PathStep[] = [];
   for (let x = 0; x < width; x += 1) {
@@ -216,9 +216,12 @@ export function generatePathPuzzle(input: {
 }): PathBoard {
   const random = createSeededRandom(stableSeedKey([input.seed, input.ageTrack, input.variant, 'g06-t1']));
   const rank = ageRank(input.ageTrack);
+  const quarter = candidateQuarter(input.seed);
   const variant = pathVariant(input.variant);
-  const width = rank >= 2 ? (rank === 3 ? 8 : 7) : 5;
-  const wallCount = input.ageTrack === 'age_3_5' ? 0 : input.ageTrack === 'age_6_8' ? 1 : rank === 2 ? 4 : 6;
+  const width = Math.min(9, 5 + rank + (quarter >= 2 ? 1 : 0));
+  const wallCount = Math.min(12, (rank === 0 ? 1 : rank === 1 ? 2 : rank === 2 ? 4 : 6) + quarter);
+  const start = { x: 0, y: Math.floor(random() * Math.min(width - 1, quarter + 2)) };
+  const goal = { x: width - 1, y: width - 1 - Math.floor(random() * Math.min(width - 1, quarter + 2)) };
   let waypoints: PathBoard['waypoints'] = [];
   if (variant === 'waypoint') {
     waypoints = [{ id: 'w1', x: width === 5 ? 2 : 3, y: width === 5 ? 2 : 3 }];
@@ -235,10 +238,10 @@ export function generatePathPuzzle(input: {
       ? { shortestPathOnly: true }
       : {};
   for (let attempt = 0; attempt < 32; attempt += 1) {
-    const board = buildBoard(random, width, width, wallCount, waypoints, extra);
+    const board = buildBoard(random, width, width, wallCount, waypoints, start, goal, extra);
     if (solvePath(board)) return board;
   }
-  return buildBoard(random, width, width, 0, waypoints, extra);
+  return buildBoard(random, width, width, 0, waypoints, start, goal, extra);
 }
 
 function pathHintMode(board: PathBoard): string {
@@ -259,7 +262,7 @@ function describePathBoardLegacy(board: PathBoard): {
         'Bạn đếm số bước của từng ngả đường để so sánh nhé.',
         'Đường ngắn nhất không đi vòng qua những ô thừa, mỗi bước đều tiến gần đích hơn.',
       ],
-      explanation: `Đường ngắn nhất đưa bạn nhỏ về đích cần đúng ${steps} bước di chuyển an toàn.`,
+      explanation: `Lộ trình ngắn nhất tới đích cần đúng ${steps} bước di chuyển an toàn.`,
     };
   }
   if (board.waypointOrder === 'ordered') {

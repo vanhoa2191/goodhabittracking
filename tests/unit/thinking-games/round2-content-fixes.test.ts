@@ -164,19 +164,19 @@ describe('answer position bias (finding A)', () => {
 });
 
 describe('V2 catalog quality counters', () => {
-  it('reports real duplicate totals and blocks the quality gate', async () => {
+  it('reports zero duplicate totals and does not block the quality gate', async () => {
     const { result } = await v2Check.checkAll({ write: false });
 
     expect(Number.isFinite(result.metrics.duplicateFingerprints)).toBe(true);
     expect(Number.isFinite(result.metrics.normalizedCollisions)).toBe(true);
-    expect(result.metrics.duplicateFingerprints).toBe(137);
-    expect(result.metrics.normalizedCollisions).toBe(434);
+    expect(result.metrics.duplicateFingerprints).toBe(0);
+    expect(result.metrics.normalizedCollisions).toBe(0);
     expect(result.quality).toMatchObject({
-      duplicateFingerprints: 137,
-      normalizedCollisions: 434,
-      blocked: true,
+      duplicateFingerprints: 0,
+      normalizedCollisions: 0,
+      blocked: false,
     });
-    expect(result.status).not.toBe('pass_with_review_warnings');
+    expect(result.status).toBe('pass_with_review_warnings');
   }, 60_000);
 });
 
@@ -187,7 +187,7 @@ describe('g07-t2 perspective (finding B)', () => {
       const generated = generate('g07-t2', `persp-${n}`, TRACKS[n % 2]!, n);
       directions.add(generated.solution);
       expect(generated.explanation).not.toMatch(/\bở\s+ở\b/);
-      expect(generated.explanation).toMatch(/phía trước|phía sau|bên trái|bên phải/);
+        expect(generated.explanation).toMatch(/phía trước|phía sau|bên trái|sang phải/);
       const copyErrors = v2Check.copyAuditErrors({ title: 't', invitation: 'i', tutorial: generated.tutorial, explanation: generated.explanation, hints: generated.hints, solution: generated.solution });
       expect(copyErrors).toEqual([]);
     }

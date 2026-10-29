@@ -1,0 +1,351 @@
+{
+  "fingerprint_duplicate_groups": 8,
+  "fingerprint_duplicate_items": 31,
+  "fingerprint_details": [
+    {
+      "fingerprint": "06ad2b6c7108d9a1",
+      "count": 6,
+      "items": [
+        "D042-bonus-vi68",
+        "D125-main-vi68",
+        "D138-bonus-vi68",
+        "D221-main-vi68",
+        "D234-bonus-vi68",
+        "D330-bonus-vi68"
+      ]
+    },
+    {
+      "fingerprint": "e3f01554c338c8cb",
+      "count": 5,
+      "items": [
+        "D090-bonus-vi68",
+        "D173-main-vi68",
+        "D186-bonus-vi68",
+        "D269-main-vi68",
+        "D365-main-vi68"
+      ]
+    },
+    {
+      "fingerprint": "e4c4ce54ea0882b4",
+      "count": 4,
+      "items": [
+        "D005-main-vi68",
+        "D197-main-vi68",
+        "D210-bonus-vi68",
+        "D293-main-vi68"
+      ]
+    },
+    {
+      "fingerprint": "af78cfa5e4f1fdb1",
+      "count": 4,
+      "items": [
+        "D018-bonus-vi68",
+        "D101-main-vi68",
+        "D114-bonus-vi68",
+        "D306-bonus-vi68"
+      ]
+    },
+    {
+      "fingerprint": "c724672070377def",
+      "count": 4,
+      "items": [
+        "D053-main-vi68",
+        "D149-main-vi68",
+        "D245-main-vi68",
+        "D341-main-vi68"
+      ]
+    },
+    {
+      "fingerprint": "e9e90e66c9abe980",
+      "count": 4,
+      "items": [
+        "D066-bonus-vi68",
+        "D162-bonus-vi68",
+        "D258-bonus-vi68",
+        "D354-bonus-vi68"
+      ]
+    },
+    {
+      "fingerprint": "8422bae221f37ee8",
+      "count": 2,
+      "items": [
+        "D029-main-vi68",
+        "D317-main-vi68"
+      ]
+    },
+    {
+      "fingerprint": "9c333c77bd437dfe",
+      "count": 2,
+      "items": [
+        "D077-main-vi68",
+        "D282-bonus-vi68"
+      ]
+    }
+  ],
+  "skeleton_duplicate_groups": 60,
+  "skeleton_duplicate_items": 282,
+  "full_copy_duplicate_groups": 0,
+  "full_copy_duplicate_items": 0,
+  "top_skeleton_clusters": [
+    {
+      "gameTypeId": "g01-t1",
+      "kind": "rule-sequence",
+      "count": 16,
+      "sample_ids": [
+        "D001-main-vi68",
+        "D014-bonus-vi68",
+        "D049-main-vi68",
+        "D062-bonus-vi68",
+        "D097-main-vi68"
+      ],
+      "skeleton": "('alternating', None, None, (0, 1, 0, 1, 0))"
+    },
+    {
+      "gameTypeId": "g06-t3",
+      "kind": "planning-fix-step",
+      "count": 11,
+      "sample_ids": [
+        "D035-bonus-vi68",
+        "D070-main-vi68",
+        "D083-bonus-vi68",
+        "D094-main-vi68",
+        "D131-bonus-vi68"
+      ],
+      "skeleton": "(('right', 'right', 'up', 'down', 'down'),)"
+    },
+    {
+      "gameTypeId": "g04-t2",
+      "kind": "reasoning-if-then",
+      "count": 10,
+      "sample_ids": [
+        "D017-bonus-vi68",
+        "D041-bonus-vi68",
+        "D065-bonus-vi68",
+        "D100-main-vi68",
+        "D137-bonus-vi68"
+      ],
+      "skeleton": "((('khát nước', 'uống nước'), ('nắng gắt', 'khát nước')),)"
+    },
+    {
+      "gameTypeId": "g06-t3",
+      "kind": "planning-fix-step",
+      "count": 10,
+      "sample_ids": [
+        "D022-main-vi68",
+        "D179-bonus-vi68",
+        "D190-main-vi68",
+        "D214-main-vi68",
+        "D275-bonus-vi68"
+      ],
+      "skeleton": "(('right', 'right', 'right', 'up', 'down'),)"
+    },
+    {
+      "gameTypeId": "g06-t3",
+      "kind": "planning-fix-step",
+      "count": 9,
+      "sample_ids": [
+        "D011-bonus-vi68",
+        "D046-main-vi68",
+        "D059-bonus-vi68",
+        "D107-bonus-vi68",
+        "D118-main-vi68"
+      ],
+      "skeleton": "(('right', 'up', 'right', 'down', 'down'),)"
+    },
+    {
+      "gameTypeId": "g03-t1",
+      "kind": "memory-sequence",
+      "count": 8,
+      "sample_ids": [
+        "D003-main-vi68",
+        "D016-bonus-vi68",
+        "D099-main-vi68",
+        "D112-bonus-vi68",
+        "D195-main-vi68"
+      ],
+      "skeleton": "(None, None, None, (0, 1, 2, 3))"
+    },
+    {
+      "gameTypeId": "g01-t3",
+      "kind": "rule-transform",
+      "count": 8,
+      "sample_ids": [
+        "D009-main-vi68",
+        "D022-bonus-vi68",
+        "D105-main-vi68",
+        "D118-bonus-vi68",
+        "D201-main-vi68"
+      ],
+      "skeleton": "('add', 3)"
+    },
+    {
+      "gameTypeId": "g01-t1",
+      "kind": "rule-sequence",
+      "count": 8,
+      "sample_ids": [
+        "D025-main-vi68",
+        "D038-bonus-vi68",
+        "D121-main-vi68",
+        "D134-bonus-vi68",
+        "D217-main-vi68"
+      ],
+      "skeleton": "('increment', None, None, (0, 1, 2, 3, 4))"
+    },
+    {
+      "gameTypeId": "g03-t1",
+      "kind": "memory-sequence",
+      "count": 8,
+      "sample_ids": [
+        "D027-main-vi68",
+        "D040-bonus-vi68",
+        "D123-main-vi68",
+        "D136-bonus-vi68",
+        "D219-main-vi68"
+      ],
+      "skeleton": "(None, 'missing', None, (0, 1, 2, 3))"
+    },
+    {
+      "gameTypeId": "g01-t3",
+      "kind": "rule-transform",
+      "count": 8,
+      "sample_ids": [
+        "D033-main-vi68",
+        "D046-bonus-vi68",
+        "D129-main-vi68",
+        "D142-bonus-vi68",
+        "D225-main-vi68"
+      ],
+      "skeleton": "('subtract', 3)"
+    },
+    {
+      "gameTypeId": "g03-t1",
+      "kind": "memory-sequence",
+      "count": 8,
+      "sample_ids": [
+        "D051-main-vi68",
+        "D064-bonus-vi68",
+        "D147-main-vi68",
+        "D160-bonus-vi68",
+        "D243-main-vi68"
+      ],
+      "skeleton": "(None, 'grouped', None, (0, 1, 2, 3))"
+    },
+    {
+      "gameTypeId": "g01-t3",
+      "kind": "rule-transform",
+      "count": 8,
+      "sample_ids": [
+        "D057-main-vi68",
+        "D070-bonus-vi68",
+        "D153-main-vi68",
+        "D166-bonus-vi68",
+        "D249-main-vi68"
+      ],
+      "skeleton": "('double', 3)"
+    },
+    {
+      "gameTypeId": "g04-t2",
+      "kind": "reasoning-if-then",
+      "count": 7,
+      "sample_ids": [
+        "D004-main-vi68",
+        "D028-main-vi68",
+        "D052-main-vi68",
+        "D113-bonus-vi68",
+        "D196-main-vi68"
+      ],
+      "skeleton": "((('mây', 'mưa'), ('mưa', 'áo mưa')),)"
+    },
+    {
+      "gameTypeId": "g06-t2",
+      "kind": "planning-command-order",
+      "count": 7,
+      "sample_ids": [
+        "D067-bonus-vi68",
+        "D163-bonus-vi68",
+        "D211-bonus-vi68",
+        "D246-main-vi68",
+        "D294-main-vi68"
+      ],
+      "skeleton": "(('Mở vòi', 'Rửa sạch', 'Rửa tay', 'Xoa xà phòng'),)"
+    },
+    {
+      "gameTypeId": "g01-t1",
+      "kind": "rule-sequence",
+      "count": 7,
+      "sample_ids": [
+        "D073-main-vi68",
+        "D086-bonus-vi68",
+        "D169-main-vi68",
+        "D182-bonus-vi68",
+        "D265-main-vi68"
+      ],
+      "skeleton": "('repeat', None, 3, (0, 1, 2, 0, 1))"
+    },
+    {
+      "gameTypeId": "g03-t1",
+      "kind": "memory-sequence",
+      "count": 7,
+      "sample_ids": [
+        "D075-main-vi68",
+        "D088-bonus-vi68",
+        "D171-main-vi68",
+        "D184-bonus-vi68",
+        "D267-main-vi68"
+      ],
+      "skeleton": "(None, 'swapped', None, (0, 1, 2, 3))"
+    },
+    {
+      "gameTypeId": "g06-t2",
+      "kind": "planning-command-order",
+      "count": 6,
+      "sample_ids": [
+        "D030-main-vi68",
+        "D091-bonus-vi68",
+        "D102-main-vi68",
+        "D235-bonus-vi68",
+        "D270-main-vi68"
+      ],
+      "skeleton": "(('Gieo hạt', 'Lấp đất', 'Lấy hạt', 'Đào đất'),)"
+    },
+    {
+      "gameTypeId": "g05-t2",
+      "kind": "quantity-grouping",
+      "count": 6,
+      "sample_ids": [
+        "D042-bonus-vi68",
+        "D125-main-vi68",
+        "D138-bonus-vi68",
+        "D221-main-vi68",
+        "D234-bonus-vi68"
+      ],
+      "skeleton": "('remainder', 9, 2)"
+    },
+    {
+      "gameTypeId": "g01-t3",
+      "kind": "rule-transform",
+      "count": 6,
+      "sample_ids": [
+        "D081-main-vi68",
+        "D094-bonus-vi68",
+        "D177-main-vi68",
+        "D190-bonus-vi68",
+        "D273-main-vi68"
+      ],
+      "skeleton": "('reverse', 3)"
+    },
+    {
+      "gameTypeId": "g06-t2",
+      "kind": "planning-command-order",
+      "count": 6,
+      "sample_ids": [
+        "D115-bonus-vi68",
+        "D126-main-vi68",
+        "D150-main-vi68",
+        "D198-main-vi68",
+        "D283-bonus-vi68"
+      ],
+      "skeleton": "(('Bật đèn', 'Mở sách', 'Ngồi xuống', 'Đọc bài'),)"
+    }
+  ]
+}
