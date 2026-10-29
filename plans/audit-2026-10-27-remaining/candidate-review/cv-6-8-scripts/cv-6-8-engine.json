@@ -1,0 +1,148 @@
+{
+  "engineVersion": "engine-f9520019a2984d4a",
+  "counts": {
+    "manifestAllTracks": 2920,
+    "track": 730,
+    "batchTrackItems": 730,
+    "manifestBatchMismatch": 0
+  },
+  "days": 365,
+  "perDay": {},
+  "validatePuzzle": {
+    "failed": 0,
+    "samples": []
+  },
+  "solution": {
+    "rejected": 0,
+    "rejectedSamples": []
+  },
+  "uniqueness": {
+    "single": 541,
+    "multi": 98,
+    "skippedNoOptions": 91,
+    "multiOptionCorrect": 0,
+    "multiSamples": [],
+    "noCorrectOption": 145,
+    "noCorrectSamples": [
+      {
+        "id": "D003-main-vi68",
+        "kind": "memory-sequence"
+      },
+      {
+        "id": "D004-bonus-vi68",
+        "kind": "flexibility-classify"
+      },
+      {
+        "id": "D008-main-vi68",
+        "kind": "observation-two-traits"
+      },
+      {
+        "id": "D008-bonus-vi68",
+        "kind": "memory-position"
+      },
+      {
+        "id": "D010-bonus-vi68",
+        "kind": "quantity-target"
+      },
+      {
+        "id": "D015-main-vi68",
+        "kind": "flexibility-classify"
+      },
+      {
+        "id": "D016-bonus-vi68",
+        "kind": "memory-sequence"
+      },
+      {
+        "id": "D019-main-vi68",
+        "kind": "memory-position"
+      },
+      {
+        "id": "D021-main-vi68",
+        "kind": "quantity-target"
+      },
+      {
+        "id": "D021-bonus-vi68",
+        "kind": "observation-two-traits"
+      },
+      {
+        "id": "D027-main-vi68",
+        "kind": "memory-sequence"
+      },
+      {
+        "id": "D028-bonus-vi68",
+        "kind": "flexibility-classify"
+      },
+      {
+        "id": "D032-main-vi68",
+        "kind": "observation-two-traits"
+      },
+      {
+        "id": "D032-bonus-vi68",
+        "kind": "memory-position"
+      },
+      {
+        "id": "D034-bonus-vi68",
+        "kind": "quantity-target"
+      },
+      {
+        "id": "D039-main-vi68",
+        "kind": "flexibility-classify"
+      },
+      {
+        "id": "D040-bonus-vi68",
+        "kind": "memory-sequence"
+      },
+      {
+        "id": "D043-main-vi68",
+        "kind": "memory-position"
+      },
+      {
+        "id": "D045-main-vi68",
+        "kind": "quantity-target"
+      },
+      {
+        "id": "D045-bonus-vi68",
+        "kind": "observation-two-traits"
+      }
+    ]
+  },
+  "wrongAnswerAccepted": {
+    "count": 0,
+    "samples": []
+  },
+  "alternateFail": {
+    "count": 0,
+    "samples": []
+  },
+  "repoHelpers": {
+    "copyIssues": 0,
+    "copySamples": [],
+    "malformed": 0,
+    "malformedSamples": [],
+    "positionBias": 3,
+    "positionBiasSamples": [
+      {
+        "code": "answer_position_bias",
+        "id": "g05-t2:age_6_8|g05-t2:chia theo hai kích cỡ",
+        "gameTypeId": "g05-t2",
+        "message": "g05-t2 (age_6_8|g05-t2:chia theo hai kích cỡ): correct answer is option #2 in 6/8 items (> 60%)"
+      },
+      {
+        "code": "answer_position_bias",
+        "id": "g05-t2:age_6_8|g05-t2:chia có phần dư được nêu",
+        "gameTypeId": "g05-t2",
+        "message": "g05-t2 (age_6_8|g05-t2:chia có phần dư được nêu): correct answer is option #3 in 8/8 items (> 60%)"
+      },
+      {
+        "code": "answer_position_bias",
+        "id": "g05-t2:age_6_8|g05-t2:chọn cách chia thỏa ràng buộc",
+        "gameTypeId": "g05-t2",
+        "message": "g05-t2 (age_6_8|g05-t2:chọn cách chia thỏa ràng buộc): correct answer is option #2 in 5/7 items (> 60%)"
+      }
+    ],
+    "crossTrackHint": 0,
+    "crossTrackSamples": [],
+    "titleRepeat": 0,
+    "titleRepeatSamples": []
+  }
+}

@@ -66,8 +66,15 @@ export function getVariedTitle(input: {
   let first: string | null = null;
   for (let step = 0; step < names.length * STATEMENT_FRAMES.length; step += 1) {
     const name = names[(base + step) % names.length]!;
+    const nameText = input.ageTrack === 'age_13_plus'
+      ? name.text
+        .replace(/bạn nhỏ/giu, 'nhân vật')
+        .replace(/thám tử nhỏ/giu, 'suy luận')
+        .replace(/mê cung nhỏ/giu, 'lộ trình')
+        .replace(/đố bạn nhớ dãy/giu, 'ghi nhớ dãy')
+      : name.text;
     const frames = name.question ? QUESTION_FRAMES : STATEMENT_FRAMES;
-    const title = frames[(frameBase + Math.floor(step / names.length)) % frames.length]!(input.theme, name.text);
+    const title = frames[(frameBase + Math.floor(step / names.length)) % frames.length]!(input.theme, nameText);
     first ??= title;
     if (!input.avoid?.has(title)) return title;
   }

@@ -128,6 +128,7 @@ export type RelativeDirection = 'left' | 'right' | 'ahead' | 'behind';
 
 export type RuleErrorBoard = Readonly<{
   kind: 'rule-error';
+  mechanicRevision?: 2;
   sequence: readonly string[];
   ruleKind: 'alternating' | 'repeat' | 'increment';
   period?: number;
@@ -149,6 +150,7 @@ export type SpatialSilhouetteBoard = Readonly<{
 
 export type SpatialRotationBoard = Readonly<{
   kind: 'spatial-rotation';
+  mechanicRevision?: 2;
   shape: readonly PathStep[];
   turn: 'quarter' | 'half' | 'mirror' | 'quarter-mirror';
   options: readonly SpatialOption[];

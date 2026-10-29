@@ -1,0 +1,479 @@
+{
+ "total": 2920,
+ "perTrack": {
+  "age_3_5": 730,
+  "age_6_8": 730,
+  "age_9_12": 730,
+  "age_13_plus": 730
+ },
+ "kinds": {
+  "age_13_plus|flexibility-alternative": 30,
+  "age_13_plus|flexibility-classify": 31,
+  "age_13_plus|flexibility-perspective": 30,
+  "age_13_plus|memory-change": 30,
+  "age_13_plus|memory-position": 30,
+  "age_13_plus|memory-sequence": 31,
+  "age_13_plus|observation-difference": 31,
+  "age_13_plus|observation-implausible": 30,
+  "age_13_plus|observation-two-traits": 30,
+  "age_13_plus|path-planning": 31,
+  "age_13_plus|planning-command-order": 30,
+  "age_13_plus|planning-fix-step": 30,
+  "age_13_plus|quantity-balance": 31,
+  "age_13_plus|quantity-grouping": 31,
+  "age_13_plus|quantity-target": 30,
+  "age_13_plus|reasoning-elimination": 31,
+  "age_13_plus|reasoning-if-then": 31,
+  "age_13_plus|reasoning-missing-info": 30,
+  "age_13_plus|rule-error": 30,
+  "age_13_plus|rule-sequence": 31,
+  "age_13_plus|rule-transform": 30,
+  "age_13_plus|spatial-rotation": 30,
+  "age_13_plus|spatial-silhouette": 31,
+  "age_13_plus|spatial-symmetry": 30,
+  "age_3_5|flexibility-alternative": 30,
+  "age_3_5|flexibility-classify": 31,
+  "age_3_5|flexibility-perspective": 30,
+  "age_3_5|memory-change": 30,
+  "age_3_5|memory-position": 30,
+  "age_3_5|memory-sequence": 31,
+  "age_3_5|observation-difference": 31,
+  "age_3_5|observation-implausible": 30,
+  "age_3_5|observation-two-traits": 30,
+  "age_3_5|path-planning": 31,
+  "age_3_5|planning-command-order": 30,
+  "age_3_5|planning-fix-step": 30,
+  "age_3_5|quantity-balance": 31,
+  "age_3_5|quantity-grouping": 31,
+  "age_3_5|quantity-target": 30,
+  "age_3_5|reasoning-elimination": 31,
+  "age_3_5|reasoning-if-then": 31,
+  "age_3_5|reasoning-missing-info": 30,
+  "age_3_5|rule-error": 30,
+  "age_3_5|rule-sequence": 31,
+  "age_3_5|rule-transform": 30,
+  "age_3_5|spatial-rotation": 30,
+  "age_3_5|spatial-silhouette": 31,
+  "age_3_5|spatial-symmetry": 30,
+  "age_6_8|flexibility-alternative": 30,
+  "age_6_8|flexibility-classify": 31,
+  "age_6_8|flexibility-perspective": 30,
+  "age_6_8|memory-change": 30,
+  "age_6_8|memory-position": 30,
+  "age_6_8|memory-sequence": 31,
+  "age_6_8|observation-difference": 31,
+  "age_6_8|observation-implausible": 30,
+  "age_6_8|observation-two-traits": 30,
+  "age_6_8|path-planning": 31,
+  "age_6_8|planning-command-order": 30,
+  "age_6_8|planning-fix-step": 30,
+  "age_6_8|quantity-balance": 31,
+  "age_6_8|quantity-grouping": 31,
+  "age_6_8|quantity-target": 30,
+  "age_6_8|reasoning-elimination": 31,
+  "age_6_8|reasoning-if-then": 31,
+  "age_6_8|reasoning-missing-info": 30,
+  "age_6_8|rule-error": 30,
+  "age_6_8|rule-sequence": 31,
+  "age_6_8|rule-transform": 30,
+  "age_6_8|spatial-rotation": 30,
+  "age_6_8|spatial-silhouette": 31,
+  "age_6_8|spatial-symmetry": 30,
+  "age_9_12|flexibility-alternative": 30,
+  "age_9_12|flexibility-classify": 31,
+  "age_9_12|flexibility-perspective": 30,
+  "age_9_12|memory-change": 30,
+  "age_9_12|memory-position": 30,
+  "age_9_12|memory-sequence": 31,
+  "age_9_12|observation-difference": 31,
+  "age_9_12|observation-implausible": 30,
+  "age_9_12|observation-two-traits": 30,
+  "age_9_12|path-planning": 31,
+  "age_9_12|planning-command-order": 30,
+  "age_9_12|planning-fix-step": 30,
+  "age_9_12|quantity-balance": 31,
+  "age_9_12|quantity-grouping": 31,
+  "age_9_12|quantity-target": 30,
+  "age_9_12|reasoning-elimination": 31,
+  "age_9_12|reasoning-if-then": 31,
+  "age_9_12|reasoning-missing-info": 30,
+  "age_9_12|rule-error": 30,
+  "age_9_12|rule-sequence": 31,
+  "age_9_12|rule-transform": 30,
+  "age_9_12|spatial-rotation": 30,
+  "age_9_12|spatial-silhouette": 31,
+  "age_9_12|spatial-symmetry": 30
+ },
+ "nonVi": [],
+ "answerPosition": {
+  "rule-sequence|n3": {
+   "0": 24,
+   "1": 27,
+   "2": 17
+  },
+  "rule-sequence|n4": {
+   "0": 12,
+   "1": 19,
+   "2": 12,
+   "3": 13
+  },
+  "reasoning-elimination|n3": {
+   "0": 11,
+   "1": 10,
+   "2": 10
+  },
+  "reasoning-elimination|n4": {
+   "0": 9,
+   "1": 8,
+   "2": 5,
+   "3": 9
+  },
+  "reasoning-elimination|n5": {
+   "0": 3,
+   "1": 5,
+   "2": 5,
+   "3": 9,
+   "4": 9
+  },
+  "reasoning-elimination|n6": {
+   "0": 7,
+   "1": 4,
+   "2": 6,
+   "3": 6,
+   "4": 2,
+   "5": 6
+  },
+  "spatial-silhouette|n3": {
+   "0": 11,
+   "1": 8,
+   "2": 12
+  },
+  "spatial-silhouette|n4": {
+   "0": 17,
+   "1": 9,
+   "2": 12,
+   "3": 15
+  },
+  "spatial-silhouette|n5": {
+   "0": 7,
+   "1": 6,
+   "2": 7,
+   "3": 14,
+   "4": 6
+  },
+  "quantity-balance|n3": {
+   "0": 22,
+   "1": 21,
+   "2": 19
+  },
+  "quantity-balance|n4": {
+   "0": 8,
+   "1": 9,
+   "2": 7,
+   "3": 7
+  },
+  "quantity-balance|n5": {
+   "0": 5,
+   "1": 8,
+   "2": 10,
+   "3": 5,
+   "4": 3
+  },
+  "memory-sequence|n3": {
+   "-1": 31
+  },
+  "memory-sequence|n4": {
+   "-1": 31
+  },
+  "memory-sequence|n6": {
+   "-1": 31
+  },
+  "memory-sequence|n7": {
+   "-1": 31
+  },
+  "reasoning-if-then|n3": {
+   "0": 18,
+   "1": 5,
+   "2": 8
+  },
+  "reasoning-if-then|n4": {
+   "0": 8,
+   "1": 9,
+   "2": 9,
+   "3": 5
+  },
+  "reasoning-if-then|n5": {
+   "0": 6,
+   "1": 5,
+   "2": 4,
+   "3": 9,
+   "4": 7
+  },
+  "reasoning-if-then|n6": {
+   "0": 3,
+   "1": 9,
+   "2": 8,
+   "3": 3,
+   "4": 4,
+   "5": 4
+  },
+  "flexibility-classify|n4": {
+   "-1": 31
+  },
+  "flexibility-classify|n5": {
+   "-1": 31
+  },
+  "flexibility-classify|n6": {
+   "-1": 62
+  },
+  "quantity-grouping|n3": {
+   "0": 7,
+   "1": 8,
+   "2": 16
+  },
+  "quantity-grouping|n4": {
+   "0": 6,
+   "1": 15,
+   "2": 8,
+   "3": 2
+  },
+  "quantity-grouping|n5": {
+   "0": 10,
+   "1": 8,
+   "2": 2,
+   "3": 9,
+   "4": 2
+  },
+  "quantity-grouping|n6": {
+   "0": 1,
+   "1": 4,
+   "2": 1,
+   "3": 3,
+   "4": 15,
+   "5": 7
+  },
+  "observation-difference|n4": {
+   "-1": 31
+  },
+  "observation-difference|n5": {
+   "-1": 31
+  },
+  "observation-difference|n6": {
+   "-1": 31
+  },
+  "observation-difference|n7": {
+   "-1": 31
+  },
+  "flexibility-perspective|n4": {
+   "0": 25,
+   "1": 30,
+   "2": 37,
+   "3": 28
+  },
+  "spatial-rotation|n3": {
+   "0": 17,
+   "1": 10,
+   "2": 8
+  },
+  "spatial-rotation|n4": {
+   "0": 16,
+   "1": 10,
+   "2": 12,
+   "3": 18
+  },
+  "spatial-rotation|n5": {
+   "0": 7,
+   "1": 7,
+   "2": 5,
+   "3": 4,
+   "4": 6
+  },
+  "observation-two-traits|n4": {
+   "-1": 30
+  },
+  "observation-two-traits|n5": {
+   "-1": 30
+  },
+  "observation-two-traits|n6": {
+   "-1": 60
+  },
+  "memory-position|n3": {
+   "-1": 30
+  },
+  "memory-position|n4": {
+   "-1": 30
+  },
+  "memory-position|n5": {
+   "-1": 30
+  },
+  "memory-position|n6": {
+   "-1": 30
+  },
+  "rule-transform|n3": {
+   "0": 30,
+   "1": 14,
+   "2": 16
+  },
+  "rule-transform|n4": {
+   "0": 14,
+   "1": 7,
+   "2": 5,
+   "3": 4
+  },
+  "rule-transform|n5": {
+   "0": 7,
+   "1": 4,
+   "2": 7,
+   "3": 8,
+   "4": 4
+  },
+  "reasoning-missing-info|n3": {
+   "0": 21,
+   "1": 20,
+   "2": 19
+  },
+  "reasoning-missing-info|n4": {
+   "0": 12,
+   "1": 20,
+   "2": 11,
+   "3": 17
+  },
+  "spatial-symmetry|n3": {
+   "0": 17,
+   "1": 22,
+   "2": 21
+  },
+  "spatial-symmetry|n4": {
+   "0": 7,
+   "1": 10,
+   "2": 4,
+   "3": 9
+  },
+  "spatial-symmetry|n5": {
+   "0": 5,
+   "1": 6,
+   "2": 3,
+   "3": 8,
+   "4": 8
+  },
+  "quantity-target|n3": {
+   "-1": 30
+  },
+  "quantity-target|n4": {
+   "-1": 30
+  },
+  "quantity-target|n5": {
+   "-1": 30
+  },
+  "quantity-target|n6": {
+   "-1": 30
+  },
+  "memory-change|n3": {
+   "0": 10,
+   "1": 13,
+   "2": 7
+  },
+  "memory-change|n4": {
+   "0": 11,
+   "1": 8,
+   "2": 7,
+   "3": 4
+  },
+  "memory-change|n5": {
+   "0": 6,
+   "1": 7,
+   "2": 4,
+   "3": 9,
+   "4": 4
+  },
+  "memory-change|n6": {
+   "0": 6,
+   "1": 2,
+   "2": 4,
+   "3": 4,
+   "4": 6,
+   "5": 8
+  },
+  "planning-fix-step|n4": {
+   "0": 31,
+   "1": 27,
+   "2": 29,
+   "3": 33
+  },
+  "observation-implausible|n3": {
+   "0": 11,
+   "1": 8,
+   "2": 11
+  },
+  "observation-implausible|n4": {
+   "0": 11,
+   "1": 6,
+   "2": 6,
+   "3": 7
+  },
+  "observation-implausible|n5": {
+   "0": 9,
+   "1": 5,
+   "2": 3,
+   "3": 5,
+   "4": 8
+  },
+  "observation-implausible|n6": {
+   "0": 6,
+   "1": 5,
+   "2": 2,
+   "3": 6,
+   "4": 6,
+   "5": 5
+  }
+ },
+ "exactTextDupGroups": 8,
+ "exactTextDupItems": 16,
+ "unique_title": 1642,
+ "unique_invitation": 120,
+ "unique_tutorial": 225,
+ "unique_explanation": 1123,
+ "fingerprintDupGroups": 58,
+ "explanationNumbers": 124,
+ "targetSeconds": {
+  "age_3_5|60": 730,
+  "age_6_8|75": 730,
+  "age_9_12|105": 730,
+  "age_13_plus|115": 730
+ },
+ "noSolution": 0,
+ "topRepeatedExplanations": [
+  [
+   "Đường đi mới đã dẫn từ điểm xuất phát đến đích mà không bị trùng với đường ban đầu và tránh được các ô tường.",
+   120
+  ],
+  [
+   "Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình A.",
+   40
+  ],
+  [
+   "Đổi bước 2 thành hướng \"bên phải\" để robot về đích an toàn.",
+   36
+  ],
+  [
+   "Hình có đúng số ô và hình dạng khớp hoàn toàn với bóng mẫu là Hình A.",
+   35
+  ],
+  [
+   "Manh mối còn thiếu giúp nhận diện chính xác bạn này là: hình là sao.",
+   34
+  ],
+  [
+   "Một đường đi hợp lệ giúp bạn di chuyển an toàn từ ô xuất phát về đích mà không chạm tường.",
+   32
+  ],
+  [
+   "Đường đi đúng ghé qua ngôi sao trên bảng rồi mới về đích, không chạm tường.",
+   32
+  ],
+  [
+   "Đường đi đúng ghé ngôi sao số 1 trước, rồi ngôi sao số 2, sau đó mới về đích mà không chạm tường.",
+   32
+  ]
+ ]
+}

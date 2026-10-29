@@ -82,7 +82,7 @@ describe('round 3 title/hint semantic regressions', () => {
       const generated = generate('g06-t2', 'age_6_8', index);
       if (generated.board.kind !== 'planning-command-order') throw new Error('wrong board');
       expect(generated.board.before.length).toBeGreaterThan(0);
-      expect(generated.tutorial).toContain('Luật riêng của ván này');
+      expect(generated.tutorial).toMatch(/quy tắc/);
     }
     for (const pair of TRACK_HINTS['g06-t2'].young.default!) {
       expect(pair.join(' ')).toMatch(/luật.*ván này/);

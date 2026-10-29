@@ -86,7 +86,7 @@ describe('path-planning', () => {
   it('generates structurally different boards for the two age tracks', () => {
     const young = generatePathPuzzle({ seed: 'path-young', ageTrack: 'age_6_8', variant: 'đến đích tránh chướng ngại' });
     const older = generatePathPuzzle({ seed: 'path-older', ageTrack: 'age_9_12', variant: 'đi qua một điểm bắt buộc' });
-    expect([young.width, young.height]).toEqual([5, 5]);
+    expect([young.width, young.height]).toEqual([6, 6]);
     expect([older.width, older.height]).toEqual([7, 7]);
     expect(young.waypoints).toHaveLength(0);
     expect(older.waypoints).toHaveLength(1);

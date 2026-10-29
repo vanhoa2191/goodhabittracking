@@ -4,6 +4,8 @@ import { z } from 'zod';
 import { CHILD_SESSION_COOKIE, sha256Hex } from '@/lib/pairing/crypto';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { limitThinkingGameRequest, readThinkingGameBody } from '@/lib/thinking-games/server/request-guards';
 import { checkAnswer } from '@/lib/thinking-games';
 import { pinnedContentFromAttempt, puzzleItemFromContentRow } from '@/lib/thinking-games/server/content-row';
 import { failure, success } from '@/lib/thinking-games/server/response';
@@ -20,15 +22,27 @@ const inputSchema = z.object({
 export async function POST(request: NextRequest) {
   const crossSite = rejectCrossSiteRequest(request);
   if (crossSite) return crossSite;
-  const parsed = inputSchema.safeParse(await request.json().catch(() => null));
+  const limited = limitThinkingGameRequest(request);
+  if (limited) return limited;
+  const body = await readThinkingGameBody(request);
+  if (!body.ok) return body.response;
+  const parsed = inputSchema.safeParse(body.value);
   if (!parsed.success) return NextResponse.json(failure('invalid_input'), { status: 400 });
   const token = (await cookies()).get(CHILD_SESSION_COOKIE)?.value;
   if (!token) return NextResponse.json(failure('session_invalid'), { status: 401 });
   const tokenHash = await sha256Hex(token);
+  const sessionLimited = limitThinkingGameRequest(request, tokenHash);
+  if (sessionLimited) return sessionLimited;
+  const { data: session, error: sessionError } = await (await createServerSupabaseClient()).rpc('get_child_session', {
+    session_token_hash: tokenHash,
+  });
+  if (sessionError) return NextResponse.json(failure('internal'), { status: 503 });
+  if (!session?.child?.id) return NextResponse.json(failure('session_invalid'), { status: 401 });
   const admin = createAdminSupabaseClient();
-  const { data: attempt } = await admin.from('thinking_game_attempts')
+  const { data: attempt, error: attemptError } = await admin.from('thinking_game_attempts')
     .select('child_id, thinking_game_entitlements(content_id, content_version, thinking_game_content(*))')
-    .eq('id', parsed.data.attemptId).maybeSingle();
+    .eq('id', parsed.data.attemptId).eq('child_id', session.child.id).maybeSingle();
+  if (attemptError || !attempt) return NextResponse.json(failure('not_found'), { status: 404 });
   const pinned = pinnedContentFromAttempt(attempt);
   let puzzle: ReturnType<typeof puzzleItemFromContentRow>;
   try {

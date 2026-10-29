@@ -91,6 +91,25 @@ describe('activity actions', () => {
     expect(state).toHaveLength(1);
   });
 
+  it('prevents a shared daily-living assignment from duplicating an active child assignment', async () => {
+    let state: HabitActivity[] = [];
+    const actions = createActivityActions({
+      currentUser: null,
+      familyId: null,
+      getActivities: () => state,
+      setActivities: (action) => { state = typeof action === 'function' ? action(state) : action; },
+      setCloudSyncActive: () => undefined,
+      isDemoSession: true,
+      syncCloudFamily: vi.fn(async () => true),
+    });
+
+    await actions.createActivity({ ...activity, childId: 'child-one', legacyTemplateId: 'WIT-DLY-01' });
+    expect(await actions.createActivity({ ...activity, childId: null, legacyTemplateId: 'WIT-DLY-01' })).toBe(false);
+    await actions.createActivity({ ...activity, childId: 'child-two', legacyTemplateId: 'WIT-DLY-01' });
+
+    expect(state.map((item) => item.childId)).toEqual(['child-one', 'child-two']);
+  });
+
   it('rejects a local all-children assignment that overlaps a child assignment', async () => {
     let state: HabitActivity[] = [];
     const setActivities: Dispatch<SetStateAction<HabitActivity[]>> = (action) => {

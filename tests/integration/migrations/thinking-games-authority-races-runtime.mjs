@@ -373,6 +373,7 @@ const isolatedSettings = ISOLATED.map(c =>
   `('${c.family}',true,true,'${TZ}','${CUTOFF_LOCAL}','21:00','07:00',null)`).join(',');
 
 await fixture.exec(migrationSql);
+await fixture.exec(await readFile('supabase/migrations/202610280001_reconcile_thinking_games_guard.sql', 'utf8'));
 await fixture.exec(preflightSql);
 await fixture.exec(BRIDGE_SQL);
 await fixture.exec(`set thinking_games.content_version = 'release-365-v1'`);
@@ -787,6 +788,10 @@ try {
   expect(entitlement?.state === 'revoked_unused',
     `the bonus entitlement must become 'revoked_unused', got ${entitlement?.state}`,
     { entitlement, contract: 'GWT-17' });
+  const blockedStart = await expectRpcError(gameService,
+    `select public.thinking_game_start($1, 'bonus', $2, gen_random_uuid()) as result`,
+    [child.token, SERVER_DAY], /bonus_locked/);
+  expect(blockedStart.matched, `revoked_unused bonus start must be rejected, got ${JSON.stringify(blockedStart)}`);
   const receipt = await fixture.one(
     `select log_id, received_at from public.thinking_game_habit_receipts where log_id = $1`, [logId]);
   expect(receipt, 'the game-owned receipt must survive the undo as audit');
@@ -826,6 +831,10 @@ try {
     `select points from public.child_profiles where id = $1`, [child.child]);
   expect(after?.state === 'revoked_after_use',
     `the bonus entitlement must become 'revoked_after_use', got ${after?.state}`, { after, contract: 'GWT-18' });
+  const blockedResume = await expectRpcError(gameService,
+    `select public.thinking_game_start($1, 'bonus', $2, gen_random_uuid()) as result`,
+    [child.token, SERVER_DAY], /bonus_locked/);
+  expect(blockedResume.matched, `revoked_after_use bonus resume must be rejected, got ${JSON.stringify(blockedResume)}`);
   expect(attemptAfter, 'the attempt must stay in history after the revocation');
   expect(pointsAfter === pointsBefore - 7,
     `the habit ledger owns the points, so the undo must move them by the task points; before=${pointsBefore} after=${pointsAfter}`);

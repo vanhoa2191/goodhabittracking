@@ -70,10 +70,15 @@ try {
   await fixture.exec(rollback);
   const audit = await fixture.query(`select to_regclass('public.thinking_game_audit_events') as audit_table, to_regclass('public.activity_logs') as habit_table`);
   if (audit.rows[0].audit_table !== null || audit.rows[0].habit_table === null) throw new Error('rollback removed wrong data surface');
+  const leftoverFunctions = await fixture.query(`
+    select p.proname from pg_proc p join pg_namespace n on n.oid=p.pronamespace
+    where n.nspname='public' and p.proname like 'thinking_game%'
+  `);
+  if (leftoverFunctions.rows.length) throw new Error(`rollback left game functions: ${leftoverFunctions.rows.map((row) => row.proname).join(', ')}`);
   console.log(JSON.stringify({
     verdict: 'PASS',
     evidence: 'real-postgresql',
-    cases: ['all-game-tables-rls-force', 'nonpermissive-policies', 'protected-rpc-acl', 'unsafe-preflight-rejection', 'rollback-preserves-habits', 'legacy-habit-rpc-acl-parity'],
+    cases: ['all-game-tables-rls-force', 'nonpermissive-policies', 'protected-rpc-acl', 'unsafe-preflight-rejection', 'rollback-preserves-habits', 'rollback-removes-game-functions', 'legacy-habit-rpc-acl-parity'],
     database: fixture.databaseName,
   }));
 } finally {

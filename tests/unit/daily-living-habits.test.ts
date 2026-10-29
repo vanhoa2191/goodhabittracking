@@ -11,6 +11,7 @@ import {
 } from '@/lib/daily-living-habits';
 import { HABIT_FRAMEWORK_CATALOG } from '@/lib/habit-framework/catalog';
 import { HABIT_PROGRAMS } from '@/lib/habit-programs/programs';
+import { overlapsDailyLivingAssignment } from '@/lib/store/activity-actions';
 import type { HabitActivity } from '@/types';
 
 describe('Daily Living Catalog — structure and integrity', () => {
@@ -44,6 +45,18 @@ describe('Daily Living Catalog — structure and integrity', () => {
       expect(t.points).toBeGreaterThanOrEqual(0);
       expect(t.description).toBeTruthy();
     }
+  });
+
+  it('keeps Vietnamese catalog copy free of CJK characters', () => {
+    const copy = DAILY_LIVING_TEMPLATES.flatMap((template) => [
+      template.title,
+      template.shortTitle,
+      template.description,
+      template.support,
+      template.cue,
+    ]).filter((value): value is string => Boolean(value));
+
+    expect(copy.join('')).not.toMatch(/[\u3400-\u9fff]/u);
   });
 
   it('daily templates have 5 points each', () => {
@@ -195,6 +208,22 @@ describe('dailyLivingStatus', () => {
   it('returns "available" when no matching activity exists', () => {
     const template = getDailyLivingTemplate('WIT-DLY-01')!;
     expect(dailyLivingStatus(template, childId, [])).toBe('available');
+  });
+
+  it('blocks a shared assignment that overlaps an active child assignment, while allowing another child', () => {
+    const template = getDailyLivingTemplate('WIT-DLY-01')!;
+    const existing = [baseActivity({ isActive: true, childId })];
+
+    expect(overlapsDailyLivingAssignment({ id: 'shared', childId: null, legacyTemplateId: template.id }, existing)).toBe(true);
+    expect(overlapsDailyLivingAssignment({
+      id: 'other-child',
+      childId: '33333333-3333-4333-8333-333333333333',
+      legacyTemplateId: template.id,
+    }, existing)).toBe(false);
+    expect(overlapsDailyLivingAssignment(
+      { id: 'shared-after-archive', childId: null, legacyTemplateId: template.id },
+      [baseActivity({ isActive: false, childId })],
+    )).toBe(false);
   });
 
   it('returns "added" when active activity exists for the child', () => {

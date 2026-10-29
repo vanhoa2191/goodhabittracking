@@ -181,7 +181,8 @@ const nullableSymbolGridSchema = z.array(z.array(z.string().min(1).nullable()).m
 
 export const ruleErrorBoardSchema = z.object({
   kind: z.literal('rule-error'),
-  sequence: z.array(z.string().min(1)).min(4).max(8),
+  mechanicRevision: z.literal(2).optional(),
+  sequence: z.array(z.string().min(1)).min(4).max(12),
   ruleKind: z.enum(['alternating', 'repeat', 'increment']),
   period: z.number().int().min(2).max(4).optional(),
 }).strict().superRefine((board, ctx) => {
@@ -223,6 +224,7 @@ export const spatialSilhouetteBoardSchema = z.object({
 
 export const spatialRotationBoardSchema = z.object({
   kind: z.literal('spatial-rotation'),
+  mechanicRevision: z.literal(2).optional(),
   shape: z.array(pointSchema).min(1).max(12),
   turn: z.enum(['quarter', 'half', 'mirror', 'quarter-mirror']),
   options: z.array(spatialOptionSchema).min(2).max(6),
@@ -385,8 +387,8 @@ export const quantityTargetBoardSchema = z.object({
 
 export const planningCommandOrderBoardSchema = z.object({
   kind: z.literal('planning-command-order'),
-  commands: z.array(z.object({ id: z.string().min(1), text: z.string().min(1) }).strict()).min(3).max(5),
-  before: z.array(z.tuple([z.string().min(1), z.string().min(1)])).min(1).max(5),
+  commands: z.array(z.object({ id: z.string().min(1), text: z.string().min(1) }).strict()).min(3).max(6),
+  before: z.array(z.tuple([z.string().min(1), z.string().min(1)])).min(1).max(6),
 }).strict().superRefine((board, ctx) => {
   const ids = new Set(board.commands.map((command) => command.id));
   if (ids.size !== board.commands.length) ctx.addIssue({ code: 'custom', path: ['commands'], message: 'command ids must be unique' });

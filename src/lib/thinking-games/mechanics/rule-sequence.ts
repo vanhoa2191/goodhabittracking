@@ -1,4 +1,4 @@
-import { ageRank } from '../age';
+import { ageRank, candidateQuarter } from '../age';
 import { getTrackHints, type HintContext } from '../content/hints';
 import { ruleSequenceBoardSchema } from '../schema';
 import { createSeededRandom, pickOne, shuffleDeterministic, stableSeedKey } from '../seeded';
@@ -172,7 +172,7 @@ export function generateRuleSequencePuzzle(input: {
 }): RuleSequenceBoard {
   const random = createSeededRandom(stableSeedKey([input.seed, input.ageTrack, input.variant, 'g01-t1']));
   const rank = ageRank(input.ageTrack);
-  const length = 4 + rank;
+  const length = Math.min(8, 4 + rank + candidateQuarter(input.seed));
   if (input.variant.includes('lặp')) return alternatingBoard(random, length, rank);
   if (input.variant.includes('tăng')) return incrementBoard(random, length, rank);
   if (input.variant.includes('xen')) {

@@ -1,4 +1,4 @@
-import { ageRank } from '../age';
+import { ageRank, candidateQuarter } from '../age';
 import { getTrackHints, type HintContext } from '../content/hints';
 import { memorySequenceBoardSchema } from '../schema';
 import { createSeededRandom, shuffleDeterministic, stableSeedKey } from '../seeded';
@@ -58,7 +58,8 @@ export function generateMemorySequencePuzzle(input: {
 }): MemorySequenceBoard {
   const random = createSeededRandom(stableSeedKey([input.seed, input.ageTrack, input.variant, 'g03-t1']));
   const rank = ageRank(input.ageTrack);
-  const length = 3 + rank;
+  const quarter = candidateQuarter(input.seed);
+  const length = Math.min(6, 3 + rank + (quarter >= 2 ? 1 : 0));
   const tokens = shuffleDeterministic(random, TOKENS);
   const sequence = tokens.slice(0, length);
   const mode = input.variant.includes('còn thiếu')
@@ -68,16 +69,17 @@ export function generateMemorySequencePuzzle(input: {
       : input.variant.includes('cặp bị đổi')
         ? 'swapped'
         : 'recall';
-  const missingIndex = Math.floor(length / 2);
-  const swappedIndices: [number, number] = length >= 4 ? [1, 2] : [0, 1];
-  const distractorCount = rank >= 2 ? 1 : 0;
+  const missingIndex = Math.floor(random() * length);
+  const firstSwap = Math.floor(random() * (length - 1));
+  const swappedIndices: [number, number] = [firstSwap, firstSwap + 1];
+  const distractorCount = Math.min(7 - length, (rank >= 2 ? 1 : 0) + (quarter >= 2 ? 1 : 0));
   const distractors = tokens.filter((token) => !sequence.includes(token)).slice(0, distractorCount);
   const options = shuffleDeterministic(random, [...sequence, ...distractors]);
   return {
     kind: 'memory-sequence',
     sequence,
     options,
-    displayMs: input.ageTrack === 'age_3_5' ? 1400 : input.ageTrack === 'age_6_8' ? 1200 : input.ageTrack === 'age_9_12' ? 1600 : 1800,
+    displayMs: Math.max(1000, (input.ageTrack === 'age_3_5' ? 1400 : input.ageTrack === 'age_6_8' ? 1200 : input.ageTrack === 'age_9_12' ? 1600 : 1800) - quarter * 150),
     ...(mode === 'recall' ? {} : { mode }),
     ...(mode === 'grouped' ? { groupSize: rank >= 2 ? 3 : 2 } : {}),
     ...(mode === 'missing' ? { missingIndex } : {}),

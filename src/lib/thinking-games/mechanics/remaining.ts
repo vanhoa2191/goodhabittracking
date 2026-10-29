@@ -1,4 +1,4 @@
-import { ageRank, targetSecondsForAge } from '../age';
+import { ageRank, candidateQuarter, targetSecondsForAge } from '../age';
 import {
   DIRECTION_SHORT_VI,
   getNaturalTutorial,
@@ -30,6 +30,7 @@ import {
   observationImplausibleBoardSchema,
 } from '../schema';
 import { createSeededRandom, shuffleDeterministic, stableSeedKey } from '../seeded';
+import { displayQuantityGroupingOptions } from '../display-order';
 import { checkPath } from './path-planning';
 import type {
   GameAgeTrack,
@@ -76,6 +77,18 @@ function randomFor(input: GenerateInput, salt: string): () => number {
 // Option order is shuffled per item seed so the correct slot is not predictable.
 function shuffledOptions<T>(input: GenerateInput, salt: string, options: readonly T[]): T[] {
   return shuffleDeterministic(randomFor(input, `${salt}-option-order`), options);
+}
+
+function candidateAnswerSlot(input: GenerateInput, salt: string, count: number): number {
+  const match = input.seed.match(/^p08-candidates-365-v2\|D(\d{3})-(?:main|bonus)\|/);
+  if (!match) return Math.floor(randomFor(input, `${salt}-answer-slot`)() * count);
+  const day = Number(match[1]) - 1;
+  // The editorial schedule repeats each variant twice per 96-day cycle.
+  // Rotate slots across cycles and across the two slots within each cycle;
+  // an independent item shuffle alone can still bias these small strata.
+  const occurrence = Math.floor(day / 96) + Math.floor((day % 24) / 12);
+  const slots = shuffleDeterministic(createSeededRandom(stableSeedKey([salt, input.ageTrack, input.variant])), Array.from({ length: count }, (_, i) => i));
+  return slots[occurrence % count]!;
 }
 
 function variantIndex(gameTypeId: GameTypeId, variant: string): number {
@@ -140,14 +153,16 @@ function parseInteger(value: unknown): number | null {
   return Number.isFinite(parsed) && Number.isInteger(parsed) ? parsed : null;
 }
 
-function rotateCells(cells: readonly PathStep[], turn: 'quarter' | 'half' | 'mirror' | 'quarter-mirror'): PathStep[] {
+function rotateCells(cells: readonly PathStep[], turn: 'quarter' | 'half' | 'mirror' | 'quarter-mirror', revision: 1 | 2 = 2): PathStep[] {
   const maxX = Math.max(...cells.map((point) => point.x));
   const maxY = Math.max(...cells.map((point) => point.y));
   return uniquePoints(cells.map((point) => {
     if (turn === 'quarter') return { x: maxY - point.y, y: point.x };
     if (turn === 'half') return { x: maxX - point.x, y: maxY - point.y };
     if (turn === 'mirror') return { x: maxX - point.x, y: point.y };
-    return { x: point.y, y: maxX - point.x };
+    if (revision === 1) return { x: point.y, y: maxX - point.x };
+    // Clockwise quarter turn (maxY-y,x), then left-right reflection.
+    return { x: point.y, y: point.x };
   }));
 }
 
@@ -169,8 +184,11 @@ const definitions: RemainingMechanic[] = [];
 function ruleErrorSequence(input: GenerateInput, rng: () => number): { sequence: string[]; ruleKind: 'alternating' | 'repeat' | 'increment'; period?: number; errorIndex: number } {
   const rank = ageRank(input.ageTrack);
   const variant = variantIndex('g01-t2', input.variant);
-  const length = (variant === 3 ? 5 : 4) + rank;
   const ruleKind = variant === 0 ? 'alternating' : variant === 1 ? 'increment' : 'repeat';
+  const blockSize = ruleKind === 'repeat' && rank >= 2 ? 3 : 2;
+  // Three witnesses per residue make the corrupted slot unambiguous even
+  // when it is in the first block; two witnesses alone can be tied.
+  const length = Math.max(6 + rank + (variant === 3 ? 1 : 0), 3 * blockSize + rank);
   let sequence: string[];
   let period: number | undefined;
   if (ruleKind === 'alternating') {
@@ -178,7 +196,6 @@ function ruleErrorSequence(input: GenerateInput, rng: () => number): { sequence:
     const second = ['mây', 'nắng', 'cá', 'mèo'].filter((token) => token !== first)[Math.floor(rng() * 3)] as string;
     sequence = Array.from({ length }, (_, index) => (index % 2 === 0 ? first : second));
   } else if (ruleKind === 'repeat') {
-    const blockSize = rank >= 2 ? 3 : 2;
     period = blockSize;
     const block = shuffleDeterministic(rng, ['lá', 'hoa', 'quả', 'sao']).slice(0, blockSize);
     sequence = Array.from({ length }, (_, index) => block[index % blockSize] as string);
@@ -187,14 +204,61 @@ function ruleErrorSequence(input: GenerateInput, rng: () => number): { sequence:
     const step = 1 + Math.floor(rng() * 3);
     sequence = Array.from({ length }, (_, index) => String(start + step * index));
   }
-  const errorIndex = ruleKind === 'repeat'
-    ? (period ?? 2) + Math.floor(rng() * (length - (period ?? 2)))
-    : 2 + Math.floor(rng() * (length - 2));
+  const errorIndex = Math.floor(rng() * length);
   const expected = ruleKind === 'increment'
     ? String(Number(sequence[errorIndex]) + 1 + Math.floor(rng() * 3))
     : (['lá', 'hoa', 'quả', 'sao', 'mây', 'nắng', 'cá', 'mèo'].find((token) => token !== sequence[errorIndex]) as string);
   sequence[errorIndex] = expected;
   return { sequence, ruleKind, period, errorIndex };
+}
+
+function ruleErrorRepairs(board: Extract<BoardData, { kind: 'rule-error' }>): number[] {
+  const { sequence, ruleKind } = board;
+  return sequence.flatMap((token, omitted) => {
+    if (ruleKind === 'increment') {
+      const values = sequence.map(parseInteger);
+      if (values.some((value) => value === null)) return [];
+      const indices = values.flatMap((_, i) => i !== omitted ? [i] : []);
+      if (indices.length < 3) return [];
+      const [a, b] = indices as [number, number, ...number[]];
+      const step = (values[b]! - values[a]!) / (b - a);
+      const start = values[a]! - a * step;
+      return Number.isInteger(step) && step > 0 && values[omitted] !== start + omitted * step
+        && indices.every((i) => values[i] === start + i * step) ? [omitted] : [];
+    }
+    const period = ruleKind === 'alternating' ? 2 : board.period ?? 0;
+    if (period < 2) return [];
+    const groups = Array.from({ length: period }, (_, residue) => new Set(sequence.filter((_, i) => i !== omitted && i % period === residue)));
+    if (!groups.every((group) => group.size === 1) || groups[omitted % period]!.has(token)) return [];
+    if (ruleKind === 'alternating' && [...groups[0]!][0] === [...groups[1]!][0]) return [];
+    return [omitted];
+  });
+}
+
+// Historical boards were authored against an anchored first block. Preserve
+// that interpretation for the immutable V1/P06/synthetic catalogs only; every
+// new generated board opts into the independently repairable revision 2.
+function legacyRuleErrorAnswer(board: Extract<BoardData, { kind: 'rule-error' }>): number | null {
+  const { sequence, ruleKind, period } = board;
+  if (ruleKind === 'increment') {
+    const values = sequence.map(parseInteger);
+    if (values.some((value) => value === null)) return null;
+    const step = values[1]! - values[0]!;
+    if (step <= 0) return null;
+    const mismatches = values.flatMap((value, index) => index >= 2 && value !== values[0]! + step * index ? [index] : []);
+    return mismatches.length === 1 ? mismatches[0]! : null;
+  }
+  if (ruleKind === 'alternating') {
+    const first = sequence[0];
+    const second = sequence[1];
+    if (first === undefined || second === undefined || first === second) return null;
+    const mismatches = sequence.flatMap((token, index) => index >= 2 && token !== (index % 2 === 0 ? first : second) ? [index] : []);
+    return mismatches.length === 1 ? mismatches[0]! : null;
+  }
+  const block = period ?? 0;
+  if (block < 2 || sequence.length < block + 1) return null;
+  const mismatches = sequence.flatMap((token, index) => index >= block && token !== sequence[index % block] ? [index] : []);
+  return mismatches.length === 1 ? mismatches[0]! : null;
 }
 
 definitions.push({
@@ -204,26 +268,9 @@ definitions.push({
   parseBoard: (input) => ruleErrorBoardFrom(input),
   solve: (board) => {
     if (board.kind !== 'rule-error') return null;
-    const { sequence, ruleKind, period } = board;
-    if (ruleKind === 'increment') {
-      const values = sequence.map(parseInteger);
-      if (values.some((value) => value === null)) return null;
-      const step = values[1]! - values[0]!;
-      if (step <= 0) return null;
-      const mismatches = values.flatMap((value, index) => index >= 2 && value !== values[0]! + step * index ? [index] : []);
-      return mismatches.length === 1 ? mismatches[0] : null;
-    }
-    if (ruleKind === 'alternating') {
-      const first = sequence[0];
-      const second = sequence[1];
-      if (first === undefined || second === undefined || first === second) return null;
-      const mismatches = sequence.flatMap((token, index) => index >= 2 && token !== (index % 2 === 0 ? first : second) ? [index] : []);
-      return mismatches.length === 1 ? mismatches[0] : null;
-    }
-    const block = period ?? 0;
-    if (block < 2 || sequence.length < block + 1) return null;
-    const mismatches = sequence.flatMap((token, index) => index >= block && token !== sequence[index % block] ? [index] : []);
-    return mismatches.length === 1 ? mismatches[0] : null;
+    if (board.mechanicRevision !== 2) return legacyRuleErrorAnswer(board);
+    const repairs = ruleErrorRepairs(board);
+    return repairs.length === 1 ? repairs[0]! : null;
   },
   check: (board, answer) => {
     if (!Number.isInteger(answer)) return false;
@@ -233,7 +280,7 @@ definitions.push({
   generate: (input) => {
     const rng = randomFor(input, 'g01-t2');
     const { sequence, ruleKind, period, errorIndex } = ruleErrorSequence(input, rng);
-    const board = { kind: 'rule-error' as const, sequence, ruleKind, ...(period ? { period } : {}) };
+    const board = { kind: 'rule-error' as const, mechanicRevision: 2 as const, sequence, ruleKind, ...(period ? { period } : {}) };
     const errorToken = sequence[errorIndex] ?? '';
     const hints = getTrackHints('g01-t2', input.ageTrack, input.seed, ruleKind);
     return {
@@ -372,13 +419,13 @@ definitions.push({
   parseBoard: (input) => spatialRotationBoardSchema.parse(input) as BoardData,
   solve: (board) => {
     if (board.kind !== 'spatial-rotation') return null;
-    const expected = rotateCells(board.shape, board.turn);
+    const expected = rotateCells(board.shape, board.turn, board.mechanicRevision ?? 1);
     return matchesAnyOption(board.options, expected);
   },
   check: (board, answer) => {
     if (typeof answer !== 'string' || board.kind !== 'spatial-rotation') return false;
     const option = board.options.find((entry) => entry.id === answer);
-    return Boolean(option && samePointSet(option.cells, rotateCells(board.shape, board.turn)));
+    return Boolean(option && samePointSet(option.cells, rotateCells(board.shape, board.turn, board.mechanicRevision ?? 1)));
   },
   generate: (input) => {
     const rng = randomFor(input, 'g02-t2');
@@ -397,8 +444,12 @@ definitions.push({
       { id: 'turn-b', cells: rotateCells(shape, turn === 'half' ? 'quarter' : 'half') },
       { id: 'turn-c', cells: reflectCells(shape, 'vertical') },
       { id: 'turn-d', cells: rotateCells(shape, 'quarter-mirror') },
-      { id: 'turn-e', cells: reflectCells(shape, 'horizontal') },
-    ].filter((option, index, list) => list.findIndex((entry) => samePointSet(entry.cells, option.cells)) === index);
+      // The task explicitly asks for left-right reflection. Do not offer a
+      // second mirror axis as an apparently valid interpretation of it.
+      ...(turn === 'mirror' ? [] : [{ id: 'turn-e', cells: reflectCells(shape, 'horizontal') }]),
+      { id: 'turn-f', cells: shape },
+    ].filter((option, index, list) => list.findIndex((entry) => samePointSet(entry.cells, option.cells)) === index)
+      .filter((option) => turn !== 'mirror' || option.id === 'turn-a' || !samePointSet(option.cells, reflectCells(shape, 'horizontal')));
     const optionCount = Math.min(allOptions.length, 3 + Math.min(rank, 2));
     const options = shuffledOptions(input, 'g02-t2', allOptions.slice(0, Math.max(2, optionCount)));
     const solution = 'turn-a';
@@ -406,12 +457,12 @@ definitions.push({
     const targetLabel = String.fromCharCode(65 + Math.max(0, targetIdx));
     const hints = getTrackHints('g02-t2', input.ageTrack, input.seed, turn === 'quarter-mirror' ? 'quarter-mirror' : turn === 'mirror' ? 'flip' : 'rotate');
     return {
-      board: { kind: 'spatial-rotation', shape, turn, options },
+      board: { kind: 'spatial-rotation', mechanicRevision: 2, shape, turn, options },
       solution,
       hints,
       explanation: `Làm đúng thao tác biến đổi được chỉ dẫn trên hình mẫu, bạn được Hình ${targetLabel}.`,
       title: 'Xoay hình',
-      tutorial: getNaturalTutorial('g02-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
+      tutorial: getNaturalTutorial('g02-t2', input.ageTrack, Math.floor(rng() * 100), input.seed, { kind: 'spatial-rotation', shape, turn, options }),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -496,12 +547,12 @@ definitions.push({
       solution = pointKey(chosen) < pointKey(mirror) ? chosen : mirror;
     }
     const distractorCount = 2 + (rank >= 2 ? 1 : 0) + (rank === 3 ? 1 : 0);
-    // Filter out BOTH points of the symmetry-breaking pair to ensure unique answer
-    // (checker accepts either point in the pair, so both must be excluded from distractors)
+    // Both cells are equally valid in find-break mode; expose both rather
+    // than arbitrarily hiding one half of the broken pair.
     const breakPairKeys = new Set([pointKey(chosen), pointKey(mirror)]);
     const otherCandidates = candidates.filter((point) => !breakPairKeys.has(pointKey(point)));
     const options = shuffleDeterministic(rng, [
-      solution,
+      ...(mode === 'find-break' ? [chosen, mirror] : [solution]),
       ...shuffleDeterministic(rng, otherCandidates).slice(0, distractorCount),
     ]);
     const hints = getTrackHints('g02-t3', input.ageTrack, input.seed, mode);
@@ -509,7 +560,9 @@ definitions.push({
       board: { kind: 'spatial-symmetry', grid, axis, mode, options },
       solution,
       hints,
-      explanation: `Ô cần chọn nằm ở ${VIETNAMESE_COORDINATE(solution)} để hình hoàn toàn đối xứng.`,
+      explanation: mode === 'find-break'
+        ? `Cặp ô ở ${VIETNAMESE_COORDINATE(chosen)} và ${VIETNAMESE_COORDINATE(mirror)} không giống nhau qua trục đối xứng. Chọn ô nào trong cặp ô này cũng đúng.`
+        : `Ô cần chọn nằm ở ${VIETNAMESE_COORDINATE(solution)} để hình hoàn toàn đối xứng.`,
       title: 'Hoàn thành đối xứng',
       tutorial: getNaturalTutorial('g02-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
@@ -563,7 +616,7 @@ definitions.push({
     const optionCount = 3 + rank;
     const distractors = shuffleDeterministic(rng, allPoints).slice(0, Math.max(0, optionCount - targets.length));
     const options = shuffleDeterministic(rng, [...targets, ...distractors]);
-    const posVi = solution.map(VIETNAMESE_COORDINATE).join(' và ');
+    const posVi = solution.map(VIETNAMESE_COORDINATE).join(', ');
     const hints = getTrackHints('g03-t2', input.ageTrack, input.seed, mode);
     const board = { kind: 'memory-position' as const, width, height, targets, revealed, mode, displayMs: input.ageTrack === 'age_6_8' ? 1400 : 1200, options };
     return {
@@ -572,7 +625,7 @@ definitions.push({
       hints,
       explanation: mode === 'missing'
         ? `Vị trí còn thiếu nằm ở ${posVi}.`
-        : `Các vị trí bạn nhỏ đã xuất hiện nằm ở ${posVi}.`,
+        : `Các vị trí đã xuất hiện nằm ở ${posVi}.`,
       title: 'Nhớ vị trí',
       tutorial: getNaturalTutorial('g03-t2', input.ageTrack, Math.floor(rng() * 100), input.seed, board),
       targetSeconds: targetSeconds(input.ageTrack),
@@ -650,7 +703,9 @@ definitions.push({
           [before[2] ?? before[0]!, before[3] ?? before[1]!].sort().join('|'),
           'không có gì thay đổi',
         ]
-      : [solution, tokens[0]!, tokens[1] ?? 'lá', ...extraTokens, 'không có gì thay đổi'];
+      : change === 'property'
+        ? [solution, ...shuffleDeterministic(rng, tokens.flatMap((token) => ['đỏ', 'xanh', 'vàng', 'tím'].map((color) => `${token} ${color}`)).filter((token) => token !== solution))]
+        : [solution, tokens[0]!, tokens[1] ?? 'lá', ...extraTokens, 'không có gì thay đổi'];
     const optionCount = 3 + rank;
     const trimmed = [...new Set(optionPool)].slice(0, optionCount);
     if (!trimmed.includes(solution)) trimmed[0] = solution;
@@ -659,7 +714,10 @@ definitions.push({
     if (change === 'removed') changeExplanation = `Ở cảnh sau, ${solution} đã biến mất khỏi khung hình.`;
     else if (change === 'added') changeExplanation = `Ở cảnh sau, ${solution} vừa mới được thêm vào.`;
     else if (change === 'swapped') changeExplanation = `Hai bạn ${solution.split('|').join(' và ')} đã đổi chỗ cho nhau.`;
-    else if (change === 'property') changeExplanation = `Ở cảnh sau, đối tượng đã đổi màu thành ${solution}.`;
+    else if (change === 'property') {
+      const changedIndex = before.findIndex((token, index) => token !== after[index]);
+      changeExplanation = `Ở cảnh trước là ${before[changedIndex]}; sang cảnh sau, màu đổi thành ${after[changedIndex]}.`;
+    }
     const hints = getTrackHints('g03-t3', input.ageTrack, input.seed, change);
     return {
       board: { kind: 'memory-change', before, after, change, options },
@@ -698,42 +756,48 @@ definitions.push({
     const variant = variantIndex('g04-t1', input.variant);
     const colors = shuffleDeterministic(rng, ['đỏ', 'xanh', 'vàng', 'tím', 'cam', 'hồng']);
     const shapes = shuffleDeterministic(rng, ['tròn', 'vuông', 'tam giác', 'sao', 'thoi']);
-    const sizes = ['to', 'nhỏ'];
+    const sizes = shuffleDeterministic(rng, ['to', 'nhỏ']);
     const targetColor = colors[0]!;
     const targetShape = shapes[0]!;
     const targetSize = sizes[0]!;
     const count = 3 + rank;
-    const candidates: TraitItem[] = Array.from({ length: count }, (_, index) => {
-      if (index === 0) {
-        return {
-          id: `candidate-1`,
-          traits: { màu: targetColor, hình: targetShape, 'kích cỡ': targetSize },
-        };
-      }
-      return {
-        id: `candidate-${index + 1}`,
-        traits: {
-          màu: variant === 2 ? colors[1]! : colors[(index % (colors.length - 1)) + 1]!,
-          hình: shapes[(index % (shapes.length - 1)) + 1]!,
-          'kích cỡ': sizes[index % 2]!,
-        },
-      };
-    });
-    const clues = variant === 0
-      ? [{ trait: 'màu', value: targetColor, negate: false }]
-      : variant === 1
-        ? [{ trait: 'màu', value: targetColor, negate: false }, { trait: 'hình', value: targetShape, negate: false }]
-        : variant === 2
-          ? [{ trait: 'màu', value: colors[1]!, negate: true }]
-          : [{ trait: 'màu', value: targetColor, negate: false }, { trait: 'hình', value: targetShape, negate: false }, { trait: 'kích cỡ', value: targetSize, negate: false }];
-    const options = shuffleDeterministic(rng, candidates.map((candidate) => candidate.id));
+    const clueCount = rank === 3 ? 3 : rank >= 1 || variant !== 0 ? 2 : 1;
+    const negative = variant === 2;
+    const cluePool = [
+      { trait: 'màu', value: negative ? colors[1]! : targetColor, negate: negative },
+      { trait: 'hình', value: targetShape, negate: false },
+      { trait: 'kích cỡ', value: targetSize, negate: false },
+    ];
+    const clues = shuffleDeterministic(rng, cluePool.slice(0, clueCount));
+    const traits: TraitMap[] = [{ màu: targetColor, hình: targetShape, 'kích cỡ': targetSize }];
+    if (clueCount === 1) {
+      traits.push(
+        { màu: colors[1]!, hình: targetShape, 'kích cỡ': targetSize },
+        { màu: colors[2]!, hình: shapes[1]!, 'kích cỡ': sizes[1]! },
+      );
+    } else {
+      // Each of the first two decoys violates just one clue. Removing either
+      // clue therefore leaves more than one possible answer.
+      traits.push(
+        { màu: colors[1]!, hình: targetShape, 'kích cỡ': targetSize },
+        { màu: targetColor, hình: shapes[1]!, 'kích cỡ': targetSize },
+      );
+      if (clueCount === 3) traits.push({ màu: targetColor, hình: targetShape, 'kích cỡ': sizes[1]! });
+    }
+    while (traits.length < count) {
+      const index = traits.length;
+      traits.push({ màu: colors[(index % (colors.length - 1)) + 1]!, hình: shapes[(index % (shapes.length - 1)) + 1]!, 'kích cỡ': sizes[index % 2]! });
+    }
+    const candidates: TraitItem[] = traits.map((entry, index) => ({ id: `candidate-${index + 1}`, traits: entry }));
+    const options = shuffledOptions(input, 'g04-t1', candidates.map((candidate) => candidate.id));
+    const orderedCandidates = options.map((id) => candidates.find((candidate) => candidate.id === id)!);
     const solution = candidates[0]!.id;
-    const candIndex = candidates.findIndex((c) => c.id === solution);
-    const targetCandidate = candidates[candIndex];
+    const candIndex = options.indexOf(solution);
+    const targetCandidate = candidates.find((candidate) => candidate.id === solution);
     const targetTraitsVi = targetCandidate ? Object.entries(targetCandidate.traits).map(([k, v]) => `${k} ${v}`).join(', ') : '';
     const hints = getTrackHints('g04-t1', input.ageTrack, input.seed);
     return {
-      board: { kind: 'reasoning-elimination', candidates, clues, options },
+      board: { kind: 'reasoning-elimination', candidates: orderedCandidates, clues, options },
       solution,
       hints,
       explanation: `Sau khi loại trừ theo các manh mối, bạn còn lại thỏa mãn tất cả yêu cầu là Bạn số ${candIndex + 1} (${targetTraitsVi}).`,
@@ -793,20 +857,22 @@ definitions.push({
     ];
     const words = pools[Math.floor(rng() * pools.length)]!;
     const variant = variantIndex('g04-t2', input.variant);
-    const hasShortcut = variant === 3;
-    const maxChain = hasShortcut ? 3 : 4;
-    const chainLength = Math.min(words.length - 2, 1 + rank, maxChain);
+    const hasExtraRule = variant === 3;
+    const maxChain = hasExtraRule ? 3 : 4;
+    const chainLength = Math.min(words.length - 2, Math.max(variant >= 2 ? 2 : 1, 1 + rank), maxChain);
     const facts = [words[0]!];
     const rules = Array.from({ length: chainLength }, (_, index) => ({ if: words[index]!, then: words[index + 1]! }));
-    if (hasShortcut && chainLength >= 2) {
-      rules.push({ if: words[0]!, then: words[2]! });
+    if (hasExtraRule) {
+      // An unrelated rule provides a distractor without short-circuiting the
+      // very two-step inference requested by the variant.
+      rules.push({ if: words[4]!, then: words[5]! });
     }
     const closure = ifThenClosure({ kind: 'reasoning-if-then', rules, facts, options: [] });
     const newFacts = [...closure].filter((fact) => !facts.includes(fact));
     // Age progression: for older tracks, the correct answer is the chain end (last derivable fact)
     // For younger tracks, it's the first derivable fact
     const derivableSorted = [...newFacts].sort();
-    const solution = rank >= 2 ? newFacts[newFacts.length - 1]! : derivableSorted[0]!;
+    const solution = rank >= 2 || variant >= 2 ? newFacts[newFacts.length - 1]! : derivableSorted[0]!;
     // Distractors: only words NOT in closure and NOT initial facts
     const distractorPool = pools.flat().filter((w) => !closure.has(w) && !facts.includes(w));
     const distractors = shuffleDeterministic(rng, distractorPool).slice(0, 2 + rank);
@@ -896,11 +962,14 @@ definitions.push({
     const solOpt = options.find((opt) => opt.id === solution);
     const factDesc = solOpt ? `${solOpt.trait} là ${solOpt.value}` : 'manh mối còn thiếu';
     const hints = getTrackHints('g04-t3', input.ageTrack, input.seed);
+    const candidateOrder = shuffleDeterministic(randomFor(input, 'g04-t3-candidate-order'), candidates);
+    candidateOrder.splice(candidateOrder.findIndex((candidate) => candidate.id === targetId), 1);
+    candidateOrder.splice(candidateAnswerSlot(input, 'g04-t3', candidates.length), 0, target);
     return {
       board: {
         kind: 'reasoning-missing-info',
         scenario: 'Mình cần biết chắc một bạn là ai.',
-        candidates,
+        candidates: candidateOrder,
         known,
         targetId,
         questionTrait,
@@ -998,7 +1067,7 @@ definitions.push({
     const explanation = mode === 'replace' && replaceTarget
       ? `Thay quả cân thứ ${replaceTarget.index + 1} ở đĩa ${replaceTarget.side === 'left' ? 'Trái' : 'Phải'} bằng quả cân nặng ${answer} thì hai đĩa cân sẽ cân bằng.`
       : mode === 'compare'
-        ? `Cần thêm ${answer} vào đĩa nhẹ hơn để hai đĩa cân cân bằng.`
+        ? `Cần thêm ${answer} vào đĩa nhẹ hơn để hai đĩa thăng bằng.`
         : `Cần thêm ${answer} để hai bên đĩa cân có cân nặng bằng nhau.`;
     return {
       board,
@@ -1035,26 +1104,30 @@ definitions.push({
   generate: (input) => {
     const rng = randomFor(input, 'g05-t2');
     const rank = ageRank(input.ageTrack);
+    const quarter = candidateQuarter(input.seed);
     const mode = (['exact', 'remainder', 'floor', 'needed'] as const)[variantIndex('g05-t2', input.variant) % 4] as 'exact' | 'remainder' | 'floor' | 'needed';
-    const groupSize = 2 + (rank >= 2 ? 1 : 0);
-    const groups = 2 + rank * 2 + Math.floor(rng() * 2);
+    const groupSize = rank === 0
+      ? (quarter === 2 ? 3 + Math.floor(rng() * 2) : 2 + Math.min(quarter, 2))
+      : Math.min(9, 2 + rank + quarter + Math.floor(rng() * 2));
+    const maxGroups = Math.min(rank === 0 ? (mode === 'exact' ? 5 : 4) : 5 + rank + quarter, Math.floor((50 - (mode === 'exact' ? 0 : groupSize - 1)) / groupSize));
+    const minGroups = Math.min(maxGroups, rank === 0 ? 2 + quarter : 2 + rank + Math.floor(quarter / 2));
+    const groups = minGroups + Math.floor(rng() * (maxGroups - minGroups + 1));
     const total = mode === 'exact' ? groupSize * groups : groupSize * groups + 1 + Math.floor(rng() * (groupSize - 1));
     const base = { kind: 'quantity-grouping' as const, total, groupSize, mode, options: [] };
     const expected = groupingAnswer(base);
-    const optionPool = [
-      expected,
-      expected + 1,
-      Math.max(0, expected - 1),
-      expected + 2,
-      Math.max(0, expected - 2),
-      expected + 3,
-      Math.max(0, expected - 3),
-      groups,
-      groups + 1,
-      groups + 2,
-    ];
-    const options = [...new Set(optionPool)].sort((a, b) => a - b).slice(0, 3 + rank);
-    if (!options.includes(expected)) options[0] = expected;
+    // Identical tiny distractor pools previously produced the same rendered
+    // shuffle for every remainder/needed item. Vary the pool by item seed too.
+    const optionCount = 3 + rank;
+    const distractorRng = randomFor(input, 'g05-t2-distractors');
+    const pool = Array.from({ length: Math.max(total + groupSize, optionCount * 3) + 1 }, (_, value) => value).filter((value) => value !== expected);
+    const answerSlot = candidateAnswerSlot(input, 'g05-t2', optionCount);
+    let options: number[] = [];
+    for (let attempt = 0; attempt < 256; attempt += 1) {
+      const candidates = [expected, ...shuffleDeterministic(distractorRng, pool).slice(0, optionCount - 1)];
+      options = displayQuantityGroupingOptions({ ...base, options: candidates });
+      if (options.indexOf(expected) === answerSlot) break;
+    }
+    if (options.indexOf(expected) !== answerSlot) throw new Error('Could not place grouping answer in its scheduled slot');
     let groupExp = `Chia đều thành các nhóm ${groupSize}, kết quả là ${expected}.`;
     if (mode === 'exact') groupExp = `Chia đều thành các nhóm ${groupSize}, ta được đúng ${expected} nhóm.`;
     else if (mode === 'remainder') groupExp = `Sau khi chia thành các nhóm ${groupSize}, phần còn dư ra là ${expected}.`;
@@ -1193,27 +1266,32 @@ definitions.push({
     const rank = ageRank(input.ageTrack);
     const variant = variantIndex('g06-t2', input.variant);
     for (let i = 0; i < variant; i += 1) rng();
-    const count = 3 + Math.min(2, rank);
+    const count = 3 + rank;
     const scenarios = [
-      ['Mở hộp', 'Lấy đồ', 'Đóng hộp', 'Cất hộp', 'Dọn bàn'],
-      ['Mở vòi', 'Rửa tay', 'Xoa xà phòng', 'Rửa sạch', 'Lau khô'],
-      ['Lấy hạt', 'Đào đất', 'Gieo hạt', 'Lấp đất', 'Tưới nước'],
-      ['Bật đèn', 'Ngồi xuống', 'Mở sách', 'Đọc bài', 'Gấp sách'],
-      ['Lấy bát', 'Xới cơm', 'Múc canh', 'Mời cả nhà', 'Ăn cơm'],
-      ['Pha màu', 'Nhúng cọ', 'Vẽ tranh', 'Tô màu', 'Rửa cọ'],
+      ['Mở hộp', 'Lấy bút', 'Lấy giấy', 'Đóng hộp', 'Cất hộp', 'Dọn bàn'],
+      ['Mở túi', 'Lấy khăn', 'Lấy áo', 'Đóng túi', 'Cất túi', 'Dọn chỗ'],
+      ['Chuẩn bị khay', 'Lấy hạt', 'Lấy đất', 'Gieo hạt', 'Tưới nước', 'Dọn khay'],
+      ['Bật đèn', 'Lấy sách', 'Lấy vở', 'Ngồi vào bàn', 'Mở sách', 'Đọc bài'],
+      ['Lấy bát', 'Xới cơm', 'Múc canh', 'Mời cả nhà', 'Ăn cơm', 'Dọn bát'],
+      ['Mở hộp màu', 'Lấy cọ', 'Lấy màu', 'Vẽ tranh', 'Rửa cọ', 'Cất cọ'],
     ];
     const scenario = scenarios[Math.floor(rng() * scenarios.length)]!;
     const rawCommands = Array.from({ length: count }, (_, index) => ({
       id: `step-${index + 1}`,
       text: scenario[index] as string,
     }));
-    const before: [string, string][] = [];
-    for (let index = 0; index < count - 1; index += 1) {
-      before.push([rawCommands[index]!.id, rawCommands[index + 1]!.id]);
-    }
-    if (rank === 3 && before.length < 5) {
-      before.push([rawCommands[0]!.id, rawCommands[count - 1]!.id]);
-    }
+    // Fork after the first command. Steps 2 and 3 remain unordered, so the
+    // predicate's support for alternative orders is exercised by real items.
+    const edges: [string, string][] = [
+      [rawCommands[0]!.id, rawCommands[1]!.id],
+      [rawCommands[0]!.id, rawCommands[2]!.id],
+    ];
+    if (count >= 4) edges.push([rawCommands[1]!.id, rawCommands[3]!.id], [rawCommands[2]!.id, rawCommands[3]!.id]);
+    if (count >= 5) edges.push([rawCommands[3]!.id, rawCommands[4]!.id]);
+    if (count >= 6) edges.push([rawCommands[4]!.id, rawCommands[5]!.id]);
+    const before = shuffleDeterministic(randomFor(input, 'g06-t2-rule-order'), edges);
+    // Never print even this partial DAG in canonical solution order.
+    if (before.every((edge, i) => edge[0] === edges[i]![0] && edge[1] === edges[i]![1])) before.reverse();
     const commands = shuffleDeterministic(rng, rawCommands);
     const board = { kind: 'planning-command-order' as const, commands, before };
     const solution = solveCommandOrder(board) as string[];
@@ -1229,9 +1307,9 @@ definitions.push({
       board,
       solution,
       hints,
-      explanation: `${orderContext} Một thứ tự theo luật của ván này là: ${commandTexts.join(' → ')}.`,
+      explanation: `${rank === 3 ? '' : `${orderContext} `}Một thứ tự theo luật của ván này là: ${commandTexts.join(' → ')}.`,
       title: 'Xếp lệnh',
-      tutorial: `${orderContext} Mọi thứ tự giữ đủ luật đều được.`,
+      tutorial: getNaturalTutorial('g06-t2', input.ageTrack, 0, input.seed, board),
       targetSeconds: targetSeconds(input.ageTrack),
       praiseKeys: PRAISE_KEYS,
     };
@@ -1279,16 +1357,33 @@ definitions.push({
   generate: (input) => {
     const rng = randomFor(input, 'g06-t3');
     const rank = ageRank(input.ageTrack);
-    const width = 5;
-    const height = 5;
+    const quarter = candidateQuarter(input.seed);
+    const width = Math.min(7, 5 + (rank >= 2 ? 1 : 0) + (rank === 3 || quarter >= 2 ? 1 : 0));
+    const height = width;
     const start = { x: 0, y: 0 };
-    const goalX = rank === 0 ? 2 : rank === 1 ? 3 : rank === 2 ? 3 : 4;
-    const goalY = rank === 0 ? 2 : rank === 1 ? 2 : rank === 2 ? 3 : 4;
+    const stepCount = Math.min(8, 4 + rank + (quarter >= 2 ? 1 : 0));
+    const goalX = Math.max(1, Math.min(width - 1, Math.floor(stepCount / 2) + Math.floor(rng() * 3) - 1));
+    const goalY = stepCount - goalX;
     const goal = { x: goalX, y: goalY };
-    const commands: Direction[] = [
+    const correctCommands: Direction[] = shuffleDeterministic(rng, [
       ...Array.from({ length: goalX }, () => 'right' as const),
       ...Array.from({ length: goalY }, () => 'down' as const),
-    ];
+    ]);
+    const protectedCells = new Set([pointKey(start)]);
+    let current = { ...start };
+    for (const command of correctCommands) {
+      const move = DIRECTION_VECTORS[command];
+      current = { x: current.x + move.x, y: current.y + move.y };
+      protectedCells.add(pointKey(current));
+    }
+    const wallCandidates: PathStep[] = [];
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
+        if (!protectedCells.has(`${x},${y}`)) wallCandidates.push({ x, y });
+      }
+    }
+    const walls = shuffleDeterministic(rng, wallCandidates).slice(0, Math.min(rank + quarter, 10));
+    const commands = [...correctCommands];
     const errorIndex = 1 + Math.floor(rng() * (commands.length - 2));
     commands[errorIndex] = 'up';
     const options = shuffleDeterministic(rng, [
@@ -1297,7 +1392,7 @@ definitions.push({
       { id: 'fix-c', index: errorIndex, command: 'left' as Direction },
       { id: 'fix-d', index: errorIndex, command: 'up' as Direction },
     ]).filter((option, index, list) => list.findIndex((entry) => entry.command === option.command) === index);
-    const board = { kind: 'planning-fix-step' as const, width, height, start, goal, walls: [], commands, options };
+    const board = { kind: 'planning-fix-step' as const, width, height, start, goal, walls, commands, options };
     const solution = fixedCommandOptions(board)[0] as string;
     const solOption = options.find((entry) => entry.id === solution);
     const dirVi = solOption ? DIRECTION_SHORT_VI[solOption.command] ?? solOption.command : '';
@@ -1307,7 +1402,7 @@ definitions.push({
       board,
       solution,
       hints,
-      explanation: `Đổi bước ${stepIndex} thành hướng "${dirVi}" để robot về đích an toàn.`,
+      explanation: `Đổi bước ${stepIndex} sang hướng ${dirVi} để robot về đích an toàn.`,
       title: 'Sửa bước sai',
       tutorial: getNaturalTutorial('g06-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
@@ -1404,20 +1499,24 @@ definitions.push({
   generate: (input) => {
     const rng = randomFor(input, 'g07-t2');
     const rank = ageRank(input.ageTrack);
-    const width = 3 + rank;
+    const quarter = candidateQuarter(input.seed);
+    const width = Math.min(7, 3 + rank + (quarter >= 2 ? 1 : 0));
     const height = width;
     const facings = ['north', 'east', 'south', 'west'] as const;
     const facing = facings[variantIndex('g07-t2', input.variant) % facings.length] as typeof facings[number];
-    const viewer = { x: 1 + Math.floor(rng() * Math.max(1, width - 2)), y: 1 + Math.floor(rng() * Math.max(1, height - 2)), facing };
-    // The wanted direction (ahead/behind/left/right of the viewer) is seeded so answers vary;
-    // the viewer stays off the border so the object is always exactly one step away in that direction.
+    const distance = Math.min(width - 1, 1 + Math.floor((rank + quarter) / 2));
     const wanted = (['ahead', 'right', 'behind', 'left'] as const)[Math.floor(randomFor(input, 'g07-t2-direction')() * 4)] as RelativeDirection;
     const forward = facing === 'north' ? { x: 0, y: -1 } : facing === 'south' ? { x: 0, y: 1 } : facing === 'east' ? { x: 1, y: 0 } : { x: -1, y: 0 };
     const rightVec = { x: -forward.y, y: forward.x };
     const step = wanted === 'ahead' ? forward
       : wanted === 'behind' ? { x: -forward.x, y: -forward.y }
         : wanted === 'right' ? rightVec : { x: -rightVec.x, y: -rightVec.y };
-    const target = { x: viewer.x + step.x, y: viewer.y + step.y };
+    const minX = Math.max(0, -step.x * distance);
+    const minY = Math.max(0, -step.y * distance);
+    const maxX = width - 1 - Math.max(0, step.x * distance);
+    const maxY = height - 1 - Math.max(0, step.y * distance);
+    const viewer = { x: minX + Math.floor(rng() * (maxX - minX + 1)), y: minY + Math.floor(rng() * (maxY - minY + 1)), facing };
+    const target = { x: viewer.x + step.x * distance, y: viewer.y + step.y * distance };
     const board = { kind: 'flexibility-perspective' as const, width, height, viewer, target, options: ['left', 'right', 'ahead', 'behind'] as RelativeDirection[] };
     const solution = relativeDirection(board) as RelativeDirection;
     const solLabel = DIRECTION_SHORT_VI[solution] ?? solution;
@@ -1433,7 +1532,7 @@ definitions.push({
       board,
       solution,
       hints,
-      explanation: `Từ vị trí bạn nhỏ đang ${facingDesc}, đồ vật nằm ở ${solLabel}.`,
+      explanation: `Từ hướng nhìn của nhân vật đang ${facingDesc}, đồ vật nằm ở ${solLabel}.`,
       title: 'Đổi góc nhìn',
       tutorial: getNaturalTutorial('g07-t2', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
@@ -1446,18 +1545,18 @@ function samePath(left: readonly PathStep[], right: readonly PathStep[]): boolea
   return left.length === right.length && left.every((point, index) => pointKey(point) === pointKey(right[index]!));
 }
 
-function simplePaths(width: number, height: number): PathStep[][] {
-  const topThenRight = [{ x: 0, y: 0 }, ...Array.from({ length: width - 1 }, (_, index) => ({ x: index + 1, y: 0 })), ...Array.from({ length: height - 1 }, (_, index) => ({ x: width - 1, y: index + 1 }))];
-  const leftThenBottom = [{ x: 0, y: 0 }, ...Array.from({ length: height - 1 }, (_, index) => ({ x: 0, y: index + 1 })), ...Array.from({ length: width - 1 }, (_, index) => ({ x: index + 1, y: height - 1 }))];
+function simplePaths(width: number, height: number, start: PathStep = { x: 0, y: 0 }, goal: PathStep = { x: width - 1, y: height - 1 }): PathStep[][] {
+  const topThenRight = [start, ...Array.from({ length: goal.x - start.x }, (_, index) => ({ x: start.x + index + 1, y: start.y })), ...Array.from({ length: goal.y - start.y }, (_, index) => ({ x: goal.x, y: start.y + index + 1 }))];
+  const leftThenBottom = [start, ...Array.from({ length: goal.y - start.y }, (_, index) => ({ x: start.x, y: start.y + index + 1 })), ...Array.from({ length: goal.x - start.x }, (_, index) => ({ x: start.x + index + 1, y: goal.y }))];
   const zigzag = (verticalFirst: boolean): PathStep[] => {
-    const path: PathStep[] = [{ x: 0, y: 0 }];
-    let x = 0;
-    let y = 0;
+    const path: PathStep[] = [start];
+    let x = start.x;
+    let y = start.y;
     let vertical = verticalFirst;
-    while (x < width - 1 || y < height - 1) {
-      if (vertical && y < height - 1) y += 1;
-      else if (!vertical && x < width - 1) x += 1;
-      else if (x < width - 1) x += 1;
+    while (x < goal.x || y < goal.y) {
+      if (vertical && y < goal.y) y += 1;
+      else if (!vertical && x < goal.x) x += 1;
+      else if (x < goal.x) x += 1;
       else y += 1;
       path.push({ x, y });
       vertical = !vertical;
@@ -1474,7 +1573,8 @@ definitions.push({
   parseBoard: (input) => flexibilityAlternativeBoardSchema.parse(input) as BoardData,
   solve: (board) => {
     if (board.kind !== 'flexibility-alternative') return null;
-    return simplePaths(board.width, board.height).find((path) => !samePath(path, board.knownPath)) ?? null;
+    const pathBoard = { kind: 'path-planning' as const, width: board.width, height: board.height, start: board.start, goal: board.goal, walls: board.walls, waypoints: [] };
+    return simplePaths(board.width, board.height, board.start, board.goal).find((path) => !samePath(path, board.knownPath) && checkPath(pathBoard, path)) ?? null;
   },
   check: (board, answer) => {
     if (!isPointArray(answer) || board.kind !== 'flexibility-alternative') return false;
@@ -1484,13 +1584,15 @@ definitions.push({
   generate: (input) => {
     const rng = randomFor(input, 'g07-t3');
     const rank = ageRank(input.ageTrack);
+    const quarter = candidateQuarter(input.seed);
     const variant = variantIndex('g07-t3', input.variant);
     for (let i = 0; i < variant; i += 1) rng();
-    const width = 5 + (rank >= 2 ? 1 : 0) + (rank === 3 ? 1 : 0);
+    const width = Math.min(7, 5 + (rank >= 2 ? 1 : 0) + (rank === 3 || quarter >= 2 ? 1 : 0));
     const height = width;
-    const start = { x: 0, y: 0 };
-    const goal = { x: width - 1, y: height - 1 };
-    const paths = simplePaths(width, height);
+    const variedEndpoints = /\|D\d{3}-(?:main|bonus)/.test(input.seed);
+    const start = { x: 0, y: variedEndpoints ? Math.floor(rng() * 2) : 0 };
+    const goal = { x: width - 1, y: height - 1 - (variedEndpoints ? Math.floor(rng() * 2) : 0) };
+    const paths = simplePaths(width, height, start, goal);
     const basePathIndex = Math.floor(rng() * paths.length);
     const knownPath = paths[(basePathIndex + variant) % paths.length]!;
     const solution = paths.find((path) => !samePath(path, knownPath))!;
@@ -1504,14 +1606,14 @@ definitions.push({
         }
       }
     }
-    const wallCount = 1 + rank;
+    const wallCount = 1 + rank + quarter;
     const walls = shuffleDeterministic(rng, interiorCells).slice(0, Math.min(wallCount, interiorCells.length));
     const hints = getTrackHints('g07-t3', input.ageTrack, input.seed);
     return {
       board: { kind: 'flexibility-alternative' as const, width, height, start, goal, walls, knownPath },
       solution,
       hints,
-      explanation: 'Đường đi mới đã dẫn từ điểm xuất phát đến đích mà không bị trùng với đường ban đầu và tránh được các ô tường.',
+      explanation: `Một lộ trình khác là ${solution.map(VIETNAMESE_COORDINATE).join(' → ')}; lộ trình này tới đích mà không lặp lại đường cũ hay đi qua tường.`,
       title: 'Cách giải khác',
       tutorial: getNaturalTutorial('g07-t3', input.ageTrack, Math.floor(rng() * 100), input.seed),
       targetSeconds: targetSeconds(input.ageTrack),
@@ -1671,7 +1773,7 @@ definitions.push({
     const count = 3 + rank;
     const ruleTrait = index % 2 === 0 ? 'nhóm' : 'bước';
     const ruleValue = (index === 0 ? 'đồ chơi' : index === 1 ? 'đi đúng hướng' : index === 2 ? 'đồ dùng học tập' : 'đi đúng vạch') as string;
-    const flipIndex = 1 + Math.floor(rng() * (count - 1));
+    const flipIndex = Math.floor(rng() * count);
 
     const toyTexts = [
       'Bạn đang xếp các khối gỗ lâu đài',
@@ -1713,10 +1815,11 @@ definitions.push({
 
     const pool = index === 0 ? toyTexts : index === 1 ? directionTexts : index === 2 ? studyTexts : lineTexts;
     const badText = index === 0 ? badToyText : index === 1 ? badDirectionText : index === 2 ? badStudyText : badLineText;
+    const selectedTexts = shuffleDeterministic(rng, pool);
 
     const scene: { id: string; text: string; traits: TraitMap }[] = Array.from({ length: count }, (_, sceneIndex) => {
       const isBad = sceneIndex === flipIndex;
-      const text = isBad ? badText : pool[sceneIndex % pool.length]!;
+      const text = isBad ? badText : selectedTexts[sceneIndex % selectedTexts.length]!;
       return {
         id: `scene-${sceneIndex + 1}`,
         text,
