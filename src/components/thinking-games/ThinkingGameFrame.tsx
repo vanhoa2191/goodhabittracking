@@ -14,6 +14,7 @@ import {
 import { getThinkingGamesViCopy } from '@/lib/i18n/thinking-games-copy';
 import { ThinkingGameStatus } from './ThinkingGameStatus';
 import { useThinkingGameAudio } from './use-thinking-game-audio';
+import type { AgeTrack } from '@/lib/thinking-games/types';
 
 export type ThinkingGameState =
   | 'invitation'
@@ -47,7 +48,7 @@ export interface ThinkingGameFrameProps {
   /** Day index (1–365) */
   readonly dayIndex?: number;
   /** Age track target */
-  readonly ageTrack?: 'age_6_8' | 'age_9_12';
+  readonly ageTrack?: AgeTrack;
   /** Invitation text override */
   readonly invitationText?: string;
   /** Tutorial guidance text override */
@@ -186,7 +187,7 @@ export function ThinkingGameFrame({
   };
 
   // Determine button size scaling based on age track
-  const isYoung = ageTrack === 'age_6_8';
+  const isYoung = ageTrack === 'age_3_5' || ageTrack === 'age_6_8';
   const primaryButtonMinHeight = isYoung ? 'min-h-[56px] text-lg' : 'min-h-[48px] text-base';
 
   return (
@@ -327,13 +328,22 @@ export function ThinkingGameFrame({
               </p>
             </div>
 
+            {ageTrack === 'age_3_5' && (
+              <p
+                data-testid="co-play-note"
+                className="mt-3 w-full rounded-2xl border border-amber-200 bg-amber-50 p-3 text-left text-sm font-semibold text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-100"
+              >
+                {copy.tutorial.coPlayNote}
+              </p>
+            )}
+
             {/* Read Aloud button */}
             {audio.isVoiceAvailable && (
               <button
                 type="button"
                 onClick={() => audio.toggleReadAloud(tutorialText || copy.tutorial.defaultGuidance)}
                 aria-pressed={audio.isReading}
-                className="mt-3 inline-flex min-h-[48px] items-center gap-2 rounded-2xl border border-indigo-200 bg-white px-4 py-2 text-sm font-bold text-indigo-700 transition hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 dark:border-indigo-800 dark:bg-zinc-800 dark:text-indigo-300"
+                className={`mt-3 inline-flex ${ageTrack === 'age_3_5' ? 'min-h-[64px] text-base' : 'min-h-[48px] text-sm'} items-center gap-2 rounded-2xl border border-indigo-200 bg-white px-4 py-2 font-bold text-indigo-700 transition hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 dark:border-indigo-800 dark:bg-zinc-800 dark:text-indigo-300`}
               >
                 <Volume2 className="h-4 w-4" aria-hidden="true" />
                 {audio.isReading ? copy.tutorial.stopReadAloudAction : copy.tutorial.readAloudAction}

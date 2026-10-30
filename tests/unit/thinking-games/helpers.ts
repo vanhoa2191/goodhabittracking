@@ -13,7 +13,7 @@ export function loadPilot(): unknown {
 }
 
 export function loadRelease(): unknown {
-  return readJson('../../../content/thinking-games/manifests/release-365-v2.json');
+  return readJson('../../../content/thinking-games/manifests/release-365-v3.json');
 }
 
 export function loadReleasePlaceholder(): unknown {

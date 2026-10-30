@@ -5,6 +5,7 @@ import { requireParentUnlock } from '@/lib/security/parent-unlock';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
+import { GAME_AGE_TRACKS } from '@/lib/thinking-games/types';
 
 const settingsSchema = z.object({
   enabled: z.boolean(),
@@ -13,7 +14,7 @@ const settingsSchema = z.object({
   cutoffLocal: z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/),
   bedtimeStartLocal: z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/),
   bedtimeEndLocal: z.string().regex(/^\d{2}:\d{2}(:\d{2})?$/),
-  ageTrackOverride: z.enum(['age_6_8', 'age_9_12']).nullable().default(null),
+  ageTrackOverride: z.enum(GAME_AGE_TRACKS).nullable().default(null),
   commandId: z.string().uuid(),
 });
 

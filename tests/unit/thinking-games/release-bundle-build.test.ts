@@ -4,8 +4,8 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 
-const manifestPath = resolve('content/thinking-games/manifests/release-365-v2.json');
-const proofPath = resolve('content/thinking-games/manifests/release-365-v2.validation.json');
+const manifestPath = resolve('content/thinking-games/manifests/release-365-v3.json');
+const proofPath = resolve('content/thinking-games/manifests/release-365-v3.validation.json');
 const temporary: string[] = [];
 function fixture(name: string, contents: string): string {
   const directory = mkdtempSync(join(tmpdir(), 'release-bundle-negative-'));
@@ -25,7 +25,7 @@ describe('production build release admission', () => {
   it('fully validates the exact reviewed bytes before the Worker can bundle them', { timeout: 30000 }, () => {
     const result = verify();
     expect(result.status, result.stderr).toBe(0);
-    expect(JSON.parse(result.stdout)).toMatchObject({ status: 'passed', itemCount: 1460, completeReleaseValidation: true });
+    expect(JSON.parse(result.stdout)).toMatchObject({ status: 'passed', itemCount: 2920, completeReleaseValidation: true });
   });
   it('rejects changed catalog bytes even when counts, statuses and the old proof remain valid', () => {
     const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));

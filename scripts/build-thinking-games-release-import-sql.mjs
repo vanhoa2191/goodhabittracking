@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * Writes the guarded production import for the release-365-v2 serving manifest as independently atomic batches.
+ * Writes the guarded production import for the currently pinned release serving manifest as independently atomic batches.
  * Each batch inserts missing rows only (never overwrites), then fails the transaction unless every row of the batch
  * reads back identical. The rows use the same projections the serving code rebuilds items from
  * (public payload + grading payload), and the generator proves that round trip before writing anything.
  *
- * Usage: node scripts/build-thinking-games-release-v2-import-sql.mjs --output-dir <dir>
+ * Usage: node scripts/build-thinking-games-release-import-sql.mjs --output-dir <dir>
  */
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -21,7 +21,10 @@ if (dirIndex < 0 || !process.argv[dirIndex + 1]) throw new Error('--output-dir <
 const outputDir = resolve(process.argv[dirIndex + 1]);
 const BATCH_SIZE = 100;
 
-const manifestPath = join(root, 'content/thinking-games/manifests/release-365-v2.json');
+const pinSource = readFileSync(join(root, 'src/lib/thinking-games/server/release-manifest.ts'), 'utf8');
+const version = pinSource.match(/export const RELEASE_MANIFEST_VERSION = '([^']+)'/)?.[1];
+if (!version) throw new Error('RELEASE_MANIFEST_VERSION is not pinned');
+const manifestPath = join(root, `content/thinking-games/manifests/${version}.json`);
 const raw = readFileSync(manifestPath, 'utf8');
 const manifest = JSON.parse(raw);
 const digest = createHash('sha256').update(raw).digest('hex');
@@ -78,7 +81,7 @@ const batches = [];
 for (let start = 0; start < rows.length; start += BATCH_SIZE) batches.push(rows.slice(start, start + BATCH_SIZE));
 batches.forEach((batch, index) => {
   const name = `batch-${String(index + 1).padStart(2, '0')}-of-${String(batches.length).padStart(2, '0')}.sql`;
-  const sql = `-- release-365-v2 content import ${index + 1}/${batches.length}; manifest sha256 ${digest}
+  const sql = `-- ${version} content import ${index + 1}/${batches.length}; manifest sha256 ${digest}
 -- Inserts missing rows only and aborts unless every row of this batch reads back identical.
 begin;
 create temp table release_import_batch on commit drop as
@@ -99,7 +102,7 @@ begin
         is distinct from
         (i.content_version, i.day_index, i.slot_type, i.age_track, i.locale, i.game_type_id, i.rule_variant_id, i.status, i.checker_id, i.public_payload, i.grading_payload, i.fingerprint);
   if mismatched <> 0 then
-    raise exception 'release-365-v2 import batch ${index + 1} mismatched % rows', mismatched;
+    raise exception '${version} import batch ${index + 1} mismatched % rows', mismatched;
   end if;
 end $verify$;
 commit;
@@ -107,9 +110,9 @@ commit;
   writeFileSync(join(outputDir, name), sql);
 });
 
-writeFileSync(join(outputDir, 'verify-after-import.sql'), `-- Run after all batches. Expect: rows = 1460, per-track 730, per-slot 365, no other version rows touched.
+writeFileSync(join(outputDir, 'verify-after-import.sql'), `-- Run after all batches. Expect: rows = ${rows.length}, per-track ${rows.length / new Set(rows.map((row) => row.age_track)).size}, per-slot 365, no other version rows touched.
 select content_version, age_track, slot_type, count(*) as rows, min(day_index) as first_day, max(day_index) as last_day
-from public.thinking_game_content where content_version = 'release-365-v2'
+from public.thinking_game_content where content_version = '${version}'
 group by 1, 2, 3 order by 2, 3;
 `);
-console.log(JSON.stringify({ outputDir, batches: batches.length, rows: rows.length, manifestSha256: digest }));
+console.log(JSON.stringify({ version, outputDir, batches: batches.length, rows: rows.length, manifestSha256: digest }));
