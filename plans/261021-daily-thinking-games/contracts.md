@@ -294,15 +294,17 @@ The key is a deterministic 64-bit value scoped to one child. It is `revoked` fro
 
 ## 10. Age and locale
 
-- Initial release: `vi`, tracks `age_6_8` and `age_9_12`.
+- Initial release: `vi`, tracks `age_6_8` and `age_9_12`. From release-365-v3 (2026-10-30) all four tracks are served.
 - Automatic track from server-known age:
+  - age 3–5 inclusive → `age_3_5` (v3 onwards);
   - age 6–8 inclusive → `age_6_8`;
   - age 9–12 inclusive → `age_9_12`;
+  - age 13 and over → `age_13_plus` (v3 onwards);
   - any other/unknown age → `age_track_unavailable`.
-- A parent override (`thinking_game_child_settings.age_track_override`) wins over computed age. It may only be one of the two released tracks in v1.
+- A parent override (`thinking_game_child_settings.age_track_override`) wins over computed age. From release-365-v3 it may be any of the four tracks (v1/v2 allowed only the two initial tracks).
 - No silent fallback to another track. No silent use of the existing theme `ageBandOverride`, which may be `teen`/`off` and has different meaning.
 - An age-track change is effective the next local day and cannot change the content of a started attempt.
-- 3–5 and 13+ are not enabled; their UI must not offer or imply support.
+- 3–5 and 13+ are enabled from release-365-v3 (2026-10-30, see decision D28). The age resolver maps ages 3–5, 6–8, 9–12 and 13+ to their tracks; ages under 3 stay `age_track_unavailable`. A parent override may select any of the four tracks.
 - The game copy is a peer voice, Vietnamese `mình – bạn`, including invite, tutorial, hints, retry, praise, explanation, pause, bedtime, offline, approval-wait and errors. It must not use adult-to-child “con/bé”. The habit flow copy is not silently rewritten by this feature.
 
 ## 11. Content model

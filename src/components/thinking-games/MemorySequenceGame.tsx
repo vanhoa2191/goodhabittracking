@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Eye, RotateCcw, Undo2 } from 'lucide-react';
 import type { AgeTrack, MemorySequenceBoard } from '@/lib/thinking-games/types';
 import { memorySequenceAnswerLength, memorySequenceSlots } from '@/lib/thinking-games';
+import { getButtonMinHeight, getButtonMinSize } from './game-utils';
 
 export interface MemorySequenceGameProps {
   readonly board: MemorySequenceBoard;
@@ -46,8 +47,7 @@ export function MemorySequenceGame({
     setUserSequence([]);
   }
 
-  const isAge68 = ageTrack === 'age_6_8';
-  const buttonMinSize = isAge68 ? 'min-h-[56px] min-w-[56px]' : 'min-h-[48px] min-w-[48px]';
+  const buttonMinSize = getButtonMinSize(ageTrack);
   const slots = memorySequenceSlots(board);
   const requiredLength = memorySequenceAnswerLength(board);
 
@@ -146,7 +146,7 @@ export function MemorySequenceGame({
             disabled={disabled}
             onClick={handleStartRecall}
             className={`flex ${
-              isAge68 ? 'min-h-[56px]' : 'min-h-[48px]'
+              getButtonMinHeight(ageTrack)
             } items-center justify-center rounded-2xl bg-indigo-600 px-6 py-3 text-base font-bold text-white shadow-md transition hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 disabled:opacity-50`}
           >
             Mình đã nhớ rồi! Bắt đầu xếp lại
@@ -294,7 +294,7 @@ export function MemorySequenceGame({
               disabled={disabled || userSequence.length !== requiredLength}
               onClick={handleSubmit}
               className={`flex ${
-                isAge68 ? 'min-h-[56px]' : 'min-h-[48px]'
+                getButtonMinHeight(ageTrack)
               } items-center justify-center rounded-2xl bg-indigo-600 px-6 py-3 text-base font-bold text-white shadow-md transition hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none dark:disabled:bg-zinc-800 dark:disabled:text-zinc-600`}
             >
               Kiểm tra đáp án

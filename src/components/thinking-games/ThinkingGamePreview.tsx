@@ -3,7 +3,7 @@
 import { useMemo, useState, useSyncExternalStore } from 'react';
 import pilotManifest from '../../../content/thinking-games/pilot/pilot-manifest-v1.json';
 import p06Fixtures from '../../../content/thinking-games/p06-fixtures/p06-fixtures-v1.json';
-import { checkAnswer, toPublicPuzzle, type GameTypeId, type PuzzleItem } from '@/lib/thinking-games';
+import { checkAnswer, toPublicPuzzle, type GameAgeTrack, type GameTypeId, type PuzzleItem } from '@/lib/thinking-games';
 import {
   ThinkingGameFrame,
   type ThinkingGameState,
@@ -72,7 +72,7 @@ export function ThinkingGamePreview() {
   });
   const [state, setState] = useState<ThinkingGameState>('invitation');
   const [slotType, setSlotType] = useState<'main' | 'bonus'>('main');
-  const [ageTrack, setAgeTrack] = useState<'age_6_8' | 'age_9_12'>('age_6_8');
+  const [ageTrack, setAgeTrack] = useState<GameAgeTrack>('age_6_8');
   const [dayIndex, setDayIndex] = useState<number>(1);
   const [selectedGameType, setSelectedGameType] = useState<GameTypeId>('g01-t2');
   const [variantIndex, setVariantIndex] = useState<number>(0);
@@ -314,13 +314,15 @@ export function ThinkingGamePreview() {
               data-testid="age-select"
               value={ageTrack}
               onChange={(e) => {
-                setAgeTrack(e.target.value as 'age_6_8' | 'age_9_12');
+                setAgeTrack(e.target.value as GameAgeTrack);
                 setPlayerResetKey((k) => k + 1);
               }}
               className="mt-1 min-h-[44px] rounded-xl border border-slate-300 bg-white px-2 py-1.5 text-xs font-semibold text-slate-900 dark:border-zinc-700 dark:bg-zinc-800 dark:text-slate-100"
             >
+              <option value="age_3_5">3–5 tuổi (Nút rất to 64px)</option>
               <option value="age_6_8">6–8 tuổi (Nút to 56px)</option>
               <option value="age_9_12">9–12 tuổi (Nút 48px)</option>
+              <option value="age_13_plus">Từ 13 tuổi (Nút 48px)</option>
             </select>
           </div>
 

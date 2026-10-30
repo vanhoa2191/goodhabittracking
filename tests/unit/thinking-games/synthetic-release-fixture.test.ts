@@ -38,10 +38,10 @@ describe('synthetic release fixture', () => {
 
   it('is NOT the same as the serving release manifest', () => {
     const serving = parseManifest(loadRelease());
-    expect(serving.manifestVersion).toBe('release-365-v2');
+    expect(serving.manifestVersion).toBe('release-365-v3');
     expect(serving.manifestVersion).not.toBe(parseManifest(loadSyntheticReleaseFixture()).manifestVersion);
     expect(serving.editorialApproval).toMatchObject({
-      editorialSignature: expect.stringContaining('Product owner explicitly approved candidate V2 content for production'),
+      editorialSignature: expect.stringContaining('Product owner explicitly asked on 2026-10-30'),
     });
   });
 
@@ -80,17 +80,17 @@ describe('synthetic release fixture', () => {
 });
 
 describe('approved production serving release', () => {
-  it('validates the approved two-track year and admits only the pinned bytes', { timeout: 30000 }, () => {
-    const raw = readFileSync(new URL('../../../content/thinking-games/manifests/release-365-v2.json', import.meta.url), 'utf8');
+  it('validates the approved four-track year and admits only the pinned bytes', { timeout: 30000 }, () => {
+    const raw = readFileSync(new URL('../../../content/thinking-games/manifests/release-365-v3.json', import.meta.url), 'utf8');
     const manifest = parseManifest(JSON.parse(raw));
     const digest = sha256(raw);
     expect(validateManifest(manifest, { profile: 'release' })).toMatchObject({
       ok: true,
-      metrics: { itemCount: 1460, dayCount: 365, typeIds: 24, variantPairs: 96, skillCount: 8 },
+      metrics: { itemCount: 2920, dayCount: 365, typeIds: 24, variantPairs: 96, skillCount: 8 },
     });
-    expect(manifest.ageTracks).toEqual(['age_6_8', 'age_9_12']);
+    expect(manifest.ageTracks).toEqual(['age_3_5', 'age_6_8', 'age_9_12', 'age_13_plus']);
     expect(manifest.locales).toEqual(['vi']);
-    expect(new Set(manifest.items.map((item) => item.contentVersion))).toEqual(new Set(['release-365-v2']));
+    expect(new Set(manifest.items.map((item) => item.contentVersion))).toEqual(new Set(['release-365-v3']));
     expect(digest).toBe(RELEASE_MANIFEST_DIGEST);
     expect(admitReleaseManifest(manifest, RELEASE_MANIFEST_DIGEST, digest)).toBe(true);
     expect(admitReleaseManifest(manifest, '', digest)).toBe(false);
@@ -110,9 +110,9 @@ describe('approved production serving release', () => {
     const admission = getThinkingGameCatalog();
     expect(admission).toMatchObject({ ok: true, profile: 'release' });
     if (!admission.ok) throw new Error(`Release admission failed: ${admission.code}`);
-    expect(admission.manifest.manifestVersion).toBe('release-365-v2');
-    expect(admission.manifest.items).toHaveLength(1460);
-    expect(admission.manifest.ageTracks).toEqual(['age_6_8', 'age_9_12']);
+    expect(admission.manifest.manifestVersion).toBe('release-365-v3');
+    expect(admission.manifest.items).toHaveLength(2920);
+    expect(admission.manifest.ageTracks).toEqual(['age_3_5', 'age_6_8', 'age_9_12', 'age_13_plus']);
     expect(sha256(JSON.stringify(admission.manifest, null, 2) + '\n')).toBe(RELEASE_MANIFEST_DIGEST);
     expect(getThinkingGameCatalog()).toBe(admission);
     vi.stubEnv('ENABLE_THINKING_GAMES', 'false');

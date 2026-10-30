@@ -30,6 +30,7 @@ export interface ThinkingGamesCopy {
     readonly understandAction: string;
     readonly readAloudAction: string;
     readonly stopReadAloudAction: string;
+    readonly coPlayNote: string;
   };
   readonly playing: {
     readonly pauseAction: string;
@@ -149,6 +150,7 @@ export const THINKING_GAMES_VI_COPY: ThinkingGamesCopy = {
     understandAction: 'Mình hiểu rồi',
     readAloudAction: 'Nghe mình đọc',
     stopReadAloudAction: 'Dừng đọc',
+    coPlayNote: 'Dành cho người lớn: hãy ngồi cạnh bạn nhỏ, đọc to hướng dẫn rồi để bạn tự chạm nhé.',
   },
   playing: {
     pauseAction: 'Tạm dừng',

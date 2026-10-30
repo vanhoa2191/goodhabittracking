@@ -4,8 +4,8 @@
   "generatedAt": "2026-10-22T00:00:00.000Z",
   "contentVersion": "p08-candidates-365-v2",
   "sourceHash": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
-  "engineVersion": "engine-e2ee48b85e3f760d",
-  "inputSha256": "f8fe17cf9f7d8728ee15a487f7f7a78b80b666f336dc20ac23cd66ec9691e838",
+  "engineVersion": "engine-ca44df89a632ab75",
+  "inputSha256": "8ed0b46b93fa9a025acd49cd8eec20942b31a3d35277cf8180ccfdad95c4847c",
   "csvSha256": "a48461dfbfc096bec79ceab171489cfe80e133d17a4aac4313d7f1644725e3a9",
   "metrics": {
     "itemCount": 2920,
@@ -16,8 +16,12 @@
     "malformedPass": 2920,
     "alternateApplicable": 148,
     "alternatePass": 148,
-    "uniqueFingerprints": 2783,
-    "uniqueNormalized": 2486,
+    "uniqueFingerprints": 2920,
+    "uniqueNormalized": 2920,
+    "duplicateFingerprints": 0,
+    "normalizedCollisions": 0,
+    "ageComplexityWarnings": 384,
+    "structuralReusePairs": 2824,
     "tracks": {
       "age_3_5": 730,
       "age_6_8": 730,
@@ -2955,19 +2959,19 @@
     "provenance": true,
     "difficulty": {
       "pairs": 730,
-      "notHarder": 0,
-      "clearlyHarder": 726,
+      "notHarder": 5,
+      "clearlyHarder": 715,
       "perType": {
         "g01-t1": {
           "pairs": 31,
-          "avgYoung": 6.94,
-          "avgOlder": 8.82,
-          "harderShare": 1
+          "avgYoung": 8.4,
+          "avgOlder": 10.03,
+          "harderShare": 0.968
         },
         "g01-t2": {
           "pairs": 30,
-          "avgYoung": 5.67,
-          "avgOlder": 6.9,
+          "avgYoung": 7.67,
+          "avgOlder": 10.1,
           "harderShare": 1
         },
         "g01-t3": {
@@ -2984,20 +2988,20 @@
         },
         "g02-t2": {
           "pairs": 30,
-          "avgYoung": 6.97,
-          "avgOlder": 8.28,
+          "avgYoung": 6.95,
+          "avgOlder": 8.45,
           "harderShare": 1
         },
         "g02-t3": {
           "pairs": 30,
-          "avgYoung": 6.83,
-          "avgOlder": 10.33,
+          "avgYoung": 7.07,
+          "avgOlder": 10.57,
           "harderShare": 1
         },
         "g03-t1": {
           "pairs": 31,
-          "avgYoung": 4.26,
-          "avgOlder": 5.89,
+          "avgYoung": 5.03,
+          "avgOlder": 6.4,
           "harderShare": 1
         },
         "g03-t2": {
@@ -3014,8 +3018,8 @@
         },
         "g04-t1": {
           "pairs": 31,
-          "avgYoung": 5.71,
-          "avgOlder": 6.71,
+          "avgYoung": 6,
+          "avgOlder": 7,
           "harderShare": 1
         },
         "g04-t2": {
@@ -3038,9 +3042,9 @@
         },
         "g05-t2": {
           "pairs": 31,
-          "avgYoung": 6.38,
-          "avgOlder": 10.67,
-          "harderShare": 1
+          "avgYoung": 14.37,
+          "avgOlder": 17.76,
+          "harderShare": 0.871
         },
         "g05-t3": {
           "pairs": 30,
@@ -3050,20 +3054,20 @@
         },
         "g06-t1": {
           "pairs": 31,
-          "avgYoung": 9,
-          "avgOlder": 17.25,
+          "avgYoung": 15.19,
+          "avgOlder": 20.18,
           "harderShare": 1
         },
         "g06-t2": {
           "pairs": 30,
-          "avgYoung": 5.5,
-          "avgOlder": 7,
+          "avgYoung": 6,
+          "avgOlder": 7.5,
           "harderShare": 1
         },
         "g06-t3": {
           "pairs": 30,
-          "avgYoung": 7.5,
-          "avgOlder": 8.5,
+          "avgYoung": 9.82,
+          "avgOlder": 12.52,
           "harderShare": 1
         },
         "g07-t1": {
@@ -3074,14 +3078,14 @@
         },
         "g07-t2": {
           "pairs": 30,
-          "avgYoung": 5,
-          "avgOlder": 6,
+          "avgYoung": 6.5,
+          "avgOlder": 8,
           "harderShare": 1
         },
         "g07-t3": {
           "pairs": 30,
-          "avgYoung": 6,
-          "avgOlder": 7.5,
+          "avgYoung": 7.18,
+          "avgOlder": 8.77,
           "harderShare": 1
         },
         "g08-t1": {
@@ -3103,10 +3107,7 @@
           "harderShare": 1
         }
       }
-    },
-    "duplicateFingerprints": null,
-    "normalizedCollisions": null,
-    "structuralReusePairs": null
+    }
   },
   "checks": {
     "schema": true,
@@ -3117,14 +3118,14 @@
     "alternateWhereApplicable": true,
     "copy": true,
     "provenance": true,
-    "fingerprintsUnique": false,
-    "normalizedUnique": false
+    "fingerprintsUnique": true,
+    "normalizedUnique": true
   },
   "quality": {
     "duplicateFingerprints": 0,
     "normalizedCollisions": 0,
-    "ageComplexityWarnings": 0,
-    "structuralReusePairs": 0,
+    "ageComplexityWarnings": 384,
+    "structuralReusePairs": 2824,
     "blocked": false
   },
   "catalogChecks": {
@@ -32344,1254 +32345,1004 @@
   "errors": [],
   "warnings": [
     {
-      "code": "duplicate_fingerprint",
-      "id": "D014-main-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:lặp một thuộc tính|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D099-bonus-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:lặp một thuộc tính|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D110-main-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:lặp một thuộc tính|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D195-bonus-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:lặp một thuộc tính|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D206-main-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:một manh mối trực tiếp|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D291-bonus-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:một manh mối trực tiếp|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D302-main-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:một manh mối trực tiếp|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D101-main-vi35",
-      "other": "D005-main-vi35"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:một manh mối trực tiếp|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D114-bonus-vi35",
-      "other": "D005-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:khớp đường viền|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D210-bonus-vi35",
-      "other": "D005-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:khớp đường viền|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D306-bonus-vi35",
-      "other": "D005-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:khớp đường viền|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D197-main-vi68",
-      "other": "D005-main-vi68"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:khớp đường viền|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D210-bonus-vi68",
-      "other": "D005-main-vi68"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:bổ sung số lượng thiếu|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D293-main-vi68",
-      "other": "D005-main-vi68"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:bổ sung số lượng thiếu|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D101-main-vi912",
-      "other": "D005-main-vi912"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:bổ sung số lượng thiếu|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D293-main-vi912",
-      "other": "D005-main-vi912"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:bổ sung số lượng thiếu|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D306-bonus-vi912",
-      "other": "D005-main-vi912"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:nhắc lại cùng chiều|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D210-bonus-vi13p",
-      "other": "D005-main-vi13p"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:nhắc lại cùng chiều|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D197-main-vi35",
-      "other": "D018-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:nhắc lại cùng chiều|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D293-main-vi35",
-      "other": "D018-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:nhắc lại cùng chiều|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D101-main-vi68",
-      "other": "D018-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:đến đích tránh chướng ngại|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D114-bonus-vi68",
-      "other": "D018-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:đến đích tránh chướng ngại|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D306-bonus-vi68",
-      "other": "D018-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:đến đích tránh chướng ngại|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D114-bonus-vi912",
-      "other": "D018-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:đến đích tránh chướng ngại|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D197-main-vi912",
-      "other": "D018-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:áp dụng một quy tắc|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D210-bonus-vi912",
-      "other": "D018-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:áp dụng một quy tắc|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D101-main-vi13p",
-      "other": "D018-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:áp dụng một quy tắc|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D114-bonus-vi13p",
-      "other": "D018-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:áp dụng một quy tắc|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D197-main-vi13p",
-      "other": "D018-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ hình sang màu có nhãn|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D293-main-vi13p",
-      "other": "D018-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ hình sang màu có nhãn|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D306-bonus-vi13p",
-      "other": "D018-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ hình sang màu có nhãn|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D199-main-vi35",
-      "other": "D020-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ hình sang màu có nhãn|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D308-bonus-vi35",
-      "other": "D020-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia đều không dư|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D348-bonus-vi35",
-      "other": "D023-main-vi35"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia đều không dư|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D038-main-vi35",
-      "other": "D027-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia đều không dư|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D123-bonus-vi35",
-      "other": "D027-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia đều không dư|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D134-main-vi35",
-      "other": "D027-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:một chi tiết hình dạng|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D219-bonus-vi35",
-      "other": "D027-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:một chi tiết hình dạng|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D230-main-vi35",
-      "other": "D027-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:một chi tiết hình dạng|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D315-bonus-vi35",
-      "other": "D027-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:một chi tiết hình dạng|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D326-main-vi35",
-      "other": "D027-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:xếp ba bước đúng thứ tự|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D221-main-vi35",
-      "other": "D029-main-vi35"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:xếp ba bước đúng thứ tự|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D234-bonus-vi35",
-      "other": "D029-main-vi35"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:xếp ba bước đúng thứ tự|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D330-bonus-vi35",
-      "other": "D029-main-vi35"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:xếp ba bước đúng thứ tự|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D317-main-vi68",
-      "other": "D029-main-vi68"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một hình sai vị trí|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D221-main-vi912",
-      "other": "D029-main-vi912"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một hình sai vị trí|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D234-bonus-vi912",
-      "other": "D029-main-vi912"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một hình sai vị trí|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D221-main-vi13p",
-      "other": "D029-main-vi13p"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một hình sai vị trí|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D332-bonus-vi35",
-      "other": "D031-main-vi35"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:xem cùng vật từ phía khác|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D335-main-vi35",
-      "other": "D036-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:xem cùng vật từ phía khác|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D125-main-vi35",
-      "other": "D042-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:xem cùng vật từ phía khác|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D138-bonus-vi35",
-      "other": "D042-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:xem cùng vật từ phía khác|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D317-main-vi35",
-      "other": "D042-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:xoay một phần tư vòng|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D125-main-vi68",
-      "other": "D042-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:xoay một phần tư vòng|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D138-bonus-vi68",
-      "other": "D042-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:xoay một phần tư vòng|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D221-main-vi68",
-      "other": "D042-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:xoay một phần tư vòng|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D234-bonus-vi68",
-      "other": "D042-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g08-t2|g08-t2:hình dạng và kích cỡ|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D330-bonus-vi68",
-      "other": "D042-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g08-t2|g08-t2:hình dạng và kích cỡ|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D191-main-vi35",
-      "other": "D047-main-vi35"
+      "code": "age_complexity",
+      "message": "g08-t2|g08-t2:hình dạng và kích cỡ|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D062-main-vi35",
-      "other": "D051-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g08-t2|g08-t2:hình dạng và kích cỡ|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D147-bonus-vi35",
-      "other": "D051-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g03-t2|g03-t2:chọn vị trí vừa thấy|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D158-main-vi35",
-      "other": "D051-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g03-t2|g03-t2:chọn vị trí vừa thấy|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D243-bonus-vi35",
-      "other": "D051-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g03-t2|g03-t2:chọn vị trí vừa thấy|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D254-main-vi35",
-      "other": "D051-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g03-t2|g03-t2:chọn vị trí vừa thấy|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D339-bonus-vi35",
-      "other": "D051-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g01-t3|g01-t3:đổi một thuộc tính|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D350-main-vi35",
-      "other": "D051-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g01-t3|g01-t3:đổi một thuộc tính|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D245-main-vi35",
-      "other": "D053-main-vi35"
+      "code": "age_complexity",
+      "message": "g01-t3|g01-t3:đổi một thuộc tính|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D149-main-vi68",
-      "other": "D053-main-vi68"
+      "code": "age_complexity",
+      "message": "g01-t3|g01-t3:đổi một thuộc tính|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D245-main-vi68",
-      "other": "D053-main-vi68"
+      "code": "age_complexity",
+      "message": "g04-t3|g04-t3:chọn câu hỏi phân biệt|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D341-main-vi68",
-      "other": "D053-main-vi68"
+      "code": "age_complexity",
+      "message": "g04-t3|g04-t3:chọn câu hỏi phân biệt|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D341-main-vi13p",
-      "other": "D053-main-vi13p"
+      "code": "age_complexity",
+      "message": "g04-t3|g04-t3:chọn câu hỏi phân biệt|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D260-bonus-vi35",
-      "other": "D055-main-vi35"
+      "code": "age_complexity",
+      "message": "g04-t3|g04-t3:chọn câu hỏi phân biệt|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D149-main-vi35",
-      "other": "D066-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g02-t3|g02-t3:gương dọc|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D162-bonus-vi35",
-      "other": "D066-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g02-t3|g02-t3:gương dọc|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D258-bonus-vi35",
-      "other": "D066-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g02-t3|g02-t3:gương dọc|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D341-main-vi35",
-      "other": "D066-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g02-t3|g02-t3:gương dọc|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D354-bonus-vi35",
-      "other": "D066-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g05-t3|g05-t3:chọn hai phần vừa đủ|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D162-bonus-vi68",
-      "other": "D066-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g05-t3|g05-t3:chọn hai phần vừa đủ|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D258-bonus-vi68",
-      "other": "D066-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g05-t3|g05-t3:chọn hai phần vừa đủ|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D354-bonus-vi68",
-      "other": "D066-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g05-t3|g05-t3:chọn hai phần vừa đủ|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D245-main-vi912",
-      "other": "D066-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g03-t3|g03-t3:một vật biến mất|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D354-bonus-vi13p",
-      "other": "D066-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g03-t3|g03-t3:một vật biến mất|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D086-main-vi35",
-      "other": "D075-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g03-t3|g03-t3:một vật biến mất|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D171-bonus-vi35",
-      "other": "D075-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g03-t3|g03-t3:một vật biến mất|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D182-main-vi35",
-      "other": "D075-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g06-t3|g06-t3:sửa hướng rẽ đầu tiên|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D267-bonus-vi35",
-      "other": "D075-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g06-t3|g06-t3:sửa hướng rẽ đầu tiên|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D278-main-vi35",
-      "other": "D075-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g06-t3|g06-t3:sửa hướng rẽ đầu tiên|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D363-bonus-vi35",
-      "other": "D075-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g06-t3|g06-t3:sửa hướng rẽ đầu tiên|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D186-bonus-vi35",
-      "other": "D077-main-vi35"
+      "code": "age_complexity",
+      "message": "g07-t3|g07-t3:tìm đường thứ hai|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D269-main-vi35",
-      "other": "D077-main-vi35"
+      "code": "age_complexity",
+      "message": "g07-t3|g07-t3:tìm đường thứ hai|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D365-main-vi35",
-      "other": "D077-main-vi35"
+      "code": "age_complexity",
+      "message": "g07-t3|g07-t3:tìm đường thứ hai|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D282-bonus-vi68",
-      "other": "D077-main-vi68"
+      "code": "age_complexity",
+      "message": "g07-t3|g07-t3:tìm đường thứ hai|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D365-main-vi912",
-      "other": "D077-main-vi912"
+      "code": "age_complexity",
+      "message": "g08-t3|g08-t3:vật sai nhóm đã định nghĩa|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D269-main-vi13p",
-      "other": "D077-main-vi13p"
+      "code": "age_complexity",
+      "message": "g08-t3|g08-t3:vật sai nhóm đã định nghĩa|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D282-bonus-vi13p",
-      "other": "D077-main-vi13p"
+      "code": "age_complexity",
+      "message": "g08-t3|g08-t3:vật sai nhóm đã định nghĩa|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D284-bonus-vi35",
-      "other": "D079-main-vi35"
+      "code": "age_complexity",
+      "message": "g08-t3|g08-t3:vật sai nhóm đã định nghĩa|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D228-bonus-vi35",
-      "other": "D084-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:tăng số phần tử|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D300-bonus-vi35",
-      "other": "D084-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:tăng số phần tử|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D359-main-vi35",
-      "other": "D084-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:tăng số phần tử|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D173-main-vi35",
-      "other": "D090-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:tăng số phần tử|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D282-bonus-vi35",
-      "other": "D090-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:hai điều kiện đồng thời|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D173-main-vi68",
-      "other": "D090-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:hai điều kiện đồng thời|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D186-bonus-vi68",
-      "other": "D090-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:hai điều kiện đồng thời|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D269-main-vi68",
-      "other": "D090-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:hai điều kiện đồng thời|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D365-main-vi68",
-      "other": "D090-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:khớp khi bỏ chi tiết|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D311-main-vi35",
-      "other": "D095-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:khớp khi bỏ chi tiết|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D212-bonus-vi35",
-      "other": "D116-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:khớp khi bỏ chi tiết|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D295-main-vi35",
-      "other": "D116-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:khớp khi bỏ chi tiết|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D252-bonus-vi35",
-      "other": "D119-main-vi35"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:thay một vật cho cân|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D324-bonus-vi35",
-      "other": "D119-main-vi35"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:thay một vật cho cân|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D330-bonus-vi912",
-      "other": "D125-main-vi912"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:thay một vật cho cân|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D234-bonus-vi13p",
-      "other": "D125-main-vi13p"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:thay một vật cho cân|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D223-main-vi35",
-      "other": "D127-main-vi35"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:chọn phần tử còn thiếu|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D236-bonus-vi35",
-      "other": "D127-main-vi35"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:chọn phần tử còn thiếu|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D319-main-vi35",
-      "other": "D127-main-vi35"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:chọn phần tử còn thiếu|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D239-main-vi35",
-      "other": "D132-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:chọn phần tử còn thiếu|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D276-bonus-vi35",
-      "other": "D132-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:đi qua một điểm bắt buộc|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D317-main-vi912",
-      "other": "D138-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:đi qua một điểm bắt buộc|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D317-main-vi13p",
-      "other": "D138-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:đi qua một điểm bắt buộc|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D330-bonus-vi13p",
-      "other": "D138-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:đi qua một điểm bắt buộc|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D204-bonus-vi35",
-      "other": "D143-main-vi35"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:chọn ngoại lệ được nêu|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D215-main-vi35",
-      "other": "D143-main-vi35"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:chọn ngoại lệ được nêu|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D258-bonus-vi912",
-      "other": "D149-main-vi912"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:chọn ngoại lệ được nêu|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D247-main-vi35",
-      "other": "D151-main-vi35"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:chọn ngoại lệ được nêu|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D343-main-vi35",
-      "other": "D151-main-vi35"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ kích cỡ sang số lượng|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D180-bonus-vi35",
-      "other": "D156-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ kích cỡ sang số lượng|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D263-main-vi35",
-      "other": "D156-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ kích cỡ sang số lượng|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D287-main-vi35",
-      "other": "D156-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ kích cỡ sang số lượng|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D341-main-vi912",
-      "other": "D162-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia theo hai kích cỡ|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D354-bonus-vi912",
-      "other": "D162-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia theo hai kích cỡ|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D245-main-vi13p",
-      "other": "D162-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia theo hai kích cỡ|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D258-bonus-vi13p",
-      "other": "D162-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia theo hai kích cỡ|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D356-bonus-vi35",
-      "other": "D164-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:chi tiết vị trí|age_3_5: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D269-main-vi912",
-      "other": "D173-main-vi912"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:chi tiết vị trí|age_6_8: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D282-bonus-vi912",
-      "other": "D173-main-vi912"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:chi tiết vị trí|age_9_12: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D271-main-vi35",
-      "other": "D175-main-vi35"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:chi tiết vị trí|age_13_plus: 6/8 over target"
     },
     {
-      "code": "duplicate_fingerprint",
-      "id": "D365-main-vi13p",
-      "other": "D186-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:chèn một lệnh thiếu|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D014-bonus-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:chèn một lệnh thiếu|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D049-main-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:chèn một lệnh thiếu|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D062-bonus-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:chèn một lệnh thiếu|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D097-main-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một bước sai độ lớn|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D110-bonus-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một bước sai độ lớn|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D145-main-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một bước sai độ lớn|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D158-bonus-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một bước sai độ lớn|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D193-main-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:chọn lời tả từ vị trí mới|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D206-bonus-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:chọn lời tả từ vị trí mới|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D241-main-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:chọn lời tả từ vị trí mới|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D254-bonus-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:chọn lời tả từ vị trí mới|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D289-main-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:xoay nửa vòng|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D302-bonus-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:xoay nửa vòng|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D337-main-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:xoay nửa vòng|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D350-bonus-vi35",
-      "other": "D001-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:xoay nửa vòng|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D014-bonus-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g08-t2|g08-t2:vị trí và số lượng|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D049-main-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g08-t2|g08-t2:vị trí và số lượng|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D062-bonus-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g08-t2|g08-t2:vị trí và số lượng|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D097-main-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g08-t2|g08-t2:vị trí và số lượng|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D110-bonus-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g03-t2|g03-t2:đặt lại hai đồ vật|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D145-main-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g03-t2|g03-t2:đặt lại hai đồ vật|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D158-bonus-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g03-t2|g03-t2:đặt lại hai đồ vật|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D193-main-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g03-t2|g03-t2:đặt lại hai đồ vật|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D206-bonus-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g01-t3|g01-t3:thêm hoặc bớt phần tử|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D241-main-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g01-t3|g01-t3:thêm hoặc bớt phần tử|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D254-bonus-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g01-t3|g01-t3:thêm hoặc bớt phần tử|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D289-main-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g01-t3|g01-t3:thêm hoặc bớt phần tử|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D302-bonus-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g04-t3|g04-t3:chọn dữ kiện đủ dùng|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D337-main-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g04-t3|g04-t3:chọn dữ kiện đủ dùng|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D350-bonus-vi68",
-      "other": "D001-main-vi68"
+      "code": "age_complexity",
+      "message": "g04-t3|g04-t3:chọn dữ kiện đủ dùng|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D014-bonus-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g04-t3|g04-t3:chọn dữ kiện đủ dùng|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D049-main-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g02-t3|g02-t3:gương ngang|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D062-bonus-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g02-t3|g02-t3:gương ngang|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D097-main-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g02-t3|g02-t3:gương ngang|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D110-bonus-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g02-t3|g02-t3:gương ngang|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D145-main-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g05-t3|g05-t3:chọn số phần ít nhất|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D158-bonus-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g05-t3|g05-t3:chọn số phần ít nhất|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D193-main-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g05-t3|g05-t3:chọn số phần ít nhất|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D206-bonus-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g05-t3|g05-t3:chọn số phần ít nhất|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D241-main-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g03-t3|g03-t3:một vật được thêm|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D254-bonus-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g03-t3|g03-t3:một vật được thêm|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D289-main-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g03-t3|g03-t3:một vật được thêm|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D302-bonus-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g03-t3|g03-t3:một vật được thêm|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D337-main-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g06-t3|g06-t3:thay một lệnh sai|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D350-bonus-vi912",
-      "other": "D001-main-vi912"
+      "code": "age_complexity",
+      "message": "g06-t3|g06-t3:thay một lệnh sai|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D014-bonus-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g06-t3|g06-t3:thay một lệnh sai|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D049-main-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g06-t3|g06-t3:thay một lệnh sai|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D062-bonus-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t3|g07-t3:tìm cách ghép khác|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D097-main-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t3|g07-t3:tìm cách ghép khác|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D110-bonus-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t3|g07-t3:tìm cách ghép khác|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D145-main-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t3|g07-t3:tìm cách ghép khác|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D158-bonus-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g08-t3|g08-t3:bước không phù hợp mục tiêu|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D193-main-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g08-t3|g08-t3:bước không phù hợp mục tiêu|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D206-bonus-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g08-t3|g08-t3:bước không phù hợp mục tiêu|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D241-main-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g08-t3|g08-t3:bước không phù hợp mục tiêu|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D254-bonus-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:xen kẽ hai chuỗi|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D289-main-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:xen kẽ hai chuỗi|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D302-bonus-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:xen kẽ hai chuỗi|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D337-main-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g01-t1|g01-t1:xen kẽ hai chuỗi|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D350-bonus-vi13p",
-      "other": "D001-main-vi13p"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:manh mối phủ định|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D016-bonus-vi35",
-      "other": "D003-main-vi35"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:manh mối phủ định|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D099-main-vi35",
-      "other": "D003-main-vi35"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:manh mối phủ định|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D112-bonus-vi35",
-      "other": "D003-main-vi35"
+      "code": "age_complexity",
+      "message": "g04-t1|g04-t1:manh mối phủ định|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D195-main-vi35",
-      "other": "D003-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:phân biệt bóng gần giống|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D208-bonus-vi35",
-      "other": "D003-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:phân biệt bóng gần giống|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D291-main-vi35",
-      "other": "D003-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:phân biệt bóng gần giống|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D304-bonus-vi35",
-      "other": "D003-main-vi35"
+      "code": "age_complexity",
+      "message": "g02-t1|g02-t1:phân biệt bóng gần giống|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D016-bonus-vi68",
-      "other": "D003-main-vi68"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:so sánh tổng hai nhóm|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D099-main-vi68",
-      "other": "D003-main-vi68"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:so sánh tổng hai nhóm|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D112-bonus-vi68",
-      "other": "D003-main-vi68"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:so sánh tổng hai nhóm|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D195-main-vi68",
-      "other": "D003-main-vi68"
+      "code": "age_complexity",
+      "message": "g05-t1|g05-t1:so sánh tổng hai nhóm|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D208-bonus-vi68",
-      "other": "D003-main-vi68"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:nhắc lại theo nhóm|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D291-main-vi68",
-      "other": "D003-main-vi68"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:nhắc lại theo nhóm|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D304-bonus-vi68",
-      "other": "D003-main-vi68"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:nhắc lại theo nhóm|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D016-bonus-vi912",
-      "other": "D003-main-vi912"
+      "code": "age_complexity",
+      "message": "g03-t1|g03-t1:nhắc lại theo nhóm|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D099-main-vi912",
-      "other": "D003-main-vi912"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:lấy chìa trước khi tới cửa|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D112-bonus-vi912",
-      "other": "D003-main-vi912"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:lấy chìa trước khi tới cửa|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D195-main-vi912",
-      "other": "D003-main-vi912"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:lấy chìa trước khi tới cửa|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D208-bonus-vi912",
-      "other": "D003-main-vi912"
+      "code": "age_complexity",
+      "message": "g06-t1|g06-t1:lấy chìa trước khi tới cửa|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D291-main-vi912",
-      "other": "D003-main-vi912"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:phối hợp hai điều kiện|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D304-bonus-vi912",
-      "other": "D003-main-vi912"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:phối hợp hai điều kiện|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D016-bonus-vi13p",
-      "other": "D003-main-vi13p"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:phối hợp hai điều kiện|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D099-main-vi13p",
-      "other": "D003-main-vi13p"
+      "code": "age_complexity",
+      "message": "g04-t2|g04-t2:phối hợp hai điều kiện|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D112-bonus-vi13p",
-      "other": "D003-main-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ chất liệu sang công dụng|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D195-main-vi13p",
-      "other": "D003-main-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ chất liệu sang công dụng|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D208-bonus-vi13p",
-      "other": "D003-main-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ chất liệu sang công dụng|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D291-main-vi13p",
-      "other": "D003-main-vi13p"
+      "code": "age_complexity",
+      "message": "g07-t1|g07-t1:đổi từ chất liệu sang công dụng|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D304-bonus-vi13p",
-      "other": "D003-main-vi13p"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia có phần dư được nêu|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D014-main-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia có phần dư được nêu|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D099-bonus-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia có phần dư được nêu|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D110-main-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g05-t2|g05-t2:chia có phần dư được nêu|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D195-bonus-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:chi tiết số lượng|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D206-main-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:chi tiết số lượng|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D291-bonus-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:chi tiết số lượng|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D302-main-vi35",
-      "other": "D003-bonus-vi35"
+      "code": "age_complexity",
+      "message": "g08-t1|g08-t1:chi tiết số lượng|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D014-main-vi68",
-      "other": "D003-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:đổi thứ tự để tới đích|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D099-bonus-vi68",
-      "other": "D003-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:đổi thứ tự để tới đích|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D110-main-vi68",
-      "other": "D003-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:đổi thứ tự để tới đích|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D195-bonus-vi68",
-      "other": "D003-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g06-t2|g06-t2:đổi thứ tự để tới đích|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D206-main-vi68",
-      "other": "D003-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một nhánh phá nhịp|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D291-bonus-vi68",
-      "other": "D003-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một nhánh phá nhịp|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D302-main-vi68",
-      "other": "D003-bonus-vi68"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một nhánh phá nhịp|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D014-main-vi912",
-      "other": "D003-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g01-t2|g01-t2:một nhánh phá nhịp|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D099-bonus-vi912",
-      "other": "D003-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D110-main-vi912",
-      "other": "D003-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D195-bonus-vi912",
-      "other": "D003-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D206-main-vi912",
-      "other": "D003-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g07-t2|g07-t2:đọc sơ đồ từ điểm bắt đầu khác|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D291-bonus-vi912",
-      "other": "D003-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:phân biệt xoay và lật|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D302-main-vi912",
-      "other": "D003-bonus-vi912"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:phân biệt xoay và lật|age_6_8: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D014-main-vi13p",
-      "other": "D003-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:phân biệt xoay và lật|age_9_12: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D099-bonus-vi13p",
-      "other": "D003-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g02-t2|g02-t2:phân biệt xoay và lật|age_13_plus: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D110-main-vi13p",
-      "other": "D003-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g08-t2|g08-t2:hướng và đường viền|age_3_5: 6/8 over target"
     },
     {
-      "code": "normalized_skin_duplicate",
-      "id": "D195-bonus-vi13p",
-      "other": "D003-bonus-vi13p"
+      "code": "age_complexity",
+      "message": "g08-t2|g08-t2:hướng và đường viền|age_6_8: 6/8 over target"
     }
   ],
   "status": "pass_with_review_warnings"

@@ -33,7 +33,15 @@ export const TOKEN_ICONS: Record<string, string> = {
 };
 
 export function getButtonMinSize(ageTrack: AgeTrack): string {
-  return ageTrack === 'age_6_8' ? 'min-h-[56px] min-w-[56px]' : 'min-h-[48px] min-w-[48px]';
+  if (ageTrack === 'age_3_5') return 'min-h-[64px] min-w-[64px]';
+  if (ageTrack === 'age_6_8') return 'min-h-[56px] min-w-[56px]';
+  return 'min-h-[48px] min-w-[48px]';
+}
+
+export function getButtonMinHeight(ageTrack: AgeTrack): string {
+  if (ageTrack === 'age_3_5') return 'min-h-[64px]';
+  if (ageTrack === 'age_6_8') return 'min-h-[56px]';
+  return 'min-h-[48px]';
 }
 
 export function renderTokenVisual(token: string | number): React.ReactNode {

@@ -77,6 +77,32 @@ test.describe('Thinking Games Frame & Preview Harness (Isolated Dev Fixture)', (
     }
   });
 
+  test('age 3-5 track shows the co-play note and uses 64px touch targets', async ({ page }) => {
+    await gotoPreview(page);
+    await page.getByTestId('age-select').selectOption('age_3_5');
+    await page.getByTestId('scenario-btn-tutorial').click();
+    await expect(page.getByTestId('harness-state-display')).toHaveText('tutorial');
+    await expect(page.getByTestId('co-play-note')).toContainText('người lớn');
+    const understand = page.getByRole('button', { name: 'Mình hiểu rồi' });
+    const box = await understand.boundingBox();
+    expect(box).not.toBeNull();
+    if (box) expect(box.height).toBeGreaterThanOrEqual(56);
+    await assertNoHorizontalOverflow(page);
+  });
+
+  test('age 13+ track keeps the standard layout without the co-play note', async ({ page }) => {
+    await gotoPreview(page);
+    await page.getByTestId('age-select').selectOption('age_13_plus');
+    await page.getByTestId('scenario-btn-tutorial').click();
+    await expect(page.getByTestId('harness-state-display')).toHaveText('tutorial');
+    await expect(page.getByTestId('co-play-note')).toHaveCount(0);
+    const understand = page.getByRole('button', { name: 'Mình hiểu rồi' });
+    const box = await understand.boundingBox();
+    expect(box).not.toBeNull();
+    if (box) expect(box.height).toBeGreaterThanOrEqual(48);
+    await assertNoHorizontalOverflow(page);
+  });
+
   test('invitation to playing flow via start action', async ({ page }) => {
     await gotoPreview(page);
     await expect(page.getByTestId('harness-state-display')).toHaveText('invitation');

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Flag, Home, RotateCcw, Undo2 } from 'lucide-react';
 import type { AgeTrack, PathBoard, PathStep } from '@/lib/thinking-games/types';
+import { getButtonMinHeight, getButtonMinSize } from './game-utils';
 
 export interface PathPlanningGameProps {
   readonly board: PathBoard;
@@ -34,8 +35,7 @@ export function PathPlanningGame({
     setPath([board.start]);
   }
 
-  const isAge68 = ageTrack === 'age_6_8';
-  const controlMinSize = isAge68 ? 'min-h-[56px] min-w-[56px]' : 'min-h-[48px] min-w-[48px]';
+  const controlMinSize = getButtonMinSize(ageTrack);
 
   const wallSet = useMemo(() => new Set(board.walls.map(cellKey)), [board.walls]);
   const waypointSet = useMemo(() => new Set(board.waypoints.map(cellKey)), [board.waypoints]);
@@ -330,7 +330,7 @@ export function PathPlanningGame({
           disabled={disabled || !isAtGoal}
           onClick={handleSubmit}
           className={`flex ${
-            isAge68 ? 'min-h-[56px]' : 'min-h-[48px]'
+            getButtonMinHeight(ageTrack)
           } items-center justify-center rounded-2xl bg-indigo-600 px-6 py-3 text-base font-bold text-white shadow-md transition hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none dark:disabled:bg-zinc-800 dark:disabled:text-zinc-600`}
         >
           Kiểm tra đường đi

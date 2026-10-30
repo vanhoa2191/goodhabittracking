@@ -21,6 +21,8 @@ async function expectGate(label, pattern, action) {
 
 try {
   await fixture.exec(await readFile('supabase/migrations/202610210001_thinking_games.sql', 'utf8'));
+  await fixture.exec(await readFile('supabase/migrations/202610300001_thinking_games_age_tracks.sql', 'utf8'));
+  await fixture.exec(await readFile('supabase/migrations/202610300002_thinking_games_release_v3.sql', 'utf8'));
   await fixture.exec(`set thinking_games.content_version = 'release-365-v1'`);
   await fixture.query(`
     create table if not exists public.family_engagement_settings (
@@ -93,12 +95,15 @@ try {
   `, [ids.families.alpha]);
   // currentYear is derived from the DB clock + family IANA timezone at the top of the file.
   for (const [birthYear, expected] of [
-    [currentYear - 5, 'age_track_unavailable'],
+    [currentYear - 2, 'age_track_unavailable'],
+    [currentYear - 3, 'age_3_5'],
+    [currentYear - 5, 'age_3_5'],
     [currentYear - 6, 'age_6_8'],
     [currentYear - 8, 'age_6_8'],
     [currentYear - 9, 'age_9_12'],
     [currentYear - 12, 'age_9_12'],
-    [currentYear - 13, 'age_track_unavailable'],
+    [currentYear - 13, 'age_13_plus'],
+    [currentYear - 16, 'age_13_plus'],
   ]) {
     await fixture.query(`update public.child_profiles set birth_year = $2 where id = $1`, [ids.children.alpha, birthYear]);
     const resolved = await fixture.scalar(

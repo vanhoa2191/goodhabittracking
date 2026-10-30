@@ -1,3 +1,4 @@
+import type { GameAgeTrack } from '@/lib/thinking-games/types';
 import { z } from 'zod';
 
 const successSchema = z.object({
@@ -96,7 +97,7 @@ export function getThinkingGameParentSettings(requester: ThinkingGameRequester =
 }
 export function updateThinkingGameParentSettings(input: {
   enabled: boolean; bonusEnabled: boolean; timezone: string; cutoffLocal: string;
-  bedtimeStartLocal: string; bedtimeEndLocal: string; ageTrackOverride: 'age_6_8' | 'age_9_12' | null; commandId: string;
+  bedtimeStartLocal: string; bedtimeEndLocal: string; ageTrackOverride: GameAgeTrack | null; commandId: string;
 }, requester: ThinkingGameRequester = fetch) {
   return request('/api/domain/thinking-games/settings', json(input, 'PUT'), requester);
 }
