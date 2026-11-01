@@ -57,6 +57,7 @@ function startServer(targetPort: number, flag: 'true' | 'false') {
     env: {
       ...process.env,
       NEXT_PUBLIC_THINKING_GAMES: flag,
+      NEXT_PUBLIC_CHILD_SPACE: 'true',
       NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'https://e2e-test.supabase.co',
       NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? 'e2e-anon-key',
       NEXT_PUBLIC_APP_URL: `http://127.0.0.1:${targetPort}`,
@@ -204,6 +205,25 @@ test.describe('Thinking Games Card/Player integration', () => {
     await expect(page.getByRole('dialog', { name: 'Nghỉ ngơi một chút' })).toHaveCount(0);
     await expect(page.getByRole('button', { name: 'Tạm dừng' })).toBeVisible();
     expect(cloudFamilyIds.child).toBeTruthy();
+  });
+
+  test('the child space opens from its own tab, keeps a mood and folds badges into rewards', async ({ page }) => {
+    test.setTimeout(120_000);
+    await ensureServer();
+    await page.goto(`${baseURL}/?demo=1`);
+    const tabs = page.getByTestId('kid-tabs');
+    await tabs.getByRole('button', { name: 'Quà & huy hiệu' }).click({ timeout: 30_000 });
+    await expect(page.getByTestId('badge-collection')).toBeVisible();
+    await tabs.getByRole('button', { name: 'Không gian', exact: true }).click();
+    await expect(page.getByTestId('child-space')).toBeVisible();
+    await expect(page.getByText('Ba mẹ nhìn thấy cảm xúc con chọn')).toBeVisible();
+    await page.getByTestId('mood-sad').click();
+    await expect(page.getByTestId('mood-sad')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByTestId('calm-box').getByText('Hít vào bằng mũi')).toBeVisible();
+    await expect(page.getByTestId('mood-week')).toContainText('chưa chọn');
+    await page.getByTestId('mood-happy').click();
+    await expect(page.getByTestId('mood-happy')).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.getByTestId('mood-sad')).toHaveAttribute('aria-pressed', 'false');
   });
 
   test('the default-off flag mounts no Card and issues no thinking-game requests', async ({ page }) => {
