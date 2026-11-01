@@ -80,7 +80,7 @@ export function DailyWisdom({ localDay }: { localDay: string }) {
   const [open, setOpen] = useState(false);
   const parsed = parseLocalDay(localDay);
   if (!parsed) return null;
-  if (!value) return <div aria-hidden="true" className="mt-2 h-9" />;
+  if (!value) return <div aria-hidden="true" className="mt-1.5 h-8" />;
   const { quote, event } = value;
   if (!quote && !event) return null;
   const line = [
@@ -95,7 +95,7 @@ export function DailyWisdom({ localDay }: { localDay: string }) {
         onClick={() => setOpen(true)}
         data-testid="daily-wisdom-ticker"
         aria-label={`${line}. Bấm để xem đầy đủ.`}
-        className="group mt-2 flex h-9 w-full items-center gap-2 overflow-hidden rounded-xl bg-white/70 px-3 text-left text-sm font-semibold text-slate-900 hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-zinc-900/70 dark:text-slate-100"
+        className="group mt-1.5 flex h-8 w-full items-center gap-2 overflow-hidden rounded-xl bg-white/70 px-3 text-left text-sm font-semibold text-slate-900 hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-zinc-900/70 dark:text-slate-100"
       >
         <BookOpenText aria-hidden="true" className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
         <span aria-hidden="true" className="relative min-w-0 flex-1 overflow-hidden">

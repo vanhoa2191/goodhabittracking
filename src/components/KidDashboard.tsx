@@ -78,7 +78,7 @@ import { canStepKidDay, clampKidDay, isEditableDay, parseDayKey, shiftDayKey } f
 // The ticker keeps its slot while it loads, so the page does not jump after a tab shortcut has scrolled.
 const DailyWisdom = dynamic(
   () => import('./DailyWisdom').then((module) => module.DailyWisdom),
-  { ssr: false, loading: () => <div aria-hidden="true" className="mt-2 h-9" /> },
+  { ssr: false, loading: () => <div aria-hidden="true" className="mt-1.5 h-8" /> },
 );
 const DailyGameLauncher = dynamic(
   () => import('./DailyGameLauncher').then((module) => module.DailyGameLauncher),
@@ -479,7 +479,7 @@ export function KidDashboard() {
             </div>
           )}
         </div>}
-        {!isFamilyPaused && <DailyWisdom localDay={dateStr} />}
+        {!isFamilyPaused && <DailyWisdom localDay={todayStr} />}
       </div>
       {activeChild && isToday && !isFamilyPaused && defaultExperienceFlags.thinkingGames && (
         <DailyGameLauncher key={`${activeChild.id}:${dateStr}:${thinkingGameMode}`} childId={activeChild.id} localDay={dateStr} mode={thinkingGameMode} />
