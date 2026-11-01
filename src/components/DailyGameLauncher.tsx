@@ -2,11 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Sparkles, X } from 'lucide-react';
+import { Gamepad2, Sparkles, X } from 'lucide-react';
 import { ModalShell } from '@/components/ui/ModalShell';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { getThinkingGameParentState, getThinkingGameState } from '@/lib/store/thinking-games-client';
-import { DailyWisdom } from './DailyWisdom';
 
 const ThinkingGameCard = dynamic(
   () => import('./ThinkingGameCard').then((module) => module.ThinkingGameCard),
@@ -15,21 +14,9 @@ const ThinkingGameCard = dynamic(
 
 type Props = { childId: string; localDay: string; mode: 'paired' | 'parent' | 'local' };
 
-function autoOpenKey(childId: string, localDay: string) {
-  return `kidhabit.game-popup.${childId}.${localDay}`;
-}
-
-function alreadyOpenedToday(childId: string, localDay: string) {
-  try { return window.localStorage.getItem(autoOpenKey(childId, localDay)) === '1'; } catch { return false; }
-}
-
-function rememberOpenedToday(childId: string, localDay: string) {
-  try { window.localStorage.setItem(autoOpenKey(childId, localDay), '1'); } catch { /* storage unavailable */ }
-}
-
 /**
- * The practice game lives in a popup instead of a dashboard section: a small button opens it, and it opens once a day
- * by itself. It only shows when the family has switched the game on (or in local practice mode).
+ * The practice game lives behind a floating button in the bottom-right corner and opens in its own popup, apart from the
+ * saying of the day. It only shows when the family has switched the game on (or in local practice mode).
  */
 export function DailyGameLauncher({ childId, localDay, mode }: Props) {
   const enabled = defaultExperienceFlags.thinkingGames;
@@ -45,24 +32,12 @@ export function DailyGameLauncher({ childId, localDay, mode }: Props) {
         : getThinkingGameState(localDay);
       void request.then((result) => {
         if (!active) return;
-        const on = result.ok && (result.data as { featureEnabled?: boolean } | undefined)?.featureEnabled === true;
-        setFamilyOn(on);
-        if (on && !alreadyOpenedToday(childId, localDay)) {
-          rememberOpenedToday(childId, localDay);
-          setOpen(true);
-        }
+        setFamilyOn(result.ok && (result.data as { featureEnabled?: boolean } | undefined)?.featureEnabled === true);
       }).catch(() => { if (active) setFamilyOn(false); });
     };
     refresh();
     window.addEventListener('focus', refresh);
     return () => { active = false; window.removeEventListener('focus', refresh); };
-  }, [childId, localDay, mode, enabled]);
-
-  useEffect(() => {
-    if (mode !== 'local' || !enabled || alreadyOpenedToday(childId, localDay)) return;
-    // Remember only when the popup really opens: a strict-mode remount cancels the timer and must be able to retry.
-    const timer = window.setTimeout(() => { rememberOpenedToday(childId, localDay); setOpen(true); }, 0);
-    return () => window.clearTimeout(timer);
   }, [childId, localDay, mode, enabled]);
 
   const close = useCallback(() => setOpen(false), []);
@@ -74,9 +49,10 @@ export function DailyGameLauncher({ childId, localDay, mode }: Props) {
         type="button"
         onClick={() => setOpen(true)}
         data-testid="daily-game-button"
-        className="inline-flex min-h-11 items-center gap-2 rounded-full bg-white/90 px-4 text-sm font-black text-indigo-800 shadow-sm hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white dark:bg-zinc-900/90 dark:text-indigo-200"
+        aria-label="Trò chơi hôm nay"
+        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-40 inline-flex h-14 items-center gap-2 rounded-full bg-gradient-to-br from-indigo-600 to-violet-600 px-5 text-base font-black text-white shadow-xl ring-2 ring-white/70 hover:from-indigo-700 hover:to-violet-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-indigo-300 active:scale-95"
       >
-        <Sparkles aria-hidden="true" className="h-4 w-4" /> Trò chơi hôm nay
+        <Gamepad2 aria-hidden="true" className="h-6 w-6" /> <span className="hidden min-[380px]:inline">Trò chơi</span>
       </button>
       <ModalShell isOpen={open} onClose={close} label="Trò chơi hôm nay" titleId="daily-game-title" maxWidth="lg" mobileSheet>
         <div className="flex items-start justify-between gap-3 border-b border-slate-100 px-5 py-4 dark:border-zinc-800">
@@ -87,8 +63,7 @@ export function DailyGameLauncher({ childId, localDay, mode }: Props) {
             <X aria-hidden="true" className="h-5 w-5" />
           </button>
         </div>
-        <div className="grid gap-4 overflow-y-auto px-5 py-4">
-          <DailyWisdom localDay={localDay} />
+        <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain px-4 py-4 sm:px-5">
           <ThinkingGameCard childId={childId} localDay={localDay} mode={mode} />
         </div>
       </ModalShell>

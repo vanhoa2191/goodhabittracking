@@ -20,6 +20,8 @@ test.describe('child looks back at earlier days', () => {
     const todayCards = page.locator('[data-task-card]');
     await expect(todayCards.first()).toBeVisible();
     await expect(todayCards.first().locator('[data-task-toggle]')).toHaveCount(1);
+    // The saying of the day loads a moment after the hero; wait for it so both snapshots include it.
+    await expect(page.getByTestId('daily-wisdom-ticker')).toBeVisible();
     const heroProgress = await page.getByTestId('kid-hero').textContent();
 
     await previous(page).click();

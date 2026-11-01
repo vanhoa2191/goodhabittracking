@@ -75,6 +75,11 @@ import { getAgeThemeCopy } from '@/lib/i18n/age-theme-copy';
 import { getKidHistoryCopy } from '@/lib/i18n/kid-history-copy';
 import { canStepKidDay, clampKidDay, isEditableDay, parseDayKey, shiftDayKey } from '@/lib/kid-day-window';
 // Loaded only when the thinkingGames flag is on, so the first download stays lean for families that do not use it.
+// The ticker keeps its slot while it loads, so the page does not jump after a tab shortcut has scrolled.
+const DailyWisdom = dynamic(
+  () => import('./DailyWisdom').then((module) => module.DailyWisdom),
+  { ssr: false, loading: () => <div aria-hidden="true" className="mt-1.5 h-8" /> },
+);
 const DailyGameLauncher = dynamic(
   () => import('./DailyGameLauncher').then((module) => module.DailyGameLauncher),
   { ssr: false },
@@ -474,12 +479,11 @@ export function KidDashboard() {
             </div>
           )}
         </div>}
-        {activeChild && isToday && !isFamilyPaused && defaultExperienceFlags.thinkingGames && (
-          <div className="mt-3 flex justify-center">
-            <DailyGameLauncher key={`${activeChild.id}:${dateStr}:${thinkingGameMode}`} childId={activeChild.id} localDay={dateStr} mode={thinkingGameMode} />
-          </div>
-        )}
+        {!isFamilyPaused && <DailyWisdom localDay={todayStr} />}
       </div>
+      {activeChild && isToday && !isFamilyPaused && defaultExperienceFlags.thinkingGames && (
+        <DailyGameLauncher key={`${activeChild.id}:${dateStr}:${thinkingGameMode}`} childId={activeChild.id} localDay={dateStr} mode={thinkingGameMode} />
+      )}
 
       {/* Main Tab Navigation */}
       <div data-testid="kid-tabs" className={`hidden sm:grid ${isFamilyPaused ? 'grid-cols-3' : 'grid-cols-4'} p-1 sm:p-1.5 bg-slate-100 dark:bg-zinc-900 rounded-2xl max-w-xl mx-auto gap-1`}>

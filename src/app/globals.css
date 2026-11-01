@@ -306,3 +306,10 @@ html.dark .guide-prose code { background: #1e1b4b; color: #c7d2fe; }
 html.dark .guide-prose blockquote { border-left-color: #6366f1; color: #94a3b8; }
 html.dark .guide-prose th, html.dark .guide-prose td { border-color: #3f3f46; }
 html.dark .guide-prose th { background: #27272a; }
+
+/* Slow sideways ticker for the saying of the day; the text is repeated once, so -50% loops without a jump. */
+@keyframes wisdom-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.wisdom-marquee { animation: wisdom-marquee 60s linear infinite; }

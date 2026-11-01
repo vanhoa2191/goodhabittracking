@@ -15,3 +15,19 @@ export async function thinkingGameBonusAvailable(admin: SupabaseClient, childId:
     && !attempts.some((attempt: { result: { won?: boolean } | null }) => attempt.result?.won === true)
     && bonus && ['granted', 'started'].includes(bonus.state));
 }
+
+/** Whether today's slot has already been played to the end; a finished slot is never replayed. */
+export async function thinkingGameSlotFinished(admin: SupabaseClient, childId: string, localDay: string, slot: 'main' | 'bonus') {
+  const { data, error } = await admin.from('thinking_game_entitlements')
+    .select('state').eq('child_id', childId).eq('local_day', localDay).eq('slot_type', slot).maybeSingle();
+  return !error && data?.state === 'finished';
+}
+
+export async function thinkingGameDayStatus(admin: SupabaseClient, childId: string, localDay: string) {
+  const [bonusAvailable, mainPlayed, bonusPlayed] = await Promise.all([
+    thinkingGameBonusAvailable(admin, childId, localDay),
+    thinkingGameSlotFinished(admin, childId, localDay, 'main'),
+    thinkingGameSlotFinished(admin, childId, localDay, 'bonus'),
+  ]);
+  return { bonusAvailable, mainPlayed, bonusPlayed };
+}

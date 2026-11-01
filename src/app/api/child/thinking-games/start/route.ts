@@ -6,6 +6,7 @@ import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { failure, success } from '@/lib/thinking-games/server/response';
 import { rpcErrorCode, rpcErrorStatus } from '@/lib/thinking-games/server/rpc-error';
+import { thinkingGameSlotFinished } from '@/lib/thinking-games/server/availability';
 import { getThinkingGameCatalog } from '@/lib/thinking-games/server/catalog';
 
 export const runtime = 'nodejs';
@@ -29,6 +30,11 @@ export async function POST(request: NextRequest) {
   const { data: existing } = await admin.rpc('thinking_game_state', { session_token_hash: tokenHash });
   if (existing?.status === 'started' || existing?.status === 'paused') {
     return NextResponse.json(failure('attempt_already_active'), { status: 409 });
+  }
+  const { data: session } = await admin.rpc('get_child_session', { session_token_hash: tokenHash });
+  if (session?.child?.id
+    && await thinkingGameSlotFinished(admin, session.child.id, parsed.data.expectedLocalDay, parsed.data.slot)) {
+    return NextResponse.json(failure('already_finished'), { status: 409 });
   }
   const { data, error } = await admin.rpc('thinking_game_start', {
     session_token_hash: tokenHash,
