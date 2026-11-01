@@ -11,6 +11,10 @@ const lifecycleTemplateSchema = z.enum([
   'support_status',
   'refund_status',
   'subscription_cancelled',
+  'care_week1_tips',
+  'care_child_inactive',
+  'care_weekly_summary',
+  'care_space_alert',
 ]);
 
 const lifecyclePayloadSchema = z.object({
@@ -20,6 +24,8 @@ const lifecyclePayloadSchema = z.object({
   planId: z.string().max(40).optional(),
   caseId: z.string().uuid().optional(),
   status: z.string().max(40).optional(),
+  completedCount: z.number().int().min(0).max(9999).optional(),
+  activeDays: z.number().int().min(0).max(7).optional(),
 }).strict();
 
 export type LifecycleMessage = {
@@ -35,14 +41,21 @@ type RenderedEmail = {
 
 const APP_URL = 'https://app.kidhabithero.com';
 
-function frame(title: string, body: string, vietnamese: boolean, cta?: { readonly label: string; readonly path: string }): string {
+// Care mail is sent only to parents who opted in to updates, so its footer says why and how to stop.
+function careFooter(vietnamese: boolean): string {
+  return vietnamese
+    ? 'Bạn nhận thư chăm sóc này vì đã đồng ý nhận thông tin từ KidHabit Hero. Muốn ngừng nhận, hãy tắt tùy chọn nhận thông tin trong hồ sơ phụ huynh (Tài khoản) — thay đổi có hiệu lực ngay. Chúng tôi không bao giờ hỏi mật khẩu, mã PIN phụ huynh hay thông tin thẻ qua email.<br>KidHabit Hero · kidhabithero.com'
+    : 'You are receiving this care email because you agreed to updates from KidHabit Hero. To stop, turn off the updates option in your parent profile (Account); it takes effect immediately. We never ask for passwords, parent PINs or card details by email.<br>KidHabit Hero · kidhabithero.com';
+}
+
+function frame(title: string, body: string, vietnamese: boolean, cta?: { readonly label: string; readonly path: string }, care = false): string {
   const button = cta ? emailButton(cta.label, `${APP_URL}${cta.path}`) : '';
   return renderEmailShell({
     lang: vietnamese ? 'vi' : 'en',
     title,
     preheader: title,
     bodyHtml: body.replace(/<p>/g, `<p style="margin:0 0 16px;font-size:16px;line-height:1.6;color:${EMAIL_COLORS.ink}">`) + button,
-    footerNote: vietnamese
+    footerNote: care ? careFooter(vietnamese) : vietnamese
       ? 'Thư giao dịch tự động từ KidHabit Hero, vui lòng không trả lời. Chúng tôi không bao giờ hỏi mật khẩu, mã PIN phụ huynh hay thông tin thẻ qua email.<br>KidHabit Hero · kidhabithero.com'
       : 'Automated transactional email from KidHabit Hero; please do not reply. We never ask for passwords, parent PINs or card details by email.<br>KidHabit Hero · kidhabithero.com',
   });
@@ -109,6 +122,37 @@ export function renderLifecycleEmail(message: LifecycleMessage): RenderedEmail {
         ? `<p>Trạng thái yêu cầu của bạn đã được cập nhật: <strong>${escapeHtml(statusLabel(payload.status, true))}</strong>.</p><p>Mã theo dõi: <strong>${escapeHtml(payload.caseId ?? '')}</strong>.</p>`
         : `<p>Your request status is now <strong>${escapeHtml(statusLabel(payload.status, false))}</strong>.</p><p>Tracking ID: <strong>${escapeHtml(payload.caseId ?? '')}</strong>.</p>`;
       return { subject, html: frame(subject, body, vietnamese) };
+    }
+    case 'care_week1_tips': {
+      const subject = vietnamese ? 'Ba bước nhỏ để đặt nhiệm vụ đầu tiên cho bé' : 'Three small steps to set your child’s first tasks';
+      const body = vietnamese
+        ? '<p>Chào bạn, những ngày đầu thường là lúc khó nhất. Bạn không cần làm nhiều: chỉ cần một vài việc nhỏ, rõ ràng.</p><p><strong>1.</strong> Chọn 1–3 việc bé đã gần như tự làm được (ví dụ cất cặp, đánh răng).<br><strong>2.</strong> Đặt giờ cố định và giải thích ngắn gọn với bé.<br><strong>3.</strong> Khen ngay khi bé hoàn thành — việc nhỏ làm đều mỗi ngày hiệu quả hơn việc lớn làm một lần.</p>'
+        : '<p>Hello, the first days are often the hardest. You do not need much: just a few small, clear tasks.</p><p><strong>1.</strong> Pick 1–3 things your child almost does alone (for example packing a bag, brushing teeth).<br><strong>2.</strong> Set a fixed time and explain it briefly.<br><strong>3.</strong> Praise right after it is done — small tasks done daily beat big ones done once.</p>';
+      return { subject, html: frame(subject, body, vietnamese, { label: vietnamese ? 'Đặt nhiệm vụ đầu tiên' : 'Set the first tasks', path: '/' }, true) };
+    }
+    case 'care_child_inactive': {
+      const subject = vietnamese ? 'Vài ngày nay bé chưa hoàn thành nhiệm vụ nào' : 'Your child has not completed a task for a few days';
+      const body = vietnamese
+        ? '<p>Có những tuần bận rộn, và việc nhịp thói quen chùng xuống là hoàn toàn bình thường. Không cần lo lắng hay trách bé.</p><p>Bạn có thể thử: giảm còn một việc dễ nhất, hỏi bé muốn bắt đầu lại từ việc nào, và cùng bé làm thử hôm nay.</p>'
+        : '<p>Busy weeks happen, and a habit rhythm slowing down is completely normal. There is no need to worry or blame anyone.</p><p>You could try: cut back to the single easiest task, ask your child which one they would like to restart with, and do it together today.</p>';
+      return { subject, html: frame(subject, body, vietnamese, { label: vietnamese ? 'Mở KidHabit Hero' : 'Open KidHabit Hero', path: '/' }, true) };
+    }
+    case 'care_weekly_summary': {
+      const completed = payload.completedCount ?? 0;
+      const days = payload.activeDays ?? 0;
+      const subject = vietnamese ? 'Tuần qua của gia đình bạn' : 'Your family’s week in review';
+      const body = vietnamese
+        ? `<p>Tuần qua, cả nhà đã hoàn thành <strong>${completed}</strong> nhiệm vụ trong <strong>${days}</strong> ngày. Mỗi bước nhỏ đều đáng được ghi nhận.</p><p>Hãy dành một phút khen bé về điều bé làm tốt nhất tuần này.</p>`
+        : `<p>This past week your family completed <strong>${completed}</strong> tasks across <strong>${days}</strong> days. Every small step counts.</p><p>Take a minute to praise your child for what they did best this week.</p>`;
+      return { subject, html: frame(subject, body, vietnamese, { label: vietnamese ? 'Xem tiến độ' : 'See progress', path: '/' }, true) };
+    }
+    case 'care_space_alert': {
+      // Deliberately generic: no mood, note, reason or child name, and no diagnosis. The app holds the detail.
+      const subject = vietnamese ? 'Một lời nhắc nhẹ nhàng từ Không gian của bé' : 'A gentle note from your child’s space';
+      const body = vietnamese
+        ? '<p>Có vài cập nhật nhỏ trong Không gian của bé gần đây. Đây chỉ là một lời nhắc nhẹ, không phải đánh giá hay kết luận về bé.</p><p>Khi tiện, bạn có thể mở ứng dụng và dành ít phút trò chuyện cùng bé.</p>'
+        : '<p>There are a few small updates in your child’s space lately. This is only a gentle reminder, not an assessment or conclusion about your child.</p><p>When convenient, open the app and take a few minutes to talk together.</p>';
+      return { subject, html: frame(subject, body, vietnamese, { label: vietnamese ? 'Mở ứng dụng' : 'Open the app', path: '/' }, true) };
     }
     case 'subscription_cancelled': {
       const subject = vietnamese ? 'Gói KidHabit Hero đã được hủy' : 'Your KidHabit Hero plan was cancelled';

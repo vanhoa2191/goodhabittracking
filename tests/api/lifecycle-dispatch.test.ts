@@ -55,6 +55,30 @@ describe('POST /api/internal/lifecycle/dispatch', () => {
     expect(rpc).not.toHaveBeenCalled();
   });
 
+  it('does not schedule care emails unless LIFECYCLE_CARE_EMAILS_ENABLED is true', async () => {
+    rpc.mockClear();
+    const response = await POST(request());
+    expect(response.status).toBe(200);
+    const names = rpc.mock.calls.map((call) => call[0]);
+    expect(names).not.toContain('schedule_care_messages');
+    expect(names).not.toContain('care_space_mood_snapshot');
+  });
+
+  it('schedules care emails when enabled, and a care failure never blocks sending', async () => {
+    vi.stubEnv('LIFECYCLE_CARE_EMAILS_ENABLED', 'true');
+    rpc.mockImplementation((name: string) => {
+      if (name === 'care_space_mood_snapshot' || name === 'schedule_care_messages') return Promise.resolve({ data: null, error: { message: 'boom' } });
+      if (name === 'schedule_trial_ending_messages') return Promise.resolve({ data: 0, error: null });
+      if (name === 'claim_lifecycle_messages') return Promise.resolve({ data: [claimed], error: null });
+      return Promise.resolve({ data: true, error: null });
+    });
+    const response = await POST(request());
+    expect(rpc.mock.calls.map((call) => call[0])).toContain('schedule_care_messages');
+    expect(response.status).toBe(200);
+    expect(sendLifecycleEmail).toHaveBeenCalledOnce();
+    vi.unstubAllEnvs();
+  });
+
   it('sends a claimed message once and records its provider id', async () => {
     const response = await POST(request());
     expect(response.status).toBe(200);

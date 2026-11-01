@@ -23,7 +23,7 @@ describe('lifecycle email', () => {
   });
 
   it('wraps every template in the shared shell and links to the app only with fixed URLs', () => {
-    const keys = ['welcome_setup', 'trial_ending', 'payment_receipt', 'support_status', 'refund_status', 'subscription_cancelled'] as const;
+    const keys = ['welcome_setup', 'trial_ending', 'payment_receipt', 'support_status', 'refund_status', 'subscription_cancelled', 'care_week1_tips', 'care_child_inactive', 'care_weekly_summary', 'care_space_alert'] as const;
     for (const templateKey of keys) {
       for (const locale of ['vi', 'en']) {
         const { html } = renderLifecycleEmail(parseLifecycleMessage({
@@ -38,6 +38,50 @@ describe('lifecycle email', () => {
         for (const link of links) expect(link).toMatch(/^https:\/\/app\.kidhabithero\.com\//);
       }
     }
+  });
+
+  describe('care templates', () => {
+    const careKeys = ['care_week1_tips', 'care_child_inactive', 'care_weekly_summary', 'care_space_alert'] as const;
+
+    it.each(careKeys)('%s renders vi and en with the opt-in footer and an app-only link', (templateKey) => {
+      const vi = renderLifecycleEmail(parseLifecycleMessage({ templateKey, locale: 'vi', payload: { completedCount: 5, activeDays: 3, status: 'watch' } }));
+      const en = renderLifecycleEmail(parseLifecycleMessage({ templateKey, locale: 'en-US', payload: { completedCount: 5, activeDays: 3, status: 'watch' } }));
+      expect(vi.subject).not.toBe(en.subject);
+      expect(vi.html).toContain('lang="vi"');
+      expect(en.html).toContain('lang="en"');
+      expect(vi.html).toContain('đồng ý nhận thông tin');
+      expect(vi.html).toContain('hồ sơ phụ huynh');
+      expect(en.html).toContain('you agreed to updates');
+      expect(vi.html).not.toContain('Thư giao dịch tự động');
+    });
+
+    it('keeps transactional mail on the transactional footer', () => {
+      const { html } = renderLifecycleEmail(parseLifecycleMessage({ templateKey: 'welcome_setup', locale: 'vi', payload: {} }));
+      expect(html).toContain('Thư giao dịch tự động');
+      expect(html).not.toContain('đồng ý nhận thông tin');
+    });
+
+    it('shows only the aggregate counts in the weekly summary', () => {
+      const { html } = renderLifecycleEmail(parseLifecycleMessage({ templateKey: 'care_weekly_summary', locale: 'vi', payload: { completedCount: 12, activeDays: 5 } }));
+      expect(html).toContain('<strong>12</strong>');
+      expect(html).toContain('<strong>5</strong>');
+    });
+
+    it('keeps the space alert generic: no mood, note, diagnosis wording or child details', () => {
+      for (const locale of ['vi', 'en']) {
+        for (const status of ['watch', 'concern']) {
+          const { subject, html } = renderLifecycleEmail(parseLifecycleMessage({ templateKey: 'care_space_alert', locale, payload: { status } }));
+          const text = `${subject} ${html}`;
+          expect(text).not.toMatch(/buồn|giận|\bsad\b|worried|angry|trầm cảm|depress|anxi|lo âu|disorder|khủng hoảng|\bconcern\b|\bwatch\b/i);
+        }
+      }
+    });
+
+    it('rejects payload fields that could carry child content', () => {
+      expect(() => parseLifecycleMessage({ templateKey: 'care_space_alert', locale: 'vi', payload: { note: 'bé buồn vì bạn' } })).toThrow();
+      expect(() => parseLifecycleMessage({ templateKey: 'care_weekly_summary', locale: 'vi', payload: { completedCount: -1 } })).toThrow();
+      expect(() => parseLifecycleMessage({ templateKey: 'care_weekly_summary', locale: 'vi', payload: { activeDays: 8 } })).toThrow();
+    });
   });
 
   it('escapes payload text and keeps the call to action on the checkout page for trial mail', () => {
