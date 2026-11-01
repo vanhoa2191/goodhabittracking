@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { evaluateMoodAlert, normalizeSpaceNote, type SpaceMood } from '@/lib/child-space';
+import {
+  buildMoodTimeline, evaluateMoodAlert, normalizeSpaceGoal, normalizeSpaceLetter, normalizeSpaceNote, spaceSnapshotSchema, weekStartOf,
+  type SpaceMood,
+} from '@/lib/child-space';
 
 const days = (today: string, moods: Array<SpaceMood | null>) => moods.flatMap((mood, index) => {
   const date = new Date(`${today}T00:00:00Z`);
@@ -37,5 +40,37 @@ describe('space notes', () => {
     expect(normalizeSpaceNote('   ')).toBeNull();
     expect(normalizeSpaceNote('a'.repeat(141))).toBeNull();
     expect(normalizeSpaceNote('a'.repeat(140))).not.toBeNull();
+  });
+});
+
+describe('phase 2: timeline, weekly goal, letter', () => {
+  it('weeks start on Monday', () => {
+    expect(weekStartOf('2026-11-02')).toBe('2026-11-02'); // Monday
+    expect(weekStartOf('2026-11-08')).toBe('2026-11-02'); // Sunday
+    expect(weekStartOf('2026-11-09')).toBe('2026-11-09');
+  });
+  it('lays out 30 days ending today, lined up under Monday-first weekdays', () => {
+    const { leading, cells } = buildMoodTimeline([{ local_date: '2026-11-02', mood: 'happy' }], '2026-11-02', 30);
+    expect(cells).toHaveLength(30);
+    expect(cells[29]).toEqual({ day: '2026-11-02', mood: 'happy' });
+    expect(cells[0]).toEqual({ day: '2026-10-04', mood: null }); // a Sunday
+    expect(leading).toBe(6);
+  });
+  it('limits a goal to one short line of 60 characters', () => {
+    expect(normalizeSpaceGoal('  Tự   dọn\nđồ chơi ')).toBe('Tự dọn đồ chơi');
+    expect(normalizeSpaceGoal('a'.repeat(60))).not.toBeNull();
+    expect(normalizeSpaceGoal('a'.repeat(61))).toBeNull();
+    expect(normalizeSpaceGoal('  ')).toBeNull();
+  });
+  it('limits a letter to 300 characters and keeps its line breaks', () => {
+    expect(normalizeSpaceLetter(' Ba mẹ ơi  \r\n\r\n\r\n\r\nCon yêu ba mẹ ')).toBe('Ba mẹ ơi\n\nCon yêu ba mẹ');
+    expect(normalizeSpaceLetter('a'.repeat(300))).not.toBeNull();
+    expect(normalizeSpaceLetter('a'.repeat(301))).toBeNull();
+    expect(normalizeSpaceLetter('\n \n')).toBeNull();
+  });
+  it('still reads a phase-1 payload that has no goals or letters', () => {
+    const parsed = spaceSnapshotSchema.parse({ moods: [], notes: [] });
+    expect(parsed.goals).toEqual([]);
+    expect(parsed.letters).toEqual([]);
   });
 });

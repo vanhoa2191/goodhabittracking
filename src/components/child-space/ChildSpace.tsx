@@ -4,13 +4,16 @@ import { useCallback, useEffect, useState } from 'react';
 import { Heart, Lock, ShieldCheck, Trash2 } from 'lucide-react';
 import { DailyJournalCard } from '@/components/DailyJournalCard';
 import { CalmBox } from '@/components/child-space/CalmBox';
+import { LetterToParents } from '@/components/child-space/LetterToParents';
+import { MoodTimeline } from '@/components/child-space/MoodTimeline';
+import { WeeklyGoal } from '@/components/child-space/WeeklyGoal';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import {
-  MOOD_VISUAL, NOTE_KIND_COPY, REASON_LABEL, SPACE_MOODS, SPACE_NOTE_KINDS, SPACE_NOTE_MAX_LENGTH, SPACE_REASONS,
+  MOOD_VISUAL, NOTE_KIND_COPY, REASON_LABEL, SPACE_MOODS, SPACE_NOTE_KINDS, SPACE_NOTE_MAX_LENGTH, SPACE_REASONS, weekStartOf,
   type SpaceMood, type SpaceNoteKind, type SpaceReason, type SpaceSnapshot,
 } from '@/lib/child-space';
 import {
-  EMPTY_SPACE, deleteSpaceNote, loadChildSpace, saveSpaceMood, saveSpaceNote, type ChildSpaceMode,
+  EMPTY_SPACE, deleteSpaceNote, loadChildSpace, markSpaceGoal, saveSpaceGoal, saveSpaceMood, saveSpaceNote, sendSpaceLetter, type ChildSpaceMode,
 } from '@/lib/store/child-space-client';
 
 type Props = {
@@ -72,7 +75,7 @@ export function ChildSpace({ childId, childName, localDay, mode, canWrite }: Pro
         <h2 className="flex items-center gap-2 text-lg font-extrabold text-slate-800 dark:text-slate-100"><Heart aria-hidden="true" className="h-5 w-5 text-rose-500" /> Không gian của bé</h2>
         <p className="mt-1 flex items-start gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
           <ShieldCheck aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
-          <span>Đây là chỗ của riêng {childName}. Ba mẹ nhìn thấy cảm xúc con chọn để biết khi nào con cần được giúp. Các ghi chú chỉ ba mẹ đọc được khi con bật &quot;Chia sẻ với ba mẹ&quot;.</span>
+          <span>Đây là chỗ của riêng {childName}. Ba mẹ nhìn thấy cảm xúc con chọn để biết khi nào con cần được giúp. Các ghi chú chỉ ba mẹ đọc được khi con bật &quot;Chia sẻ với ba mẹ&quot;. Riêng thư gửi ba mẹ thì ba mẹ luôn đọc được.</span>
         </p>
         {mode !== 'paired' && <p className="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-400">Đang xem thử trên thiết bị này, dữ liệu không gửi lên gia đình.</p>}
       </div>
@@ -133,7 +136,27 @@ export function ChildSpace({ childId, childName, localDay, mode, canWrite }: Pro
         </ol>
       </section>
 
+      <MoodTimeline snapshot={snapshot} localDay={localDay} />
+
       <CalmBox defaultOpen={showCalm} key={showCalm ? 'open' : 'closed'} />
+
+      {canWrite && (
+        <WeeklyGoal
+          goals={snapshot.goals}
+          weekStart={weekStartOf(localDay)}
+          lastWeekStart={addDays(weekStartOf(localDay), -7)}
+          onSave={async (text) => { const ok = await saveSpaceGoal(childId, mode, weekStartOf(localDay), text); if (ok) await reload(); return ok; }}
+          onMark={async (weekStart, status) => { const ok = await markSpaceGoal(childId, mode, weekStart, status); if (ok) await reload(); return ok; }}
+        />
+      )}
+
+      {canWrite && (
+        <LetterToParents
+          letters={snapshot.letters}
+          preview={mode !== 'paired'}
+          onSend={async (text) => { const ok = await sendSpaceLetter(childId, mode, localDay, text); if (ok) await reload(); return ok; }}
+        />
+      )}
 
       {canWrite && (
         <section aria-labelledby="notes-title" className="rounded-3xl border border-slate-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">

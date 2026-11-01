@@ -226,6 +226,39 @@ test.describe('Thinking Games Card/Player integration', () => {
     await expect(page.getByTestId('mood-sad')).toHaveAttribute('aria-pressed', 'false');
   });
 
+  test('the child space shows the 30-day journey, keeps a weekly goal and sends a letter that is clearly shared', async ({ page }) => {
+    test.setTimeout(120_000);
+    await ensureServer();
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(`${baseURL}/?demo=1`);
+    await page.getByTestId('kid-tabs').getByRole('button', { name: 'Không gian', exact: true }).click({ timeout: 30_000 });
+    await expect(page.getByTestId('child-space')).toBeVisible();
+
+    await page.getByTestId('mood-happy').click();
+    const timeline = page.getByTestId('mood-timeline-grid');
+    await expect(timeline.locator('li[data-testid^="timeline-"]')).toHaveCount(30);
+    await expect(timeline.locator('li[data-testid^="timeline-"]').last()).toContainText('😄');
+
+    const goal = page.getByTestId('weekly-goal');
+    await goal.getByRole('button', { name: 'Đọc sách mỗi ngày' }).click();
+    await goal.getByRole('button', { name: 'Chọn cho tuần này' }).click();
+    await expect(page.getByTestId('goal-current')).toHaveText('Đọc sách mỗi ngày');
+    await page.getByRole('button', { name: 'Con làm được ✓' }).click();
+    await expect(page.getByTestId('goal-status')).toHaveText('Con đã làm được');
+
+    const letter = page.getByTestId('letter-to-parents');
+    await expect(page.getByTestId('letter-shared-notice')).toContainText('luôn được gửi cho ba mẹ đọc');
+    await expect(letter.getByRole('button', { name: 'Gửi cho ba mẹ' })).toBeDisabled();
+    await letter.getByLabel('Con muốn nói với ba mẹ…').fill('Con yêu ba mẹ nhiều lắm.');
+    await letter.getByRole('button', { name: 'Gửi cho ba mẹ' }).click();
+    await expect(page.getByTestId('letters-sent')).toContainText('Con yêu ba mẹ nhiều lắm.');
+    await expect(letter.getByRole('status')).toContainText('chưa gửi cho ba mẹ');
+
+    // The 375px layout keeps every card inside the screen.
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(overflow).toBeLessThanOrEqual(0);
+  });
+
   test('the default-off flag mounts no Card and issues no thinking-game requests', async ({ page }) => {
     test.setTimeout(120_000);
     const disabledURL = 'http://127.0.0.1:3218';
