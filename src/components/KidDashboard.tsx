@@ -75,8 +75,8 @@ import { getAgeThemeCopy } from '@/lib/i18n/age-theme-copy';
 import { getKidHistoryCopy } from '@/lib/i18n/kid-history-copy';
 import { canStepKidDay, clampKidDay, isEditableDay, parseDayKey, shiftDayKey } from '@/lib/kid-day-window';
 // Loaded only when the thinkingGames flag is on, so the first download stays lean for families that do not use it.
-const ThinkingGameCard = dynamic(
-  () => import('./ThinkingGameCard').then((module) => module.ThinkingGameCard),
+const DailyGameLauncher = dynamic(
+  () => import('./DailyGameLauncher').then((module) => module.DailyGameLauncher),
   { ssr: false },
 );
 
@@ -475,8 +475,8 @@ export function KidDashboard() {
           )}
         </div>}
         {activeChild && isToday && !isFamilyPaused && defaultExperienceFlags.thinkingGames && (
-          <div className="mt-4">
-            <ThinkingGameCard key={`${activeChild.id}:${dateStr}:${thinkingGameMode}`} childId={activeChild.id} localDay={dateStr} mode={thinkingGameMode} />
+          <div className="mt-3 flex justify-center">
+            <DailyGameLauncher key={`${activeChild.id}:${dateStr}:${thinkingGameMode}`} childId={activeChild.id} localDay={dateStr} mode={thinkingGameMode} />
           </div>
         )}
       </div>

@@ -1,0 +1,77 @@
+dn||Albert Einstein|Trí tưởng tượng quan trọng hơn tri thức. Vì tri thức chỉ giới hạn trong những gì ta hiểu biết, trong khi trí tưởng tượng bao trùm cả thế giới, và cả những gì ta sẽ hiểu biết.
+dn||Albert Einstein|Điều quan trọng là người ta không ngừng hỏi.
+dn||Albert Einstein|Kẻ nào chưa từng mắc phải lỗi lầm cũng là kẻ chưa bao giờ thử làm việc gì cả.
+dn||Albert Einstein|Cuộc sống cũng giống như đang lái một chiếc xe đạp, để giữ thăng bằng cần phải đạp không ngừng.
+dn||Albert Einstein|Không bao giờ làm điều gì trái với lương tâm, cho dù hoàn cảnh bắt buộc điều đó.
+dn||Albert Einstein|Thông tin không phải là kiến thức.
+dn||Albert Einstein|Nếu bạn không thể giải thích điều nào đó một cách đơn giản, có nghĩa bạn không hiểu rõ về nó.
+dn||Aristotle|Hy vọng là một giấc mơ có thực.
+dn||Aristotle|Bước đầu tiên quan trọng hơn phân nửa của mục tiêu.
+dn||Aristotle|Chính nhờ kinh nghiệm mà khoa học và nghệ thuật tiến bộ nơi con người.
+dn||Aristotle|Dấu hiệu đặc trưng của nhà thông thái là khả năng dạy học.
+dn||Aristotle|Thầy đã quý, chân lý còn quý hơn
+dn||Aristotle|Đức có thể chia làm 2 loại: một là đức của trí tuệ, hai là đức của hành vi. Cái trước có được trong học tập, cái sau có được trong thực tiễn.
+dn||Benjamin Franklin|Sức mạnh và sự kiên trì sẽ giúp thâu tóm mọi thứ.
+dn||Benjamin Franklin|Một lỗ thủng nhỏ có thể làm đắm cả con tàu lớn.
+dn||Benjamin Franklin|Nếu bạn có việc gì cho ngày mai, làm hôm nay đi.
+dn||Charles Darwin|Tình bạn của một người là thước đo tốt nhất giá trị của anh ta.
+dn||Charles Darwin|Người nào dám lãng phí một giờ đồng hồ hãy còn chưa phát hiện ra giá trị của cuộc sống.
+dn||Helen Keller|Cùng bước với một người bạn trong bóng tối tốt hơn là bước một mình trong ánh sáng.
+dn||Helen Keller|Cuộc sống là một chuỗi bài học mà bạn cần phải sống mới hiểu được.
+dn||Helen Keller|Cuộc sống rất thú vị, và thú vị nhất khi nó được sống vì người khác.
+dn||Helen Keller|Đừng bao giờ cúi đầu. Hãy luôn ngẩng cao. Nhìn thẳng vào mắt thế giới.
+dn||Helen Keller|Điều tốt đẹp nhất trên thế gian này không thể nhìn thấy hoặc thậm chí chạm vào - chúng phải được cảm nhận bằng trái tim.
+dn||Helen Keller|Hãy quay về hướng mặt trời, và bạn sẽ không thấy bóng tối.
+dn||Helen Keller|Lạc quan là niềm tin dẫn tới thành tựu. Bạn chẳng thể làm được điều gì mà thiếu đi hy vọng và sự tự tin.
+dn||Helen Keller|Một mình, ta làm được rất ít; cùng nhau, ta làm được rất nhiều.
+dn||Helen Keller|Thành công và hạnh phúc nằm trong bạn. Quyết tâm hạnh phúc, và niềm vui sẽ đi cùng bạn để hình thành đạo quân bất khả chiến bại chống lại nghịch cảnh.
+dn||Helen Keller|Tôi chỉ là một, nhưng tôi vẫn là một. Tôi không thể làm mọi thứ, nhưng tôi vẫn có thể làm gì đó; và bởi vì tôi không thể làm tất cả, tôi sẽ không từ chối làm điều tôi có thể.
+dn||Helen Keller|Tôi khao khát làm được những điều vĩ đại và cao cả, nhưng trách nhiệm chính của tôi là làm được những điều nhỏ nhặt như thể chúng vĩ đại và cao cả.
+dn||Helen Keller|Thế giới đang tiến về phía trước, không phải bởi cú đẩy mạnh mẽ của những anh hùng, mà bởi tổng hòa cú đẩy yếu hơn của những người lao động lương thiện.
+dn||Helen Keller|Than thân trách phận là kẻ thù tồi tệ nhất của chúng ta, và nếu ta đầu hàng nó, ta sẽ chẳng làm được gì khôn ngoan trên thế giới này.
+dn||Hồ Chí Minh|Vì lợi ích mười năm trồng cây, vì lợi ích trăm năm trồng người.
+dn||Hồ Chí Minh|Dễ trăm lần không dân cũng chịu, khó vạn lần dân liệu cũng xong.
+dn|12,1,2|Hồ Chí Minh|Vượt qua mùa đông giá rét, chúng ta sẽ có một mùa xuân ấm áp.
+dn|9|Hồ Chí Minh|Non sông Việt Nam có trở nên tươi đẹp hay không, dân tộc Việt Nam có bước tới đài vinh quang để sánh vai với các cường quốc năm châu được hay không, chính là nhờ một phần lớn ở công học tập của các em.
+dn||Hồ Chí Minh|Tôi chỉ có một sự ham muốn, ham muốn tột bậc, là làm sao cho nước ta được hoàn toàn độc lập, dân ta được hoàn toàn tự do, đồng bào ai cũng có cơm ăn áo mặc, ai cũng được học hành.
+dn||Hồ Chí Minh|Sử ta dạy cho ta bài học này: Lúc nào dân ta đoàn kết muôn người như một thì nước ta độc lập, tự do. Trái lại lúc nào dân ta không đoàn kết thì bị nước ngoài xâm lấn.
+dn||Hồ Chí Minh|Không có việc gì khó, / Chỉ sợ lòng không bền. / Đào núi và lấp biển, / Quyết chí ắt làm nên".
+dn||Hồ Chí Minh|Hoàn cảnh thế nào không quan trọng, quan trọng là đối phó thế nào".
+dn||Hồ Chí Minh|Trời có bốn mùa: xuân, hạ, thu, đông, đất có bốn phương: đông, tây, nam, bắc, người có bốn đức: cần, kiệm, liêm, chính.
+dn||Hồ Chí Minh|Trẻ em như búp trên cành. Biết ăn ngủ, biết học hành là ngoan.
+dn||Hồ Chí Minh|Dân ta phải biết sử ta, Cho tường gốc tích nước nhà Việt Nam.
+dn||Hồ Chí Minh|Đoàn kết, đoàn kết, đại đoàn kết. Thành công, thành công, đại thành công.
+dn||Hồ Chí Minh|Việc học không bao giờ cùng, còn sống còn phải học.
+dn||Hồ Chí Minh|Hiền dữ đâu phải do tính sẵn, phần nhiều do giáo dục mà nên.
+dn||Hồ Chí Minh|Ai cũng có lòng tự trọng, tự tin. Không có lòng tự trọng, tự tin là người vô dụng.
+dn||Hồ Chí Minh|Thế giới đang tiến bộ không ngừng, ai không học là lùi sự tiến bộ đó.
+dn||Khổng Tử|Học cho rộng, hỏi cho kỹ, nghĩ cho cẩn thận, phân biệt cho rõ, làm cho hết sức.
+dn||Khổng Tử|Học đi với hành, không chỉ nói cho qua chuyện
+dn||Khổng Tử|Biết thì nói là biết, không biết thì nói là không biết, vậy mới thật là biết.
+dn||Khổng Tử|Người không có chữ tín, chẳng làm chi nên việc.
+dn||Khổng Tử|Biết mà học không bằng thích mà học, thích mà học không bằng vui say mà học.
+dn||Khổng Tử|Đến mùa giá lạnh mới biết cây tùng, cây bách rụng lá sau cùng
+dn||Khổng Tử|Ba người cùng đi với nhau, trong hai người thế nào cũng có một người đáng làm thầy ta. Ta chọn điều tốt để học theo, còn điều không tốt thì biết để sửa chữa.
+dn||Mạnh Tử|Người có đức thì không lẻ loi, tất có bạn cũng trọng đạo đức như mình.
+dn||Mạnh Tử|Lòng biết hổ thẹn là đầu mối của đức nghĩa.
+dn||Lê Quý Đôn|Dẫu có bạc vàng trăm vạn lạng, Chẳng bằng kinh sử một vài pho.
+dn||Lê Quý Đôn|Học giả nên có ba sự nhiều: đọc sách nhiều, tường thuật nhiều, nghị luận nhiều.
+dn||Lê Quý Đôn|Đọc sách không cần nhiều, đọc một chữ đem áp dụng làm việc được một chữ, thế là được.
+dn||Nelson Mandela|Giáo dục là vũ khí mạnh nhất mà chúng ta có thể sử dụng để thay đổi thế giới và Mindset Network là phần mạnh mẽ trong thùng thuốc súng thay đổi thế giới đó.
+dn||Nguyễn Bỉnh Khiêm|Hoa càng khoe nở, hoa nên rữa / Nước chứa cho đầy, nước ắt vơi (Thơ chữ Nôm, Bài số 52)
+dn||Nguyễn Bỉnh Khiêm|Làm người hay một chớ hay hai / Chớ cậy rằng hơn, chớ cậy tài (Thơ chữ Nôm, Bài số 65)
+dn||Nguyễn Bỉnh Khiêm|Làm người chớ thấy tài mà cậy / Có nhọn bao nhiêu lại có tù (Thơ chữ Nôm, Bài số 11)
+dn||Nguyễn Bỉnh Khiêm|Làm người có dại mới nên khôn / Chớ dại ngây si, chớ quá khôn (Thơ chữ Nôm, Bài số 94)
+dn||Nguyễn Trãi|Việc nhân nghĩa cốt ở yên dân, Quân điếu phạt trước lo trừ bạo.
+dn||Nguyễn Trãi|Con cháu chớ hiềm song viết ngặt / Thi thư thực ấy báu ngàn đời (Ngôn chí bài 9, Quốc âm thi tập)
+dn||Nguyễn Trãi|Tích đức cho con hơn tích của, / Đua lành cùng thế mựa đua khôn. / Một niềm trung hiếu làm miều cả, / Hai quyển thi thư ấy báu chôn.(Tự thán bài 41, Quốc âm thi tập)
+dn||Ngô Bảo Châu|Đến một lúc nào đó, bạn làm toán vì bạn thích chứ không phải để chứng tỏ một cái gì nữa.
+dn||Ngô Bảo Châu|Không phải ai cũng có khả năng để đạt giải Nobel hay Fields, nhưng ai cũng có thể sống để cuộc sống của mình có ý nghĩa.
+dn||Thomas Edison|Thiên tài một phần trăm là cảm hứng và chín mươi chín phần trăm là mồ hôi.
+dn||Victor Hugo|Con người không thiếu sức mạnh; họ chỉ thiếu ý chí.
+dn||Victor Hugo|Những lỗi lầm lớn thường kết cấu từ những lỗi lầm nhỏ.
+dn||Victor Hugo|Hãy bắt chước con chim đậu trên cành liễu, nó biết cành sắp gãy, nhưng vẫn vui vẻ hót, vì biết rằng mình vẫn còn đôi cánh.
+dn||Rabindranath Tagore|Tri thức là kết tinh của trí tuệ, văn hóa là ánh sáng của ngọc thạch phát ra.
+dn||Abraham Lincoln|Hãy quyết tâm sống chân thật trong mọi sự; nếu bạn thấy mình không thể trở thành một luật sư trung thực, thì hãy cố sống trung thực mà không cần phải làm luật sư.
+dn||Mark Twain|Sự khác nhau giữa một từ đúng và một từ gần đúng cũng giống như sự khác nhau giữa sấm chớp và một con đom đóm
+dn|1,2,3|Hồ Chí Minh|Mùa xuân là Tết trồng cây / Làm cho đất nước càng ngày càng xuân.

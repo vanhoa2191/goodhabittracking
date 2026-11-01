@@ -111,7 +111,9 @@ test.describe('Thinking Games Card/Player integration', () => {
     // Pilot day 1 is the rule-sequence board; other calendar days rotate mechanics.
     await page.clock.setFixedTime('2026-10-22T12:00:00');
     await page.goto(`${baseURL}/?demo=1`);
-    await expect(page.getByRole('heading', { name: 'Một trò chơi nhỏ hôm nay' })).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole('dialog', { name: 'Trò chơi hôm nay' })).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByTestId('daily-quote')).toBeVisible();
+    await expect(page.getByTestId('daily-history')).toContainText('Ngày này năm xưa');
     await page.getByRole('button', { name: 'Chơi', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Cùng thử nhé' })).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: 'Cùng thử nhé' }).click();
@@ -156,6 +158,11 @@ test.describe('Thinking Games Card/Player integration', () => {
         ? { ok: false, schemaVersion: 'v1', code: 'server_error', messageKey: 'error.unavailable' }
         : { ok: true, schemaVersion: 'v1', status: 'paused', data: { attemptId } }),
     }));
+    await page.route('**/api/domain/thinking-games/state**', (route) => route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true, schemaVersion: 'v1', status: 'available', data: { featureEnabled: true, bonusAvailable: false } }),
+    }));
     await page.route('**/api/domain/thinking-games/start', (route) => route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -169,7 +176,7 @@ test.describe('Thinking Games Card/Player integration', () => {
 
     await page.goto(baseURL);
     await page.getByRole('button', { name: 'Bé vui học' }).click();
-    await expect(page.getByRole('heading', { name: 'Một trò chơi nhỏ hôm nay' })).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole('dialog', { name: 'Trò chơi hôm nay' })).toBeVisible({ timeout: 30_000 });
     await page.getByRole('button', { name: 'Chơi', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Cùng thử nhé' })).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: 'Cùng thử nhé' }).click();
@@ -200,7 +207,8 @@ test.describe('Thinking Games Card/Player integration', () => {
     });
 
     await page.goto(`${disabledURL}/?demo=1`);
-    await expect(page.getByRole('heading', { name: 'Một trò chơi nhỏ hôm nay' })).toHaveCount(0);
+    await expect(page.getByTestId('daily-game-button')).toHaveCount(0);
+    await expect(page.getByRole('dialog', { name: 'Trò chơi hôm nay' })).toHaveCount(0);
     await page.waitForTimeout(1_000);
     expect(requests).toEqual([]);
   });

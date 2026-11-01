@@ -1,0 +1,122 @@
+tn|1,2,3||Tháng giêng là tháng ăn chơi, tháng hai trồng đậu, tháng ba trồng cà.
+tn|12,1,2||Tháng chạp là tháng trồng khoai, tháng giêng trồng đậu, tháng hai trồng cà.
+tn|2,3||Tháng hai trồng cà, tháng ba trồng đỗ.
+tn|3||Rét tháng ba, bà già chết cóng.
+tn|3,7||Ếch tháng ba, gà tháng bảy.
+tn|3||Bao giờ cho đến tháng ba, ếch cắn cổ rắn tha ra ngoài đồng.
+tn|7||Tháng bảy kiến bò, chỉ lo lại lụt.
+tn|7,8||Mưa tháng bảy gãy cành trám, nắng tháng tám rám trái bưởi.
+tn|8||Tháng tám nắng rám trái bưởi.
+tn|9||Tháng chín mưa rươi.
+tn|10||Bao giờ cho đến tháng mười, thổi nồi cơm nếp vừa cười vừa ăn.
+tn|5,10||Đêm tháng năm chưa nằm đã sáng, ngày tháng mười chưa cười đã tối.
+tn|1,2||Mồng một Tết cha, mồng hai Tết mẹ, mồng ba Tết thầy.
+tn|12,1,2||Đầu năm sương muối, cuối năm gió nồm.
+tn|9,10,11||Gió heo may, chuồn chuồn bay thì bão.
+tn|11,12,1||Thứ nhất cày ải, thứ nhì vãi phân.
+tn|3,4||Lúa chiêm lấp ló đầu bờ, nghe tiếng sấm dậy mở cờ mà lên.
+tn|||Mau sao thì nắng, vắng sao thì mưa.
+tn|||Chuồn chuồn bay thấp thì mưa, bay cao thì nắng, bay vừa thì râm.
+tn|||Mây xanh thì nắng, mây trắng thì mưa.
+tn|||Ráng vàng thì gió, ráng đỏ thì mưa.
+tn|||Trăng quầng thì hạn, trăng tán thì mưa.
+tn|||Nắng chóng trưa, mưa chóng tối.
+tn|||Chớp đông nhay nháy, gà gáy thì mưa.
+tn|||Kiến đen tha trứng lên cao, thế nào cũng có mưa rào rất to.
+tn|||Quạ tắm thì ráo, sáo tắm thì mưa.
+tn|||Én liệng lưng chừng, trời râm mát dạ; én liệng là đà, gió tạt mưa sa.
+tn|||Ếch kêu uôm uôm, ao chuôm đầy nước.
+tn|||Một nắng hai sương.
+tn|||Năm nắng mười mưa.
+tn|||Sau cơn mưa trời lại sáng.
+tn|||Mưa thuận gió hòa.
+tn|||Tre già măng mọc.
+tn|||Cây khô cũng có lúc đâm chồi.
+tn|||Trồng cây gây rừng.
+tn|||Một cây làm chẳng nên non.
+tn|||Tát nước theo mưa.
+tn|||Nước lã mà vã nên hồ.
+tn|||Đất lề quê thói.
+ch|||Hạt gạo trắng nuôi người.
+tn|||Một hạt cơm, chín hạt mồ hôi.
+tn|||Ăn khoai nhớ kẻ cho dây mà trồng.
+tn|||Chó treo mèo đậy.
+tn|||Mèo mả gà đồng.
+tn|||Trâu ơi ta bảo trâu này, trâu ăn no cỏ trâu cày với ta.
+tn|||Con trâu là đầu cơ nghiệp.
+ch|||Gà con mới nở, mẹ che.
+ch|||Gà mẹ che chở đàn con.
+ch|||Chim chóc kết bầy.
+tn|||Ngựa quen đường cũ.
+tn|||Ngựa hay chẳng sợ đường dài.
+tn|||Ngựa chạy có bầy, chim bay có bạn.
+tn|||Hổ phụ sinh hổ tử.
+tn|||Rồng đến nhà tôm.
+tn|||Cọp chết để da, người ta chết để tiếng.
+tn|||Hùm chết để da, người chết để tiếng.
+tn|||Lợn lành chữa thành lợn què.
+tn|||Cò bay thẳng cánh.
+tn|||Đồng Tháp Mười cò bay thẳng cánh, nước đỏ như son, cá lội như trùn.
+tn|||Mèo con bắt chuột nhắt.
+tn|||Rau nào sâu nấy.
+tn|||Nồi nào úp vung nấy.
+tn|||Nồi tròn úp vung tròn, nồi méo úp vung méo.
+tn|||Đèn nhà ai nấy rạng.
+tn|||Đèn nhà ai, nhà nấy rạng.
+tn|||Có bột mới gột nên hồ.
+tn|||Gạo trắng nước trong.
+tn|||Cơm no áo ấm.
+tn|||Ăn no mặc ấm.
+tn|||Ăn trái nhớ kẻ trồng cây.
+tn|||Ăn khoai nhớ kẻ trồng khoai.
+tn|||Ăn xôi nhớ kẻ đồ xôi.
+tn|||Muốn ăn thì lăn vào bếp.
+tn|||Muốn sang thì bắc cầu Kiều.
+tn|||Muốn no thì phải chăm làm.
+ch|||Lười biếng thì đói.
+ch|||Siêng làm thì có, siêng học thì hay.
+tn|||Dao có mài mới sắc, người có học mới khôn.
+tn|||Dao có mài mới sắc.
+tn|||Người không học như ngọc không mài.
+ch|||Không học thì dốt, không làm thì đói.
+tn|||Văn hay chữ tốt.
+tn|||Chữ thầy trả thầy.
+tn|||Bút sa gà chết.
+tn|||Nét chữ nết người.
+tn|||Nhất tự vi sư, bán tự vi sư.
+tn|||Thương nhau củ ấu cũng tròn, ghét nhau quả bồ hòn cũng méo.
+tn|||Đồng cam cộng khổ.
+tn|||Đồng tâm hiệp lực.
+tn|||Chung lưng đấu cật.
+ch|||Chung tay góp sức.
+ch|||Cùng chung một nhà.
+tn|||Gia hòa vạn sự hưng.
+tn|||Êm cửa ấm nhà.
+tn|||Cha lành con thảo.
+tn|||Cha nào con nấy.
+tn|||Con nhà tông không giống lông cũng giống cánh.
+tn|||Con nhà lành chẳng giống cha cũng giống mẹ.
+tn|||Con có cha như nhà có nóc.
+tn|||Chị ngã em nâng.
+tn|||Anh em trên kính dưới nhường.
+ch|||Lòng mẹ bao la như biển Thái Bình.
+ch|||Con dù lớn vẫn là con của mẹ.
+tn|||Mẹ già như chuối ba hương, như xôi nếp một, như đường mía lau.
+ch|||Cả nhà đoàn tụ là niềm vui lớn nhất.
+ch|||Nhà đông con thì vui, nhà đông tiếng thì ấm.
+tn|||Trẻ con như búp trên cành.
+tn|||Trẻ người non dạ.
+tn|||Dạy con từ thuở còn thơ, dạy vợ từ thuở bơ vơ mới về.
+ch|||Giáo dục trẻ từ khi còn bé.
+ch|||Trẻ không học, lớn khó nên.
+ch|||Lớn lên nhờ học, thành người nhờ rèn.
+ch|||Học là ánh sáng, dốt là bóng tối.
+ch|||Biết mà không hỏi thì quên.
+ch|||Hay hỏi thì biết, hay học thì hay.
+ch|||Không biết thì hỏi, không hiểu thì học.
+ch|||Đọc sách là ăn bữa cơm của tinh thần.
+ch|||Mở sách ra là mở cửa ra thế giới.
+ch|||Sách là người bạn không bao giờ phản bội.
+ch|||Nhà nghèo mà có sách là nhà giàu.
+ch|||Sách là kho tàng tri thức.
+ch|||Siêng đọc sách, hay hiểu biết.

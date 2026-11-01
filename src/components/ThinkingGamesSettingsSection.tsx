@@ -77,8 +77,12 @@ function ThinkingGamesSettingsContent() {
       }
       setStatus(result.ok
         ? data?.status === 'scheduled'
-          ? 'Đã lưu. Thay đổi bật trò chơi sẽ áp dụng từ ngày địa phương tiếp theo.'
-          : 'Đã lưu cài đặt trò chơi.'
+          ? 'Đã lưu. Thay đổi cài đặt sẽ áp dụng từ ngày địa phương tiếp theo.'
+          : data?.status === 'disabled'
+            ? 'Đã tắt trò chơi.'
+            : enabledNow
+              ? 'Đã bật trò chơi. Bé có thể chơi ngay hôm nay.'
+              : 'Đã lưu cài đặt trò chơi.'
         : 'Không thể lưu cài đặt.');
       return result.ok;
     } catch {
@@ -117,7 +121,7 @@ function ThinkingGamesSettingsContent() {
             Trò chơi luyện tập: {enabled ? (pendingDay ? `sẽ bật từ ngày ${pendingDay}` : 'đang bật') : 'đang tắt'}
           </p>
           <p id="thinking-games-switch-help" className="mt-1 text-xs font-medium text-slate-600 dark:text-slate-300">
-            Tắt có hiệu lực ngay. Bật lại hoặc đổi cài đặt sẽ áp dụng từ ngày mai theo múi giờ của gia đình. Cần mã PIN phụ huynh để thay đổi.
+            Bật hoặc tắt có hiệu lực ngay. Các thay đổi khác khi trò chơi đang bật sẽ áp dụng từ ngày mai theo múi giờ của gia đình. Cần mã PIN phụ huynh để thay đổi.
           </p>
         </div>
         <button
