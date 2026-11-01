@@ -35,6 +35,7 @@ export function DailyGameLauncher({ childId, localDay, mode }: Props) {
   const enabled = defaultExperienceFlags.thinkingGames;
   const [familyOn, setFamilyOn] = useState(mode === 'local');
   const [open, setOpen] = useState(false);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     if (!enabled || mode === 'local') return;
@@ -66,6 +67,7 @@ export function DailyGameLauncher({ childId, localDay, mode }: Props) {
   }, [childId, localDay, mode, enabled]);
 
   const close = useCallback(() => setOpen(false), []);
+  const onPlayingChange = useCallback((value: boolean) => setPlaying(value), []);
 
   if (!enabled || !familyOn) return null;
   return (
@@ -78,7 +80,7 @@ export function DailyGameLauncher({ childId, localDay, mode }: Props) {
       >
         <Sparkles aria-hidden="true" className="h-4 w-4" /> Trò chơi hôm nay
       </button>
-      <ModalShell isOpen={open} onClose={close} label="Trò chơi hôm nay" titleId="daily-game-title" maxWidth="lg" mobileSheet>
+      <ModalShell isOpen={open} onClose={close} label="Trò chơi hôm nay" titleId="daily-game-title" maxWidth={playing ? '2xl' : 'lg'} mobileSheet>
         <div className="flex items-start justify-between gap-3 border-b border-slate-100 px-5 py-4 dark:border-zinc-800">
           <h2 id="daily-game-title" className="flex items-center gap-2 text-lg font-black text-slate-900 dark:text-slate-100">
             <Sparkles aria-hidden="true" className="h-5 w-5 text-amber-500" /> Trò chơi hôm nay
@@ -88,8 +90,9 @@ export function DailyGameLauncher({ childId, localDay, mode }: Props) {
           </button>
         </div>
         <div className="grid gap-4 overflow-y-auto px-5 py-4">
-          <DailyWisdom localDay={localDay} />
-          <ThinkingGameCard childId={childId} localDay={localDay} mode={mode} />
+          {/* While a puzzle is open it gets the whole popup; the saying and the history fact come back afterwards. */}
+          <div hidden={playing}><DailyWisdom localDay={localDay} /></div>
+          <ThinkingGameCard childId={childId} localDay={localDay} mode={mode} onPlayingChange={onPlayingChange} />
         </div>
       </ModalShell>
     </>

@@ -42,6 +42,8 @@ type Props = {
   childId: string;
   localDay: string;
   mode: 'paired' | 'parent' | 'local';
+  /** Lets the host popup hand the whole space to the puzzle while one is open. */
+  onPlayingChange?: (playing: boolean) => void;
 };
 
 /** Say why a game did not open, in the family's words, instead of one generic "not ready" line. */
@@ -57,7 +59,7 @@ function startFailureNotice(error: unknown): string {
   return 'Mất kết nối rồi. Bạn kiểm tra mạng và thử lại nhé.';
 }
 
-export function ThinkingGameCard({ childId, localDay, mode }: Props) {
+export function ThinkingGameCard({ childId, localDay, mode, onPlayingChange }: Props) {
   const [initialLocal] = useState(() => mode === 'local' ? getLocalThinkingGame() : null);
   const [puzzle, setPuzzle] = useState<PublicPuzzle | null>(initialLocal?.puzzle ?? null);
   const [attemptId, setAttemptId] = useState<string | null>(initialLocal?.attemptId ?? null);
@@ -67,6 +69,9 @@ export function ThinkingGameCard({ childId, localDay, mode }: Props) {
   const [starting, setStarting] = useState(false);
   const latestRequestId = useRef(0);
   const enabled = defaultExperienceFlags.thinkingGames;
+
+  const playing = open && Boolean(puzzle && attemptId);
+  useEffect(() => { onPlayingChange?.(playing); }, [playing, onPlayingChange]);
 
   const applyLocalState = useCallback(() => {
     const state = getLocalThinkingGame();
@@ -157,16 +162,29 @@ export function ThinkingGameCard({ childId, localDay, mode }: Props) {
   return (
     <div data-testid="thinking-game-panel">
       {!open && (
-        <div className="flex flex-wrap items-center gap-3">
-          <button type="button" disabled={starting} onClick={() => void start()} className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-indigo-600 px-6 text-base font-bold text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"><Play aria-hidden="true" className="h-5 w-5" /> {starting ? 'Đang mở…' : 'Chơi'}</button>
-          {bonusAvailable && <button type="button" disabled={starting} onClick={() => void start('bonus')} className="inline-flex min-h-12 items-center gap-2 rounded-2xl border border-indigo-300 bg-white px-5 text-base font-bold text-indigo-700 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-700 dark:bg-zinc-900 dark:text-indigo-300"><Sparkles aria-hidden="true" className="h-5 w-5" /> Chơi thêm</button>}
+        <div className="rounded-3xl bg-gradient-to-br from-indigo-600 to-violet-600 p-5 text-white shadow-lg">
+          <div className="flex items-center gap-3">
+            <span aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/20"><Sparkles className="h-6 w-6" /></span>
+            <div>
+              <p className="text-lg font-black leading-tight">Thử thách trí tuệ hôm nay</p>
+              <p className="text-sm font-medium text-indigo-100">Một câu đố ngắn, chơi lúc nào cũng được.</p>
+            </div>
+          </div>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <button type="button" disabled={starting} onClick={() => void start()} className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-white px-7 text-base font-black text-indigo-700 shadow hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-indigo-600 disabled:cursor-not-allowed disabled:opacity-60"><Play aria-hidden="true" className="h-5 w-5" /> {starting ? 'Đang mở…' : 'Chơi'}</button>
+            {bonusAvailable && <button type="button" disabled={starting} onClick={() => void start('bonus')} className="inline-flex min-h-12 items-center gap-2 rounded-2xl border border-white/60 bg-transparent px-5 text-base font-bold text-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:cursor-not-allowed disabled:opacity-60"><Sparkles aria-hidden="true" className="h-5 w-5" /> Chơi thêm</button>}
+          </div>
         </div>
       )}
-      {notice && <p role="status" className="mt-3 text-sm font-bold text-amber-900 dark:text-amber-100">{notice}</p>}
-      {!open && <p className="mt-3 text-xs font-medium text-slate-600 dark:text-slate-300">{mode === 'local' ? 'Luyện tập riêng trên thiết bị này, không ảnh hưởng dữ liệu gia đình.' : 'Luyện tập ngắn, không điểm thưởng và không thay đổi danh sách thói quen.'}</p>}
-      {mode !== 'local' && !open && <p className="mt-2 flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400"><ShieldAlert aria-hidden="true" className="h-4 w-4" /> Kết quả được xác nhận an toàn trên máy chủ.</p>}
+      {notice && <p role="status" className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-sm font-bold text-amber-900 dark:bg-amber-950/40 dark:text-amber-100">{notice}</p>}
+      {!open && (
+        <p className="mt-3 flex items-start gap-2 text-xs font-medium text-slate-600 dark:text-slate-300">
+          {mode !== 'local' && <ShieldAlert aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />}
+          <span>{mode === 'local' ? 'Luyện tập riêng trên thiết bị này, không ảnh hưởng dữ liệu gia đình.' : 'Luyện tập ngắn, không điểm thưởng và không thay đổi danh sách thói quen. Kết quả được xác nhận an toàn trên máy chủ.'}</span>
+        </p>
+      )}
       {open && puzzle && attemptId && (
-        <div className="mt-5">
+        <div>
           <ThinkingGamePlayer
             puzzle={puzzle}
             onPauseRequest={pause}
