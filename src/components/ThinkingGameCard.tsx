@@ -26,6 +26,7 @@ import {
   subscribeLocalThinkingGame,
 } from '@/lib/store/thinking-games-local';
 import { Play, ShieldAlert, Sparkles } from 'lucide-react';
+import { getThinkingGamesViCopy } from '@/lib/i18n/thinking-games-copy';
 
 type PauseAwarePlayerProps = ThinkingGamePlayerProps & {
   readonly onPauseRequest?: () => Promise<boolean> | boolean;
@@ -42,6 +43,19 @@ type Props = {
   localDay: string;
   mode: 'paired' | 'parent' | 'local';
 };
+
+/** Say why a game did not open, in the family's words, instead of one generic "not ready" line. */
+function startFailureNotice(error: unknown): string {
+  const codes = getThinkingGamesViCopy().error.codes as Readonly<Record<string, string>>;
+  if (error instanceof ThinkingGameRequestError) {
+    if (error.code === 'feature_off') return 'Trò chơi đang tắt. Phụ huynh có thể bật trong Cài đặt.';
+    const known = codes[error.code];
+    if (known) return known;
+    if (error.code === 'authentication_required') return 'Bạn cần đăng nhập lại để mở trò chơi.';
+    return `Trò chơi chưa mở được (mã ${error.code}). Bạn thử lại sau nhé.`;
+  }
+  return 'Mất kết nối rồi. Bạn kiểm tra mạng và thử lại nhé.';
+}
 
 export function ThinkingGameCard({ childId, localDay, mode }: Props) {
   const [initialLocal] = useState(() => mode === 'local' ? getLocalThinkingGame() : null);
@@ -114,8 +128,8 @@ export function ThinkingGameCard({ childId, localDay, mode }: Props) {
       const data = result.data as { puzzle?: PublicPuzzle; attemptId?: string } | undefined;
       if (!data?.puzzle || !data.attemptId) setNotice('Hôm nay chưa có trò chơi phù hợp.');
       else { setPuzzle(data.puzzle); setAttemptId(data.attemptId); setOpen(true); }
-    } catch {
-      if (requestId === latestRequestId.current) setNotice('Trò chơi chưa sẵn sàng. Bạn có thể thử lại sau.');
+    } catch (error) {
+      if (requestId === latestRequestId.current) setNotice(startFailureNotice(error));
     } finally {
       if (requestId === latestRequestId.current) setStarting(false);
     }
@@ -141,21 +155,16 @@ export function ThinkingGameCard({ childId, localDay, mode }: Props) {
 
   if (!enabled) return null;
   return (
-    <section className="rounded-3xl border border-amber-200 bg-amber-50/80 p-5 shadow-sm dark:border-amber-900/50 dark:bg-amber-950/20" aria-labelledby="thinking-game-title">
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h2 id="thinking-game-title" className="flex items-center gap-2 text-base font-black text-amber-950 dark:text-amber-100">
-            <Sparkles aria-hidden="true" className="h-5 w-5 text-amber-600" /> Một trò chơi nhỏ hôm nay
-          </h2>
-          <p className="mt-1 text-sm font-medium text-amber-900/80 dark:text-amber-200/80">
-            {mode === 'local' ? 'Luyện tập riêng trên thiết bị này, không ảnh hưởng dữ liệu gia đình.' : 'Luyện tập ngắn, không điểm thưởng và không thay đổi danh sách thói quen.'}
-          </p>
+    <div data-testid="thinking-game-panel">
+      {!open && (
+        <div className="flex flex-wrap items-center gap-3">
+          <button type="button" disabled={starting} onClick={() => void start()} className="inline-flex min-h-12 items-center gap-2 rounded-2xl bg-indigo-600 px-6 text-base font-bold text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"><Play aria-hidden="true" className="h-5 w-5" /> {starting ? 'Đang mở…' : 'Chơi'}</button>
+          {bonusAvailable && <button type="button" disabled={starting} onClick={() => void start('bonus')} className="inline-flex min-h-12 items-center gap-2 rounded-2xl border border-indigo-300 bg-white px-5 text-base font-bold text-indigo-700 hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-indigo-700 dark:bg-zinc-900 dark:text-indigo-300"><Sparkles aria-hidden="true" className="h-5 w-5" /> Chơi thêm</button>}
         </div>
-        {!open && <button type="button" disabled={starting} onClick={() => void start()} className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"><Play aria-hidden="true" className="h-4 w-4" /> {starting ? 'Đang mở…' : 'Chơi'}</button>}
-      </div>
-      {!open && bonusAvailable && <button type="button" disabled={starting} onClick={() => void start('bonus')} className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"><Sparkles aria-hidden="true" className="h-4 w-4" /> Chơi thêm</button>}
+      )}
       {notice && <p role="status" className="mt-3 text-sm font-bold text-amber-900 dark:text-amber-100">{notice}</p>}
-      {mode !== 'local' && <p className="mt-3 flex items-center gap-2 text-xs font-bold text-amber-900/70 dark:text-amber-200/70"><ShieldAlert aria-hidden="true" className="h-4 w-4" /> Kết quả được xác nhận an toàn trên máy chủ.</p>}
+      {!open && <p className="mt-3 text-xs font-medium text-slate-600 dark:text-slate-300">{mode === 'local' ? 'Luyện tập riêng trên thiết bị này, không ảnh hưởng dữ liệu gia đình.' : 'Luyện tập ngắn, không điểm thưởng và không thay đổi danh sách thói quen.'}</p>}
+      {mode !== 'local' && !open && <p className="mt-2 flex items-center gap-2 text-xs font-bold text-slate-500 dark:text-slate-400"><ShieldAlert aria-hidden="true" className="h-4 w-4" /> Kết quả được xác nhận an toàn trên máy chủ.</p>}
       {open && puzzle && attemptId && (
         <div className="mt-5">
           <ThinkingGamePlayer
@@ -190,6 +199,6 @@ export function ThinkingGameCard({ childId, localDay, mode }: Props) {
           />
         </div>
       )}
-    </section>
+    </div>
   );
 }

@@ -80,3 +80,4 @@
 \ir migrations/202610290001_thinking_games_release_v2.sql
 \ir migrations/202610300001_thinking_games_age_tracks.sql
 \ir migrations/202610300002_thinking_games_release_v3.sql
+\ir migrations/202611010001_thinking_games_enable_immediately.sql
