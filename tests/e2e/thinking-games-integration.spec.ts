@@ -229,10 +229,11 @@ test.describe('Thinking Games Card/Player integration', () => {
   test('the child space shows the 30-day journey, keeps a weekly goal and sends a letter that is clearly shared', async ({ page }) => {
     test.setTimeout(120_000);
     await ensureServer();
-    await page.setViewportSize({ width: 375, height: 812 });
     await page.goto(`${baseURL}/?demo=1`);
     await page.getByTestId('kid-tabs').getByRole('button', { name: 'Không gian', exact: true }).click({ timeout: 30_000 });
     await expect(page.getByTestId('child-space')).toBeVisible();
+    // The tab labels collapse on a phone, so the narrow layout is checked after the space is open.
+    await page.setViewportSize({ width: 375, height: 812 });
 
     await page.getByTestId('mood-happy').click();
     const timeline = page.getByTestId('mood-timeline-grid');
