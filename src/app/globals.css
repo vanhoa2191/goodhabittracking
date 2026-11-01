@@ -313,3 +313,10 @@ html.dark .guide-prose th { background: #27272a; }
   to { transform: translateX(-50%); }
 }
 .wisdom-marquee { animation: wisdom-marquee 60s linear infinite; }
+
+/* Breathing balloon for the calm box: four seconds in, four seconds out. */
+@keyframes calm-breath {
+  0%, 100% { transform: scale(0.8); }
+  50% { transform: scale(1.15); }
+}
+.calm-breath { animation: calm-breath 8s ease-in-out infinite; }

@@ -31,6 +31,7 @@ import {
   Palette,
   BookOpen,
   Brush,
+  Heart,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
 import { useTranslation } from '@/lib/i18n/context';
@@ -73,9 +74,14 @@ import { AgeThemeNotice } from './AgeThemeNotice';
 import { useAgeTheme } from './useAgeTheme';
 import { getAgeThemeCopy } from '@/lib/i18n/age-theme-copy';
 import { getKidHistoryCopy } from '@/lib/i18n/kid-history-copy';
+import { getChildSpaceTabCopy } from '@/lib/i18n/child-space-copy';
 import { canStepKidDay, clampKidDay, isEditableDay, parseDayKey, shiftDayKey } from '@/lib/kid-day-window';
 // Loaded only when the thinkingGames flag is on, so the first download stays lean for families that do not use it.
 // The ticker keeps its slot while it loads, so the page does not jump after a tab shortcut has scrolled.
+const ChildSpace = dynamic(
+  () => import('./child-space/ChildSpace').then((module) => module.ChildSpace),
+  { ssr: false },
+);
 const DailyWisdom = dynamic(
   () => import('./DailyWisdom').then((module) => module.DailyWisdom),
   { ssr: false, loading: () => <div aria-hidden="true" className="mt-1.5 h-8" /> },
@@ -129,7 +135,7 @@ export function KidDashboard() {
   const questCopy = getKidQuestCopy(language);
   const historyCopy = getKidHistoryCopy(language);
 
-  const [activeTab, setActiveTab] = useState<'tasks' | 'leaderboard' | 'rewards' | 'badges'>('tasks');
+  const [activeTab, setActiveTab] = useState<'tasks' | 'leaderboard' | 'rewards' | 'badges' | 'space'>('tasks');
   // null follows today, so a screen left open past midnight moves on to the new day by itself.
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedTimerActivity, setSelectedTimerActivity] = useState<HabitActivity | null>(null);
@@ -148,7 +154,10 @@ export function KidDashboard() {
   const [claimingRewardId, setClaimingRewardId] = useState<string | null>(null);
   const [claimErrorId, setClaimErrorId] = useState<string | null>(null);
   const [taskRetry, setTaskRetry] = useState<{ activity: HabitActivity; date: string; isCompleting: boolean } | null>(null);
-  const visibleTab = isFamilyPaused && activeTab === 'leaderboard' ? 'tasks' : activeTab;
+  const spaceOn = defaultExperienceFlags.childSpace;
+  // With the child's space switched on, badges live inside the rewards tab.
+  const visibleTab = isFamilyPaused && activeTab === 'leaderboard' ? 'tasks' : spaceOn && activeTab === 'badges' ? 'rewards' : activeTab;
+  const tabCopy = getChildSpaceTabCopy(language);
   const habitPhases = useChildHabitPhases({
     enabled: defaultExperienceFlags.habitPrograms,
     child: activeChild,
@@ -321,16 +330,23 @@ export function KidDashboard() {
   const { dueActivities, completedActivityIds, pendingApprovalIds, deferredActivityIds } = viewed;
   const { completedCount, totalDue, progressPercent } = today;
 
-  const bottomTabs: { id: 'tasks' | 'leaderboard' | 'rewards' | 'badges'; Icon: typeof CheckCheck; label: string; tone: string }[] = [
+  const bottomTabs: { id: 'tasks' | 'leaderboard' | 'rewards' | 'badges' | 'space'; Icon: typeof CheckCheck; label: string; tone: string }[] = [
     { id: 'tasks', Icon: CheckCheck, label: t.tasks, tone: 'text-indigo-600 dark:text-indigo-400' },
     ...(isFamilyPaused ? [] : [{ id: 'leaderboard' as const, Icon: Trophy, label: t.bxhShort, tone: 'text-amber-600 dark:text-amber-400' }]),
-    { id: 'rewards', Icon: Gift, label: t.rewardsShort, tone: 'text-pink-600 dark:text-pink-400' },
-    { id: 'badges', Icon: Award, label: t.badgesShort, tone: 'text-amber-600 dark:text-amber-400' },
+    ...(spaceOn
+      ? [
+          { id: 'rewards' as const, Icon: Gift, label: tabCopy.rewardsBadges, tone: 'text-pink-600 dark:text-pink-400' },
+          { id: 'space' as const, Icon: Heart, label: tabCopy.space, tone: 'text-rose-600 dark:text-rose-400' },
+        ]
+      : [
+          { id: 'rewards' as const, Icon: Gift, label: t.rewardsShort, tone: 'text-pink-600 dark:text-pink-400' },
+          { id: 'badges' as const, Icon: Award, label: t.badgesShort, tone: 'text-amber-600 dark:text-amber-400' },
+        ]),
   ];
 
   // Wait for the selected tab to render, then bring useful content below the
   // sticky header. A task shortcut should pass the compact hero, too.
-  const showTab = (tab: 'tasks' | 'leaderboard' | 'rewards' | 'badges') => {
+  const showTab = (tab: 'tasks' | 'leaderboard' | 'rewards' | 'badges' | 'space') => {
     setActiveTab(tab);
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     requestAnimationFrame(() => {
@@ -522,10 +538,22 @@ export function KidDashboard() {
           }`}
         >
           <Gift className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
-          <span className="hidden sm:inline">{t.rewards}</span>
-          <span className="sm:hidden">{t.rewardsShort}</span>
+          <span className="hidden sm:inline">{spaceOn ? tabCopy.rewardsBadges : t.rewards}</span>
+          <span className="sm:hidden">{spaceOn ? tabCopy.rewardsBadges : t.rewardsShort}</span>
         </button>
-        <button
+        {spaceOn && <button
+          onClick={() => setActiveTab('space')}
+          aria-pressed={visibleTab === 'space'}
+          className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+            visibleTab === 'space'
+              ? 'bg-white dark:bg-zinc-800 text-rose-600 dark:text-rose-400 shadow-sm'
+              : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+          }`}
+        >
+          <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span>{tabCopy.space}</span>
+        </button>}
+        {!spaceOn && <button
           onClick={() => setActiveTab('badges')}
           aria-pressed={visibleTab === 'badges'}
           className={`min-w-0 min-h-[52px] sm:min-h-[44px] py-1.5 sm:py-2 px-1 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5 text-center break-words cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 ${
@@ -537,7 +565,7 @@ export function KidDashboard() {
           <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
           <span className="hidden sm:inline">{t.myBadges}</span>
           <span className="sm:hidden">{t.badgesShort}</span>
-        </button>
+        </button>}
       </div>
 
       <div ref={contentTopRef} aria-hidden="true" className="-my-3 h-px scroll-mt-20" />
@@ -990,7 +1018,7 @@ export function KidDashboard() {
       )}
 
       {/* TAB 3: BADGES */}
-      {visibleTab === 'badges' && (
+      {(visibleTab === 'badges' || (spaceOn && visibleTab === 'rewards')) && (
         <div className="space-y-6" data-testid="badge-collection">
           <h2 className="text-lg font-extrabold text-slate-800 dark:text-slate-100">{t.myBadges}</h2>
           <p className="text-sm font-bold text-slate-600 dark:text-slate-300">
@@ -1068,7 +1096,7 @@ export function KidDashboard() {
         onDismiss={badgeAwards.dismiss}
         onViewBadges={() => {
           badgeAwards.dismiss();
-          setActiveTab('badges');
+          setActiveTab(spaceOn ? 'rewards' : 'badges');
         }}
       />
 
@@ -1196,7 +1224,17 @@ export function KidDashboard() {
       <TaskDetailsModal activity={selectedTask} onClose={() => setSelectedTask(null)} />
 
       {/* The evening note comes after the day's content, so the list is not pushed down by it. */}
-      {defaultExperienceFlags.dailyJournal && activeChild.ageStage !== '0-3' && <DailyJournalCard />}
+      {!spaceOn && defaultExperienceFlags.dailyJournal && activeChild.ageStage !== '0-3' && <DailyJournalCard />}
+      {spaceOn && visibleTab === 'space' && (
+        <ChildSpace
+          key={`${activeChild.id}:${todayStr}:${thinkingGameMode}`}
+          childId={activeChild.id}
+          childName={activeChild.nickname || activeChild.name}
+          localDay={todayStr}
+          mode={thinkingGameMode}
+          canWrite={activeChild.ageStage === '6-12' || activeChild.ageStage === '12-18'}
+        />
+      )}
 
       {/* Child Mascot / Avatar Picker Modal */}
       {isAvatarPickerOpen && <MascotPickerController onClose={() => setIsAvatarPickerOpen(false)} />}

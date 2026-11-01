@@ -7,6 +7,7 @@ import { useTranslation } from '@/lib/i18n/context';
 import { getParentSecondaryCopy } from '@/lib/i18n/parent-secondary-copy';
 import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { ParentJournalPanel } from '@/components/ParentJournalPanel';
+import { ChildSpaceParentPanel } from '@/components/child-space/ChildSpaceParent';
 import { AchievementShareDialog } from '@/components/AchievementShareDialog';
 import { localDayKey } from '@/lib/local-day';
 import { PrintWeekButtons } from '@/components/PrintableWeek';
@@ -96,6 +97,7 @@ export function ParentAnalyticsTab() {
         </div>
       </div>
 
+      {defaultExperienceFlags.childSpace && <ChildSpaceParentPanel />}
       {defaultExperienceFlags.dailyJournal && <ParentJournalPanel />}
 
       <AchievementShareDialog />

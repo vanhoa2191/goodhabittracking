@@ -13,6 +13,7 @@ import { defaultExperienceFlags } from '@/lib/experience-flags';
 import { HabitProgressSummary } from './HabitProgressSummary';
 import { HabitSupportPrompt } from './HabitSupportPrompt';
 import { ParentTodayCard } from './ParentTodayCard';
+import { ChildSpaceAlert } from './child-space/ChildSpaceParent';
 import { WeeklyReviewCard } from './WeeklyReviewCard';
 import { getParentTodayCopy } from '@/lib/i18n/parent-today-copy';
 import { HelpTip } from '@/components/help/HelpTip';
@@ -331,6 +332,7 @@ export function ParentApprovalsTab({ onOpenHabits }: { readonly onOpenHabits?: (
         )}
 
         {focusChildId && <ParentTodayCard childId={focusChildId} />}
+        {focusChildId && defaultExperienceFlags.childSpace && <ChildSpaceAlert childId={focusChildId} />}
 
         {defaultExperienceFlags.habitPrograms && (
           <>
