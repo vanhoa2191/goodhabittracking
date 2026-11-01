@@ -479,7 +479,6 @@ export function KidDashboard() {
           )}
         </div>}
       </div>
-      {activeChild && !isFamilyPaused && visibleTab === 'tasks' && <DailyWisdom localDay={dateStr} />}
       {activeChild && isToday && !isFamilyPaused && defaultExperienceFlags.thinkingGames && (
         <DailyGameLauncher key={`${activeChild.id}:${dateStr}:${thinkingGameMode}`} childId={activeChild.id} localDay={dateStr} mode={thinkingGameMode} />
       )}
@@ -1178,6 +1177,8 @@ export function KidDashboard() {
       {defaultExperienceFlags.habitPrograms && visibleTab === 'tasks' && <ChildSelfReportPrompt />}
       {defaultExperienceFlags.independence && visibleTab === 'tasks' && <KidIndependence childId={activeChild.id} />}
       {defaultExperienceFlags.habitCoach && visibleTab === 'tasks' && <KidWeeklyFocus childId={activeChild.id} />}
+      {/* Below the task list so the first task still fits the first screen. */}
+      {!isFamilyPaused && <DailyWisdom localDay={dateStr} />}
 
       </div>}
 
