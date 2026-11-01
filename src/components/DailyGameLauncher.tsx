@@ -60,8 +60,8 @@ export function DailyGameLauncher({ childId, localDay, mode }: Props) {
 
   useEffect(() => {
     if (mode !== 'local' || !enabled || alreadyOpenedToday(childId, localDay)) return;
-    rememberOpenedToday(childId, localDay);
-    const timer = window.setTimeout(() => setOpen(true), 0);
+    // Remember only when the popup really opens: a strict-mode remount cancels the timer and must be able to retry.
+    const timer = window.setTimeout(() => { rememberOpenedToday(childId, localDay); setOpen(true); }, 0);
     return () => window.clearTimeout(timer);
   }, [childId, localDay, mode, enabled]);
 
