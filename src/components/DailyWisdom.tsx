@@ -79,8 +79,10 @@ export function DailyWisdom({ localDay }: { localDay: string }) {
   const value = useWisdom(localDay);
   const [open, setOpen] = useState(false);
   const parsed = parseLocalDay(localDay);
-  if (!parsed || !value || (!value.quote && !value.event)) return null;
+  if (!parsed) return null;
+  if (!value) return <div aria-hidden="true" className="mt-2 h-9" />;
   const { quote, event } = value;
+  if (!quote && !event) return null;
   const line = [
     quote && `${quote.t.replace(/ \/ /g, ' — ')}${quote.a ? ` (${quote.a})` : ''}`,
     event && `Ngày này năm xưa ${parsed.day}/${parsed.month}, năm ${event.y}: ${event.t}`,
