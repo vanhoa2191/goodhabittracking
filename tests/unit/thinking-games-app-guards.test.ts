@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { limitThinkingGameRequest, readThinkingGameBody } from '@/lib/thinking-games/server/request-guards';
-import { thinkingGameBonusAvailable } from '@/lib/thinking-games/server/availability';
+import { thinkingGameBonusAvailable, thinkingGameSlotFinished } from '@/lib/thinking-games/server/availability';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 let minute = 0;
@@ -68,5 +68,21 @@ describe('thinking-games server bonus availability', () => {
       const admin = { from: () => ({ select: () => ({ eq }) }) } as unknown as SupabaseClient;
       expect(await thinkingGameBonusAvailable(admin, 'child-a', '2026-10-28')).toBe(false);
     }
+  });
+});
+
+describe('thinking-games finished slot', () => {
+  const adminWith = (row: { state: string } | null, error: object | null = null) => {
+    const maybeSingle = vi.fn().mockResolvedValue({ data: row, error });
+    const eq = vi.fn();
+    eq.mockReturnValue({ eq, maybeSingle });
+    return { from: () => ({ select: () => ({ eq }) }) } as unknown as SupabaseClient;
+  };
+
+  it('is true only for a finished entitlement, so a played game is not replayed', async () => {
+    expect(await thinkingGameSlotFinished(adminWith({ state: 'finished' }), 'child-a', '2026-11-01', 'main')).toBe(true);
+    expect(await thinkingGameSlotFinished(adminWith({ state: 'started' }), 'child-a', '2026-11-01', 'main')).toBe(false);
+    expect(await thinkingGameSlotFinished(adminWith(null), 'child-a', '2026-11-01', 'main')).toBe(false);
+    expect(await thinkingGameSlotFinished(adminWith({ state: 'finished' }, {}), 'child-a', '2026-11-01', 'main')).toBe(false);
   });
 });

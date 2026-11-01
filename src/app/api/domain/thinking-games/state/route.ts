@@ -5,7 +5,7 @@ import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { failure, success } from '@/lib/thinking-games/server/response';
 import { rpcErrorCode, rpcErrorStatus } from '@/lib/thinking-games/server/rpc-error';
-import { thinkingGameBonusAvailable } from '@/lib/thinking-games/server/availability';
+import { thinkingGameDayStatus } from '@/lib/thinking-games/server/availability';
 
 const input = z.object({ childId: z.string().uuid(), expectedLocalDay: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional() });
 export async function GET(request: NextRequest) {
@@ -23,9 +23,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(failure(code), { status: rpcErrorStatus(code) });
   }
   if (data?.ok === false) return NextResponse.json({ ...data, schemaVersion: 'v1', messageKey: `thinkingGames.${data.code}` }, { status: rpcErrorStatus(data.code) });
-  const bonusAvailable = data?.ok === true && data.featureEnabled === true && typeof data.serverLocalDay === 'string'
-    ? await thinkingGameBonusAvailable(admin, parsed.data.childId, data.serverLocalDay) : false;
-  return NextResponse.json(success('available', { ...data, bonusAvailable }));
+  const dayStatus = data?.ok === true && data.featureEnabled === true && typeof data.serverLocalDay === 'string'
+    ? await thinkingGameDayStatus(admin, parsed.data.childId, data.serverLocalDay)
+    : { bonusAvailable: false, mainPlayed: false, bonusPlayed: false };
+  return NextResponse.json(success('available', { ...data, ...dayStatus }));
 }
 export async function POST(request: NextRequest) {
   const crossSite = rejectCrossSiteRequest(request);
