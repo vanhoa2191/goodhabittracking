@@ -111,13 +111,18 @@ test.describe('Thinking Games Card/Player integration', () => {
     // Pilot day 1 is the rule-sequence board; other calendar days rotate mechanics.
     await page.clock.setFixedTime('2026-10-22T12:00:00');
     await page.goto(`${baseURL}/?demo=1`);
-    // The saying and the history fact sit on the dashboard; the game waits behind the floating button.
-    await expect(page.getByTestId('daily-quote')).toBeVisible({ timeout: 30_000 });
+    // The saying and the history fact scroll in a slim line on the dashboard; the game waits behind the floating button.
+    const ticker = page.getByTestId('daily-wisdom-ticker');
+    await expect(ticker).toBeVisible({ timeout: 30_000 });
+    await expect(ticker).toHaveAttribute('aria-label', /Ngày này năm xưa/);
+    await ticker.click();
+    await expect(page.getByTestId('daily-quote')).toBeVisible();
     await expect(page.getByTestId('daily-history')).toContainText('Ngày này năm xưa');
+    await page.getByRole('button', { name: 'Đóng', exact: true }).click();
     await expect(page.getByRole('dialog', { name: 'Trò chơi hôm nay' })).toHaveCount(0);
     await page.getByTestId('daily-game-button').click();
     await expect(page.getByRole('dialog', { name: 'Trò chơi hôm nay' })).toBeVisible();
-    await expect(page.getByTestId('daily-quote')).toHaveCount(1);
+    await expect(page.getByTestId('daily-quote')).toHaveCount(0);
     await page.getByRole('button', { name: 'Chơi', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Cùng thử nhé' })).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: 'Cùng thử nhé' }).click();

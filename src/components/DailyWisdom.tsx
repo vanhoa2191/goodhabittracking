@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BookOpenText, History } from 'lucide-react';
+import { BookOpenText, History, X } from 'lucide-react';
+import { ModalShell } from '@/components/ui/ModalShell';
 import {
   WISDOM_KIND_LABEL,
   parseLocalDay,
@@ -14,8 +15,7 @@ import {
 
 type Picked = { quote: WisdomQuote | null; event: HistoryEvent | null };
 
-/** The saying and the "on this day" fact for one local day. The data loads lazily, only when the popup opens. */
-export function DailyWisdom({ localDay }: { localDay: string }) {
+function useWisdom(localDay: string): Picked | null {
   const [picked, setPicked] = useState<{ day: string; value: Picked } | null>(null);
 
   useEffect(() => {
@@ -36,13 +36,13 @@ export function DailyWisdom({ localDay }: { localDay: string }) {
     return () => { active = false; };
   }, [localDay]);
 
-  const parsed = parseLocalDay(localDay);
-  const value = picked?.day === localDay ? picked.value : null;
-  if (!parsed) return null;
-  if (!value) return <div aria-hidden="true" className="h-24 animate-pulse rounded-2xl bg-slate-100 motion-reduce:animate-none dark:bg-zinc-800" />;
-  const { quote, event } = value;
-  if (!quote && !event) return null;
+  return picked?.day === localDay ? picked.value : null;
+}
 
+function WisdomCards({ value, localDay }: { value: Picked; localDay: string }) {
+  const parsed = parseLocalDay(localDay);
+  const { quote, event } = value;
+  if (!parsed) return null;
   return (
     <div className="grid gap-3" data-testid="daily-wisdom">
       {quote && (
@@ -68,5 +68,48 @@ export function DailyWisdom({ localDay }: { localDay: string }) {
         Nguồn: kho tàng tục ngữ, ca dao; Wikiquote và Wikipedia tiếng Việt (CC BY-SA).
       </p>
     </div>
+  );
+}
+
+/**
+ * One slim line at the top of the dashboard: the saying and the "on this day" fact scroll sideways. Tapping it opens
+ * the full text. With reduced motion the line stays still and is cut short instead of moving.
+ */
+export function DailyWisdom({ localDay }: { localDay: string }) {
+  const value = useWisdom(localDay);
+  const [open, setOpen] = useState(false);
+  const parsed = parseLocalDay(localDay);
+  if (!parsed || !value || (!value.quote && !value.event)) return null;
+  const { quote, event } = value;
+  const line = [
+    quote && `${quote.t.replace(/ \/ /g, ' — ')}${quote.a ? ` (${quote.a})` : ''}`,
+    event && `Ngày này năm xưa ${parsed.day}/${parsed.month}, năm ${event.y}: ${event.t}`,
+  ].filter(Boolean).join('   ✦   ');
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        data-testid="daily-wisdom-ticker"
+        aria-label={`${line}. Bấm để xem đầy đủ.`}
+        className="group mt-2 flex h-9 w-full items-center gap-2 overflow-hidden rounded-xl bg-white/70 px-3 text-left text-sm font-semibold text-slate-900 hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:bg-zinc-900/70 dark:text-slate-100"
+      >
+        <BookOpenText aria-hidden="true" className="h-4 w-4 shrink-0 text-amber-700 dark:text-amber-300" />
+        <span aria-hidden="true" className="relative min-w-0 flex-1 overflow-hidden">
+          <span className="wisdom-marquee inline-block whitespace-nowrap group-hover:[animation-play-state:paused] group-focus-visible:[animation-play-state:paused] motion-reduce:hidden">{line}<span className="px-12" /> {line}</span>
+          <span className="hidden truncate motion-reduce:block">{line}</span>
+        </span>
+      </button>
+      <ModalShell isOpen={open} onClose={() => setOpen(false)} label="Lời hay và ngày này năm xưa" titleId="daily-wisdom-title" maxWidth="lg" mobileSheet>
+        <div className="flex items-start justify-between gap-3 border-b border-slate-100 px-5 py-4 dark:border-zinc-800">
+          <h2 id="daily-wisdom-title" className="text-lg font-black text-slate-900 dark:text-slate-100">Lời hay và ngày này năm xưa</h2>
+          <button type="button" onClick={() => setOpen(false)} aria-label="Đóng" className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-slate-300 dark:hover:bg-zinc-800">
+            <X aria-hidden="true" className="h-5 w-5" />
+          </button>
+        </div>
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5"><WisdomCards value={value} localDay={localDay} /></div>
+      </ModalShell>
+    </>
   );
 }
