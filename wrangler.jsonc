@@ -15,7 +15,11 @@
     "binding": "AI"
   },
   "vars": {
-    "ENABLE_THINKING_GAMES": "true"
+    "ENABLE_THINKING_GAMES": "true",
+    "LIFECYCLE_EMAIL_PROVIDER": "brevo",
+    "LIFECYCLE_EMAIL_FROM": "KidHabit Hero <no-reply@kidhabithero.com>",
+    "LIFECYCLE_EMAILS_ENABLED": "true",
+    "LIFECYCLE_CARE_EMAILS_ENABLED": "true"
   },
   "observability": {
     "enabled": true
