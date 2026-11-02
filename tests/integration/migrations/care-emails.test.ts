@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { parse } from '@libpg-query/parser';
 import { describe, expect, it } from 'vitest';
 
-const migration = readFileSync(resolve('supabase/migrations/202611030001_care_emails.sql'), 'utf8');
+const migration = readFileSync(resolve('supabase/migrations/202611030002_care_emails.sql'), 'utf8');
 
 describe('care emails migration', () => {
   it('parses as PostgreSQL SQL', async () => {

@@ -21,7 +21,7 @@ try {
     .split('create table if not exists public.billing_support_cases')[0] + '\ncommit;';
   await fixture.exec(lifecycle.replace(/create or replace function public\.schedule_trial_ending_messages[\s\S]*$/, 'commit;'));
   await fixture.exec(await readFile('supabase/migrations/202611020001_child_space.sql', 'utf8'));
-  const migration = await readFile('supabase/migrations/202611030001_care_emails.sql', 'utf8');
+  const migration = await readFile('supabase/migrations/202611030002_care_emails.sql', 'utf8');
   await fixture.exec(migration);
   await fixture.exec(migration); // replay is harmless
 

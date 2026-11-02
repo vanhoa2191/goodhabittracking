@@ -83,3 +83,4 @@
 \ir migrations/202611010001_thinking_games_enable_immediately.sql
 \ir migrations/202611020001_child_space.sql
 \ir migrations/202611030001_child_space_phase2.sql
+\ir migrations/202611030002_care_emails.sql
