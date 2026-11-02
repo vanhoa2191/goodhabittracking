@@ -241,6 +241,7 @@ test('@a11y the offers and referral group in parent settings has no serious or c
   await page.locator('#parent-area-family').click();
   await page.locator('#parent-section-settings').click();
   const offers = page.locator('#settings-offers');
+  await offers.getByRole('button').click();
   await offers.scrollIntoViewIfNeeded();
   await expect(offers).toBeVisible();
   await expect(page.getByTestId('affiliate-card')).toBeVisible();
