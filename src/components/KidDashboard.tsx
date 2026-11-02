@@ -86,6 +86,10 @@ const DailyWisdom = dynamic(
   () => import('./DailyWisdom').then((module) => module.DailyWisdom),
   { ssr: false, loading: () => <div aria-hidden="true" className="mt-1.5 h-8" /> },
 );
+const ThinkingGameCard = dynamic(
+  () => import('./ThinkingGameCard').then((module) => module.ThinkingGameCard),
+  { ssr: false, loading: () => <div aria-hidden className="h-24" /> },
+);
 const DailyGameLauncher = dynamic(
   () => import('./DailyGameLauncher').then((module) => module.DailyGameLauncher),
   { ssr: false },
@@ -497,7 +501,7 @@ export function KidDashboard() {
         </div>}
         {!isFamilyPaused && <DailyWisdom localDay={todayStr} />}
       </div>
-      {activeChild && isToday && !isFamilyPaused && defaultExperienceFlags.thinkingGames && (
+      {activeChild && isToday && !isFamilyPaused && !spaceOn && defaultExperienceFlags.thinkingGames && (
         <DailyGameLauncher key={`${activeChild.id}:${dateStr}:${thinkingGameMode}`} childId={activeChild.id} localDay={dateStr} mode={thinkingGameMode} />
       )}
 
@@ -1225,6 +1229,11 @@ export function KidDashboard() {
 
       {/* The evening note comes after the day's content, so the list is not pushed down by it. */}
       {!spaceOn && defaultExperienceFlags.dailyJournal && activeChild.ageStage !== '0-3' && <DailyJournalCard />}
+      {spaceOn && visibleTab === 'space' && activeChild && isToday && !isFamilyPaused && defaultExperienceFlags.thinkingGames && (
+        <section data-testid="space-game" aria-label="Trò chơi hôm nay" className="mx-auto mb-4 w-full max-w-xl px-1">
+          <ThinkingGameCard key={`${activeChild.id}:${dateStr}:${thinkingGameMode}`} childId={activeChild.id} localDay={dateStr} mode={thinkingGameMode} />
+        </section>
+      )}
       {spaceOn && visibleTab === 'space' && (
         <ChildSpace
           key={`${activeChild.id}:${todayStr}:${thinkingGameMode}`}

@@ -120,9 +120,10 @@ test.describe('Thinking Games Card/Player integration', () => {
     await expect(page.getByTestId('daily-quote')).toBeVisible();
     await expect(page.getByTestId('daily-history')).toContainText('Ngày này năm xưa');
     await page.getByRole('button', { name: 'Đóng', exact: true }).click();
-    await expect(page.getByRole('dialog', { name: 'Trò chơi hôm nay' })).toHaveCount(0);
-    await page.getByTestId('daily-game-button').click();
-    await expect(page.getByRole('dialog', { name: 'Trò chơi hôm nay' })).toBeVisible();
+    // The game lives inside Không gian của bé; there is no floating button any more.
+    await expect(page.getByTestId('daily-game-button')).toHaveCount(0);
+    await page.getByTestId('kid-tabs').getByRole('button', { name: 'Không gian', exact: true }).click({ timeout: 30_000 });
+    await expect(page.getByTestId('space-game')).toBeVisible();
     await expect(page.getByTestId('daily-quote')).toHaveCount(0);
     await page.getByRole('button', { name: 'Chơi', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Cùng thử nhé' })).toBeVisible({ timeout: 15_000 });
@@ -186,8 +187,8 @@ test.describe('Thinking Games Card/Player integration', () => {
 
     await page.goto(baseURL);
     await page.getByRole('button', { name: 'Bé vui học' }).click();
-    await page.getByTestId('daily-game-button').click({ timeout: 30_000 });
-    await expect(page.getByRole('dialog', { name: 'Trò chơi hôm nay' })).toBeVisible();
+    await page.getByTestId('kid-tabs').getByRole('button', { name: 'Không gian', exact: true }).click({ timeout: 30_000 });
+    await expect(page.getByTestId('space-game')).toBeVisible();
     await page.getByRole('button', { name: 'Chơi', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Cùng thử nhé' })).toBeVisible({ timeout: 15_000 });
     await page.getByRole('button', { name: 'Cùng thử nhé' }).click();
@@ -272,7 +273,7 @@ test.describe('Thinking Games Card/Player integration', () => {
 
     await page.goto(`${disabledURL}/?demo=1`);
     await expect(page.getByTestId('daily-game-button')).toHaveCount(0);
-    await expect(page.getByRole('dialog', { name: 'Trò chơi hôm nay' })).toHaveCount(0);
+    await expect(page.getByTestId('space-game')).toHaveCount(0);
     await page.waitForTimeout(1_000);
     expect(requests).toEqual([]);
   });
