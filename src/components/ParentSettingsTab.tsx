@@ -29,6 +29,7 @@ import { PwaInstallPanel } from '@/components/PwaInstallPanel';
 import { getMarketingOrigin } from '@/lib/site';
 import { parseSettingsAnchor, SETTINGS_SECTIONS } from '@/lib/parent-section-url';
 import { HelpTip } from '@/components/help/HelpTip';
+import { SettingsGroup } from '@/components/SettingsGroup';
 
 const AiComingSoonCard = dynamic(() => import('./ai/AiComingSoon').then((module) => module.AiComingSoonCard), { ssr: false });
 const AiConsentCard = dynamic(() => import('./ai/AiConsentCard').then((module) => module.AiConsentCard), { ssr: false });
@@ -49,14 +50,26 @@ function useActiveSection(hasAccount: boolean): string {
     const headings = getVisibleSections(hasAccount)
       .map((section) => document.getElementById(section.id))
       .filter((element): element is HTMLElement => element !== null);
-    if (headings.length === 0 || typeof IntersectionObserver === 'undefined') return;
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries.filter((entry) => entry.isIntersecting);
-      const first = visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-      if (first) setActive(first.target.id);
-    }, { rootMargin: '-140px 0px -65% 0px' });
-    headings.forEach((heading) => observer.observe(heading));
-    return () => observer.disconnect();
+    if (headings.length === 0) return;
+    let frame = 0;
+    // The active group is the last heading that has reached the band just under the sticky links.
+    const update = () => {
+      frame = 0;
+      // At the very bottom a short last group cannot reach the band, so the last heading on screen counts.
+      const atBottom = window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+      const limit = atBottom ? window.innerHeight : 200;
+      const passed = headings.filter((heading) => heading.getBoundingClientRect().top <= limit);
+      setActive((passed.length > 0 ? passed[passed.length - 1] : headings[0]).id);
+    };
+    const schedule = () => { if (!frame) frame = window.requestAnimationFrame(update); };
+    update();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    return () => {
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, [hasAccount]);
   return active;
 }
@@ -109,6 +122,24 @@ export function ParentSettingsTab() {
   const pinCopy = getPinCopy(language);
   const layout = getSettingsLayoutCopy(language);
   const activeSection = useActiveSection(Boolean(currentUser));
+  const [openGroups, setOpenGroups] = useState<ReadonlySet<string>>(() => {
+    const anchor = typeof window === 'undefined' ? null : parseSettingsAnchor(window.location.hash);
+    return new Set(['settings-devices', 'settings-account', ...(anchor ? [anchor] : [])]);
+  });
+  const isOpen = (id: string) => openGroups.has(id);
+  const toggleGroup = (id: string) => setOpenGroups((current) => {
+    const next = new Set(current);
+    if (!next.delete(id)) next.add(id);
+    return next;
+  });
+  useEffect(() => {
+    const openFromHash = () => {
+      const anchor = parseSettingsAnchor(window.location.hash);
+      if (anchor) setOpenGroups((current) => (current.has(anchor) ? current : new Set(current).add(anchor)));
+    };
+    window.addEventListener('hashchange', openFromHash);
+    return () => window.removeEventListener('hashchange', openFromHash);
+  }, []);
   useScrollToSettingsAnchor();
   const pauseCopy = familyPauseCopy[language];
   const isPaused = Boolean(experience.settings?.paused_at);
@@ -195,12 +226,12 @@ export function ParentSettingsTab() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <h3 className="font-black text-lg text-slate-800 dark:text-slate-100">{t.parentSettings}</h3>
 
       <nav
         aria-label={layout.groupNav}
-        className="sticky top-[4.75rem] z-30 flex flex-wrap gap-2 rounded-2xl border border-slate-100 bg-white/90 p-2 text-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/90"
+        className="flex gap-2 overflow-x-auto rounded-2xl sm:sticky sm:top-[4.75rem] sm:z-30 sm:flex-wrap sm:overflow-visible border border-slate-100 bg-white/90 p-2 text-sm backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/90"
       >
         {getVisibleSections(Boolean(currentUser)).map((section) => {
           const current = activeSection === section.id;
@@ -208,8 +239,9 @@ export function ParentSettingsTab() {
             <a
               key={section.id}
               href={`#${section.id}`}
+              onClick={() => setOpenGroups((open) => (open.has(section.id) ? open : new Set(open).add(section.id)))}
               aria-current={current ? 'location' : undefined}
-              className={`inline-flex min-h-11 items-center rounded-xl border px-3 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
+              className={`inline-flex min-h-11 shrink-0 items-center whitespace-nowrap rounded-xl border px-3 font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                 current
                   ? 'border-indigo-600 bg-indigo-600 text-white'
                   : 'border-slate-200 bg-white text-indigo-700 hover:bg-indigo-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300'
@@ -221,7 +253,7 @@ export function ParentSettingsTab() {
         })}
       </nav>
 
-      <h4 id="settings-devices" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionDevices}</h4>
+      <SettingsGroup id="settings-devices" title={layout.sectionDevices} open={isOpen("settings-devices")} onToggle={toggleGroup}>
 
       <ChildDevicesPanel key={currentUser?.id ?? 'signed-out'} />
       <PwaInstallPanel />
@@ -247,31 +279,26 @@ export function ParentSettingsTab() {
         )}
         {pauseError && <p role="alert" className="mt-3 text-sm font-semibold text-rose-700 dark:text-rose-300">{pauseCopy.error}</p>}
       </section>
-
-      <h4 id="settings-account" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionAccount}</h4>
+      </SettingsGroup>
+      <SettingsGroup id="settings-account" title={layout.sectionAccount} open={isOpen("settings-account")} onToggle={toggleGroup}>
       {currentUser && <AccountProfileCard />}
       {currentUser && <AddonsCard />}
       <FamilyDataCard />
-      <h4 id="settings-privacy" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionPrivacy}</h4>
+      </SettingsGroup>
+      <SettingsGroup id="settings-privacy" title={layout.sectionPrivacy} open={isOpen("settings-privacy")} onToggle={toggleGroup}>
       {currentUser && <AnalyticsConsentCard />}
       {currentUser && <LeaderboardSharingCard />}
       {currentUser && defaultExperienceFlags.parentReengagement && <ParentReminderConsentCard />}
       {currentUser && defaultExperienceFlags.parentAi && <AiConsentCard />}
       {!defaultExperienceFlags.parentAi && <AiComingSoonCard />}
 
-      <Link href="/docs" className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{layout.openGuide}</Link>
-      {legalPagesApproved && <nav aria-label={layout.legalNav} className="grid gap-2 sm:grid-cols-3">
-        <Link href={new URL('/privacy/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.privacy}</Link>
-        <Link href={new URL('/terms/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.terms}</Link>
-        <Link href={new URL('/contact/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.contact}</Link>
-      </nav>}
-
-      <h4 id="settings-appearance" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionAppearance}</h4>
+      </SettingsGroup>
+      <SettingsGroup id="settings-appearance" title={layout.sectionAppearance} open={isOpen("settings-appearance")} onToggle={toggleGroup}>
       <div className="rounded-3xl border border-slate-100 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
         <ThemeSelector />
       </div>
-
-      <h4 id="settings-security" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionSecurity}</h4>
+      </SettingsGroup>
+      <SettingsGroup id="settings-security" title={layout.sectionSecurity} open={isOpen("settings-security")} onToggle={toggleGroup}>
       <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-slate-100 dark:border-zinc-800">
         <div className="flex items-center gap-1"><h4 className="font-bold text-sm text-slate-800 dark:text-slate-100 mb-2 flex items-center gap-2">
           <Lock className="w-4 h-4 text-indigo-600" />
@@ -327,14 +354,19 @@ export function ParentSettingsTab() {
           <div className="flex items-start gap-2.5"><span className="text-base leading-none">✅</span><div className="text-xs text-emerald-900 dark:text-emerald-200"><p className="font-bold mb-0.5">{copy.cloudSetupTitle}</p><p className="text-emerald-700 dark:text-emerald-300">{copy.cloudSetupDescription}</p></div></div>
         </div>
       </div>
-
+      </SettingsGroup>
       {currentUser && (
-        <>
-          <h4 id="settings-offers" className="scroll-mt-40 text-base font-black text-slate-900 dark:text-white">{layout.sectionOffers}</h4>
+        <SettingsGroup id="settings-offers" title={layout.sectionOffers} open={isOpen('settings-offers')} onToggle={toggleGroup}>
           <ReferralCodeEntry />
           <AffiliateCard />
-        </>
+        </SettingsGroup>
       )}
+      <Link href="/docs" className="flex min-h-11 items-center justify-center rounded-2xl border border-indigo-200 bg-indigo-50 px-4 text-sm font-extrabold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-300">{layout.openGuide}</Link>
+      {legalPagesApproved && <nav aria-label={layout.legalNav} className="grid gap-2 sm:grid-cols-3">
+        <Link href={new URL('/privacy/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.privacy}</Link>
+        <Link href={new URL('/terms/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.terms}</Link>
+        <Link href={new URL('/contact/', marketingOrigin).href} className="flex min-h-11 items-center justify-center rounded-xl border border-slate-200 bg-white px-3 text-sm font-bold text-indigo-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-indigo-300">{layout.contact}</Link>
+      </nav>}
     </div>
   );
 }

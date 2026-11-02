@@ -112,16 +112,16 @@ function ThinkingGamesSettingsContent() {
   };
 
   return (
-    <section id="settings-thinking-games" className="scroll-mt-40 rounded-3xl border border-amber-200 bg-amber-50/70 p-6 dark:border-amber-900/50 dark:bg-amber-950/20" aria-labelledby="thinking-games-settings-title">
+    <section id="settings-thinking-games" className="scroll-mt-40 rounded-3xl border border-amber-200 bg-amber-50/70 p-4 sm:p-6 dark:border-amber-900/50 dark:bg-amber-950/20" aria-labelledby="thinking-games-settings-title">
       <h4 id="thinking-games-settings-title" className="flex items-center gap-2 text-base font-black text-amber-950 dark:text-amber-100"><Gamepad2 aria-hidden="true" className="h-5 w-5" /> Trò chơi luyện tập</h4>
-      <p className="mt-2 text-sm text-amber-900/80 dark:text-amber-200/80">Không thay đổi điểm, thói quen hoặc phần thưởng. Nội dung chưa được duyệt sẽ không xuất hiện trong tài khoản thật.</p>
+      <p className="mt-1 text-sm text-amber-900/80 dark:text-amber-200/80">Không ảnh hưởng điểm, thói quen hay phần thưởng.</p>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-white/80 p-4 dark:border-amber-900/50 dark:bg-zinc-900/60">
         <div className="min-w-0 flex-1">
           <p id="thinking-games-switch-label" className="text-sm font-black text-slate-900 dark:text-slate-100">
             Trò chơi luyện tập: {enabled ? (pendingDay ? `sẽ bật từ ngày ${pendingDay}` : 'đang bật') : 'đang tắt'}
           </p>
           <p id="thinking-games-switch-help" className="mt-1 text-xs font-medium text-slate-600 dark:text-slate-300">
-            Bật hoặc tắt có hiệu lực ngay. Các thay đổi khác khi trò chơi đang bật sẽ áp dụng từ ngày mai theo múi giờ của gia đình. Cần mã PIN phụ huynh để thay đổi.
+            Bật/tắt có hiệu lực ngay; thay đổi khác áp dụng từ ngày mai. Cần PIN phụ huynh.
           </p>
         </div>
         <button
@@ -139,7 +139,9 @@ function ThinkingGamesSettingsContent() {
           <span className="sr-only">{enabled ? 'Tắt trò chơi' : 'Bật trò chơi'}</span>
         </button>
       </div>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+      <details className="group mt-3">
+        <summary className="flex min-h-11 cursor-pointer items-center text-sm font-bold text-indigo-700 dark:text-indigo-300">Tuỳ chọn thời gian &amp; độ tuổi</summary>
+      <div className="mt-2 grid gap-3 sm:grid-cols-2">
         <label className="flex min-h-11 items-center gap-3 text-sm font-bold text-slate-800 dark:text-slate-100">
           <input type="checkbox" checked={bonusEnabled} onChange={(event) => setBonusEnabled(event.target.checked)} disabled={!enabled} className="h-5 w-5 accent-indigo-600 disabled:opacity-40" />
           Cho phép thử thách phụ
@@ -166,6 +168,7 @@ function ThinkingGamesSettingsContent() {
           </select>
         </label>
       </div>
+      </details>
       <div className="mt-4 flex flex-wrap gap-2">
         <button type="button" onClick={() => void save()} disabled={saving} className="min-h-11 rounded-xl bg-indigo-600 px-4 text-sm font-bold text-white hover:bg-indigo-700 disabled:opacity-60">{saving ? 'Đang lưu…' : 'Lưu cài đặt'}</button>
         <button type="button" onClick={() => void loadPreview()} disabled={!activeChild} className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-indigo-200 bg-white px-4 text-sm font-bold text-indigo-700 hover:bg-indigo-50 disabled:opacity-50"><Eye aria-hidden="true" className="h-4 w-4" /> Xem trước</button>

@@ -72,7 +72,7 @@ export function PwaInstallBanner() {
   return (
     <aside
       aria-label={copy.title}
-      className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-md rounded-2xl border border-emerald-200 bg-white p-4 shadow-lg dark:border-emerald-800 dark:bg-zinc-900"
+      className="relative mx-3 mb-[max(0.75rem,env(safe-area-inset-bottom))] mt-4 sm:mx-auto max-w-md rounded-2xl border border-emerald-200 bg-white p-4 shadow-lg dark:border-emerald-800 dark:bg-zinc-900"
     >
       <div className="flex items-start gap-3">
         <Download className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" aria-hidden="true" />

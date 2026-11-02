@@ -12,6 +12,7 @@ test('parents see that AI suggestions are coming, and nothing about them can be 
 
   await page.getByRole('tablist', { name: 'Khu vực phụ huynh' }).getByRole('tab', { name: 'Gia đình' }).click();
   await page.getByRole('tab', { name: /Cài đặt/ }).click();
+  await page.locator('#settings-privacy').getByRole('button').click();
   const card = page.getByTestId('ai-coming-soon-card');
   await expect(card).toBeVisible();
   await expect(card).toContainText('Sắp ra mắt');

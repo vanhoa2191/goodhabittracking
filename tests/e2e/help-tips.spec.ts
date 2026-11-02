@@ -66,6 +66,7 @@ test('every parent area carries ? help and the guide link opens the in-app guide
   await page.getByRole('tab', { name: 'Gia đình', exact: true }).click();
   await expect(page.locator('[data-help-topic="children.profiles"]')).toBeVisible();
   await page.getByRole('tab', { name: /Cài đặt/ }).click();
+  await page.locator('#settings-security').getByRole('button').click();
   await expect(page.locator('[data-help-topic="settings.pin"]')).toBeVisible();
   await expect(page.getByRole('link', { name: /tài liệu hướng dẫn/i })).toHaveAttribute('href', '/docs');
 });
