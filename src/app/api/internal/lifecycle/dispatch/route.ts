@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getLifecycleEmailConfig, LifecycleDeliveryUncertainError, parseLifecycleMessage, sendLifecycleEmail } from '@/lib/lifecycle/email';
+import { isCareEmailsEnabled, scheduleCareMessages } from '@/lib/lifecycle/care';
 import { createCorrelationId, logOperationalEvent } from '@/lib/observability/logger';
 import { createAdminSupabaseClient } from '@/lib/supabase/admin';
 import { hasBearerSecret } from '@/lib/security/bearer-secret';
@@ -36,6 +37,11 @@ export async function POST(request: NextRequest) {
   if (scheduleError) {
     logOperationalEvent('error', { operation: 'lifecycle_schedule', reasonCode: 'database_failure', correlationId, route: request.nextUrl.pathname, status: 503 });
     return NextResponse.json({ error: 'Could not schedule lifecycle messages.', correlationId }, { status: 503 });
+  }
+
+  // Default off. A care scheduling failure is logged but never blocks transactional sends.
+  if (isCareEmailsEnabled() && !(await scheduleCareMessages(admin)).ok) {
+    logOperationalEvent('error', { operation: 'lifecycle_care_schedule', reasonCode: 'database_failure', correlationId, route: request.nextUrl.pathname, status: 200 });
   }
 
   // Leave margin for persistence after ten 30s sends within the ten-minute lease.
