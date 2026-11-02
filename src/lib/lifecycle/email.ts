@@ -15,6 +15,9 @@ const lifecycleTemplateSchema = z.enum([
   'care_child_inactive',
   'care_weekly_summary',
   'care_space_alert',
+  'onboarding_day1',
+  'onboarding_day3',
+  'onboarding_day7',
 ]);
 
 const lifecyclePayloadSchema = z.object({
@@ -41,11 +44,34 @@ type RenderedEmail = {
 
 const APP_URL = 'https://app.kidhabithero.com';
 
-// Care mail is sent only to parents who opted in to updates, so its footer says why and how to stop.
+// Care and onboarding mail is sent only to parents who opted in to updates, so its footer says why and how to stop.
 function careFooter(vietnamese: boolean): string {
   return vietnamese
     ? 'Bạn nhận thư chăm sóc này vì đã đồng ý nhận thông tin từ KidHabit Hero. Muốn ngừng nhận, hãy tắt tùy chọn nhận thông tin trong hồ sơ phụ huynh (Tài khoản) — thay đổi có hiệu lực ngay. Chúng tôi không bao giờ hỏi mật khẩu, mã PIN phụ huynh hay thông tin thẻ qua email.<br>KidHabit Hero · kidhabithero.com'
     : 'You are receiving this care email because you agreed to updates from KidHabit Hero. To stop, turn off the updates option in your parent profile (Account); it takes effect immediately. We never ask for passwords, parent PINs or card details by email.<br>KidHabit Hero · kidhabithero.com';
+}
+
+// Tutorial videos on the KidHabit Hero YouTube channel (@KidHabiHero). Emails link to them as text buttons: no embeds, no images.
+const TUTORIAL_VIDEOS = {
+  1: { url: 'https://youtu.be/rWdlRY6dXyo', vi: 'Bắt đầu với KidhabitHero', en: 'Getting started with KidhabitHero' },
+  2: { url: 'https://youtu.be/wKvK5c54XsY', vi: 'Hướng dẫn - Màn Hình Của Bé', en: 'Guide: the child’s screen' },
+  3: { url: 'https://youtu.be/q5GH78yGnOQ', vi: 'Đổi quà và Thành phố ước mơ', en: 'Rewards and Dream City' },
+  4: { url: 'https://youtu.be/3vhlOq71DgE', vi: 'Hôm nay và việc duyệt', en: 'Today and approvals' },
+  5: { url: 'https://youtu.be/_rKUsay8s6E', vi: 'Thiết kế thói quen', en: 'Designing habits' },
+  6: { url: 'https://youtu.be/MngkioDTqJI', vi: 'Gia đình và cài đặt', en: 'Family and settings' },
+  7: { url: 'https://youtu.be/iYcroOEsTQY', vi: 'Gói và dùng thử', en: 'Plans and trial' },
+  8: { url: 'https://youtu.be/CD-ak4oJQco', vi: 'Cài ứng dụng lên điện thoại, máy tính bảng', en: 'Install the app on a phone or tablet' },
+} as const;
+
+type TutorialVideoId = keyof typeof TUTORIAL_VIDEOS;
+
+function videoButtons(ids: readonly TutorialVideoId[], vietnamese: boolean): string {
+  const links = ids.map((id) => {
+    const video = TUTORIAL_VIDEOS[id];
+    return `<a href="${video.url}" style="display:inline-block;margin:0 8px 8px 0;padding:10px 16px;font-size:15px;font-weight:700;color:${EMAIL_COLORS.primary};text-decoration:none;border:2px solid ${EMAIL_COLORS.primary};border-radius:12px">▶ ${escapeHtml(vietnamese ? video.vi : video.en)}</a>`;
+  }).join('');
+  const heading = vietnamese ? 'Video hướng dẫn ngắn' : 'Short tutorial videos';
+  return `<p><strong>${heading}</strong></p><div style="margin:0 0 16px">${links}</div>`;
 }
 
 function frame(title: string, body: string, vietnamese: boolean, cta?: { readonly label: string; readonly path: string }, care = false): string {
@@ -90,8 +116,8 @@ export function renderLifecycleEmail(message: LifecycleMessage): RenderedEmail {
     case 'welcome_setup': {
       const subject = vietnamese ? 'Bắt đầu cùng KidHabit Hero' : 'Get started with KidHabit Hero';
       const body = vietnamese
-        ? '<p>Hồ sơ phụ huynh đã sẵn sàng. Bước tiếp theo là tạo hồ sơ bé, chọn thói quen phù hợp và ghép thiết bị nếu cần.</p>'
-        : '<p>Your parent profile is ready. Next, create a child profile, choose suitable habits, and pair a device if needed.</p>';
+        ? '<p>Hồ sơ phụ huynh đã sẵn sàng. Bước tiếp theo là tạo hồ sơ bé, chọn thói quen phù hợp và ghép thiết bị nếu cần.</p>' + videoButtons([1, 8], true)
+        : '<p>Your parent profile is ready. Next, create a child profile, choose suitable habits, and pair a device if needed.</p>' + videoButtons([1, 8], false);
       return { subject, html: frame(subject, body, vietnamese, { label: vietnamese ? 'Mở KidHabit Hero' : 'Open KidHabit Hero', path: '/' }) };
     }
     case 'trial_ending': {
@@ -100,8 +126,8 @@ export function renderLifecycleEmail(message: LifecycleMessage): RenderedEmail {
         : '';
       const subject = vietnamese ? 'Gói dùng thử sắp kết thúc' : 'Your trial is ending soon';
       const body = vietnamese
-        ? `<p>Thời gian dùng thử dự kiến kết thúc vào <strong>${escapeHtml(end)}</strong>. KidHabit Hero không tự động trừ tiền; bạn chỉ thanh toán khi chủ động chọn gói.</p>`
-        : `<p>Your trial is expected to end on <strong>${escapeHtml(end)}</strong>. KidHabit Hero does not charge automatically; payment happens only when you actively choose a plan.</p>`;
+        ? `<p>Thời gian dùng thử dự kiến kết thúc vào <strong>${escapeHtml(end)}</strong>. KidHabit Hero không tự động trừ tiền; bạn chỉ thanh toán khi chủ động chọn gói.</p>${videoButtons([7], true)}`
+        : `<p>Your trial is expected to end on <strong>${escapeHtml(end)}</strong>. KidHabit Hero does not charge automatically; payment happens only when you actively choose a plan.</p>${videoButtons([7], false)}`;
       return { subject, html: frame(subject, body, vietnamese, { label: vietnamese ? 'Xem các gói' : 'See plans', path: '/checkout' }) };
     }
     case 'payment_receipt': {
@@ -126,8 +152,8 @@ export function renderLifecycleEmail(message: LifecycleMessage): RenderedEmail {
     case 'care_week1_tips': {
       const subject = vietnamese ? 'Ba bước nhỏ để đặt nhiệm vụ đầu tiên cho bé' : 'Three small steps to set your child’s first tasks';
       const body = vietnamese
-        ? '<p>Chào bạn, những ngày đầu thường là lúc khó nhất. Bạn không cần làm nhiều: chỉ cần một vài việc nhỏ, rõ ràng.</p><p><strong>1.</strong> Chọn 1–3 việc bé đã gần như tự làm được (ví dụ cất cặp, đánh răng).<br><strong>2.</strong> Đặt giờ cố định và giải thích ngắn gọn với bé.<br><strong>3.</strong> Khen ngay khi bé hoàn thành — việc nhỏ làm đều mỗi ngày hiệu quả hơn việc lớn làm một lần.</p>'
-        : '<p>Hello, the first days are often the hardest. You do not need much: just a few small, clear tasks.</p><p><strong>1.</strong> Pick 1–3 things your child almost does alone (for example packing a bag, brushing teeth).<br><strong>2.</strong> Set a fixed time and explain it briefly.<br><strong>3.</strong> Praise right after it is done — small tasks done daily beat big ones done once.</p>';
+        ? '<p>Chào bạn, những ngày đầu thường là lúc khó nhất. Bạn không cần làm nhiều: chỉ cần một vài việc nhỏ, rõ ràng.</p><p><strong>1.</strong> Chọn 1–3 việc bé đã gần như tự làm được (ví dụ cất cặp, đánh răng).<br><strong>2.</strong> Đặt giờ cố định và giải thích ngắn gọn với bé.<br><strong>3.</strong> Khen ngay khi bé hoàn thành — việc nhỏ làm đều mỗi ngày hiệu quả hơn việc lớn làm một lần.</p>' + videoButtons([5], true)
+        : '<p>Hello, the first days are often the hardest. You do not need much: just a few small, clear tasks.</p><p><strong>1.</strong> Pick 1–3 things your child almost does alone (for example packing a bag, brushing teeth).<br><strong>2.</strong> Set a fixed time and explain it briefly.<br><strong>3.</strong> Praise right after it is done — small tasks done daily beat big ones done once.</p>' + videoButtons([5], false);
       return { subject, html: frame(subject, body, vietnamese, { label: vietnamese ? 'Đặt nhiệm vụ đầu tiên' : 'Set the first tasks', path: '/' }, true) };
     }
     case 'care_child_inactive': {
@@ -153,6 +179,29 @@ export function renderLifecycleEmail(message: LifecycleMessage): RenderedEmail {
         ? '<p>Có vài cập nhật nhỏ trong Không gian của bé gần đây. Đây chỉ là một lời nhắc nhẹ, không phải đánh giá hay kết luận về bé.</p><p>Khi tiện, bạn có thể mở ứng dụng và dành ít phút trò chuyện cùng bé.</p>'
         : '<p>There are a few small updates in your child’s space lately. This is only a gentle reminder, not an assessment or conclusion about your child.</p><p>When convenient, open the app and take a few minutes to talk together.</p>';
       return { subject, html: frame(subject, body, vietnamese, { label: vietnamese ? 'Mở ứng dụng' : 'Open the app', path: '/' }, true) };
+    }
+    case 'onboarding_day1':
+    case 'onboarding_day3':
+    case 'onboarding_day7': {
+      const step = {
+        onboarding_day1: {
+          videos: [1, 2, 8] as const,
+          vi: ['Chào mừng bạn đến với KidHabit Hero', '<p>Chào bạn, cảm ơn bạn đã tạo gia đình trên KidHabit Hero. Ba video ngắn dưới đây giúp bạn bắt đầu trong vài phút: tạo hồ sơ, xem màn hình của bé và cài ứng dụng lên điện thoại hoặc máy tính bảng.</p>'],
+          en: ['Welcome to KidHabit Hero', '<p>Hello, thank you for creating your family on KidHabit Hero. The three short videos below get you started in minutes: set up, see your child’s screen, and install the app on a phone or tablet.</p>'],
+        },
+        onboarding_day3: {
+          videos: [5, 4] as const,
+          vi: ['Thiết kế thói quen và duyệt việc mỗi ngày', '<p>Sau vài ngày làm quen, đây là lúc đặt những thói quen nhỏ phù hợp với bé và nắm nhịp duyệt việc hằng ngày. Hai video này đi qua từng bước.</p>'],
+          en: ['Design habits and review each day', '<p>After a few days, it is a good time to set small habits that fit your child and get into a daily review rhythm. These two videos walk through each step.</p>'],
+        },
+        onboarding_day7: {
+          videos: [3, 6] as const,
+          vi: ['Quà tặng, Thành phố ước mơ và cài đặt gia đình', '<p>Sau một tuần, bé có thể bắt đầu đổi quà và xây Thành phố ước mơ, còn bạn có thể mời thêm người thân và chỉnh cài đặt gia đình. Hai video này giải thích cách làm.</p>'],
+          en: ['Rewards, Dream City and family settings', '<p>After a week, your child can start redeeming rewards and building Dream City, and you can invite relatives and adjust family settings. These two videos explain how.</p>'],
+        },
+      }[message.templateKey];
+      const [subject, intro] = vietnamese ? step.vi : step.en;
+      return { subject, html: frame(subject, intro + videoButtons(step.videos, vietnamese), vietnamese, { label: vietnamese ? 'Mở KidHabit Hero' : 'Open KidHabit Hero', path: '/' }, true) };
     }
     case 'subscription_cancelled': {
       const subject = vietnamese ? 'Gói KidHabit Hero đã được hủy' : 'Your KidHabit Hero plan was cancelled';
