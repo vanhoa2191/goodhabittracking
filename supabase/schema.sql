@@ -84,3 +84,4 @@
 \ir migrations/202611020001_child_space.sql
 \ir migrations/202611030001_child_space_phase2.sql
 \ir migrations/202611030002_care_emails.sql
+\ir migrations/202611040001_onboarding_emails.sql

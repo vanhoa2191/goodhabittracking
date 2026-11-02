@@ -61,6 +61,7 @@ describe('POST /api/internal/lifecycle/dispatch', () => {
     expect(response.status).toBe(200);
     const names = rpc.mock.calls.map((call) => call[0]);
     expect(names).not.toContain('schedule_care_messages');
+    expect(names).not.toContain('schedule_onboarding_messages');
     expect(names).not.toContain('care_space_mood_snapshot');
   });
 

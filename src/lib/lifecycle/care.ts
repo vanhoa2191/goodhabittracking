@@ -56,5 +56,9 @@ export async function scheduleCareMessages(admin: Pick<SupabaseClient, 'rpc'>, n
     const { error } = await admin.rpc('schedule_care_messages');
     if (error) ok = false;
   } catch { ok = false; }
+  try {
+    const { error } = await admin.rpc('schedule_onboarding_messages');
+    if (error) ok = false;
+  } catch { ok = false; }
   return { ok };
 }

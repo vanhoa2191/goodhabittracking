@@ -23,7 +23,7 @@ describe('lifecycle email', () => {
   });
 
   it('wraps every template in the shared shell and links to the app only with fixed URLs', () => {
-    const keys = ['welcome_setup', 'trial_ending', 'payment_receipt', 'support_status', 'refund_status', 'subscription_cancelled', 'care_week1_tips', 'care_child_inactive', 'care_weekly_summary', 'care_space_alert'] as const;
+    const keys = ['welcome_setup', 'trial_ending', 'payment_receipt', 'support_status', 'refund_status', 'subscription_cancelled', 'care_week1_tips', 'care_child_inactive', 'care_weekly_summary', 'care_space_alert', 'onboarding_day1', 'onboarding_day3', 'onboarding_day7'] as const;
     for (const templateKey of keys) {
       for (const locale of ['vi', 'en']) {
         const { html } = renderLifecycleEmail(parseLifecycleMessage({
@@ -35,9 +35,44 @@ describe('lifecycle email', () => {
         expect(html).toContain(`lang="${locale}"`);
         expect(html).not.toMatch(/<script|<img/i);
         const links = [...html.matchAll(/href="([^"]+)"/g)].map((match) => match[1]);
-        for (const link of links) expect(link).toMatch(/^https:\/\/app\.kidhabithero\.com\//);
+        for (const link of links) expect(link).toMatch(/^https:\/\/(app\.kidhabithero\.com\/|youtu\.be\/[\w-]{11}$)/);
       }
     }
+  });
+
+  describe('tutorial videos and onboarding', () => {
+    const videoLinks = (templateKey: string, locale = 'vi') => {
+      const { html } = renderLifecycleEmail(parseLifecycleMessage({ templateKey, locale, payload: { trialEndsAt: '2026-10-20T00:00:00.000Z' } }));
+      expect(html).not.toMatch(/<iframe|<video|<img/i);
+      return [...html.matchAll(/href="(https:\/\/youtu\.be\/[^"]+)"/g)].map((match) => match[1]);
+    };
+    const id = (code: string) => `https://youtu.be/${code}`;
+
+    it.each([
+      ['welcome_setup', ['rWdlRY6dXyo', 'CD-ak4oJQco']],
+      ['care_week1_tips', ['_rKUsay8s6E']],
+      ['trial_ending', ['iYcroOEsTQY']],
+      ['onboarding_day1', ['rWdlRY6dXyo', 'wKvK5c54XsY', 'CD-ak4oJQco']],
+      ['onboarding_day3', ['_rKUsay8s6E', '3vhlOq71DgE']],
+      ['onboarding_day7', ['q5GH78yGnOQ', 'MngkioDTqJI']],
+    ])('%s links the right videos in order, as text buttons, in both languages', (templateKey, codes) => {
+      for (const locale of ['vi', 'en']) expect(videoLinks(templateKey, locale)).toEqual(codes.map(id));
+    });
+
+    it.each(['onboarding_day1', 'onboarding_day3', 'onboarding_day7'])('%s renders vi and en with the opt-in footer', (templateKey) => {
+      const vi = renderLifecycleEmail(parseLifecycleMessage({ templateKey, locale: 'vi', payload: {} }));
+      const en = renderLifecycleEmail(parseLifecycleMessage({ templateKey, locale: 'en', payload: {} }));
+      expect(vi.subject).not.toBe(en.subject);
+      expect(vi.html).toContain('đồng ý nhận thông tin');
+      expect(en.html).toContain('you agreed to updates');
+      expect(vi.html).toContain('Video hướng dẫn');
+      expect(en.html).toContain('tutorial videos');
+    });
+
+    it('does not put video links in unrelated mail', () => {
+      expect(videoLinks('payment_receipt')).toEqual([]);
+      expect(videoLinks('care_weekly_summary')).toEqual([]);
+    });
   });
 
   describe('care templates', () => {

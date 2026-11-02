@@ -39,7 +39,7 @@ describe('care email scheduling', () => {
     });
     const result = await scheduleCareMessages({ rpc } as never, new Date('2026-11-01T05:00:00Z'));
     expect(result.ok).toBe(true);
-    expect(calls.map(([name]) => name)).toEqual(['care_space_mood_snapshot', 'enqueue_care_message', 'schedule_care_messages']);
+    expect(calls.map(([name]) => name)).toEqual(['care_space_mood_snapshot', 'enqueue_care_message', 'schedule_care_messages', 'schedule_onboarding_messages']);
     expect(calls[1][1]).toEqual({ target_family_id: 'f1', target_template_key: 'care_space_alert', target_payload: { status: 'watch' } });
   });
 
@@ -48,5 +48,11 @@ describe('care email scheduling', () => {
     const result = await scheduleCareMessages({ rpc } as never);
     expect(result.ok).toBe(false);
     expect(rpc).toHaveBeenCalledWith('schedule_care_messages');
+    expect(rpc).toHaveBeenCalledWith('schedule_onboarding_messages');
+  });
+
+  it('reports an onboarding producer failure', async () => {
+    const rpc = vi.fn(async (name: string) => ({ data: null, error: name === 'schedule_onboarding_messages' ? { message: 'x' } : null }));
+    expect((await scheduleCareMessages({ rpc } as never)).ok).toBe(false);
   });
 });
