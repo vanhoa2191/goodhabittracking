@@ -1,6 +1,9 @@
 import {
+  normalizeSpaceGoal,
+  normalizeSpaceLetter,
   normalizeSpaceNote,
   spaceSnapshotSchema,
+  type SpaceGoalStatus,
   type SpaceMood,
   type SpaceNoteKind,
   type SpaceReason,
@@ -8,7 +11,7 @@ import {
 } from '@/lib/child-space';
 
 export type ChildSpaceMode = 'paired' | 'parent' | 'local';
-export const EMPTY_SPACE: SpaceSnapshot = { moods: [], notes: [] };
+export const EMPTY_SPACE: SpaceSnapshot = { moods: [], notes: [], goals: [], letters: [] };
 
 const localKey = (childId: string) => `kidhabit.child-space.local.v1.${childId}`;
 
@@ -95,5 +98,60 @@ export async function loadParentChildSpace(childId: string): Promise<SpaceSnapsh
     return response.ok && parsed.success ? parsed.data : null;
   } catch {
     return null;
+  }
+}
+
+export async function saveSpaceGoal(childId: string, mode: ChildSpaceMode, weekStart: string, text: string): Promise<boolean> {
+  const goal = normalizeSpaceGoal(text);
+  if (!goal) return false;
+  if (mode === 'paired') {
+    try {
+      return (await fetch('/api/child/space', { method: 'PUT', headers: json, body: JSON.stringify({ type: 'goal', weekStart, text: goal }) })).ok;
+    } catch {
+      return false;
+    }
+  }
+  const current = readLocal(childId);
+  writeLocal(childId, { ...current, goals: [{ week_start: weekStart, goal_text: goal, status: 'open' }, ...current.goals.filter((entry) => entry.week_start !== weekStart)] });
+  return true;
+}
+
+export async function markSpaceGoal(childId: string, mode: ChildSpaceMode, weekStart: string, status: SpaceGoalStatus): Promise<boolean> {
+  if (mode === 'paired') {
+    try {
+      return (await fetch('/api/child/space', { method: 'PUT', headers: json, body: JSON.stringify({ type: 'goal-status', weekStart, status }) })).ok;
+    } catch {
+      return false;
+    }
+  }
+  const current = readLocal(childId);
+  writeLocal(childId, { ...current, goals: current.goals.map((entry) => (entry.week_start === weekStart ? { ...entry, status } : entry)) });
+  return true;
+}
+
+/** A letter is always shared with parents, so a parent preview or local practice never sends one: it stays on this device. */
+export async function sendSpaceLetter(childId: string, mode: ChildSpaceMode, date: string, text: string): Promise<boolean> {
+  const letter = normalizeSpaceLetter(text);
+  if (!letter) return false;
+  if (mode === 'paired') {
+    try {
+      return (await fetch('/api/child/space', { method: 'PUT', headers: json, body: JSON.stringify({ type: 'letter', date, text: letter }) })).ok;
+    } catch {
+      return false;
+    }
+  }
+  const current = readLocal(childId);
+  writeLocal(childId, { ...current, letters: [{ id: `local-${Date.now()}`, local_date: date, letter_text: letter, read: false, parent_heart: false }, ...current.letters] });
+  return true;
+}
+
+export async function respondToSpaceLetter(letterId: string, heart?: boolean): Promise<boolean> {
+  try {
+    const response = await fetch('/api/domain/child-space', {
+      method: 'POST', headers: json, body: JSON.stringify({ letterId, ...(heart === undefined ? {} : { heart }) }),
+    });
+    return response.ok;
+  } catch {
+    return false;
   }
 }

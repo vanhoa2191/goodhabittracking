@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
-  SPACE_MOODS, SPACE_NOTE_KINDS, SPACE_REASONS, normalizeSpaceNote, spaceSnapshotSchema,
+  SPACE_GOAL_STATUSES, SPACE_MOODS, SPACE_NOTE_KINDS, SPACE_REASONS, normalizeSpaceGoal, normalizeSpaceLetter, normalizeSpaceNote, spaceSnapshotSchema,
 } from '@/lib/child-space';
 import { CHILD_SESSION_COOKIE, sha256Hex } from '@/lib/pairing/crypto';
 import { rejectCrossSiteRequest } from '@/lib/security/request-origin';
@@ -13,6 +13,9 @@ export const runtime = 'nodejs';
 const putInput = z.discriminatedUnion('type', [
   z.object({ type: z.literal('mood'), date: z.iso.date(), mood: z.enum(SPACE_MOODS), reason: z.enum(SPACE_REASONS).nullable().optional() }).strict(),
   z.object({ type: z.literal('note'), date: z.iso.date(), kind: z.enum(SPACE_NOTE_KINDS), text: z.string(), shared: z.boolean().optional() }).strict(),
+  z.object({ type: z.literal('goal'), weekStart: z.iso.date(), text: z.string() }).strict(),
+  z.object({ type: z.literal('goal-status'), weekStart: z.iso.date(), status: z.enum(SPACE_GOAL_STATUSES) }).strict(),
+  z.object({ type: z.literal('letter'), date: z.iso.date(), text: z.string() }).strict(),
 ]);
 const deleteInput = z.object({ date: z.iso.date(), kind: z.enum(SPACE_NOTE_KINDS) }).strict();
 
@@ -26,7 +29,7 @@ async function sessionHash(): Promise<string | null> {
   return token ? sha256Hex(token) : null;
 }
 
-const unavailable = (status: unknown) => status === 'date_unavailable' || status === 'input_invalid';
+const unavailable = (status: unknown) => status === 'date_unavailable' || status === 'input_invalid' || status === 'not_found' || status === 'limit_reached';
 
 export async function GET() {
   const tokenHash = await sessionHash();
@@ -54,6 +57,22 @@ export async function PUT(request: NextRequest) {
     result = await supabase.rpc('save_child_space_mood', {
       session_token_hash: tokenHash, target_local_date: body.data.date,
       target_mood: body.data.mood, target_reason: body.data.reason ?? null,
+    });
+  } else if (body.data.type === 'goal') {
+    const text = normalizeSpaceGoal(body.data.text);
+    if (!text) return NextResponse.json({ error: 'Invalid space entry.' }, { status: 400 });
+    result = await supabase.rpc('save_child_space_goal', {
+      session_token_hash: tokenHash, target_week_start: body.data.weekStart, target_text: text,
+    });
+  } else if (body.data.type === 'goal-status') {
+    result = await supabase.rpc('mark_child_space_goal', {
+      session_token_hash: tokenHash, target_week_start: body.data.weekStart, target_status: body.data.status,
+    });
+  } else if (body.data.type === 'letter') {
+    const text = normalizeSpaceLetter(body.data.text);
+    if (!text) return NextResponse.json({ error: 'Invalid space entry.' }, { status: 400 });
+    result = await supabase.rpc('send_child_space_letter', {
+      session_token_hash: tokenHash, target_local_date: body.data.date, target_text: text,
     });
   } else {
     const text = normalizeSpaceNote(body.data.text);
